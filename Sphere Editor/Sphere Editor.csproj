@@ -625,6 +625,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Libs\irrklang\irrKlang.NET2.0.dll" />
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -637,7 +638,6 @@
     <None Include="ikpMP3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Libs\irrklang\irrKlang.NET2.0.dll" />
     <Content Include="SciLexer64.dll" />
     <None Include="Libs\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll" />
     <None Include="Libs\scintilla\ScintillaNET.dll" />
