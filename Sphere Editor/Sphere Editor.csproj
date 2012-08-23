@@ -1,0 +1,647 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9CAC2194-E0C8-4164-9D47-627520E79B95}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sphere_Editor</RootNamespace>
+    <AssemblyName>Sphere Editor</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>Editor.ico</ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>C:\deploy\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <UpdateUrl>http://www.spheredev.org/~radnen/SphereEditor/</UpdateUrl>
+    <SupportUrl>http://www.spheredev.org</SupportUrl>
+    <ProductName>.Net Sphere Editor</ProductName>
+    <PublisherName>Sphereical</PublisherName>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>0.9.8.2</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>7CCA2132F78BD752DFFC6FDBB696ECAB940B124F</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Sphere Editor_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Sphere_Editor.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="irrKlang.NET2.0, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a854741bd80517c7, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\irrKlang.NET2.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="ScintillaNET, Version=2.2.3581.19319, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\SciLexer2.5.1\ScintillaNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.5.0.15095, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EditorComponents\AutosetEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\AutosetEditor.Designer.cs">
+      <DependentUpon>AutosetEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\ImageEditControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\ImageEditControl2.Designer.cs">
+      <DependentUpon>ImageEditControl2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\MapControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\MapControl.Designer.cs">
+      <DependentUpon>MapControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\HistoryManager.cs" />
+    <Compile Include="EditorComponents\SpritesetComponents\BaseEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\SpritesetComponents\BaseEditor.Designer.cs">
+      <DependentUpon>BaseEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\SpritesetComponents\DirectionAnimator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\SpritesetComponents\DirectionAnimator.Designer.cs">
+      <DependentUpon>DirectionAnimator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\SpritesetComponents\FramePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\SpritesetComponents\SpritesetLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\SpritesetComponents\SpritesetLayout.Designer.cs">
+      <DependentUpon>SpritesetLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\TileEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\TileEditor.Designer.cs">
+      <DependentUpon>TileEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\TilesetControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\TilesetControl2.Designer.cs">
+      <DependentUpon>TilesetControl2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AboutSphereEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutSphereEditor.Designer.cs">
+      <DependentUpon>AboutSphereEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewMap.Designer.cs">
+      <DependentUpon>NewMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.Designer.cs">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Global.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RadEditors\MenuEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RadEditors\MenuEditor.Designer.cs">
+      <DependentUpon>MenuEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RadEditors\RadObjects.cs" />
+    <Compile Include="SphereObjects\GraphicalLayer.cs" />
+    <Compile Include="SphereObjects\Layer2.cs" />
+    <Compile Include="SphereObjects\Map.cs" />
+    <Compile Include="SphereObjects\Segment.cs" />
+    <Compile Include="SphereObjects\Tileset2.cs" />
+    <Compile Include="SphereObjects\Zone2.cs" />
+    <Compile Include="SubEditors\AudioPlayer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\AudioPlayer.Designer.cs">
+      <DependentUpon>AudioPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\Drawer2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\Drawer2.Designer.cs">
+      <DependentUpon>Drawer2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\Drawer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\Drawer.Designer.cs">
+      <DependentUpon>Drawer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\EditorObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\EditorObject.Designer.cs">
+      <DependentUpon>EditorObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bitmap\FastBitmap.cs" />
+    <Compile Include="EditorComponents\Font.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\Font.Designer.cs">
+      <DependentUpon>Font.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\FontEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\FontEditor.Designer.cs">
+      <DependentUpon>FontEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\LayerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\LayerControl.Designer.cs">
+      <DependentUpon>LayerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\LayerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\LayerPanel.Designer.cs">
+      <DependentUpon>LayerPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\MapEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\MapEditor.Designer.cs">
+      <DependentUpon>MapEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\Mapper.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\Mapper.Designer.cs">
+      <DependentUpon>Mapper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\ProjectTree.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\ProjectTree.Designer.cs">
+      <DependentUpon>ProjectTree.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\ScriptEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\ScriptEditor.Designer.cs">
+      <DependentUpon>ScriptEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\SpritesetEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\SpritesetEditor.Designer.cs">
+      <DependentUpon>SpritesetEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\StartPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\StartPage.Designer.cs">
+      <DependentUpon>StartPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\TaskList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\TaskList.Designer.cs">
+      <DependentUpon>TaskList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubEditors\WindowStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubEditors\WindowStyleEditor.Designer.cs">
+      <DependentUpon>WindowStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\Zone.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\Zone.Designer.cs">
+      <DependentUpon>Zone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor.Designer.cs">
+      <DependentUpon>Editor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\EditorSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\EditorSettings.Designer.cs">
+      <DependentUpon>EditorSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SphereObjects\Entity.cs" />
+    <Compile Include="Forms\ColorPicker\ColorBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\ColorBox.Designer.cs">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\ColorPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\ColorRectangle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\ColorRectangle.Designer.cs">
+      <DependentUpon>ColorRectangle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\DynamicPalette.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPicker\DynamicPalette.Designer.cs">
+      <DependentUpon>DynamicPalette.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MapPropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MapPropertiesForm.Designer.cs">
+      <DependentUpon>MapPropertiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PersonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PersonForm.Designer.cs">
+      <DependentUpon>PersonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SizeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SizeForm.Designer.cs">
+      <DependentUpon>SizeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StringInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StringInputForm.Designer.cs">
+      <DependentUpon>StringInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TriggerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TriggerForm.Designer.cs">
+      <DependentUpon>TriggerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ZoneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ZoneForm.Designer.cs">
+      <DependentUpon>ZoneForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\GameProject.cs" />
+    <Compile Include="Settings\GameSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\GameSettings.designer.cs">
+      <DependentUpon>GameSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\ImageEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\ImageEditControl.Designer.cs">
+      <DependentUpon>ImageEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorComponents\MapEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\MapEditor.Designer.cs">
+      <DependentUpon>MapEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SphereObjects\Layer.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Forms\Project.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Project.Designer.cs">
+      <DependentUpon>Project.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Bitmap\BitmapLoader.cs" />
+    <Compile Include="SphereObjects\Windowstyle.cs" />
+    <EmbeddedResource Include="EditorComponents\AutosetEditor.resx">
+      <DependentUpon>AutosetEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\ImageEditControl2.resx">
+      <DependentUpon>ImageEditControl2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\MapControl.resx">
+      <DependentUpon>MapControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\SpritesetComponents\BaseEditor.resx">
+      <DependentUpon>BaseEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\SpritesetComponents\DirectionAnimator.resx">
+      <DependentUpon>DirectionAnimator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\SpritesetComponents\SpritesetLayout.resx">
+      <DependentUpon>SpritesetLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\TileEditor.resx">
+      <DependentUpon>TileEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\TilesetControl2.resx">
+      <DependentUpon>TilesetControl2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AboutSphereEditor.resx">
+      <DependentUpon>AboutSphereEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewMap.resx">
+      <DependentUpon>NewMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RadEditors\MenuEditor.resx">
+      <DependentUpon>MenuEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\AudioPlayer.resx">
+      <DependentUpon>AudioPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\Drawer2.resx">
+      <DependentUpon>Drawer2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\Drawer.resx">
+      <DependentUpon>Drawer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\Font.resx">
+      <DependentUpon>Font.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\FontEditor.resx">
+      <DependentUpon>FontEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\LayerControl.resx">
+      <DependentUpon>LayerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\LayerPanel.resx">
+      <DependentUpon>LayerPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\MapEditor.resx">
+      <DependentUpon>MapEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\Mapper.resx">
+      <DependentUpon>Mapper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\ProjectTree.resx">
+      <DependentUpon>ProjectTree.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\ScriptEditor.resx">
+      <DependentUpon>ScriptEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\SpritesetEditor.resx">
+      <DependentUpon>SpritesetEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\StartPage.resx">
+      <DependentUpon>StartPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\TaskList.resx">
+      <DependentUpon>TaskList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubEditors\WindowStyleEditor.resx">
+      <DependentUpon>WindowStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\Zone.resx">
+      <DependentUpon>Zone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor.resx">
+      <DependentUpon>Editor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\EditorSettings.resx">
+      <DependentUpon>EditorSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorPicker\ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorPicker\ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorPicker\ColorRectangle.resx">
+      <DependentUpon>ColorRectangle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ColorPicker\DynamicPalette.resx">
+      <DependentUpon>DynamicPalette.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MapPropertiesForm.resx">
+      <DependentUpon>MapPropertiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PersonForm.resx">
+      <DependentUpon>PersonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SizeForm.resx">
+      <DependentUpon>SizeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StringInputForm.resx">
+      <DependentUpon>StringInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TriggerForm.resx">
+      <DependentUpon>TriggerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZoneForm.resx">
+      <DependentUpon>ZoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\GameSettings.resx">
+      <DependentUpon>GameSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\ImageEditControl.resx">
+      <DependentUpon>ImageEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\MapEditor.resx">
+      <DependentUpon>MapEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Project.resx">
+      <DependentUpon>Project.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorComponents\Tileset.resx">
+      <DependentUpon>Tileset.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Settings\ScriptSettings.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Settings\SphereSettings.cs" />
+    <Compile Include="SphereObjects\Spriteset.cs" />
+    <Compile Include="SphereObjects\Tiles.cs">
+    </Compile>
+    <Compile Include="EditorComponents\Tileset.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorComponents\Tileset.Designer.cs">
+      <DependentUpon>Tileset.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sphere Editor_TemporaryKey.pfx" />
+    <None Include="SphereSplash.png" />
+    <None Include="BarImage.png" />
+    <Content Include="Docs\api.txt" />
+    <Content Include="Docs\functions.txt" />
+    <Content Include="Editor.ico" />
+    <None Include="Icons\question_mark.png" />
+    <None Include="Icons\style.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

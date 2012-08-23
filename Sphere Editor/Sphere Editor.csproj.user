@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>C:\deploy\|C:\deploy\SphereStudio\|ftp://www.spheredev.org/~radnen/SphereStudio/|ftp://www.spheredev.org/SphereStudio/|www.spheredev.org\</PublishUrlHistory>
+    <InstallUrlHistory>http://www.spheredev.org/~radnen/SphereEditor/</InstallUrlHistory>
+    <SupportUrlHistory>http://www.spheredev.org</SupportUrlHistory>
+    <UpdateUrlHistory>http://www.spheredev.org/~radnen/SphereEditor/|http://www.spheredev.org/~radnen/Sphere Editor/</UpdateUrlHistory>
+    <BootstrapperUrlHistory>
+    </BootstrapperUrlHistory>
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+    <ProjectView>ProjectFiles</ProjectView>
+    <ErrorReportUrlHistory />
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
+  </PropertyGroup>
+</Project>
