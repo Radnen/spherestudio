@@ -897,7 +897,8 @@ namespace Sphere_Editor
             if (CurrentControl != null) CurrentControl.SaveLayout();
         }
 
-        private void ScriptMenu_DropDownClosed(object sender, EventArgs e)
+        // put here things to store into the settings file via menu-item check
+        private void UpdateCheck(object sender, EventArgs e)
         {
             Global.CurrentEditor.ShowAutoComplete = AutoCompleteItem.Checked;
         }

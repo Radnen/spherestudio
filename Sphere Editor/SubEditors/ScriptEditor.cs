@@ -14,9 +14,10 @@ namespace Sphere_Editor.SubEditors
         {
             code_box.ConfigurationManager.CustomLocation = Application.StartupPath + "\\SphereLexer.xml";
             code_box.ConfigurationManager.Language = "js";
-            code_box.AutoComplete.ListString = Global.CurrentScriptSettings.FunctionList;
-            code_box.AutoComplete.ListSeparator = ';';
             code_box.AutoComplete.IsCaseSensitive = true;
+            code_box.AutoComplete.SingleLineAccept = true;
+            code_box.AutoComplete.ListSeparator = ';';
+            code_box.AutoComplete.ListString = Global.CurrentScriptSettings.FunctionList;
             code_box.AutoComplete.DropRestOfWord = true;
             code_box.SupressControlCharacters = true;
             code_box.Margins[0].Width = 36;

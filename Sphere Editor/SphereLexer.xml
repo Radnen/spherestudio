@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ScintillaNET>
+  
+  <Language Name="Default">
+    <Styles>
+      <Style Name="Default" FontName="Courier New" />
+    </Styles>
+  </Language>
+
+  <Language Name="js">
+      <Styles>
+        <Style Name="DEFAULT" BackColor="White" ForeColor="Black" />
+        <Style Name="COMMENT" BackColor="White" ForeColor="DarkGreen" />
+        <Style Name="COMMENTLINE" BackColor="White" ForeColor="DarkGreen" />
+        <Style Name="COMMENTDOC" BackColor="White" ForeColor="0x007F00" />
+        <Style Name="NUMBER" BackColor="White" ForeColor="DarkRed" />
+        <Style Name="STRING" BackColor="White" ForeColor="Blue" />
+        <Style Name="CHARACTER" BackColor="White" ForeColor="Red" />
+        <Style Name="OPERATOR" BackColor="White" ForeColor="Magenta" />
+        <Style Name="IDENTIFIER" BackColor="White" ForeColor="Black" />
+        <Style Name="STRINGEOL" BackColor="White" ForeColor="Black" />
+        <Style Name="COMMENTLINEDOC" BackColor="White" ForeColor="Black" />
+        <Style Name="COMMENTDOCKEYWORD" BackColor="White" ForeColor="Black" />
+      </Styles>
+  </Language>
+
+</ScintillaNET>

@@ -990,7 +990,6 @@
             this.ScriptMenu.Name = "ScriptMenu";
             this.ScriptMenu.Size = new System.Drawing.Size(49, 20);
             this.ScriptMenu.Text = "S&cript";
-            this.ScriptMenu.DropDownClosed += new System.EventHandler(this.ScriptMenu_DropDownClosed);
             // 
             // AutoCompleteItem
             // 
@@ -998,6 +997,7 @@
             this.AutoCompleteItem.Name = "AutoCompleteItem";
             this.AutoCompleteItem.Size = new System.Drawing.Size(192, 22);
             this.AutoCompleteItem.Text = "Toggle AutoComplete";
+            this.AutoCompleteItem.CheckedChanged += new System.EventHandler(this.UpdateCheck);
             // 
             // ImageMenu
             // 
