@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
 using Sphere_Editor.Forms;
+using Sphere_Editor.SphereObjects;
 
 namespace Sphere_Editor.EditorComponents
 {
@@ -109,6 +107,12 @@ namespace Sphere_Editor.EditorComponents
             hScrollBar.LargeChange = vScrollBar.LargeChange = 1;
         }
 
+        #region Public Functions
+        /// <summary>
+        /// Sets the base maps layers to new layers, keeping track of changes.
+        /// </summary>
+        /// <param name="new_layers">List of new layers to set.</param>
+        /// <param name="new_start">The new start layer.</param>
         public void SetLayers(List<Layer2> new_layers, byte new_start)
         {
             PushLayerPage(new_layers, new_start);
@@ -117,22 +121,23 @@ namespace Sphere_Editor.EditorComponents
             RefreshLayers();
         }
 
-        private void UpdateLayers()
-        {
-            for (int i = 0; i < GraphicLayers.Count; ++i)
-                GraphicLayers[i].Update(ref _offset, Size, _base_map.Tileset);
-            Invalidate();
-        }
 
+        /// <summary>
+        /// Redraws the current viewport. Do this when there's a change.
+        /// </summary>
         public void RefreshLayers()
         {
-            if (_base_map == null) return;
-            if (IsDisposed) return;
+            if (_base_map == null || IsDisposed) return;
             for (int i = 0; i < GraphicLayers.Count; ++i)
                 GraphicLayers[i].Refresh(_base_map.Layers[i], _base_map.Tileset);
             Invalidate();
         }
 
+        /// <summary>
+        /// Resizes the layers to the new width and height.
+        /// </summary>
+        /// <param name="tw">The new witdh in tiles.</param>
+        /// <param name="th">The new Height in tiles.</param>
         public void ResizeLayers(int tw, int th)
         {
             _tile_w_zoom = tw * Zoom;
@@ -152,13 +157,90 @@ namespace Sphere_Editor.EditorComponents
             Invalidate();
         }
 
-        // in case it ever gets lost you can quickly recenter it.
+        /// <summary>
+        /// In case you ever get lost you can quickly recenter it.
+        /// </summary>
         public void CenterMap()
         {
             _offset.X = Width / 2 - _vw / 2;
             _offset.Y = Height / 2 - _vh / 2;
             UpdateScrollBars();
             UpdateLayers();
+        }
+
+        /// <summary>
+        /// Used to update and draw a bew region of the map.
+        /// Do this only if the view was moved by some other means.
+        /// </summary>
+        public void UpdateView()
+        {
+            UpdateScrollBars();
+            UpdateLayers();
+        }
+
+        /// <summary>
+        /// false, means it stopped zooming.
+        /// </summary>
+        public bool ZoomIn()
+        {
+            if (Zoom < 4)
+            {
+                Zoom *= 2;
+                _tile_w_zoom = _base_map.Tileset.TileWidth * Zoom;
+                _tile_h_zoom = _base_map.Tileset.TileHeight * Zoom;
+                _vw = BaseMap.Width * _tile_w_zoom;
+                _vh = BaseMap.Height * _tile_h_zoom;
+                UpdateScrollBars();
+                foreach (GraphicalLayer gl in GraphicLayers) gl.SetZoom(Zoom);
+                UpdateLayers();
+                UpdateScrollBars();
+                Invalidate();
+            }
+            return CanZoomIn;
+        }
+
+        /// <summary>
+        /// false means it stopped zooming.
+        /// </summary>
+        public bool ZoomOut()
+        {
+            if (Zoom > 1)
+            {
+                Zoom /= 2;
+                _tile_w_zoom = _base_map.Tileset.TileWidth * Zoom;
+                _tile_h_zoom = _base_map.Tileset.TileHeight * Zoom;
+                _vw = BaseMap.Width * _tile_w_zoom;
+                _vh = BaseMap.Height * _tile_h_zoom;
+                foreach (GraphicalLayer gl in GraphicLayers) gl.SetZoom(Zoom);
+                UpdateLayers();
+                UpdateScrollBars();
+                Invalidate();
+            }
+            return CanZoomOut;
+        }
+
+        /// <summary>
+        /// Adds a new fresh layer to the control.
+        /// </summary>
+        /// <returns>A sphere layer object.</returns>
+        public Layer2 AddLayer()
+        {
+            Layer2 layer = new Layer2();
+            layer.CreateNew((short)_base_map.Width, (short)_base_map.Height);
+            _base_map.Layers.Add(layer);
+            GraphicalLayer g_layer = new GraphicalLayer(layer, _base_map.Tileset.TileWidth, _base_map.Tileset.TileHeight);
+            g_layer.SetZoom(Zoom);
+            GraphicLayers.Add(g_layer);
+            UpdateLayers();
+            return layer;
+        }
+        #endregion
+
+        private void UpdateLayers()
+        {
+            for (int i = 0; i < GraphicLayers.Count; ++i)
+                GraphicLayers[i].Update(ref _offset, Size, _base_map.Tileset);
+            Invalidate();
         }
 
         private void CalcMouse(Point mouse)
@@ -216,47 +298,6 @@ namespace Sphere_Editor.EditorComponents
             g.DrawRectangle(Pens.Magenta, _offset.X + x, _offset.Y + y, w, h);
         }
 
-        /// <summary>
-        /// false, means it stopped zooming.
-        /// </summary>
-        public bool ZoomIn()
-        {
-            if (Zoom < 4)
-            {
-                Zoom *= 2;
-                _tile_w_zoom = _base_map.Tileset.TileWidth * Zoom;
-                _tile_h_zoom = _base_map.Tileset.TileHeight * Zoom;
-                _vw = BaseMap.Width * _tile_w_zoom;
-                _vh = BaseMap.Height * _tile_h_zoom;
-                UpdateScrollBars();
-                foreach (GraphicalLayer gl in GraphicLayers) gl.SetZoom(Zoom);
-                UpdateLayers();
-                UpdateScrollBars();
-                Invalidate();
-            }
-            return CanZoomIn;
-        }
-
-        /// <summary>
-        /// false means it stopped zooming.
-        /// </summary>
-        public bool ZoomOut()
-        {
-            if (Zoom > 1)
-            {
-                Zoom /= 2;
-                _tile_w_zoom = _base_map.Tileset.TileWidth * Zoom;
-                _tile_h_zoom = _base_map.Tileset.TileHeight * Zoom;
-                _vw = BaseMap.Width * _tile_w_zoom;
-                _vh = BaseMap.Height * _tile_h_zoom;
-                foreach (GraphicalLayer gl in GraphicLayers) gl.SetZoom(Zoom);
-                UpdateLayers();
-                UpdateScrollBars();
-                Invalidate();
-            }
-            return CanZoomOut;
-        }
-
         private void UpdateScrollBars()
         {
             int maxh = (_vw < Width) ? 0 : (_vw - Width) / _tile_w_zoom + 3;
@@ -267,18 +308,6 @@ namespace Sphere_Editor.EditorComponents
             vScrollBar.Minimum = (_vh < Height) ? 0 : -2;
             hScrollBar.Value = Math.Min(Math.Max(0, -(_offset.X / _tile_w_zoom)), maxh);
             vScrollBar.Value = Math.Min(Math.Max(0, -(_offset.Y / _tile_h_zoom)), maxv);
-        }
-
-        public Layer2 AddLayer()
-        {
-            Layer2 layer = new Layer2();
-            layer.CreateNew((short)_base_map.Width, (short)_base_map.Height);
-            _base_map.Layers.Add(layer);
-            GraphicalLayer g_layer = new GraphicalLayer(layer, _base_map.Tileset.TileWidth, _base_map.Tileset.TileHeight);
-            g_layer.SetZoom(Zoom);
-            GraphicLayers.Add(g_layer);
-            UpdateLayers();
-            return layer;
         }
 
         private bool GetEntityAtMouse()
@@ -801,10 +830,10 @@ namespace Sphere_Editor.EditorComponents
             Invalidate(false);
         }
 
+        // In order to redraw regions that come into existance via form resize.
         private void MapControl_Resize(object sender, EventArgs e)
         {
-            if (_base_map == null) return;
-            if (IsDisposed) return;
+            if (_base_map == null || IsDisposed) return;
             UpdateScrollBars();
             UpdateLayers();
         }

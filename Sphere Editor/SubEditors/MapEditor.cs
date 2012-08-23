@@ -127,6 +127,7 @@ namespace Sphere_Editor.SubEditors
             TilesetControl.Tileset = MapControl.BaseMap.Tileset;
             TilesetControl.Select(0);
             InitLayers();
+            MapControl.UpdateView();
 
             Invalidate(true);
         }
@@ -155,6 +156,7 @@ namespace Sphere_Editor.SubEditors
             TilesetControl.Select(0);
             TilesetControl.ZoomIn();
             InitLayers();
+            MapControl.UpdateView();
 
             Invalidate(true);
         }
