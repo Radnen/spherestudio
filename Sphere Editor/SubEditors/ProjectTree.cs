@@ -11,7 +11,6 @@ namespace Sphere_Editor.SubEditors
     public partial class ProjectTree : UserControl
     {
         ToolTip tip = new ToolTip();
-        private static bool init = false;
         public EditorForm EditorForm { get; set; }
 
         private ImageList _iconlist = new ImageList();
@@ -157,7 +156,7 @@ namespace Sphere_Editor.SubEditors
                 {
                     return;
                 }
-                this.UpdateTree();
+                UpdateTree();
             }
         }
 
@@ -172,54 +171,24 @@ namespace Sphere_Editor.SubEditors
         }
 
         /// <summary>
-        /// Updates the contents of the tree. This is usually only called once. It can
-        /// Be invoked by the user, but there's usually no need as because a filesystem
-        /// watcher makes sure the contents are "synched".
+        /// Updates the contents of the tree.
         /// </summary>
         public void UpdateTree()
         {
             if (Global.CurrentProject.Path.Length == 0) return;
 
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
             ProjectTreeView.Nodes.Clear();
             ProjectTreeView.Nodes.Add(new TreeNode(Global.CurrentProject.Name));
             DirectoryInfo BaseDir = new DirectoryInfo(SystemWatcher.Path);
-            Populate(ProjectTreeView.Nodes[0], BaseDir);
+            PopulateDirectoryNode(ProjectTreeView.Nodes[0], BaseDir);
 
             if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Toggle();
-            init = true;
-        }
 
-        private void Populate(TreeNode baseNode, DirectoryInfo dir)
-        {
-            DirectoryInfo[] dirs = dir.GetDirectories();
-            FileInfo[] files = dir.GetFiles();
-            TreeNode subNode, fileNode;
-            string name;
-
-            foreach (DirectoryInfo d in dirs)
-            {
-                name = d.Name;
-                subNode = GetNode(baseNode, ref name);
-                if (subNode == null)
-                {
-                    subNode = new TreeNode(name, 2, 1);
-                    baseNode.Nodes.Add(subNode);
-                }
-
-                PopulateDirectoryNode(subNode, d);
-            }
-
-            for (int i = 0; i < files.Length; ++i)
-            {
-                name = files[i].Name;
-                fileNode = GetNode(baseNode, ref name);
-                if (fileNode == null)
-                {
-                    fileNode = new TreeNode(name, 9, 9);
-                    UpdateImage(fileNode);
-                    baseNode.Nodes.Add(fileNode);
-                }
-            }
+            watch.Stop();
+            Console.WriteLine(Global.CurrentProject.Name + ": " + watch.Elapsed.TotalMilliseconds);
         }
 
         // RECURSIVE:
@@ -227,55 +196,20 @@ namespace Sphere_Editor.SubEditors
         {
             DirectoryInfo[] dirs = dir.GetDirectories();
             FileInfo[] files = dir.GetFiles();
-            TreeNode subNode, fileNode;
-            string name;
+            TreeNode subNode;
 
-            if (init)
-            {
-                for (int i = 0; i < baseNode.Nodes.Count; ++i)
-                {
-                    if (baseNode.Nodes[i].ImageIndex != 2)
-                    {
-                        if (!FileExists(files, baseNode.Nodes[i].Text))
-                        {
-                            baseNode.Nodes[i].Remove();
-                            i--;
-                        }
-                    }
-                    else
-                    {
-                        if (!FolderExists(dirs, baseNode.Nodes[i].Text))
-                        {
-                            baseNode.Nodes[i].Remove();
-                            i--;
-                        }
-                    }
-                }
-            }
-            
             foreach (DirectoryInfo d in dirs)
             {
-                name = d.Name;
-                subNode = GetNode(baseNode, ref name);
-                if (subNode == null) 
-                {
-                    subNode = new TreeNode(name, 2, 1);
-                    baseNode.Nodes.Add(subNode);
-                }
-
+                subNode = new TreeNode(d.Name, 2, 1);
+                baseNode.Nodes.Add(subNode);
                 PopulateDirectoryNode(subNode, d);
             }
 
             for (int i = 0; i < files.Length; ++i)
             {
-                name = files[i].Name;
-                fileNode = GetNode(baseNode, ref name);
-                if (fileNode == null)
-                {
-                    fileNode = new TreeNode(name, 9, 9);
-                    UpdateImage(fileNode);
-                    baseNode.Nodes.Add(fileNode);
-                }
+                subNode = new TreeNode(files[i].Name, 9, 9);
+                UpdateImage(subNode);
+                baseNode.Nodes.Add(subNode);
             }
         }
 
@@ -296,27 +230,6 @@ namespace Sphere_Editor.SubEditors
             else if (Global.IsText(ref s))
                 node.SelectedImageIndex = node.ImageIndex = 3;
             else node.SelectedImageIndex = node.ImageIndex = 9;
-        }
-
-        private static TreeNode GetNode(TreeNode baseNode, ref string nodeName)
-        {
-            foreach (TreeNode n in baseNode.Nodes)
-                if (n.Text == nodeName) return n;
-            return null;
-        }
-
-        private static bool FolderExists(DirectoryInfo[] dirs, string dirName)
-        {
-            for (int i = 0; i < dirs.Length; ++i)
-                if (dirs[i].Name == dirName) return true;
-            return false;
-        }
-
-        private static bool FileExists(FileInfo[] files, string fileName)
-        {
-            for (int i = 0; i < files.Length; ++i)
-                if (files[i].Name == fileName) return true;
-            return false;
         }
 
         private void AddFolderItem_Click(object sender, EventArgs e)
@@ -474,7 +387,6 @@ namespace Sphere_Editor.SubEditors
                 SystemWatcher.Path = Global.CurrentProject.Path;
 
             SystemWatcher.EnableRaisingEvents = true;
-            init = false;
         }
 
         private void OpenItem(TreeNode node)
@@ -503,9 +415,7 @@ namespace Sphere_Editor.SubEditors
         
         private void OpenFileItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = ProjectTreeView.SelectedNode;
-            OpenItem(node);
-            node = null;
+            OpenItem(ProjectTreeView.SelectedNode);
         }
         
         private void ProjectTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
