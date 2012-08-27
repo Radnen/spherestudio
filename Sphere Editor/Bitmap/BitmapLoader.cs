@@ -2,12 +2,13 @@
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using System;
 
 namespace Sphere_Editor.Bitmaps
 {
     // used for fast and easy bitmap extraction from a stream.
     // by Andrew Helenius, 2010-2012
-    class BitmapLoader
+    class BitmapLoader : IDisposable
     {
         private Rectangle _rect;
         private FastBitmap _fast_img;
@@ -69,9 +70,12 @@ namespace Sphere_Editor.Bitmaps
         // must be called to close any opened resources.
         public void Close()
         {
+            if (_copy == null) return;
             _copy.UnlockBits(_data);
             _copy.Dispose();
+            _copy = null;
             _image.Dispose();
+            _image = null;
         }
 
         public ColorFormat ColorFormat
@@ -79,27 +83,48 @@ namespace Sphere_Editor.Bitmaps
             get { return _fast_img.ColorFormat; }
             set { _fast_img.ColorFormat = value; }
         }
+
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing) Close();
+
+                _image = null;
+                _copy = null;
+                _data = null;
+            }
+            _disposed = true;
+        }
     }
 
     class BitmapSaver
     {
-        Rectangle rect;
-        BitmapData data;
-        int size;
+        private Rectangle _rect;
+        private BitmapData _data;
+        private int _size;
 
         public BitmapSaver(int width, int height)
         {
-            this.rect = new Rectangle(0, 0, width, height);
-            this.size = width * height;
+            _rect = new Rectangle(0, 0, width, height);
+            _size = width * height;
         }
 
         public void SaveToStream(Bitmap image, BinaryWriter writer)
         {
-            this.data = image.LockBits(this.rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            _data = image.LockBits(_rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             unsafe
             {
-                byte* ptr = (byte*)data.Scan0;
-                for (int i = 0; i < this.size; ++i)
+                byte* ptr = (byte*)_data.Scan0;
+                for (int i = 0; i < _size; ++i)
                 {
                     writer.Write(*(ptr + 2));
                     writer.Write(*(ptr + 1));
@@ -108,7 +133,7 @@ namespace Sphere_Editor.Bitmaps
                     ptr += 4;
                 }
             }
-            image.UnlockBits(this.data);
+            image.UnlockBits(_data);
         }
     }
 }

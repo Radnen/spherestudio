@@ -51,18 +51,18 @@ namespace Sphere_Editor.SphereObjects
             ts._has_obstruct = reader.ReadByte();
             reader.ReadBytes(240);
 
-            int bit_size = ts.TileWidth * ts.TileHeight * 4;
-            Bitmaps.BitmapLoader loader = new Bitmaps.BitmapLoader(ts.TileWidth, ts.TileHeight);
-            Tile new_tile;
-
-            while (num_tiles-- > 0)
+            using (Bitmaps.BitmapLoader loader = new Bitmaps.BitmapLoader(ts.TileWidth, ts.TileHeight))
             {
-                new_tile = new Tile(ts.TileWidth, ts.TileHeight);
-                new_tile.Graphic = loader.LoadFromStream(reader, bit_size);
-                ts.Tiles.Add(new_tile);
-            }
+                int bit_size = ts.TileWidth * ts.TileHeight * 4;
+                Tile new_tile;
 
-            loader.Close();
+                while (num_tiles-- > 0)
+                {
+                    new_tile = new Tile(ts.TileWidth, ts.TileHeight);
+                    new_tile.Graphic = loader.LoadFromStream(reader, bit_size);
+                    ts.Tiles.Add(new_tile);
+                }
+            }
 
             foreach (Tile t in ts.Tiles)
             {
