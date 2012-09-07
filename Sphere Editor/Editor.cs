@@ -863,33 +863,12 @@ namespace Sphere_Editor
 
         private void ExportSsMenuItem_Click(object sender, EventArgs e)
         {
-            SpritesetEditor editor = (SpritesetEditor)CurrentControl;
-            using (SaveFileDialog diag = new SaveFileDialog())
-            {
-                diag.Filter = "Image Files (.png, .jpg, .gif)|*.png;*.jpg;*.gif";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    editor.Tileset.ExportAsImage(diag.FileName);
-                    MessageBox.Show("Tileset exported as: " + diag.FileName, "Export Successful");
-                }
-            }
+            // not implemented.
         }
 
         private void ImportSsMenuItem_Click(object sender, EventArgs e)
         {
-            SpritesetEditor editor = (SpritesetEditor)CurrentControl;
-            using (OpenFileDialog diag = new OpenFileDialog())
-            {
-                diag.Filter = "Image Files (.png, .jpg, .gif)|*.png;*.jpg;*.gif";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    editor.Tileset.UpdateFromImage(diag.FileName, editor.Tileset.TileWidth, editor.Tileset.TileHeight);
-                    MessageBox.Show("Tileset updated from: " + diag.FileName, "Update Successful");
-                    editor.Invalidate(true);
-                }
-            }
+            // not implemented.
         }
 
         private void SaveLayoutMenuItem_Click(object sender, EventArgs e)

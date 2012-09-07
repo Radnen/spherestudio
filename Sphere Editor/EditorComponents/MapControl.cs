@@ -113,7 +113,7 @@ namespace Sphere_Editor.EditorComponents
         /// </summary>
         /// <param name="new_layers">List of new layers to set.</param>
         /// <param name="new_start">The new start layer.</param>
-        public void SetLayers(List<Layer2> new_layers, byte new_start)
+        public void SetLayers(List<Layer> new_layers, byte new_start)
         {
             PushLayerPage(new_layers, new_start);
             _base_map.Layers = new_layers;
@@ -223,9 +223,9 @@ namespace Sphere_Editor.EditorComponents
         /// Adds a new fresh layer to the control.
         /// </summary>
         /// <returns>A sphere layer object.</returns>
-        public Layer2 AddLayer()
+        public Layer AddLayer()
         {
-            Layer2 layer = new Layer2();
+            Layer layer = new Layer();
             layer.CreateNew((short)_base_map.Width, (short)_base_map.Height);
             _base_map.Layers.Add(layer);
             GraphicalLayer g_layer = new GraphicalLayer(layer, _base_map.Tileset.TileWidth, _base_map.Tileset.TileHeight);
@@ -257,34 +257,53 @@ namespace Sphere_Editor.EditorComponents
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
-            for (int i = 0; i < GraphicLayers.Count; ++i)
-            {
-                GraphicLayers[i].Draw(e.Graphics, ref _offset);
-                if (i == CurrentLayer && _paint && (Tool == MapTool.Line || Tool == MapTool.Rectangle))
-                    DrawTool(e.Graphics);
-            }
+            DrawGraphicLayers(e.Graphics);
 
-            foreach (Zone2 zone in _base_map.Zones)
-            {
-                zone.Draw(e.Graphics, _offset, Tool == MapTool.Zone ? 0 : -1, Zoom);
-            }
+            DrawZones(e.Graphics);
+            
+            DrawEntities(e.Graphics);
 
-            foreach (Entity ent in _base_map.Entities)
-            {
-                ent.Draw(e.Graphics, _base_map.Tileset.TileWidth, _base_map.Tileset.TileHeight, ref _offset, Zoom);
-            }
+            if (_paint && Tool == MapTool.Zone)
+                DrawTool(e.Graphics);
 
-            if (_paint && Tool == MapTool.Zone) DrawTool(e.Graphics);
+            DrawSelector(e.Graphics);
 
-            if (_mouse.X >= 0 && _mouse.Y >= 0 && _mouse.X < _vw && _mouse.Y < _vh)
-            {
-                int x = _offset.X + _mouse.X;
-                int y = _offset.Y + _mouse.Y;
-                e.Graphics.DrawRectangle(Pens.Yellow, x, y, _tile_w_zoom, _tile_h_zoom);
-            }
             e.Graphics.DrawRectangle(Pens.Black, _offset.X, _offset.Y, _vw, _vh);
 
             if (ShowCameraBounds) DrawCameraBounds(e.Graphics);
+        }
+
+        private void DrawGraphicLayers(Graphics g)
+        {
+            for (int i = 0; i < GraphicLayers.Count; ++i)
+            {
+                GraphicLayers[i].Draw(g, ref _offset);
+                if (i == CurrentLayer && _paint && (Tool == MapTool.Line || Tool == MapTool.Rectangle)) DrawTool(g);
+            }
+        }
+
+        private void DrawZones(Graphics g)
+        {
+            int state = Tool == MapTool.Zone ? 0 : -1;
+            foreach (Zone2 zone in _base_map.Zones)
+                zone.Draw(g, _offset, state, Zoom);
+        }
+
+        private void DrawEntities(Graphics g)
+        {
+            foreach (Entity ent in _base_map.Entities)
+                ent.Draw(g, _base_map.Tileset.TileWidth, _base_map.Tileset.TileHeight, ref _offset, Zoom);
+        }
+
+        private void DrawSelector(Graphics g)
+        {
+            bool mouse_in = (_mouse.X >= 0 && _mouse.Y >= 0 && _mouse.X < _vw && _mouse.Y < _vh);
+            if (mouse_in)
+            {
+                int x = _offset.X + _mouse.X;
+                int y = _offset.Y + _mouse.Y;
+                g.DrawRectangle(Pens.Yellow, x, y, _tile_w_zoom, _tile_h_zoom);
+            }
         }
 
         private void DrawCameraBounds(Graphics g)
@@ -493,7 +512,7 @@ namespace Sphere_Editor.EditorComponents
             }
         }
 
-        private void PushLayerPage(List<Layer2> new_layers, byte new_start)
+        private void PushLayerPage(List<Layer> new_layers, byte new_start)
         {
             LayerPage page = new LayerPage(this, _base_map.Layers, new_layers, _base_map.StartLayer, new_start);
             _h_manager.PushPage(page);
@@ -680,7 +699,7 @@ namespace Sphere_Editor.EditorComponents
         {
             using (PersonForm form = new PersonForm(_base_map.Entities))
             {
-                foreach (Layer2 lay in _base_map.Layers) form.AddString(lay.Name);
+                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
                 form.SelectedIndex = CurrentLayer;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -697,7 +716,7 @@ namespace Sphere_Editor.EditorComponents
         {
             using (TriggerForm form = new TriggerForm())
             {
-                foreach (Layer2 lay in _base_map.Layers) form.AddString(lay.Name);
+                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
                 form.SelectedIndex = CurrentLayer;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -714,27 +733,33 @@ namespace Sphere_Editor.EditorComponents
         {
             if (_cur_ent == null) return;
             if (_cur_ent.Type == 1)
+                EditPerson();
+            else
+                EditTrigger();
+        }
+
+        private void EditPerson()
+        {
+            using (PersonForm form = new PersonForm(_cur_ent.Copy(), _base_map.Entities))
             {
-                using (PersonForm form = new PersonForm(_cur_ent.Copy(), _base_map.Entities))
+                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Layer2 lay in _base_map.Layers) form.AddString(lay.Name);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        _base_map.Entities[_base_map.Entities.IndexOf(_cur_ent)] = form.Person;
-                        if (Edited != null) Edited(this, EventArgs.Empty);
-                    }
+                    _base_map.Entities[_base_map.Entities.IndexOf(_cur_ent)] = form.Person;
+                    if (Edited != null) Edited(this, EventArgs.Empty);
                 }
             }
-            else
+        }
+
+        private void EditTrigger()
+        {
+            using (TriggerForm form = new TriggerForm(_cur_ent.Copy()))
             {
-                using (TriggerForm form = new TriggerForm(_cur_ent.Copy()))
+                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Layer2 lay in _base_map.Layers) form.AddString(lay.Name);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        _base_map.Entities[_base_map.Entities.IndexOf(_cur_ent)] = form.Trigger;
-                        if (Edited != null) Edited(this, EventArgs.Empty);
-                    }
+                    _base_map.Entities[_base_map.Entities.IndexOf(_cur_ent)] = form.Trigger;
+                    if (Edited != null) Edited(this, EventArgs.Empty);
                 }
             }
         }
@@ -794,7 +819,7 @@ namespace Sphere_Editor.EditorComponents
         {
             using (ZoneForm form = new ZoneForm(_cur_zone))
             {
-                foreach (Layer2 l in _base_map.Layers) form.AddString(l.Name);
+                foreach (Layer l in _base_map.Layers) form.AddString(l.Name);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     _base_map.Zones[_base_map.Zones.IndexOf(_cur_zone)] = form.Zone.Clone();

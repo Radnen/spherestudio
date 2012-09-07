@@ -204,7 +204,7 @@ namespace Sphere_Editor.SubEditors
         private void InitLayers()
         {
             LayerEditor.Layers.ClearItems();
-            foreach (Layer2 lay in MapControl.BaseMap.Layers)
+            foreach (Layer lay in MapControl.BaseMap.Layers)
             {
                 LayerItem item = new LayerItem(lay.Name, lay.Visible);
                 item.Tag = lay;
@@ -277,10 +277,10 @@ namespace Sphere_Editor.SubEditors
 
         private void Layers_LayerChanged(LayerControl sender, LayerItem layer)
         {
-            List<Layer2> layers = new List<Layer2>();
+            List<Layer> layers = new List<Layer>();
             foreach (LayerItem li in sender.Items)
             {
-                if (li.Tag is Layer2) layers.Add(li.Tag as Layer2);
+                if (li.Tag is Layer) layers.Add(li.Tag as Layer);
             }
             byte start = (byte)((layer.Start) ? layer.Index : sender.StartLayer);
             if (layer.State == ListViewItemStates.Selected) MapControl.CurrentLayer = (short)layer.Index;
@@ -418,7 +418,7 @@ namespace Sphere_Editor.SubEditors
 
         private void Layers_LayerAdded(object sender, EventArgs e)
         {
-            Layer2 lay = MapControl.AddLayer();
+            Layer lay = MapControl.AddLayer();
             LayerItem item = new LayerItem("Untitled", true);
             item.Tag = lay;
             LayerEditor.Layers.AddItem(item);
@@ -427,7 +427,7 @@ namespace Sphere_Editor.SubEditors
 
         private void Layers_LayerRemoved(object sender, EventArgs e)
         {
-            Layer2 target = LayerEditor.Layers.Items[LayerEditor.Layers.SelectedIndex].Tag as Layer2;
+            Layer target = LayerEditor.Layers.Items[LayerEditor.Layers.SelectedIndex].Tag as Layer;
             
             for (int i = 0; i < MapControl.GraphicLayers.Count; ++i)
             {
@@ -453,7 +453,7 @@ namespace Sphere_Editor.SubEditors
             TileRemovePage page = new TileRemovePage(this, tiles, tile, Map.CloneAllLayerTiles());
             MapControl.PushTileLayerPage(page);
 
-            foreach (Layer2 lay in Map.Layers) lay.AdjustTiles(tile, (short)-tiles.Count);
+            foreach (Layer lay in Map.Layers) lay.AdjustTiles(tile, (short)-tiles.Count);
             MapControl.RefreshLayers();
             
             redoButton.Enabled = MapControl.CanRedo;
@@ -467,7 +467,7 @@ namespace Sphere_Editor.SubEditors
             TileAddPage page = new TileAddPage(this, tiles, tile, Map.CloneAllLayerTiles());
             MapControl.PushTileLayerPage(page);
 
-            foreach (Layer2 lay in Map.Layers) lay.AdjustTiles((short)(tile - 1), (short)tiles.Count);
+            foreach (Layer lay in Map.Layers) lay.AdjustTiles((short)(tile - 1), (short)tiles.Count);
             MapControl.RefreshLayers();
 
             redoButton.Enabled = MapControl.CanRedo;

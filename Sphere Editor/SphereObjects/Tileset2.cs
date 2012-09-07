@@ -38,6 +38,18 @@ namespace Sphere_Editor.SphereObjects
             }
         }
 
+        public static Tileset2 FromSpriteset(Spriteset set)
+        {
+            Tileset2 tileset = new Tileset2();
+            foreach (Bitmap image in set.Images)
+                tileset.Tiles.Add(new Tile(image));
+
+            tileset.TileWidth = set.SpriteWidth;
+            tileset.TileHeight = set.SpriteHeight;
+
+            return tileset;
+        }
+
         public static Tileset2 FromBinary(BinaryReader reader)
         {
             Tileset2 ts = new Tileset2();
@@ -158,7 +170,13 @@ namespace Sphere_Editor.SphereObjects
             _disposed = true;
         }
 
-        public void ResizeTiles(short tw, short th, bool p)
+        /// <summary>
+        /// Resizes the tiles in the tileset.
+        /// </summary>
+        /// <param name="tw">New tile width.</param>
+        /// <param name="th">New tile height.</param>
+        /// <param name="rescale">If true rescale, else resize.</param>
+        public void ResizeTiles(short tw, short th, bool rescale)
         {
             TileWidth = tw;
             TileHeight = th;
@@ -171,7 +189,7 @@ namespace Sphere_Editor.SphereObjects
                     g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
                     g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-                    if (p)
+                    if (rescale)
                         g.DrawImage(t.Graphic, 0, 0, tw, th);
                     else
                         g.DrawImageUnscaled(t.Graphic, Point.Empty);

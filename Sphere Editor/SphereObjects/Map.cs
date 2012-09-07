@@ -12,7 +12,7 @@ namespace Sphere_Editor.SphereObjects
         public byte StartLayer { get; set; }
 
         public List<string> Scripts { get; set; }
-        public List<Layer2> Layers { get; set; }
+        public List<Layer> Layers { get; set; }
         public List<Entity> Entities { get; set; }
         public List<Zone2> Zones { get; set; }
 
@@ -32,7 +32,7 @@ namespace Sphere_Editor.SphereObjects
         public Map()
         {
             Scripts = new List<string>();
-            Layers = new List<Layer2>();
+            Layers = new List<Layer>();
             Entities = new List<Entity>();
             Zones = new List<Zone2>();
         }
@@ -42,7 +42,7 @@ namespace Sphere_Editor.SphereObjects
             for (int i = 0; i < 9; ++i) Scripts.Add("");
 
             // create a base layer:
-            Layer2 layer = new Layer2();
+            Layer layer = new Layer();
             layer.CreateNew(width, height);
             Layers.Add(layer);
 
@@ -93,7 +93,7 @@ namespace Sphere_Editor.SphereObjects
 
                 // read layers:
                 while (num_layers-- > 0)
-                    Layers.Add(Layer2.FromBinary(reader));
+                    Layers.Add(Layer.FromBinary(reader));
 
                 // read entities:
                 while (num_entities-- > 0)
@@ -114,7 +114,7 @@ namespace Sphere_Editor.SphereObjects
 
                 // init all layers:
                 bool validated = true;
-                foreach (Layer2 layer in Layers)
+                foreach (Layer layer in Layers)
                 {
                     validated = layer.Validate(Tileset.Tiles.Count);
                 }
@@ -152,7 +152,7 @@ namespace Sphere_Editor.SphereObjects
                 }
 
                 // save layers:
-                foreach (Layer2 l in Layers) l.Save(writer);
+                foreach (Layer l in Layers) l.Save(writer);
 
                 // save entities:
                 foreach (Entity e in Entities) e.Save(writer);
@@ -195,13 +195,13 @@ namespace Sphere_Editor.SphereObjects
 
         public void ResizeAllLayers(short lw, short lh)
         {
-            foreach (Layer2 lay in Layers) lay.Resize(lw, lh);
+            foreach (Layer lay in Layers) lay.Resize(lw, lh);
         }
 
         public List<short[,]> CloneAllLayerTiles()
         {
             List<short[,]> list = new List<short[,]>(Layers.Count);
-            foreach (Layer2 lay in Layers) list.Add(lay.CloneTiles());
+            foreach (Layer lay in Layers) list.Add(lay.CloneTiles());
             return list;
         }
     }

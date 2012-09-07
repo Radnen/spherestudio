@@ -92,11 +92,11 @@ namespace Sphere_Editor.EditorComponents
 
     public class LayerPage : HistoryPage
     {
-        private List<Layer2> _before, _after;
+        private List<Layer> _before, _after;
         private byte _start_before, _start_after;
         private MapControl _parent;
 
-        public LayerPage(MapControl parent, List<Layer2> before, List<Layer2> after, byte start_before, byte start_after)
+        public LayerPage(MapControl parent, List<Layer> before, List<Layer> after, byte start_before, byte start_after)
         {
             _before = before;
             _after = after;

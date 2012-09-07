@@ -19,7 +19,7 @@ namespace Sphere_Editor.SubEditors
         private Spriteset _sprite = null;
         private int _zoom = 3;
         private DirectionLayout _selected_direction = null;
-        private TilesetControl _tileset_ctrl = null;
+        private TilesetControl2 _tileset_ctrl = null;
         private FramePanel _selected_frame = null;
 
         // Dock controls:
@@ -147,19 +147,27 @@ namespace Sphere_Editor.SubEditors
             SpriteDrawer.SetImage((Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index)));
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
-            _tileset_ctrl = TilesetControl.FromSprite(_sprite);
-            _tileset_ctrl.IsMulti = false;
-            _tileset_ctrl.CanDrag = true;
+            _tileset_ctrl = new TilesetControl2();
+            _tileset_ctrl.Tileset = Tileset2.FromSpriteset(_sprite);
+            //_tileset_ctrl.IsMulti = false;
+            //_tileset_ctrl.CanDrag = true;
             _tileset_ctrl.CanInsert = false;
-            _tileset_ctrl.Sprite = this._sprite;
-            _tileset_ctrl.Zoom = 2;
+            _tileset_ctrl.ZoomIn();
             _tileset_ctrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            _tileset_ctrl.TileSelected += new TilesetControl.EventHandler(tileset_TileSelected);
+            _tileset_ctrl.TileSelected += new TilesetControl2.SelectedHandler(_tileset_ctrl_TileSelected);
             ImageHolder.Controls.Add(_tileset_ctrl);
             _tileset_ctrl.Width = ImageHolder.Width - 6;
-            DirectionAnim.Sprite = this._sprite;
-            DirectionAnim.Direction = this._sprite.Directions[0];
-            FrameBaseEditor.Frame = this._sprite.Directions[0].frames[0];
+            DirectionAnim.Sprite = _sprite;
+            DirectionAnim.Direction = _sprite.Directions[0];
+            FrameBaseEditor.Frame = _sprite.Directions[0].frames[0];
+        }
+
+        void _tileset_ctrl_TileSelected(short tile)
+        {
+            _selected_frame.Index = tile;
+            DirectionHolder.Invalidate(true);
+            SpriteDrawer.SetImage(_tileset_ctrl.Tileset.Tiles[tile].Graphic);
+            Modified(null, EventArgs.Empty);
         }
 
         public override void CreateNew()
@@ -211,54 +219,36 @@ namespace Sphere_Editor.SubEditors
 
         public void ResizeAll()
         {
-            SizeForm frm = new SizeForm();
-            frm.WidthSize = _tileset_ctrl.TileWidth;
-            frm.HeightSize = _tileset_ctrl.TileHeight;
-            frm.UseScale = false;
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                _tileset_ctrl.ResizeAllTiles((short)frm.WidthSize, (short)frm.HeightSize);
-                for (short i = 0; i < _sprite.Images.Count; ++i )
-                {
-                    _sprite.Images[i].Dispose();
-                    _sprite.Images[i] = _tileset_ctrl.Tiles[i].Graphic;
-                }
-                _sprite.SpriteWidth = (short)frm.WidthSize;
-                _sprite.SpriteHeight = (short)frm.HeightSize;
-            }
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selected_frame.Index));
-            UpdateControls();
-            Modified(null, EventArgs.Empty);
+            CallFormResize(false);
         }
 
         public void RescaleAll()
         {
-            SizeForm frm = new SizeForm();
-            frm.WidthSize = _tileset_ctrl.TileWidth;
-            frm.HeightSize = _tileset_ctrl.TileHeight;
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                _tileset_ctrl.RescaleAllTiles((short)frm.WidthSize, (short)frm.HeightSize);
-                for (short i = 0; i < _sprite.Images.Count; ++i)
-                {
-                    _sprite.Images[i].Dispose();
-                    _sprite.Images[i] = _tileset_ctrl.Tiles[i].Graphic;
-                }
-                _sprite.SpriteWidth = (short)frm.WidthSize;
-                _sprite.SpriteHeight = (short)frm.HeightSize;
-            }
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selected_frame.Index));
-            UpdateControls();
-            Modified(null, EventArgs.Empty);
-            frm.Dispose();
+            CallFormResize(true);
         }
 
-        void tileset_TileSelected(object sender, EventArgs e)
+        private void CallFormResize(bool rescale)
         {
-            _selected_frame.Index = _tileset_ctrl.Selection;
-            DirectionHolder.Invalidate(true);
-            DirectionHolder.Update();
-            SpriteDrawer.SetImage(_tileset_ctrl.GetTile(_tileset_ctrl.Selection).Graphic);
+            using (SizeForm frm = new SizeForm())
+            {
+                frm.WidthSize = _sprite.SpriteWidth;
+                frm.HeightSize = _sprite.SpriteHeight;
+                frm.UseScale = rescale;
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    _tileset_ctrl.Tileset.ResizeTiles((short)frm.WidthSize, (short)frm.HeightSize, rescale);
+                    for (short i = 0; i < _sprite.Images.Count; ++i)
+                    {
+                        _sprite.Images[i].Dispose();
+                        _sprite.Images[i] = _tileset_ctrl.Tileset.Tiles[i].Graphic;
+                    }
+                    _sprite.SpriteWidth = (short)frm.WidthSize;
+                    _sprite.SpriteHeight = (short)frm.HeightSize;
+                }
+                SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selected_frame.Index));
+                UpdateControls();
+                Modified(null, EventArgs.Empty);
+            }
         }
 
         public override void Destroy()
@@ -306,7 +296,7 @@ namespace Sphere_Editor.SubEditors
 
         public bool CanZoomIn { get { return _zoom < 8; } }
         public bool CanZoomOut { get { return _zoom > 1; } }
-        public TilesetControl Tileset
+        public TilesetControl2 Tileset
         {
             get { return _tileset_ctrl; }
             set { _tileset_ctrl = value; }
@@ -330,22 +320,15 @@ namespace Sphere_Editor.SubEditors
         {
             _sprite.Directions.Remove(layout.Direction);
             DirectionHolder.Controls.Remove(layout);
-            LayoutDirections();
+            UpdateControls();
             Modified(null, EventArgs.Empty);
-        }
-
-        public void LayoutDirections()
-        {
-            int i = 0;
-            foreach (DirectionLayout dl in DirectionHolder.Controls)
-                dl.Location = new Point(2, i++ * (dl.Height + 2) + 2);
         }
 
         private void SpriteDrawer_ImageEdited(object sender, EventArgs e)
         {
             Bitmap img = SpriteDrawer.GetImage();
             _sprite.Images[_selected_frame.Index] = img;
-            _tileset_ctrl.Tiles[_selected_frame.Index].Graphic = img;
+            _tileset_ctrl.Tileset.Tiles[_selected_frame.Index].Graphic = img;
             Modified(null, EventArgs.Empty);
             Invalidate(true);
         }

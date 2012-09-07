@@ -40,10 +40,12 @@ namespace Sphere_Editor.EditorComponents
         private int _zoom = 1;
 
         public short Selected { get; set; }
+        public bool CanInsert { get; set; }
 
         public TilesetControl2()
         {
             InitializeComponent();
+            CanInsert = true;
         }
 
         private void TilesetControl2_Paint(object sender, PaintEventArgs e)
@@ -171,6 +173,8 @@ namespace Sphere_Editor.EditorComponents
         {
             bool onlytile = _tileset.Tiles.Count == 1;
             removeTilesItem.Enabled = removeItem.Enabled = !onlytile;
+
+            insertItem.Visible = CanInsert;
         }
 
         private void TilesetControl2_MouseUp(object sender, MouseEventArgs e)

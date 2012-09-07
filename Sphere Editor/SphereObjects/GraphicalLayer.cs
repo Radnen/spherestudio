@@ -14,7 +14,6 @@ namespace Sphere_Editor.SphereObjects
             private int _tile_w_z, _tile_h_z;
             private int _zoom = 1;
             private int _vw, _vh;
-            private int _mul;
             
             public Point Offset { get; private set; }            
             public Bitmap Image { get; private set; }
@@ -22,17 +21,16 @@ namespace Sphere_Editor.SphereObjects
 
             public bool Visible { get { return _canvas != null; } }
 
-            public LayerCell(Point offset, int tile_width, int tile_height, int multiple)
+            public LayerCell(Point offset, int tile_width, int tile_height)
             {
                 Offset = offset;
                 _tile_w = _tile_w_z = tile_width;
                 _tile_h = _tile_h_z = tile_height;
-                _mul = multiple;
                 _vw = _mul * tile_width;
                 _vh = _mul * tile_height;
             }
 
-            public void Allocate(Layer2 layer, Tileset2 tileset)
+            public void Allocate(Layer layer, Tileset2 tileset)
             {
                 if (_canvas != null) return;
 
@@ -45,7 +43,7 @@ namespace Sphere_Editor.SphereObjects
                 Redraw(layer, tileset);
             }
 
-            public void Redraw(Layer2 layer, Tileset2 tileset)
+            public void Redraw(Layer layer, Tileset2 tileset)
             {
                 if (_canvas == null) return;
 
@@ -109,13 +107,13 @@ namespace Sphere_Editor.SphereObjects
         }
         #endregion
 
-        public Layer2 TargetLayer { get; private set; }
+        public Layer TargetLayer { get; private set; }
         private int _tile_w, _tile_h, _width;
         private static int _mul = 10;
         private LayerCell[] _cells;
         private int _zoom = 1;
 
-        public GraphicalLayer(Layer2 target, int tile_width, int tile_height)
+        public GraphicalLayer(Layer target, int tile_width, int tile_height)
         {
             TargetLayer = target;
             Resize(tile_width, tile_height);
@@ -139,7 +137,7 @@ namespace Sphere_Editor.SphereObjects
                 for (int x = 0; x < w; x++)
                 {
                     offset.X = x * _mul;
-                    _cells[index] = new LayerCell(offset, tile_width, tile_height, _mul);
+                    _cells[index] = new LayerCell(offset, tile_width, tile_height);
                     index++;
                 }
             }
@@ -154,7 +152,7 @@ namespace Sphere_Editor.SphereObjects
             for (int i = 0; i < _cells.Length; ++i) _cells[i].Redraw(TargetLayer, tileset);
         }
 
-        public void Refresh(Layer2 target, Tileset2 tileset)
+        public void Refresh(Layer target, Tileset2 tileset)
         {
             if (tileset.IsDisposed) return;
 
