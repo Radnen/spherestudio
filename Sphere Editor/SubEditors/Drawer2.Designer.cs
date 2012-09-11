@@ -31,8 +31,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.EditorToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ColorBox1 = new Sphere_Editor.Forms.ColorPicker.ColorBox();
-            this.ColorBox2 = new Sphere_Editor.Forms.ColorPicker.ColorBox();
             this.DrawerPanel = new System.Windows.Forms.Panel();
             this.ImagePanel = new Sphere_Editor.EditorPanel();
             this.ImageEditor = new Sphere_Editor.EditorComponents.ImageEditControl2();
@@ -64,7 +62,6 @@
             this.EditorStatus.SuspendLayout();
             this.EditorPanel.SuspendLayout();
             this.ColorSelectionPanel.SuspendLayout();
-            this.ColorFlow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlphaTracker)).BeginInit();
             this.PaletteStatus.SuspendLayout();
             this.SuspendLayout();
@@ -77,30 +74,6 @@
             this.EditorToolTip.ReshowDelay = 100;
             this.EditorToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.EditorToolTip.ToolTipTitle = "Editor Help";
-            // 
-            // ColorBox1
-            // 
-            this.ColorBox1.Location = new System.Drawing.Point(3, 3);
-            this.ColorBox1.Name = "ColorBox1";
-            this.ColorBox1.Selected = false;
-            this.ColorBox1.SelectedColor = System.Drawing.Color.White;
-            this.ColorBox1.Size = new System.Drawing.Size(64, 48);
-            this.ColorBox1.TabIndex = 6;
-            this.EditorToolTip.SetToolTip(this.ColorBox1, "Double click to set Primary Color.");
-            this.ColorBox1.ColorChanged += new System.EventHandler(this.ColorUpdated);
-            this.ColorBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Color1_MouseClick);
-            // 
-            // ColorBox2
-            // 
-            this.ColorBox2.Location = new System.Drawing.Point(3, 57);
-            this.ColorBox2.Name = "ColorBox2";
-            this.ColorBox2.Selected = false;
-            this.ColorBox2.SelectedColor = System.Drawing.Color.White;
-            this.ColorBox2.Size = new System.Drawing.Size(64, 48);
-            this.ColorBox2.TabIndex = 7;
-            this.EditorToolTip.SetToolTip(this.ColorBox2, "Double click to set Secondary Color.");
-            this.ColorBox2.ColorChanged += new System.EventHandler(this.ColorUpdated);
-            this.ColorBox2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Color2_MouseClick);
             // 
             // DrawerPanel
             // 
@@ -337,8 +310,6 @@
             // ColorFlow
             // 
             this.ColorFlow.BackColor = System.Drawing.SystemColors.Control;
-            this.ColorFlow.Controls.Add(this.ColorBox1);
-            this.ColorFlow.Controls.Add(this.ColorBox2);
             this.ColorFlow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorFlow.Location = new System.Drawing.Point(45, 0);
             this.ColorFlow.Name = "ColorFlow";
@@ -409,7 +380,6 @@
             this.EditorPanel.PerformLayout();
             this.ColorSelectionPanel.ResumeLayout(false);
             this.ColorSelectionPanel.PerformLayout();
-            this.ColorFlow.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AlphaTracker)).EndInit();
             this.PaletteStatus.ResumeLayout(false);
             this.PaletteStatus.PerformLayout();
@@ -431,8 +401,6 @@
         private System.Windows.Forms.TrackBar AlphaTracker;
         private System.Windows.Forms.ToolStripButton UndoButton;
         private System.Windows.Forms.ToolStripButton RedoButton;
-        private Forms.ColorPicker.ColorBox ColorBox2;
-        private Forms.ColorPicker.ColorBox ColorBox1;
         private System.Windows.Forms.Panel ColorSelectionPanel;
         private System.Windows.Forms.StatusStrip EditorStatus;
         private System.Windows.Forms.ToolStripStatusLabel ZoomLabel;

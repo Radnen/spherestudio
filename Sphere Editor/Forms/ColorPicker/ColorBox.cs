@@ -32,13 +32,13 @@ namespace Sphere_Editor.Forms.ColorPicker
         public Color SelectedColor
         {
             get { return color; }
-            set { color = value; }
+            set { color = value; Invalidate(); }
         }
 
         public bool Selected
         {
             get { return selected; }
-            set { selected = value; }
+            set { selected = value; Invalidate(); }
         }
 
         private void ColorBox_Paint(object sender, PaintEventArgs e)

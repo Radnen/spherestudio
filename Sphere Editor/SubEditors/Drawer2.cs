@@ -28,13 +28,33 @@ namespace Sphere_Editor.SubEditors
         private DockContent PaletteContent = new DockContent();
         private DockPanel EditorDock = new DockPanel();
 
+        private ColorBox _selected_box;
+
         public Drawer2()
         {
             InitializeComponent();
             InitializeDocking();
-            ColorBox1.Selected = true;
-            ColorBox1.SelectedColor = Color.White;
-            ColorBox2.SelectedColor = Color.Black;
+
+            for (int i = 0; i < 8; ++i)
+            {
+                ColorBox box = new ColorBox();
+                box.SelectedColor = Color.White;
+                box.ColorChanged += new EventHandler(ColorUpdated);
+                box.MouseClick += new MouseEventHandler(box_MouseClick);
+                ColorFlow.Controls.Add(box);
+            }
+        }
+
+        void box_MouseClick(object sender, MouseEventArgs e)
+        {
+            foreach (ColorBox box in ColorFlow.Controls)
+                box.Selected = false;
+
+            _selected_box = (ColorBox)sender;
+
+            _selected_box.Selected = true;
+            ImageEditor.DrawColor = _selected_box.SelectedColor;
+            Invalidate();
         }
 
         private void InitializeDocking()
@@ -168,22 +188,6 @@ namespace Sphere_Editor.SubEditors
             ImageEditor.Invalidate(false);
         }
 
-        private void Color1_MouseClick(object sender, MouseEventArgs e)
-        {
-            ColorBox1.Selected = true;
-            ColorBox2.Selected = false;
-            ImageEditor.DrawColor = ColorBox1.SelectedColor;
-            Refresh();
-        }
-
-        private void Color2_MouseClick(object sender, MouseEventArgs e)
-        {
-            ColorBox2.Selected = true;
-            ColorBox1.Selected = false;
-            ImageEditor.DrawColor = ColorBox2.SelectedColor;
-            Refresh();
-        }
-
         private void ColorUpdated(object sender, EventArgs e)
         {
             AlphaTracker.Value = 255;
@@ -193,16 +197,9 @@ namespace Sphere_Editor.SubEditors
         private void AlphaTracker_Scroll(object sender, EventArgs e)
         {
             AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
-            if (ColorBox1.Selected)
-            {
-                ColorBox1.SelectedColor = Color.FromArgb(AlphaTracker.Value, ColorBox1.SelectedColor);
-                ImageEditor.DrawColor = ColorBox1.SelectedColor;
-            }
-            else
-            {
-                ColorBox2.SelectedColor = Color.FromArgb(AlphaTracker.Value, ColorBox2.SelectedColor);
-                ImageEditor.DrawColor = ColorBox2.SelectedColor;
-            }
+
+            _selected_box.SelectedColor = Color.FromArgb(AlphaTracker.Value, _selected_box.SelectedColor);
+            ImageEditor.DrawColor = _selected_box.SelectedColor;
         }
 
         // sure there might be a better way, but this is more elegamt due to it's simplicity.
@@ -284,8 +281,7 @@ namespace Sphere_Editor.SubEditors
 
         private void ImageEditor_ColorChanged(object sender, EventArgs e)
         {
-            if (ColorBox1.Selected) { ColorBox1.SelectedColor = ImageEditor.DrawColor; ColorBox1.Invalidate(); }
-            if (ColorBox2.Selected) { ColorBox2.SelectedColor = ImageEditor.DrawColor; ColorBox2.Invalidate(); }
+            _selected_box.SelectedColor = ImageEditor.DrawColor;
             AlphaTracker.Value = ImageEditor.DrawColor.A;
             AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
         }

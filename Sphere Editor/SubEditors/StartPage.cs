@@ -48,6 +48,7 @@ namespace Sphere_Editor.SubEditors
             GameContent.Controls.Add(GamesPanel);
             GameContent.DockAreas = DockAreas.DockTop | DockAreas.DockBottom | DockAreas.Document;
             GameContent.AllowEndUserDocking = false;
+            GameContent.DockHandler.CloseButtonVisible = false;
             GameContent.Text = "Local Projects";
             InfoContent.Controls.Add(InfoPanel);
             InfoContent.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight;
