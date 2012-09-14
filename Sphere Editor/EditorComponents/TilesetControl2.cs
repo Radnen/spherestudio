@@ -48,6 +48,28 @@ namespace Sphere_Editor.EditorComponents
             CanInsert = true;
         }
 
+        /// <summary>
+        /// Resizes or rescales the tileset belonging to this control.
+        /// </summary>
+        /// <param name="tileWidth">Width of the new tiles.</param>
+        /// <param name="tileHeight">Height of the new tiles.</param>
+        /// <param name="rescale">Whether or not to rescale along with the resize.</param>
+        public void ResizeTileset(short tileWidth, short tileHeight, bool rescale)
+        {
+            Tileset.ResizeTiles(tileWidth, tileHeight, rescale);
+            UpdateTileSize();
+        }
+
+        /// <summary>
+        /// Call this when the tile sizes change outside of this controls scope.
+        /// </summary>
+        public void UpdateTileSize()
+        {
+            _tile_w_zoom = Tileset.TileWidth * _zoom;
+            _tile_h_zoom = Tileset.TileHeight * _zoom;
+            Invalidate();
+        }
+
         private void TilesetControl2_Paint(object sender, PaintEventArgs e)
         {
             if (Tileset == null) return;

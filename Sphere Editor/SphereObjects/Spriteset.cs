@@ -179,7 +179,11 @@ namespace Sphere_Editor.SphereObjects
             _disposed = true;
         }
 
-        public void RemoveBadReference(int reference)
+        /// <summary>
+        /// Removes the frame from the spriteset and its image array.
+        /// </summary>
+        /// <param name="reference"></param>
+        public void RemoveFrameReference(int reference)
         {
             foreach (Direction d in directions)
             {

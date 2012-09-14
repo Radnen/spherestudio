@@ -193,6 +193,7 @@ namespace Sphere_Editor.SubEditors
             {
                 diag.Filter = "Map Files (.rmp)|*.rmp";
                 diag.InitialDirectory = Global.CurrentProject.Path + "\\maps";
+                diag.DefaultExt = "rmp";
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
                     _filename = diag.FileName;
@@ -248,6 +249,7 @@ namespace Sphere_Editor.SubEditors
         public void SetTileSize(int tile_width, int tile_height)
         {
             MapControl.ResizeLayers(tile_width, tile_height);
+            TilesetControl.UpdateTileSize();
             TilesetControl.Invalidate();
             TilesetControl.Select(TilesetControl.Selected);
         }

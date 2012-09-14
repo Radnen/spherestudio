@@ -103,6 +103,12 @@ namespace Sphere_Editor.SubEditors
             Controls.Add(MainDockPanel);
         }
 
+        private WeifenLuo.WinFormsUI.Docking.IDockContent GetContentFromPersistString(string persistString)
+        {
+            if (persistString == "WeifenLuo.WinFormsUI.Docking.DockContent") return DirectionContent;
+            else return null;
+        }
+
         private int _id = -1;
         public IDockContent GetContent(string persist)
         {
@@ -122,12 +128,6 @@ namespace Sphere_Editor.SubEditors
             else return new DockContent();
         }
         #endregion
-
-        private WeifenLuo.WinFormsUI.Docking.IDockContent GetContentFromPersistString(string persistString)
-        {
-            if (persistString == "WeifenLuo.WinFormsUI.Docking.DockContent") return DirectionContent;
-            else return null;
-        }
 
         public void Init()
         {
@@ -155,6 +155,8 @@ namespace Sphere_Editor.SubEditors
             _tileset_ctrl.ZoomIn();
             _tileset_ctrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             _tileset_ctrl.TileSelected += new TilesetControl2.SelectedHandler(_tileset_ctrl_TileSelected);
+            _tileset_ctrl.TileAdded += new TilesetControl2.TileHandler(_tileset_ctrl_TileAdded);
+            _tileset_ctrl.TileRemoved += new TilesetControl2.TileHandler(_tileset_ctrl_TileRemoved);
             ImageHolder.Controls.Add(_tileset_ctrl);
             _tileset_ctrl.Width = ImageHolder.Width - 6;
             DirectionAnim.Sprite = _sprite;
@@ -168,6 +170,17 @@ namespace Sphere_Editor.SubEditors
             DirectionHolder.Invalidate(true);
             SpriteDrawer.SetImage(_tileset_ctrl.Tileset.Tiles[tile].Graphic);
             Modified(null, EventArgs.Empty);
+        }
+
+        void _tileset_ctrl_TileRemoved(short startindex, List<Tile> tiles)
+        {
+            _sprite.RemoveFrameReference(startindex);
+            DirectionHolder.Invalidate(true);
+        }
+
+        void _tileset_ctrl_TileAdded(short startindex, List<Tile> tiles)
+        {
+            _sprite.Images.Add(tiles[0].Graphic);
         }
 
         public override void CreateNew()
@@ -236,7 +249,7 @@ namespace Sphere_Editor.SubEditors
                 frm.UseScale = rescale;
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    _tileset_ctrl.Tileset.ResizeTiles((short)frm.WidthSize, (short)frm.HeightSize, rescale);
+                    _tileset_ctrl.ResizeTileset((short)frm.WidthSize, (short)frm.HeightSize, rescale);
                     for (short i = 0; i < _sprite.Images.Count; ++i)
                     {
                         _sprite.Images[i].Dispose();
@@ -285,13 +298,15 @@ namespace Sphere_Editor.SubEditors
         public void UpdateControls()
         {
             int i = 0;
+            int val = DirectionHolder.VerticalScroll.Value;
             DirectionHolder.VerticalScroll.Value = 0;
             foreach (DirectionLayout l in DirectionHolder.Controls)
             {
                 l.Zoom = _zoom;
                 l.Location = new Point(2, i++ * (l.Height + 2) + 2);
             }
-            Refresh();
+            DirectionHolder.VerticalScroll.Value = val;
+            DirectionHolder.Invalidate();
         }
 
         public bool CanZoomIn { get { return _zoom < 8; } }

@@ -733,9 +733,7 @@ namespace Sphere_Editor
         private void recenterMapItem_Click(object sender, EventArgs e)
         {
             if (CurrentControl != null && CurrentControl is MapEditor)
-            {
                 ((MapEditor)CurrentControl).MapControl.CenterMap();
-            }
         }
         #endregion
 

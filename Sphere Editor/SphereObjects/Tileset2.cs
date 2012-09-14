@@ -206,15 +206,13 @@ namespace Sphere_Editor.SphereObjects
         public void UpdateFromImage(string filename)
         {
             Bitmap img = (Bitmap)Bitmap.FromFile(filename);
-            int witdh = img.Width;
-            int height = img.Height;
-            int index = 0;
             Rectangle rect = new Rectangle(0, 0, TileWidth, TileHeight);
 
-            for (int y = 0; y < height; y += TileWidth)
+            int index = 0;
+            for (int y = 0; y < img.Height; y += TileWidth)
             {
                 rect.Y = y;
-                for (int x = 0; x < witdh; x += TileWidth)
+                for (int x = 0; x < img.Width; x += TileWidth, index++)
                 {
                     rect.X = x;
                     if (index < Tiles.Count)
@@ -227,7 +225,6 @@ namespace Sphere_Editor.SphereObjects
                         Tile t = new Tile(img.Clone(rect, System.Drawing.Imaging.PixelFormat.Format32bppPArgb));
                         Tiles.Add(t);
                     }
-                    index++;
                 }
             }
 
