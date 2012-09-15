@@ -43,6 +43,8 @@ namespace Sphere_Editor.SubEditors
                 box.MouseClick += new MouseEventHandler(box_MouseClick);
                 ColorFlow.Controls.Add(box);
             }
+
+            box_MouseClick(ColorFlow.Controls[0], null);
         }
 
         void box_MouseClick(object sender, MouseEventArgs e)

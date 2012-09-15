@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.PlayButton = new System.Windows.Forms.Button();
-            this.StopButton = new System.Windows.Forms.Button();
             this.AudioTracker = new System.Windows.Forms.TrackBar();
             this.RepeatCheckBox = new System.Windows.Forms.CheckBox();
             this.TimeLabel = new System.Windows.Forms.Label();
@@ -39,7 +37,9 @@
             this.InfoLabel = new System.Windows.Forms.Label();
             this.VolumeTracker = new System.Windows.Forms.TrackBar();
             this.PitchTracker = new System.Windows.Forms.TrackBar();
-            this.RemoveButton = new System.Windows.Forms.Button();
+            this.StopButton = new System.Windows.Forms.Button();
+            this.PlayButton = new System.Windows.Forms.Button();
+            this.removeButton = new System.Windows.Forms.Button();
             this.NameLabel = new Sphere_Editor.EditorLabel();
             ((System.ComponentModel.ISupportInitialize)(this.AudioTracker)).BeginInit();
             this.SongPanel.SuspendLayout();
@@ -51,41 +51,13 @@
             // 
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
-            // PlayButton
-            // 
-            this.PlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.PlayButton.Image = global::Sphere_Editor.Properties.Resources.sound;
-            this.PlayButton.Location = new System.Drawing.Point(3, 77);
-            this.PlayButton.Name = "PlayButton";
-            this.PlayButton.Size = new System.Drawing.Size(75, 23);
-            this.PlayButton.TabIndex = 0;
-            this.PlayButton.Text = "Play";
-            this.PlayButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.PlayButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.PlayButton.UseVisualStyleBackColor = true;
-            this.PlayButton.Click += new System.EventHandler(this.PlayPauseButton_Click);
-            // 
-            // StopButton
-            // 
-            this.StopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.StopButton.Image = global::Sphere_Editor.Properties.Resources.cross;
-            this.StopButton.Location = new System.Drawing.Point(84, 77);
-            this.StopButton.Name = "StopButton";
-            this.StopButton.Size = new System.Drawing.Size(75, 23);
-            this.StopButton.TabIndex = 1;
-            this.StopButton.Text = "Stop";
-            this.StopButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.StopButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.StopButton.UseVisualStyleBackColor = true;
-            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
-            // 
             // AudioTracker
             // 
             this.AudioTracker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.AudioTracker.Location = new System.Drawing.Point(3, 26);
             this.AudioTracker.Name = "AudioTracker";
-            this.AudioTracker.Size = new System.Drawing.Size(564, 45);
+            this.AudioTracker.Size = new System.Drawing.Size(489, 45);
             this.AudioTracker.TabIndex = 3;
             this.AudioTracker.TickFrequency = 1000;
             this.AudioTracker.TickStyle = System.Windows.Forms.TickStyle.Both;
@@ -95,7 +67,7 @@
             // 
             this.RepeatCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RepeatCheckBox.AutoSize = true;
-            this.RepeatCheckBox.Location = new System.Drawing.Point(165, 81);
+            this.RepeatCheckBox.Location = new System.Drawing.Point(165, 83);
             this.RepeatCheckBox.Name = "RepeatCheckBox";
             this.RepeatCheckBox.Size = new System.Drawing.Size(61, 17);
             this.RepeatCheckBox.TabIndex = 4;
@@ -109,9 +81,9 @@
             this.TimeLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(225)))), ((int)(((byte)(243)))));
             this.TimeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TimeLabel.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLabel.Location = new System.Drawing.Point(413, 76);
+            this.TimeLabel.Location = new System.Drawing.Point(347, 78);
             this.TimeLabel.Name = "TimeLabel";
-            this.TimeLabel.Size = new System.Drawing.Size(154, 26);
+            this.TimeLabel.Size = new System.Drawing.Size(145, 26);
             this.TimeLabel.TabIndex = 6;
             this.TimeLabel.Text = "(00.00) / (00.00)";
             this.TimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -122,12 +94,12 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.SongPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SongPanel.Controls.Add(this.NameLabel);
+            this.SongPanel.Controls.Add(this.removeButton);
             this.SongPanel.Controls.Add(this.InfoLabel);
             this.SongPanel.Controls.Add(this.VolumeTracker);
             this.SongPanel.Controls.Add(this.PitchTracker);
-            this.SongPanel.Controls.Add(this.RemoveButton);
             this.SongPanel.Controls.Add(this.TimeLabel);
-            this.SongPanel.Controls.Add(this.NameLabel);
             this.SongPanel.Controls.Add(this.RepeatCheckBox);
             this.SongPanel.Controls.Add(this.AudioTracker);
             this.SongPanel.Controls.Add(this.StopButton);
@@ -135,7 +107,7 @@
             this.SongPanel.Location = new System.Drawing.Point(6, 6);
             this.SongPanel.Margin = new System.Windows.Forms.Padding(6);
             this.SongPanel.Name = "SongPanel";
-            this.SongPanel.Size = new System.Drawing.Size(665, 107);
+            this.SongPanel.Size = new System.Drawing.Size(599, 109);
             this.SongPanel.TabIndex = 6;
             // 
             // InfoLabel
@@ -144,7 +116,7 @@
             this.InfoLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(225)))), ((int)(((byte)(243)))));
             this.InfoLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.InfoLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InfoLabel.Location = new System.Drawing.Point(232, 76);
+            this.InfoLabel.Location = new System.Drawing.Point(166, 78);
             this.InfoLabel.Name = "InfoLabel";
             this.InfoLabel.Size = new System.Drawing.Size(175, 26);
             this.InfoLabel.TabIndex = 11;
@@ -153,12 +125,13 @@
             // 
             // VolumeTracker
             // 
-            this.VolumeTracker.Dock = System.Windows.Forms.DockStyle.Right;
-            this.VolumeTracker.Location = new System.Drawing.Point(573, 23);
+            this.VolumeTracker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.VolumeTracker.Location = new System.Drawing.Point(498, 26);
             this.VolumeTracker.Maximum = 100;
             this.VolumeTracker.Name = "VolumeTracker";
             this.VolumeTracker.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.VolumeTracker.Size = new System.Drawing.Size(45, 82);
+            this.VolumeTracker.Size = new System.Drawing.Size(45, 80);
             this.VolumeTracker.TabIndex = 9;
             this.VolumeTracker.TickFrequency = 1000;
             this.VolumeTracker.Value = 100;
@@ -167,13 +140,14 @@
             // 
             // PitchTracker
             // 
-            this.PitchTracker.Dock = System.Windows.Forms.DockStyle.Right;
-            this.PitchTracker.Location = new System.Drawing.Point(618, 23);
+            this.PitchTracker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.PitchTracker.Location = new System.Drawing.Point(549, 26);
             this.PitchTracker.Maximum = 200;
             this.PitchTracker.Minimum = 10;
             this.PitchTracker.Name = "PitchTracker";
             this.PitchTracker.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.PitchTracker.Size = new System.Drawing.Size(45, 82);
+            this.PitchTracker.Size = new System.Drawing.Size(45, 80);
             this.PitchTracker.TabIndex = 8;
             this.PitchTracker.TickFrequency = 1000;
             this.PitchTracker.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
@@ -181,34 +155,61 @@
             this.PitchTracker.ValueChanged += new System.EventHandler(this.PitchTracker_ValueChanged);
             this.PitchTracker.MouseEnter += new System.EventHandler(this.PitchTracker_MouseEnter);
             // 
-            // RemoveButton
+            // StopButton
             // 
-            this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.RemoveButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.RemoveButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.RemoveButton.FlatAppearance.BorderSize = 0;
-            this.RemoveButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Blue;
-            this.RemoveButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RemoveButton.Image = global::Sphere_Editor.Properties.Resources.cross;
-            this.RemoveButton.Location = new System.Drawing.Point(634, 2);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(26, 20);
-            this.RemoveButton.TabIndex = 7;
-            this.RemoveButton.UseVisualStyleBackColor = false;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
+            this.StopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.StopButton.Image = global::Sphere_Editor.Properties.Resources.stop;
+            this.StopButton.Location = new System.Drawing.Point(84, 79);
+            this.StopButton.Name = "StopButton";
+            this.StopButton.Size = new System.Drawing.Size(75, 23);
+            this.StopButton.TabIndex = 1;
+            this.StopButton.Text = "Stop";
+            this.StopButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.StopButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
+            // 
+            // PlayButton
+            // 
+            this.PlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.PlayButton.Image = global::Sphere_Editor.Properties.Resources.play;
+            this.PlayButton.Location = new System.Drawing.Point(3, 79);
+            this.PlayButton.Name = "PlayButton";
+            this.PlayButton.Size = new System.Drawing.Size(75, 23);
+            this.PlayButton.TabIndex = 0;
+            this.PlayButton.Text = "Play";
+            this.PlayButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.PlayButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.PlayButton.UseVisualStyleBackColor = true;
+            this.PlayButton.Click += new System.EventHandler(this.PlayPauseButton_Click);
+            // 
+            // removeButton
+            // 
+            this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.removeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(125)))), ((int)(((byte)(255)))));
+            this.removeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.removeButton.Image = global::Sphere_Editor.Properties.Resources.cross;
+            this.removeButton.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.removeButton.Location = new System.Drawing.Point(574, -1);
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(24, 24);
+            this.removeButton.TabIndex = 12;
+            this.removeButton.UseVisualStyleBackColor = false;
+            this.removeButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
             // NameLabel
             // 
-            this.NameLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.NameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.NameLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
             this.NameLabel.ForeColor = System.Drawing.Color.MidnightBlue;
             this.NameLabel.Location = new System.Drawing.Point(0, 0);
             this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(663, 23);
+            this.NameLabel.Size = new System.Drawing.Size(574, 23);
             this.NameLabel.TabIndex = 5;
             this.NameLabel.Text = "[[Song Name]]";
             this.NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.NameLabel.DoubleClick += new System.EventHandler(this.NameLabel_DoubleClick);
             // 
             // AudioPlayer
             // 
@@ -216,7 +217,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.SongPanel);
             this.Name = "AudioPlayer";
-            this.Size = new System.Drawing.Size(677, 119);
+            this.Size = new System.Drawing.Size(611, 121);
             ((System.ComponentModel.ISupportInitialize)(this.AudioTracker)).EndInit();
             this.SongPanel.ResumeLayout(false);
             this.SongPanel.PerformLayout();
@@ -236,9 +237,9 @@
         private EditorLabel NameLabel;
         private System.Windows.Forms.Label TimeLabel;
         private System.Windows.Forms.Panel SongPanel;
-        private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.TrackBar VolumeTracker;
         private System.Windows.Forms.TrackBar PitchTracker;
         private System.Windows.Forms.Label InfoLabel;
+        private System.Windows.Forms.Button removeButton;
     }
 }

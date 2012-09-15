@@ -260,7 +260,6 @@ namespace Sphere_Editor.EditorComponents
                 DoTool();
                 PushHistory();
                 if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
-                Invalidate();
             }
         }
 
@@ -283,6 +282,7 @@ namespace Sphere_Editor.EditorComponents
             ImagePage page = new ImagePage(this, rect.Location, before, after);
             Flatten(ref rect);
             _h_manager.PushPage(page);
+            Invalidate();
         }
 
         // flatten will compile a portion of the current editing copy to
@@ -510,6 +510,7 @@ namespace Sphere_Editor.EditorComponents
             _end_anchor.X = _image.Width - 1;
             _end_anchor.Y = _image.Height - 1;
             PushHistory();
+            Invalidate();
             if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
         }
 

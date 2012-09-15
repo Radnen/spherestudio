@@ -580,6 +580,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Libs\irrklang\irrKlang.NET2.0.dll" />
+    <None Include="Icons\new.png" />
+    <None Include="Icons\open.png" />
+    <None Include="Icons\play.png" />
+    <None Include="Icons\stop.png" />
+    <None Include="Icons\pause.png" />
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

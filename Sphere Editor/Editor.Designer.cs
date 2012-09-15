@@ -46,25 +46,23 @@
             WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
             this.EditorTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.CloseTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseAllTabItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DockTest = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.EditorTools = new System.Windows.Forms.ToolStrip();
+            this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolSeperator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.EditorStatus = new System.Windows.Forms.StatusStrip();
+            this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.NewToolButton = new System.Windows.Forms.ToolStripButton();
             this.OpenToolButton = new System.Windows.Forms.ToolStripButton();
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
-            this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.RunToolButton = new System.Windows.Forms.ToolStripButton();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
             this.OptionsToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.ToolSeperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.CutToolButton = new System.Windows.Forms.ToolStripButton();
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
-            this.EditorStatus = new System.Windows.Forms.StatusStrip();
-            this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NewProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,6 +141,8 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TestItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CloseTabItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -158,25 +158,11 @@
             this.EditorTabContextMenu.Name = "EditorTabContextMenu";
             this.EditorTabContextMenu.Size = new System.Drawing.Size(167, 70);
             // 
-            // CloseTabItem
-            // 
-            this.CloseTabItem.Image = global::Sphere_Editor.Properties.Resources.cross;
-            this.CloseTabItem.Name = "CloseTabItem";
-            this.CloseTabItem.Size = new System.Drawing.Size(166, 22);
-            this.CloseTabItem.Text = "Close Tab";
-            // 
             // CloseAllTabItem
             // 
             this.CloseAllTabItem.Name = "CloseAllTabItem";
             this.CloseAllTabItem.Size = new System.Drawing.Size(166, 22);
             this.CloseAllTabItem.Text = "Close All But This";
-            // 
-            // SaveTabItem
-            // 
-            this.SaveTabItem.Image = global::Sphere_Editor.Properties.Resources.disk;
-            this.SaveTabItem.Name = "SaveTabItem";
-            this.SaveTabItem.Size = new System.Drawing.Size(166, 22);
-            this.SaveTabItem.Text = "Save Tab";
             // 
             // DockTest
             // 
@@ -265,6 +251,36 @@
             this.EditorTools.TabIndex = 4;
             this.EditorTools.Text = "Tool Strip";
             // 
+            // ToolSeperator1
+            // 
+            this.ToolSeperator1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ToolSeperator1.Name = "ToolSeperator1";
+            this.ToolSeperator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // ToolSeperator2
+            // 
+            this.ToolSeperator2.Name = "ToolSeperator2";
+            this.ToolSeperator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // EditorStatus
+            // 
+            this.EditorStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HelpLabel});
+            this.EditorStatus.Location = new System.Drawing.Point(0, 338);
+            this.EditorStatus.Name = "EditorStatus";
+            this.EditorStatus.Size = new System.Drawing.Size(480, 22);
+            this.EditorStatus.TabIndex = 1;
+            this.EditorStatus.Text = "Status";
+            // 
+            // HelpLabel
+            // 
+            this.HelpLabel.BackColor = System.Drawing.Color.Transparent;
+            this.HelpLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
+            this.HelpLabel.Name = "HelpLabel";
+            this.HelpLabel.Size = new System.Drawing.Size(192, 17);
+            this.HelpLabel.Text = "Welcome to the new Sphere Editor!";
+            // 
             // NewToolButton
             // 
             this.NewToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -278,7 +294,7 @@
             // OpenToolButton
             // 
             this.OpenToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OpenToolButton.Image = global::Sphere_Editor.Properties.Resources.folder;
+            this.OpenToolButton.Image = global::Sphere_Editor.Properties.Resources.open;
             this.OpenToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenToolButton.Name = "OpenToolButton";
             this.OpenToolButton.Size = new System.Drawing.Size(23, 22);
@@ -294,12 +310,6 @@
             this.SaveToolButton.Size = new System.Drawing.Size(23, 22);
             this.SaveToolButton.Text = "&Save";
             this.SaveToolButton.Click += new System.EventHandler(this.SaveMenuItem_Click);
-            // 
-            // ToolSeperator1
-            // 
-            this.ToolSeperator1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ToolSeperator1.Name = "ToolSeperator1";
-            this.ToolSeperator1.Size = new System.Drawing.Size(6, 25);
             // 
             // RunToolButton
             // 
@@ -341,11 +351,6 @@
             this.toolStripButton1.Text = "Editor Settings";
             this.toolStripButton1.Click += new System.EventHandler(this.OpenEditorSettings);
             // 
-            // ToolSeperator2
-            // 
-            this.ToolSeperator2.Name = "ToolSeperator2";
-            this.ToolSeperator2.Size = new System.Drawing.Size(6, 25);
-            // 
             // CutToolButton
             // 
             this.CutToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -375,25 +380,6 @@
             this.PasteToolButton.Size = new System.Drawing.Size(23, 22);
             this.PasteToolButton.Text = "&Paste";
             this.PasteToolButton.Click += new System.EventHandler(this.PasteMenuItem_Click);
-            // 
-            // EditorStatus
-            // 
-            this.EditorStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.HelpLabel});
-            this.EditorStatus.Location = new System.Drawing.Point(0, 338);
-            this.EditorStatus.Name = "EditorStatus";
-            this.EditorStatus.Size = new System.Drawing.Size(480, 22);
-            this.EditorStatus.TabIndex = 1;
-            this.EditorStatus.Text = "Status";
-            // 
-            // HelpLabel
-            // 
-            this.HelpLabel.BackColor = System.Drawing.Color.Transparent;
-            this.HelpLabel.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
-            this.HelpLabel.Name = "HelpLabel";
-            this.HelpLabel.Size = new System.Drawing.Size(192, 17);
-            this.HelpLabel.Text = "Welcome to the new Sphere Editor!";
             // 
             // EditorMenu
             // 
@@ -439,7 +425,7 @@
             // 
             // NewProjectMenuItem
             // 
-            this.NewProjectMenuItem.Image = global::Sphere_Editor.Properties.Resources.page_white_edit;
+            this.NewProjectMenuItem.Image = global::Sphere_Editor.Properties.Resources._new;
             this.NewProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.NewProjectMenuItem.Name = "NewProjectMenuItem";
             this.NewProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
@@ -496,9 +482,9 @@
             // 
             // NewFontMenuItem
             // 
-            this.NewFontMenuItem.Image = global::Sphere_Editor.Properties.Resources.page_white_edit;
+            this.NewFontMenuItem.Image = global::Sphere_Editor.Properties.Resources.style;
             this.NewFontMenuItem.Name = "NewFontMenuItem";
-            this.NewFontMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.NewFontMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewFontMenuItem.Text = "Font";
             this.NewFontMenuItem.Click += new System.EventHandler(this.NewFont);
             // 
@@ -506,7 +492,7 @@
             // 
             this.NewImageMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.NewImageMenuItem.Name = "NewImageMenuItem";
-            this.NewImageMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.NewImageMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewImageMenuItem.Text = "Image";
             this.NewImageMenuItem.Click += new System.EventHandler(this.NewImage);
             // 
@@ -514,7 +500,7 @@
             // 
             this.NewMapMenuItem.Image = global::Sphere_Editor.Properties.Resources.map;
             this.NewMapMenuItem.Name = "NewMapMenuItem";
-            this.NewMapMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.NewMapMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewMapMenuItem.Text = "Map";
             this.NewMapMenuItem.Click += new System.EventHandler(this.NewMap);
             // 
@@ -524,7 +510,7 @@
             this.NewScriptMenuItem.Name = "NewScriptMenuItem";
             this.NewScriptMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.NewScriptMenuItem.ShowShortcutKeys = false;
-            this.NewScriptMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.NewScriptMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewScriptMenuItem.Text = "Script";
             this.NewScriptMenuItem.Click += new System.EventHandler(this.NewScript);
             // 
@@ -532,7 +518,7 @@
             // 
             this.NewSpritesetMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.NewSpritesetMenuItem.Name = "NewSpritesetMenuItem";
-            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewSpritesetMenuItem.Text = "Spriteset";
             this.NewSpritesetMenuItem.Click += new System.EventHandler(this.NewSpriteset);
             // 
@@ -540,14 +526,14 @@
             // 
             this.NewWindowStyleMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.NewWindowStyleMenuItem.Name = "NewWindowStyleMenuItem";
-            this.NewWindowStyleMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.NewWindowStyleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewWindowStyleMenuItem.Text = "WindowStyle";
             this.NewWindowStyleMenuItem.Click += new System.EventHandler(this.NewWindowStyle);
             // 
             // NewSeparator1
             // 
             this.NewSeparator1.Name = "NewSeparator1";
-            this.NewSeparator1.Size = new System.Drawing.Size(141, 6);
+            this.NewSeparator1.Size = new System.Drawing.Size(149, 6);
             this.NewSeparator1.Visible = false;
             // 
             // RadLibItem
@@ -556,7 +542,7 @@
             this.MenuDesignerItem});
             this.RadLibItem.Image = global::Sphere_Editor.Properties.Resources.lightning;
             this.RadLibItem.Name = "RadLibItem";
-            this.RadLibItem.Size = new System.Drawing.Size(144, 22);
+            this.RadLibItem.Size = new System.Drawing.Size(152, 22);
             this.RadLibItem.Text = "RadLib Editor";
             this.RadLibItem.Visible = false;
             // 
@@ -578,16 +564,16 @@
             this.OpenSpritesetMenuItem,
             this.OpenSoundMenuItem,
             this.OpenWindowStyleMenuItem});
-            this.OpenMenuItem.Image = global::Sphere_Editor.Properties.Resources.folder;
+            this.OpenMenuItem.Image = global::Sphere_Editor.Properties.Resources.open;
             this.OpenMenuItem.Name = "OpenMenuItem";
             this.OpenMenuItem.Size = new System.Drawing.Size(215, 22);
             this.OpenMenuItem.Text = "Open";
             // 
             // OpenFontMenuItem
             // 
-            this.OpenFontMenuItem.Image = global::Sphere_Editor.Properties.Resources.page_white_edit;
+            this.OpenFontMenuItem.Image = global::Sphere_Editor.Properties.Resources.style;
             this.OpenFontMenuItem.Name = "OpenFontMenuItem";
-            this.OpenFontMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenFontMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenFontMenuItem.Text = "Font";
             this.OpenFontMenuItem.Click += new System.EventHandler(this.OpenFontMenuItem_Click);
             // 
@@ -595,7 +581,7 @@
             // 
             this.OpenImageMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.OpenImageMenuItem.Name = "OpenImageMenuItem";
-            this.OpenImageMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenImageMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenImageMenuItem.Text = "Image";
             this.OpenImageMenuItem.Click += new System.EventHandler(this.OpenImageEvent);
             // 
@@ -603,7 +589,7 @@
             // 
             this.OpenMapMenuItem.Image = global::Sphere_Editor.Properties.Resources.map;
             this.OpenMapMenuItem.Name = "OpenMapMenuItem";
-            this.OpenMapMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenMapMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenMapMenuItem.Text = "Map";
             this.OpenMapMenuItem.Click += new System.EventHandler(this.OpenMapMenuItem_Click);
             // 
@@ -611,7 +597,7 @@
             // 
             this.OpenScriptMenuItem.Image = global::Sphere_Editor.Properties.Resources.script_edit;
             this.OpenScriptMenuItem.Name = "OpenScriptMenuItem";
-            this.OpenScriptMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenScriptMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenScriptMenuItem.Text = "Script";
             this.OpenScriptMenuItem.Click += new System.EventHandler(this.OpenScriptEvent);
             // 
@@ -619,7 +605,7 @@
             // 
             this.OpenSpritesetMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.OpenSpritesetMenuItem.Name = "OpenSpritesetMenuItem";
-            this.OpenSpritesetMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenSpritesetMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenSpritesetMenuItem.Text = "Spriteset";
             this.OpenSpritesetMenuItem.Click += new System.EventHandler(this.OpenSpritesetMenuItem_Click);
             // 
@@ -627,7 +613,7 @@
             // 
             this.OpenSoundMenuItem.Image = global::Sphere_Editor.Properties.Resources.sound;
             this.OpenSoundMenuItem.Name = "OpenSoundMenuItem";
-            this.OpenSoundMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenSoundMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenSoundMenuItem.Text = "Sound";
             this.OpenSoundMenuItem.Click += new System.EventHandler(this.OpenSoundMenuItem_Click);
             // 
@@ -635,7 +621,7 @@
             // 
             this.OpenWindowStyleMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.OpenWindowStyleMenuItem.Name = "OpenWindowStyleMenuItem";
-            this.OpenWindowStyleMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenWindowStyleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenWindowStyleMenuItem.Text = "WindowStyle";
             this.OpenWindowStyleMenuItem.Click += new System.EventHandler(this.OpenWindowStyleMenuItem_Click);
             // 
@@ -896,15 +882,17 @@
             // 
             // PropertiesMenuItem
             // 
+            this.PropertiesMenuItem.Image = global::Sphere_Editor.Properties.Resources.application_view_list;
             this.PropertiesMenuItem.Name = "PropertiesMenuItem";
-            this.PropertiesMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.PropertiesMenuItem.Size = new System.Drawing.Size(152, 22);
             this.PropertiesMenuItem.Text = "&Properties...";
             this.PropertiesMenuItem.Click += new System.EventHandler(this.MapPropertiesMenuItem_Click);
             // 
             // recenterMapItem
             // 
+            this.recenterMapItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.recenterMapItem.Name = "recenterMapItem";
-            this.recenterMapItem.Size = new System.Drawing.Size(147, 22);
+            this.recenterMapItem.Size = new System.Drawing.Size(152, 22);
             this.recenterMapItem.Text = "&Recenter Map";
             this.recenterMapItem.Click += new System.EventHandler(this.recenterMapItem_Click);
             // 
@@ -914,7 +902,7 @@
             this.ExportTilesetItem,
             this.UpdateFromMenuItem});
             this.TilesetMenuItem.Name = "TilesetMenuItem";
-            this.TilesetMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.TilesetMenuItem.Size = new System.Drawing.Size(152, 22);
             this.TilesetMenuItem.Text = "&Tileset";
             // 
             // ExportTilesetItem
@@ -1013,7 +1001,7 @@
             // 
             this.ResizeMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.ResizeMenuItem.Name = "ResizeMenuItem";
-            this.ResizeMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.ResizeMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ResizeMenuItem.Text = "&Resize Image";
             this.ResizeMenuItem.Click += new System.EventHandler(this.ResizeMenuItem_Click);
             // 
@@ -1021,7 +1009,7 @@
             // 
             this.RescaleMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.RescaleMenuItem.Name = "RescaleMenuItem";
-            this.RescaleMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.RescaleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RescaleMenuItem.Text = "Re&scale Image";
             this.RescaleMenuItem.Click += new System.EventHandler(this.RescaleMenuItem_Click);
             // 
@@ -1072,22 +1060,36 @@
             // 
             this.AboutMenuItem.Image = global::Sphere_Editor.Properties.Resources.information;
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.AboutMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AboutMenuItem.Text = "&About";
             this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
             // WebsiteMenuItem
             // 
             this.WebsiteMenuItem.Name = "WebsiteMenuItem";
-            this.WebsiteMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.WebsiteMenuItem.Size = new System.Drawing.Size(152, 22);
             this.WebsiteMenuItem.Text = "Visit Website!";
             // 
             // TestItem
             // 
             this.TestItem.Name = "TestItem";
-            this.TestItem.Size = new System.Drawing.Size(144, 22);
+            this.TestItem.Size = new System.Drawing.Size(152, 22);
             this.TestItem.Text = "Test";
             this.TestItem.Click += new System.EventHandler(this.TestItem_Click);
+            // 
+            // CloseTabItem
+            // 
+            this.CloseTabItem.Image = global::Sphere_Editor.Properties.Resources.cross;
+            this.CloseTabItem.Name = "CloseTabItem";
+            this.CloseTabItem.Size = new System.Drawing.Size(166, 22);
+            this.CloseTabItem.Text = "Close Tab";
+            // 
+            // SaveTabItem
+            // 
+            this.SaveTabItem.Image = global::Sphere_Editor.Properties.Resources.disk;
+            this.SaveTabItem.Name = "SaveTabItem";
+            this.SaveTabItem.Size = new System.Drawing.Size(166, 22);
+            this.SaveTabItem.Text = "Save Tab";
             // 
             // EditorForm
             // 
