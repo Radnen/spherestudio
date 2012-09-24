@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Text;
@@ -7,12 +8,15 @@ namespace Sphere_Editor.Settings
 {
     public class ScriptSettings
     {
-        public String CurrentWord = "";
         private static string word_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private static string word_stops = " :;{}[].,?/!@#$%^&*_+-=|\\<>\'\"123456789";
-        private static string function_list;
 
-        public string FunctionList { get { return function_list; } }
+        public List<string> FunctionList { get; private set; }
+
+        public ScriptSettings()
+        {
+            FunctionList = new List<string>();
+        }
 
         public string WordChars
         {
@@ -32,13 +36,10 @@ namespace Sphere_Editor.Settings
 
             using (StreamReader reader = FunctionFile.OpenText())
             {
-                StringBuilder builder = new StringBuilder(500);
                 while (!reader.EndOfStream)
-                {
-                    builder.Append(reader.ReadLine());
-                }
-                function_list = builder.ToString();
+                    FunctionList.Add(reader.ReadLine());
             }
+
             FunctionFile = null;
             return true;
         }
@@ -47,12 +48,6 @@ namespace Sphere_Editor.Settings
         public void LoadSettings()
         {
             LoadFunctionList();
-        }
-
-        public void UpdateCurrentWord(char single_ch)
-        {
-            if (char.IsLetter(single_ch)) CurrentWord += single_ch;
-            else if (char.IsWhiteSpace(single_ch)) CurrentWord = "";
         }
     }
 }

@@ -4,12 +4,17 @@ AreKeysLeft();
 AreZonesAt(x, y, layer);
 AttachCamera(name);
 AttachInput(name);
+break
 BezierCurve(color, step, Ax, Ay, Bx, By, Cx, Cy, Dx, Dy);
 BindJoyStickButton(joy, button, button_down, button_up);
 BindKey(key, key_down, key_up);
 BLEND;
 BlendColors(col_1, col_2);
 BlendColorsWeighted(col_1, col_2, weight_1, weight_2);
+case
+catch
+const
+continue
 CallDefaultMapScript(which);
 CallMapScript(which);
 CallPersonScript(name, which);
@@ -37,10 +42,13 @@ CreateDirectory(directory);
 CreatePerson(name, spriteset, destroy_with_map);
 CreateStringFromByteArray(byte_array);
 CreateStringFromCode(key_code);
+default
+do
 DestroyPerson(name);
 DetachCamera(name);
 DetachInput(name);
 DoesPersonExist(name);
+else
 EvaluateScript(script);
 EvaluateSystemScript(system_script);
 ExecuteGame(name);
@@ -49,11 +57,16 @@ ExecuteZoneScript(zone);
 ExecuteZones(x, y, layer);
 Exit();
 ExitMapEngine();
+false
+finally
+for
+function
 FilledCircle(x, y, r, color, antialias);
 FilledComplex(rx, ry, rw, rh, cx, cy, cr, ca, cf, fill_empty, col_1, col_2);
 FilledEllipse(x, y, rx, ry, color);
 FlipScreen();
 FollowPerson(name, pixels);
+get
 GarbageCollect();
 GetCameraPerson();
 GetCameraX();
@@ -147,6 +160,9 @@ GradientRectangle(x, y, w, h, c_ur, c_ul, c_lr, c_ll);
 GradientTriangle(x1, y1, x2, y2, x3, y3, col_1, col_2, col_3);
 HashByteArray(byte_array);
 HashFromFile(file);
+if
+in
+instanceof
 IgnorePersonObstructions(name);
 IgnoreTileObstructions(name);
 IsAnyKeyPressed();
@@ -265,6 +281,7 @@ LoadSoundEffect(filename, type);
 LoadSpriteset(filename);
 LoadSurface(filename);
 LoadWindowStyle(filename);
+MapEngine(filename, fps);
 MapToScreenX(layer, x);
 MapToScreenY(layer, y);
 OpenAddress(address);
@@ -293,6 +310,7 @@ PointSeries(array, color);
 Polygon(array, color, invert);
 QueuePersonCommand(name, command, immediate);
 QueuePersonScript(name, script, immediate);
+return
 Rectangle(x, y, w, h, color);
 RemoveDirectory(directory);
 RemoveFile(filename);
@@ -303,6 +321,8 @@ ReplaceTilesOnLayer(layer, old_tile, new_tile);
 RequireScript(script);
 RequireSystemScript(system_script);
 RestartGame();
+set
+switch
 ScreenToMapX(layer, x);
 ScreenToMapY(layer, y);
 SCRIPT_COMMAND_GENERATOR;
@@ -364,7 +384,14 @@ SetTileSurface(tile, surface);
 SetTile(x, y, layer, tile);
 SetUpdateScript(script);
 SetZoneLayer(zone, layer);
+this
+throw
+true
+try
+typeof
 Triangle(x1, y1, x2, y2, x3, y3, color);
 UnbindJoystickButton(joystick, button);
 UnbindKey(key);
 UpdateMapEngine();
+var
+while

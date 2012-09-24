@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using ScintillaNET;
@@ -14,11 +15,12 @@ namespace Sphere_Editor.SubEditors
         {
             code_box.ConfigurationManager.CustomLocation = Application.StartupPath + "\\SphereLexer.xml";
             code_box.ConfigurationManager.Language = "js";
-            code_box.AutoComplete.IsCaseSensitive = true;
-            code_box.AutoComplete.SingleLineAccept = true;
-            code_box.AutoComplete.ListSeparator = ';';
-            code_box.AutoComplete.ListString = Global.CurrentScriptSettings.FunctionList;
-            code_box.AutoComplete.DropRestOfWord = true;
+            code_box.AutoComplete.SingleLineAccept = false;
+            code_box.AutoComplete.FillUpCharacters = " ";
+            code_box.AutoComplete.StopCharacters = "(";
+            code_box.AutoComplete.ListSeparator = '&';
+            code_box.AutoComplete.IsCaseSensitive = false;
+            code_box.AutoCompleteAccepted += new EventHandler<AutoCompleteAcceptedEventArgs>(code_box_AutoCompleteAccepted);
             code_box.SupressControlCharacters = true;
             code_box.Margins[0].Width = 36;
             code_box.Indentation.SmartIndentType = SmartIndent.CPP;
@@ -29,6 +31,17 @@ namespace Sphere_Editor.SubEditors
             code_box.Dock = DockStyle.Fill;
             code_box.Commands.AddBinding(Keys.D, Keys.Control, BindableCommand.LineDuplicate);
             Controls.Add(code_box);
+        }
+
+        void code_box_AutoCompleteAccepted(object sender, AutoCompleteAcceptedEventArgs e)
+        {
+            int pos = e.WordStartPosition - 1;
+            string lastword = (pos > 0) ? code_box.GetWordFromPosition(pos) : "";
+
+            if (lastword == "var" || lastword == "const" || lastword == "function")
+            {
+                e.Cancel = true;
+            }
         }
 
         void code_box_TextChanged(object sender, EventArgs e)
@@ -152,10 +165,24 @@ namespace Sphere_Editor.SubEditors
 
         public void CodeBox_CharAdded(object sender, CharAddedEventArgs e)
         {
-            if (Global.CurrentEditor.ShowAutoComplete)
+            if (!Global.CurrentEditor.ShowAutoComplete) return;
+
+            string word = code_box.GetWordFromPosition(code_box.CurrentPos);
+            string lword = word.ToLower();
+            if (char.IsLetter(e.Ch))
             {
-                string word = code_box.GetWordFromPosition(code_box.CurrentPos);
-                if (char.IsLetter(e.Ch) && word.Length >= 2) code_box.AutoComplete.Show(word.Length);
+                List<string> filter = new List<string>();
+
+                foreach (string s in Global.CurrentScriptSettings.FunctionList)
+                {
+                    if (s.ToLower().Contains(lword)) filter.Add(s);
+                }
+
+                if (filter.Count != 0)
+                {
+                    code_box.AutoComplete.List = filter;
+                    code_box.AutoComplete.Show(word.Length);
+                }
             }
         }
 

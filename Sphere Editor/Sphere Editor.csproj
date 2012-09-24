@@ -114,8 +114,9 @@
       <HintPath>Libs\IrrKlang\irrKlang.NET2.0.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="ScintillaNET">
-      <HintPath>Libs\SciLexer2.5.1\ScintillaNET.dll</HintPath>
+    <Reference Include="ScintillaNET, Version=2.5.2.0, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\scintilla\ScintillaNET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -585,21 +586,21 @@
     <None Include="Icons\play.png" />
     <None Include="Icons\stop.png" />
     <None Include="Icons\pause.png" />
-    <Content Include="SphereLexer.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Libs\scintilla\ScintillaNET.dll" />
     <None Include="SciLexer.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Libs\scintilla\ScintillaNET.xml" />
+    <Content Include="SphereLexer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="ikpFlac.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="ikpMP3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="SciLexer64.dll" />
     <None Include="Libs\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll" />
-    <None Include="Libs\scintilla\ScintillaNET.dll" />
     <None Include="Sphere Editor_TemporaryKey.pfx" />
     <None Include="BarImage.png" />
     <Content Include="Docs\api.txt">
