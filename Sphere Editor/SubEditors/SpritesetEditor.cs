@@ -180,7 +180,7 @@ namespace Sphere_Editor.SubEditors
 
         void _tileset_ctrl_TileAdded(short startindex, List<Tile> tiles)
         {
-            _sprite.Images.Add(tiles[0].Graphic);
+            foreach (Tile t in tiles) _sprite.Images.Add(t.Graphic);
         }
 
         public override void CreateNew()
@@ -262,6 +262,10 @@ namespace Sphere_Editor.SubEditors
                 UpdateControls();
                 Modified(null, EventArgs.Empty);
             }
+
+            // these method were made public to resize the contained image:
+            FrameBaseEditor.UpdateCenterFrame();
+            DirectionAnim.UpdateAnimPanel();
         }
 
         public override void Destroy()

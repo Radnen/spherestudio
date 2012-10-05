@@ -68,7 +68,7 @@ namespace Sphere_Editor.SpritesetComponents
             DirLabel.Text = "Direction: " + _dir.Name;
         }
 
-        private void UpdateAnimPanel()
+        public void UpdateAnimPanel()
         {
             if (_sprite == null) return;
             if (_sprite.Images.Count == 0) return;

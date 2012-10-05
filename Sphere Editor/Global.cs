@@ -11,7 +11,7 @@ namespace Sphere_Editor
     public class Global
     {
         public Global() { }
-        public static ProjectSettings CurrentProject = new ProjectSettings();
+        public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
         public static ScriptSettings CurrentScriptSettings = new ScriptSettings();
         public static Sphere_Editor.SphereObjects.Entity CopiedEnt { get; set; }

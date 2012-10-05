@@ -33,15 +33,49 @@ namespace Sphere_Editor.SubEditors
             Controls.Add(code_box);
         }
 
+        private static string keywords = "var while if const function";
+
+        /// <summary>
+        /// Grabs the last applicable JS keyword. Returns true if one has been found.
+        /// </summary>
+        /// <returns>True if a keyword was found immediately to the left.</returns>
+        private bool HasLastKeyword()
+        {
+            string word = code_box.GetWordFromPosition(code_box.CurrentPos);
+            string[] words = GetWords(code_box.GetCurrentLine());
+
+            for (int i = 0; i < words.Length; ++i)
+            {
+                if (words[i] == word && i > 0 && keywords.Contains(words[i - 1]))
+                    return true;
+            }
+
+            return false;
+        }
+
+        // splits a string into individual lexemes:
+        static string[] GetWords(string host)
+        {
+            string word = null;
+            List<string> words = new List<string>();
+
+            for (int i = 0; i < host.Length; ++i)
+            {
+                if (host[i] == '\t') continue; // \t is not technically whitespace!
+                if (char.IsWhiteSpace(host[i]) && !string.IsNullOrEmpty(word))
+                {
+                    words.Add(word);
+                    word = null;
+                }
+                else word += host[i];
+            }
+
+            return words.ToArray();
+        }
+
         void code_box_AutoCompleteAccepted(object sender, AutoCompleteAcceptedEventArgs e)
         {
-            int pos = e.WordStartPosition - 1;
-            string lastword = (pos > 0) ? code_box.GetWordFromPosition(pos) : "";
-
-            if (lastword == "var" || lastword == "const" || lastword == "function")
-            {
-                e.Cancel = true;
-            }
+            if (HasLastKeyword()) e.Cancel = true;
         }
 
         void code_box_TextChanged(object sender, EventArgs e)
@@ -53,9 +87,12 @@ namespace Sphere_Editor.SubEditors
         {
             if (Global.CurrentEditor.UseScriptUpdate)
             {
+                string author = "Unnamed";
+                if (Global.CurrentProject != null) author = Global.CurrentProject.Author;
+
                 code_box.Text += "/**\n* Script: Untitled.js" +
-                       "\n* Written by: " + Global.CurrentProject.Author +
-                       "\n* Updated: " + DateTime.Today.ToShortDateString() + "\n**/";
+                       "\n* Written by: " + author + "\n* Updated: " +
+                       DateTime.Today.ToShortDateString() + "\n**/";
                 code_box.UndoRedo.EmptyUndoBuffer();
             }
         }
@@ -111,7 +148,7 @@ namespace Sphere_Editor.SubEditors
             {
                 diag.Filter = "Sphere Script Files (.js)|*.js";
 
-                if (Global.CurrentProject.Path != null)
+                if (Global.CurrentProject != null)
                     diag.InitialDirectory = Global.CurrentProject.Path + "\\scripts";
 
                 if (diag.ShowDialog() == DialogResult.OK)

@@ -39,7 +39,7 @@ namespace Sphere_Editor.SpritesetComponents
             }
         }
 
-        private void UpdateCenterFrame()
+        public void UpdateCenterFrame()
         {
             if (_sprite != null)
             {

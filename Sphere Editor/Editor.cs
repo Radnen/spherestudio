@@ -38,7 +38,6 @@ namespace Sphere_Editor
 
             Global.CurrentScriptSettings.LoadSettings();
             _firsttime = !Global.CurrentEditor.LoadSettings();
-            if (Global.CurrentEditor.LastProjectPath.Length == 0) OpenLastProjectMenuItem.Enabled = false;
             
             start_page = new StartPage(this);
             start_page.Dock = DockStyle.Fill;
@@ -48,10 +47,27 @@ namespace Sphere_Editor
             if (!Global.CurrentEditor.UseDockForm) InitializeAlternateInterface();
             else InitializeDocking();
             
-            if (Global.CurrentEditor.AutoOpen && Global.CurrentEditor.LastProjectPath != "")
+            if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
 
             AutoCompleteItem.Checked = Global.CurrentEditor.ShowAutoComplete;
+        }
+
+        bool IsProjectOpen { get { return Global.CurrentProject != null; } }
+
+        private void UpdateButtons()
+        {
+            bool config = File.Exists(Global.CurrentEditor.ConfigPath) && IsProjectOpen;
+            OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
+
+            bool sphere = File.Exists(Global.CurrentEditor.SpherePath) && IsProjectOpen;
+            RunToolButton.Enabled = TestGameMenuItem.Enabled = sphere;
+
+            bool last = !string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath);
+            OpenLastProjectMenuItem.Enabled = last;
+
+            GameSettingsMenuItem.Enabled = GameToolButton.Enabled = IsProjectOpen;
+            OpenDirectoryMenuItem.Enabled = RefreshMenuItem.Enabled = IsProjectOpen;
         }
 
         #region dock content
@@ -104,12 +120,6 @@ namespace Sphere_Editor
             AltTabInterface.TabPages.Add(page);
         }
 
-        private void SetProjectButtons(bool toggle)
-        {
-            RunToolButton.Enabled = RefreshMenuItem.Enabled = TestGameMenuItem.Enabled = OpenDirectoryMenuItem.Enabled =
-            GameToolButton.Enabled = GameSettingsMenuItem.Enabled = CloseProjectMenuItem.Enabled = toggle;
-        }
-
         private void EditorForm_Shown(object sender, EventArgs e)
         {
             Text += " v" + Application.ProductVersion;
@@ -133,11 +143,13 @@ namespace Sphere_Editor
         {
             if (string.IsNullOrEmpty(filename)) return;
             CloseProject(null, EventArgs.Empty);
+            Global.CurrentProject = new ProjectSettings();
             Global.CurrentProject.LoadData(filename);
             _tree.Open();
             RefreshProject(this, EventArgs.Empty);
             _tasks.LoadList();
             HelpLabel.Text = "Game project loaded successfully!";
+            UpdateButtons();
         }
 
         private void UpdateMenu(string name)
@@ -386,21 +398,21 @@ namespace Sphere_Editor
         {
             _tree.Close();
             _tasks.SaveList();
-            SetProjectButtons(false);
-            Global.CurrentProject = new ProjectSettings();
+            Global.CurrentProject = null;
             Global.CurrentEditor.LastProjectPath = "";
             _tree.ProjectName = "Project Name";
             OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
+            UpdateButtons();
         }
 
         private void OpenLastProject(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.LastProjectPath.Length > 0 &&
+            if (!string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath) &&
                 Directory.Exists(Global.CurrentEditor.LastProjectPath))
             {
-                this.OpenProject(Global.CurrentEditor.LastProjectPath + "\\game.sgm");
+                OpenProject(Global.CurrentEditor.LastProjectPath + "\\game.sgm");
             }
-            else OpenLastProjectMenuItem.Enabled = false;
+            else UpdateButtons();
         }
 
         private void SaveMenuItem_Click(object sender, EventArgs e)
@@ -574,8 +586,9 @@ namespace Sphere_Editor
 
         private void EditMenu_DropDownOpening(object sender, EventArgs e)
         {
-            CutMenuItem.Enabled = SelectAllMenuItem.Enabled = (CurrentControl is ScriptEditor);
-            CopyMenuItem.Enabled = RedoMenuItem.Enabled = UndoMenuItem.Enabled = (CurrentControl != null);
+            CutMenuItem.Enabled = SelectAllMenuItem.Enabled = CurrentControl is ScriptEditor;
+            CopyToolButton.Enabled = CopyMenuItem.Enabled = RedoMenuItem.Enabled = UndoMenuItem.Enabled = CurrentControl != null;
+            SaveLayoutMenuItem.Enabled = CutMenuItem.Enabled = CutToolButton.Enabled = CurrentControl != null;
             ZoomInMenuItem.Enabled = ZoomOutMenuItem.Enabled = !(CurrentControl is ScriptEditor);
         }
 
@@ -631,21 +644,26 @@ namespace Sphere_Editor
             bool last = Global.CurrentEditor.UseDockForm;
             if (_firsttime) last = false;
             bool altered = Global.EditSettings();
-            if (altered && last != Global.CurrentEditor.UseDockForm)
+            if (altered)
             {
-                switch (MessageBox.Show("The alternative Wine-friendly interface will require you to restart this application.",
-                    "Wine Mode", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk))
+                UpdateButtons();
+
+                if (last != Global.CurrentEditor.UseDockForm)
                 {
-                    case System.Windows.Forms.DialogResult.OK:
-                        Close();
-                    break;
-                    case System.Windows.Forms.DialogResult.Cancel:
-                        Global.CurrentEditor.UseDockForm = last;
-                        Global.CurrentEditor.SaveSettings();
-                    break;
+                    switch (MessageBox.Show("The alternative Wine-friendly interface will require you to restart this application.",
+                        "Wine Mode", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk))
+                    {
+                        case System.Windows.Forms.DialogResult.OK:
+                            Close();
+                            break;
+                        case System.Windows.Forms.DialogResult.Cancel:
+                            Global.CurrentEditor.UseDockForm = last;
+                            Global.CurrentEditor.SaveSettings();
+                            break;
+                    }
                 }
             }
-            if (!altered && _firsttime)
+            else if (_firsttime)
             {
                 Global.CurrentEditor.UseDockForm = false;
                 Global.CurrentEditor.UseSplash = false;
@@ -678,7 +696,6 @@ namespace Sphere_Editor
             Global.CurrentEditor.LastProjectPath = Global.CurrentProject.Path;
             Global.CurrentEditor.SaveSettings();
             _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
-            SetProjectButtons(true);
         }
         #endregion
 
@@ -816,6 +833,9 @@ namespace Sphere_Editor
             else if (value is Drawer2) ImageMenu.Visible = true;
             else if (value is ScriptEditor) ScriptMenu.Visible = true;
             else if (value is SpritesetEditor) SpritesetMenu.Visible = true;
+
+            bool save = CurrentControl != null;
+            SaveAsMenuItem.Enabled = SaveToolButton.Enabled = SaveMenuItem.Enabled = save;
         }
 
         private void DockTest_ActiveDocumentChanged(object sender, EventArgs e)
