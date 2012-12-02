@@ -205,7 +205,7 @@ namespace Sphere_Editor.SphereObjects
             _disposed = true;
         }
 
-        internal object[] GetSpriteDirections()
+        internal string[] GetSpriteDirections()
         {
             using (Spriteset s = new Spriteset())
             {

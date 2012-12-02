@@ -55,7 +55,8 @@ namespace Sphere_Editor.Forms
             SpritePreview.Image = Person.GetSSImage();
 
             // fill in sprite directions:
-            DirectionBox.Items.AddRange(Person.GetSpriteDirections());
+            string[] dirs = Person.GetSpriteDirections();
+            if (dirs != null) DirectionBox.Items.AddRange(dirs);
             
             PositionLabel.Text = "(X: " + Person.X + ", Y: " + Person.Y + ")";
         }
@@ -94,13 +95,14 @@ namespace Sphere_Editor.Forms
                     sprite_path = sprite_path.Substring(sprite_path.LastIndexOf("spritesets"));
                     sprite_path = sprite_path.Substring(sprite_path.IndexOf("\\") + 1);
                     SpritesetBox.Text = sprite_path.Replace("\\", "/");
+                    Person.Spriteset = SpritesetBox.Text;
 
                     // Load a spriteset image as a preview:
                     SpritePreview.Image = Person.GetSSImage();
-
-                    Person.Spriteset = SpritesetBox.Text;
+                    
                     DirectionBox.Items.Clear();
-                    DirectionBox.Items.AddRange(Person.GetSpriteDirections());
+                    string[] dirs = Person.GetSpriteDirections();
+                    if (dirs != null) DirectionBox.Items.AddRange(dirs);
                 }
             }
         }

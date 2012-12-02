@@ -18,11 +18,10 @@ namespace Sphere_Editor.SubEditors
             code_box.ConfigurationManager.CustomLocation = Application.StartupPath + "\\SphereLexer.xml";
             code_box.ConfigurationManager.Language = "js";
             code_box.AutoComplete.SingleLineAccept = false;
-            code_box.AutoComplete.FillUpCharacters = " ";
+            code_box.AutoComplete.FillUpCharacters = "";
             code_box.AutoComplete.StopCharacters = "(";
-            code_box.AutoComplete.ListSeparator = '&';
+            code_box.AutoComplete.ListSeparator = ';';
             code_box.AutoComplete.IsCaseSensitive = false;
-            code_box.AutoCompleteAccepted += new EventHandler<AutoCompleteAcceptedEventArgs>(code_box_AutoCompleteAccepted);
             code_box.SupressControlCharacters = true;
             code_box.Margins[0].Width = 36;
             code_box.Indentation.SmartIndentType = SmartIndent.CPP;
@@ -35,54 +34,9 @@ namespace Sphere_Editor.SubEditors
             Controls.Add(code_box);
         }
 
-        private static string keywords = "var while if const function";
-
-        /// <summary>
-        /// Grabs the last applicable JS keyword. Returns true if one has been found.
-        /// </summary>
-        /// <returns>True if a keyword was found immediately to the left.</returns>
-        private bool HasLastKeyword()
-        {
-            string word = code_box.GetWordFromPosition(code_box.CurrentPos);
-            string[] words = GetWords(code_box.GetCurrentLine());
-
-            for (int i = 0; i < words.Length; ++i)
-            {
-                if (words[i] == word && i > 0 && keywords.Contains(words[i - 1]))
-                    return true;
-            }
-
-            return false;
-        }
-
-        // splits a string into individual lexemes:
-        static string[] GetWords(string host)
-        {
-            string word = null;
-            List<string> words = new List<string>();
-
-            for (int i = 0; i < host.Length; ++i)
-            {
-                if (host[i] == '\t') continue; // \t is not technically whitespace!
-                if (char.IsWhiteSpace(host[i]) && !string.IsNullOrEmpty(word))
-                {
-                    words.Add(word);
-                    word = null;
-                }
-                else word += host[i];
-            }
-
-            return words.ToArray();
-        }
-
-        void code_box_AutoCompleteAccepted(object sender, AutoCompleteAcceptedEventArgs e)
-        {
-            if (HasLastKeyword()) e.Cancel = true;
-        }
-
         void code_box_TextChanged(object sender, EventArgs e)
         {
-            if (!Parent.Text.Contains("*")) Parent.Text += "*";
+            if (Parent != null && !Parent.Text.Contains("*")) Parent.Text += "*";
         }
 
         public override void CreateNew()
@@ -213,15 +167,14 @@ namespace Sphere_Editor.SubEditors
         {
             if (!Global.CurrentEditor.ShowAutoComplete) return;
 
-            string word = code_box.GetWordFromPosition(code_box.CurrentPos);
-            string lword = word.ToLower();
             if (char.IsLetter(e.Ch))
             {
+                string word = code_box.GetWordFromPosition(code_box.CurrentPos).ToLower();
                 List<string> filter = new List<string>();
 
                 foreach (string s in Global.CurrentScriptSettings.FunctionList)
                 {
-                    if (s.ToLower().Contains(lword)) filter.Add(s);
+                    if (s.ToLower().Contains(word)) filter.Add(s.Replace(";", ""));
                 }
 
                 if (filter.Count != 0)
