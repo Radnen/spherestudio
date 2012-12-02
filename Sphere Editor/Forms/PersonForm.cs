@@ -19,6 +19,9 @@ namespace Sphere_Editor.Forms
             Person = new Entity();
             Person.Type = 1;
             InitializeComponent();
+            ScriptBox.Text = (string)Person.Scripts[0];
+            ScriptBox.Dock = DockStyle.Fill;
+            CodePanel.Controls.Add(ScriptBox);
         }
 
         public PersonForm(Entity entity, List<Entity> entities)
@@ -27,6 +30,9 @@ namespace Sphere_Editor.Forms
             Person = entity;
             Person.Type = 1;
             InitializeComponent();
+            ScriptBox.Text = (string)Person.Scripts[0];
+            ScriptBox.Dock = DockStyle.Fill;
+            CodePanel.Controls.Add(ScriptBox);
         }
 
         public void AddString(string text)
@@ -41,17 +47,17 @@ namespace Sphere_Editor.Forms
 
         private void PersonForm_Load(object sender, EventArgs e)
         {
-            ScriptBox.Text = (string)Person.Scripts[0];
-            ScriptBox.Dock = DockStyle.Fill;
             NameTextBox.Text = Person.Name;
             SpritesetBox.Text = Person.Spriteset;
+            LayerComboBox.SelectedIndex = Person.Layer;
 
-            // Set the spriteset preview //
-            SpritePreview.Image = Person.Graphic;
-            DirectionBox.Items.AddRange(Person.Sprite.GetDirections());
+            // set sprite preview:
+            SpritePreview.Image = Person.GetSSImage();
+
+            // fill in sprite directions:
+            DirectionBox.Items.AddRange(Person.GetSpriteDirections());
             
             PositionLabel.Text = "(X: " + Person.X + ", Y: " + Person.Y + ")";
-            CodePanel.Controls.Add(ScriptBox);
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -75,7 +81,7 @@ namespace Sphere_Editor.Forms
 
         private void SpritesetButton_Click(object sender, EventArgs e)
         {
-            String path = Global.CurrentProject.Path + "\\spritesets";
+            String path = Global.CurrentProject.RootPath + "\\spritesets";
             using (OpenFileDialog sprite_diag = new OpenFileDialog())
             {
                 sprite_diag.Filter = "Sprite Files (*.rss)|*.rss";
@@ -90,11 +96,11 @@ namespace Sphere_Editor.Forms
                     SpritesetBox.Text = sprite_path.Replace("\\", "/");
 
                     // Load a spriteset image as a preview:
+                    SpritePreview.Image = Person.GetSSImage();
+
                     Person.Spriteset = SpritesetBox.Text;
-                    Person.LoadSpriteset();
-                    SpritePreview.Image = Person.Graphic;
                     DirectionBox.Items.Clear();
-                    DirectionBox.Items.AddRange(Person.Sprite.GetDirections());
+                    DirectionBox.Items.AddRange(Person.GetSpriteDirections());
                 }
             }
         }
@@ -102,8 +108,6 @@ namespace Sphere_Editor.Forms
         private void DirectionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string dir = (string)DirectionBox.SelectedItem;
-            if (Person.Sprite != null)
-                SpritePreview.Image = Person.Sprite.GetImage(dir, 0);
             string script = (string)Person.Scripts[0];
             script = "SetPersonDirection(\"" + NameTextBox.Text + "\", \"" + dir + "\");\n" + script;
             ScriptBox.Text = script;

@@ -130,7 +130,7 @@ namespace Sphere_Editor.SubEditors
             if (current_item != null)
             {
                 DirectoryInfo dinfo = new DirectoryInfo(Global.CurrentEditor.GamesPath);
-                proj.LoadData((string)current_item.Tag);
+                proj.LoadSettings((string)current_item.Tag);
                 SetProjData();
             }
         }
@@ -147,7 +147,7 @@ namespace Sphere_Editor.SubEditors
         {
             if (Global.CurrentEditor.SpherePath != "")
             {
-                System.Diagnostics.Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + proj.Path + "\"");
+                System.Diagnostics.Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + proj.RootPath + "\"");
             }
             else
             {
@@ -183,9 +183,9 @@ namespace Sphere_Editor.SubEditors
                 else
                 {
                     Directory.Move(path + item.Text, path + e.Label);
-                    if (path + item.Text == Global.CurrentProject.Path)
+                    if (path + item.Text == Global.CurrentProject.RootPath)
                     {
-                        Global.CurrentProject.Path = path + e.Label;
+                        Global.CurrentProject.RootPath = path + e.Label;
                         _mainEditor.RefreshProject(null, EventArgs.Empty);
                     }
                 }

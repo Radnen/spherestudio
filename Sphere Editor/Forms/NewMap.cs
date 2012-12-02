@@ -45,7 +45,7 @@ namespace Sphere_Editor.Forms
             using (OpenFileDialog diag = new OpenFileDialog())
             {
                 diag.Filter = "Tileset Files (.rts)|*.rts";
-                diag.InitialDirectory = Global.CurrentProject.Path + "\\maps";
+                diag.InitialDirectory = Global.CurrentProject.RootPath + "\\maps";
                 if (diag.ShowDialog() == DialogResult.OK) Tileset = diag.FileName;
             }
         }

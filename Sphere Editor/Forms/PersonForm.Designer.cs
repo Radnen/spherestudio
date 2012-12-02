@@ -230,7 +230,7 @@
             this.DirectionBox.Name = "DirectionBox";
             this.DirectionBox.Size = new System.Drawing.Size(162, 21);
             this.DirectionBox.TabIndex = 15;
-            this.PersonEditorTooltip.SetToolTip(this.DirectionBox, "The Direction the sprite will appear on.");
+            this.PersonEditorTooltip.SetToolTip(this.DirectionBox, "Convenience code for finding a direction.");
             this.DirectionBox.SelectedIndexChanged += new System.EventHandler(this.DirectionBox_SelectedIndexChanged);
             // 
             // GenerateButton

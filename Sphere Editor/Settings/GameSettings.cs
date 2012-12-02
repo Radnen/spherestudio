@@ -9,7 +9,7 @@ namespace Sphere_Editor.Settings
         public GameSettings(ProjectSettings someProject)
         {
             InitializeComponent();
-            PathTextBox.Text = someProject.Path;
+            PathTextBox.Text = someProject.RootPath;
             NameTextBox.Text = someProject.Name;
             AuthorTextBox.Text = someProject.Author;
             DescTextBox.Text = someProject.Description;

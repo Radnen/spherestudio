@@ -106,8 +106,8 @@ namespace Sphere_Editor.SubEditors
             SaveFileDialog diag = new SaveFileDialog();
             diag.Filter = "Font Files (.rfn)|*.rfn";
 
-            if (Global.CurrentProject.Path != null)
-                diag.InitialDirectory = Global.CurrentProject.Path + "\\fonts";
+            if (Global.CurrentProject.RootPath != null)
+                diag.InitialDirectory = Global.CurrentProject.RootPath + "\\fonts";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

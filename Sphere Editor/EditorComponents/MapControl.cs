@@ -71,6 +71,9 @@ namespace Sphere_Editor.EditorComponents
                 }
             }
         }
+
+        public short TileWidth { get { return _base_map.Tileset.TileWidth; } }
+        public short TileHeight { get { return _base_map.Tileset.TileHeight; } }
         #endregion
 
         #region History
@@ -270,6 +273,11 @@ namespace Sphere_Editor.EditorComponents
 
             e.Graphics.DrawRectangle(Pens.Black, _offset.X, _offset.Y, _vw, _vh);
 
+            int sx = _base_map.StartX / TileWidth * TileWidth * Zoom + _offset.X;
+            int sy = _base_map.StartY / TileHeight * TileHeight * Zoom + _offset.Y;
+
+            e.Graphics.DrawImage(Sphere_Editor.Properties.Resources.startpos, sx, sy, _tile_w_zoom, _tile_h_zoom);
+
             if (ShowCameraBounds) DrawCameraBounds(e.Graphics);
         }
 
@@ -427,8 +435,8 @@ namespace Sphere_Editor.EditorComponents
                             _can_copy = false;
                             _cur_ent = ent;
                         }
-                        _cur_ent.X = (short)(_mouse.X / Zoom + (_base_map.Tileset.TileWidth - 1) / 2);
-                        _cur_ent.Y = (short)(_mouse.Y / Zoom + (_base_map.Tileset.TileHeight - 1) / 2);
+                        _cur_ent.X = (short)(_mouse.X / Zoom + TileWidth / 2 - 1);
+                        _cur_ent.Y = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
                     }
                     else if (Tool != MapTool.FloodFill) Invalidate();
                 }
@@ -690,8 +698,9 @@ namespace Sphere_Editor.EditorComponents
         private void SetStartItem_Click(object sender, EventArgs e)
         {
             _base_map.StartLayer = (byte)CurrentLayer;
-            _base_map.StartX = (short)_mouse.X;
-            _base_map.StartY = (short)_mouse.Y;
+            _base_map.StartX = (short)(_mouse.X / Zoom + TileWidth / 2 - 1);
+            _base_map.StartY = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
+            Invalidate();
             if (PropChanged != null) PropChanged(this, EventArgs.Empty);
         }
 
@@ -703,10 +712,11 @@ namespace Sphere_Editor.EditorComponents
                 form.SelectedIndex = CurrentLayer;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    form.Person.X = (short)(_mouse.X / Zoom + (_base_map.Tileset.TileWidth - 1) / 2);
-                    form.Person.Y = (short)(_mouse.Y / Zoom + (_base_map.Tileset.TileHeight - 1) / 2);
+                    form.Person.X = (short)(_mouse.X / Zoom + TileWidth / 2 - 1);
+                    form.Person.Y = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
                     _base_map.Entities.Add(form.Person);
                     form.Person.Visible = _base_map.Layers[CurrentLayer].Visible;
+                    Invalidate();
                     if (Edited != null) Edited(this, EventArgs.Empty);
                 }
             }
@@ -720,10 +730,11 @@ namespace Sphere_Editor.EditorComponents
                 form.SelectedIndex = CurrentLayer;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    form.Trigger.X = (short)(_mouse.X / Zoom + (_base_map.Tileset.TileWidth - 1) / 2 - 1);
-                    form.Trigger.Y = (short)(_mouse.Y / Zoom + (_base_map.Tileset.TileHeight - 1) / 2 - 1);
+                    form.Trigger.X = (short)(_mouse.X / Zoom + TileWidth / 2 - 1);
+                    form.Trigger.Y = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
                     _base_map.Entities.Add(form.Trigger);
                     form.Trigger.Visible = _base_map.Layers[CurrentLayer].Visible;
+                    Invalidate();
                     if (Edited != null) Edited(this, EventArgs.Empty);
                 }
             }

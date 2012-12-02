@@ -8,69 +8,54 @@ using System.Windows.Forms;
 // Information.
 namespace Sphere_Editor.Settings
 {
-    public class SphereSettings
+    public class SphereSettings : GenSettings
     {
-        SortedList<string, string> items = new SortedList<string, string>();
-
-        private string GetKeyData(string key)
-        {
-            if (items.ContainsKey(key)) return items[key];
-            else return string.Empty;
-        }
-
-        private bool GetBool(string key)
-        {
-            string val = GetKeyData(key);
-            if (val == string.Empty) return false;
-            else return bool.Parse(val);
-        }
-
         public string SpherePath
         {
             get { return GetKeyData("sphere_path"); }
-            set { items["sphere_path"] = value; }
+            set { SetItem<string>("sphere_path", value); }
         }
 
         public string GamesPath
         {
             get { return GetKeyData("games_path"); }
-            set { items["games_path"] = value; }
+            set { SetItem<string>("games_path", value); }
         }
 
         public string ConfigPath
         {
             get { return GetKeyData("config_path"); }
-            set { items["config_path"] = value; }
+            set { SetItem<string>("config_path", value); }
         }
 
         public string LastProjectPath
         {
             get { return GetKeyData("last_project_path"); }
-            set { items["last_project_path"] = value; }
+            set { SetItem<string>("last_project_path", value); }
         }
 
         public bool UseDockForm
         {
             get { return GetBool("use_docking"); }
-            set { items["use_docking"] = value.ToString(); }
+            set { SetItem<bool>("use_docking", value); }
         }
 
         public bool UseSplash
         {
             get { return GetBool("use_splash"); }
-            set { items["use_splash"] = value.ToString(); }
+            set { SetItem<bool>("use_splash", value); }
         }
 
         public bool UseScriptUpdate
         {
             get { return GetBool("use_script_update"); }
-            set { items["use_script_update"] = value.ToString(); }
+            set { SetItem<bool>("use_script_update", value); }
         }
 
         public bool ShowAutoComplete
         {
             get { return GetBool("show_auto_c"); }
-            set { items["show_auto_c"] = value.ToString(); }
+            set { SetItem<bool>("show_auto_c", value); }
         }
 
         public View StartView
@@ -81,19 +66,19 @@ namespace Sphere_Editor.Settings
                 if (val == string.Empty) return View.Tile;
                 else return (View)Enum.Parse(typeof(View), val);
             }
-            set { items["start_view"] = value.ToString(); }
+            set { SetItem<View>("start_view", value); }
         }
 
         public bool AutoOpen
         {
             get { return GetBool("auto_open_project"); }
-            set { items["auto_open_project"] = value.ToString(); }
+            set { SetItem<bool>("auto_open_project", value); }
         }
 
         public bool ShowDelay
         {
             get { return GetBool("show_delay"); }
-            set { items["show_delay"] = value.ToString(); }
+            set { SetItem<bool>("show_delay", value); }
         }
 
         public string LabelFont
@@ -104,7 +89,7 @@ namespace Sphere_Editor.Settings
                 if (k == string.Empty) return "Verdana";
                 else return k;
             }
-            set { items["label_font"] = value; }
+            set { SetItem<string>("label_font", value); }
         }
 
         // this will set it's settings from the controls of a dialog window.
@@ -119,33 +104,20 @@ namespace Sphere_Editor.Settings
             LabelFont = SettingForm.LabelFont;
         }
 
-        // store the editor settings to an editor.ini file.
+        /// <summary>
+        /// Saves to default editor.ini location.
+        /// </summary>
         public void SaveSettings()
         {
-            StreamWriter settings = new StreamWriter(Application.StartupPath+"\\editor.ini");
-            for (int i = 0; i < items.Count; ++i)
-            {
-                string key = items.Keys[i];
-                settings.WriteLine(key + "=" + items[key]);
-            }
-            settings.Flush();
-            settings.Close();
+            SaveSettings(Application.StartupPath + "\\editor.ini");
         }
 
-        // loads the editor settings such as sphere engine path or config path.
-        // essentially this will allow the editor to be used from anywhere on the os.
+        /// <summary>
+        /// Reads from default editor.ini location.
+        /// </summary>
         public bool LoadSettings()
         {
-            FileInfo editorINI = new FileInfo(Application.StartupPath + "\\editor.ini");
-            if (!editorINI.Exists) return false;
-            StreamReader settings = editorINI.OpenText();
-            while (!settings.EndOfStream)
-            {
-                string[] lines = settings.ReadLine().Split('=');
-                items[lines[0]] = lines[1];
-            }
-            settings.Close();
-            return true;
+            return LoadSettings(Application.StartupPath + "\\editor.ini");
         }
 
         // returns text to load into an API Textbox.

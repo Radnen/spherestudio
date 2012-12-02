@@ -99,7 +99,7 @@ namespace Sphere_Editor.SubEditors
             // And delete the list even though it had valid contents inside!!!
             if (TaskListView.Items.Count == 0) return;
 
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(Global.CurrentProject.Path + "\\tasks.list")))
+            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(Global.CurrentProject.RootPath + "\\tasks.list")))
             {
                 writer.Write((short)TaskListView.Items.Count);
                 foreach (ListViewItem li in TaskListView.Items)
@@ -117,8 +117,8 @@ namespace Sphere_Editor.SubEditors
 
         public void LoadList()
         {
-            if (!File.Exists(Global.CurrentProject.Path + "\\tasks.list")) return;
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(Global.CurrentProject.Path + "\\tasks.list")))
+            if (!File.Exists(Global.CurrentProject.RootPath + "\\tasks.list")) return;
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(Global.CurrentProject.RootPath + "\\tasks.list")))
             {
                 short amt = reader.ReadInt16(), str;
                 while (amt-- > 0)

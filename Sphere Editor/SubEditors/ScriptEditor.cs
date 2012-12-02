@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
 
@@ -10,6 +11,7 @@ namespace Sphere_Editor.SubEditors
     {
         private string filename = null;
         Scintilla code_box = new Scintilla();
+        readonly Encoding ISO_8859_1 = System.Text.Encoding.GetEncoding("iso-8859-1");
 
         public ScriptEditor()
         {
@@ -106,13 +108,21 @@ namespace Sphere_Editor.SubEditors
         public override void LoadFile(string filename)
         {
             this.filename = filename;
-            using (StreamReader FileReader = File.OpenText(filename))
+            try
             {
-                code_box.UndoRedo.IsUndoEnabled = false;
-                code_box.Text = FileReader.ReadToEnd();
-                code_box.UndoRedo.IsUndoEnabled = true;
-                if (!Global.IsScript(ref filename)) CodeBox.ConfigurationManager.Language = "default";
-                Parent.Text = Path.GetFileName(filename);
+                using (StreamReader FileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
+                {
+                    code_box.UndoRedo.IsUndoEnabled = false;
+                    code_box.Text = FileReader.ReadToEnd();
+                    code_box.UndoRedo.IsUndoEnabled = true;
+                    if (!Global.IsScript(ref filename)) CodeBox.ConfigurationManager.Language = "default";
+                    Parent.Text = Path.GetFileName(filename);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("File: " + filename + " not found!", "File Not Found");
+                Parent.Controls.Remove(this);
             }
         }
 
@@ -121,9 +131,8 @@ namespace Sphere_Editor.SubEditors
             if (this.filename == null) SaveAs();
             else
             {
-                using (StreamWriter writer = new StreamWriter(filename, false))
+                using (StreamWriter writer = new StreamWriter(File.OpenWrite(filename), ISO_8859_1))
                 {
-
                     if (Global.CurrentEditor.UseScriptUpdate)
                     {
                         code_box.UndoRedo.IsUndoEnabled = false;
@@ -149,7 +158,7 @@ namespace Sphere_Editor.SubEditors
                 diag.Filter = "Sphere Script Files (.js)|*.js";
 
                 if (Global.CurrentProject != null)
-                    diag.InitialDirectory = Global.CurrentProject.Path + "\\scripts";
+                    diag.InitialDirectory = Global.CurrentProject.RootPath + "\\scripts";
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

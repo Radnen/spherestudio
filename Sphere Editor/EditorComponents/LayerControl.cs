@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using Sphere_Editor.SphereObjects;
 
 namespace Sphere_Editor.EditorComponents
 {
@@ -250,18 +251,30 @@ namespace Sphere_Editor.EditorComponents
         private Rectangle bounds = new Rectangle(0, 0, 128, 128);
         private bool hover, can_update = true;
         private Font font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        public string Text { get; set; }
         public ListViewItemStates State { get; set; }
-        public bool Visible { get; set; }
+
+        public bool Visible
+        {
+            get { return Layer.Visible; }
+            set { Layer.Visible = value; }
+        }
+
+        public string Text
+        {
+            get { return Layer.Name; }
+            set { Layer.Name = value; }
+        }
+        
         public int Index { get; set; }
         public bool Start { get; set; }
-        public object Tag { get; set; }
 
         public Rectangle Bounds
         {
             get { return bounds; }
             set { bounds = value; }
         }
+
+        public Layer Layer { get; set; }
 
         public bool CanUpdate
         {
@@ -275,8 +288,8 @@ namespace Sphere_Editor.EditorComponents
             set { if (CanUpdate) hover = value; }
         }
 
-        public LayerItem() { Visible = true; }
-        public LayerItem(string text, bool visible) { Visible = visible; Text = text; }
+        public LayerItem() { Layer = new Layer(); Visible = true; }
+        public LayerItem(Layer lay) { Layer = lay; }
 
         public bool IsInEye(Point p)
         {
@@ -337,11 +350,9 @@ namespace Sphere_Editor.EditorComponents
                 if (disposing)
                 {
                     if (font != null) font.Dispose();
-                    if (Tag != null && Tag is IDisposable) ((IDisposable)Tag).Dispose();
                 }
 
                 font = null;
-                Tag = null;
             }
             _disposed = true;
         }

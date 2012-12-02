@@ -215,8 +215,8 @@ namespace Sphere_Editor.SubEditors
             SaveFileDialog diag = new SaveFileDialog();
             diag.Filter = "Spriteset Files (.rss)|*.rss";
 
-            if (Global.CurrentProject.Path != null)
-                diag.InitialDirectory = Global.CurrentProject.Path + "\\spritesets";
+            if (Global.CurrentProject.RootPath != null)
+                diag.InitialDirectory = Global.CurrentProject.RootPath + "\\spritesets";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

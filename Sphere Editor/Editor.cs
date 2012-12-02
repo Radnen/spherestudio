@@ -144,7 +144,7 @@ namespace Sphere_Editor
             if (string.IsNullOrEmpty(filename)) return;
             CloseProject(null, EventArgs.Empty);
             Global.CurrentProject = new ProjectSettings();
-            Global.CurrentProject.LoadData(filename);
+            Global.CurrentProject.LoadSettings(filename);
             _tree.Open();
             RefreshProject(this, EventArgs.Empty);
             _tasks.LoadList();
@@ -347,6 +347,9 @@ namespace Sphere_Editor
         private void FileMenu_DropDownOpened(object sender, EventArgs e)
         {
             SaveAsMenuItem.Enabled = SaveMenuItem.Enabled = (CurrentControl != null);
+            CloseProjectMenuItem.Enabled = IsProjectOpen;
+            OpenLastProjectMenuItem.Enabled = (!IsProjectOpen ||
+                Global.CurrentEditor.LastProjectPath != Global.CurrentProject.RootPath);
         }
 
         public void CallNewProject(object sender, EventArgs e)
@@ -360,13 +363,17 @@ namespace Sphere_Editor
             if (MyProject.ShowDialog() == DialogResult.OK)
             {
                 CloseProject(null, EventArgs.Empty);
+                
+                if (Global.CurrentProject == null)
+                    Global.CurrentProject = new ProjectSettings();
+                
                 Global.CurrentProject.SetDataNew(MyProject);
                 Global.CurrentProject.Create();
                 Global.CurrentProject.Script = "main.js";
-                Global.CurrentProject.SaveData();
+                Global.CurrentProject.SaveSettings();
 
                 // automatically create the starting script //
-                using (StreamWriter startscript = new StreamWriter(File.Open(Global.CurrentProject.Path + "\\scripts\\main.js", FileMode.CreateNew)))
+                using (StreamWriter startscript = new StreamWriter(File.Open(Global.CurrentProject.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
                 {
                     startscript.Write("/**\n* Script: main.js\n* Written by: " + Global.CurrentProject.Author +
                         "\n* Updated: " + DateTime.Today.ToShortDateString() + "\n**/\n\nfunction game()\n{\n\t\n}");
@@ -374,7 +381,8 @@ namespace Sphere_Editor
                 }
 
                 RefreshProject(null, EventArgs.Empty);
-                OpenScript(Global.CurrentProject.Path + "\\scripts\\main.js");
+                start_page.PopulateGameList();
+                OpenScript(Global.CurrentProject.RootPath + "\\scripts\\main.js");
             }
         }
 
@@ -399,7 +407,6 @@ namespace Sphere_Editor
             _tree.Close();
             _tasks.SaveList();
             Global.CurrentProject = null;
-            Global.CurrentEditor.LastProjectPath = "";
             _tree.ProjectName = "Project Name";
             OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
             UpdateButtons();
@@ -634,7 +641,7 @@ namespace Sphere_Editor
                 if (ViewSettings.ShowDialog() == DialogResult.OK)
                 {
                     Global.CurrentProject.SetData(ViewSettings);
-                    Global.CurrentProject.SaveData();
+                    Global.CurrentProject.SaveSettings();
                 }
             }
         }
@@ -675,7 +682,7 @@ namespace Sphere_Editor
 
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
         {
-            Process p = System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + Global.CurrentProject.Path + "\\game.sgm\"");
+            Process p = System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + Global.CurrentProject.RootPath + "\\game.sgm\"");
             p.Dispose();
         }
 
@@ -683,8 +690,8 @@ namespace Sphere_Editor
         {
             if (Global.CurrentEditor.SpherePath.Length > 0)
             {
-                Global.CurrentProject.SaveData();
-                Process p = Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + Global.CurrentProject.Path + "\"");
+                Global.CurrentProject.SaveSettings();
+                Process p = Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + Global.CurrentProject.RootPath + "\"");
                 p.Dispose();
             }
         }
@@ -693,8 +700,9 @@ namespace Sphere_Editor
         {
             _tree.Open();
             _tree.UpdateTree();
-            Global.CurrentEditor.LastProjectPath = Global.CurrentProject.Path;
+            Global.CurrentEditor.LastProjectPath = Global.CurrentProject.RootPath;
             Global.CurrentEditor.SaveSettings();
+            UpdateButtons();
             _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
         }
         #endregion

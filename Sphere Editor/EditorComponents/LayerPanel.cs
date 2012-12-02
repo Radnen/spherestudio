@@ -53,13 +53,15 @@ namespace Sphere_Editor.EditorComponents
 
         private void RenameLayerMenuItem_Click(object sender, EventArgs e)
         {
-            StringInputForm form = new StringInputForm();
-            form.Input = layers.SelectedItem.Text;
-            if (form.ShowDialog() == DialogResult.OK)
+            using (StringInputForm form = new StringInputForm())
             {
-                Layers.SelectedItem.Text = form.Input;
+                form.Input = layers.SelectedItem.Text;
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    Layers.SelectedItem.Text = form.Input;
+                }
+                Refresh();
             }
-            Refresh();
         }
 
         private void LayerPanel_Resize(object sender, EventArgs e)

@@ -159,8 +159,8 @@ namespace Sphere_Editor.SubEditors
             {
                 diag.Filter = "WindowStyle Files (.rws)|*.rws";
 
-                if (Global.CurrentProject.Path != null)
-                    diag.InitialDirectory = Global.CurrentProject.Path + "\\windowstyles";
+                if (Global.CurrentProject.RootPath != null)
+                    diag.InitialDirectory = Global.CurrentProject.RootPath + "\\windowstyles";
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

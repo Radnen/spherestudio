@@ -199,6 +199,7 @@
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="RadEditors\RadObjects.cs" />
+    <Compile Include="Settings\GenSettings.cs" />
     <Compile Include="SphereObjects\GraphicalLayer.cs" />
     <Compile Include="SphereObjects\Layer.cs" />
     <Compile Include="SphereObjects\Map.cs" />

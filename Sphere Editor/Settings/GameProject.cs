@@ -5,15 +5,43 @@ using System.Windows.Forms;
 // This contains game project related stuff //
 namespace Sphere_Editor.Settings
 {
-    public class ProjectSettings
+    public class ProjectSettings : GenSettings
     {
-        public string Width { get; set; }
-        public string Height { get; set; }
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public string Path { get; set; }
-        public string Script { get; set; }
+        public string Width
+        {
+            get { return GetKeyData("screen_width"); }
+            set { SetItem<string>("screen_width", value); }
+        }
+
+        public string Height
+        {
+            get { return GetKeyData("screen_height"); }
+            set { SetItem<string>("screen_height", value); }
+        }
+
+        public string Name
+        {
+            get { return GetKeyData("name"); }
+            set { SetItem<string>("name", value); }
+        }
+
+        public string Author
+        {
+            get { return GetKeyData("author"); }
+            set { SetItem<string>("author", value); }
+        }
+
+        public string Description
+        {
+            get { return GetKeyData("description"); }
+            set { SetItem<string>("description", value); }
+        }
+
+        public string Script
+        {
+            get { return GetKeyData("script"); }
+            set { SetItem<string>("script", value); }
+        }
 
         public void SetDataNew(System.Windows.Forms.Form newForm)
         {
@@ -24,7 +52,7 @@ namespace Sphere_Editor.Settings
             Author = PropertyControls["AuthorBox"].Text;
             Description = PropertyControls["DescriptionBox"].Text;
             Name = ProjectControls["NameBox"].Text;
-            Path = ProjectControls["DirectoryBox"].Text;
+            RootPath = ProjectControls["DirectoryBox"].Text;
         }
 
         public void SetData(System.Windows.Forms.Form setForm)
@@ -35,71 +63,27 @@ namespace Sphere_Editor.Settings
             Author = Controls["AuthorTextBox"].Text;
             Description = Controls["DescTextBox"].Text;
             Name = Controls["NameTextBox"].Text;
-            Path = Controls["PathTextBox"].Text;
+            RootPath = Controls["PathTextBox"].Text;
             Script = Controls["ScriptComboBox"].Text;
         }
 
         // save data to a .sgm file.
-        public void SaveData()
+        public void SaveSettings()
         {
-            FileInfo file = new FileInfo(Path + "\\game.sgm");
-            using (StreamWriter saver = new StreamWriter(file.OpenWrite()))
-            {
-                try
-                {
-                    saver.WriteLine("author=" + Author);
-                    saver.WriteLine("description=" + Description);
-                    saver.WriteLine("name=" + Name);
-                    saver.WriteLine("screen_height=" + Height);
-                    saver.WriteLine("screen_width=" + Width);
-                    saver.WriteLine("script=" + Script);
-                }
-                catch
-                {
-                    MessageBox.Show("Error, file: game.sgm can't be written to.", "Alert!",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                }
-                saver.Flush();
-            }
-        }
-
-        // read in data from a .sgm file.
-        public bool LoadData(string filename)
-        {
-            FileInfo gameSGM = new FileInfo(filename);
-            if (!gameSGM.Exists) return false;
-            Path = gameSGM.DirectoryName;
-            try
-            {
-                using (StreamReader reader = gameSGM.OpenText())
-                {
-                    Author = reader.ReadLine().Split('=')[1];
-                    Description = reader.ReadLine().Split('=')[1];
-                    Name = reader.ReadLine().Split('=')[1];
-                    Height = reader.ReadLine().Split('=')[1];
-                    Width = reader.ReadLine().Split('=')[1];
-                    Script = reader.ReadLine().Split('=')[1];
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Error, file: game.sgm can't be read from.", "Alert!",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-            }
-            return true;
+            SaveSettings(RootPath + "\\game.sgm");
         }
 
         internal void Create()
         {
             // Create The Main Folder //
-            DirectoryInfo GameDir = new DirectoryInfo(Path);
+            DirectoryInfo GameDir = new DirectoryInfo(RootPath);
             GameDir.Create();
 
             // Create the Sub-folders //
             string[] subfolders = {"animations", "fonts", "images", "maps", "scripts", "sounds", "spritesets", "windowstyles"};
             for (int i = 0; i < subfolders.Length; ++i)
             {
-                DirectoryInfo subfolder = new DirectoryInfo(Path + "\\" + subfolders[i]);
+                DirectoryInfo subfolder = new DirectoryInfo(RootPath + "\\" + subfolders[i]);
                 subfolder.Create();
             }
         }

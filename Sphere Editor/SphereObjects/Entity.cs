@@ -102,32 +102,21 @@ namespace Sphere_Editor.SphereObjects
             }
         }
 
-        // utility function to determine the spriteset:
-        public void LoadSpriteset()
+        // utility function to grab the spriteset image:
+        public Bitmap GetSSImage()
         {
-            bool loaded = Sprite.Load(Global.CurrentProject.Path + "/spritesets/" + Spriteset);
-            if (Graphic != null) Graphic.Dispose();
-            if (loaded)
+            if (_type == 2) return Sphere_Editor.Properties.Resources.trigger; 
+            using (Spriteset s = new Spriteset())
             {
-                Image temp = Sprite.GetImage("south", 0);
-                if (temp != null) Graphic = new Bitmap(temp);
-                else Graphic = new Bitmap(Sprite.Images[0]);
+                if (s.Load(Global.CurrentProject.RootPath + "/spritesets/" + Spriteset))
+                {
+                    Image img = s.GetImage("south", 0);
+                    if (img == null && s.Images.Count > 0) img = s.Images[0];
+                    if (s.Images.Count == 0) return Sphere_Editor.Properties.Resources.person;
+                    return new Bitmap(img);
+                }
             }
-            else Graphic = new Bitmap(Sphere_Editor.Properties.Resources.person);
-        }
-
-        public void DrawSprite(Graphics g, int tile_width, int tile_height, int off_x, int off_y, int zoom)
-        {
-            if (!Visible) return;
-            int x_off = 0, y_off = 0;
-            if (_type == 1)
-            {
-                x_off = Sprite.SpriteBase.x1;
-                y_off = Sprite.SpriteBase.y1;
-            }
-            int x = (X / tile_width * tile_width) - x_off;
-            int y = (Y / tile_height * tile_height) - y_off;
-            g.DrawImage(Graphic, x * zoom - off_x, y * zoom - off_y, Graphic.Width * zoom, Graphic.Height * zoom);
+            return Sphere_Editor.Properties.Resources.person;
         }
 
         public void Draw(Graphics g, int tile_width, int tile_height, ref Point offset, int zoom)
@@ -173,7 +162,6 @@ namespace Sphere_Editor.SphereObjects
                 ent.Scripts.Clear();
                 ent.Scripts.AddRange(strings);
                 ent.Spriteset = Spriteset;
-                ent.LoadSpriteset();
             }
             else
             {
@@ -215,6 +203,18 @@ namespace Sphere_Editor.SphereObjects
                 Sprite = null;
             }
             _disposed = true;
+        }
+
+        internal object[] GetSpriteDirections()
+        {
+            using (Spriteset s = new Spriteset())
+            {
+                if (s.Load(Global.CurrentProject.RootPath + "/spritesets/" + Spriteset))
+                {
+                    return s.GetDirections();
+                }
+            }
+            return null;
         }
     }
 }

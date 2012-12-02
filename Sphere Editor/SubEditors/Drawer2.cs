@@ -102,8 +102,8 @@ namespace Sphere_Editor.SubEditors
             SaveFileDialog diag = new SaveFileDialog();
             diag.Filter = "Image Files (.png, .gif, .bmp, .jpg)|*.png;*.gif;*.bmp;*.jpg";
 
-            if (Global.CurrentProject.Path != null)
-                diag.InitialDirectory = Global.CurrentProject.Path + "\\images";
+            if (Global.CurrentProject.RootPath != null)
+                diag.InitialDirectory = Global.CurrentProject.RootPath + "\\images";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

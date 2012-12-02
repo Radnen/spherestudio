@@ -50,10 +50,10 @@ namespace Sphere_Editor.SubEditors
                                     "Map Files (.rts, .rmp)|*.rmp;*.rts|Script Files (.js)|*.js|Sound Files (.wav, .mp3, .ogg, .mod, .it, .s3m, xm)|" +
                                     "*.wav;*.mp3;*.ogg;*.it;*.mod;*.xm;*.s3m|Spriteset Files (.rss)|*.rss|" +
                                     "Windowstyle Files (.rws)|*.rws|All Files|*.*";
-            dialog.InitialDirectory = Global.CurrentProject.Path;
+            dialog.InitialDirectory = Global.CurrentProject.RootPath;
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Global.CurrentProject.Path + pathtop;
+            string path = Global.CurrentProject.RootPath + pathtop;
             string fullname = node.FullPath.ToLower();
             string name = fullname.Substring(fullname.IndexOf('\\')+1);
 
@@ -113,7 +113,7 @@ namespace Sphere_Editor.SubEditors
                 ExecuteScriptItem.Visible = false;
 
                 // If the node is the name of the project: 
-                if (Global.CurrentProject.Path.Contains(e.Node.Text))
+                if (Global.CurrentProject.RootPath.Contains(e.Node.Text))
                     GameSettingsItem.Visible = EngineSettingsItem.Visible = true;
                 // If the node is a file object:
                 else if (e.Node.Text.Contains("."))
@@ -144,7 +144,7 @@ namespace Sphere_Editor.SubEditors
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string Path = Global.CurrentProject.Path + pathtop;
+            string Path = Global.CurrentProject.RootPath + pathtop;
 
             if (System.IO.File.Exists(Path))
             {
@@ -175,7 +175,7 @@ namespace Sphere_Editor.SubEditors
         /// </summary>
         public void UpdateTree()
         {
-            if (Global.CurrentProject.Path.Length == 0) return;
+            if (Global.CurrentProject.RootPath.Length == 0) return;
 
             Stopwatch watch = new Stopwatch();
             watch.Start();
@@ -241,7 +241,7 @@ namespace Sphere_Editor.SubEditors
                 {
                     string toppath = ProjectTreeView.SelectedNode.FullPath;
                     toppath = toppath.Substring(toppath.IndexOf('\\'));
-                    string path = Global.CurrentProject.Path + toppath + "\\" + form.Input;
+                    string path = Global.CurrentProject.RootPath + toppath + "\\" + form.Input;
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
@@ -257,9 +257,9 @@ namespace Sphere_Editor.SubEditors
             if (!e.Label.Contains(".") || e.Label.IndexOf('.') == 0) { e.CancelEdit = true; return; }
             
             string pathtop = e.Node.FullPath.Substring(e.Node.FullPath.IndexOf('\\'));
-            string path = Global.CurrentProject.Path + pathtop;
+            string path = Global.CurrentProject.RootPath + pathtop;
             string newtop = pathtop.Substring(0, pathtop.LastIndexOf('\\'));
-            string newpath = Global.CurrentProject.Path + newtop + "\\" + e.Label;
+            string newpath = Global.CurrentProject.RootPath + newtop + "\\" + e.Label;
 
             if (File.Exists(newpath))
             {
@@ -310,7 +310,7 @@ namespace Sphere_Editor.SubEditors
                 if (ViewSettings.ShowDialog() == DialogResult.OK)
                 {
                     Global.CurrentProject.SetData(ViewSettings);
-                    Global.CurrentProject.SaveData();
+                    Global.CurrentProject.SaveSettings();
                 }
             }
         }
@@ -344,10 +344,10 @@ namespace Sphere_Editor.SubEditors
             // Write to file the current script:
             String old_script = Global.CurrentProject.Script;
             Global.CurrentProject.Script = ProjectTreeView.SelectedNode.Text;
-            Global.CurrentProject.SaveData();
+            Global.CurrentProject.SaveSettings();
             // And then execute the engine:
             System.Diagnostics.Process.Start(Global.CurrentEditor.SpherePath, "-game \"" +
-                Global.CurrentProject.Path + "\"");
+                Global.CurrentProject.RootPath + "\"");
             Global.CurrentProject.Script = old_script;
         }
 
@@ -360,7 +360,7 @@ namespace Sphere_Editor.SubEditors
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string Path = Global.CurrentProject.Path + pathtop;
+            string Path = Global.CurrentProject.RootPath + pathtop;
 
             if (MessageBox.Show("Are you sure you want to delete:\n" + Path,
                 "Confirm File Deletion", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation,
@@ -383,8 +383,8 @@ namespace Sphere_Editor.SubEditors
 
         public void Open()
         {
-            if (!string.IsNullOrEmpty(Global.CurrentProject.Path))
-                SystemWatcher.Path = Global.CurrentProject.Path;
+            if (!string.IsNullOrEmpty(Global.CurrentProject.RootPath))
+                SystemWatcher.Path = Global.CurrentProject.RootPath;
 
             SystemWatcher.EnableRaisingEvents = true;
         }
@@ -393,8 +393,12 @@ namespace Sphere_Editor.SubEditors
         {
             if (EditorForm == null) return;
             string pathtop = node.FullPath;
-            pathtop = pathtop.Substring(pathtop.IndexOf('\\'));
-            string path = Global.CurrentProject.Path + pathtop;
+            
+            int idx = pathtop.IndexOf('\\');
+            if (idx < 0) return; // we're at root.
+
+            pathtop = pathtop.Substring(idx);
+            string path = Global.CurrentProject.RootPath + pathtop;
 
             string s = node.Text;
 

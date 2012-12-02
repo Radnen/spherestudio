@@ -173,7 +173,7 @@ namespace Sphere_Editor.SubEditors
                         using (SaveFileDialog diag = new SaveFileDialog())
                         {
                             diag.Filter = "Tileset Files (.rts)|*.rts";
-                            diag.InitialDirectory = Global.CurrentProject.Path + "\\maps";
+                            diag.InitialDirectory = Global.CurrentProject.RootPath + "\\maps";
                             if (diag.ShowDialog() == DialogResult.OK)
                             {
                                 Map.Scripts[0] = System.IO.Path.GetFileName(diag.FileName);
@@ -192,7 +192,7 @@ namespace Sphere_Editor.SubEditors
             using (SaveFileDialog diag = new SaveFileDialog())
             {
                 diag.Filter = "Map Files (.rmp)|*.rmp";
-                diag.InitialDirectory = Global.CurrentProject.Path + "\\maps";
+                diag.InitialDirectory = Global.CurrentProject.RootPath + "\\maps";
                 diag.DefaultExt = "rmp";
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
@@ -207,8 +207,7 @@ namespace Sphere_Editor.SubEditors
             LayerEditor.Layers.ClearItems();
             foreach (Layer lay in MapControl.BaseMap.Layers)
             {
-                LayerItem item = new LayerItem(lay.Name, lay.Visible);
-                item.Tag = lay;
+                LayerItem item = new LayerItem(lay);
                 LayerEditor.Layers.AddItem(item);
             }
 
@@ -282,7 +281,7 @@ namespace Sphere_Editor.SubEditors
             List<Layer> layers = new List<Layer>();
             foreach (LayerItem li in sender.Items)
             {
-                if (li.Tag is Layer) layers.Add(li.Tag as Layer);
+                layers.Add(li.Layer);
             }
             byte start = (byte)((layer.Start) ? layer.Index : sender.StartLayer);
             if (layer.State == ListViewItemStates.Selected) MapControl.CurrentLayer = (short)layer.Index;
@@ -421,15 +420,16 @@ namespace Sphere_Editor.SubEditors
         private void Layers_LayerAdded(object sender, EventArgs e)
         {
             Layer lay = MapControl.AddLayer();
-            LayerItem item = new LayerItem("Untitled", true);
-            item.Tag = lay;
+            LayerItem item = new LayerItem(new Layer());
+            item.Text = "Untitled";
+            item.Visible = true;
             LayerEditor.Layers.AddItem(item);
             MapControl.RefreshLayers();
         }
 
         private void Layers_LayerRemoved(object sender, EventArgs e)
         {
-            Layer target = LayerEditor.Layers.Items[LayerEditor.Layers.SelectedIndex].Tag as Layer;
+            Layer target = LayerEditor.Layers.Items[LayerEditor.Layers.SelectedIndex].Layer;
             
             for (int i = 0; i < MapControl.GraphicLayers.Count; ++i)
             {
