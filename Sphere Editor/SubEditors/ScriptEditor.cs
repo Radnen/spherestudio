@@ -85,7 +85,7 @@ namespace Sphere_Editor.SubEditors
             if (this.filename == null) SaveAs();
             else
             {
-                using (StreamWriter writer = new StreamWriter(File.OpenWrite(filename), ISO_8859_1))
+                using (StreamWriter writer = new StreamWriter(filename, false, ISO_8859_1))
                 {
                     if (Global.CurrentEditor.UseScriptUpdate)
                     {
