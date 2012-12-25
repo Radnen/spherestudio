@@ -108,8 +108,10 @@ namespace Sphere_Editor.SubEditors
         public override void LoadFile(string filename)
         {
             this.filename = filename;
-            BinaryReader reader = new BinaryReader(File.OpenRead(filename));
-            style = new Windowstyle(reader);
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
+            {
+                style = new Windowstyle(reader);
+            }
             style.Grid = true;
             InitWindow();
         }

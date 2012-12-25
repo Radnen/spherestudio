@@ -191,13 +191,16 @@ namespace Sphere_Editor.SubEditors
 
         public override void LoadFile(string filename)
         {
-            if (!_sprite.Load(filename))
+            if (_sprite.Load(filename))
             {
                 _filename = filename;
+                Init();
+            }
+            else
+            {
                 MessageBox.Show("Error: Can't load spriteset: " + filename);
                 ((DockContent)this.Parent).Close();
             }
-            else Init();
         }
 
         public override void Save()

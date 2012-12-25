@@ -723,35 +723,26 @@ namespace Sphere_Editor
 
         private void ExportTilesetItem_Click(object sender, EventArgs e)
         {
-            if (CurrentControl == null) return;
-            if (!(CurrentControl is MapEditor)) return;
-
-            MessageBox.Show("Feature Not Complete");
-
-            /*using (SaveFileDialog diag = new SaveFileDialog())
+            using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = "Image Files (.png, .jpg, .gif)|*.png;*.jpg;*.gif";
+                diag.InitialDirectory = Global.CurrentProject.RootPath;
+                diag.Filter = "Image Files (.png)|*.png;";
+                diag.DefaultExt = "png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    ((MapEditor)CurrentControl).Map.Tileset.ExportAsImage(diag.FileName);
-                    MessageBox.Show("Tileset exported as: " + diag.FileName, "Export Successful");
-                }
-            }*/
+                    ((MapEditor)CurrentControl).SaveTileset(diag.FileName);
+            }
         }
 
         private void UpdateFromFileItem_Click(object sender, EventArgs e)
         {
-            MapEditor mapper = (MapEditor)CurrentControl;
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                diag.Filter = "Image Files (.png, .jpg, .gif)|*.png;*.jpg;*.gif";
+                diag.InitialDirectory = Global.CurrentProject.RootPath;
+                diag.Filter = "Image Files (.png)|*.png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    MessageBox.Show("Tileset updated from: " + diag.FileName, "Update Successful");
-                    mapper.UpdateTileset(diag.FileName);
-                }
+                    ((MapEditor)CurrentControl).UpdateTileset(diag.FileName);
             }
         }
 

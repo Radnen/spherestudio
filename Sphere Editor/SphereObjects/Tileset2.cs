@@ -209,7 +209,7 @@ namespace Sphere_Editor.SphereObjects
             Rectangle rect = new Rectangle(0, 0, TileWidth, TileHeight);
 
             int index = 0;
-            for (int y = 0; y < img.Height; y += TileWidth)
+            for (int y = 0; y < img.Height; y += TileHeight)
             {
                 rect.Y = y;
                 for (int x = 0; x < img.Width; x += TileWidth, index++)
@@ -229,6 +229,36 @@ namespace Sphere_Editor.SphereObjects
             }
 
             img.Dispose();
+        }
+
+        /// <summary>
+        /// Saves the tileset as an image.
+        /// </summary>
+        /// <param name="filename">The filename to save to.</param>
+        /// <param name="across">The amount of tiles to put across (width-wise).</param>
+        public void SaveImage(string filename, int across = 6)
+        {
+            int w = across * TileWidth;
+            int h = (int)Math.Ceiling((float)Tiles.Count / across) * TileHeight;
+
+            using (Bitmap img = new Bitmap(w, h))
+            {
+                using (Graphics g = Graphics.FromImage(img))
+                {
+                    g.Clear(Color.Transparent);
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+
+                    for (int i = 0, y = 0; y < h; y += TileHeight)
+                    {
+                        for (int x = 0; x < w; x += TileWidth, i++)
+                        {
+                            g.DrawImage(Tiles[i].Graphic, x, y);
+                        }
+                    }
+                }
+
+                img.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
+            }
         }
     }
 }

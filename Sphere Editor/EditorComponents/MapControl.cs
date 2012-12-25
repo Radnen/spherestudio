@@ -401,6 +401,7 @@ namespace Sphere_Editor.EditorComponents
                 ZoomOut();
             }
             CalcMouse(e.Location); // update position after.
+            Invalidate();
         }
 
         private void MapControl_MouseMove(object sender, MouseEventArgs e)

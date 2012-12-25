@@ -261,6 +261,11 @@ namespace Sphere_Editor.SubEditors
             Invalidate(true);
         }
 
+        public void SaveTileset(string filename)
+        {
+            Map.Tileset.SaveImage(filename);
+        }
+
         private void Layers_LayerVisibilityChanged(LayerControl sender, EditorComponents.LayerItem layer)
         {
             Map.Layers[layer.Index].Visible = layer.Visible;
