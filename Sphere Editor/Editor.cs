@@ -358,8 +358,9 @@ namespace Sphere_Editor
 
             Control.ControlCollection NewProjectControls = MyProject.Controls["ProjectBox"].Controls;
             MyProject.Text = "New Project";
-            NewProjectControls["FolderBox"].Text = Global.CurrentEditor.GamesPath;
-            NewProjectControls["DirectoryBox"].Text = Global.CurrentEditor.GamesPath + "\\";
+            string rootpath = Global.CurrentEditor.GetGamePaths()[0];
+            NewProjectControls["FolderBox"].Text = rootpath;
+            NewProjectControls["DirectoryBox"].Text = rootpath + "\\";
             if (MyProject.ShowDialog() == DialogResult.OK)
             {
                 CloseProject(null, EventArgs.Empty);
@@ -393,8 +394,9 @@ namespace Sphere_Editor
                 ProjDiag.Title = "Open Project";
                 ProjDiag.Filter = "Game Files|*.sgm|All Files|*.*";
 
-                if (Global.CurrentEditor.GamesPath.Length > 0)
-                    ProjDiag.InitialDirectory = Global.CurrentEditor.GamesPath;
+                string[] paths = Global.CurrentEditor.GetGamePaths();
+                if (paths.Length > 0)
+                    ProjDiag.InitialDirectory = paths[0];
 
                 if (ProjDiag.ShowDialog() == DialogResult.OK)
                     OpenProject(ProjDiag.FileName);
@@ -682,7 +684,8 @@ namespace Sphere_Editor
 
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
         {
-            Process p = System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + Global.CurrentProject.RootPath + "\\game.sgm\"");
+            string path = Global.CurrentProject.RootPath;
+            Process p = System.Diagnostics.Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
             p.Dispose();
         }
 

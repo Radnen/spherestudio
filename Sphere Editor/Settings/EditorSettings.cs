@@ -19,10 +19,15 @@ namespace Sphere_Editor.Settings
             set { ConfigPathBox.Text = value; }
         }
 
-        public string GamePath
+        public string[] GamePaths
         {
-            get { return GamePathBox.Text; }
-            set { GamePathBox.Text = value; }
+            get
+            {
+                string[] strings = new string[PathListBox.Items.Count];
+                PathListBox.Items.CopyTo(strings, 0);
+                return strings;
+            }
+            set { PathListBox.Items.AddRange(value); }
         }
 
         public string LabelFont
@@ -33,20 +38,20 @@ namespace Sphere_Editor.Settings
 
         public bool UseDockForm
         {
-            get { return !WineCheckBox.Checked; }
-            set { WineCheckBox.Checked = !value; }
+            get { return !ItemCheckBox.GetItemChecked(0); }
+            set { ItemCheckBox.SetItemChecked(0, !value); }
         }
 
         public bool AutoStart
         {
-            get { return AutoStartCheckBox.Checked; }
-            set { AutoStartCheckBox.Checked = value; }
+            get { return ItemCheckBox.GetItemChecked(2); }
+            set { ItemCheckBox.SetItemChecked(2, value); }
         }
 
         public bool UseScriptUpdate
         {
-            get { return ScriptUpdateCheckBox.Checked; }
-            set { ScriptUpdateCheckBox.Checked = value; }
+            get { return ItemCheckBox.GetItemChecked(1); }
+            set { ItemCheckBox.SetItemChecked(1, value); }
         }
         #endregion
 
@@ -55,7 +60,7 @@ namespace Sphere_Editor.Settings
             InitializeComponent();
             SpherePath = settings.SpherePath;
             ConfigPath = settings.ConfigPath;
-            GamePath = settings.GamesPath;
+            GamePaths = settings.GetGamePaths();
             UseDockForm = settings.UseDockForm;
             AutoStart = settings.AutoOpen;
             UseScriptUpdate = settings.UseScriptUpdate;
@@ -71,57 +76,28 @@ namespace Sphere_Editor.Settings
                     SpherePathBox.Text = path + "\\engine.exe";
                 if (File.Exists(path + "\\config.exe"))
                     ConfigPathBox.Text = path + "\\config.exe";
-                if (Directory.Exists(path + "\\games") && string.IsNullOrEmpty(GamePathBox.Text))
-                    GamePathBox.Text = path + "\\games";
+                if (Directory.Exists(path + "\\games"))
+                    PathListBox.Items.Add(path + "\\games");
             }
         }
 
-        private void GamesPathButton_Click(object sender, EventArgs e)
+        private void AddButton_Click(object sender, EventArgs e)
         {
             if (FolderBrowser.ShowDialog() == DialogResult.OK)
-                GamePath = FolderBrowser.SelectedPath;
+            {
+                PathListBox.Items.Add(FolderBrowser.SelectedPath);
+            }
         }
 
-        #region tip texts
-        private void ClearTip(object sender, EventArgs e)
+        private void RemoveButton_Click(object sender, EventArgs e)
         {
-            SettingsTip.Clear();
+            PathListBox.Items.RemoveAt(PathListBox.SelectedIndex);
+            if (PathListBox.Items.Count == 0) RemoveButton.Enabled = false;
         }
 
-        private void GamesPathButton_MouseEnter(object sender, EventArgs e)
+        private void PathListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SettingsTip.Text = "Click if you want to use a different games path.";
+            RemoveButton.Enabled = true;
         }
-
-        private void SpherePathButton_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsTip.Text = "The sphere search shall automatically fill out paths.";
-        }
-
-        private void DockCheckBox_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsTip.Text = "Wine users should uncheck this option.";
-        }
-
-        private void AutoStartCheckBox_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsTip.Text = "Checking this will allow the editor to reopen the last project when loading.";
-        }
-
-        private void HideTipCheckBox_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsTip.Text = "Checking this will hide all help tips. Not recommended to new users.";
-        }
-
-        private void FontComboBox_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsTip.Text = "Choose here for the title and tip label font.";
-        }
-
-        private void ScriptUpdateCheckBox_MouseEnter(object sender, EventArgs e)
-        {
-            SettingsTip.Text = "Setting this to true gives you self-updating script headers.";
-        }
-        #endregion
     }
 }

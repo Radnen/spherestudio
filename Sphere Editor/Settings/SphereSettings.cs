@@ -16,12 +16,6 @@ namespace Sphere_Editor.Settings
             set { SetItem<string>("sphere_path", value); }
         }
 
-        public string GamesPath
-        {
-            get { return GetKeyData("games_path"); }
-            set { SetItem<string>("games_path", value); }
-        }
-
         public string ConfigPath
         {
             get { return GetKeyData("config_path"); }
@@ -96,12 +90,25 @@ namespace Sphere_Editor.Settings
         public void SetSettings(EditorSettings SettingForm)
         {
             SpherePath = SettingForm.SpherePath;
-            GamesPath = SettingForm.GamePath;
+            SetGamePaths(SettingForm.GamePaths);
             ConfigPath = SettingForm.ConfigPath;
             UseDockForm = SettingForm.UseDockForm;
             AutoOpen = SettingForm.AutoStart;
             UseScriptUpdate = SettingForm.UseScriptUpdate;
             LabelFont = SettingForm.LabelFont;
+        }
+
+        private void SetGamePaths(string[] list)
+        {
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            foreach (string o in list) builder.Append(o).Append(',');
+            builder.Remove(builder.Length - 1, 1);
+            SetItem<string>("games_path", builder.ToString());
+        }
+
+        public string[] GetGamePaths()
+        {
+            return GetKeyData("games_path").Split(',');
         }
 
         /// <summary>
