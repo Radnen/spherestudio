@@ -592,6 +592,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Libs\scintilla\ScintillaNET.xml" />
+    <None Include="Icons\resultset_up.png" />
+    <None Include="Icons\resultset_down.png" />
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

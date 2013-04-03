@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -13,6 +14,33 @@ namespace Sphere_Editor.SubEditors
     {
         private ImageList _imagelist = new ImageList();
 
+        private enum Priority { Hi = 1, Med = 2, Lo = 3 };
+
+        private class ListViewComparer : IComparer
+        {
+            int _column = 0;
+
+            public ListViewComparer(int column)
+            {
+                _column = column;
+            }
+
+            public int Compare(object a, object b)
+            {
+                if (_column == 1)
+                {
+                    int itema = (int)((ListViewItem)a).Tag;
+                    int itemb = (int)((ListViewItem)b).Tag;
+                    return itema.CompareTo(itemb);
+                }
+                else
+                {
+                    return ((ListViewItem)a).Text.CompareTo(((ListViewItem)b).Text);
+                }
+            }
+        }
+
+
         public TaskList()
         {
             InitializeComponent();
@@ -25,19 +53,32 @@ namespace Sphere_Editor.SubEditors
         public void AddTask()
         {
             ListViewItem item = new ListViewItem("New Task", 1);
+            item.SubItems.Add("Lo");
+            item.Tag = 3;
             TaskListView.Items.Add(item);
             item.BeginEdit();
+        }
+
+        private void SetTaskPriority(ListViewItem item, Priority p)
+        {
+            item.Tag = (int)p;
+            item.SubItems[1].Text = Enum.GetName(typeof(Priority), p);
+        }
+
+        private Priority GetTaskPriority(ListViewItem item)
+        {
+            return (Priority)item.Tag;
         }
 
         private void AddTaskItem_Click(object sender, EventArgs e)
         {
             AddTask();
-            TaskLabel.Text = "Tasks (" + TaskListView.Items.Count + ")";
+            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
         }
 
         private void TaskListView_Resize(object sender, EventArgs e)
         {
-            TaskListView.Columns[0].Width = TaskListView.Width;
+            TaskListView.Columns[0].Width = TaskListView.Width - 60;
         }
 
         private void TaskListView_ItemChecked(object sender, ItemCheckedEventArgs e)
@@ -57,7 +98,7 @@ namespace Sphere_Editor.SubEditors
         private void RemoveTaskItem_Click(object sender, EventArgs e)
         {
             if (TaskListView.SelectedItems.Count > 0) TaskListView.SelectedItems[0].Remove();
-            TaskLabel.Text = "Tasks (" + TaskListView.Items.Count + ")";
+            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
         }
 
         private void EditTaskItem_Click(object sender, EventArgs e)
@@ -75,7 +116,7 @@ namespace Sphere_Editor.SubEditors
                     i--;
                 }
             }
-            TaskLabel.Text = "Tasks (" + TaskListView.Items.Count + ")";
+            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
         }
 
         private void TaskListMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -95,9 +136,15 @@ namespace Sphere_Editor.SubEditors
         /// </summary>
         public void SaveList()
         {
-            // This had deleted the task list, but it would bug out unexpectedly
-            // And delete the list even though it had valid contents inside!!!
-            if (TaskListView.Items.Count == 0) return;
+            if (TaskListView.Items.Count == 0)
+            {
+                if (Global.CurrentProject == null) return;
+                if (File.Exists(Global.CurrentProject.RootPath + "\\tasks.list"))
+                {
+                    File.Delete(Global.CurrentProject.RootPath + "\\tasks.list");
+                }
+                return;
+            }
 
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(Global.CurrentProject.RootPath + "\\tasks.list")))
             {
@@ -105,8 +152,8 @@ namespace Sphere_Editor.SubEditors
                 foreach (ListViewItem li in TaskListView.Items)
                 {
                     writer.Write(li.Checked);
-                    writer.Write((short)li.Text.Length);
-                    writer.Write(li.Text.ToCharArray());
+                    writer.Write(li.Text);
+                    writer.Write((int)li.Tag);
                 }
                 writer.Flush();
             }
@@ -120,7 +167,7 @@ namespace Sphere_Editor.SubEditors
             if (!File.Exists(Global.CurrentProject.RootPath + "\\tasks.list")) return;
             using (BinaryReader reader = new BinaryReader(File.OpenRead(Global.CurrentProject.RootPath + "\\tasks.list")))
             {
-                short amt = reader.ReadInt16(), str;
+                short amt = reader.ReadInt16();
                 while (amt-- > 0)
                 {
                     ListViewItem item = new ListViewItem("", 2);
@@ -130,18 +177,55 @@ namespace Sphere_Editor.SubEditors
                         item.ImageIndex = 1;
                         item.Font = new Font(item.Font, FontStyle.Strikeout);
                     }
-                    str = reader.ReadInt16();
-                    item.Text = new string(reader.ReadChars(str));
+                    item.Text = reader.ReadString();
+                    item.Tag = reader.ReadInt32();
+                    item.SubItems.Add(Enum.GetName(typeof(Priority), (Priority)item.Tag));
                     TaskListView.Items.Add(item);
                 }
             }
-            TaskLabel.Text = "Tasks (" + TaskListView.Items.Count + ")";
+            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
         }
 
         private void ClearAllItem_Click(object sender, EventArgs e)
         {
             TaskListView.Items.Clear();
             TaskLabel.Text = "Tasks (0)";
+        }
+
+        private void priorityUpButton_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem li in TaskListView.SelectedItems)
+            {
+                Priority p = GetTaskPriority(li);
+                if (p == Priority.Lo) SetTaskPriority(li, Priority.Med);
+                else if (p == Priority.Med) SetTaskPriority(li, Priority.Hi);
+            }
+        }
+
+        private void priorityDownButton_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem li in TaskListView.SelectedItems)
+            {
+                Priority p = GetTaskPriority(li);
+                if (p == Priority.Hi) SetTaskPriority(li, Priority.Med);
+                else if (p == Priority.Med) SetTaskPriority(li, Priority.Lo);
+            }
+        }
+
+        private void DeleteItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem li in TaskListView.SelectedItems)
+            {
+                TaskListView.Items.Remove(li);
+            }
+            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
+        }
+
+        private void TaskListView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            // sort by priority
+            TaskListView.ListViewItemSorter = (IComparer)new ListViewComparer(e.Column);
+            TaskListView.Sort();
         }
     }
 }
