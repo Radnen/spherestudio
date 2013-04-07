@@ -124,6 +124,7 @@
             this.Name = "TilesetControl2";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TilesetControl2_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TilesetControl2_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TilesetControl2_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TilesetControl2_MouseUp);
             this.Resize += new System.EventHandler(this.TilesetControl2_Resize);
             this.TileContextStrip.ResumeLayout(false);

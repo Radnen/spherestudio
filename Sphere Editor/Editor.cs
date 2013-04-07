@@ -2,19 +2,18 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
-using Sphere_Editor.Bitmaps;
+using Sphere.Plugins;
 using Sphere_Editor.Forms;
-using Sphere_Editor.Settings;
-using Sphere_Editor.SphereObjects;
-using Sphere_Editor.SubEditors;
 using Sphere_Editor.RadEditors;
+using Sphere_Editor.Settings;
+using Sphere_Editor.SubEditors;
+using Sphere_Editor.Utility;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor
 {
-    public partial class EditorForm : Form
+    public partial class EditorForm : Form, IPluginHost
     {
         // uninitialized data:
         private DockContent TreeContent;
@@ -70,7 +69,7 @@ namespace Sphere_Editor
             OpenDirectoryMenuItem.Enabled = RefreshMenuItem.Enabled = IsProjectOpen;
         }
 
-        #region dock content
+        #region interfaces
         private void InitializeDocking()
         {
             DockTest.ShowDocumentIcon = true;
@@ -92,12 +91,12 @@ namespace Sphere_Editor
 
             TaskContent = new DockContent();
             TaskContent.Controls.Add(_tasks);
+            TaskContent.DockAreas = DockAreas.Document | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.DockBottom;
             TaskContent.Text = "Project Task List";
             TaskContent.HideOnClose = true;
             TaskContent.Icon = Icon.FromHandle(Properties.Resources.application_view_list.GetHicon());
             TaskContent.Show(TreeContent.Pane, DockAlignment.Bottom, 0.40);
         }
-        #endregion
 
         private void InitializeAlternateInterface()
         {
@@ -119,6 +118,18 @@ namespace Sphere_Editor
             AltTabInterface.BringToFront();
             AltTabInterface.TabPages.Add(page);
         }
+
+        public void DockControl(Control ctrl, string name, DockAreas areas, DockAlignment align)
+        {
+            DockContent content = new DockContent();
+            ctrl.Dock = DockStyle.Fill;
+            content.Controls.Add(ctrl);
+            content.DockAreas = areas;
+            content.Text = name;
+            content.Name = name;
+            content.Show(TreeContent.Pane, align, 0.40);
+        }
+        #endregion
 
         private void EditorForm_Shown(object sender, EventArgs e)
         {
@@ -410,6 +421,7 @@ namespace Sphere_Editor
             _tasks.SaveList();
             Global.CurrentProject = null;
             _tree.ProjectName = "Project Name";
+            _tasks.Clear();
             OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
             UpdateButtons();
         }

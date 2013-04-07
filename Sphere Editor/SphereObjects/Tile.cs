@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.SphereObjects
 {
@@ -103,75 +103,6 @@ namespace Sphere_Editor.SphereObjects
             Tile new_tile = new Tile((Bitmap)graphic.Clone());
             new_tile.Name = (String)Name.Clone();
             return new_tile;
-        }
-    }
-
-    public class Line
-    {
-        private short x1, y1, x2, y2;
-        public Line(short x1, short y1, short x2, short y2)
-        {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-        }
-
-        public Line(Point start, Point end)
-        {
-            this.x1 = (short)start.X;
-            this.x2 = (short)end.X;
-            this.y1 = (short)start.Y;
-            this.y2 = (short)end.Y;
-        }
-
-        public Line(Line copy)
-        {
-            this.x1 = copy.x1;
-            this.x2 = copy.x2;
-            this.y1 = copy.y1;
-            this.y2 = copy.y2;
-        }
-
-        public short X1
-        {
-            get { return x1; }
-            set { x1 = value; }
-        }
-
-        public short Y1
-        {
-            get { return y1; }
-            set { y1 = value; }
-        }
-
-        public short X2
-        {
-            get { return x2; }
-            set { x2 = value; }
-        }
-
-        public short Y2
-        {
-            get { return y2; }
-            set { y2 = value; }
-        }
-
-        public void DrawLine(Graphics g, Pen p)
-        {
-            g.DrawLine(p, this.x1, this.y1, this.x2, this.y2);
-        }
-
-        public static Rectangle ToRectangle(Line l)
-        {
-            Line copy = new Line(l);
-
-            if (l.x2 < l.x1) { copy.x1 = l.x2; copy.x2 = l.x1; }
-            if (l.y2 < l.y1) { copy.y1 = l.y2; copy.y2 = l.y1; }
-
-            int w = copy.x2 - copy.x1;
-            int h = copy.y2 - copy.y1;
-            return new Rectangle(copy.x1, copy.y1, w, h);
         }
     }
 }

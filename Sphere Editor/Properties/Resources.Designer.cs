@@ -445,6 +445,13 @@ namespace Sphere_Editor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap resultset_none {
+            get {
+                object obj = ResourceManager.GetObject("resultset_none", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap resultset_previous {
             get {
                 object obj = ResourceManager.GetObject("resultset_previous", resourceCulture);

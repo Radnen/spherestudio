@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Editor", "Sphere Editor\Sphere Editor.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlugin", "TaskPlugin\TaskPlugin.csproj", "{F7434DEC-A94A-409C-A320-7585B4083A6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,18 @@ Global
 		{9CAC2194-E0C8-4164-9D47-627520E79B95}.Release|Any CPU.Build.0 = Release|x86
 		{9CAC2194-E0C8-4164-9D47-627520E79B95}.Release|x86.ActiveCfg = Release|x86
 		{9CAC2194-E0C8-4164-9D47-627520E79B95}.Release|x86.Build.0 = Release|x86
+		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

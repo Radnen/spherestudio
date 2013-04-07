@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere_Editor.EditorComponents;
-using Sphere_Editor.Bitmaps;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.Forms.ColorPicker
 {

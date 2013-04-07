@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Sphere.Plugins;
 
 namespace Sphere_Editor
 {
@@ -14,7 +15,9 @@ namespace Sphere_Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new EditorForm());
+            EditorForm ef = new EditorForm();
+            Global.EvalPlugins((IPluginHost)ef);
+            Application.Run(ef);
         }
     }
 }

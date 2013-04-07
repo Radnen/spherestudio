@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.Settings
 {
@@ -98,6 +99,26 @@ namespace Sphere_Editor.Settings
         private void PathListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             RemoveButton.Enabled = true;
+        }
+
+        private void EditorSettings_Load(object sender, EventArgs e)
+        {
+            foreach (PluginWrapper wrapper in Global.plugins)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = wrapper.Plugin.Name;
+                item.SubItems.Add(wrapper.Plugin.Author);
+                item.SubItems.Add(wrapper.Plugin.Version);
+                item.SubItems.Add(wrapper.Plugin.Description);
+                PluginList.Items.Add(item);
+            }
+        }
+
+        private void PluginList_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            int index = PluginList.Items.IndexOf(e.Item);
+            if (e.Item.Checked) Global.plugins[index].Activate();
+            else Global.plugins[index].Deactivate();
         }
     }
 }

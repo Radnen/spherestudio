@@ -5,12 +5,40 @@ using System.Drawing;
 using Sphere_Editor.Forms;
 using Sphere_Editor.Settings;
 using System.Windows.Forms;
+using System.Reflection;
+using Sphere.Plugins;
+using Sphere_Editor.Utility;
+using System.IO;
 
 namespace Sphere_Editor
 {
     public class Global
     {
-        public Global() { }
+        public static List<PluginWrapper> plugins = new List<PluginWrapper>();
+
+        public static void EvalPlugins(IPluginHost host)
+        {
+            string path = Application.StartupPath + "/Plugins";
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            DirectoryInfo dir = new DirectoryInfo(path);
+            foreach (FileInfo file in dir.GetFiles("*.dll"))
+            {
+                Assembly assembly = Assembly.LoadFrom(file.FullName);
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (type.GetInterface("IPlugin") != null)
+                    {
+                        IPlugin b = type.InvokeMember(null,
+                                                   BindingFlags.CreateInstance,
+                                                   null, null, null) as IPlugin;
+                        if (b == null) continue;
+                        b.Host = host;
+                        plugins.Add(new PluginWrapper(b));
+                    }
+                }
+            }
+        }
+
         public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
         public static ScriptSettings CurrentScriptSettings = new ScriptSettings();

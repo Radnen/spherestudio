@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using Sphere_Editor.Bitmaps;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.SphereObjects
 {

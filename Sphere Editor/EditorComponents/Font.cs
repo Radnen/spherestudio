@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
-using Sphere_Editor.Bitmaps;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {

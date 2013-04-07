@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using Sphere_Editor.SphereObjects;
-using Sphere_Editor.Bitmaps;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {
@@ -59,6 +59,7 @@ namespace Sphere_Editor.EditorComponents
 
         public ImageEditControl2()
         {
+            Zoom = 1;
             InitializeComponent();
             _draw_pen = new System.Drawing.Pen(Color.White);
             _h_manager = new HistoryManager();

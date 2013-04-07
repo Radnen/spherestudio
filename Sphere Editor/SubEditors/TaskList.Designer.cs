@@ -32,22 +32,28 @@
             this.TaskListMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddTaskItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditTaskItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Seperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.RemoveTaskItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveCompletedItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ClearAllItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TaskListView = new System.Windows.Forms.ListView();
-            this.nameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.priorityHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SetTypeItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SetPriorityItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.PriorityLabel = new System.Windows.Forms.ToolStripLabel();
             this.priorityUpButton = new System.Windows.Forms.ToolStripButton();
             this.priorityDownButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.DeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.Seperator0 = new System.Windows.Forms.ToolStripSeparator();
             this.AddItem = new System.Windows.Forms.ToolStripButton();
+            this.DeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.ObjectTaskList = new BrightIdeasSoftware.ObjectListView();
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TaskLabel = new Sphere_Editor.EditorLabel();
             this.TaskListMenuStrip.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ObjectTaskList)).BeginInit();
             this.SuspendLayout();
             // 
             // TaskListMenuStrip
@@ -55,76 +61,78 @@
             this.TaskListMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddTaskItem,
             this.EditTaskItem,
+            this.Seperator1,
             this.RemoveTaskItem,
             this.RemoveCompletedItem,
-            this.ClearAllItem});
+            this.ClearAllItem,
+            this.Seperator2,
+            this.SetTypeItem,
+            this.SetPriorityItem});
             this.TaskListMenuStrip.Name = "TaskListMenuStrip";
-            this.TaskListMenuStrip.Size = new System.Drawing.Size(180, 114);
-            this.TaskListMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.TaskListMenuStrip_Opening);
+            this.TaskListMenuStrip.Size = new System.Drawing.Size(180, 170);
             // 
             // AddTaskItem
             // 
+            this.AddTaskItem.Image = global::Sphere_Editor.Properties.Resources.lightbulb_add;
             this.AddTaskItem.Name = "AddTaskItem";
             this.AddTaskItem.Size = new System.Drawing.Size(179, 22);
-            this.AddTaskItem.Text = "Add Task";
+            this.AddTaskItem.Text = "&Add Task";
             this.AddTaskItem.Click += new System.EventHandler(this.AddTaskItem_Click);
             // 
             // EditTaskItem
             // 
+            this.EditTaskItem.Image = global::Sphere_Editor.Properties.Resources.page_white_edit;
             this.EditTaskItem.Name = "EditTaskItem";
             this.EditTaskItem.Size = new System.Drawing.Size(179, 22);
-            this.EditTaskItem.Text = "Edit Task";
+            this.EditTaskItem.Text = "&Edit Task";
             this.EditTaskItem.Click += new System.EventHandler(this.EditTaskItem_Click);
+            // 
+            // Seperator1
+            // 
+            this.Seperator1.Name = "Seperator1";
+            this.Seperator1.Size = new System.Drawing.Size(176, 6);
             // 
             // RemoveTaskItem
             // 
+            this.RemoveTaskItem.Image = global::Sphere_Editor.Properties.Resources.lightbulb_delete;
             this.RemoveTaskItem.Name = "RemoveTaskItem";
             this.RemoveTaskItem.Size = new System.Drawing.Size(179, 22);
-            this.RemoveTaskItem.Text = "Remove Task";
+            this.RemoveTaskItem.Text = "&Remove Task";
             this.RemoveTaskItem.Click += new System.EventHandler(this.RemoveTaskItem_Click);
             // 
             // RemoveCompletedItem
             // 
+            this.RemoveCompletedItem.Image = global::Sphere_Editor.Properties.Resources.cross;
             this.RemoveCompletedItem.Name = "RemoveCompletedItem";
             this.RemoveCompletedItem.Size = new System.Drawing.Size(179, 22);
-            this.RemoveCompletedItem.Text = "Remove Completed";
+            this.RemoveCompletedItem.Text = "Remove &Completed";
             this.RemoveCompletedItem.Click += new System.EventHandler(this.RemoveCompletedItem_Click);
             // 
             // ClearAllItem
             // 
             this.ClearAllItem.Name = "ClearAllItem";
             this.ClearAllItem.Size = new System.Drawing.Size(179, 22);
-            this.ClearAllItem.Text = "Clear All";
+            this.ClearAllItem.Text = "C&lear All";
             this.ClearAllItem.Click += new System.EventHandler(this.ClearAllItem_Click);
             // 
-            // TaskListView
+            // Seperator2
             // 
-            this.TaskListView.CheckBoxes = true;
-            this.TaskListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.nameHeader,
-            this.priorityHeader});
-            this.TaskListView.ContextMenuStrip = this.TaskListMenuStrip;
-            this.TaskListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TaskListView.FullRowSelect = true;
-            this.TaskListView.GridLines = true;
-            this.TaskListView.LabelEdit = true;
-            this.TaskListView.Location = new System.Drawing.Point(0, 46);
-            this.TaskListView.Name = "TaskListView";
-            this.TaskListView.Size = new System.Drawing.Size(358, 278);
-            this.TaskListView.TabIndex = 2;
-            this.TaskListView.UseCompatibleStateImageBehavior = false;
-            this.TaskListView.View = System.Windows.Forms.View.Details;
-            this.TaskListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.TaskListView_ColumnClick);
-            this.TaskListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.TaskListView_ItemChecked);
-            this.TaskListView.Resize += new System.EventHandler(this.TaskListView_Resize);
+            this.Seperator2.Name = "Seperator2";
+            this.Seperator2.Size = new System.Drawing.Size(176, 6);
             // 
-            // nameHeader
+            // SetTypeItem
             // 
-            this.nameHeader.Text = "Name";
+            this.SetTypeItem.Image = global::Sphere_Editor.Properties.Resources.information;
+            this.SetTypeItem.Name = "SetTypeItem";
+            this.SetTypeItem.Size = new System.Drawing.Size(179, 22);
+            this.SetTypeItem.Text = "Set &Type";
             // 
-            // priorityHeader
+            // SetPriorityItem
             // 
-            this.priorityHeader.Text = "Priority";
+            this.SetPriorityItem.Image = global::Sphere_Editor.Properties.Resources.resultset_none;
+            this.SetPriorityItem.Name = "SetPriorityItem";
+            this.SetPriorityItem.Size = new System.Drawing.Size(179, 22);
+            this.SetPriorityItem.Text = "Set &Priority";
             // 
             // toolStrip1
             // 
@@ -132,9 +140,9 @@
             this.PriorityLabel,
             this.priorityUpButton,
             this.priorityDownButton,
-            this.toolStripSeparator1,
-            this.DeleteItem,
-            this.AddItem});
+            this.Seperator0,
+            this.AddItem,
+            this.DeleteItem});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 23);
             this.toolStrip1.Name = "toolStrip1";
@@ -168,30 +176,76 @@
             this.priorityDownButton.Text = "Priority Down";
             this.priorityDownButton.Click += new System.EventHandler(this.priorityDownButton_Click);
             // 
-            // toolStripSeparator1
+            // Seperator0
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
+            this.Seperator0.Name = "Seperator0";
+            this.Seperator0.Size = new System.Drawing.Size(6, 23);
+            // 
+            // AddItem
+            // 
+            this.AddItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddItem.Image = global::Sphere_Editor.Properties.Resources.lightbulb_add;
+            this.AddItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddItem.Name = "AddItem";
+            this.AddItem.Size = new System.Drawing.Size(23, 20);
+            this.AddItem.Text = "Add Task";
+            this.AddItem.Click += new System.EventHandler(this.AddTaskItem_Click);
             // 
             // DeleteItem
             // 
             this.DeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.DeleteItem.Image = global::Sphere_Editor.Properties.Resources.cross;
+            this.DeleteItem.Image = global::Sphere_Editor.Properties.Resources.lightbulb_delete;
             this.DeleteItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DeleteItem.Name = "DeleteItem";
             this.DeleteItem.Size = new System.Drawing.Size(23, 20);
             this.DeleteItem.Text = "Remove Task(s)";
             this.DeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
             // 
-            // AddItem
+            // ObjectTaskList
             // 
-            this.AddItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddItem.Image = global::Sphere_Editor.Properties.Resources.add;
-            this.AddItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.AddItem.Name = "AddItem";
-            this.AddItem.Size = new System.Drawing.Size(23, 20);
-            this.AddItem.Text = "Add Task";
-            this.AddItem.Click += new System.EventHandler(this.AddTaskItem_Click);
+            this.ObjectTaskList.AllColumns.Add(this.olvColumn1);
+            this.ObjectTaskList.AllColumns.Add(this.olvColumn2);
+            this.ObjectTaskList.AllColumns.Add(this.olvColumn3);
+            this.ObjectTaskList.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
+            this.ObjectTaskList.CheckBoxes = true;
+            this.ObjectTaskList.CheckedAspectName = "Finished";
+            this.ObjectTaskList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn1,
+            this.olvColumn2,
+            this.olvColumn3});
+            this.ObjectTaskList.ContextMenuStrip = this.TaskListMenuStrip;
+            this.ObjectTaskList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ObjectTaskList.EmptyListMsg = "\"No Tasks Hooray!\"";
+            this.ObjectTaskList.FullRowSelect = true;
+            this.ObjectTaskList.GridLines = true;
+            this.ObjectTaskList.GroupWithItemCountFormat = "";
+            this.ObjectTaskList.Location = new System.Drawing.Point(0, 46);
+            this.ObjectTaskList.Name = "ObjectTaskList";
+            this.ObjectTaskList.Size = new System.Drawing.Size(358, 278);
+            this.ObjectTaskList.TabIndex = 4;
+            this.ObjectTaskList.UseAlternatingBackColors = true;
+            this.ObjectTaskList.UseCellFormatEvents = true;
+            this.ObjectTaskList.UseCompatibleStateImageBehavior = false;
+            this.ObjectTaskList.View = System.Windows.Forms.View.Details;
+            this.ObjectTaskList.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.ObjectTaskList_FormatCell);
+            this.ObjectTaskList.FormatRow += new System.EventHandler<BrightIdeasSoftware.FormatRowEventArgs>(this.ObjectTaskList_FormatRow);
+            // 
+            // olvColumn1
+            // 
+            this.olvColumn1.AspectName = "Name";
+            this.olvColumn1.Text = "Name";
+            this.olvColumn1.UseInitialLetterForGroup = true;
+            this.olvColumn1.Width = 96;
+            // 
+            // olvColumn2
+            // 
+            this.olvColumn2.AspectName = "Priority";
+            this.olvColumn2.Text = "Priority";
+            // 
+            // olvColumn3
+            // 
+            this.olvColumn3.AspectName = "Type";
+            this.olvColumn3.Text = "Type";
             // 
             // TaskLabel
             // 
@@ -209,7 +263,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.TaskListView);
+            this.Controls.Add(this.ObjectTaskList);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.TaskLabel);
             this.Name = "TaskList";
@@ -217,6 +271,7 @@
             this.TaskListMenuStrip.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ObjectTaskList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,16 +285,21 @@
         private System.Windows.Forms.ToolStripMenuItem RemoveTaskItem;
         private System.Windows.Forms.ToolStripMenuItem RemoveCompletedItem;
         private System.Windows.Forms.ToolStripMenuItem ClearAllItem;
-        private System.Windows.Forms.ListView TaskListView;
         private System.Windows.Forms.ToolStripMenuItem EditTaskItem;
-        private System.Windows.Forms.ColumnHeader nameHeader;
-        private System.Windows.Forms.ColumnHeader priorityHeader;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton priorityUpButton;
         private System.Windows.Forms.ToolStripButton priorityDownButton;
         private System.Windows.Forms.ToolStripLabel PriorityLabel;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator Seperator0;
         private System.Windows.Forms.ToolStripButton DeleteItem;
         private System.Windows.Forms.ToolStripButton AddItem;
+        private System.Windows.Forms.ToolStripSeparator Seperator1;
+        private System.Windows.Forms.ToolStripSeparator Seperator2;
+        private System.Windows.Forms.ToolStripMenuItem SetTypeItem;
+        private System.Windows.Forms.ToolStripMenuItem SetPriorityItem;
+        private BrightIdeasSoftware.ObjectListView ObjectTaskList;
+        private BrightIdeasSoftware.OLVColumn olvColumn1;
+        private BrightIdeasSoftware.OLVColumn olvColumn2;
+        private BrightIdeasSoftware.OLVColumn olvColumn3;
     }
 }

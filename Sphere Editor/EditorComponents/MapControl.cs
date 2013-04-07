@@ -6,20 +6,20 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere_Editor.Forms;
 using Sphere_Editor.SphereObjects;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {
     public partial class MapControl : UserControl
     {
         #region Attributes
-        public short Zoom { get; private set; }
         private int _vw, _vh;
         private Point _mouse;
         private Point _last_mouse;
         private int _tile_w_zoom;
         private int _tile_h_zoom;
         private bool _ctrl_key, _can_copy = true;
-        public event EventHandler PropChanged;
+        short[,] _old_cache;
 
         private bool _paint = false, _move = false;
         private Point _anchor, _offset;
@@ -28,6 +28,9 @@ namespace Sphere_Editor.EditorComponents
         private Zone2 _temp_zone = new Zone2();
 
         public Point MapPixel { get; set; }
+        public short Zoom { get; private set; }
+        public List<short> Tiles { get; set; }
+        public int SelWidth { get; set; }
         public short CurrentTile { get; set; }
         public short CurrentLayer { get; set; }
         public bool ShowCameraBounds { get; set; }
@@ -42,6 +45,7 @@ namespace Sphere_Editor.EditorComponents
             }
         }
 
+        public event EventHandler PropChanged;
         public event EventHandler Edited;
         public bool CanZoomIn { get { return Zoom != 4; } }
         public bool CanZoomOut { get { return Zoom != 1; } }
@@ -59,6 +63,7 @@ namespace Sphere_Editor.EditorComponents
                 if (_base_map != null)
                 {
                     Zoom = 1;
+                    SelWidth = 1;
                     _tile_h_zoom = value.Tileset.TileWidth;
                     _tile_w_zoom = value.Tileset.TileHeight;
                     _vw = value.Width * _tile_w_zoom;
@@ -101,6 +106,7 @@ namespace Sphere_Editor.EditorComponents
         public MapControl()
         {
             Zoom = 1;
+            SelWidth = 1;
             MapPixel = new Point(0, 0);
             InitializeComponent();
             SetStyle(ControlStyles.UserPaint, true);
@@ -253,6 +259,7 @@ namespace Sphere_Editor.EditorComponents
             MapPixel = new Point((mouse.X - _offset.X) / Zoom, (mouse.Y - _offset.Y) / Zoom);
         }
 
+        #region Draw Logic
         private void MapControl_Paint(object sender, PaintEventArgs e)
         {
             if (BaseMap == null) return;
@@ -306,12 +313,18 @@ namespace Sphere_Editor.EditorComponents
         private void DrawSelector(Graphics g)
         {
             bool mouse_in = (_mouse.X >= 0 && _mouse.Y >= 0 && _mouse.X < _vw && _mouse.Y < _vh);
-            if (mouse_in)
-            {
-                int x = _offset.X + _mouse.X;
-                int y = _offset.Y + _mouse.Y;
-                g.DrawRectangle(Pens.Yellow, x, y, _tile_w_zoom, _tile_h_zoom);
-            }
+            
+            if (!mouse_in) return;
+            if (Tiles == null || SelWidth == 0) return;
+
+            int ox = _offset.X + _mouse.X; // origin x/y
+            int oy = _offset.Y + _mouse.Y;
+            int w = SelWidth * _tile_w_zoom; // box x/y
+            int h = (Tiles.Count / SelWidth) * _tile_h_zoom;
+
+            for (int y = 0; y < h; y += _tile_h_zoom)
+                for (int x = 0; x < w; x += _tile_w_zoom)
+                    g.DrawRectangle(Pens.Yellow, ox + x, oy + y, _tile_w_zoom, _tile_h_zoom);
         }
 
         private void DrawCameraBounds(Graphics g)
@@ -324,6 +337,7 @@ namespace Sphere_Editor.EditorComponents
             int h = _vh - sh * Zoom;
             g.DrawRectangle(Pens.Magenta, _offset.X + x, _offset.Y + y, w, h);
         }
+        #endregion
 
         private void UpdateScrollBars()
         {
@@ -368,20 +382,41 @@ namespace Sphere_Editor.EditorComponents
 
         private void InvalidateCursor()
         {
-            Invalidate(new Rectangle(_offset.X + _mouse.X - 1, _offset.Y + _mouse.Y - 1, _tile_w_zoom + 2, _tile_h_zoom + 2));
-            Invalidate(new Rectangle(_offset.X + _last_mouse.X - 1, _offset.Y + _last_mouse.Y - 1, _tile_w_zoom + 2, _tile_h_zoom + 2));
+            Invalidate(new Rectangle(0, 0, Width, Height));
         }
 
-        // set tile will also update the internal history list
-        private void SetTile(int x, int y)
+        private void StampTiles(int ox, int oy)
+        {
+            if (Tiles == null || SelWidth == 0) return;
+            int w = SelWidth, h = Tiles.Count / w, i = 0;
+            for (int y = 0; y < h; ++y)
+                for (int x = 0; x < w; ++x, ++i)
+                    SetTile(Tiles[i], ox + x, oy + y, false);
+        }
+
+        /// <summary>
+        /// Sets a tile at the x/y location on the map to the specified tile.
+        /// </summary>
+        /// <param name="tile">Index number of tile in tileset to set.</param>
+        /// <param name="x">The x location in tiles.</param>
+        /// <param name="y">The y location in tiles.</param>
+        private void SetTile(short tile, int x, int y, bool hist = true)
         {
             short older = _base_map.Layers[CurrentLayer].GetTile(x, y);
-            if (older == -1 || older == CurrentTile) return;
+            if (tile == -1 || older == -1 || older == tile) return;
 
-            HistoryTile tile = new HistoryTile(x, y, older, CurrentTile);
-            _base_map.Layers[CurrentLayer].SetTile(x, y, CurrentTile);
-            GraphicLayers[CurrentLayer].SetTile(x, y, _base_map.Tileset.Tiles[CurrentTile].Graphic);
-            _h_tiles.Add(tile);
+            if (hist) { _h_tiles.Add(new HistoryTile(x, y, older, tile)); }
+
+            _base_map.Layers[CurrentLayer].SetTile(x, y, tile);
+            GraphicLayers[CurrentLayer].SetTile(x, y, _base_map.Tileset.Tiles[tile].Graphic);
+        }
+
+        /// <summary>
+        /// Sets the 'current tile' to the x/y location.
+        /// </summary>
+        private void SetTile(int x, int y)
+        {
+            SetTile(CurrentTile, x, y);
         }
 
         #region Mouse
@@ -423,7 +458,7 @@ namespace Sphere_Editor.EditorComponents
                     {
                         int x = _mouse.X / _tile_w_zoom;
                         int y = _mouse.Y / _tile_h_zoom;
-                        SetTile(x, y);
+                        StampTiles(x, y);
                     }
                     else if (Tool == MapTool.Entity && _cur_ent != null &&
                         _cur_ent.Layer == CurrentLayer)
@@ -454,7 +489,10 @@ namespace Sphere_Editor.EditorComponents
                 CalcMouse(e.Location);
 
                 if (Tool == MapTool.Pen)
-                    SetTile(_mouse.X / _tile_w_zoom, _mouse.Y / _tile_h_zoom);
+                {
+                    _old_cache = _base_map.Layers[CurrentLayer].CloneTiles();
+                    StampTiles(_mouse.X / _tile_w_zoom, _mouse.Y / _tile_h_zoom);
+                }
                 else if (Tool == MapTool.Entity)
                     GetEntityAtMouse();
                 else
@@ -486,6 +524,12 @@ namespace Sphere_Editor.EditorComponents
                     _cur_ent = null;
                     _can_copy = true;
                 }
+                else if (Tool == MapTool.Pen)
+                {
+                    short[,] new_cache = _base_map.Layers[CurrentLayer].CloneTiles();
+                    LayerTilesPage page = new LayerTilesPage(this, _old_cache, new_cache, CurrentLayer);
+                    _h_manager.PushPage(page);
+                }
                 else PushTilePage();
 
                 if (Edited != null) Edited(this, EventArgs.Empty);
@@ -513,12 +557,10 @@ namespace Sphere_Editor.EditorComponents
 
         private void PushTilePage()
         {
-            if (_h_tiles.Count > 0)
-            {
-                TileListPage page = new TileListPage(this, _h_tiles, CurrentLayer);
-                _h_manager.PushPage(page);
-                _h_tiles = new List<HistoryTile>();
-            }
+            if (_h_tiles.Count == 0) return;
+            TileListPage page = new TileListPage(this, _h_tiles, CurrentLayer);
+            _h_manager.PushPage(page);
+            _h_tiles = new List<HistoryTile>();
         }
 
         private void PushLayerPage(List<Layer> new_layers, byte new_start)

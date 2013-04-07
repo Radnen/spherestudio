@@ -181,8 +181,8 @@ namespace Sphere_Editor.EditorComponents
                 _parent.Map.Layers[i].AdjustTiles(_startindex, (short)-_added.Count);
 
             _parent.MapControl.RefreshLayers();
-            if (_parent.TilesetControl.Selected >= _parent.Map.Tileset.Tiles.Count)
-                _parent.TilesetControl.Selected = (short)(_parent.Map.Tileset.Tiles.Count - 1);
+            if (_parent.TilesetControl.Selected[0] >= _parent.Map.Tileset.Tiles.Count)
+                _parent.TilesetControl.Select((short)(_parent.Map.Tileset.Tiles.Count - 1));
             _parent.Invalidate(true);
         }
 
@@ -198,6 +198,34 @@ namespace Sphere_Editor.EditorComponents
 
             _parent.MapControl.RefreshLayers();
             _parent.Invalidate(true);
+        }
+    }
+
+    public class LayerTilesPage : HistoryPage
+    {
+        short _layer;
+        short[,] _tiles_old;
+        short[,] _tiles_new;
+        MapControl _parent;
+
+        public LayerTilesPage(MapControl parent, short[,] tiles_old, short[,] tiles_new, short layer)
+        {
+            _layer = layer;
+            _parent = parent;
+            _tiles_old = tiles_old;
+            _tiles_new = tiles_new;
+        }
+
+        public override void Undo()
+        {
+            _parent.BaseMap.Layers[_layer].SetTiles(_tiles_old);
+            _parent.RefreshLayers();
+        }
+
+        public override void Redo()
+        {
+            _parent.BaseMap.Layers[_layer].SetTiles(_tiles_new);
+            _parent.RefreshLayers();
         }
     }
 

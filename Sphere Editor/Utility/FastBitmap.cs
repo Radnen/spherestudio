@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Sphere_Editor.Bitmaps
+namespace Sphere_Editor.Utility
 {
     unsafe public class FastBitmap
     {

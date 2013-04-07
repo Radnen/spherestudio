@@ -114,6 +114,9 @@
       <HintPath>Libs\IrrKlang\irrKlang.NET2.0.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="ObjectListView">
+      <HintPath>Libs\objectlistview\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="ScintillaNET, Version=2.5.2.0, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\scintilla\ScintillaNET.dll</HintPath>
@@ -126,8 +129,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>Libs\WeifenLuo2.6.0\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.7.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +234,7 @@
     <Compile Include="SubEditors\EditorObject.Designer.cs">
       <DependentUpon>EditorObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Bitmap\FastBitmap.cs" />
+    <Compile Include="Utility\FastBitmap.cs" />
     <Compile Include="EditorComponents\Font.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -397,8 +401,11 @@
       <DependentUpon>Project.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Bitmap\BitmapLoader.cs" />
+    <Compile Include="Utility\BitmapLoader.cs" />
     <Compile Include="SphereObjects\Windowstyle.cs" />
+    <Compile Include="Utility\Line.cs" />
+    <Compile Include="Utility\Plugin.cs" />
+    <Compile Include="Utility\Task.cs" />
     <EmbeddedResource Include="EditorComponents\ImageEditControl2.resx">
       <DependentUpon>ImageEditControl2.cs</DependentUpon>
     </EmbeddedResource>
@@ -547,7 +554,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Settings\SphereSettings.cs" />
     <Compile Include="SphereObjects\Spriteset.cs" />
-    <Compile Include="SphereObjects\Tiles.cs">
+    <Compile Include="SphereObjects\Tile.cs">
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -594,6 +601,12 @@
     <None Include="Libs\scintilla\ScintillaNET.xml" />
     <None Include="Icons\resultset_up.png" />
     <None Include="Icons\resultset_down.png" />
+    <None Include="Icons\resultset_none.png" />
+    <Content Include="Libs\objectlistview\ObjectListView.dll" />
+    <Content Include="Libs\objectlistview\ObjectListView.XML" />
+    <Content Include="Plugins\TaskPlugin.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -615,6 +628,12 @@
     <Content Include="Editor.ico" />
     <None Include="Icons\question_mark.png" />
     <None Include="Icons\style.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
+      <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
+      <Name>Sphere.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

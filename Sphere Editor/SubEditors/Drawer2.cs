@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -152,6 +153,31 @@ namespace Sphere_Editor.SubEditors
                 UndoButton.Enabled = RedoButton.Enabled = false;
             }
             ImageEditor.Invalidate();
+        }
+
+        /// <summary>
+        /// Cuts up and returns a list of sub-images.
+        /// </summary>
+        /// <param name="tile_width">Width of sub-image.</param>
+        /// <param name="tile_height">Height of sub-image.</param>
+        /// <returns></returns>
+        public List<Bitmap> GetImages(short tile_width,short tile_height)
+        {
+            List<Bitmap> images = new List<Bitmap>();
+            Bitmap source = (Bitmap)ImageEditor.EditImage;
+            Rectangle sourceRect = new Rectangle(0, 0, tile_width, tile_height);
+            int w = ImageEditor.EditImage.Width;
+            int h = ImageEditor.EditImage.Height;
+            for (int y = 0; y < h; y += tile_height)
+            {
+                sourceRect.Y = y;
+                for (int x = 0; x < w; x += tile_width)
+                {
+                    sourceRect.X = x;
+                    images.Add(source.Clone(sourceRect, System.Drawing.Imaging.PixelFormat.Format32bppPArgb));
+                }
+            }
+            return images;
         }
 
         public Bitmap GetImage()

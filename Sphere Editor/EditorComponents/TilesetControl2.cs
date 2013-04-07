@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere_Editor.SphereObjects;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {
@@ -28,20 +29,34 @@ namespace Sphere_Editor.EditorComponents
         }
 
         public delegate void TileHandler(short startindex, List<Tile> tiles);
-        public delegate void SelectedHandler(short tile);
+        public delegate void SelectedHandler(List<short> tiles);
         public event SelectedHandler TileSelected;
         public event TileHandler TileRemoved;
         public event TileHandler TileAdded;
+        public bool MultiSelect { get; set; }
 
+        private bool _select_paint = false;
+        private int _selected_index = 0;
         private int _tile_w_zoom;
         private int _tile_h_zoom;
         private int _zoom = 1;
+        private Line _selection = new Line();
 
-        public short Selected { get; set; }
+        public Rectangle Selection
+        {
+            get
+            {
+                Rectangle sel = Line.ToRectangle(_selection);
+                sel.Width++; sel.Height++;
+                return sel;
+            }
+        }
+        public List<short> Selected { get; set; }
         public bool CanInsert { get; set; }
 
         public TilesetControl2()
         {
+            Selected = new List<short>();
             InitializeComponent();
             CanInsert = true;
         }
@@ -76,14 +91,15 @@ namespace Sphere_Editor.EditorComponents
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
-            int index = 0, w = Width - _tile_w_zoom;
+            short index = 0;
+            int w = Width - _tile_w_zoom;
             for (int y = 0; y < Height; y += _tile_h_zoom)
             {
                 for (int x = 0; x < w; x += _tile_w_zoom)
                 {
                     if (index < Tileset.Tiles.Count)
                         e.Graphics.DrawImage(Tileset.Tiles[index].Graphic, x, y, _tile_w_zoom, _tile_h_zoom);
-                    if (index == Selected)
+                    if (Selected.Contains(index))
                         e.Graphics.DrawRectangle(Pens.Magenta, x, y, _tile_w_zoom, _tile_h_zoom);
                     index++;
                 }
@@ -92,10 +108,25 @@ namespace Sphere_Editor.EditorComponents
 
         public void Select(short tile)
         {
-            if (tile >= Tileset.Tiles.Count) return;
-            Selected = tile;
+            if (tile < -1 || tile >= Tileset.Tiles.Count) return;
+            if (tile == -1)
+            {
+                Selected.Clear();
+                Selected.Add(-1);
+                _selection.Start = _selection.End;
+            }
+            else
+            {
+                _selected_index = tile;
+                int x = (tile % (Width / _tile_w_zoom));
+                int y = (tile / (Height / _tile_h_zoom));
+                _selection.Start = new Point(x, y);
+                _selection.End = _selection.Start;
+                Selected.Clear();
+                Selected.Add(tile);
+            }
+
             Invalidate();
-            if (TileSelected != null) TileSelected(tile);
         }
 
         /// <summary>
@@ -135,11 +166,52 @@ namespace Sphere_Editor.EditorComponents
             int w = Width / _tile_w_zoom;
             short tile = (short)(x + y * w);
 
-            if (tile >= Tileset.Tiles.Count) return;
+            if (tile < 0 || tile >= Tileset.Tiles.Count) return;
 
-            Selected = tile;
+            _select_paint = true;
+            _selection.Start = new Point(x, y);
+            _selection.End = _selection.Start;
+            SelectTiles();
             Invalidate();
-            if (TileSelected != null) TileSelected(Selected);
+        }
+
+        private void TilesetControl2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!_select_paint || !MultiSelect) return;
+            int x = e.X / _tile_w_zoom;
+            int y = e.Y / _tile_h_zoom;
+            _selection.End = new Point(x, y);
+            SelectTiles();
+            Invalidate();
+        }
+
+        private void TilesetControl2_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+                TileContextStrip.Show(this, e.Location);
+            else if (e.Button == MouseButtons.Left)
+            {
+                _select_paint = false;
+                SelectTiles();
+                Invalidate();
+                if (TileSelected != null) TileSelected(Selected);
+            }
+        }
+
+        private void SelectTiles()
+        {
+            Rectangle r = Selection;
+            int w = Width / _tile_w_zoom;
+            Selected.Clear();
+            for (int y = 0; y < r.Height; ++y)
+            {
+                for (int x = 0; x < r.Width; ++x)
+                {
+                    short tile = (short)((r.X + x) + (r.Y + y) * w);
+                    if (tile < 0 || tile > Tileset.Tiles.Count - 1) tile = -1;
+                    Selected.Add(tile);
+                }
+            }
         }
 
         private void zoomInItem_Click(object sender, EventArgs e)
@@ -156,7 +228,7 @@ namespace Sphere_Editor.EditorComponents
 
         private void insertItem_Click(object sender, EventArgs e)
         {
-            AddTiles(Selected, 1);
+            AddTiles(Selected[0], 1);
         }
 
         private void addItem_Click(object sender, EventArgs e)
@@ -197,12 +269,6 @@ namespace Sphere_Editor.EditorComponents
             insertItem.Visible = CanInsert;
         }
 
-        private void TilesetControl2_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Right)
-                TileContextStrip.Show(this, e.Location);
-        }
-
         public void UpdateHeight()
         {
             if (_tile_w_zoom == 0) return;
@@ -218,13 +284,13 @@ namespace Sphere_Editor.EditorComponents
 
         private void RemoveTiles(int count)
         {
-            int amount = Math.Min(count, _tileset.Tiles.Count - Selected);
+            /*int amount = Math.Min(count, _tileset.Tiles.Count - Selected);
             List<Tile> removed = new List<Tile>(amount);
             for (int i = 0; i < amount; ++i) removed.Add(_tileset.Tiles[Selected + i]);
             _tileset.Tiles.RemoveRange(Selected, amount);
             UpdateHeight();
             Invalidate();
-            if (TileRemoved != null) TileRemoved(Selected, removed);
+            if (TileRemoved != null) TileRemoved(Selected, removed);*/
         }
 
         private void AddTiles(short start, short count)
@@ -240,6 +306,52 @@ namespace Sphere_Editor.EditorComponents
             UpdateHeight();
             Invalidate();
             if (TileAdded != null) TileAdded(start, added);
+        }
+
+        /// <summary>
+        /// Compiles the Selected list into a single image.
+        /// </summary>
+        /// <returns>A System.Drawing.Bitmap of the selected area.</returns>
+        public Bitmap GetCompiledImage()
+        {
+            int w = Selection.Width * _tileset.TileWidth;
+            int h = Selection.Height * _tileset.TileHeight;
+            int i = 0;
+            Bitmap image = new Bitmap(w, h, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            using (Graphics g = Graphics.FromImage(image))
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                for (int y = 0; y < image.Height; y += _tileset.TileHeight)
+                {
+                    for (int x = 0; x < image.Width; x += _tileset.TileWidth)
+                    {
+                        if (Selected[i] < 0)
+                        {
+                            g.FillRectangle(Brushes.Gray, new Rectangle(x, y, _tileset.TileWidth, _tileset.TileHeight));
+                        }
+                        else
+                        {
+                            g.DrawImageUnscaled(_tileset.Tiles[Selected[i]].Graphic, x, y);
+                        }
+                        i++;
+                    }
+                }
+            }
+            return image;
+        }
+
+        /// <summary>
+        /// Sets the images of the selected tiles;
+        /// </summary>
+        /// <param name="images"></param>
+        public void SetImages(List<Bitmap> images)
+        {
+            for (int i = 0; i < images.Count; ++i)
+            {
+                if (i >= Selected.Count || Selected[i] < 0) continue;
+                _tileset.Tiles[Selected[i]].Graphic = images[i];
+            }
+            Invalidate();
         }
     }
 }

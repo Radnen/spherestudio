@@ -40,7 +40,7 @@
             this.ConfigPathBox = new System.Windows.Forms.TextBox();
             this.FontComboBox = new System.Windows.Forms.ComboBox();
             this.FontLabel = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.PropLabel = new System.Windows.Forms.Label();
             this.ItemCheckBox = new System.Windows.Forms.CheckedListBox();
@@ -50,19 +50,29 @@
             this.PathListBox = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Tip = new System.Windows.Forms.ToolTip(this.components);
-            this.tabControl1.SuspendLayout();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.PluginList = new System.Windows.Forms.ListView();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.AuthorCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.VersionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.DescriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // cancelButton
             // 
             this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(102, 12);
+            this.cancelButton.Location = new System.Drawing.Point(115, 12);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(87, 23);
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 0;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -71,9 +81,9 @@
             // 
             this.OkButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OkButton.Location = new System.Drawing.Point(205, 12);
+            this.OkButton.Location = new System.Drawing.Point(204, 12);
             this.OkButton.Name = "OkButton";
-            this.OkButton.Size = new System.Drawing.Size(87, 23);
+            this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 1;
             this.OkButton.Text = "OK";
             this.OkButton.UseVisualStyleBackColor = true;
@@ -83,7 +93,7 @@
             this.SpherePathLabel.AutoSize = true;
             this.SpherePathLabel.Location = new System.Drawing.Point(3, 3);
             this.SpherePathLabel.Name = "SpherePathLabel";
-            this.SpherePathLabel.Size = new System.Drawing.Size(120, 13);
+            this.SpherePathLabel.Size = new System.Drawing.Size(102, 13);
             this.SpherePathLabel.TabIndex = 2;
             this.SpherePathLabel.Text = "Sphere Engine Path";
             // 
@@ -91,18 +101,18 @@
             // 
             this.SpherePathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpherePathBox.Location = new System.Drawing.Point(6, 19);
+            this.SpherePathBox.Location = new System.Drawing.Point(5, 19);
             this.SpherePathBox.Name = "SpherePathBox";
-            this.SpherePathBox.Size = new System.Drawing.Size(331, 20);
+            this.SpherePathBox.Size = new System.Drawing.Size(339, 20);
             this.SpherePathBox.TabIndex = 5;
             // 
             // SpherePathButton
             // 
             this.SpherePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SpherePathButton.Image = global::Sphere_Editor.Properties.Resources.folder;
-            this.SpherePathButton.Location = new System.Drawing.Point(343, 17);
+            this.SpherePathButton.Location = new System.Drawing.Point(349, 17);
             this.SpherePathButton.Name = "SpherePathButton";
-            this.SpherePathButton.Size = new System.Drawing.Size(36, 23);
+            this.SpherePathButton.Size = new System.Drawing.Size(31, 23);
             this.SpherePathButton.TabIndex = 8;
             this.Tip.SetToolTip(this.SpherePathButton, "Click here to set the engine");
             this.SpherePathButton.UseVisualStyleBackColor = true;
@@ -112,7 +122,7 @@
             this.ConfigPathLabel.AutoSize = true;
             this.ConfigPathLabel.Location = new System.Drawing.Point(3, 42);
             this.ConfigPathLabel.Name = "ConfigPathLabel";
-            this.ConfigPathLabel.Size = new System.Drawing.Size(73, 13);
+            this.ConfigPathLabel.Size = new System.Drawing.Size(62, 13);
             this.ConfigPathLabel.TabIndex = 3;
             this.ConfigPathLabel.Text = "Config Path";
             // 
@@ -121,7 +131,7 @@
             this.GamePathLabel.AutoSize = true;
             this.GamePathLabel.Location = new System.Drawing.Point(3, 81);
             this.GamePathLabel.Name = "GamePathLabel";
-            this.GamePathLabel.Size = new System.Drawing.Size(75, 13);
+            this.GamePathLabel.Size = new System.Drawing.Size(65, 13);
             this.GamePathLabel.TabIndex = 4;
             this.GamePathLabel.Text = "Game Paths";
             // 
@@ -129,9 +139,9 @@
             // 
             this.ConfigPathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConfigPathBox.Location = new System.Drawing.Point(8, 58);
+            this.ConfigPathBox.Location = new System.Drawing.Point(7, 58);
             this.ConfigPathBox.Name = "ConfigPathBox";
-            this.ConfigPathBox.Size = new System.Drawing.Size(329, 20);
+            this.ConfigPathBox.Size = new System.Drawing.Size(338, 20);
             this.ConfigPathBox.TabIndex = 6;
             // 
             // FontComboBox
@@ -143,31 +153,32 @@
             "Arial",
             "Comic Sans MS",
             "Courier"});
-            this.FontComboBox.Location = new System.Drawing.Point(11, 132);
+            this.FontComboBox.Location = new System.Drawing.Point(9, 132);
             this.FontComboBox.Name = "FontComboBox";
-            this.FontComboBox.Size = new System.Drawing.Size(175, 21);
+            this.FontComboBox.Size = new System.Drawing.Size(151, 21);
             this.FontComboBox.TabIndex = 15;
             this.FontComboBox.Text = "Verdana";
             // 
             // FontLabel
             // 
             this.FontLabel.AutoSize = true;
-            this.FontLabel.Location = new System.Drawing.Point(8, 116);
+            this.FontLabel.Location = new System.Drawing.Point(7, 116);
             this.FontLabel.Name = "FontLabel";
-            this.FontLabel.Size = new System.Drawing.Size(108, 13);
+            this.FontLabel.Size = new System.Drawing.Size(90, 13);
             this.FontLabel.TabIndex = 14;
             this.FontLabel.Text = "Editor Label Font:";
             // 
-            // tabControl1
+            // SettingsTabs
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(395, 300);
-            this.tabControl1.TabIndex = 14;
+            this.SettingsTabs.Controls.Add(this.tabPage1);
+            this.SettingsTabs.Controls.Add(this.tabPage2);
+            this.SettingsTabs.Controls.Add(this.tabPage3);
+            this.SettingsTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsTabs.Location = new System.Drawing.Point(0, 0);
+            this.SettingsTabs.Name = "SettingsTabs";
+            this.SettingsTabs.SelectedIndex = 0;
+            this.SettingsTabs.Size = new System.Drawing.Size(394, 251);
+            this.SettingsTabs.TabIndex = 14;
             // 
             // tabPage1
             // 
@@ -178,7 +189,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(387, 274);
+            this.tabPage1.Size = new System.Drawing.Size(386, 225);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -186,22 +197,24 @@
             // PropLabel
             // 
             this.PropLabel.AutoSize = true;
-            this.PropLabel.Location = new System.Drawing.Point(6, 3);
+            this.PropLabel.Location = new System.Drawing.Point(5, 3);
             this.PropLabel.Name = "PropLabel";
-            this.PropLabel.Size = new System.Drawing.Size(64, 13);
+            this.PropLabel.Size = new System.Drawing.Size(54, 13);
             this.PropLabel.TabIndex = 19;
             this.PropLabel.Text = "Properties";
             // 
             // ItemCheckBox
             // 
+            this.ItemCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.ItemCheckBox.FormattingEnabled = true;
             this.ItemCheckBox.Items.AddRange(new object[] {
             "Wine Mode",
             "Update Script Headers",
             "Open Last Project"});
-            this.ItemCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.ItemCheckBox.Location = new System.Drawing.Point(5, 19);
             this.ItemCheckBox.Name = "ItemCheckBox";
-            this.ItemCheckBox.Size = new System.Drawing.Size(375, 94);
+            this.ItemCheckBox.Size = new System.Drawing.Size(373, 94);
             this.ItemCheckBox.TabIndex = 18;
             // 
             // tabPage2
@@ -218,7 +231,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(387, 274);
+            this.tabPage2.Size = new System.Drawing.Size(386, 225);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -226,9 +239,9 @@
             // RemoveButton
             // 
             this.RemoveButton.Enabled = false;
-            this.RemoveButton.Location = new System.Drawing.Point(89, 198);
+            this.RemoveButton.Location = new System.Drawing.Point(76, 198);
             this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(75, 23);
+            this.RemoveButton.Size = new System.Drawing.Size(64, 23);
             this.RemoveButton.TabIndex = 11;
             this.RemoveButton.Text = "Remove Path";
             this.Tip.SetToolTip(this.RemoveButton, "Remove selected gamepath.");
@@ -237,9 +250,9 @@
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(8, 198);
+            this.AddButton.Location = new System.Drawing.Point(7, 198);
             this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(75, 23);
+            this.AddButton.Size = new System.Drawing.Size(64, 23);
             this.AddButton.TabIndex = 10;
             this.AddButton.Text = "Add...";
             this.Tip.SetToolTip(this.AddButton, "Add a games path to this list.");
@@ -248,10 +261,12 @@
             // 
             // PathListBox
             // 
+            this.PathListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.PathListBox.FormattingEnabled = true;
-            this.PathListBox.Location = new System.Drawing.Point(6, 97);
+            this.PathListBox.Location = new System.Drawing.Point(5, 97);
             this.PathListBox.Name = "PathListBox";
-            this.PathListBox.Size = new System.Drawing.Size(373, 95);
+            this.PathListBox.Size = new System.Drawing.Size(340, 95);
             this.PathListBox.TabIndex = 9;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
@@ -260,34 +275,105 @@
             this.panel1.Controls.Add(this.cancelButton);
             this.panel1.Controls.Add(this.OkButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 300);
+            this.panel1.Location = new System.Drawing.Point(0, 251);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(395, 46);
+            this.panel1.Size = new System.Drawing.Size(394, 46);
             this.panel1.TabIndex = 15;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.PluginList);
+            this.tabPage3.Controls.Add(this.panel2);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(386, 225);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Plugins";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // PluginList
+            // 
+            this.PluginList.CheckBoxes = true;
+            this.PluginList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.NameCol,
+            this.AuthorCol,
+            this.VersionCol,
+            this.DescriptionCol});
+            this.PluginList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PluginList.GridLines = true;
+            this.PluginList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.PluginList.Location = new System.Drawing.Point(3, 36);
+            this.PluginList.Name = "PluginList";
+            this.PluginList.Size = new System.Drawing.Size(380, 186);
+            this.PluginList.TabIndex = 0;
+            this.PluginList.UseCompatibleStateImageBehavior = false;
+            this.PluginList.View = System.Windows.Forms.View.Details;
+            this.PluginList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.PluginList_ItemChecked);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(380, 33);
+            this.panel2.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(380, 33);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "This is a list of plugins that are present in the /plugins directory.\r\nHit the ch" +
+                "eck boxes to add or remove features from the editor.";
+            // 
+            // NameCol
+            // 
+            this.NameCol.Text = "Name";
+            this.NameCol.Width = 70;
+            // 
+            // AuthorCol
+            // 
+            this.AuthorCol.Text = "Author";
+            // 
+            // VersionCol
+            // 
+            this.VersionCol.Text = "Version";
+            this.VersionCol.Width = 50;
+            // 
+            // DescriptionCol
+            // 
+            this.DescriptionCol.Text = "Description";
+            this.DescriptionCol.Width = 195;
             // 
             // EditorSettings
             // 
             this.AcceptButton = this.OkButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(395, 346);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(394, 297);
+            this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(640, 480);
+            this.MaximumSize = new System.Drawing.Size(549, 480);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(380, 223);
+            this.MinimumSize = new System.Drawing.Size(400, 325);
             this.Name = "EditorSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Editor Settings";
-            this.tabControl1.ResumeLayout(false);
+            this.Load += new System.EventHandler(this.EditorSettings_Load);
+            this.SettingsTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -305,7 +391,7 @@
         private System.Windows.Forms.TextBox ConfigPathBox;
         private System.Windows.Forms.Label FontLabel;
         private System.Windows.Forms.ComboBox FontComboBox;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl SettingsTabs;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.CheckedListBox ItemCheckBox;
         private System.Windows.Forms.TabPage tabPage2;
@@ -315,5 +401,13 @@
         private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.ToolTip Tip;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ListView PluginList;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ColumnHeader NameCol;
+        private System.Windows.Forms.ColumnHeader AuthorCol;
+        private System.Windows.Forms.ColumnHeader VersionCol;
+        private System.Windows.Forms.ColumnHeader DescriptionCol;
     }
 }

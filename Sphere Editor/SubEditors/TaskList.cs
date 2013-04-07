@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -14,218 +14,209 @@ namespace Sphere_Editor.SubEditors
     {
         private ImageList _imagelist = new ImageList();
 
-        private enum Priority { Hi = 1, Med = 2, Lo = 3 };
+        private enum View { Expanded = 0, Compacted = 1 };
 
-        private class ListViewComparer : IComparer
-        {
-            int _column = 0;
-
-            public ListViewComparer(int column)
-            {
-                _column = column;
-            }
-
-            public int Compare(object a, object b)
-            {
-                if (_column == 1)
-                {
-                    int itema = (int)((ListViewItem)a).Tag;
-                    int itemb = (int)((ListViewItem)b).Tag;
-                    return itema.CompareTo(itemb);
-                }
-                else
-                {
-                    return ((ListViewItem)a).Text.CompareTo(((ListViewItem)b).Text);
-                }
-            }
-        }
-
+        private Color _loColor = Color.FromArgb(150, 250, 150);
+        private Color _medColor = Color.FromArgb(250, 250, 150);
+        private Color _hiColor = Color.FromArgb(250, 150, 150);
+        private Color _noColor = Color.FromArgb(255, 255, 255);
 
         public TaskList()
         {
             InitializeComponent();
             _imagelist.ColorDepth = ColorDepth.Depth32Bit;
-            _imagelist.Images.Add(Sphere_Editor.Properties.Resources.lightbulb);
-            _imagelist.Images.Add(Sphere_Editor.Properties.Resources.lightbulb_off);
-            TaskListView.SmallImageList = _imagelist;
-        }
+            _imagelist.Images.Add("not", Properties.Resources.lightbulb);
+            _imagelist.Images.Add("done", Properties.Resources.lightbulb_off);
+            ObjectTaskList.SmallImageList = _imagelist;
 
-        public void AddTask()
-        {
-            ListViewItem item = new ListViewItem("New Task", 1);
-            item.SubItems.Add("Lo");
-            item.Tag = 3;
-            TaskListView.Items.Add(item);
-            item.BeginEdit();
-        }
+            olvColumn1.ImageGetter = delegate(object rowObject)
+            {
+                Task t = (Task)rowObject;
+                if (t.Finished) return "done";
+                else return "not";
+            };
 
-        private void SetTaskPriority(ListViewItem item, Priority p)
-        {
-            item.Tag = (int)p;
-            item.SubItems[1].Text = Enum.GetName(typeof(Priority), p);
-        }
+            string[] names = Enum.GetNames(typeof(TaskType));
+            foreach (string s in names)
+            {
+                EventHandler eh = new EventHandler(SetType_Click);
+                SetTypeItem.DropDownItems.Add(s, Properties.Resources.lightbulb, eh);
+            }
 
-        private Priority GetTaskPriority(ListViewItem item)
-        {
-            return (Priority)item.Tag;
+            names = Enum.GetNames(typeof(TaskPriority));
+            foreach (string s in names)
+            {
+                EventHandler eh = new EventHandler(SetPriorityItem_Click);
+                SetPriorityItem.DropDownItems.Add(s, Properties.Resources.resultset_none, eh);
+            }
         }
 
         private void AddTaskItem_Click(object sender, EventArgs e)
         {
-            AddTask();
-            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
-        }
-
-        private void TaskListView_Resize(object sender, EventArgs e)
-        {
-            TaskListView.Columns[0].Width = TaskListView.Width - 60;
-        }
-
-        private void TaskListView_ItemChecked(object sender, ItemCheckedEventArgs e)
-        {
-            if (e.Item.ImageIndex == 1)
-            {
-                e.Item.Font = new Font(e.Item.Font, FontStyle.Regular);
-                e.Item.ImageIndex = 0;
-            }
-            else if (e.Item.ImageIndex == 0)
-            {
-                e.Item.Font = new Font(e.Item.Font, FontStyle.Strikeout);
-                e.Item.ImageIndex = 1;
-            }
+            ObjectTaskList.AddObject(new Task("New Task"));
+            TaskLabel.Text = string.Format("Tasks ({0})", ObjectTaskList.GetItemCount());
         }
 
         private void RemoveTaskItem_Click(object sender, EventArgs e)
         {
-            if (TaskListView.SelectedItems.Count > 0) TaskListView.SelectedItems[0].Remove();
-            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
+            if (ObjectTaskList.SelectedObject != null)
+                ObjectTaskList.RemoveObject(ObjectTaskList.SelectedObject);
+            TaskLabel.Text = string.Format("Tasks ({0})", ObjectTaskList.GetItemCount());
         }
 
         private void EditTaskItem_Click(object sender, EventArgs e)
         {
-            if (TaskListView.Items.Count > 0) TaskListView.SelectedItems[0].BeginEdit();
+            if (ObjectTaskList.SelectedObject != null)
+                ObjectTaskList.SelectedItem.BeginEdit();
         }
 
         private void RemoveCompletedItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < TaskListView.Items.Count; ++i)
+            foreach (Task task in ObjectTaskList.Objects)
             {
-                if (TaskListView.Items[i].Checked)
-                {
-                    TaskListView.Items[i].Remove();
-                    i--;
-                }
+                if (task.Finished) ObjectTaskList.RemoveObject(task);
             }
-            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
+            TaskLabel.Text = string.Format("Tasks ({0})", ObjectTaskList.GetItemCount());
         }
 
-        private void TaskListMenuStrip_Opening(object sender, CancelEventArgs e)
+        /// <summary>
+        /// Attempts to delete the tasklist file if there is nothing left.
+        /// </summary>
+        /// <returns>True if the file was clean, false if there is stuff to save.</returns>
+        private bool Clean()
         {
-            bool available = TaskListView.SelectedItems.Count > 0;
-            RemoveTaskItem.Enabled = EditTaskItem.Enabled = available;
-            RemoveCompletedItem.Enabled = TaskListView.Items.Count > 0;
+            if (Global.CurrentProject == null) return true;
+            if (ObjectTaskList.GetItemCount() > 0) return false;
+            if (File.Exists(Global.CurrentProject.RootPath + "\\tasks.list"))
+                File.Delete(Global.CurrentProject.RootPath + "\\tasks.list");
+            return true;
+        }
+
+        /// <summary>
+        /// Clears the list out
+        /// </summary>
+        public void Clear()
+        {
+            ObjectTaskList.ClearObjects();
+            TaskLabel.Text = "Tasks (0)";
         }
 
         /// <summary>
         /// Tasks are saved as follows:
-        /// word: # of tasks
+        /// int32: # of tasks
         /// for each task:
-        ///   byte: checked switch;
-        ///   word: # of letters in text;
-        ///   text: the name of the task;
+        ///   bool: checked switch;
+        ///   string: name of task;
+        ///   int32: ID;
+        ///   int32: type;
         /// </summary>
         public void SaveList()
         {
-            if (TaskListView.Items.Count == 0)
-            {
-                if (Global.CurrentProject == null) return;
-                if (File.Exists(Global.CurrentProject.RootPath + "\\tasks.list"))
-                {
-                    File.Delete(Global.CurrentProject.RootPath + "\\tasks.list");
-                }
-                return;
-            }
+            // clean the file
+            if (Clean()) return;
 
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(Global.CurrentProject.RootPath + "\\tasks.list")))
             {
-                writer.Write((short)TaskListView.Items.Count);
-                foreach (ListViewItem li in TaskListView.Items)
+                writer.Write(ObjectTaskList.GetItemCount());
+                foreach (Task task in ObjectTaskList.Objects)
                 {
-                    writer.Write(li.Checked);
-                    writer.Write(li.Text);
-                    writer.Write((int)li.Tag);
+                    writer.Write(task.Finished);
+                    writer.Write(task.Name);
+                    writer.Write((int)task.Priority);
+                    writer.Write((int)task.Type);
                 }
                 writer.Flush();
             }
-
-            TaskListView.Items.Clear();
-            TaskLabel.Text = "Tasks (0)";
         }
 
         public void LoadList()
         {
+            ObjectTaskList.ClearObjects();
             if (!File.Exists(Global.CurrentProject.RootPath + "\\tasks.list")) return;
             using (BinaryReader reader = new BinaryReader(File.OpenRead(Global.CurrentProject.RootPath + "\\tasks.list")))
             {
-                short amt = reader.ReadInt16();
+                List<Task> tasks = new List<Task>();
+                int amt = reader.ReadInt32();
                 while (amt-- > 0)
                 {
-                    ListViewItem item = new ListViewItem("", 2);
-                    item.Checked = reader.ReadBoolean();
-                    if (item.Checked)
-                    {
-                        item.ImageIndex = 1;
-                        item.Font = new Font(item.Font, FontStyle.Strikeout);
-                    }
-                    item.Text = reader.ReadString();
-                    item.Tag = reader.ReadInt32();
-                    item.SubItems.Add(Enum.GetName(typeof(Priority), (Priority)item.Tag));
-                    TaskListView.Items.Add(item);
+                    Task t = new Task();
+                    t.Finished = reader.ReadBoolean();
+                    t.Name = reader.ReadString();
+                    t.Priority = (TaskPriority)reader.ReadInt32();
+                    t.Type = (TaskType)reader.ReadInt32();
+                    tasks.Add(t);
                 }
+                ObjectTaskList.SetObjects(tasks);
+                TaskLabel.Text = string.Format("Tasks ({0})", tasks.Count);
             }
-            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
         }
 
         private void ClearAllItem_Click(object sender, EventArgs e)
         {
-            TaskListView.Items.Clear();
-            TaskLabel.Text = "Tasks (0)";
+            Clear();
         }
 
         private void priorityUpButton_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem li in TaskListView.SelectedItems)
-            {
-                Priority p = GetTaskPriority(li);
-                if (p == Priority.Lo) SetTaskPriority(li, Priority.Med);
-                else if (p == Priority.Med) SetTaskPriority(li, Priority.Hi);
-            }
+            foreach (Task task in ObjectTaskList.SelectedObjects)
+                task.IncreasePriority();
+            ObjectTaskList.RefreshSelectedObjects();
         }
 
         private void priorityDownButton_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem li in TaskListView.SelectedItems)
-            {
-                Priority p = GetTaskPriority(li);
-                if (p == Priority.Hi) SetTaskPriority(li, Priority.Med);
-                else if (p == Priority.Med) SetTaskPriority(li, Priority.Lo);
-            }
+            foreach (Task task in ObjectTaskList.SelectedObjects)
+                task.DecreasePriority();
+            ObjectTaskList.RefreshSelectedObjects();
         }
 
         private void DeleteItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem li in TaskListView.SelectedItems)
-            {
-                TaskListView.Items.Remove(li);
-            }
-            TaskLabel.Text = string.Format("Tasks ({0})", TaskListView.Items.Count);
+            foreach (Task task in ObjectTaskList.SelectedObjects)
+                ObjectTaskList.RemoveObject(task);
+            TaskLabel.Text = string.Format("Tasks ({0})", ObjectTaskList.GetItemCount());
         }
 
-        private void TaskListView_ColumnClick(object sender, ColumnClickEventArgs e)
+        private void SetType_Click(object sender, EventArgs e)
         {
-            // sort by priority
-            TaskListView.ListViewItemSorter = (IComparer)new ListViewComparer(e.Column);
-            TaskListView.Sort();
+            foreach (Task task in ObjectTaskList.SelectedObjects)
+            {
+                int index = SetTypeItem.DropDownItems.IndexOf((ToolStripItem)sender);
+                task.Type = (TaskType)index;
+                ObjectTaskList.RefreshObject(task);
+            }
+        }
+
+        private void SetPriorityItem_Click(object sender, EventArgs e)
+        {
+            foreach (Task task in ObjectTaskList.SelectedObjects)
+            {
+                int index = SetPriorityItem.DropDownItems.IndexOf((ToolStripItem)sender);
+                task.Priority = (TaskPriority)index;
+                ObjectTaskList.RefreshObject(task);
+            }
+        }
+
+        private void ObjectTaskList_FormatRow(object sender, BrightIdeasSoftware.FormatRowEventArgs e)
+        {
+            Task task = (Task)e.Model;
+            switch (task.Priority)
+            {
+                case TaskPriority.Hi: e.Item.BackColor = _hiColor; break;
+                case TaskPriority.Lo: e.Item.BackColor = _loColor; break;
+                case TaskPriority.Med: e.Item.BackColor = _medColor; break;
+                case TaskPriority.None: e.Item.BackColor = _noColor; break;
+            }
+        }
+
+        private void ObjectTaskList_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
+        {
+            Task task = (Task)e.Model;
+            if (e.ColumnIndex == olvColumn1.Index)
+            {
+                FontStyle style = task.Finished ? FontStyle.Strikeout : FontStyle.Regular;
+                e.SubItem.Font = new Font(e.SubItem.Font, style);
+            }
         }
     }
 }

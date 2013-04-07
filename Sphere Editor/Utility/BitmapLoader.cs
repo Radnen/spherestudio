@@ -1,10 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using System;
 
-namespace Sphere_Editor.Bitmaps
+namespace Sphere_Editor.Utility
 {
     // used for fast and easy bitmap extraction from a stream.
     // by Andrew Helenius, 2010-2012

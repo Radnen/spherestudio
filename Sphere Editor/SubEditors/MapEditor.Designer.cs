@@ -201,9 +201,11 @@
             this.MapControl.Location = new System.Drawing.Point(0, 0);
             this.MapControl.MapPixel = new System.Drawing.Point(0, 0);
             this.MapControl.Name = "MapControl";
+            this.MapControl.SelWidth = 1;
             this.MapControl.ShowCameraBounds = false;
             this.MapControl.Size = new System.Drawing.Size(457, 158);
             this.MapControl.TabIndex = 1;
+            this.MapControl.Tiles = null;
             this.MapControl.Tool = Sphere_Editor.EditorComponents.MapControl.MapTool.Pen;
             this.MapControl.PropChanged += new System.EventHandler(this.MapControl_PropChanged);
             this.MapControl.Edited += new System.EventHandler(this.MapControl_Edited);
@@ -487,9 +489,10 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.TilesetControl.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TilesetControl.BackgroundImage")));
             this.TilesetControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.TilesetControl.CanInsert = true;
             this.TilesetControl.Location = new System.Drawing.Point(3, 3);
             this.TilesetControl.Name = "TilesetControl";
-            this.TilesetControl.Selected = ((short)(0));
+            this.TilesetControl.Selected = ((System.Collections.Generic.List<short>)(resources.GetObject("TilesetControl.Selected")));
             this.TilesetControl.Size = new System.Drawing.Size(0, 298);
             this.TilesetControl.TabIndex = 0;
             this.TilesetControl.Tileset = null;

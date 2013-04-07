@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.IO;
-using Sphere_Editor.Bitmaps;
+using Sphere_Editor.Utility;
 using Sphere_Editor.Forms;
 
 namespace Sphere_Editor.SphereObjects

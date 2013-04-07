@@ -29,6 +29,7 @@ namespace Sphere_Editor.SubEditors
             InitializeComponent();
             InitializeDocking();
             TileEditor.Tileset = TilesetControl;
+            TilesetControl.MultiSelect = true;
         }
 
         #region docking
@@ -126,6 +127,7 @@ namespace Sphere_Editor.SubEditors
 
             TilesetControl.Tileset = MapControl.BaseMap.Tileset;
             TilesetControl.Select(0);
+            SelectTiles(TilesetControl.Selected);
             InitLayers();
             MapControl.UpdateView();
 
@@ -154,6 +156,7 @@ namespace Sphere_Editor.SubEditors
             MapControl.BaseMap = map;
             TilesetControl.Tileset = MapControl.BaseMap.Tileset;
             TilesetControl.Select(0);
+            SelectTiles(TilesetControl.Selected);
             TilesetControl.ZoomIn();
             InitLayers();
             MapControl.UpdateView();
@@ -250,14 +253,13 @@ namespace Sphere_Editor.SubEditors
             MapControl.ResizeLayers(tile_width, tile_height);
             TilesetControl.UpdateTileSize();
             TilesetControl.Invalidate();
-            TilesetControl.Select(TilesetControl.Selected);
         }
 
         public void UpdateTileset(string filename)
         {
             Map.Tileset.UpdateFromImage(filename);
             MapControl.RefreshLayers();
-            TilesetControl.Select(TilesetControl.Selected);
+            TilesetControl.Invalidate();
             Invalidate(true);
         }
 
@@ -284,10 +286,7 @@ namespace Sphere_Editor.SubEditors
         private void Layers_LayerChanged(LayerControl sender, LayerItem layer)
         {
             List<Layer> layers = new List<Layer>();
-            foreach (LayerItem li in sender.Items)
-            {
-                layers.Add(li.Layer);
-            }
+            foreach (LayerItem li in sender.Items) layers.Add(li.Layer);
             byte start = (byte)((layer.Start) ? layer.Index : sender.StartLayer);
             if (layer.State == ListViewItemStates.Selected) MapControl.CurrentLayer = (short)layer.Index;
             MapControl.SetLayers(layers, start);
@@ -351,23 +350,25 @@ namespace Sphere_Editor.SubEditors
         {
             Undo();
             TilesetControl.UpdateHeight();
-            SelectTile(TilesetControl.Selected);
+            SelectTiles(TilesetControl.Selected);
         }
 
         private void redoButton_Click(object sender, EventArgs e)
         {
             Redo();
             TilesetControl.UpdateHeight();
-            SelectTile(TilesetControl.Selected);
+            SelectTiles(TilesetControl.Selected);
         }
 
-        private void SelectTile(short tile)
+        private void SelectTiles(List<short> tiles)
         {
-            if (tile >= Map.Tileset.Tiles.Count) tile = (short)(Map.Tileset.Tiles.Count - 1);
-            MapControl.CurrentTile = tile;
-            TilesetControl.Selected = tile;
-            TileDrawer.SetImage(Map.Tileset.Tiles[tile].Graphic, true);
-            TileEditor.Tile = Map.Tileset.Tiles[tile];
+            MapControl.Tiles = tiles;
+            MapControl.SelWidth = TilesetControl.Selection.Width;
+            MapControl.CurrentTile = tiles[0];
+            Bitmap img = TilesetControl.GetCompiledImage();
+            TileDrawer.SetImage(img, true);
+            img.Dispose();
+            TileEditor.Tile = Map.Tileset.Tiles[tiles[0]];
         }
 
         private void showCameraButton_Click(object sender, EventArgs e)
@@ -394,8 +395,9 @@ namespace Sphere_Editor.SubEditors
 
         private void TileDrawer_ImageEdited(object sender, EventArgs e)
         {
-            TilesetControl.Tileset.Tiles[TilesetControl.Selected].Graphic = TileDrawer.GetImage();
-            TilesetControl.Invalidate();
+            short tw = TilesetControl.Tileset.TileWidth;
+            short th = TilesetControl.Tileset.TileHeight;
+            TilesetControl.SetImages(TileDrawer.GetImages(tw, th));
             MapControl.RefreshLayers();
             if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
         }
@@ -450,9 +452,9 @@ namespace Sphere_Editor.SubEditors
             MapControl.RefreshLayers();
         }
 
-        private void TilesetControl_TileSelected(short tile)
+        private void TilesetControl_TileSelected(List<short> tiles)
         {
-            SelectTile(tile);
+            SelectTiles(tiles);
         }
 
         private void TilesetControl_TileRemoved(short tile, List<Tile> tiles)
@@ -465,7 +467,7 @@ namespace Sphere_Editor.SubEditors
             
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            SelectTile(tile);
+            TilesetControl.Select(tile);
             if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
         }
 
@@ -479,7 +481,7 @@ namespace Sphere_Editor.SubEditors
 
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            SelectTile(tile);
+            TilesetControl.Select(tile);
             if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
         }
     }

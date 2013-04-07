@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Drawing;
+using System.IO;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.SphereObjects
 {
@@ -63,7 +63,7 @@ namespace Sphere_Editor.SphereObjects
             ts._has_obstruct = reader.ReadByte();
             reader.ReadBytes(240);
 
-            using (Bitmaps.BitmapLoader loader = new Bitmaps.BitmapLoader(ts.TileWidth, ts.TileHeight))
+            using (BitmapLoader loader = new BitmapLoader(ts.TileWidth, ts.TileHeight))
             {
                 int bit_size = ts.TileWidth * ts.TileHeight * 4;
                 Tile new_tile;
@@ -118,7 +118,7 @@ namespace Sphere_Editor.SphereObjects
                 writer.Write(new byte[240]);
 
                 // save tile pixels:
-                Bitmaps.BitmapSaver saver = new Bitmaps.BitmapSaver(TileWidth, TileHeight);
+                BitmapSaver saver = new BitmapSaver(TileWidth, TileHeight);
                 for (int i = 0; i < Tiles.Count; ++i)
                     saver.SaveToStream(Tiles[i].Graphic, writer);
 

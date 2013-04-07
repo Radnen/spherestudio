@@ -164,11 +164,11 @@ namespace Sphere_Editor.SubEditors
             FrameBaseEditor.Frame = _sprite.Directions[0].frames[0];
         }
 
-        void _tileset_ctrl_TileSelected(short tile)
+        void _tileset_ctrl_TileSelected(List<short> tiles)
         {
-            _selected_frame.Index = tile;
+            _selected_frame.Index = tiles[0];
             DirectionHolder.Invalidate(true);
-            SpriteDrawer.SetImage(_tileset_ctrl.Tileset.Tiles[tile].Graphic);
+            SpriteDrawer.SetImage(_tileset_ctrl.Tileset.Tiles[tiles[0]].Graphic);
             Modified(null, EventArgs.Empty);
         }
 
