@@ -114,7 +114,8 @@
       <HintPath>Libs\IrrKlang\irrKlang.NET2.0.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="ObjectListView">
+    <Reference Include="ObjectListView, Version=2.5.1.20896, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\objectlistview\ObjectListView.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=2.5.2.0, Culture=neutral, PublicKeyToken=948d6c9751444115, processorArchitecture=MSIL">

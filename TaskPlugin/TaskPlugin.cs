@@ -30,6 +30,7 @@ namespace TaskPlugin
         public void Initialize()
         {
             _list = new TaskList();
+            _list.Plugin = this;
             Host.DockControl(_list, "Task List Plugin", DockAreas.DockBottom | DockAreas.Document | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop, DockAlignment.Bottom);
         }
 

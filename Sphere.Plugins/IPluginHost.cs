@@ -8,6 +8,7 @@ namespace Sphere.Plugins
 {
     public interface IPluginHost
     {
+        string ProjectPath { get; }
         void DockControl(Control ctrl, string name, DockAreas areas, DockAlignment align);
         void RemoveControl(string name);
     }

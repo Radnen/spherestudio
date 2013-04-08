@@ -106,6 +106,7 @@ namespace Sphere_Editor.Settings
 
         private void EditorSettings_Load(object sender, EventArgs e)
         {
+            _updatePlugins = false;
             foreach (KeyValuePair<string, PluginWrapper> pair in Global.plugins)
             {
                 ListViewItem item = new ListViewItem();
@@ -114,11 +115,10 @@ namespace Sphere_Editor.Settings
                 item.SubItems.Add(pair.Value.Plugin.Version);
                 item.SubItems.Add(pair.Value.Plugin.Description);
                 item.Tag = pair.Key;
-                _updatePlugins = false;
                 item.Checked = pair.Value.Enabled;
                 PluginList.Items.Add(item);
-                _updatePlugins = true;
             }
+            _updatePlugins = true;
         }
 
         private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)

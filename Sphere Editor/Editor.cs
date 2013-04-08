@@ -139,6 +139,15 @@ namespace Sphere_Editor
             DockContent c = FindDocument(name);
             if (c != null) c.DockHandler.Close();
         }
+
+        public string ProjectPath
+        {
+            get
+            {
+                if (Global.CurrentProject == null) return "";
+                else return Global.CurrentProject.RootPath;
+            }
+        }
         #endregion
 
         private void EditorForm_Shown(object sender, EventArgs e)

@@ -117,10 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="TaskListMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>168, 17</value>
-  </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cross.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\information.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lightbulb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightbulb.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lightbulb_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightbulb_add.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lightbulb_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightbulb_delete.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lightbulb_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lightbulb_off.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="page_white_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\page_white_edit.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resultset_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resultset_down.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resultset_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resultset_next.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resultset_none" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resultset_none.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resultset_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resultset_previous.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resultset_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resultset_up.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
