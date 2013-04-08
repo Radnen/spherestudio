@@ -6,25 +6,73 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.IO;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere.Core.SphereObjects
 {
+    /// <summary>
+    /// A Sphere map layer.
+    /// </summary>
     public class Layer
     {
         #region attributes
         private short[,] _tiles;
+        /// <summary>
+        /// Gets the width of this Layer in tiles.
+        /// </summary>
         public short Width { get; private set; }
+
+        /// <summary>
+        /// Gets the height of this Layer in tiles.
+        /// </summary>
         public short Height { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the parallax x value of this Layer.
+        /// </summary>
         public float ParallaxX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parallax y value of this Layer.
+        /// </summary>
         public float ParallaxY { get; set; }
+
+        /// <summary>
+        /// Gets the scroll x value of this Layer. 
+        /// </summary>
         public float ScrollX { get; set; }
+
+        /// <summary>
+        /// Gets the scroll y value of this Layer.
+        /// </summary>
         public float ScrollY { get; set; }
+
+        /// <summary>
+        /// Gets r sets the reflectivity of this Layer.
+        /// </summary>
         public bool Reflective { get; set; }
+
+        /// <summary>
+        /// Gets or sets the visibility of this layer.
+        /// </summary>
         public bool Visible { get; set; }
+
+        /// <summary>
+        /// Gets or sets if it is parallaxed.
+        /// </summary>
         public bool Parallax { get; set; }
+        
+        /// <summary>
+        /// Gets the flags used by this Layer.
+        /// </summary>
         public short Flags { get; set; }
 
+        /// <summary>
+        /// Gets the name of this Layer.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets the list of obstruction segments used by this layer.
+        /// </summary>
         public List<Segment> Segments { get; private set; }
         #endregion
 

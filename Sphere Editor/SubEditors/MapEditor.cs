@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.EditorComponents;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -217,7 +217,7 @@ namespace Sphere_Editor.SubEditors
             foreach (Entity ent in Map.Entities)
                 ent.Visible = Map.Layers[ent.Layer].Visible;
 
-            foreach (Zone2 zone in Map.Zones)
+            foreach (Zone zone in Map.Zones)
                 zone.Visible = Map.Layers[zone.Layer].Visible;
 
             LayerEditor.Layers.StartLayer = MapControl.BaseMap.StartLayer;
@@ -273,7 +273,7 @@ namespace Sphere_Editor.SubEditors
             Map.Layers[layer.Index].Visible = layer.Visible;
             foreach (Entity ent in Map.Entities)
                 if (ent.Layer == layer.Index) ent.Visible = layer.Visible;
-            foreach (Zone2 zone in Map.Zones)
+            foreach (Zone zone in Map.Zones)
                 if (zone.Layer == layer.Index) zone.Visible = layer.Visible;
             MapControl.Invalidate();
         }

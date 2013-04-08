@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
-using Sphere_Editor.SphereObjects;
-using Sphere_Editor.Utility;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
+using Sphere.Core.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {

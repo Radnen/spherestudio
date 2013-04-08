@@ -1,6 +1,6 @@
 ﻿namespace Sphere_Editor.EditorComponents
 {
-    partial class Zone
+    partial class ZoneControl
     {
         /// <summary> 
         /// Required designer variable.

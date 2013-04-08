@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using Sphere_Editor.Forms;
-using Sphere_Editor.Settings;
-using System.Windows.Forms;
-using System.Reflection;
-using Sphere.Plugins;
-using Sphere_Editor.Utility;
 using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
+using Sphere.Plugins;
+using Sphere_Editor.Settings;
+using Sphere_Editor.Utility;
 
 namespace Sphere_Editor
 {
@@ -42,7 +40,7 @@ namespace Sphere_Editor
         public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
         public static ScriptSettings CurrentScriptSettings = new ScriptSettings();
-        public static Sphere_Editor.SphereObjects.Entity CopiedEnt { get; set; }
+        public static Sphere.Core.SphereObjects.Entity CopiedEnt { get; set; }
 
         // Extention checking functions. Globally useable. :)
         public static bool IsScript(ref string name)

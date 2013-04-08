@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere_Editor.Forms;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.SpritesetComponents

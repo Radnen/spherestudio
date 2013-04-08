@@ -8,6 +8,7 @@ using Sphere_Editor.Forms;
 using Sphere_Editor.RadEditors;
 using Sphere_Editor.Settings;
 using Sphere_Editor.SubEditors;
+using Sphere.Core.Utility;
 using Sphere_Editor.Utility;
 using WeifenLuo.WinFormsUI.Docking;
 

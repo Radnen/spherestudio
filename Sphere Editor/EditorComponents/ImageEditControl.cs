@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using Sphere_Editor.Forms.ColorPicker;
-using Sphere_Editor.Utility;
+using Sphere.Core.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {

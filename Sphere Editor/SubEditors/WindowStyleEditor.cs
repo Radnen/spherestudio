@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor.SubEditors

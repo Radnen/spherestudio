@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.SubEditors;
 using System.Drawing;
 using System.Drawing.Drawing2D;

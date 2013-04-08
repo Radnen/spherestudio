@@ -4,28 +4,66 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere.Core.SphereObjects
 {
-    public class Zone2
+    /// <summary>
+    /// A Sphere Zone object.
+    /// </summary>
+    public class Zone
     {
         #region attributes
         private short _x1, _y1;
         private short _x2, _y2;
+
+        /// <summary>
+        /// Gets or sers the layer index of this Zone.
+        /// </summary>
         public short Layer { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the number of steps for this Zone.
+        /// </summary>
         public short NumSteps { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Function used by this Zone.
+        /// </summary>
         public string Function { get; set; }
+
+        /// <summary>
+        /// Gets or sets the visibility of this Zone.
+        /// </summary>
         public bool Visible { get; set; }
+
         private static Brush _bg = new SolidBrush(Color.FromArgb(125, Color.Red));
         private static Brush _bg2 = new SolidBrush(Color.FromArgb(125, Color.Yellow));
         private static Pen _off_pen;
         #endregion
 
+        /// <summary>
+        /// Gets or sets the width of this Zone in pixels.
+        /// </summary>
         public int Width { get { return _x2 - _x1; } set { _x2 = (short)(_x1 + value); } }
+
+        /// <summary>
+        /// Gets or sets the height of this Zone in pixels.
+        /// </summary>
         public int Height { get { return _y2 - _y1; } set { _y2 = (short)(_y1 + value); } }
+        
+        /// <summary>
+        /// Gets or sets the x location of this Zone in pixels.
+        /// </summary>
         public int X { get { return _x1; } set { _x1 = (short)value; } }
+
+        /// <summary>
+        /// Gets or sets the y location of this zone in pixels.
+        /// </summary>
         public int Y { get { return _y1; } set { _y1 = (short)value; } }
 
-        public Zone2()
+        /// <summary>
+        /// Creates a new, blank zone.
+        /// </summary>
+        public Zone()
         {
             if (_off_pen == null)
             {
@@ -39,9 +77,14 @@ namespace Sphere_Editor.SphereObjects
             Visible = true;
         }
 
-        public static Zone2 FromBinary(BinaryReader reader)
+        /// <summary>
+        /// Creates a zone from a filestream.
+        /// </summary>
+        /// <param name="reader">The System.IO.BinrayReader to use.</param>
+        /// <returns>A zone object.</returns>
+        public static Zone FromBinary(BinaryReader reader)
         {
-            Zone2 zone = new Zone2();
+            Zone zone = new Zone();
 
             // read header:
             zone._x1 = reader.ReadInt16();
@@ -59,6 +102,10 @@ namespace Sphere_Editor.SphereObjects
             return zone;
         }
 
+        /// <summary>
+        /// Stores the zone into a filestream.
+        /// </summary>
+        /// <param name="writer">The System.IO.BinaryWriter to use.</param>
         public void Save(BinaryWriter writer)
         {
             // save header:
@@ -75,11 +122,23 @@ namespace Sphere_Editor.SphereObjects
             writer.Write(Function.ToCharArray());
         }
 
+        /// <summary>
+        /// Gets if whather or not the mouse is in a zone.
+        /// </summary>
+        /// <param name="mouse">The System.Drawing.Point of the mouses location.</param>
+        /// <returns>True if mouse is inside.</returns>
         public bool IsMouseWithin(Point mouse)
         {
             return (mouse.X >= X && mouse.X < X + Width && mouse.Y >= Y && mouse.Y < Y + Height);
         }
 
+        /// <summary>
+        /// Draws the zone to a System.drawing.Graphics.
+        /// </summary>
+        /// <param name="map">The System.Drawing.Graphics to use.</param>
+        /// <param name="offset">The x/y offset of the zone.</param>
+        /// <param name="lighted">The state the zone is in.</param>
+        /// <param name="zoom">The zoom factor.</param>
         public void Draw(Graphics map, Point offset, int lighted, int zoom)
         {
             if (!Visible) return;
@@ -105,9 +164,13 @@ namespace Sphere_Editor.SphereObjects
             }
         }
 
-        public Zone2 Clone()
+        /// <summary>
+        /// Creates a perfect copy of this Zone.
+        /// </summary>
+        /// <returns>A Zone object.</returns>
+        public Zone Clone()
         {
-            Zone2 zone = new Zone2();
+            Zone zone = new Zone();
             zone.X = X;
             zone.Y = Y;
             zone.Width = Width;

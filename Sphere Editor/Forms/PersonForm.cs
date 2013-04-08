@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.Forms
@@ -16,8 +16,7 @@ namespace Sphere_Editor.Forms
         public PersonForm(List<Entity> entities)
         {
             EntityList = entities;
-            Person = new Entity();
-            Person.Type = 1;
+            Person = new Entity(Entity.EntityType.Person);
             InitializeComponent();
             ScriptBox.Text = (string)Person.Scripts[0];
             ScriptBox.Dock = DockStyle.Fill;
@@ -28,7 +27,7 @@ namespace Sphere_Editor.Forms
         {
             EntityList = entities;
             Person = entity;
-            Person.Type = 1;
+            Person.Type = Entity.EntityType.Person;
             InitializeComponent();
             ScriptBox.Text = (string)Person.Scripts[0];
             ScriptBox.Dock = DockStyle.Fill;
@@ -52,10 +51,10 @@ namespace Sphere_Editor.Forms
             LayerComboBox.SelectedIndex = Person.Layer;
 
             // set sprite preview:
-            SpritePreview.Image = Person.GetSSImage();
+            SpritePreview.Image = Person.GetSSImage(Global.CurrentProject.RootPath);
 
             // fill in sprite directions:
-            string[] dirs = Person.GetSpriteDirections();
+            string[] dirs = Person.GetSpriteDirections(Global.CurrentProject.RootPath);
             if (dirs != null) DirectionBox.Items.AddRange(dirs);
             
             PositionLabel.Text = "(X: " + Person.X + ", Y: " + Person.Y + ")";
@@ -98,10 +97,10 @@ namespace Sphere_Editor.Forms
                     Person.Spriteset = SpritesetBox.Text;
 
                     // Load a spriteset image as a preview:
-                    SpritePreview.Image = Person.GetSSImage();
+                    SpritePreview.Image = Person.GetSSImage(Global.CurrentProject.RootPath);
                     
                     DirectionBox.Items.Clear();
-                    string[] dirs = Person.GetSpriteDirections();
+                    string[] dirs = Person.GetSpriteDirections(Global.CurrentProject.RootPath);
                     if (dirs != null) DirectionBox.Items.AddRange(dirs);
                 }
             }

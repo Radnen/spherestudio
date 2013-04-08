@@ -4,11 +4,14 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Sphere_Editor.Utility
+// by Andrew Helenius, 2010-2013
+
+namespace Sphere.Core.Utility
 {
-    // used for fast and easy bitmap extraction from a stream.
-    // by Andrew Helenius, 2010-2012
-    class BitmapLoader : IDisposable
+    /// <summary>
+    /// Efficiently loads bitmaps from a filestream.
+    /// </summary>
+    public class BitmapLoader : IDisposable
     {
         private Rectangle _rect;
         private FastBitmap _fast_img;
@@ -16,6 +19,11 @@ namespace Sphere_Editor.Utility
         private Bitmap _copy;
         private BitmapData _data;
 
+        /// <summary>
+        /// Creates a new bitmap loader. Which loads bitmaps from filestreams.
+        /// </summary>
+        /// <param name="width">The image width in pixels.</param>
+        /// <param name="height">the image height in pixels.</param>
         public BitmapLoader(int width, int height)
         {
             _rect = new Rectangle(0, 0, width, height);
@@ -27,7 +35,11 @@ namespace Sphere_Editor.Utility
             _fast_img = new FastBitmap(_image);
         }
 
-        // DIBstream is DIB content saved in a memory stream.
+        /// <summary>
+        /// Generates a bitmap from a DIB object.
+        /// </summary>
+        /// <param name="DIBstream">A stream representing a DIB object.</param>
+        /// <returns>A bitmap object.</returns>
         public static Bitmap BitmapFromDIB(MemoryStream DIBstream)
         {
             BinaryReader reader = new BinaryReader(DIBstream);
@@ -36,15 +48,21 @@ namespace Sphere_Editor.Utility
             int h = reader.ReadInt32();
             reader.ReadBytes(40);
 
-            BitmapLoader loader = new BitmapLoader(w, h);
-            loader.ColorFormat = ColorFormat.FormatARGB;
-            Bitmap image = loader.LoadFromStream(reader, (int)reader.BaseStream.Length - 52);
-            image.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            loader.Close();
-            
-            return image;
+            using (BitmapLoader loader = new BitmapLoader(w, h))
+            {
+                loader.ColorFormat = ColorFormat.FormatARGB;
+                Bitmap image = loader.LoadFromStream(reader, (int)reader.BaseStream.Length - 52);
+                image.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                return image;
+            }
         }
 
+        /// <summary>
+        /// Creates a bitmap from a filestream.
+        /// </summary>
+        /// <param name="reader">The System.IO.BinaryReader to use.</param>
+        /// <param name="amount">The size in bytes of the image.</param>
+        /// <returns>A new bitmap object.</returns>
         public Bitmap LoadFromStream(BinaryReader reader, int amount)
         {
             byte[] bmp_bytes = reader.ReadBytes(amount);
@@ -67,7 +85,9 @@ namespace Sphere_Editor.Utility
             return new Bitmap(_image);
         }
 
-        // must be called to close any opened resources.
+        /// <summary>
+        /// Closes and releases any resources being used.
+        /// </summary>
         public void Close()
         {
             if (_copy == null) return;
@@ -78,6 +98,9 @@ namespace Sphere_Editor.Utility
             _image = null;
         }
 
+        /// <summary>
+        /// Gets or sets the color format.
+        /// </summary>
         public ColorFormat ColorFormat
         {
             get { return _fast_img.ColorFormat; }
@@ -86,6 +109,9 @@ namespace Sphere_Editor.Utility
 
         private bool _disposed;
 
+        /// <summary>
+        /// Disposes and clears all data.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -103,37 +129,6 @@ namespace Sphere_Editor.Utility
                 _data = null;
             }
             _disposed = true;
-        }
-    }
-
-    class BitmapSaver
-    {
-        private Rectangle _rect;
-        private BitmapData _data;
-        private int _size;
-
-        public BitmapSaver(int width, int height)
-        {
-            _rect = new Rectangle(0, 0, width, height);
-            _size = width * height;
-        }
-
-        public void SaveToStream(Bitmap image, BinaryWriter writer)
-        {
-            _data = image.LockBits(_rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            unsafe
-            {
-                byte* ptr = (byte*)_data.Scan0;
-                for (int i = 0; i < _size; ++i)
-                {
-                    writer.Write(*(ptr + 2));
-                    writer.Write(*(ptr + 1));
-                    writer.Write(*(ptr));
-                    writer.Write(*(ptr + 3));
-                    ptr += 4;
-                }
-            }
-            image.UnlockBits(_data);
         }
     }
 }

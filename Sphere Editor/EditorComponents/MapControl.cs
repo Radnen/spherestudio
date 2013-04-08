@@ -5,8 +5,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere_Editor.Forms;
-using Sphere_Editor.SphereObjects;
-using Sphere_Editor.Utility;
+using Sphere.Core.SphereObjects;
+using Sphere.Core.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {
@@ -25,7 +25,7 @@ namespace Sphere_Editor.EditorComponents
         private Point _anchor, _offset;
         private static Brush _rect_brush = new SolidBrush(Color.FromArgb(125, Color.Blue));
         public List<GraphicalLayer> GraphicLayers { get; private set; }
-        private Zone2 _temp_zone = new Zone2();
+        private Zone _temp_zone = new Zone();
 
         public Point MapPixel { get; set; }
         public short Zoom { get; private set; }
@@ -51,7 +51,7 @@ namespace Sphere_Editor.EditorComponents
         public bool CanZoomOut { get { return Zoom != 1; } }
 
         private Entity _cur_ent = null;
-        private Zone2 _cur_zone = null;
+        private Zone _cur_zone = null;
 
         private Map _base_map;
         public Map BaseMap
@@ -300,7 +300,7 @@ namespace Sphere_Editor.EditorComponents
         private void DrawZones(Graphics g)
         {
             int state = Tool == MapTool.Zone ? 0 : -1;
-            foreach (Zone2 zone in _base_map.Zones)
+            foreach (Zone zone in _base_map.Zones)
                 zone.Draw(g, _offset, state, Zoom);
         }
 
@@ -369,7 +369,7 @@ namespace Sphere_Editor.EditorComponents
 
         private bool GetZoneAtMouse()
         {
-            foreach (Zone2 zone in _base_map.Zones)
+            foreach (Zone zone in _base_map.Zones)
             {
                 if (zone.IsMouseWithin(MapPixel))
                 {
@@ -466,7 +466,8 @@ namespace Sphere_Editor.EditorComponents
                         if (_ctrl_key && _can_copy) // copy - move:
                         {
                             Entity ent = _cur_ent.Copy();
-                            if (ent.Type == 1) ent.FigureOutName(_base_map.Entities);
+                            if (ent.Type == Entity.EntityType.Person)
+                                ent.FigureOutName(_base_map.Entities);
                             _base_map.Entities.Add(ent);
                             _can_copy = false;
                             _cur_ent = ent;
@@ -653,7 +654,7 @@ namespace Sphere_Editor.EditorComponents
                     break;
                 case MapTool.Zone:
                     _base_map.Zones.Add(_temp_zone);
-                    _temp_zone = new Zone2();
+                    _temp_zone = new Zone();
                     break;
             }
         }
@@ -786,7 +787,7 @@ namespace Sphere_Editor.EditorComponents
         private void EditEntityItem_Click(object sender, EventArgs e)
         {
             if (_cur_ent == null) return;
-            if (_cur_ent.Type == 1)
+            if (_cur_ent.Type == Entity.EntityType.Person)
                 EditPerson();
             else
                 EditTrigger();

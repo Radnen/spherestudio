@@ -1,13 +1,26 @@
 ﻿using System.Drawing;
 
-namespace Sphere_Editor.Utility
+namespace Sphere.Core.Utility
 {
+    /// <summary>
+    /// A convenient Line object.
+    /// </summary>
     public class Line
     {
         private short x1, y1, x2, y2;
 
+        /// <summary>
+        /// Creates a new, empty Line.
+        /// </summary>
         public Line() { }
 
+        /// <summary>
+        /// Creates a line with some values.
+        /// </summary>
+        /// <param name="x1">The start x.</param>
+        /// <param name="y1">The start y.</param>
+        /// <param name="x2">The end x.</param>
+        /// <param name="y2">The end y.</param>
         public Line(short x1, short y1, short x2, short y2)
         {
             this.x1 = x1;
@@ -16,9 +29,18 @@ namespace Sphere_Editor.Utility
             this.y2 = y2;
         }
 
+        /// <summary>
+        /// Creates a line with some values.
+        /// </summary>
+        /// <param name="start">The start Point.</param>
+        /// <param name="end">The end Point.</param>
         public Line(Point start, Point end)
             : this((short)start.X, (short)start.Y, (short)end.X, (short)end.Y) { }
 
+        /// <summary>
+        /// Creates a line from another line.
+        /// </summary>
+        /// <param name="copy">The other line to copy from.</param>
         public Line(Line copy) :
             this(copy.x1, copy.y1, copy.x2, copy.y2) { }
 
@@ -76,9 +98,14 @@ namespace Sphere_Editor.Utility
             set { x2 = (short)value.X; y2 = (short)value.Y; }
         }
 
-        public void DrawLine(Graphics g, Pen p)
+        /// <summary>
+        /// Draws this line to the System.Drawing.Graphics.
+        /// </summary>
+        /// <param name="g">The System.Drawing.graphics to use.</param>
+        /// <param name="pen">The pen style to use.</param>
+        public void DrawLine(Graphics g, Pen pen)
         {
-            g.DrawLine(p, this.x1, this.y1, this.x2, this.y2);
+            g.DrawLine(pen, this.x1, this.y1, this.x2, this.y2);
         }
 
         /// <summary>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 
 namespace Sphere_Editor.EditorComponents
 {

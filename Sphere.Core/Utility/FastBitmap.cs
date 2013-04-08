@@ -4,8 +4,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Sphere_Editor.Utility
+namespace Sphere.Core.Utility
 {
+    /// <summary>
+    /// Used to efficiently and quickly manipulate bitmaps.
+    /// </summary>
     unsafe public class FastBitmap
     {
         Rectangle bounds;
@@ -17,11 +20,18 @@ namespace Sphere_Editor.Utility
         PixelData* pixelData;
         ColorFormat c_format = ColorFormat.FormatABGR;
 
+        /// <summary>
+        /// Creates a FastBitmap wrapper for an image object.
+        /// </summary>
+        /// <param name="img">The image object to wrap.</param>
         public FastBitmap(Bitmap img)
         {
             image = img;
         }
 
+        /// <summary>
+        /// Locks the image to get it ready for fast manipluations.
+        /// </summary>
         public void LockImage()
         {
             bounds = new Rectangle(Point.Empty, image.Size);
@@ -32,6 +42,13 @@ namespace Sphere_Editor.Utility
             pBase = (byte*)imageData.Scan0.ToPointer();
         }
 
+        /// <summary>
+        /// Gets a pixel at the x/y location.
+        /// </summary>
+        /// <param name="x">The x pixel location.</param>
+        /// <param name="y">The y pixel location.</param>
+        /// <returns>The Color at the x/y location.</returns>
+        /// <exception cref="Exception">Invalid color format.</exception>
         public Color GetPixel(int x, int y)
         {
             pixelData = (PixelData*)(pBase + y * width + x * sizeof(PixelData));
@@ -51,6 +68,12 @@ namespace Sphere_Editor.Utility
             throw new Exception("Invalid color format.");
         }
 
+        /// <summary>
+        /// Sets a pixel at the x/y location to the new color.
+        /// </summary>
+        /// <param name="x">The x pixel location.</param>
+        /// <param name="y">The y pixel location.</param>
+        /// <param name="color">The color to set the pixel to.</param>
         public void SetPixel(int x, int y, Color color)
         {
             PixelData* pixel = (PixelData*)(pBase + y * width + x * sizeof(PixelData));            
@@ -87,42 +110,67 @@ namespace Sphere_Editor.Utility
             pixel->b = pixel->g;
         }
 
+        /// <summary>
+        /// Unlocks the image.
+        /// </summary>
         public void UnlockImage()
         {
             image.UnlockBits(imageData);
         }
 
+        /// <summary>
+        /// Creates a clone of the wrapped image object.
+        /// </summary>
+        /// <returns>A copy of the image object.</returns>
         public Bitmap Clone()
         {
             return image.Clone(bounds, PixelFormat.Format32bppArgb);
         }
 
+        /// <summary>
+        /// Grabs a sub-section clone of the wrapped image.
+        /// </summary>
+        /// <param name="rect">The rectangle to cut from.</param>
+        /// <param name="format">The PixelFomat to use.</param>
+        /// <returns>A sub-bitmap object.</returns>
         public Bitmap Clone(Rectangle rect, PixelFormat format)
         {
             return image.Clone(rect, format);
         }
 
+        /// <summary>
+        /// Grabs a sub-section clone of the wrapped image.
+        /// </summary>
+        /// <param name="rect">The rectangle to cut from.</param>
+        /// <param name="format">The PixelFomat to use.</param>
+        /// <returns>A sub-bitmap object.</returns>
         public Bitmap Clone(RectangleF rect, PixelFormat format)
         {
             return image.Clone(rect, format);
         }
 
-        public int Width
-        {
-            get { return image.Width; }
-        }
+        /// <summary>
+        /// Gets the width of the wrapped Image.
+        /// </summary>
+        public int Width { get { return image.Width; } }
 
-        public int Height
-        {
-            get { return image.Height; }
-        }
+        /// <summary>
+        /// Gets the height of the wrapped Image.
+        /// </summary>
+        public int Height { get { return image.Height; } }
 
+        /// <summary>
+        /// Gets or sets the image wrapped by this.
+        /// </summary>
         public Bitmap Image
         {
             get { return image; }
             set { image = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the Color format used by this.
+        /// </summary>
         public ColorFormat ColorFormat
         {
             get { return c_format; }
@@ -130,11 +178,11 @@ namespace Sphere_Editor.Utility
         }
 
         /// <summary>
-        /// replaces the two matching colors:
+        /// Replaces an old color with a new color.
         /// </summary>
-        /// <param name="old_c">the color in the image to edit.</param>
-        /// <param name="new_c">the color to replace with.</param>
-        internal void ReplaceColor(Color old_c, Color new_c)
+        /// <param name="old_c">The color in the image to edit.</param>
+        /// <param name="new_c">The color to replace with.</param>
+        public void ReplaceColor(Color old_c, Color new_c)
         {
             for (int y = 0; y < image.Height; ++y)
             {
@@ -145,7 +193,10 @@ namespace Sphere_Editor.Utility
             }
         }
 
-        internal void Grayscale()
+        /// <summary>
+        /// Converts the image to a grayscale representation.
+        /// </summary>
+        public void Grayscale()
         {
             for (int y = 0; y < image.Height; ++y)
             {
@@ -156,7 +207,7 @@ namespace Sphere_Editor.Utility
         /// <summary>
         /// Sets all transparency to max value.
         /// </summary>
-        internal void FlattenAlpha()
+        public void FlattenAlpha()
         {
             for (int y = 0; y < image.Height; ++y)
             {
@@ -171,7 +222,7 @@ namespace Sphere_Editor.Utility
         /// <param name="y">start y</param>
         /// <param name="new_color">color to replace with</param>
         /// <returns>rectangle of the affetced area.</returns>
-        internal Rectangle FloodFill(int x, int y, Color new_color)
+        public Rectangle FloodFill(int x, int y, Color new_color)
         {
             Color old_color = GetPixel(x, y);
             if (ColorsEqual(old_color, new_color)) return Rectangle.Empty;
@@ -209,12 +260,25 @@ namespace Sphere_Editor.Utility
             }
         }
 
+        /// <summary>
+        /// Determines if two colors equal.
+        /// </summary>
+        /// <param name="col1">The color to compare.</param>
+        /// <param name="col2">The color to compare against.</param>
+        /// <returns>True if they field-wise match.</returns>
         public static bool ColorsEqual(Color col1, Color col2)
         {
             return (col1.A == col2.A && col1.R == col2.R &&
                     col1.G == col2.G && col1.B == col2.B);
         }
 
+        /// <summary>
+        /// Draws another bitmap into this image using straight-up pixel data.
+        /// Not as fast as the Graphics.DrawImage();
+        /// </summary>
+        /// <param name="img">The source image.</param>
+        /// <param name="x">x location in pixels.</param>
+        /// <param name="y">y location in pixels.</param>
         public void DrawImage(Bitmap img, int x, int y)
         {
             FastBitmap fast_source = new FastBitmap(img);
@@ -229,20 +293,56 @@ namespace Sphere_Editor.Utility
         }
     }
 
+    /// <summary>
+    /// Pixel data of an image.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PixelData
     {
+        /// <summary>
+        /// Red component.
+        /// </summary>
         public byte r;
+        
+        /// <summary>
+        /// Green component.
+        /// </summary>
         public byte g;
+        
+        /// <summary>
+        /// Blue component.
+        /// </summary>
         public byte b;
+
+        /// <summary>
+        /// Alpha component
+        /// </summary>
         public byte a;
     }
 
+    /// <summary>
+    /// A color format for loading/saving color data.
+    /// </summary>
     public enum ColorFormat
     {
+        /// <summary>
+        /// ARGB style.
+        /// </summary>
         FormatARGB = 0,
+        
+        /// <summary>
+        /// RGBA style.
+        /// </summary>
         FormatRGBA = 1,
+        
+        /// <summary>
+        /// BGRA style.
+        /// </summary>
         FormatBGRA = 2,
+
+        /// <summary>
+        /// ABGR style.
+        /// </summary>
         FormatABGR = 3,
     }
 }

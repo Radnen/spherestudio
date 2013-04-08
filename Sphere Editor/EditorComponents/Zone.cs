@@ -6,7 +6,7 @@ using Sphere_Editor.Forms;
 
 namespace Sphere_Editor.EditorComponents
 {
-    public partial class Zone : UserControl
+    public partial class ZoneControl : UserControl
     {
         #region private members
         private short x1, y1;
@@ -34,13 +34,13 @@ namespace Sphere_Editor.EditorComponents
             outline.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
         }
 
-        public Zone()
+        public ZoneControl()
         {
             Set();
             InitializeComponent();
         }
 
-        public Zone(BinaryReader stream)
+        public ZoneControl(BinaryReader stream)
         {
             Set();
             InitializeComponent();
@@ -78,7 +78,7 @@ namespace Sphere_Editor.EditorComponents
             binwrite.Write(function.ToCharArray());
         }
 
-        public Zone(int x, int y, int width, int height, int layer_num)
+        public ZoneControl(int x, int y, int width, int height, int layer_num)
         {
             Set();
             InitializeComponent();

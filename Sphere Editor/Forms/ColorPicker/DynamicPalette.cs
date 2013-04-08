@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Sphere.Core.Utility;
 using Sphere_Editor.EditorComponents;
-using Sphere_Editor.Utility;
 
 namespace Sphere_Editor.Forms.ColorPicker
 {

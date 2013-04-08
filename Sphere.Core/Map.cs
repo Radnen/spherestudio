@@ -2,41 +2,97 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere.Core.SphereObjects
 {
+    /// <summary>
+    /// A Sphere map object.
+    /// </summary>
     public class Map : IDisposable
     {
+        #region Attributes
         private short _version = 1;
+
+        /// <summary>
+        /// Gets or sets the starting x position.
+        /// </summary>
         public short StartX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the starting y position.
+        /// </summary>
         public short StartY { get; set; }
+
+        /// <summary>
+        /// Gets or sets the start layer.
+        /// </summary>
         public byte StartLayer { get; set; }
 
-        public List<string> Scripts { get; set; }
-        public List<Layer> Layers { get; set; }
-        public List<Entity> Entities { get; set; }
-        public List<Zone2> Zones { get; set; }
+        /// <summary>
+        /// Gets a list of string used by this Map.
+        /// </summary>
+        public List<string> Scripts { get; private set; }
 
+        /// <summary>
+        /// Gets or sets a list of layers used by this Map.
+        /// </summary>
+        public List<Layer> Layers { get; set; }
+
+        /// <summary>
+        /// Gets a list of entities used by this Map.
+        /// </summary>
+        public List<Entity> Entities { get; private set; }
+
+        /// <summary>
+        /// Gets a list of zones used by this map.
+        /// </summary>
+        public List<Zone> Zones { get; private set; }
+
+        /// <summary>
+        /// Gets the width of the zero'th layer in the map.
+        /// </summary>
         public int Width
         {
             get { return Layers[0].Width; }
         }
 
+        /// <summary>
+        /// Gets the height of the zero'th layer in the Map.
+        /// </summary>
         public int Height
         {
             get { return Layers[0].Height; }
         }
 
-        public Tileset2 Tileset { get; set; }
-        public bool ErrorOnLoad { get; private set; }
+        /// <summary>
+        /// Gets or sets the tileset associated with this map.
+        /// </summary>
+        public Tileset Tileset { get; set; }
 
+        /// <summary>
+        /// Gets if the map had an error while loading.
+        /// </summary>
+        public bool ErrorOnLoad { get; private set; }
+        #endregion
+
+        /// <summary>
+        /// Creates a new, empty map.
+        /// </summary>
         public Map()
         {
             Scripts = new List<string>();
             Layers = new List<Layer>();
             Entities = new List<Entity>();
-            Zones = new List<Zone2>();
+            Zones = new List<Zone>();
         }
 
+        /// <summary>
+        /// Creates a new map with values.
+        /// </summary>
+        /// <param name="width">The width in tiles.</param>
+        /// <param name="height">The height in tiles.</param>
+        /// <param name="tile_width">The tilewidth in pixels.</param>
+        /// <param name="tile_height">The tileheight in pixels.</param>
+        /// <param name="tileset_path">The path to the tileset.</param>
         public void CreateNew(short width, short height, short tile_width, short tile_height, string tileset_path)
         {
             for (int i = 0; i < 9; ++i) Scripts.Add("");
@@ -47,17 +103,22 @@ namespace Sphere_Editor.SphereObjects
             Layers.Add(layer);
 
             // create a starting tile:
-            Tileset = new Tileset2();
+            Tileset = new Tileset();
 
             if (string.IsNullOrEmpty(tileset_path))
                 Tileset.CreateNew(tile_width, tile_height);
             else
             {
-                Tileset = Tileset2.FromFile(tileset_path);
+                Tileset = Tileset.FromFile(tileset_path);
                 Scripts[0] = Path.GetFileName(tileset_path);
             }
         }
 
+        /// <summary>
+        /// Loads a map from the given filename.
+        /// </summary>
+        /// <param name="filename">The filename of the map.</param>
+        /// <returns>True if the load was a success.</returns>
         public bool Load(string filename)
         {
             if (!File.Exists(filename)) return false;
@@ -101,15 +162,15 @@ namespace Sphere_Editor.SphereObjects
 
                 // read zones:
                 while (num_zones-- > 0)
-                    Zones.Add(Zone2.FromBinary(reader));
+                    Zones.Add(Zone.FromBinary(reader));
 
                 // read tileset:
                 if (Scripts[0].Length == 0)
-                    Tileset = Tileset2.FromBinary(reader);
+                    Tileset = Tileset.FromBinary(reader);
                 else
                 {
                     string path = Path.GetDirectoryName(filename) + "\\" + Scripts[0];
-                    Tileset = Tileset2.FromFile(path);
+                    Tileset = Tileset.FromFile(path);
                 }
 
                 // init all layers:
@@ -124,6 +185,11 @@ namespace Sphere_Editor.SphereObjects
             return true;
         }
 
+        /// <summary>
+        /// Attempts to save the map to the given filename.
+        /// </summary>
+        /// <param name="filename">The path to save the Map to.</param>
+        /// <returns>True if the save was successful.</returns>
         public bool Save(string filename)
         {
             if (Scripts.Count == 0 || Scripts[0].Length == 0) return false;
@@ -158,7 +224,7 @@ namespace Sphere_Editor.SphereObjects
                 foreach (Entity e in Entities) e.Save(writer);
 
                 // save zones:
-                foreach (Zone2 z in Zones) z.Save(writer);
+                foreach (Zone z in Zones) z.Save(writer);
 
                 writer.Flush();
             }
@@ -169,6 +235,9 @@ namespace Sphere_Editor.SphereObjects
             return true;
         }
 
+        /// <summary>
+        /// Disposes and clears this object.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -193,11 +262,20 @@ namespace Sphere_Editor.SphereObjects
             _disposed = true;
         }
 
-        public void ResizeAllLayers(short lw, short lh)
+        /// <summary>
+        /// Resizes the map's layers to the new size.
+        /// </summary>
+        /// <param name="width">The new width in tiles.</param>
+        /// <param name="height">The new height in tiles.</param>
+        public void ResizeAllLayers(short width, short height)
         {
-            foreach (Layer lay in Layers) lay.Resize(lw, lh);
+            foreach (Layer lay in Layers) lay.Resize(width, height);
         }
 
+        /// <summary>
+        /// Returns a list of copied tiles of each layer.
+        /// </summary>
+        /// <returns>A list of cloned layer tiles.</returns>
         public List<short[,]> CloneAllLayerTiles()
         {
             List<short[,]> list = new List<short[,]>(Layers.Count);

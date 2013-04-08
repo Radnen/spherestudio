@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using Sphere.Core.SphereObjects;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere_Editor.EditorComponents
 {
     public class GraphicalLayer : IDisposable
     {
@@ -30,7 +31,7 @@ namespace Sphere_Editor.SphereObjects
                 _vh = _mul * tile_height;
             }
 
-            public void Allocate(Layer layer, Tileset2 tileset)
+            public void Allocate(Layer layer, Tileset tileset)
             {
                 if (_canvas != null) return;
 
@@ -43,7 +44,7 @@ namespace Sphere_Editor.SphereObjects
                 Redraw(layer, tileset);
             }
 
-            public void Redraw(Layer layer, Tileset2 tileset)
+            public void Redraw(Layer layer, Tileset tileset)
             {
                 if (_canvas == null) return;
 
@@ -146,13 +147,13 @@ namespace Sphere_Editor.SphereObjects
             _tile_h = tile_height;
         }
 
-        public void Refresh(Tileset2 tileset)
+        public void Refresh(Tileset tileset)
         {
             if (tileset.IsDisposed) return;
             for (int i = 0; i < _cells.Length; ++i) _cells[i].Redraw(TargetLayer, tileset);
         }
 
-        public void Refresh(Layer target, Tileset2 tileset)
+        public void Refresh(Layer target, Tileset tileset)
         {
             if (tileset.IsDisposed) return;
 
@@ -161,7 +162,7 @@ namespace Sphere_Editor.SphereObjects
         }
 
         // determines which cells to load up:
-        public void Update(ref Point offset, Size bounds, Tileset2 tileset)
+        public void Update(ref Point offset, Size bounds, Tileset tileset)
         {
             if (tileset.IsDisposed) return;
 

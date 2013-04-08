@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.Forms
@@ -13,8 +13,7 @@ namespace Sphere_Editor.Forms
         public TriggerForm()
         {
             InitializeComponent();
-            Trigger = new Entity();
-            Trigger.Type = 2;
+            Trigger = new Entity(Entity.EntityType.Trigger);
         }
 
         public TriggerForm(Entity trigger)

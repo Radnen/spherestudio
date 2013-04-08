@@ -4,15 +4,15 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
-using Sphere_Editor.Utility;
+using Sphere.Core.SphereObjects;
+using Sphere.Core.Utility;
 
 namespace Sphere_Editor.EditorComponents
 {
     public partial class TilesetControl2 : UserControl
     {
-        private Tileset2 _tileset;
-        public Tileset2 Tileset
+        private Tileset _tileset;
+        public Tileset Tileset
         {
             get { return _tileset; }
             set

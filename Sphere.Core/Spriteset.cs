@@ -4,10 +4,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using Sphere_Editor.Utility;
+using Sphere.Core.Utility;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere.Core.SphereObjects
 {
+    /// <summary>
+    /// A Sphere spriteset object
+    /// </summary>
     public class Spriteset : IDisposable
     {
         private short version = 3;
@@ -17,6 +20,9 @@ namespace Sphere_Editor.SphereObjects
         private List<Direction> directions = new List<Direction>();
         private List<Bitmap> images = new List<Bitmap>();
 
+        /// <summary>
+        /// Creates a new blank Spriteset object.
+        /// </summary>
         public Spriteset() { }
 
         /// <summary>
@@ -46,6 +52,11 @@ namespace Sphere_Editor.SphereObjects
             images.Clear();
         }
 
+        /// <summary>
+        /// Attempts to load the spriteset from the given filename.
+        /// </summary>
+        /// <param name="filename">The filename of the Spriteset to load.</param>
+        /// <returns>True if successful.</returns>
         public bool Load(String filename)
         {
             if (!File.Exists(filename)) return false;
@@ -108,6 +119,10 @@ namespace Sphere_Editor.SphereObjects
             return true;
         }
 
+        /// <summary>
+        /// Saves the Spriteset to the filename.
+        /// </summary>
+        /// <param name="filename">The filename to store the spriteset.</param>
         public void Save(string filename)
         {
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename)))
@@ -155,13 +170,17 @@ namespace Sphere_Editor.SphereObjects
         }
 
         private bool _disposed;
+
+        /// <summary>
+        /// Disposes and clears this object.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        public void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -196,7 +215,13 @@ namespace Sphere_Editor.SphereObjects
             images.RemoveAt(reference);
         }
 
-        public Image GetImage(string direction, int num)
+        /// <summary>
+        /// Attempts to grab an image by using a direction and frame.
+        /// </summary>
+        /// <param name="direction">The name of the direction to get an image from.</param>
+        /// <param name="frame">The frame in the direction to use.</param>
+        /// <returns>null if it can't find an image or the System.Drawing.Image.</returns>
+        public Image GetImage(string direction, int frame = 0)
         {
             Direction dir = null;
             foreach (Direction d in directions)
@@ -204,50 +229,66 @@ namespace Sphere_Editor.SphereObjects
                 if (d.Name.Equals(direction)) { dir = d; break; }
             }
             if (dir == null) return null;
-            return images[dir.frames[num].Index];
+            return images[dir.frames[frame].Index];
         }
 
+        /// <summary>
+        /// Gets or sets the spritesets width in pixels.
+        /// </summary>
         public short SpriteWidth
         {
             get { return frame_width; }
             set { frame_width = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the spritesets height in pixels.
+        /// </summary>
         public short SpriteHeight
         {
             get { return frame_height; }
             set { frame_height = value; }
         }
 
+        /// <summary>
+        /// Returns an image based on the given index.
+        /// </summary>
+        /// <param name="index">The image index to use.</param>
+        /// <returns>The System.Drawing.Image at the index.</returns>
         public Image GetImage(int index)
         {
             return images[index];
         }
 
+        /// <summary>
+        /// Gets or sets the sprite Base of this Spriteset.
+        /// </summary>
         public Base SpriteBase
         {
             get { return sprite_base; }
             set { sprite_base = value; }
         }
 
+        /// <summary>
+        /// Gets the list of directions for this spriteset.
+        /// </summary>
         public List<Direction> Directions
         {
             get { return this.directions; }
-            set { this.directions = value; }
         }
 
+        /// <summary>
+        /// Gets the image list of this spriteset.
+        /// </summary>
         public List<Bitmap> Images
         {
             get { return this.images; }
-            set
-            {
-                this.images = value;
-                this.frame_height = (short)value[0].Height;
-                this.frame_width  = (short)value[0].Width;
-            }
         }
 
-        // returns an array with the names of each direction:
+        /// <summary>
+        /// Returns an array of the directions in this spriteset.
+        /// </summary>
+        /// <returns>A string[] of the directions.</returns>
         public string[] GetDirections()
         {
             string[] dirs = new string[directions.Count];
@@ -262,14 +303,37 @@ namespace Sphere_Editor.SphereObjects
     /// </summary>
     public class Base
     {
-        public short x1 = 0, y1 = 15;
-        public short x2 = 15, y2 = 31;
+        /// <summary>
+        /// The upper-left x location.
+        /// </summary>
+        public short x1 = 0;
+        
+        /// <summary>
+        /// The upper-left y location.
+        /// </summary>
+        public short y1 = 15;
+        
+        /// <summary>
+        /// The lower-right x location.
+        /// </summary>
+        public short x2 = 15;
 
+        /// <summary>
+        /// the lower-right y location.
+        /// </summary>
+        public short y2 = 31;
+
+        /// <summary>
+        /// Gets the height of the spriteset Base.
+        /// </summary>
         public int Height
         {
             get { return (int)(y2 - y1); }
         }
 
+        /// <summary>
+        /// Gets the width of the spriteset Base.
+        /// </summary>
         public int Width
         {
             get { return (int)(x2 - x1); }
@@ -291,40 +355,49 @@ namespace Sphere_Editor.SphereObjects
         }
     }
 
+    /// <summary>
+    /// A frame of a spriteset direction.
+    /// </summary>
     public class Frame
     {
-        private short index = 0;
-        private short delay = 8;
+        /// <summary>
+        /// Creates a new, empty frame.
+        /// </summary>
+        public Frame() { }
 
-        public Frame() {}
+        /// <summary>
+        /// Gets or sets the delay of this Frame.
+        /// </summary>
+        public short Delay { get; set; }
 
-        public short Delay
-        {
-            get { return delay; }
-            set { delay = value; }
-        }
-
-        public short Index
-        {
-            get { return index; }
-            set { index = value; }
-        }
+        /// <summary>
+        /// Gets or sets the index of this Frame.
+        /// </summary>
+        public short Index { get; set; }
     }
 
+    /// <summary>
+    /// A representation of a spriteset direction.
+    /// </summary>
     public class Direction
     {
+        /// <summary>
+        /// The frames used witnin this Direction.
+        /// </summary>
         public List<Frame> frames = new List<Frame>();
-        private string name;
 
+        /// <summary>
+        /// Creates a new direction with the given name.
+        /// </summary>
+        /// <param name="name">Name of the direction.</param>
         public Direction(string name)
         {
-            this.name = name;
+            Name = name;
         }
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        /// <summary>
+        /// Gets or sets the name of this Direction.
+        /// </summary>
+        public string Name { get; set; }
     }
 }

@@ -3,15 +3,17 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.IO;
-using Sphere_Editor.Utility;
-using Sphere_Editor.Forms;
+using Sphere.Core.Utility;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere.Core.SphereObjects
 {
-    class Windowstyle : IDisposable
+    /// <summary>
+    /// A Sphere windowstyle object.
+    /// </summary>
+    public class Windowstyle : IDisposable
     {
         // Different Directions:
-        private Bitmap[] _maps = new Bitmap[9];
+        private Bitmap[] _images = new Bitmap[9];
         private Rectangle[] _rectangles = new Rectangle[9];
         private Pen _grid_pen = new Pen(Brushes.LimeGreen);
         private Pen _sel_pen = new Pen(Brushes.Red);
@@ -62,9 +64,13 @@ namespace Sphere_Editor.SphereObjects
         {
             _version = 2;
             for (int i = 0; i < _edge_colors.Length; ++i) _edge_colors[i] = new RGBA();
-            for (int i = 0; i < _maps.Length; ++i) _maps[i] = new Bitmap(16, 16, PixelFormat.Format32bppPArgb);
+            for (int i = 0; i < _images.Length; ++i) _images[i] = new Bitmap(16, 16, PixelFormat.Format32bppPArgb);
         }
 
+        /// <summary>
+        /// Creates a new windowstyle by loading a filename.
+        /// </summary>
+        /// <param name="filename">The file where the windowstyle is saved.</param>
         public Windowstyle(string filename)
         {
             using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
@@ -98,7 +104,7 @@ namespace Sphere_Editor.SphereObjects
             {
                 if (disposing)
                 {
-                    foreach (Bitmap b in _maps) b.Dispose();
+                    foreach (Bitmap b in _images) b.Dispose();
                     if (_preview != null) _preview.Dispose();
                     _grid_pen.Dispose();
                     _sel_pen.Dispose();
@@ -107,7 +113,7 @@ namespace Sphere_Editor.SphereObjects
                 _preview = null;
                 _grid_pen = null;
                 _sel_pen = null;
-                _maps = null;
+                _images = null;
             }
             _disposed = true;
         }
@@ -132,7 +138,7 @@ namespace Sphere_Editor.SphereObjects
                 {
                     case 2:
                         BitmapSaver saver;
-                        foreach (Bitmap b in _maps)
+                        foreach (Bitmap b in _images)
                         {
                             writer.Write((short)b.Width);
                             writer.Write((short)b.Height);
@@ -146,6 +152,10 @@ namespace Sphere_Editor.SphereObjects
             }
         }
 
+        /// <summary>
+        /// Reads the windowstyle from a filestream.
+        /// </summary>
+        /// <param name="binread">The System.IO.BinaryReader to use.</param>
         public void Open(BinaryReader binread)
         {
             _sig = new string(binread.ReadChars(4));
@@ -164,12 +174,12 @@ namespace Sphere_Editor.SphereObjects
             {
                 case 2:
                     BitmapLoader loader;
-                    for (int i = 0; i < _maps.Length; ++i)
+                    for (int i = 0; i < _images.Length; ++i)
                     {
                         short width = binread.ReadInt16();
                         short height = binread.ReadInt16();
                         loader = new BitmapLoader(width, height);
-                        _maps[i] = loader.LoadFromStream(binread, width * height * 4);
+                        _images[i] = loader.LoadFromStream(binread, width * height * 4);
                         loader.Close();
                     }
                     break;
@@ -177,16 +187,12 @@ namespace Sphere_Editor.SphereObjects
         }
 
         /// <summary>
-        /// Gets/sets a list of images that represent the windowstyle edges and center.
+        /// Gets a list of images that represent the windowstyle edges and center.
         /// </summary>
-        public Bitmap[] Images
-        {
-            get { return _maps; }
-            set { _maps = value; }
-        }
+        public Bitmap[] Images { get { return _images; } }
 
         /// <summary>
-        /// Gets/sets if whether or not to show a grid.
+        /// Gets or sets if whether or not to show a grid.
         /// </summary>
         public bool Grid { get; set; }
 
@@ -230,26 +236,26 @@ namespace Sphere_Editor.SphereObjects
             g.PixelOffsetMode = PixelOffsetMode.Half;
 
             // corners:
-            _rectangles[0] = new Rectangle(0, 0, _maps[0].Width, _maps[0].Height);
-            _rectangles[2] = new Rectangle(w - _maps[2].Width, 0, _maps[2].Width, _maps[2].Height);
-            _rectangles[4] = new Rectangle(w - _maps[4].Width, h - _maps[4].Height, _maps[4].Width, _maps[4].Height);
-            _rectangles[6] = new Rectangle(0, h - _maps[6].Height, _maps[6].Width, _maps[6].Height);
-            for (int i = 0; i < 8; i += 2) g.DrawImage(_maps[i], _rectangles[i]);
+            _rectangles[0] = new Rectangle(0, 0, _images[0].Width, _images[0].Height);
+            _rectangles[2] = new Rectangle(w - _images[2].Width, 0, _images[2].Width, _images[2].Height);
+            _rectangles[4] = new Rectangle(w - _images[4].Width, h - _images[4].Height, _images[4].Width, _images[4].Height);
+            _rectangles[6] = new Rectangle(0, h - _images[6].Height, _images[6].Width, _images[6].Height);
+            for (int i = 0; i < 8; i += 2) g.DrawImage(_images[i], _rectangles[i]);
 
             // sides:
-            _rectangles[1] = new Rectangle(_maps[0].Width, 0, w - (_maps[0].Width + _maps[2].Width), _maps[1].Height);
-            _rectangles[3] = new Rectangle(w - _maps[2].Width, _maps[2].Height, _maps[3].Width, h - (_maps[1].Height + _maps[5].Height));
-            _rectangles[5] = new Rectangle(_maps[0].Width, h - _maps[5].Height, w - (_maps[6].Width + _maps[4].Width), _maps[5].Height);
-            _rectangles[7] = new Rectangle(0, _maps[0].Height, _maps[7].Width, h - (_maps[1].Height + _maps[5].Height));
+            _rectangles[1] = new Rectangle(_images[0].Width, 0, w - (_images[0].Width + _images[2].Width), _images[1].Height);
+            _rectangles[3] = new Rectangle(w - _images[2].Width, _images[2].Height, _images[3].Width, h - (_images[1].Height + _images[5].Height));
+            _rectangles[5] = new Rectangle(_images[0].Width, h - _images[5].Height, w - (_images[6].Width + _images[4].Width), _images[5].Height);
+            _rectangles[7] = new Rectangle(0, _images[0].Height, _images[7].Width, h - (_images[1].Height + _images[5].Height));
 
-            FillWidth(g, _maps[1], _rectangles[1]);
-            FillHeight(g, _maps[3], _rectangles[3]);
-            FillWidth(g, _maps[5], _rectangles[5]);
-            FillHeight(g, _maps[7], _rectangles[7]);
+            FillWidth(g, _images[1], _rectangles[1]);
+            FillHeight(g, _images[3], _rectangles[3]);
+            FillWidth(g, _images[5], _rectangles[5]);
+            FillHeight(g, _images[7], _rectangles[7]);
 
             // center:
-            _rectangles[8] = new Rectangle(_maps[0].Width, _maps[0].Height, w - (_maps[7].Width + _maps[3].Width), h - (_maps[1].Height + _maps[5].Height));
-            FillWithin(g, _maps[8], _rectangles[8]);
+            _rectangles[8] = new Rectangle(_images[0].Width, _images[0].Height, w - (_images[7].Width + _images[3].Width), h - (_images[1].Height + _images[5].Height));
+            FillWithin(g, _images[8], _rectangles[8]);
         }
 
         /// <summary>
@@ -268,10 +274,10 @@ namespace Sphere_Editor.SphereObjects
             if (Grid)
             {
                 g.DrawRectangle(_grid_pen, 1, 1, w - 1, h - 1);
-                g.DrawLine(_grid_pen, 0, _maps[0].Height*_zoom, w, _maps[2].Height*_zoom);
-                g.DrawLine(_grid_pen, _maps[0].Width*_zoom, 0, _maps[6].Width*_zoom, h);
-                g.DrawLine(_grid_pen, 0, h - _maps[6].Height*_zoom, w, h - _maps[4].Height*_zoom);
-                g.DrawLine(_grid_pen, w - _maps[2].Width*_zoom, 0, w - _maps[4].Width*_zoom, h);
+                g.DrawLine(_grid_pen, 0, _images[0].Height*_zoom, w, _images[2].Height*_zoom);
+                g.DrawLine(_grid_pen, _images[0].Width*_zoom, 0, _images[6].Width*_zoom, h);
+                g.DrawLine(_grid_pen, 0, h - _images[6].Height*_zoom, w, h - _images[4].Height*_zoom);
+                g.DrawLine(_grid_pen, w - _images[2].Width*_zoom, 0, w - _images[4].Width*_zoom, h);
 
                 if (_sel >= 0)
                 {
@@ -291,9 +297,7 @@ namespace Sphere_Editor.SphereObjects
         /// </summary>
         /// <param name="p">The point to compare by.</param>
         /// <param name="s">The section index.</param>
-        /// <param name="ox">An x offset.</param>
-        /// <param name="oy">A y offset.</param>
-        /// <returns></returns>
+        /// <returns>True if within the subsection.</returns>
         public bool IsPointWithinSection(Point p, int s)
         {
             int x = _rectangles[s].X * _zoom;

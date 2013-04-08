@@ -1,28 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using Sphere_Editor.Utility;
+using System.Drawing;
+using Sphere.Core.Utility;
 
-namespace Sphere_Editor.SphereObjects
+namespace Sphere.Core.SphereObjects
 {
-    public class Tileset2 : IDisposable
+    /// <summary>
+    /// A sphree Tileset object.
+    /// </summary>
+    public class Tileset : IDisposable
     {
+        /// <summary>
+        /// Gets a list of Tile objects this Tileset uses.
+        /// </summary>
         public List<Tile> Tiles { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the width of a tile in pixels.
+        /// </summary>
         public short TileWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the height of a tile in pixels.
+        /// </summary>
         public short TileHeight { get; set; }
 
         private short _version = 1;
         private byte _has_obstruct, _compression;
 
+        /// <summary>
+        /// Gets if this has disposed or not.
+        /// </summary>
         public bool IsDisposed { get { return _disposed; } }
 
-        public Tileset2()
+        /// <summary>
+        /// Creates a fresh, empty tileset.
+        /// </summary>
+        public Tileset()
         {
             Tiles = new List<Tile>();
         }
 
+        /// <summary>
+        /// Adds a blank tile to the list of tiles.
+        /// </summary>
+        /// <param name="tile_width">The tile width in pixels.</param>
+        /// <param name="tile_height">The tile height in pixels.</param>
         public void CreateNew(short tile_width, short tile_height)
         {
             TileWidth = tile_width;
@@ -30,17 +54,28 @@ namespace Sphere_Editor.SphereObjects
             Tiles.Add(new Tile(TileWidth, TileHeight));
         }
 
-        public static Tileset2 FromFile(string filename)
+        /// <summary>
+        /// Loads a tileset independantly from a file.
+        /// </summary>
+        /// <param name="filename">The filename to load from.</param>
+        /// <returns>A tileset object from the file or null if it doesn't exist.</returns>
+        public static Tileset FromFile(string filename)
         {
+            if (!File.Exists(filename)) return null;
             using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
             {
                 return FromBinary(reader);
             }
         }
 
-        public static Tileset2 FromSpriteset(Spriteset set)
+        /// <summary>
+        /// Takes the images of a spriteset and creates a ileset representation of it.
+        /// </summary>
+        /// <param name="set">The spriteset to use.</param>
+        /// <returns>A tileset of the spritesets images.</returns>
+        public static Tileset FromSpriteset(Spriteset set)
         {
-            Tileset2 tileset = new Tileset2();
+            Tileset tileset = new Tileset();
             foreach (Bitmap image in set.Images)
                 tileset.Tiles.Add(new Tile(image));
 
@@ -50,9 +85,14 @@ namespace Sphere_Editor.SphereObjects
             return tileset;
         }
 
-        public static Tileset2 FromBinary(BinaryReader reader)
+        /// <summary>
+        /// Loads a tileset from a filestream.
+        /// </summary>
+        /// <param name="reader">The System.IO.BinrayReader to use.</param>
+        /// <returns>A tileset object.</returns>
+        public static Tileset FromBinary(BinaryReader reader)
         {
-            Tileset2 ts = new Tileset2();
+            Tileset ts = new Tileset();
             reader.ReadChars(4); // sign
             ts._version = reader.ReadInt16();  // version
             short num_tiles = reader.ReadInt16();
@@ -98,6 +138,10 @@ namespace Sphere_Editor.SphereObjects
             return ts;
         }
 
+        /// <summary>
+        /// Savbes the tileset to a separate file.
+        /// </summary>
+        /// <param name="filename">The filename to save to.</param>
         public void Save(string filename)
         {
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename)))
@@ -146,6 +190,9 @@ namespace Sphere_Editor.SphereObjects
             }
         }
 
+        /// <summary>
+        /// Disposes and clears this Tileset.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

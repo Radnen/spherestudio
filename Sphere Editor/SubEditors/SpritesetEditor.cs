@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using Sphere_Editor.SphereObjects;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.Forms;
 using Sphere_Editor.EditorComponents;
 using Sphere_Editor.SpritesetComponents;
@@ -148,7 +148,7 @@ namespace Sphere_Editor.SubEditors
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
             _tileset_ctrl = new TilesetControl2();
-            _tileset_ctrl.Tileset = Tileset2.FromSpriteset(_sprite);
+            _tileset_ctrl.Tileset = Sphere.Core.SphereObjects.Tileset.FromSpriteset(_sprite);
             //_tileset_ctrl.IsMulti = false;
             //_tileset_ctrl.CanDrag = true;
             _tileset_ctrl.CanInsert = false;

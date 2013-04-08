@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
 using Sphere_Editor.EditorComponents;
+using Sphere.Core.SphereObjects;
 using Sphere_Editor.SubEditors;
-using Sphere_Editor.SphereObjects;
 
 namespace Sphere_Editor.Forms
 {
     public partial class ZoneForm : Form
     {
-        public Zone2 Zone { get; private set; }
+        public Zone Zone { get; private set; }
         ScriptEditor ScriptBox = new ScriptEditor();
 
         public ZoneForm()
@@ -16,7 +16,7 @@ namespace Sphere_Editor.Forms
             InitializeComponent();
         }
 
-        public ZoneForm(Zone2 zone)
+        public ZoneForm(Zone zone)
         {
             Zone = zone;
             InitializeComponent();
