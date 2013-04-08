@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Sphere_Editor.Utility;
 
@@ -54,6 +55,8 @@ namespace Sphere_Editor.Settings
             get { return ItemCheckBox.GetItemChecked(1); }
             set { ItemCheckBox.SetItemChecked(1, value); }
         }
+
+        private bool _updatePlugins = false;
         #endregion
 
         public EditorSettings(SphereSettings settings)
@@ -103,22 +106,27 @@ namespace Sphere_Editor.Settings
 
         private void EditorSettings_Load(object sender, EventArgs e)
         {
-            foreach (PluginWrapper wrapper in Global.plugins)
+            foreach (KeyValuePair<string, PluginWrapper> pair in Global.plugins)
             {
                 ListViewItem item = new ListViewItem();
-                item.Text = wrapper.Plugin.Name;
-                item.SubItems.Add(wrapper.Plugin.Author);
-                item.SubItems.Add(wrapper.Plugin.Version);
-                item.SubItems.Add(wrapper.Plugin.Description);
+                item.Text = pair.Value.Plugin.Name;
+                item.SubItems.Add(pair.Value.Plugin.Author);
+                item.SubItems.Add(pair.Value.Plugin.Version);
+                item.SubItems.Add(pair.Value.Plugin.Description);
+                item.Tag = pair.Key;
+                _updatePlugins = false;
+                item.Checked = pair.Value.Enabled;
                 PluginList.Items.Add(item);
+                _updatePlugins = true;
             }
         }
 
-        private void PluginList_ItemChecked(object sender, ItemCheckedEventArgs e)
+        private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            int index = PluginList.Items.IndexOf(e.Item);
-            if (e.Item.Checked) Global.plugins[index].Activate();
-            else Global.plugins[index].Deactivate();
+            if (!_updatePlugins) return;
+            ListViewItem item = PluginList.Items[e.Index];
+            if (e.NewValue == CheckState.Checked) Global.plugins[(string)item.Tag].Activate();
+            else Global.plugins[(string)item.Tag].Deactivate();
         }
     }
 }

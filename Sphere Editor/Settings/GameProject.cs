@@ -9,37 +9,37 @@ namespace Sphere_Editor.Settings
     {
         public string Width
         {
-            get { return GetKeyData("screen_width"); }
+            get { return GetString("screen_width"); }
             set { SetItem<string>("screen_width", value); }
         }
 
         public string Height
         {
-            get { return GetKeyData("screen_height"); }
+            get { return GetString("screen_height"); }
             set { SetItem<string>("screen_height", value); }
         }
 
         public string Name
         {
-            get { return GetKeyData("name"); }
+            get { return GetString("name"); }
             set { SetItem<string>("name", value); }
         }
 
         public string Author
         {
-            get { return GetKeyData("author"); }
+            get { return GetString("author"); }
             set { SetItem<string>("author", value); }
         }
 
         public string Description
         {
-            get { return GetKeyData("description"); }
+            get { return GetString("description"); }
             set { SetItem<string>("description", value); }
         }
 
         public string Script
         {
-            get { return GetKeyData("script"); }
+            get { return GetString("script"); }
             set { SetItem<string>("script", value); }
         }
 

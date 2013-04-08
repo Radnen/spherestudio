@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using Sphere_Editor.Utility;
 
 // This Contains the Settings Dialogue Info
 // As well as any other Sphere Editor related
@@ -12,19 +13,19 @@ namespace Sphere_Editor.Settings
     {
         public string SpherePath
         {
-            get { return GetKeyData("sphere_path"); }
+            get { return GetString("sphere_path"); }
             set { SetItem<string>("sphere_path", value); }
         }
 
         public string ConfigPath
         {
-            get { return GetKeyData("config_path"); }
+            get { return GetString("config_path"); }
             set { SetItem<string>("config_path", value); }
         }
 
         public string LastProjectPath
         {
-            get { return GetKeyData("last_project_path"); }
+            get { return GetString("last_project_path"); }
             set { SetItem<string>("last_project_path", value); }
         }
 
@@ -56,7 +57,7 @@ namespace Sphere_Editor.Settings
         {
             get
             {
-                string val = GetKeyData("start_view");
+                string val = GetString("start_view");
                 if (val == string.Empty) return View.Tile;
                 else return (View)Enum.Parse(typeof(View), val);
             }
@@ -79,7 +80,7 @@ namespace Sphere_Editor.Settings
         {
             get
             {
-                string k = GetKeyData("label_font");
+                string k = GetString("label_font");
                 if (k == string.Empty) return "Verdana";
                 else return k;
             }
@@ -91,6 +92,7 @@ namespace Sphere_Editor.Settings
         {
             SpherePath = SettingForm.SpherePath;
             SetGamePaths(SettingForm.GamePaths);
+            SetPluginList();
             ConfigPath = SettingForm.ConfigPath;
             UseDockForm = SettingForm.UseDockForm;
             AutoOpen = SettingForm.AutoStart;
@@ -102,13 +104,29 @@ namespace Sphere_Editor.Settings
         {
             System.Text.StringBuilder builder = new System.Text.StringBuilder();
             foreach (string o in list) builder.Append(o).Append(',');
-            builder.Remove(builder.Length - 1, 1);
+            if (builder.Length > 0) builder.Remove(builder.Length - 1, 1);
             SetItem<string>("games_path", builder.ToString());
+        }
+
+        private void SetPluginList()
+        {
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            foreach (KeyValuePair<string, PluginWrapper> item in Global.plugins)
+                if (item.Value.Enabled) builder.Append(item.Value.Name).Append(',');
+            if (builder.Length > 0) builder.Remove(builder.Length - 1, 1);
+            SetItem<string>("plugins", builder.ToString());
         }
 
         public string[] GetGamePaths()
         {
-            string s = GetKeyData("games_path");
+            string s = GetString("games_path");
+            if (!string.IsNullOrEmpty(s)) return s.Split(',');
+            else return new string[0];
+        }
+
+        public string[] GetPluginList()
+        {
+            string s = GetString("plugins");
             if (!string.IsNullOrEmpty(s)) return s.Split(',');
             else return new string[0];
         }

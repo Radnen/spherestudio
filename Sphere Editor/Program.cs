@@ -15,9 +15,7 @@ namespace Sphere_Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            EditorForm ef = new EditorForm();
-            Global.EvalPlugins((IPluginHost)ef);
-            Application.Run(ef);
+            Application.Run(new EditorForm());
         }
     }
 }

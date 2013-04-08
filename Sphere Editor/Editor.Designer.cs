@@ -180,7 +180,6 @@
             // 
             // DockTest
             // 
-            this.DockTest.ActiveAutoHideContent = null;
             this.DockTest.BackColor = System.Drawing.SystemColors.Control;
             this.DockTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.DockTest.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -236,6 +235,7 @@
             dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.DockTest.Skin = dockPanelSkin1;
+            this.DockTest.SupportDeeplyNestedContent = true;
             this.DockTest.TabIndex = 6;
             this.DockTest.ActiveDocumentChanged += new System.EventHandler(this.DockTest_ActiveDocumentChanged);
             // 

@@ -12,7 +12,7 @@ namespace Sphere_Editor
 {
     public class Global
     {
-        public static List<PluginWrapper> plugins = new List<PluginWrapper>();
+        public static Dictionary<string, PluginWrapper> plugins = new Dictionary<string, PluginWrapper>();
 
         public static void EvalPlugins(IPluginHost host)
         {
@@ -31,9 +31,18 @@ namespace Sphere_Editor
                                                    null, null, null) as IPlugin;
                         if (b == null) continue;
                         b.Host = host;
-                        plugins.Add(new PluginWrapper(b));
+                        string name = Path.GetFileNameWithoutExtension(file.Name);
+                        plugins[name] = new PluginWrapper(b, name);
                     }
                 }
+            }
+        }
+
+        public static void ActivatePlugins(string[] plugin_names)
+        {
+            foreach (string s in plugin_names)
+            {
+                if (plugins.ContainsKey(s)) plugins[s].Activate();
             }
         }
 

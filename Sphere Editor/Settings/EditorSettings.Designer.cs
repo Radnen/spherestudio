@@ -300,7 +300,7 @@
             this.PluginList.TabIndex = 0;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
-            this.PluginList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.PluginList_ItemChecked);
+            this.PluginList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.PluginList_ItemCheck);
             // 
             // NameCol
             // 

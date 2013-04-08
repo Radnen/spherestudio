@@ -51,6 +51,9 @@ namespace Sphere_Editor
                 OpenLastProject(null, EventArgs.Empty);
 
             AutoCompleteItem.Checked = Global.CurrentEditor.ShowAutoComplete;
+
+            Global.EvalPlugins((IPluginHost)this);
+            Global.ActivatePlugins(Global.CurrentEditor.GetPluginList());
         }
 
         bool IsProjectOpen { get { return Global.CurrentProject != null; } }
@@ -129,6 +132,12 @@ namespace Sphere_Editor
             content.Text = name;
             content.Name = name;
             content.Show(TreeContent.Pane, align, 0.40);
+        }
+
+        public void RemoveControl(string name)
+        {
+            DockContent c = FindDocument(name);
+            if (c != null) c.DockHandler.Close();
         }
         #endregion
 
@@ -275,40 +284,40 @@ namespace Sphere_Editor
 
         public bool ContainsDocument(string name)
         {
-            for (int i = DockTest.Contents.Count - 1; i >= 0; i--)
-                if (DockTest.Contents[i].DockHandler.TabText == name)
-                    return true;
-
+            foreach (IDockContent content in DockTest.Contents)
+            {
+                if (content.DockHandler.TabText == name) return true;
+            }
             return false;
         }
 
         private DockContent FindDocument(string name)
         {
-            for (int i = DockTest.Contents.Count - 1; i >= 0; i--)
-                if (DockTest.Contents[i].DockHandler.TabText == name)
-                    return (DockContent)DockTest.Contents[i];
+            foreach (DockContent content in DockTest.Contents)
+            {
+                if (content.DockHandler.TabText == name) return content;
+            }
             return null;
         }
 
         public void SelectDocument(string name)
         {
-            for (int i = DockTest.Contents.Count - 1; i >= 0; i--)
-                if (DockTest.Contents[i].DockHandler.TabText == name)
-                    DockTest.Contents[i].DockHandler.Activate();
+            foreach (IDockContent content in DockTest.Contents)
+                if (content.DockHandler.TabText == name)
+                    content.DockHandler.Activate();
         }
 
         private void CloseAllDocuments()
         {
-            for (int i = DockTest.Contents.Count - 1; i >= 0; i--)
-                if (DockTest.Contents[i] is IDockContent)
-                    ((IDockContent)DockTest.Contents[i]).DockHandler.Close();
+            foreach (IDockContent content in DockTest.Contents)
+                content.DockHandler.Close();
         }
 
         private void SaveAllDocuments()
         {
-            for (int i = DockTest.Contents.Count - 1; i >= 0; i--)
-                if (DockTest.Contents[i].DockHandler.Form.Controls[0] is EditorObject)
-                    ((EditorObject)DockTest.Contents[i].DockHandler.Form.Controls[0]).Save();
+            foreach (IDockContent content in DockTest.Contents)
+                if (content.DockHandler.Form.Controls[0] is EditorObject)
+                    ((EditorObject)content.DockHandler.Form.Controls[0]).Save();
         }
 
         #region open functions
@@ -801,14 +810,20 @@ namespace Sphere_Editor
         #region view menu items
         private void StartPageMenuItem_Click(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.UseDockForm && StartContent.IsHidden)
-                StartContent.Show(DockTest);
+            if (Global.CurrentEditor.UseDockForm)
+            {
+                if (StartContent.IsHidden) StartContent.Show(DockTest);
+                else StartContent.Hide();
+            }
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, EventArgs e)
         {
             if (Global.CurrentEditor.UseDockForm)
+            {
                 if (TreeContent.IsHidden) TreeContent.Show(DockTest, DockState.DockLeft);
+                else TreeContent.Hide();
+            }
             else _tree.Visible = !_tree.Visible;
         }
 
@@ -816,13 +831,8 @@ namespace Sphere_Editor
         {
             if (Global.CurrentEditor.UseDockForm)
             {
-                if (TaskContent.IsHidden)
-                {
-                    if (!TreeContent.IsHidden)
-                        TaskContent.Show(TreeContent.Pane, DockAlignment.Bottom, 0.40);
-                    else
-                        TaskContent.Show(DockTest, DockState.DockLeft);
-                }
+                if (TaskContent.IsHidden) TaskContent.Show(DockTest, DockState.DockLeft);
+                else TaskContent.Hide();
             }
             else _tasks.Visible = !_tasks.Visible;
         }

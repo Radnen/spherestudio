@@ -15,7 +15,7 @@ namespace TaskPlugin
 
         public IPluginHost Host { get; set; }
 
-        private TaskList _tasklist = new TaskList();
+        private TaskList _list;
 
         public void OnProjectLoad()
         {
@@ -27,18 +27,16 @@ namespace TaskPlugin
             /* Close and empty the task List */
         }
 
-        public object GetControl()
-        {
-            return _tasklist;
-        }
-
         public void Initialize()
         {
-            Host.DockControl(_tasklist, "Task List Plugin", DockAreas.DockBottom | DockAreas.Document | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop, DockAlignment.Bottom);
+            _list = new TaskList();
+            Host.DockControl(_list, "Task List Plugin", DockAreas.DockBottom | DockAreas.Document | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop, DockAlignment.Bottom);
         }
 
         public void Destroy()
         {
+            Host.RemoveControl("Task List Plugin");
+            _list = null;
         }
     }
 }

@@ -9,10 +9,12 @@ namespace Sphere_Editor.Utility
     {
         public IPlugin Plugin { get; private set; }
         public bool Enabled { get; private set; }
+        public string Name { get; private set; }
 
-        public PluginWrapper(IPlugin plugin)
+        public PluginWrapper(IPlugin plugin, string name)
         {
             Plugin = plugin;
+            Name = name;
         }
 
         public void Activate()

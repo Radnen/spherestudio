@@ -12,7 +12,7 @@ namespace Sphere_Editor.Settings
 
         public string RootPath { get; set; }
 
-        protected string GetKeyData(string key)
+        protected string GetString(string key)
         {
             if (items.ContainsKey(key)) return items[key];
             else return string.Empty;
@@ -20,14 +20,14 @@ namespace Sphere_Editor.Settings
 
         protected bool GetBool(string key)
         {
-            string val = GetKeyData(key);
+            string val = GetString(key);
             if (val == string.Empty) return false;
             else return bool.Parse(val);
         }
 
         protected int GetInt(string key)
         {
-            string val = GetKeyData(key);
+            string val = GetString(key);
             if (val == string.Empty) return 0;
             else return int.Parse(val);
         }
