@@ -48,22 +48,22 @@
             this.RemoveButton = new System.Windows.Forms.Button();
             this.AddButton = new System.Windows.Forms.Button();
             this.PathListBox = new System.Windows.Forms.ListBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.Tip = new System.Windows.Forms.ToolTip(this.components);
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.PluginList = new System.Windows.Forms.ListView();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.AuthorCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VersionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DescriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.Tip = new System.Windows.Forms.ToolTip(this.components);
             this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cancelButton
@@ -116,6 +116,7 @@
             this.SpherePathButton.TabIndex = 8;
             this.Tip.SetToolTip(this.SpherePathButton, "Click here to set the engine");
             this.SpherePathButton.UseVisualStyleBackColor = true;
+            this.SpherePathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
             // 
             // ConfigPathLabel
             // 
@@ -270,16 +271,6 @@
             this.PathListBox.TabIndex = 9;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.cancelButton);
-            this.panel1.Controls.Add(this.OkButton);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 251);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(394, 46);
-            this.panel1.TabIndex = 15;
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.PluginList);
@@ -311,6 +302,25 @@
             this.PluginList.View = System.Windows.Forms.View.Details;
             this.PluginList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.PluginList_ItemChecked);
             // 
+            // NameCol
+            // 
+            this.NameCol.Text = "Name";
+            this.NameCol.Width = 70;
+            // 
+            // AuthorCol
+            // 
+            this.AuthorCol.Text = "Author";
+            // 
+            // VersionCol
+            // 
+            this.VersionCol.Text = "Version";
+            this.VersionCol.Width = 50;
+            // 
+            // DescriptionCol
+            // 
+            this.DescriptionCol.Text = "Description";
+            this.DescriptionCol.Width = 195;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.label1);
@@ -330,24 +340,15 @@
             this.label1.Text = "This is a list of plugins that are present in the /plugins directory.\r\nHit the ch" +
                 "eck boxes to add or remove features from the editor.";
             // 
-            // NameCol
+            // panel1
             // 
-            this.NameCol.Text = "Name";
-            this.NameCol.Width = 70;
-            // 
-            // AuthorCol
-            // 
-            this.AuthorCol.Text = "Author";
-            // 
-            // VersionCol
-            // 
-            this.VersionCol.Text = "Version";
-            this.VersionCol.Width = 50;
-            // 
-            // DescriptionCol
-            // 
-            this.DescriptionCol.Text = "Description";
-            this.DescriptionCol.Width = 195;
+            this.panel1.Controls.Add(this.cancelButton);
+            this.panel1.Controls.Add(this.OkButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 251);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(394, 46);
+            this.panel1.TabIndex = 15;
             // 
             // EditorSettings
             // 
@@ -371,9 +372,9 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

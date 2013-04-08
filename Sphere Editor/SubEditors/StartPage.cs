@@ -89,6 +89,7 @@ namespace Sphere_Editor.SubEditors
             string[] paths = Global.CurrentEditor.GetGamePaths();
             foreach (string s in paths)
             {
+                if (string.IsNullOrEmpty(s)) continue;
                 DirectoryInfo d = new DirectoryInfo(s);
                 Populate(d);
                 string path = d.FullName + "/game.sgm";

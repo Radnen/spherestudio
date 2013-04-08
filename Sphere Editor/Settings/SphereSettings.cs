@@ -108,7 +108,9 @@ namespace Sphere_Editor.Settings
 
         public string[] GetGamePaths()
         {
-            return GetKeyData("games_path").Split(',');
+            string s = GetKeyData("games_path");
+            if (!string.IsNullOrEmpty(s)) return s.Split(',');
+            else return new string[0];
         }
 
         /// <summary>
