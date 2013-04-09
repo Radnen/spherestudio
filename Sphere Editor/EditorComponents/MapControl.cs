@@ -450,37 +450,38 @@ namespace Sphere_Editor.EditorComponents
             }
             else CalcMouse(e.Location);
 
-            if (_mouse != _last_mouse)
-            {
-                if (_paint)
-                {
-                    if (Tool == MapTool.Pen)
-                    {
-                        int x = _mouse.X / _tile_w_zoom;
-                        int y = _mouse.Y / _tile_h_zoom;
-                        StampTiles(x, y);
-                    }
-                    else if (Tool == MapTool.Entity && _cur_ent != null &&
-                        _cur_ent.Layer == CurrentLayer)
-                    {
-                        if (_ctrl_key && _can_copy) // copy - move:
-                        {
-                            Entity ent = _cur_ent.Copy();
-                            if (ent.Type == Entity.EntityType.Person)
-                                ent.FigureOutName(_base_map.Entities);
-                            _base_map.Entities.Add(ent);
-                            _can_copy = false;
-                            _cur_ent = ent;
-                        }
-                        _cur_ent.X = (short)(_mouse.X / Zoom + TileWidth / 2 - 1);
-                        _cur_ent.Y = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
-                    }
-                    else if (Tool != MapTool.FloodFill) Invalidate();
-                }
+            if (_mouse == _last_mouse) return;
 
-                InvalidateCursor();
-                _last_mouse = _mouse;
+            if (_paint)
+            {
+                if (Tool == MapTool.Pen)
+                {
+                    int x = _mouse.X / _tile_w_zoom;
+                    int y = _mouse.Y / _tile_h_zoom;
+                    StampTiles(x, y);
+                }
+                else if (Tool == MapTool.Entity && _cur_ent != null &&
+                    _cur_ent.Layer == CurrentLayer)
+                {
+                    if (_ctrl_key && _can_copy) // copy - move:
+                        CopyEntity();
+
+                    _cur_ent.X = (short)(_mouse.X / Zoom + TileWidth / 2 - 1);
+                    _cur_ent.Y = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
+                }
             }
+
+            InvalidateCursor();
+            _last_mouse = _mouse;
+        }
+
+        private void CopyEntity()
+        {
+            Entity ent = _cur_ent.Copy();
+            if (ent.Type == Entity.EntityType.Person) ent.FigureOutName(_base_map.Entities);
+            _base_map.Entities.Add(ent);
+            _can_copy = false;
+            _cur_ent = ent;
         }
 
         private void MapControl_MouseDown(object sender, MouseEventArgs e)

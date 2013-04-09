@@ -3,13 +3,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Sphere.Core.Utility;
 using Sphere.Plugins;
 using Sphere_Editor.Forms;
 using Sphere_Editor.RadEditors;
 using Sphere_Editor.Settings;
 using Sphere_Editor.SubEditors;
-using Sphere.Core.Utility;
-using Sphere_Editor.Utility;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor
@@ -18,7 +17,7 @@ namespace Sphere_Editor
     {
         // uninitialized data:
         private DockContent TreeContent;
-        private DockContent TaskContent;
+        //private DockContent TaskContent;
         private DockContent StartContent;
         private StartPage start_page;
         private EditorObject CurrentControl;
@@ -26,14 +25,17 @@ namespace Sphere_Editor
 
         // initialized data:
         private ProjectTree _tree = new ProjectTree();
-        private TaskList _tasks = new TaskList();
+        //private TaskList _tasks = new TaskList();
         private bool _firsttime;
+
+        public event EventHandler OnOpenProject;
+        public event EventHandler OnCloseProject;
 
         public EditorForm()
         {
             InitializeComponent();
 
-            _tree.Dock = _tasks.Dock = DockStyle.Fill;
+            _tree.Dock = DockStyle.Fill; // _tasks.Dock;
             _tree.EditorForm = this;
 
             Global.CurrentScriptSettings.LoadSettings();
@@ -93,13 +95,13 @@ namespace Sphere_Editor
             TreeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
             TreeContent.Show(DockTest, DockState.DockLeft);
 
-            TaskContent = new DockContent();
+            /*TaskContent = new DockContent();
             TaskContent.Controls.Add(_tasks);
             TaskContent.DockAreas = DockAreas.Document | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.DockBottom;
             TaskContent.Text = "Project Task List";
             TaskContent.HideOnClose = true;
             TaskContent.Icon = Icon.FromHandle(Properties.Resources.application_view_list.GetHicon());
-            TaskContent.Show(TreeContent.Pane, DockAlignment.Bottom, 0.40);
+            TaskContent.Show(TreeContent.Pane, DockAlignment.Bottom, 0.40);*/
         }
 
         private void InitializeAlternateInterface()
@@ -123,15 +125,9 @@ namespace Sphere_Editor
             AltTabInterface.TabPages.Add(page);
         }
 
-        public void DockControl(Control ctrl, string name, DockAreas areas, DockAlignment align)
+        public void DockControl(DockContent content, DockState state)
         {
-            DockContent content = new DockContent();
-            ctrl.Dock = DockStyle.Fill;
-            content.Controls.Add(ctrl);
-            content.DockAreas = areas;
-            content.Text = name;
-            content.Name = name;
-            content.Show(TreeContent.Pane, align, 0.40);
+            content.Show(DockTest, state);
         }
 
         public void RemoveControl(string name)
@@ -147,6 +143,66 @@ namespace Sphere_Editor
                 if (Global.CurrentProject == null) return "";
                 else return Global.CurrentProject.RootPath;
             }
+        }
+
+        private ToolStripMenuItem GetMenuItem(ToolStripItemCollection collection, string name)
+        {
+            foreach (ToolStripItem item in collection)
+            {
+                if (item is ToolStripMenuItem)
+                    if (item.Text.Replace("&", "") == name) return (ToolStripMenuItem)item;
+            }
+            return null;
+        }
+
+        public void AddMenuItem(string location, Image image, EventHandler handler)
+        {
+            string[] items = location.Split('.');
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
+            if (item == null)
+            {
+                item = new ToolStripMenuItem(items[0]);
+                EditorMenu.Items.Add(item);
+            }
+
+            for (int i = 1; i < items.Length; ++i)
+            {
+                ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
+                if (menuitem == null)
+                {
+                    if (i == items.Length - 1)
+                    {
+                        menuitem = new ToolStripMenuItem(items[i], image);
+                        menuitem.Click += handler;
+                    }
+                    else menuitem = new ToolStripMenuItem(items[i]);
+                    item.DropDownItems.Add(menuitem);
+                }
+                item = menuitem;
+            }
+        }
+
+        public void RemoveMenuItem(string location, EventHandler handler)
+        {
+            string[] items = location.Split('.');
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
+            if (item == null) return;
+
+            for (int i = 1; i < items.Length; ++i)
+            {
+                ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
+                if (menuitem == null) return;
+                item = menuitem;
+            }
+
+            if (item.OwnerItem != null && item.OwnerItem is ToolStripMenuItem)
+            {
+                item.Click -= handler;
+                ((ToolStripMenuItem)item.OwnerItem).DropDownItems.Remove(item);
+            }
+
+            ViewMenu.ShowDropDown();
+            ViewMenu.HideDropDown();
         }
         #endregion
 
@@ -177,7 +233,8 @@ namespace Sphere_Editor
             Global.CurrentProject.LoadSettings(filename);
             _tree.Open();
             RefreshProject(this, EventArgs.Empty);
-            _tasks.LoadList();
+            if (OnOpenProject != null) OnOpenProject(null, EventArgs.Empty);
+            //_tasks.LoadList();
             HelpLabel.Text = "Game project loaded successfully!";
             UpdateButtons();
         }
@@ -436,11 +493,12 @@ namespace Sphere_Editor
         // remember to clear opened tabs!
         private void CloseProject(object sender, EventArgs e)
         {
+            if (OnCloseProject != null) OnCloseProject(null, EventArgs.Empty);
             _tree.Close();
-            _tasks.SaveList();
+            //_tasks.SaveList();
             Global.CurrentProject = null;
             _tree.ProjectName = "Project Name";
-            _tasks.Clear();
+            //_tasks.Clear();
             OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
             UpdateButtons();
         }
@@ -838,12 +896,12 @@ namespace Sphere_Editor
 
         private void TaskListMenuItem_Click(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.UseDockForm)
+            /*if (Global.CurrentEditor.UseDockForm)
             {
                 if (TaskContent.IsHidden) TaskContent.Show(DockTest, DockState.DockLeft);
                 else TaskContent.Hide();
             }
-            else _tasks.Visible = !_tasks.Visible;
+            else _tasks.Visible = !_tasks.Visible;*/
         }
         #endregion
 
@@ -888,7 +946,8 @@ namespace Sphere_Editor
         private void EditorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Global.CurrentEditor.SaveSettings();
-            _tasks.SaveList();
+            CloseProject(null, EventArgs.Empty);
+            //_tasks.SaveList();
         }
 
         private void MenuDesignerItem_Click(object sender, EventArgs e)

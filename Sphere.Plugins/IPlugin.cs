@@ -14,9 +14,6 @@ namespace Sphere.Plugins
 
         IPluginHost Host { get; set; }
 
-        void OnProjectLoad();
-        void OnProjectClose();
-
         void Initialize();
         void Destroy();
     }

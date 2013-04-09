@@ -284,13 +284,14 @@ namespace Sphere_Editor.EditorComponents
 
         private void RemoveTiles(int count)
         {
-            /*int amount = Math.Min(count, _tileset.Tiles.Count - Selected);
+            if (Selected.Count == 0) return;
+            int amount = Math.Min(count, _tileset.Tiles.Count - Selected[0]);
             List<Tile> removed = new List<Tile>(amount);
-            for (int i = 0; i < amount; ++i) removed.Add(_tileset.Tiles[Selected + i]);
-            _tileset.Tiles.RemoveRange(Selected, amount);
+            for (int i = 0; i < amount; ++i) removed.Add(_tileset.Tiles[Selected[0] + i]);
+            _tileset.Tiles.RemoveRange(Selected[0], amount);
             UpdateHeight();
             Invalidate();
-            if (TileRemoved != null) TileRemoved(Selected, removed);*/
+            if (TileRemoved != null) TileRemoved(Selected[0], removed);
         }
 
         private void AddTiles(short start, short count)

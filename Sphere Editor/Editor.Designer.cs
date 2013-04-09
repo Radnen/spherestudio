@@ -138,7 +138,6 @@
             this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.StartPageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ProjectExplorerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TaskListMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1048,8 +1047,7 @@
             // 
             this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StartPageMenuItem,
-            this.ProjectExplorerMenuItem,
-            this.TaskListMenuItem});
+            this.ProjectExplorerMenuItem});
             this.ViewMenu.Name = "ViewMenu";
             this.ViewMenu.Size = new System.Drawing.Size(44, 20);
             this.ViewMenu.Text = "&View";
@@ -1068,14 +1066,6 @@
             this.ProjectExplorerMenuItem.Size = new System.Drawing.Size(156, 22);
             this.ProjectExplorerMenuItem.Text = "Project &Explorer";
             this.ProjectExplorerMenuItem.Click += new System.EventHandler(this.ProjectExplorerMenuItem_Click);
-            // 
-            // TaskListMenuItem
-            // 
-            this.TaskListMenuItem.Image = global::Sphere_Editor.Properties.Resources.lightbulb;
-            this.TaskListMenuItem.Name = "TaskListMenuItem";
-            this.TaskListMenuItem.Size = new System.Drawing.Size(156, 22);
-            this.TaskListMenuItem.Text = "&Task List";
-            this.TaskListMenuItem.Click += new System.EventHandler(this.TaskListMenuItem_Click);
             // 
             // HelpMenu
             // 
@@ -1211,7 +1201,6 @@
         private System.Windows.Forms.ToolStripMenuItem ResizeMenuItem;
         private WeifenLuo.WinFormsUI.Docking.DockPanel DockTest;
         private System.Windows.Forms.ToolStripMenuItem ProjectExplorerMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem TaskListMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenDirectoryMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PropertiesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RescaleMenuItem;

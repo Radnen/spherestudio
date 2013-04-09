@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+using System.Drawing;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere.Plugins
@@ -9,7 +7,13 @@ namespace Sphere.Plugins
     public interface IPluginHost
     {
         string ProjectPath { get; }
-        void DockControl(Control ctrl, string name, DockAreas areas, DockAlignment align);
+
+        event EventHandler OnOpenProject;
+        event EventHandler OnCloseProject;
+
+        void DockControl(DockContent content, DockState state);
         void RemoveControl(string name);
+        void AddMenuItem(string location, Image image, EventHandler handler);
+        void RemoveMenuItem(string location, EventHandler handler);
     }
 }

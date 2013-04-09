@@ -573,11 +573,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Libs\scintilla\ScintillaNET.xml" />
-    <Content Include="Libs\objectlistview\ObjectListView.dll" />
-    <Content Include="Libs\objectlistview\ObjectListView.XML" />
-    <Content Include="Plugins\TaskPlugin.dll">
+    <None Include="Libs\objectlistview\ObjectListView.dll" />
+    <None Include="Libs\objectlistview\ObjectListView.XML" />
+    <None Include="Plugins\TaskPlugin.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
