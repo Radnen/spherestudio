@@ -13,6 +13,7 @@ namespace Sphere_Editor
     public class Global
     {
         public static Dictionary<string, PluginWrapper> plugins = new Dictionary<string, PluginWrapper>();
+        public static List<string> functions = new List<string>();
 
         public static void EvalPlugins(IPluginHost host)
         {
@@ -46,9 +47,20 @@ namespace Sphere_Editor
             }
         }
 
+        public static void LoadFunctions()
+        {
+            FileInfo file = new FileInfo(Application.StartupPath + "/docs/functions.txt");
+            if (!file.Exists) return;
+
+            using (StreamReader reader = file.OpenText())
+            {
+                while (!reader.EndOfStream)
+                    functions.Add(reader.ReadLine());
+            }
+        }
+
         public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
-        public static ScriptSettings CurrentScriptSettings = new ScriptSettings();
         public static Sphere.Core.SphereObjects.Entity CopiedEnt { get; set; }
 
         // Extention checking functions. Globally useable. :)

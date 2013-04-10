@@ -1,5 +1,6 @@
 ﻿using System;
 using Sphere.Plugins;
+using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace TaskPlugin
@@ -15,6 +16,7 @@ namespace TaskPlugin
 
         private TaskList _list;
         private DockContent _content;
+        private ToolStripMenuItem _item;
 
         /* Load the Task List */
         void OnProjectLoad(object sender, EventArgs e)
@@ -62,11 +64,13 @@ namespace TaskPlugin
             Host.OnCloseProject += new EventHandler(OnProjectClose);
 
             // Now, we can add a menu item like so.
-            // View.Task List will search the 'View' menu item and try to find 'Task List'
+            // 'View' will search the 'View' menu item.
             // Once it does find it, it'll add the necessary elements.
-            // You can even do paths such as 'View.Subitem.Subitem.Subitem.My Item'
-            // And it'll generate the neccessary stubs.
-            Host.AddMenuItem("View.Task List", Properties.Resources.lightbulb, new EventHandler(ItemClick));
+            // You can even do paths such as 'View.Subitem.Subitem.Subitem'
+            // And it'll generate the neccessary stubs before adding the item.
+            _item = new ToolStripMenuItem("Task List", Properties.Resources.lightbulb);
+            _item.Click += new EventHandler(ItemClick);
+            Host.AddMenuItem("View", _item);
             
             // Here I ake sure the list is loaded when the plugin has been activated.
             _list.LoadList();
@@ -83,11 +87,13 @@ namespace TaskPlugin
             Host.OnCloseProject -= new EventHandler(OnProjectClose);
 
             // And furthermore that menu item must be deleted as well!
-            Host.RemoveMenuItem("View.Task List", new EventHandler(ItemClick));
+            _item.Click -= new EventHandler(ItemClick);
+            Host.RemoveMenuItem(_item);
 
             // And we can optionally null things out just to be safe:
-            _list = null;
-            _content = null;
+            _list.Dispose(); _list = null;
+            _content.Dispose(); _content = null;
+            _item.Dispose(); _item = null;
         }
     }
 }

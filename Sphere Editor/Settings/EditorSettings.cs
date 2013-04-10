@@ -73,6 +73,8 @@ namespace Sphere_Editor.Settings
 
         private void SpherePathButton_Click(object sender, EventArgs e)
         {
+            FolderBrowser.Description = "Choose the root Sphere folder.\n" +
+                                        "This is the place where the engine.exe is.";
             if (FolderBrowser.ShowDialog() == DialogResult.OK)
             {
                 string path = FolderBrowser.SelectedPath;
@@ -87,6 +89,8 @@ namespace Sphere_Editor.Settings
 
         private void AddButton_Click(object sender, EventArgs e)
         {
+            FolderBrowser.Description = "Choose a custom Sphere games location.\n" +
+                                        "Usually Sphere/games/ but you can use your own.";
             if (FolderBrowser.ShowDialog() == DialogResult.OK)
             {
                 PathListBox.Items.Add(FolderBrowser.SelectedPath);

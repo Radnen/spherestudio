@@ -50,6 +50,26 @@ namespace Sphere_Editor.Settings
             }
         }
 
+        /// <summary>
+        /// Saves a custom value into the editor's ini file.
+        /// </summary>
+        /// <param name="key">The key to save to.</param>
+        /// <param name="data">The data serialized as a string.</param>
+        public void SaveCustom(string key, string data)
+        {
+            items[key] = data;
+        }
+
+        /// <summary>
+        /// Retreives a cusom piece of data.
+        /// </summary>
+        /// <param name="key">The key to get from.</param>
+        /// <returns>The data string.</returns>
+        public string GetCustom(string key)
+        {
+            return GetString(key);
+        }
+
         // loads the editor settings such as sphere engine path or config path.
         // essentially this will allow the editor to be used from anywhere on the os.
         public bool LoadSettings(string path)

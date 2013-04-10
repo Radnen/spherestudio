@@ -4,6 +4,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
+using System.Drawing;
+using System.ComponentModel;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -30,8 +32,16 @@ namespace Sphere_Editor.SubEditors
             code_box.TextDeleted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
             code_box.TextInserted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
             code_box.Dock = DockStyle.Fill;
+            code_box.Folding.UseCompactFolding = true;
             code_box.Commands.AddBinding(Keys.D, Keys.Control, BindableCommand.LineDuplicate);
             Controls.Add(code_box);
+
+            string fontstring = Global.CurrentEditor.GetCustom("script-font");
+            if (!String.IsNullOrEmpty(fontstring))
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
+                SetFont((Font)converter.ConvertFromString(fontstring));
+            }
         }
 
         void code_box_TextChanged(object sender, EventArgs e)
@@ -51,6 +61,13 @@ namespace Sphere_Editor.SubEditors
                        DateTime.Today.ToShortDateString() + "\n**/";
                 code_box.UndoRedo.EmptyUndoBuffer();
             }
+        }
+
+        public void SetFont(Font font)
+        {
+            for (int i = 0; i < 128; ++i)
+                code_box.Styles[i].Font = font;
+            code_box.Lexing.Colorize();
         }
 
         public string FileName
@@ -172,7 +189,7 @@ namespace Sphere_Editor.SubEditors
                 string word = code_box.GetWordFromPosition(code_box.CurrentPos).ToLower();
                 List<string> filter = new List<string>();
 
-                foreach (string s in Global.CurrentScriptSettings.FunctionList)
+                foreach (string s in Global.functions)
                 {
                     if (s.ToLower().Contains(word)) filter.Add(s.Replace(";", ""));
                 }

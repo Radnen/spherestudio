@@ -132,6 +132,7 @@
             this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ScriptMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.AutoCompleteItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ChangeFontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImageMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -179,8 +180,6 @@
             // 
             // DockTest
             // 
-            this.DockTest.BackColor = System.Drawing.SystemColors.Control;
-            this.DockTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.DockTest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DockTest.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(75)))));
             this.DockTest.DockLeftPortion = 0.2D;
@@ -415,7 +414,6 @@
             this.ViewMenu,
             this.HelpMenu});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
-            this.EditorMenu.MdiWindowListItem = this.ViewMenu;
             this.EditorMenu.Name = "EditorMenu";
             this.EditorMenu.Size = new System.Drawing.Size(480, 24);
             this.EditorMenu.TabIndex = 0;
@@ -842,6 +840,7 @@
             // 
             // ConfigureSphereMenuItem
             // 
+            this.ConfigureSphereMenuItem.Enabled = false;
             this.ConfigureSphereMenuItem.Image = global::Sphere_Editor.Properties.Resources.cog;
             this.ConfigureSphereMenuItem.Name = "ConfigureSphereMenuItem";
             this.ConfigureSphereMenuItem.Size = new System.Drawing.Size(188, 22);
@@ -1004,10 +1003,12 @@
             // ScriptMenu
             // 
             this.ScriptMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AutoCompleteItem});
+            this.AutoCompleteItem,
+            this.ChangeFontItem});
             this.ScriptMenu.Name = "ScriptMenu";
             this.ScriptMenu.Size = new System.Drawing.Size(49, 20);
             this.ScriptMenu.Text = "S&cript";
+            this.ScriptMenu.Visible = false;
             // 
             // AutoCompleteItem
             // 
@@ -1016,6 +1017,13 @@
             this.AutoCompleteItem.Size = new System.Drawing.Size(192, 22);
             this.AutoCompleteItem.Text = "Toggle AutoComplete";
             this.AutoCompleteItem.CheckedChanged += new System.EventHandler(this.UpdateCheck);
+            // 
+            // ChangeFontItem
+            // 
+            this.ChangeFontItem.Name = "ChangeFontItem";
+            this.ChangeFontItem.Size = new System.Drawing.Size(192, 22);
+            this.ChangeFontItem.Text = "Change Font...";
+            this.ChangeFontItem.Click += new System.EventHandler(this.ChangeFontItem_Click);
             // 
             // ImageMenu
             // 
@@ -1051,6 +1059,8 @@
             this.ViewMenu.Name = "ViewMenu";
             this.ViewMenu.Size = new System.Drawing.Size(44, 20);
             this.ViewMenu.Text = "&View";
+            this.ViewMenu.DropDownClosed += new System.EventHandler(this.ViewMenu_DropDownClosed);
+            this.ViewMenu.DropDownOpening += new System.EventHandler(this.ViewMenu_DropDownOpening);
             // 
             // StartPageMenuItem
             // 
@@ -1062,6 +1072,7 @@
             // 
             // ProjectExplorerMenuItem
             // 
+            this.ProjectExplorerMenuItem.Image = global::Sphere_Editor.Properties.Resources.bullet_toggle_plus;
             this.ProjectExplorerMenuItem.Name = "ProjectExplorerMenuItem";
             this.ProjectExplorerMenuItem.Size = new System.Drawing.Size(156, 22);
             this.ProjectExplorerMenuItem.Text = "Project &Explorer";
@@ -1102,7 +1113,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(166)))), ((int)(((byte)(192)))));
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(480, 360);
             this.Controls.Add(this.DockTest);
             this.Controls.Add(this.EditorTools);
@@ -1229,6 +1240,7 @@
         private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
         private System.Windows.Forms.ToolStripMenuItem ScriptMenu;
         private System.Windows.Forms.ToolStripMenuItem AutoCompleteItem;
+        private System.Windows.Forms.ToolStripMenuItem ChangeFontItem;
     }
 }
 

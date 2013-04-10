@@ -113,7 +113,11 @@ namespace Sphere_Editor.EditorComponents
             _edit_layer = new Bitmap(_image);
             _edit_canvas = Graphics.FromImage(_edit_layer);
             _edit_canvas.InterpolationMode = InterpolationMode.NearestNeighbor;
-            _edit_canvas.CompositingMode = CompositingMode.SourceCopy;
+
+            if (blendItem.Checked)
+                _edit_canvas.CompositingMode = CompositingMode.SourceOver;
+            else
+                _edit_canvas.CompositingMode = CompositingMode.SourceCopy;
 
             // here I construct a new dotted bg image.
             if (_bg != null) _bg.Dispose();
@@ -288,7 +292,6 @@ namespace Sphere_Editor.EditorComponents
         {
             using (Graphics g = Graphics.FromImage(_image))
             {
-                g.PixelOffsetMode = PixelOffsetMode.Half;
                 g.InterpolationMode = InterpolationMode.NearestNeighbor;
                 g.CompositingQuality = CompositingQuality.HighSpeed;
                 g.CompositingMode = CompositingMode.SourceCopy;
@@ -356,14 +359,14 @@ namespace Sphere_Editor.EditorComponents
         public void ResizeImage(int width, int height)
         {
             Bitmap image = new Bitmap(width, height);
-            Rectangle rect = new Rectangle(0, 0, width, height);
             using (Graphics g = Graphics.FromImage(image))
             {
                 g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.DrawImageUnscaledAndClipped(_image, rect);
+                g.DrawImage(_image, 0, 0);
             }
             PushResizePage(image);
             SetImage(image);
+            image.Dispose();
             if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
         }
 
@@ -377,6 +380,7 @@ namespace Sphere_Editor.EditorComponents
             }
             PushResizePage(image);
             SetImage(image);
+            image.Dispose();
             if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
         }
 

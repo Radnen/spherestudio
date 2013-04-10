@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Editor", "Sphere Editor\Sphere Editor.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F58A8DB0-1879-41D2-A349-4FB8991AF3D2} = {F58A8DB0-1879-41D2-A349-4FB8991AF3D2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlugin", "TaskPlugin\TaskPlugin.csproj", "{F7434DEC-A94A-409C-A320-7585B4083A6A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F58A8DB0-1879-41D2-A349-4FB8991AF3D2} = {F58A8DB0-1879-41D2-A349-4FB8991AF3D2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Core", "Sphere.Core\Sphere.Core.csproj", "{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}"
 EndProject

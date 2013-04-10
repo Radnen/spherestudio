@@ -3,7 +3,7 @@
   
   <Language Name="Default">
     <Styles>
-      <Style Name="Default" FontName="Courier New" />
+      <Style Name="Default" FontName="Consolas" />
     </Styles>
   </Language>
 

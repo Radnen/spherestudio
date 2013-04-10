@@ -123,6 +123,13 @@ namespace Sphere_Editor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap bullet_toggle_plus {
+            get {
+                object obj = ResourceManager.GetObject("bullet_toggle_plus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap check {
             get {
                 object obj = ResourceManager.GetObject("check", resourceCulture);

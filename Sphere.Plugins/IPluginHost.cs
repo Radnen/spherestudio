@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere.Plugins
@@ -13,7 +14,7 @@ namespace Sphere.Plugins
 
         void DockControl(DockContent content, DockState state);
         void RemoveControl(string name);
-        void AddMenuItem(string location, Image image, EventHandler handler);
-        void RemoveMenuItem(string location, EventHandler handler);
+        void AddMenuItem(string location, ToolStripItem item);
+        void RemoveMenuItem(ToolStripItem item);
     }
 }

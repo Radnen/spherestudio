@@ -177,18 +177,16 @@ namespace Sphere_Editor.SubEditors
         {
             if (Global.CurrentProject.RootPath.Length == 0) return;
 
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
+            Cursor.Current = Cursors.WaitCursor;
+            ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
             ProjectTreeView.Nodes.Add(new TreeNode(Global.CurrentProject.Name));
             DirectoryInfo BaseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], BaseDir);
+            Cursor.Current = Cursors.Default;
 
             if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Toggle();
-
-            watch.Stop();
-            Console.WriteLine(Global.CurrentProject.Name + ": " + watch.Elapsed.TotalMilliseconds);
+            ProjectTreeView.EndUpdate();
         }
 
         // RECURSIVE:

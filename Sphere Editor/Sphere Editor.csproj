@@ -532,7 +532,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Settings\ScriptSettings.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings\SphereSettings.cs" />
   </ItemGroup>

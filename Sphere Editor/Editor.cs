@@ -10,6 +10,7 @@ using Sphere_Editor.RadEditors;
 using Sphere_Editor.Settings;
 using Sphere_Editor.SubEditors;
 using WeifenLuo.WinFormsUI.Docking;
+using System.ComponentModel;
 
 namespace Sphere_Editor
 {
@@ -38,7 +39,7 @@ namespace Sphere_Editor
             _tree.Dock = DockStyle.Fill; // _tasks.Dock;
             _tree.EditorForm = this;
 
-            Global.CurrentScriptSettings.LoadSettings();
+            Global.LoadFunctions();
             _firsttime = !Global.CurrentEditor.LoadSettings();
             
             start_page = new StartPage(this);
@@ -81,7 +82,7 @@ namespace Sphere_Editor
             DockTest.ShowDocumentIcon = true;
 
             StartContent = new DockContent();
-            StartContent.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.SphereEditor.GetHicon());
+            StartContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
             StartContent.Text = "Start Page";
             StartContent.HideOnClose = true;
             StartContent.Show(DockTest, DockState.Document);
@@ -114,7 +115,7 @@ namespace Sphere_Editor
             _tree.BringToFront();
 
             TabPage page = new TabPage();
-            page.Text = "start page";
+            page.Text = "Start Page";
             page.Controls.Add(start_page);
 
             AltTabInterface = new TabControl();
@@ -155,7 +156,7 @@ namespace Sphere_Editor
             return null;
         }
 
-        public void AddMenuItem(string location, Image image, EventHandler handler)
+        public void AddMenuItem(string location, ToolStripItem new_item)
         {
             string[] items = location.Split('.');
             ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
@@ -165,44 +166,23 @@ namespace Sphere_Editor
                 EditorMenu.Items.Add(item);
             }
 
-            for (int i = 1; i < items.Length; ++i)
+            for (int i = 1; i < items.Length-1; ++i)
             {
                 ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
                 if (menuitem == null)
                 {
-                    if (i == items.Length - 1)
-                    {
-                        menuitem = new ToolStripMenuItem(items[i], image);
-                        menuitem.Click += handler;
-                    }
-                    else menuitem = new ToolStripMenuItem(items[i]);
-                    item.DropDownItems.Add(menuitem);
+                    item.DropDownItems.Add(new ToolStripMenuItem(items[i]));
                 }
                 item = menuitem;
             }
+
+            item.DropDownItems.Add(new_item);
         }
 
-        public void RemoveMenuItem(string location, EventHandler handler)
+        public void RemoveMenuItem(ToolStripItem item)
         {
-            string[] items = location.Split('.');
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
-            if (item == null) return;
-
-            for (int i = 1; i < items.Length; ++i)
-            {
-                ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
-                if (menuitem == null) return;
-                item = menuitem;
-            }
-
-            if (item.OwnerItem != null && item.OwnerItem is ToolStripMenuItem)
-            {
-                item.Click -= handler;
+            if (item.OwnerItem is ToolStripMenuItem)
                 ((ToolStripMenuItem)item.OwnerItem).DropDownItems.Remove(item);
-            }
-
-            ViewMenu.ShowDropDown();
-            ViewMenu.HideDropDown();
         }
         #endregion
 
@@ -273,6 +253,7 @@ namespace Sphere_Editor
             }
             else
             {
+                if (control is Drawer2) ((Drawer2)control).CanDirty = true;
                 control.Dock = DockStyle.Fill;
                 content = new DockContent();
             }
@@ -301,21 +282,21 @@ namespace Sphere_Editor
 
             if (text == "Sphere") { content.AllowEndUserDocking = false; }
             else if (control is Drawer2)
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.palette.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else if (control is ScriptEditor)
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.script_edit.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
             else if (control is MapEditor)
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.map.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.map.GetHicon());
             else if (control is SpritesetEditor)
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.palette.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else if (Global.IsSound(ref text))
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.sound.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.sound.GetHicon());
             else if (control is FontEditor)
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.font.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.font.GetHicon());
             else if (control is WindowStyleEditor)
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.palette.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else
-                content.Icon = Icon.FromHandle(Sphere_Editor.Properties.Resources.page_white_edit.GetHicon());
+                content.Icon = Icon.FromHandle(Properties.Resources.page_white_edit.GetHicon());
 
             if (CurrentControl != null) CurrentControl.HelpLabel = this.HelpLabel;
             // A work-around for the saving in the file drop-down.
@@ -991,6 +972,64 @@ namespace Sphere_Editor
         private void UpdateCheck(object sender, EventArgs e)
         {
             Global.CurrentEditor.ShowAutoComplete = AutoCompleteItem.Checked;
+        }
+
+        private void ViewMenu_DropDownOpening(object sender, EventArgs e)
+        {
+            if (DockTest.Contents.Count == 0) return;
+            ToolStripSeparator ts = new ToolStripSeparator();
+            ts.Name = "view_addition";
+            ViewMenu.DropDownItems.Add(ts);
+            foreach (IDockContent content in DockTest.Contents)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText);
+                item.Name = "view_addition";
+                item.Click += new EventHandler(item_Click);
+                if (content.DockHandler.IsActivated) item.CheckState = CheckState.Checked;
+                ViewMenu.DropDownItems.Add(item);
+            }
+        }
+
+        void item_Click(object sender, EventArgs e)
+        {
+            SelectDocument(((ToolStripMenuItem)sender).Text);
+        }
+
+        private void ViewMenu_DropDownClosed(object sender, EventArgs e)
+        {
+            for (int i = 0; i < ViewMenu.DropDownItems.Count; ++i)
+            {
+                if (ViewMenu.DropDownItems[i].Name == "view_addition")
+                {
+                    ViewMenu.DropDownItems.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        private void ChangeFontItem_Click(object sender, EventArgs e)
+        {
+            // QUICK IDEA
+            using (FontDialog diag = new FontDialog())
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
+                string fontstring = Global.CurrentEditor.GetCustom("script-font");
+
+                if (!String.IsNullOrEmpty(fontstring))
+                    diag.Font = (Font)converter.ConvertFromString(fontstring);
+                
+                if (diag.ShowDialog() == DialogResult.OK)
+                {
+                    fontstring = converter.ConvertToString(diag.Font);
+                    Global.CurrentEditor.SaveCustom("script-font", fontstring);
+
+                    foreach (DockContent content in DockTest.Contents)
+                    {
+                        if (content.Controls[0] is ScriptEditor)
+                            ((ScriptEditor)content.Controls[0]).SetFont(diag.Font);
+                    }
+                }
+            }
         }
     }
 }

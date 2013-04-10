@@ -276,7 +276,10 @@ namespace Sphere_Editor.EditorComponents
             if (_paint && Tool == MapTool.Zone)
                 DrawTool(e.Graphics);
 
-            DrawSelector(e.Graphics);
+            if (Tool == MapTool.Pen)
+                DrawSelector(e.Graphics);
+            else if (Tool != MapTool.Zone)
+                DrawSelector(e.Graphics, true);
 
             e.Graphics.DrawRectangle(Pens.Black, _offset.X, _offset.Y, _vw, _vh);
 
@@ -310,7 +313,7 @@ namespace Sphere_Editor.EditorComponents
                 ent.Draw(g, _base_map.Tileset.TileWidth, _base_map.Tileset.TileHeight, ref _offset, Zoom);
         }
 
-        private void DrawSelector(Graphics g)
+        private void DrawSelector(Graphics g, bool single = false)
         {
             bool mouse_in = (_mouse.X >= 0 && _mouse.Y >= 0 && _mouse.X < _vw && _mouse.Y < _vh);
             
@@ -319,6 +322,13 @@ namespace Sphere_Editor.EditorComponents
 
             int ox = _offset.X + _mouse.X; // origin x/y
             int oy = _offset.Y + _mouse.Y;
+
+            if (single)
+            {
+                g.DrawRectangle(Pens.Yellow, ox, oy, _tile_w_zoom, _tile_h_zoom);
+                return;
+            }
+
             int w = SelWidth * _tile_w_zoom; // box x/y
             int h = (Tiles.Count / SelWidth) * _tile_h_zoom;
 
