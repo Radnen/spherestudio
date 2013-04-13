@@ -6,26 +6,43 @@ using System.Windows.Forms;
 
 namespace Sphere_Editor.Settings
 {
-    public class GenSettings
+    public abstract class GenSettings
     {
         private SortedList<string, string> items = new SortedList<string, string>();
 
         public string RootPath { get; set; }
 
-        protected string GetString(string key)
+        /// <summary>
+        /// Attempts to get the string stored at the key.
+        /// </summary>
+        /// <param name="key">The key to read from.</param>
+        /// <returns>A string or string.Empty if it failed.</returns>
+        public string GetString(string key)
         {
             if (items.ContainsKey(key)) return items[key];
             else return string.Empty;
         }
 
-        protected bool GetBool(string key)
+        /// <summary>
+        /// Attempts to get a bool from the key.
+        /// </summary>
+        /// <param name="key">The value to read.</param>
+        /// <param name="fail">The value to return if it failed.</param>
+        /// <returns>The boolean stored at the key.</returns>
+        public bool GetBool(string key, bool fail = false)
         {
             string val = GetString(key);
-            if (val == string.Empty) return false;
+            if (val == string.Empty) return fail;
             else return bool.Parse(val);
         }
 
-        protected int GetInt(string key)
+        /// <summary>
+        /// Attempts to get an int from the key.
+        /// </summary>
+        /// <param name="key">The key to read from.</param>
+        /// <param name="fail">The value to return if it failed.</param>
+        /// <returns>The integer stored at the key.</returns>
+        public int GetInt(string key, int fail = 0)
         {
             string val = GetString(key);
             if (val == string.Empty) return 0;
@@ -35,6 +52,20 @@ namespace Sphere_Editor.Settings
         protected void SetItem<T>(string key, T item)
         {
             items[key] = item.ToString();
+        }
+
+        public void SetSettings(GenSettings settings)
+        {
+            foreach (KeyValuePair<string, string> pair in settings.items)
+                items[pair.Key] = pair.Value;
+        }
+
+        protected GenSettings Clone(GenSettings settings)
+        {
+            foreach (KeyValuePair<string, string> pair in items)
+                settings.items[pair.Key] = pair.Value;
+            settings.RootPath = RootPath;
+            return settings;
         }
 
         public virtual void SaveSettings(string path)
@@ -55,19 +86,9 @@ namespace Sphere_Editor.Settings
         /// </summary>
         /// <param name="key">The key to save to.</param>
         /// <param name="data">The data serialized as a string.</param>
-        public void SaveCustom(string key, string data)
+        public void SaveObject(string key, object data)
         {
-            items[key] = data;
-        }
-
-        /// <summary>
-        /// Retreives a cusom piece of data.
-        /// </summary>
-        /// <param name="key">The key to get from.</param>
-        /// <returns>The data string.</returns>
-        public string GetCustom(string key)
-        {
-            return GetString(key);
+            items[key] = data.ToString();
         }
 
         // loads the editor settings such as sphere engine path or config path.

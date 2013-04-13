@@ -168,7 +168,7 @@ namespace Sphere_Editor.EditorComponents
 
             if (tile < 0 || tile >= Tileset.Tiles.Count) return;
 
-            _select_paint = true;
+            if (e.Button == MouseButtons.Left) _select_paint = true;
             _selection.Start = new Point(x, y);
             _selection.End = _selection.Start;
             SelectTiles();

@@ -80,6 +80,7 @@ namespace Sphere_Editor.SubEditors
         public void PopulateGameList()
         {
             GameFolders.Items.Clear();
+            GameFolders.BeginUpdate();
             if (_imageicons.Images.Count == 0) return;
             Image hold_on_to_me = _imageicons.Images[0]; // keep this sucker alive.
             _imageicons.Images.Clear();
@@ -103,6 +104,8 @@ namespace Sphere_Editor.SubEditors
                     GameFolders.Items.Add(item);
                 }
             }
+            GameFolders.EndUpdate();
+            GameFolders.Invalidate();
         }
 
         /// <summary>
@@ -134,13 +137,6 @@ namespace Sphere_Editor.SubEditors
             return 0;
         }
 
-        private void GameFolders_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            current_item = GameFolders.GetItemAt(e.X, e.Y);
-            if (current_item == null) return;
-            _mainEditor.OpenProject((string)current_item.Tag);
-        }
-
         private void GameFolders_MouseClick(object sender, MouseEventArgs e)
         {
             current_item = GameFolders.GetItemAt(e.X, e.Y);
@@ -159,19 +155,9 @@ namespace Sphere_Editor.SubEditors
 
         private void PlayMenuItem_Click(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.SpherePath != "")
-            {
-                System.Diagnostics.Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + proj.RootPath + "\"");
-            }
-            else
-            {
-                if (MessageBox.Show("Invalid Sphere Engine Path! Find Path?", "Invalid Path",
-                    MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    EditorForm MainForm = ((EditorForm)Parent.Parent.Parent);
-                    MainForm.OpenEditorSettings(null, EventArgs.Empty);
-                }
-            }
+            if (!File.Exists(Global.CurrentEditor.SpherePath)) return;
+            string args = string.Format("-game\"{0}\"", proj.RootPath);
+            Process.Start(Global.CurrentEditor.SpherePath, args);
         }
 
         private void LoadMenuItem_Click(object sender, EventArgs e)
@@ -187,22 +173,26 @@ namespace Sphere_Editor.SubEditors
 
         private void GameFolders_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
-            if (e.Label == null || e.Label == "") e.CancelEdit = true;
-            else
+            if (string.IsNullOrEmpty(e.Label))
             {
-                ListViewItem item = GameFolders.Items[e.Item];
-                string path = Path.GetDirectoryName(GameFolders.Items[e.Item].Tag as string);
+                e.CancelEdit = true;
+                return;
+            }
 
-                if (File.Exists(path + e.Label)) e.CancelEdit = true;
-                else
-                {
-                    Directory.Move(path + item.Text, path + e.Label);
-                    if (path + item.Text == Global.CurrentProject.RootPath)
-                    {
-                        Global.CurrentProject.RootPath = path + e.Label;
-                        _mainEditor.RefreshProject(null, EventArgs.Empty);
-                    }
-                }
+            ListViewItem item = GameFolders.Items[e.Item];
+            string path = Path.GetDirectoryName(GameFolders.Items[e.Item].Tag as string);
+
+            if (File.Exists(path + e.Label)) e.CancelEdit = true;
+            else RenameProject(path + item.Text, path + e.Label);
+        }
+
+        private void RenameProject(string oldname, string newname)
+        {
+            Directory.Move(oldname, newname);
+            if (oldname == Global.CurrentProject.RootPath)
+            {
+                Global.CurrentProject.RootPath = newname;
+                _mainEditor.RefreshProject();
             }
         }
 
@@ -267,6 +257,7 @@ namespace Sphere_Editor.SubEditors
             PlayGameItem.Visible = LoadMenuItem.Visible =
                 RenameProjectItem.Visible = SetIconItem.Visible =
                     OpenFolderItem.Visible = (current_item != null);
+            PlayGameItem.Visible = !string.IsNullOrEmpty(Global.CurrentEditor.SpherePath);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)
@@ -302,5 +293,19 @@ namespace Sphere_Editor.SubEditors
             HelpLabel.Text = "These are the games properties stored in their \"game.sgm\" file.";
         }
         #endregion
+
+        private void GameFolders_ItemActivate(object sender, EventArgs e)
+        {
+            current_item = GameFolders.SelectedItems[0];
+            if (current_item == null) return;
+            _mainEditor.OpenProject((string)current_item.Tag);
+
+            /*if (current_item != null && File.Exists((string)current_item.Tag))
+            {
+                GameFolders.Items.Remove(current_item);
+                current_item = null;
+            }*/
+        }
+
     }
 }

@@ -43,7 +43,7 @@ namespace Sphere_Editor.Settings
             set { SetItem<string>("script", value); }
         }
 
-        public void SetDataNew(System.Windows.Forms.Form newForm)
+        public void SetDataNew(Form newForm)
         {
             Control.ControlCollection PropertyControls = newForm.Controls["PropertiesBox"].Controls;
             Control.ControlCollection ProjectControls = newForm.Controls["ProjectBox"].Controls;
@@ -55,7 +55,7 @@ namespace Sphere_Editor.Settings
             RootPath = ProjectControls["DirectoryBox"].Text;
         }
 
-        public void SetData(System.Windows.Forms.Form setForm)
+        public void SetData(Form setForm)
         {
             Control.ControlCollection Controls = setForm.Controls;
             Width = Controls["WidthTextBox"].Text;
@@ -80,7 +80,7 @@ namespace Sphere_Editor.Settings
             GameDir.Create();
 
             // Create the Sub-folders //
-            string[] subfolders = {"animations", "fonts", "images", "maps", "scripts", "sounds", "spritesets", "windowstyles"};
+            string[] subfolders = { "animations", "fonts", "images", "maps", "scripts", "sounds", "spritesets", "windowstyles" };
             for (int i = 0; i < subfolders.Length; ++i)
             {
                 DirectoryInfo subfolder = new DirectoryInfo(RootPath + "\\" + subfolders[i]);

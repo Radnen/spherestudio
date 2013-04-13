@@ -72,10 +72,8 @@
             this.GameFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.GameFolders.BackColor = System.Drawing.Color.White;
             this.GameFolders.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GameFolders.ContextMenuStrip = this.ItemContextStrip;
-            this.GameFolders.GridLines = true;
             this.GameFolders.LabelEdit = true;
             this.GameFolders.Location = new System.Drawing.Point(3, 26);
             this.GameFolders.MultiSelect = false;
@@ -85,8 +83,8 @@
             this.GameFolders.UseCompatibleStateImageBehavior = false;
             this.GameFolders.View = System.Windows.Forms.View.Tile;
             this.GameFolders.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.GameFolders_AfterLabelEdit);
+            this.GameFolders.ItemActivate += new System.EventHandler(this.GameFolders_ItemActivate);
             this.GameFolders.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GameFolders_MouseClick);
-            this.GameFolders.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.GameFolders_MouseDoubleClick);
             this.GameFolders.MouseEnter += new System.EventHandler(this.GameFolders_MouseEnter);
             this.GameFolders.MouseLeave += new System.EventHandler(this.ClearTip);
             // 
@@ -102,7 +100,7 @@
             this.RefreshItem,
             this.ViewItem});
             this.ItemContextStrip.Name = "ItemContextStrip";
-            this.ItemContextStrip.Size = new System.Drawing.Size(194, 186);
+            this.ItemContextStrip.Size = new System.Drawing.Size(194, 164);
             this.ItemContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ItemContextStrip_Opening);
             // 
             // PlayGameItem

@@ -56,6 +56,12 @@
             this.DescriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.PresetListBox = new System.Windows.Forms.ListBox();
+            this.UsePresetButton = new System.Windows.Forms.Button();
+            this.RemovePresetButton = new System.Windows.Forms.Button();
+            this.SavePresetButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Tip = new System.Windows.Forms.ToolTip(this.components);
             this.SettingsTabs.SuspendLayout();
@@ -63,6 +69,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,7 +121,7 @@
             this.SpherePathButton.Name = "SpherePathButton";
             this.SpherePathButton.Size = new System.Drawing.Size(31, 23);
             this.SpherePathButton.TabIndex = 8;
-            this.Tip.SetToolTip(this.SpherePathButton, "Click here to set the engine");
+            this.Tip.SetToolTip(this.SpherePathButton, "Choose Sphere Folder");
             this.SpherePathButton.UseVisualStyleBackColor = true;
             this.SpherePathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
             // 
@@ -174,6 +181,7 @@
             this.SettingsTabs.Controls.Add(this.tabPage1);
             this.SettingsTabs.Controls.Add(this.tabPage2);
             this.SettingsTabs.Controls.Add(this.tabPage3);
+            this.SettingsTabs.Controls.Add(this.tabPage4);
             this.SettingsTabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SettingsTabs.Location = new System.Drawing.Point(0, 0);
             this.SettingsTabs.Name = "SettingsTabs";
@@ -239,30 +247,33 @@
             // 
             // RemoveButton
             // 
+            this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RemoveButton.Enabled = false;
             this.RemoveButton.Location = new System.Drawing.Point(76, 198);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(64, 23);
             this.RemoveButton.TabIndex = 11;
-            this.RemoveButton.Text = "Remove Path";
-            this.Tip.SetToolTip(this.RemoveButton, "Remove selected gamepath.");
+            this.RemoveButton.Text = "Remove";
+            this.Tip.SetToolTip(this.RemoveButton, "Remove Selected Gamepath");
             this.RemoveButton.UseVisualStyleBackColor = true;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
             // AddButton
             // 
+            this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AddButton.Location = new System.Drawing.Point(7, 198);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(64, 23);
             this.AddButton.TabIndex = 10;
             this.AddButton.Text = "Add...";
-            this.Tip.SetToolTip(this.AddButton, "Add a games path to this list.");
+            this.Tip.SetToolTip(this.AddButton, "Add a Games Path");
             this.AddButton.UseVisualStyleBackColor = true;
             this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // PathListBox
             // 
-            this.PathListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.PathListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.PathListBox.FormattingEnabled = true;
             this.PathListBox.Location = new System.Drawing.Point(5, 97);
@@ -340,6 +351,81 @@
             this.label1.Text = "This is a list of plugins that are present in the /plugins directory.\r\nHit the ch" +
                 "eck boxes to add or remove features from the editor.";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.PresetListBox);
+            this.tabPage4.Controls.Add(this.UsePresetButton);
+            this.tabPage4.Controls.Add(this.RemovePresetButton);
+            this.tabPage4.Controls.Add(this.SavePresetButton);
+            this.tabPage4.Controls.Add(this.label2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(386, 225);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Presets";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // PresetListBox
+            // 
+            this.PresetListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.PresetListBox.FormattingEnabled = true;
+            this.PresetListBox.Location = new System.Drawing.Point(6, 36);
+            this.PresetListBox.Name = "PresetListBox";
+            this.PresetListBox.Size = new System.Drawing.Size(372, 147);
+            this.PresetListBox.TabIndex = 15;
+            this.PresetListBox.SelectedIndexChanged += new System.EventHandler(this.PresetListBox_SelectedIndexChanged);
+            // 
+            // UsePresetButton
+            // 
+            this.UsePresetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UsePresetButton.Enabled = false;
+            this.UsePresetButton.Location = new System.Drawing.Point(6, 196);
+            this.UsePresetButton.Name = "UsePresetButton";
+            this.UsePresetButton.Size = new System.Drawing.Size(64, 23);
+            this.UsePresetButton.TabIndex = 14;
+            this.UsePresetButton.Text = "Use";
+            this.Tip.SetToolTip(this.UsePresetButton, "Use Preset Settings File");
+            this.UsePresetButton.UseVisualStyleBackColor = true;
+            this.UsePresetButton.Click += new System.EventHandler(this.UsePresetButton_Click);
+            // 
+            // RemovePresetButton
+            // 
+            this.RemovePresetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RemovePresetButton.Enabled = false;
+            this.RemovePresetButton.Location = new System.Drawing.Point(145, 196);
+            this.RemovePresetButton.Name = "RemovePresetButton";
+            this.RemovePresetButton.Size = new System.Drawing.Size(64, 23);
+            this.RemovePresetButton.TabIndex = 13;
+            this.RemovePresetButton.Text = "Remove";
+            this.Tip.SetToolTip(this.RemovePresetButton, "Remove the preset settings file.");
+            this.RemovePresetButton.UseVisualStyleBackColor = true;
+            this.RemovePresetButton.Click += new System.EventHandler(this.RemovePresetButton_Click);
+            // 
+            // SavePresetButton
+            // 
+            this.SavePresetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SavePresetButton.Location = new System.Drawing.Point(76, 196);
+            this.SavePresetButton.Name = "SavePresetButton";
+            this.SavePresetButton.Size = new System.Drawing.Size(64, 23);
+            this.SavePresetButton.TabIndex = 12;
+            this.SavePresetButton.Text = "Add...";
+            this.Tip.SetToolTip(this.SavePresetButton, "Save these settings.");
+            this.SavePresetButton.UseVisualStyleBackColor = true;
+            this.SavePresetButton.Click += new System.EventHandler(this.SavePresetButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Location = new System.Drawing.Point(3, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(380, 30);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Editor presets allow you to target different sphere versions,\r\ngame paths and plu" +
+                "gin lists to suit your development needs.";
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.cancelButton);
@@ -374,6 +460,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -410,5 +497,11 @@
         private System.Windows.Forms.ColumnHeader AuthorCol;
         private System.Windows.Forms.ColumnHeader VersionCol;
         private System.Windows.Forms.ColumnHeader DescriptionCol;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button UsePresetButton;
+        private System.Windows.Forms.Button RemovePresetButton;
+        private System.Windows.Forms.Button SavePresetButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox PresetListBox;
     }
 }

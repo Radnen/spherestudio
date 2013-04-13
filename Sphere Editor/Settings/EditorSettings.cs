@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using Sphere_Editor.Utility;
 
@@ -29,7 +29,7 @@ namespace Sphere_Editor.Settings
                 PathListBox.Items.CopyTo(strings, 0);
                 return strings;
             }
-            set { PathListBox.Items.AddRange(value); }
+            set { PathListBox.Items.Clear(); PathListBox.Items.AddRange(value); }
         }
 
         public string LabelFont
@@ -62,6 +62,11 @@ namespace Sphere_Editor.Settings
         public EditorSettings(SphereSettings settings)
         {
             InitializeComponent();
+            SetValues(settings);
+        }
+
+        private void SetValues(SphereSettings settings)
+        {
             SpherePath = settings.SpherePath;
             ConfigPath = settings.ConfigPath;
             GamePaths = settings.GetGamePaths();
@@ -100,7 +105,7 @@ namespace Sphere_Editor.Settings
         private void RemoveButton_Click(object sender, EventArgs e)
         {
             PathListBox.Items.RemoveAt(PathListBox.SelectedIndex);
-            if (PathListBox.Items.Count == 0) RemoveButton.Enabled = false;
+            RemoveButton.Enabled = PathListBox.Items.Count > 0 && PathListBox.SelectedIndex > 0;
         }
 
         private void PathListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -123,6 +128,12 @@ namespace Sphere_Editor.Settings
                 PluginList.Items.Add(item);
             }
             _updatePlugins = true;
+
+            string[] files = Directory.GetFiles(Application.StartupPath, "*.preset");
+            foreach (string s in files)
+            {
+                PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(s));
+            }
         }
 
         private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -131,6 +142,45 @@ namespace Sphere_Editor.Settings
             ListViewItem item = PluginList.Items[e.Index];
             if (e.NewValue == CheckState.Checked) Global.plugins[(string)item.Tag].Activate();
             else Global.plugins[(string)item.Tag].Deactivate();
+        }
+
+        private void PresetListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RemovePresetButton.Enabled = true;
+            UsePresetButton.Enabled = true;
+        }
+
+        private void RemovePresetButton_Click(object sender, EventArgs e)
+        {
+            string path = (string)PresetListBox.SelectedItem;
+            if (File.Exists(path)) File.Delete(path);
+            PresetListBox.Items.RemoveAt(PresetListBox.SelectedIndex);
+            RemovePresetButton.Enabled = PresetListBox.Items.Count > 0 && PresetListBox.SelectedIndex > 0;
+        }
+
+        private void SavePresetButton_Click(object sender, EventArgs e)
+        {
+            using (Sphere_Editor.Forms.StringInputForm form = new Sphere_Editor.Forms.StringInputForm())
+            {
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    GenSettings old = Global.CurrentEditor.Clone();
+                    Global.CurrentEditor.SetSettings(this);
+
+                    string file = form.Input + ".preset";
+                    Global.CurrentEditor.SaveSettings(file);
+                    Global.CurrentEditor.SetSettings(old);
+
+                    PresetListBox.Items.Add(Path.GetFileName(file));
+                }
+            }
+        }
+
+        private void UsePresetButton_Click(object sender, EventArgs e)
+        {
+            SphereSettings settings = new SphereSettings();
+            settings.LoadSettings(((string)PresetListBox.SelectedItem) + ".preset");
+            SetValues(settings);
         }
     }
 }

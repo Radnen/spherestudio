@@ -83,7 +83,11 @@ namespace Sphere_Editor.SubEditors
 
         public override void CreateNew() { ImageEditor.MakeNew(80, 80); }
         public override void Copy() { ImageEditor.Copy(); }
-        public override void Paste() { ImageEditor.Paste(); }
+        public override void Paste()
+        {
+            ImageEditor.Paste();
+            ImageEditor.Invalidate();
+        }
 
         public override void Save()
         {
@@ -199,10 +203,6 @@ namespace Sphere_Editor.SubEditors
         public void SetScale(int width, int height, InterpolationMode mode)
         {
             ImageEditor.RescaleImage(width, height, mode);
-        }
-
-        public void SetTileImageMap(Bitmap img, short[] indices)
-        {
         }
 
         private void OutlineButton_Click(object sender, EventArgs e)

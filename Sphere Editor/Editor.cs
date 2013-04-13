@@ -41,15 +41,15 @@ namespace Sphere_Editor
 
             Global.LoadFunctions();
             _firsttime = !Global.CurrentEditor.LoadSettings();
-            
+
             start_page = new StartPage(this);
             start_page.Dock = DockStyle.Fill;
             start_page.HelpLabel = this.HelpLabel;
             start_page.PopulateGameList();
-            
+
             if (!Global.CurrentEditor.UseDockForm) InitializeAlternateInterface();
             else InitializeDocking();
-            
+
             if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
 
@@ -57,16 +57,25 @@ namespace Sphere_Editor
 
             Global.EvalPlugins((IPluginHost)this);
             Global.ActivatePlugins(Global.CurrentEditor.GetPluginList());
+
+            int spaces = Global.CurrentEditor.GetInt("script-spaces", 2);
+            TwoUnitsItem.Checked = (spaces == 2);
+            FourUnitsItem.Checked = (spaces == 4);
+
+            UseTabsItem.Checked = Global.CurrentEditor.GetBool("script-tabs", true);
+            FoldItem.Checked = Global.CurrentEditor.GetBool("script-fold", true);
+            HighlightLineItem.Checked = Global.CurrentEditor.GetBool("script-hiline", true);
+            HighlightBracesItem.Checked = Global.CurrentEditor.GetBool("script-hibraces", true);
         }
 
         bool IsProjectOpen { get { return Global.CurrentProject != null; } }
 
         private void UpdateButtons()
         {
-            bool config = File.Exists(Global.CurrentEditor.ConfigPath) && IsProjectOpen;
+            bool config = File.Exists(Global.CurrentEditor.ConfigPath);
             OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
 
-            bool sphere = File.Exists(Global.CurrentEditor.SpherePath) && IsProjectOpen;
+            bool sphere = File.Exists(Global.CurrentEditor.SpherePath);
             RunToolButton.Enabled = TestGameMenuItem.Enabled = sphere;
 
             bool last = !string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath);
@@ -166,7 +175,7 @@ namespace Sphere_Editor
                 EditorMenu.Items.Add(item);
             }
 
-            for (int i = 1; i < items.Length-1; ++i)
+            for (int i = 1; i < items.Length - 1; ++i)
             {
                 ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
                 if (menuitem == null)
@@ -211,8 +220,7 @@ namespace Sphere_Editor
             CloseProject(null, EventArgs.Empty);
             Global.CurrentProject = new ProjectSettings();
             Global.CurrentProject.LoadSettings(filename);
-            _tree.Open();
-            RefreshProject(this, EventArgs.Empty);
+            RefreshProject();
             if (OnOpenProject != null) OnOpenProject(null, EventArgs.Empty);
             //_tasks.LoadList();
             HelpLabel.Text = "Game project loaded successfully!";
@@ -299,12 +307,6 @@ namespace Sphere_Editor
                 content.Icon = Icon.FromHandle(Properties.Resources.page_white_edit.GetHicon());
 
             if (CurrentControl != null) CurrentControl.HelpLabel = this.HelpLabel;
-            // A work-around for the saving in the file drop-down.
-            // Showing the menu seems to initialize the shortcuts.
-            FileMenu.ShowDropDown();
-            FileMenu.DropDown.Close();
-            EditMenu.ShowDropDown();
-            EditMenu.DropDown.Close();
         }
         #endregion
 
@@ -401,7 +403,7 @@ namespace Sphere_Editor
         public void OpenSpriteset(string filename)
         {
             CurrentControl = new SpritesetEditor();
-            LoadDocument(CurrentControl, filename); 
+            LoadDocument(CurrentControl, filename);
         }
 
         public void OpenWindowStyle(string filename)
@@ -432,10 +434,10 @@ namespace Sphere_Editor
             if (MyProject.ShowDialog() == DialogResult.OK)
             {
                 CloseProject(null, EventArgs.Empty);
-                
+
                 if (Global.CurrentProject == null)
                     Global.CurrentProject = new ProjectSettings();
-                
+
                 Global.CurrentProject.SetDataNew(MyProject);
                 Global.CurrentProject.Create();
                 Global.CurrentProject.Script = "main.js";
@@ -444,8 +446,8 @@ namespace Sphere_Editor
                 // automatically create the starting script //
                 using (StreamWriter startscript = new StreamWriter(File.Open(Global.CurrentProject.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
                 {
-                    startscript.Write("/**\n* Script: main.js\n* Written by: " + Global.CurrentProject.Author +
-                        "\n* Updated: " + DateTime.Today.ToShortDateString() + "\n**/\n\nfunction game()\n{\n\t\n}");
+                    string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
+                    startscript.Write(string.Format(header, Global.CurrentProject.Author, DateTime.Today.ToShortDateString()));
                     startscript.Flush();
                 }
 
@@ -668,6 +670,7 @@ namespace Sphere_Editor
             CutMenuItem.Enabled = SelectAllMenuItem.Enabled = CurrentControl is ScriptEditor;
             CopyToolButton.Enabled = CopyMenuItem.Enabled = RedoMenuItem.Enabled = UndoMenuItem.Enabled = CurrentControl != null;
             SaveLayoutMenuItem.Enabled = CutMenuItem.Enabled = CutToolButton.Enabled = CurrentControl != null;
+            PasteMenuItem.Enabled = PasteToolButton.Enabled = true;
             ZoomInMenuItem.Enabled = ZoomOutMenuItem.Enabled = !(CurrentControl is ScriptEditor);
         }
 
@@ -701,7 +704,7 @@ namespace Sphere_Editor
         private void OptionsToolButton_Click(object sender, EventArgs e)
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Global.CurrentEditor.ConfigPath));
-            if (Global.CurrentEditor.ConfigPath.Length > 0)
+            if (File.Exists(Global.CurrentEditor.ConfigPath))
                 System.Diagnostics.Process.Start(Global.CurrentEditor.ConfigPath);
             Directory.SetCurrentDirectory(Application.StartupPath);
         }
@@ -755,21 +758,29 @@ namespace Sphere_Editor
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
         {
             string path = Global.CurrentProject.RootPath;
-            Process p = System.Diagnostics.Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
+            Process p = Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
             p.Dispose();
         }
 
         private void RunToolButton_Click(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.SpherePath.Length > 0)
+            if (File.Exists(Global.CurrentEditor.SpherePath))
             {
-                Global.CurrentProject.SaveSettings();
-                Process p = Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + Global.CurrentProject.RootPath + "\"");
+                Process p;
+
+                if (IsProjectOpen)
+                {
+                    Global.CurrentProject.SaveSettings();
+                    p = Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + Global.CurrentProject.RootPath + "\"");
+                }
+                else
+                    p = Process.Start(Global.CurrentEditor.SpherePath);
+
                 p.Dispose();
             }
         }
 
-        public void RefreshProject(object sender, EventArgs e)
+        public void RefreshProject()
         {
             _tree.Open();
             _tree.UpdateTree();
@@ -777,6 +788,11 @@ namespace Sphere_Editor
             Global.CurrentEditor.SaveSettings();
             UpdateButtons();
             _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
+        }
+
+        private void RefreshProject(object sender, EventArgs e)
+        {
+            RefreshProject();
         }
         #endregion
 
@@ -1007,29 +1023,82 @@ namespace Sphere_Editor
             }
         }
 
+        private void UpdateScriptControls()
+        {
+            foreach (DockContent content in DockTest.Contents)
+                if (content.Controls[0] is ScriptEditor)
+                    ((ScriptEditor)content.Controls[0]).UpdateStyle();
+        }
+
         private void ChangeFontItem_Click(object sender, EventArgs e)
         {
-            // QUICK IDEA
             using (FontDialog diag = new FontDialog())
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                string fontstring = Global.CurrentEditor.GetCustom("script-font");
+                string fontstring = Global.CurrentEditor.GetString("script-font");
 
                 if (!String.IsNullOrEmpty(fontstring))
                     diag.Font = (Font)converter.ConvertFromString(fontstring);
-                
+
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
                     fontstring = converter.ConvertToString(diag.Font);
-                    Global.CurrentEditor.SaveCustom("script-font", fontstring);
-
-                    foreach (DockContent content in DockTest.Contents)
-                    {
-                        if (content.Controls[0] is ScriptEditor)
-                            ((ScriptEditor)content.Controls[0]).SetFont(diag.Font);
-                    }
+                    Global.CurrentEditor.SaveObject("script-font", fontstring);
+                    UpdateScriptControls();
                 }
             }
+        }
+
+        private void UseTabsItem_Click(object sender, EventArgs e)
+        {
+            Global.CurrentEditor.SaveObject("script-tabs", UseTabsItem.Checked);
+            UpdateScriptControls();
+        }
+
+        private void TwoUnitsItem_Click(object sender, EventArgs e)
+        {
+            Global.CurrentEditor.SaveObject("script-spaces", 2);
+            FourUnitsItem.CheckState = CheckState.Unchecked;
+            TwoUnitsItem.CheckState = CheckState.Checked;
+            UpdateScriptControls();
+        }
+
+        private void FourUnitsItem_Click(object sender, EventArgs e)
+        {
+            Global.CurrentEditor.SaveObject("script-spaces", 4);
+            TwoUnitsItem.CheckState = CheckState.Unchecked;
+            FourUnitsItem.CheckState = CheckState.Checked;
+            UpdateScriptControls();
+        }
+
+        private void FoldItem_Click(object sender, EventArgs e)
+        {
+            Global.CurrentEditor.SaveObject("script-fold", FoldItem.Checked);
+        }
+
+        private void HighlightLineItem_Click(object sender, EventArgs e)
+        {
+            Global.CurrentEditor.SaveObject("script-hiline", HighlightLineItem.Checked);
+            UpdateScriptControls();
+        }
+
+        private void HighlightBracesItem_Click(object sender, EventArgs e)
+        {
+            Global.CurrentEditor.SaveObject("script-hibraces", HighlightBracesItem.Checked);
+            UpdateScriptControls();
+        }
+
+        private void ClosePaneItem_Click(object sender, EventArgs e)
+        {
+            if (DockTest.ActiveDocument == null) return;
+
+            if (DockTest.ActiveDocument is DockContent &&
+                ((DockContent)DockTest.ActiveDocument).Controls[0] is StartPage)
+            {
+                StartPageMenuItem_Click(null, EventArgs.Empty);
+                return;
+            }
+            else DockTest.ActiveDocument.DockHandler.Close();
         }
     }
 }

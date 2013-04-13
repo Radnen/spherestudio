@@ -415,6 +415,7 @@ namespace Sphere_Editor.SubEditors
             LayerEditor.Layers.StartLayer = Map.StartLayer;
             LayerEditor.Layers.Invalidate();
             TilesetControl.Select(MapControl.CurrentTile);
+            MapControl.SelWidth = 1;
         }
 
         private void EntityButton_Click(object sender, EventArgs e)

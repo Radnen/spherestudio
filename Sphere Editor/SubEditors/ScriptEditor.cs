@@ -25,18 +25,41 @@ namespace Sphere_Editor.SubEditors
             code_box.AutoComplete.ListSeparator = ';';
             code_box.AutoComplete.IsCaseSensitive = false;
             code_box.SupressControlCharacters = true;
+            
+            code_box.Folding.MarkerScheme = FoldMarkerScheme.Arrow;
             code_box.Margins[0].Width = 36;
+
+            bool fold = Global.CurrentEditor.GetBool("script-fold", true);
+            if (fold) SetFold(fold);
+
             code_box.Indentation.SmartIndentType = SmartIndent.CPP;
-            code_box.Indentation.TabWidth = 2;
+            code_box.Styles.BraceLight.ForeColor = Color.Black;
+            code_box.Styles.BraceLight.BackColor = Color.LightGray;
+
+            code_box.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
+
             code_box.CharAdded += new EventHandler<CharAddedEventArgs>(CodeBox_CharAdded);
             code_box.TextDeleted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
             code_box.TextInserted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
             code_box.Dock = DockStyle.Fill;
-            code_box.Folding.UseCompactFolding = true;
+
             code_box.Commands.AddBinding(Keys.D, Keys.Control, BindableCommand.LineDuplicate);
             Controls.Add(code_box);
 
-            string fontstring = Global.CurrentEditor.GetCustom("script-font");
+            UpdateStyle();
+        }
+
+        /// <summary>
+        /// Styles the code box per the options specified in the editor settings.
+        /// </summary>
+        public void UpdateStyle()
+        {
+            code_box.Indentation.TabWidth = Global.CurrentEditor.GetInt("script-spaces", 2);
+            code_box.Indentation.UseTabs = Global.CurrentEditor.GetBool("script-tabs", true);
+            code_box.Caret.HighlightCurrentLine = Global.CurrentEditor.GetBool("script-hiline", true);
+            code_box.IsBraceMatching = Global.CurrentEditor.GetBool("script-hibraces", true);
+
+            string fontstring = Global.CurrentEditor.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
@@ -46,28 +69,32 @@ namespace Sphere_Editor.SubEditors
 
         void code_box_TextChanged(object sender, EventArgs e)
         {
-            if (Parent != null && !Parent.Text.Contains("*")) Parent.Text += "*";
+            if (Parent != null && !Parent.Text.EndsWith("*")) Parent.Text += "*";
         }
 
         public override void CreateNew()
         {
             if (Global.CurrentEditor.UseScriptUpdate)
             {
-                string author = "Unnamed";
-                if (Global.CurrentProject != null) author = Global.CurrentProject.Author;
-
-                code_box.Text += "/**\n* Script: Untitled.js" +
-                       "\n* Written by: " + author + "\n* Updated: " +
-                       DateTime.Today.ToShortDateString() + "\n**/";
+                string author = (Global.CurrentProject != null) ? Global.CurrentProject.Author : "Unnamed";
+                string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
+                code_box.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
                 code_box.UndoRedo.EmptyUndoBuffer();
             }
         }
 
-        public void SetFont(Font font)
+        private void SetFont(Font font)
         {
             for (int i = 0; i < 128; ++i)
                 code_box.Styles[i].Font = font;
             code_box.Lexing.Colorize();
+        }
+
+        private void SetFold(bool fold)
+        {
+            code_box.Margins[0].IsFoldMargin = fold;
+            code_box.Margins[0].IsClickable = fold;
+            code_box.Folding.IsEnabled = fold;
         }
 
         public string FileName

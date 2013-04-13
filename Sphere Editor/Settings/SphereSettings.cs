@@ -147,15 +147,13 @@ namespace Sphere_Editor.Settings
             return LoadSettings(Application.StartupPath + "\\editor.ini");
         }
 
-        // returns text to load into an API Textbox.
-        public string LoadAPI()
+        /// <summary>
+        /// Creates a clone of these editor settings.
+        /// </summary>
+        /// <returns></returns>
+        public SphereSettings Clone()
         {
-            FileInfo apitxt = new FileInfo(Application.StartupPath + "\\docs\\api.txt");
-            if (!apitxt.Exists) return "";
-            StreamReader text = apitxt.OpenText();
-            string Text = text.ReadToEnd();
-            text.Close();
-            return Text;
+            return (SphereSettings)Clone(new SphereSettings());
         }
     }
 }

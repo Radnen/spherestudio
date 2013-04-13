@@ -132,11 +132,22 @@
             this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ScriptMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.AutoCompleteItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FoldItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HighlightLineItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HighlightBracesItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.IndentationItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UseTabsItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.TwoUnitsItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FourUnitsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChangeFontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImageMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ClosePaneItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.StartPageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ProjectExplorerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -714,7 +725,6 @@
             // 
             // UndoMenuItem
             // 
-            this.UndoMenuItem.Enabled = false;
             this.UndoMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_undo;
             this.UndoMenuItem.Name = "UndoMenuItem";
             this.UndoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
@@ -724,7 +734,6 @@
             // 
             // RedoMenuItem
             // 
-            this.RedoMenuItem.Enabled = false;
             this.RedoMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_redo;
             this.RedoMenuItem.Name = "RedoMenuItem";
             this.RedoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
@@ -739,7 +748,6 @@
             // 
             // CutMenuItem
             // 
-            this.CutMenuItem.Enabled = false;
             this.CutMenuItem.Image = global::Sphere_Editor.Properties.Resources.cut;
             this.CutMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CutMenuItem.Name = "CutMenuItem";
@@ -750,7 +758,6 @@
             // 
             // CopyMenuItem
             // 
-            this.CopyMenuItem.Enabled = false;
             this.CopyMenuItem.Image = global::Sphere_Editor.Properties.Resources.page_copy;
             this.CopyMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CopyMenuItem.Name = "CopyMenuItem";
@@ -761,7 +768,6 @@
             // 
             // PasteMenuItem
             // 
-            this.PasteMenuItem.Enabled = false;
             this.PasteMenuItem.Image = global::Sphere_Editor.Properties.Resources.paste_plain;
             this.PasteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PasteMenuItem.Name = "PasteMenuItem";
@@ -777,7 +783,6 @@
             // 
             // SelectAllMenuItem
             // 
-            this.SelectAllMenuItem.Enabled = false;
             this.SelectAllMenuItem.Name = "SelectAllMenuItem";
             this.SelectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.SelectAllMenuItem.Size = new System.Drawing.Size(196, 22);
@@ -791,7 +796,6 @@
             // 
             // ZoomInMenuItem
             // 
-            this.ZoomInMenuItem.Enabled = false;
             this.ZoomInMenuItem.Image = global::Sphere_Editor.Properties.Resources.magnifier_zoom_in;
             this.ZoomInMenuItem.Name = "ZoomInMenuItem";
             this.ZoomInMenuItem.ShortcutKeyDisplayString = "Ctrl+Plus";
@@ -802,7 +806,6 @@
             // 
             // ZoomOutMenuItem
             // 
-            this.ZoomOutMenuItem.Enabled = false;
             this.ZoomOutMenuItem.Image = global::Sphere_Editor.Properties.Resources.magnifier_zoom_out;
             this.ZoomOutMenuItem.Name = "ZoomOutMenuItem";
             this.ZoomOutMenuItem.ShortcutKeyDisplayString = "Ctrl+Minus";
@@ -1004,6 +1007,11 @@
             // 
             this.ScriptMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AutoCompleteItem,
+            this.FoldItem,
+            this.HighlightLineItem,
+            this.HighlightBracesItem,
+            this.toolStripSeparator2,
+            this.IndentationItem,
             this.ChangeFontItem});
             this.ScriptMenu.Name = "ScriptMenu";
             this.ScriptMenu.Size = new System.Drawing.Size(49, 20);
@@ -1015,8 +1023,79 @@
             this.AutoCompleteItem.CheckOnClick = true;
             this.AutoCompleteItem.Name = "AutoCompleteItem";
             this.AutoCompleteItem.Size = new System.Drawing.Size(192, 22);
-            this.AutoCompleteItem.Text = "Toggle AutoComplete";
+            this.AutoCompleteItem.Text = "Use Auto Complete";
             this.AutoCompleteItem.CheckedChanged += new System.EventHandler(this.UpdateCheck);
+            // 
+            // FoldItem
+            // 
+            this.FoldItem.CheckOnClick = true;
+            this.FoldItem.Name = "FoldItem";
+            this.FoldItem.Size = new System.Drawing.Size(192, 22);
+            this.FoldItem.Text = "Use Code Folding";
+            this.FoldItem.Click += new System.EventHandler(this.FoldItem_Click);
+            // 
+            // HighlightLineItem
+            // 
+            this.HighlightLineItem.CheckOnClick = true;
+            this.HighlightLineItem.Name = "HighlightLineItem";
+            this.HighlightLineItem.Size = new System.Drawing.Size(192, 22);
+            this.HighlightLineItem.Text = "Highlight Current Line";
+            this.HighlightLineItem.Click += new System.EventHandler(this.HighlightLineItem_Click);
+            // 
+            // HighlightBracesItem
+            // 
+            this.HighlightBracesItem.CheckOnClick = true;
+            this.HighlightBracesItem.Name = "HighlightBracesItem";
+            this.HighlightBracesItem.Size = new System.Drawing.Size(192, 22);
+            this.HighlightBracesItem.Text = "Highlight Braces";
+            this.HighlightBracesItem.Click += new System.EventHandler(this.HighlightBracesItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(189, 6);
+            // 
+            // IndentationItem
+            // 
+            this.IndentationItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.UseTabsItem,
+            this.toolStripSeparator1,
+            this.TwoUnitsItem,
+            this.FourUnitsItem});
+            this.IndentationItem.Name = "IndentationItem";
+            this.IndentationItem.Size = new System.Drawing.Size(192, 22);
+            this.IndentationItem.Text = "Indentation";
+            // 
+            // UseTabsItem
+            // 
+            this.UseTabsItem.Checked = true;
+            this.UseTabsItem.CheckOnClick = true;
+            this.UseTabsItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UseTabsItem.Name = "UseTabsItem";
+            this.UseTabsItem.Size = new System.Drawing.Size(121, 22);
+            this.UseTabsItem.Text = "Use Tabs";
+            this.UseTabsItem.Click += new System.EventHandler(this.UseTabsItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(118, 6);
+            // 
+            // TwoUnitsItem
+            // 
+            this.TwoUnitsItem.Checked = true;
+            this.TwoUnitsItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.TwoUnitsItem.Name = "TwoUnitsItem";
+            this.TwoUnitsItem.Size = new System.Drawing.Size(121, 22);
+            this.TwoUnitsItem.Text = "2 units";
+            this.TwoUnitsItem.Click += new System.EventHandler(this.TwoUnitsItem_Click);
+            // 
+            // FourUnitsItem
+            // 
+            this.FourUnitsItem.Name = "FourUnitsItem";
+            this.FourUnitsItem.Size = new System.Drawing.Size(121, 22);
+            this.FourUnitsItem.Text = "4 units";
+            this.FourUnitsItem.Click += new System.EventHandler(this.FourUnitsItem_Click);
             // 
             // ChangeFontItem
             // 
@@ -1054,6 +1133,8 @@
             // ViewMenu
             // 
             this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ClosePaneItem,
+            this.toolStripSeparator3,
             this.StartPageMenuItem,
             this.ProjectExplorerMenuItem});
             this.ViewMenu.Name = "ViewMenu";
@@ -1062,11 +1143,24 @@
             this.ViewMenu.DropDownClosed += new System.EventHandler(this.ViewMenu_DropDownClosed);
             this.ViewMenu.DropDownOpening += new System.EventHandler(this.ViewMenu_DropDownOpening);
             // 
+            // ClosePaneItem
+            // 
+            this.ClosePaneItem.Name = "ClosePaneItem";
+            this.ClosePaneItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.ClosePaneItem.Size = new System.Drawing.Size(213, 22);
+            this.ClosePaneItem.Text = "Close Active Pane";
+            this.ClosePaneItem.Click += new System.EventHandler(this.ClosePaneItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(210, 6);
+            // 
             // StartPageMenuItem
             // 
             this.StartPageMenuItem.Image = global::Sphere_Editor.Properties.Resources.SphereEditor;
             this.StartPageMenuItem.Name = "StartPageMenuItem";
-            this.StartPageMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.StartPageMenuItem.Size = new System.Drawing.Size(213, 22);
             this.StartPageMenuItem.Text = "&Start Page";
             this.StartPageMenuItem.Click += new System.EventHandler(this.StartPageMenuItem_Click);
             // 
@@ -1074,7 +1168,7 @@
             // 
             this.ProjectExplorerMenuItem.Image = global::Sphere_Editor.Properties.Resources.bullet_toggle_plus;
             this.ProjectExplorerMenuItem.Name = "ProjectExplorerMenuItem";
-            this.ProjectExplorerMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.ProjectExplorerMenuItem.Size = new System.Drawing.Size(213, 22);
             this.ProjectExplorerMenuItem.Text = "Project &Explorer";
             this.ProjectExplorerMenuItem.Click += new System.EventHandler(this.ProjectExplorerMenuItem_Click);
             // 
@@ -1121,6 +1215,7 @@
             this.Controls.Add(this.EditorMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.EditorMenu;
             this.MinimumSize = new System.Drawing.Size(480, 360);
             this.Name = "EditorForm";
@@ -1241,6 +1336,17 @@
         private System.Windows.Forms.ToolStripMenuItem ScriptMenu;
         private System.Windows.Forms.ToolStripMenuItem AutoCompleteItem;
         private System.Windows.Forms.ToolStripMenuItem ChangeFontItem;
+        private System.Windows.Forms.ToolStripMenuItem IndentationItem;
+        private System.Windows.Forms.ToolStripMenuItem UseTabsItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem TwoUnitsItem;
+        private System.Windows.Forms.ToolStripMenuItem FourUnitsItem;
+        private System.Windows.Forms.ToolStripMenuItem FoldItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem HighlightLineItem;
+        private System.Windows.Forms.ToolStripMenuItem HighlightBracesItem;
+        private System.Windows.Forms.ToolStripMenuItem ClosePaneItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 
