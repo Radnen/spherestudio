@@ -453,7 +453,7 @@
             // 
             // NewProjectMenuItem
             // 
-            this.NewProjectMenuItem.Image = global::Sphere_Editor.Properties.Resources._new;
+            this.NewProjectMenuItem.Image = global::Sphere_Editor.Properties.Resources.new_item;
             this.NewProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.NewProjectMenuItem.Name = "NewProjectMenuItem";
             this.NewProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));

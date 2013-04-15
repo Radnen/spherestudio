@@ -23,9 +23,7 @@ namespace Sphere_Editor
         private StartPage start_page;
         private EditorObject CurrentControl;
         private TabControl AltTabInterface;
-
-        // initialized data:
-        private ProjectTree _tree = new ProjectTree();
+        private ProjectTree _tree;
         //private TaskList _tasks = new TaskList();
         private bool _firsttime;
 
@@ -34,13 +32,14 @@ namespace Sphere_Editor
 
         public EditorForm()
         {
-            InitializeComponent();
-
-            _tree.Dock = DockStyle.Fill; // _tasks.Dock;
-            _tree.EditorForm = this;
-
             Global.LoadFunctions();
             _firsttime = !Global.CurrentEditor.LoadSettings();
+
+            InitializeComponent();
+
+            _tree = new ProjectTree();
+            _tree.Dock = DockStyle.Fill; // _tasks.Dock;
+            _tree.EditorForm = this;
 
             start_page = new StartPage(this);
             start_page.Dock = DockStyle.Fill;
@@ -57,6 +56,7 @@ namespace Sphere_Editor
 
             Global.EvalPlugins((IPluginHost)this);
             Global.ActivatePlugins(Global.CurrentEditor.GetPluginList());
+            TreeContent.Activate();
 
             int spaces = Global.CurrentEditor.GetInt("script-spaces", 2);
             TwoUnitsItem.Checked = (spaces == 2);
@@ -222,6 +222,7 @@ namespace Sphere_Editor
             Global.CurrentProject.LoadSettings(filename);
             RefreshProject();
             if (OnOpenProject != null) OnOpenProject(null, EventArgs.Empty);
+            TreeContent.Activate();
             //_tasks.LoadList();
             HelpLabel.Text = "Game project loaded successfully!";
             UpdateButtons();
@@ -314,7 +315,7 @@ namespace Sphere_Editor
         void Content_FormClosing(object sender, FormClosingEventArgs e)
         {
             DockContent obj = (DockContent)sender;
-            if (obj.Text.Contains("*"))
+            if (obj.Text.EndsWith("*"))
             {
                 switch (MessageBox.Show("File has been modified, save?", obj.Text,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
@@ -766,6 +767,7 @@ namespace Sphere_Editor
         {
             if (File.Exists(Global.CurrentEditor.SpherePath))
             {
+                _tree.Pause();
                 Process p;
 
                 if (IsProjectOpen)
@@ -775,8 +777,8 @@ namespace Sphere_Editor
                 }
                 else
                     p = Process.Start(Global.CurrentEditor.SpherePath);
-
-                p.Dispose();
+                p.EnableRaisingEvents = true;
+                p.Exited += delegate { _tree.Resume(); };
             }
         }
 
@@ -1040,11 +1042,18 @@ namespace Sphere_Editor
                 if (!String.IsNullOrEmpty(fontstring))
                     diag.Font = (Font)converter.ConvertFromString(fontstring);
 
-                if (diag.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    fontstring = converter.ConvertToString(diag.Font);
-                    Global.CurrentEditor.SaveObject("script-font", fontstring);
-                    UpdateScriptControls();
+                    if (diag.ShowDialog() == DialogResult.OK)
+                    {
+                        fontstring = converter.ConvertToString(diag.Font);
+                        Global.CurrentEditor.SaveObject("script-font", fontstring);
+                        UpdateScriptControls();
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    MessageBox.Show("GDI+ only uses TrueType fonts.", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

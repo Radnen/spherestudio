@@ -30,6 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Drawer2));
             this.EditorToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DrawerPanel = new System.Windows.Forms.Panel();
             this.ImagePanel = new Sphere_Editor.EditorPanel();
@@ -41,12 +42,14 @@
             this.RectangleButton = new System.Windows.Forms.ToolStripButton();
             this.FillButton = new System.Windows.Forms.ToolStripButton();
             this.PanButton = new System.Windows.Forms.ToolStripButton();
-            this.OutlineButton = new System.Windows.Forms.ToolStripButton();
             this.DrawSeperator = new System.Windows.Forms.ToolStripSeparator();
             this.UndoButton = new System.Windows.Forms.ToolStripButton();
             this.RedoButton = new System.Windows.Forms.ToolStripButton();
             this.DrawSeperator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.OutlineButton = new System.Windows.Forms.ToolStripButton();
             this.ShowGridButton = new System.Windows.Forms.ToolStripButton();
+            this.MirrorButton = new System.Windows.Forms.ToolStripButton();
+            this.MirrorHButton = new System.Windows.Forms.ToolStripButton();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.ZoomLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.EditorPanel = new System.Windows.Forms.Panel();
@@ -83,7 +86,7 @@
             this.DrawerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DrawerPanel.Location = new System.Drawing.Point(0, 0);
             this.DrawerPanel.Name = "DrawerPanel";
-            this.DrawerPanel.Size = new System.Drawing.Size(273, 337);
+            this.DrawerPanel.Size = new System.Drawing.Size(362, 421);
             this.DrawerPanel.TabIndex = 3;
             // 
             // ImagePanel
@@ -94,7 +97,7 @@
             this.ImagePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ImagePanel.Location = new System.Drawing.Point(0, 25);
             this.ImagePanel.Name = "ImagePanel";
-            this.ImagePanel.Size = new System.Drawing.Size(273, 288);
+            this.ImagePanel.Size = new System.Drawing.Size(362, 372);
             this.ImagePanel.TabIndex = 2;
             this.ImagePanel.XSnap = 0;
             this.ImagePanel.YSnap = 0;
@@ -106,8 +109,10 @@
             this.ImageEditor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ImageEditor.DrawColor = System.Drawing.Color.White;
             this.ImageEditor.FixedSize = false;
-            this.ImageEditor.Location = new System.Drawing.Point(62, 70);
+            this.ImageEditor.Location = new System.Drawing.Point(107, 112);
             this.ImageEditor.LocationLabel = this.LocationLabel;
+            this.ImageEditor.MirrorH = false;
+            this.ImageEditor.MirrorV = false;
             this.ImageEditor.Name = "ImageEditor";
             this.ImageEditor.Outlined = false;
             this.ImageEditor.Size = new System.Drawing.Size(148, 148);
@@ -138,17 +143,19 @@
             this.RectangleButton,
             this.FillButton,
             this.PanButton,
-            this.OutlineButton,
             this.DrawSeperator,
             this.UndoButton,
             this.RedoButton,
             this.DrawSeperator3,
-            this.ShowGridButton});
+            this.OutlineButton,
+            this.ShowGridButton,
+            this.MirrorButton,
+            this.MirrorHButton});
             this.DrawToolStrip.Location = new System.Drawing.Point(0, 0);
             this.DrawToolStrip.Name = "DrawToolStrip";
             this.DrawToolStrip.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
             this.DrawToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.DrawToolStrip.Size = new System.Drawing.Size(273, 25);
+            this.DrawToolStrip.Size = new System.Drawing.Size(362, 25);
             this.DrawToolStrip.TabIndex = 2;
             // 
             // PencilButton
@@ -203,17 +210,6 @@
             this.PanButton.Text = "Pan Image";
             this.PanButton.Click += new System.EventHandler(this.PanButton_Click);
             // 
-            // OutlineButton
-            // 
-            this.OutlineButton.CheckOnClick = true;
-            this.OutlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OutlineButton.Image = global::Sphere_Editor.Properties.Resources.outline;
-            this.OutlineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OutlineButton.Name = "OutlineButton";
-            this.OutlineButton.Size = new System.Drawing.Size(23, 22);
-            this.OutlineButton.Text = "Use Outline";
-            this.OutlineButton.Click += new System.EventHandler(this.OutlineButton_Click);
-            // 
             // DrawSeperator
             // 
             this.DrawSeperator.Name = "DrawSeperator";
@@ -246,6 +242,17 @@
             this.DrawSeperator3.Name = "DrawSeperator3";
             this.DrawSeperator3.Size = new System.Drawing.Size(6, 25);
             // 
+            // OutlineButton
+            // 
+            this.OutlineButton.CheckOnClick = true;
+            this.OutlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.OutlineButton.Image = global::Sphere_Editor.Properties.Resources.outline;
+            this.OutlineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.OutlineButton.Name = "OutlineButton";
+            this.OutlineButton.Size = new System.Drawing.Size(23, 22);
+            this.OutlineButton.Text = "Use Outline";
+            this.OutlineButton.Click += new System.EventHandler(this.OutlineButton_Click);
+            // 
             // ShowGridButton
             // 
             this.ShowGridButton.CheckOnClick = true;
@@ -257,14 +264,36 @@
             this.ShowGridButton.Text = "Display Grid";
             this.ShowGridButton.Click += new System.EventHandler(this.ShowGridButton_Click);
             // 
+            // MirrorButton
+            // 
+            this.MirrorButton.CheckOnClick = true;
+            this.MirrorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.MirrorButton.Image = ((System.Drawing.Image)(resources.GetObject("MirrorButton.Image")));
+            this.MirrorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.MirrorButton.Name = "MirrorButton";
+            this.MirrorButton.Size = new System.Drawing.Size(23, 22);
+            this.MirrorButton.Text = "Mirror Vertical";
+            this.MirrorButton.Click += new System.EventHandler(this.MirrorButton_Click);
+            // 
+            // MirrorHButton
+            // 
+            this.MirrorHButton.CheckOnClick = true;
+            this.MirrorHButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.MirrorHButton.Image = global::Sphere_Editor.Properties.Resources.MirrorH;
+            this.MirrorHButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.MirrorHButton.Name = "MirrorHButton";
+            this.MirrorHButton.Size = new System.Drawing.Size(23, 22);
+            this.MirrorHButton.Text = "Mirror Horizontal";
+            this.MirrorHButton.Click += new System.EventHandler(this.MirrorHButton_Click);
+            // 
             // EditorStatus
             // 
             this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ZoomLabel,
             this.LocationLabel});
-            this.EditorStatus.Location = new System.Drawing.Point(0, 313);
+            this.EditorStatus.Location = new System.Drawing.Point(0, 397);
             this.EditorStatus.Name = "EditorStatus";
-            this.EditorStatus.Size = new System.Drawing.Size(273, 24);
+            this.EditorStatus.Size = new System.Drawing.Size(362, 24);
             this.EditorStatus.SizingGrip = false;
             this.EditorStatus.TabIndex = 1;
             this.EditorStatus.Text = "Image Status";
@@ -288,9 +317,9 @@
             this.EditorPanel.Controls.Add(this.PaletteStatus);
             this.EditorPanel.Controls.Add(this.ColorLabel);
             this.EditorPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.EditorPanel.Location = new System.Drawing.Point(273, 0);
+            this.EditorPanel.Location = new System.Drawing.Point(362, 0);
             this.EditorPanel.Name = "EditorPanel";
-            this.EditorPanel.Size = new System.Drawing.Size(135, 337);
+            this.EditorPanel.Size = new System.Drawing.Size(135, 421);
             this.EditorPanel.TabIndex = 0;
             // 
             // ColorSelectionPanel
@@ -304,7 +333,7 @@
             this.ColorSelectionPanel.Location = new System.Drawing.Point(9, 29);
             this.ColorSelectionPanel.Margin = new System.Windows.Forms.Padding(6);
             this.ColorSelectionPanel.Name = "ColorSelectionPanel";
-            this.ColorSelectionPanel.Size = new System.Drawing.Size(120, 280);
+            this.ColorSelectionPanel.Size = new System.Drawing.Size(120, 364);
             this.ColorSelectionPanel.TabIndex = 10;
             // 
             // ColorFlow
@@ -313,7 +342,7 @@
             this.ColorFlow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorFlow.Location = new System.Drawing.Point(45, 0);
             this.ColorFlow.Name = "ColorFlow";
-            this.ColorFlow.Size = new System.Drawing.Size(73, 278);
+            this.ColorFlow.Size = new System.Drawing.Size(73, 362);
             this.ColorFlow.TabIndex = 8;
             // 
             // AlphaTracker
@@ -324,17 +353,18 @@
             this.AlphaTracker.Maximum = 255;
             this.AlphaTracker.Name = "AlphaTracker";
             this.AlphaTracker.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.AlphaTracker.Size = new System.Drawing.Size(45, 278);
+            this.AlphaTracker.Size = new System.Drawing.Size(45, 362);
             this.AlphaTracker.TabIndex = 2;
             this.AlphaTracker.TickFrequency = 5;
             this.AlphaTracker.Value = 255;
             this.AlphaTracker.Scroll += new System.EventHandler(this.AlphaTracker_Scroll);
+            this.AlphaTracker.ValueChanged += new System.EventHandler(this.AlphaTracker_ValueChanged);
             // 
             // PaletteStatus
             // 
             this.PaletteStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AlphaLabel});
-            this.PaletteStatus.Location = new System.Drawing.Point(0, 315);
+            this.PaletteStatus.Location = new System.Drawing.Point(0, 399);
             this.PaletteStatus.Name = "PaletteStatus";
             this.PaletteStatus.Size = new System.Drawing.Size(135, 22);
             this.PaletteStatus.SizingGrip = false;
@@ -368,7 +398,7 @@
             this.Controls.Add(this.DrawerPanel);
             this.Controls.Add(this.EditorPanel);
             this.Name = "Drawer2";
-            this.Size = new System.Drawing.Size(408, 337);
+            this.Size = new System.Drawing.Size(497, 421);
             this.DrawerPanel.ResumeLayout(false);
             this.DrawerPanel.PerformLayout();
             this.ImagePanel.ResumeLayout(false);
@@ -415,5 +445,7 @@
         private System.Windows.Forms.FlowLayoutPanel ColorFlow;
         private EditorLabel ColorLabel;
         private EditorComponents.ImageEditControl2 ImageEditor;
+        private System.Windows.Forms.ToolStripButton MirrorButton;
+        private System.Windows.Forms.ToolStripButton MirrorHButton;
     }
 }

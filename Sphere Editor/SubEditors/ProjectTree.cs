@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Sphere_Editor.Settings;
 using Microsoft.VisualBasic.FileIO;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -35,6 +36,7 @@ namespace Sphere_Editor.SubEditors
             _iconlist.Images.Add(Sphere_Editor.Properties.Resources.question_mark);
 
             ProjectTreeView.ImageList = _iconlist;
+            SetFont();
         }
 
         public string ProjectName
@@ -158,6 +160,22 @@ namespace Sphere_Editor.SubEditors
                 }
                 UpdateTree();
             }
+        }
+
+        /// <summary>
+        /// Pauses the filesystem watcher from modifying this control.
+        /// </summary>
+        public void Pause()
+        {
+            SystemWatcher.EnableRaisingEvents = false;
+        }
+
+        /// <summary>
+        /// Resumes the filesystem watcher, enabling it to modify this control.
+        /// </summary>
+        public void Resume()
+        {
+            SystemWatcher.EnableRaisingEvents = true;
         }
 
         private void ProjectTreeView_AfterExpand(object sender, TreeViewEventArgs e)
@@ -423,6 +441,38 @@ namespace Sphere_Editor.SubEditors
         private void ProjectTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             OpenItem(e.Node);
+        }
+
+        private void FontItem_Click(object sender, EventArgs e)
+        {
+            using (FontDialog diag = new FontDialog())
+            {
+                diag.Font = ProjectTreeView.Font;
+                try
+                {
+                    if (diag.ShowDialog() == DialogResult.OK)
+                    {
+                        TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
+                        string fontstring = converter.ConvertToString(diag.Font);
+                        Global.CurrentEditor.SaveObject("tree-font", fontstring);
+                        SetFont();
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    MessageBox.Show("GDI+ only uses TrueType fonts.", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void SetFont()
+        {
+            string fontstring = Global.CurrentEditor.GetString("tree-font");
+            if (!String.IsNullOrEmpty(fontstring))
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
+                ProjectTreeView.Font = (Font)converter.ConvertFromString(fontstring);
+            }
         }
     }
 }

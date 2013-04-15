@@ -60,13 +60,6 @@ namespace Sphere_Editor.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap _new {
-            get {
-                object obj = ResourceManager.GetObject("new", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap AboutSphere {
             get {
                 object obj = ResourceManager.GetObject("AboutSphere", resourceCulture);
@@ -322,6 +315,27 @@ namespace Sphere_Editor.Properties {
         internal static System.Drawing.Bitmap map {
             get {
                 object obj = ResourceManager.GetObject("map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Mirror {
+            get {
+                object obj = ResourceManager.GetObject("Mirror", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap MirrorH {
+            get {
+                object obj = ResourceManager.GetObject("MirrorH", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap new_item {
+            get {
+                object obj = ResourceManager.GetObject("new_item", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

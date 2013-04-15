@@ -20,6 +20,7 @@ namespace Sphere_Editor.EditorComponents
         private bool _paint;
         private Point _mouse, _last_mouse;
         private Pen _draw_pen;
+        private SolidBrush _draw_brush;
         private HistoryManager _h_manager;
         private Point _start_anchor = new Point();
         private Point _end_anchor = new Point();
@@ -29,7 +30,8 @@ namespace Sphere_Editor.EditorComponents
         public bool Outlined { get; set; }
         public Point Pixel { get { return _mouse; } }
         public bool FixedSize { get; set; }
-
+        public bool MirrorV { get; set; }
+        public bool MirrorH { get; set; }
 
         public enum ImageTool
         {
@@ -49,7 +51,7 @@ namespace Sphere_Editor.EditorComponents
         public Color DrawColor
         {
             get { return _draw_pen.Color; }
-            set { _draw_pen.Color = value; }
+            set { _draw_pen.Color = value; _draw_brush.Color = value; }
         }
         #endregion
 
@@ -57,7 +59,8 @@ namespace Sphere_Editor.EditorComponents
         {
             Zoom = 1;
             InitializeComponent();
-            _draw_pen = new System.Drawing.Pen(Color.White);
+            _draw_pen = new Pen(Color.White);
+            _draw_brush = new SolidBrush(Color.White);
             _h_manager = new HistoryManager();
         }
 
@@ -102,8 +105,12 @@ namespace Sphere_Editor.EditorComponents
         public void SetImage(Bitmap image)
         {
             if (image == null) return;
+            int _oldWidth = 0, _oldHeight = 0;
+
             if (_image != null)
             {
+                _oldWidth = _image.Width;
+                _oldHeight = _image.Height;
                 _image.Dispose();
                 _edit_layer.Dispose();
                 _edit_canvas.Dispose();
@@ -119,15 +126,18 @@ namespace Sphere_Editor.EditorComponents
             else
                 _edit_canvas.CompositingMode = CompositingMode.SourceCopy;
 
-            // here I construct a new dotted bg image.
-            if (_bg != null) _bg.Dispose();
-            _bg = new Bitmap(_image.Width, _image.Height, PixelFormat.Format32bppPArgb);
-            FastBitmap bmap = new FastBitmap(_bg);
-            bmap.LockImage();
-            for (int x = 0; x < _image.Width; x++)
-                for (int y = 0; y < _image.Height; y++)
-                    if (y % 2 == (x % 2 == 0 ? 0 : 1)) bmap.SetPixel(x, y, Color.LightGray);
-            bmap.UnlockImage();
+            // here I construct a new dotted bg image. But only if we need to.
+            if (_image.Width != _oldWidth || _image.Height != _oldHeight)
+            {
+                if (_bg != null) _bg.Dispose();
+                _bg = new Bitmap(_image.Width, _image.Height, PixelFormat.Format32bppPArgb);
+                FastBitmap bmap = new FastBitmap(_bg);
+                bmap.LockImage();
+                for (int x = 0; x < _image.Width; x++)
+                    for (int y = 0; y < _image.Height; y++)
+                        if (y % 2 == (x % 2 == 0 ? 0 : 1)) bmap.SetPixel(x, y, Color.LightGray);
+                bmap.UnlockImage();
+            }
 
             ResizeToFit();
         }
@@ -148,13 +158,7 @@ namespace Sphere_Editor.EditorComponents
                 _start_anchor = _mouse;
                 _end_anchor = _start_anchor;
 
-                if (Tool == ImageTool.Pen)
-                {
-                    using (SolidBrush brush = new SolidBrush(DrawColor))
-                    {
-                        _edit_canvas.FillRectangle(brush, _start_anchor.X, _start_anchor.Y, 1, 1);
-                    }
-                }
+                if (Tool == ImageTool.Pen) DrawPenDot();
 
                 _paint = true;
                 Invalidate();
@@ -202,11 +206,12 @@ namespace Sphere_Editor.EditorComponents
                     rect.Width += Zoom;
                     rect.Height += Zoom;
                     if (!Outlined)
-                        using (Brush b = new SolidBrush(DrawColor))
-                        {
-                            g.FillRectangle(b, rect);
-                        }
-                    else g.DrawRectangle(_draw_pen, rect);
+                    {
+                        g.FillRectangle(_draw_brush, rect);
+                        if (_draw_pen.Color.A != 255) g.DrawRectangle(Pens.Black, rect);
+                    }
+                    else
+                        g.DrawRectangle(_draw_pen, rect);
                     break;
             }
         }
@@ -217,11 +222,7 @@ namespace Sphere_Editor.EditorComponents
             switch (Tool)
             {
                 case ImageTool.Pen:
-                    _edit_canvas.DrawLine(_draw_pen, _mouse, _last_mouse);
-                    if (_mouse.X < _start_anchor.X) _start_anchor.X = _mouse.X;
-                    if (_mouse.Y < _start_anchor.Y) _start_anchor.Y = _mouse.Y;
-                    if (_mouse.X > _end_anchor.X) _end_anchor.X = _mouse.X;
-                    if (_mouse.Y > _end_anchor.Y) _end_anchor.Y = _mouse.Y;
+                    DrawPenLine();
                     break;
                 case ImageTool.Line:
                     _edit_canvas.DrawLine(_draw_pen, _start_anchor, _mouse);
@@ -233,10 +234,7 @@ namespace Sphere_Editor.EditorComponents
                     {
                         rect.Width += 1;
                         rect.Height += 1;
-                        using (Brush b = new SolidBrush(DrawColor))
-                        {
-                            _edit_canvas.FillRectangle(b, rect);
-                        }
+                        _edit_canvas.FillRectangle(_draw_brush, rect);
                     }
                     else _edit_canvas.DrawRectangle(_draw_pen, rect);
                     _end_anchor = _mouse;
@@ -252,6 +250,87 @@ namespace Sphere_Editor.EditorComponents
                     break;
             }
         }
+
+        #region Mirror Pen
+        /// <summary>
+        /// Figures out the subsection to add to the undo handler.
+        /// </summary>
+        /// <param name="mouse">The point to attempt to grow the area with.</param>
+        private void GrowPenRegion(Point mouse)
+        {
+            if (mouse.X < _start_anchor.X) _start_anchor.X = mouse.X;
+            if (mouse.Y < _start_anchor.Y) _start_anchor.Y = mouse.Y;
+            if (mouse.X > _end_anchor.X) _end_anchor.X = mouse.X;
+            if (mouse.Y > _end_anchor.Y) _end_anchor.Y = mouse.Y;
+        }
+
+        private void DrawPenLine()
+        {
+            _edit_canvas.DrawLine(_draw_pen, _mouse, _last_mouse);
+            GrowPenRegion(_mouse);
+
+            int last_mv = 0, last_mh = 0;
+            int mv = 0, mh = 0;
+
+            if (MirrorV)
+            {
+                last_mv = _image.Width / 2 + (_image.Width / 2 - _last_mouse.X - 1);
+                mv = _image.Width / 2 + (_image.Width / 2 - _mouse.X - 1);
+                Point m_last = new Point(last_mv, _last_mouse.Y);
+                Point m_mouse = new Point(mv, _mouse.Y);
+                _edit_canvas.DrawLine(_draw_pen, m_mouse, m_last);
+                GrowPenRegion(m_mouse);
+            }
+
+            if (MirrorH)
+            {
+                last_mh = _image.Height / 2 + (_image.Height / 2 - _last_mouse.Y - 1);
+                mh = _image.Height / 2 + (_image.Height / 2 - _mouse.Y - 1);
+                Point mh_last = new Point(_last_mouse.X, last_mh);
+                Point mh_mouse = new Point(_mouse.X, mh);
+                _edit_canvas.DrawLine(_draw_pen, mh_mouse, mh_last);
+                GrowPenRegion(mh_mouse);
+            }
+
+            if (MirrorH && MirrorV)
+            {
+                Point mvh_last = new Point(last_mv, last_mh);
+                Point mvh_mouse = new Point(mv, mh);
+                _edit_canvas.DrawLine(_draw_pen, mvh_mouse, mvh_last);
+                GrowPenRegion(mvh_mouse);
+            }
+        }
+
+        private void DrawPenDot()
+        {
+            _edit_canvas.FillRectangle(_draw_brush, _mouse.X, _mouse.Y, 1, 1);
+
+            int mv = 0, mh = 0;
+
+            if (MirrorV)
+            {
+                mv = _image.Width / 2 + (_image.Width / 2 - _mouse.X - 1);
+                Point m_mouse = new Point(mv, _mouse.Y);
+                _edit_canvas.FillRectangle(_draw_brush, m_mouse.X, m_mouse.Y, 1, 1);
+                GrowPenRegion(m_mouse);
+            }
+
+            if (MirrorH)
+            {
+                mh = _image.Height / 2 + (_image.Height / 2 - _mouse.Y - 1);
+                Point mh_mouse = new Point(_mouse.X, mh);
+                _edit_canvas.FillRectangle(_draw_brush, mh_mouse.X, mh_mouse.Y, 1, 1);
+                GrowPenRegion(mh_mouse);
+            }
+
+            if (MirrorV && MirrorH)
+            {
+                Point mvh_mouse = new Point(mv, mh);
+                _edit_canvas.FillRectangle(_draw_brush, mvh_mouse.X, mvh_mouse.Y, 1, 1);
+                GrowPenRegion(mvh_mouse);
+            }
+        }
+        #endregion
 
         private void ImageEditControl2_MouseUp(object sender, MouseEventArgs e)
         {
@@ -274,8 +353,8 @@ namespace Sphere_Editor.EditorComponents
         {
             Line region = new Line(_start_anchor, _end_anchor);
             Rectangle rect = Line.ToRectangle(region);
-            rect.Width += 1;
-            rect.Height += 1;
+            rect.Width = Math.Min(rect.Width + 1, _image.Width);
+            rect.Height = Math.Min(rect.Height + 1, _image.Height);
 
             Image before = _image.Clone(rect, PixelFormat.Format32bppPArgb);
             Image after = _edit_layer.Clone(rect, PixelFormat.Format32bppPArgb);
@@ -467,11 +546,10 @@ namespace Sphere_Editor.EditorComponents
             if (obj.GetDataPresent(DataFormats.Bitmap))
             {
                 Bitmap img = (Bitmap)obj.GetData("System.Drawing.Bitmap");
-                Rectangle rect = new Rectangle(Point.Empty, _image.Size);
-                _edit_canvas.DrawImageUnscaledAndClipped(img, rect);
+                _edit_canvas.DrawImage(img, 0, 0);
                 _start_anchor = Point.Empty;
-                _end_anchor.X = rect.Width - 1;
-                _end_anchor.Y = rect.Height - 1;
+                _end_anchor.X = _image.Width - 1;
+                _end_anchor.Y = _image.Height - 1;
                 PushHistory();
                 if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
             }

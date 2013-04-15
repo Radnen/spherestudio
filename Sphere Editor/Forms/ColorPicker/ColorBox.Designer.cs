@@ -16,8 +16,8 @@
             if (disposing)
             {
                 if (components != null) components.Dispose();
-                outline.Dispose();
-                selection.Dispose();
+                _outline.Dispose();
+                _selection.Dispose();
             }
             base.Dispose(disposing);
         }

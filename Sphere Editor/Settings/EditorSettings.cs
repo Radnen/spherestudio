@@ -78,17 +78,19 @@ namespace Sphere_Editor.Settings
 
         private void SpherePathButton_Click(object sender, EventArgs e)
         {
-            FolderBrowser.Description = "Choose the root Sphere folder.\n" +
-                                        "This is the place where the engine.exe is.";
-            if (FolderBrowser.ShowDialog() == DialogResult.OK)
+            using (FileDialog diag = new OpenFileDialog())
             {
-                string path = FolderBrowser.SelectedPath;
-                if (File.Exists(path + "\\engine.exe"))
-                    SpherePathBox.Text = path + "\\engine.exe";
-                if (File.Exists(path + "\\config.exe"))
-                    ConfigPathBox.Text = path + "\\config.exe";
-                if (Directory.Exists(path + "\\games"))
-                    PathListBox.Items.Add(path + "\\games");
+                diag.Filter = "Executable Files|*.exe";
+                if (diag.ShowDialog() == DialogResult.OK)
+                {
+                    string path = Path.GetDirectoryName(diag.FileName);
+                    if (File.Exists(path + "\\engine.exe"))
+                        SpherePathBox.Text = path + "\\engine.exe";
+                    if (File.Exists(path + "\\config.exe"))
+                        ConfigPathBox.Text = path + "\\config.exe";
+                    if (Directory.Exists(path + "\\games"))
+                        PathListBox.Items.Add(path + "\\games");
+                }
             }
         }
 

@@ -123,6 +123,15 @@
   <metadata name="DrawToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="MirrorButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABvSURBVDhPY6Ap6Ft3+z8IQ7mkA6INgClExsji+NSAAQoH
+        CGD89hXX/oMwshgMEGVA3YLz/0EYWQwGiDKgZt7Z/yCMLAYDRBlQPffsfxBGFoMB+hhAsRcoDkSSohEd
+        I4vjU4MXEK0QF6DYAMKAgQEAVuj0aRJqJccAAAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="EditorStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>146, 17</value>
   </metadata>

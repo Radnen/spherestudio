@@ -44,6 +44,8 @@
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SystemWatcher = new System.IO.FileSystemWatcher();
             this.ProjectNameLabel = new Sphere_Editor.EditorLabel();
+            this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ProjectFileContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).BeginInit();
             this.SuspendLayout();
@@ -78,9 +80,11 @@
             this.CopyPathItem,
             this.ExecuteScriptItem,
             this.GameSettingsItem,
-            this.EngineSettingsItem});
+            this.EngineSettingsItem,
+            this.toolStripSeparator1,
+            this.FontItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 246);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 296);
             // 
             // NewFileItem
             // 
@@ -190,6 +194,19 @@
             this.ProjectNameLabel.Text = "Project Name";
             this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // FontItem
+            // 
+            this.FontItem.Image = global::Sphere_Editor.Properties.Resources.style;
+            this.FontItem.Name = "FontItem";
+            this.FontItem.Size = new System.Drawing.Size(184, 22);
+            this.FontItem.Text = "Change Font";
+            this.FontItem.Click += new System.EventHandler(this.FontItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
+            // 
             // ProjectTree
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -221,5 +238,7 @@
         private System.IO.FileSystemWatcher SystemWatcher;
         private EditorLabel ProjectNameLabel;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem FontItem;
     }
 }

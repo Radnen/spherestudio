@@ -57,6 +57,7 @@ namespace Sphere_Editor.SubEditors
 
             _selected_box.Selected = true;
             ImageEditor.DrawColor = _selected_box.SelectedColor;
+            AlphaTracker.Value = _selected_box.SelectedColor.A;
             Invalidate();
         }
 
@@ -207,12 +208,12 @@ namespace Sphere_Editor.SubEditors
 
         private void OutlineButton_Click(object sender, EventArgs e)
         {
-            ImageEditor.Outlined = !ImageEditor.Outlined;
+            ImageEditor.Outlined = OutlineButton.Checked;
         }
 
         private void ShowGridButton_Click(object sender, EventArgs e)
         {
-            ImageEditor.UseGrid = !ImageEditor.UseGrid;
+            ImageEditor.UseGrid = ShowGridButton.Checked;
             ImageEditor.Invalidate(false);
         }
 
@@ -238,6 +239,7 @@ namespace Sphere_Editor.SubEditors
             PencilButton.Checked = false;
             FillButton.Checked = false;
             PanButton.Checked = false;
+            MirrorButton.Enabled = MirrorHButton.Enabled = false;
         }
 
         #region tool buttons
@@ -245,6 +247,7 @@ namespace Sphere_Editor.SubEditors
         {
             UnselectButtons();
             PencilButton.Checked = true;
+            MirrorButton.Enabled = MirrorHButton.Enabled = true;
             ImageEditor.Tool = ImageEditControl2.ImageTool.Pen;
         }
 
@@ -312,6 +315,21 @@ namespace Sphere_Editor.SubEditors
             _selected_box.SelectedColor = ImageEditor.DrawColor;
             AlphaTracker.Value = ImageEditor.DrawColor.A;
             AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
+        }
+
+        private void MirrorButton_Click(object sender, EventArgs e)
+        {
+            ImageEditor.MirrorV = MirrorButton.Checked;
+        }
+
+        private void AlphaTracker_ValueChanged(object sender, EventArgs e)
+        {
+            AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
+        }
+
+        private void MirrorHButton_Click(object sender, EventArgs e)
+        {
+            ImageEditor.MirrorH = MirrorHButton.Checked;
         }
     }
 }

@@ -115,6 +115,7 @@ namespace Sphere_Editor.SubEditors
                     code_box.UndoRedo.IsUndoEnabled = true;
                     if (!Global.IsScript(ref filename)) CodeBox.ConfigurationManager.Language = "default";
                     Parent.Text = Path.GetFileName(filename);
+                    code_box.Margins[0].Width = 24+(int)Math.Log10(code_box.Lines.Count)*8;
                 }
             }
             catch (FileNotFoundException)
