@@ -7,7 +7,7 @@ Download
 ========
 You can download the latest version: [Here][]
 
-[Here]: radnen.tengudev.com/SphereStudioLatest.zip
+[Here]: http://radnen.tengudev.com/SphereStudioLatest.zip
 
 Features
 ========
