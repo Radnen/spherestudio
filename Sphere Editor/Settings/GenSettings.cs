@@ -102,7 +102,7 @@ namespace Sphere_Editor.Settings
                 RootPath = Path.GetDirectoryName(path);
                 while (!settings.EndOfStream)
                 {
-                    string[] lines = settings.ReadLine().Split('=');
+                    string[] lines = settings.ReadLine().Split(new char[] { '=' }, 2);
                     if (lines.Length > 1) items[lines[0]] = lines[1];
                 }
                 return true;
