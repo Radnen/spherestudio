@@ -197,6 +197,7 @@
             this.DockTest.DockRightPortion = 0.2D;
             this.DockTest.Location = new System.Drawing.Point(0, 49);
             this.DockTest.Name = "DockTest";
+            this.DockTest.ShowDocumentIcon = true;
             this.DockTest.Size = new System.Drawing.Size(480, 289);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;

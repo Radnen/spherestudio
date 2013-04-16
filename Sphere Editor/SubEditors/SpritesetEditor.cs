@@ -15,7 +15,7 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class SpritesetEditor : EditorObject
     {
-        private string _filename = null;
+        #region attributes
         private Spriteset _sprite = null;
         private int _zoom = 3;
         private DirectionLayout _selected_direction = null;
@@ -29,6 +29,7 @@ namespace Sphere_Editor.SubEditors
         private DockContent ImageContent     = null;
         private DockContent AnimContent      = null;
         private DockContent BaseContent      = null;
+        #endregion
 
         public SpritesetEditor()
         {
@@ -193,7 +194,7 @@ namespace Sphere_Editor.SubEditors
         {
             if (_sprite.Load(filename))
             {
-                _filename = filename;
+                FileName = filename;
                 Init();
             }
             else
@@ -205,11 +206,11 @@ namespace Sphere_Editor.SubEditors
 
         public override void Save()
         {
-            if (string.IsNullOrEmpty(_filename)) SaveAs();
+            if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = System.IO.Path.GetFileName(_filename);
-                _sprite.Save(_filename);
+                Parent.Text = System.IO.Path.GetFileName(FileName);
+                _sprite.Save(FileName);
             }
         }
 
@@ -223,7 +224,7 @@ namespace Sphere_Editor.SubEditors
 
             if (diag.ShowDialog() == DialogResult.OK)
             {
-                _filename = diag.FileName;
+                FileName = diag.FileName;
                 Save();
             }
         }

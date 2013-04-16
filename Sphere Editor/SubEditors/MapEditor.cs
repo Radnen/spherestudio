@@ -14,7 +14,6 @@ namespace Sphere_Editor.SubEditors
     public partial class MapEditor : EditorObject
     {
         #region attributes
-        private string _filename;
         private DockContent _map_content;
         private DockContent _draw_content;
         private DockContent _tile_content;
@@ -148,7 +147,7 @@ namespace Sphere_Editor.SubEditors
 
         public override void LoadFile(string filename)
         {
-            _filename = filename;
+            FileName = filename;
 
             Map map = new Map();
             map.Load(filename);
@@ -166,10 +165,10 @@ namespace Sphere_Editor.SubEditors
 
         public override void Save()
         {
-            if (_filename == null) SaveAs();
+            if (!IsSaved()) SaveAs();
             else
             {
-                if (!Map.Save(_filename))
+                if (!Map.Save(FileName))
                 {
                     if (MessageBox.Show("Tileset needs to be saved.", "Save the Tileset", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                     {
@@ -180,13 +179,13 @@ namespace Sphere_Editor.SubEditors
                             if (diag.ShowDialog() == DialogResult.OK)
                             {
                                 Map.Scripts[0] = System.IO.Path.GetFileName(diag.FileName);
-                                Map.Save(_filename);
-                                Parent.Text = System.IO.Path.GetFileName(_filename);
+                                Map.Save(FileName);
+                                Parent.Text = System.IO.Path.GetFileName(FileName);
                             }
                         }
                     }
                 }
-                else Parent.Text = System.IO.Path.GetFileName(_filename);
+                else Parent.Text = System.IO.Path.GetFileName(FileName);
             }
         }
 
@@ -199,7 +198,7 @@ namespace Sphere_Editor.SubEditors
                 diag.DefaultExt = "rmp";
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
-                    _filename = diag.FileName;
+                    FileName = diag.FileName;
                     Save();
                 }
             }

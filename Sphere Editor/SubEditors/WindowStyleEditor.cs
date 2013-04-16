@@ -9,9 +9,8 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class WindowStyleEditor : EditorObject
     {
-        #region private data
+        #region attributes
         private Windowstyle style;
-        private string filename;
         private bool _move = false;
         private int tx = 0;
         private int ty = 0;
@@ -107,7 +106,7 @@ namespace Sphere_Editor.SubEditors
 
         public override void LoadFile(string filename)
         {
-            this.filename = filename;
+            FileName = filename;
             using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
             {
                 style = new Windowstyle(reader);
@@ -147,11 +146,11 @@ namespace Sphere_Editor.SubEditors
 
         public override void Save()
         {
-            if (filename == null) SaveAs();
+            if (!IsSaved()) SaveAs();
             else
             {
-                this.Parent.Text = Path.GetFileName(this.filename);
-                style.Save(filename);
+                this.Parent.Text = Path.GetFileName(FileName);
+                style.Save(FileName);
             }
         }
 
@@ -166,8 +165,8 @@ namespace Sphere_Editor.SubEditors
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
-                    this.filename = diag.FileName;
-                    this.Save();
+                    FileName = diag.FileName;
+                    Save();
                 }
             }
         }

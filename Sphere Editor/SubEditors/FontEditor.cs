@@ -12,7 +12,6 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class FontEditor : EditorObject
     {
-        private string filename = null;
         FontSet FontLayout = new FontSet();
         Font selected = null;
 
@@ -20,7 +19,7 @@ namespace Sphere_Editor.SubEditors
 
         public FontEditor(string filename)
         {
-            this.filename = filename;
+            FileName = filename;
             FontLayout.LoadFromFile(filename);
             Setup();
         }
@@ -93,11 +92,11 @@ namespace Sphere_Editor.SubEditors
 
         public override void Save()
         {
-            if (this.filename == null) SaveAs();
+            if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = Path.GetFileName(this.filename);
-                FontLayout.SaveToFile(this.filename);
+                Parent.Text = Path.GetFileName(FileName);
+                FontLayout.SaveToFile(FileName);
             }
         }
 
@@ -111,8 +110,8 @@ namespace Sphere_Editor.SubEditors
 
             if (diag.ShowDialog() == DialogResult.OK)
             {
-                this.filename = diag.FileName;
-                this.Save();
+                FileName = diag.FileName;
+                Save();
             }
         }
 

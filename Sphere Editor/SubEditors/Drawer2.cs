@@ -24,7 +24,6 @@ namespace Sphere_Editor.SubEditors
         public int ImageWidth { get { return ImageEditor.EditImage.Width; } }
         public int ImageHeight { get { return ImageEditor.EditImage.Height; } }
 
-        private string _filename;
         private DockContent DrawContent = new DockContent();
         private DockContent PaletteContent = new DockContent();
         private DockPanel EditorDock = new DockPanel();
@@ -92,14 +91,14 @@ namespace Sphere_Editor.SubEditors
 
         public override void Save()
         {
-            if (_filename == null) SaveAs();
+            if (!IsSaved()) SaveAs();
             else
             {
                 using (Image img = ImageEditor.GetImage())
                 {
-                    img.Save(_filename);
+                    img.Save(FileName);
                 }
-                Parent.Text = System.IO.Path.GetFileName(_filename);
+                Parent.Text = System.IO.Path.GetFileName(FileName);
             }
         }
 
@@ -113,14 +112,14 @@ namespace Sphere_Editor.SubEditors
 
             if (diag.ShowDialog() == DialogResult.OK)
             {
-                _filename = diag.FileName;
+                FileName = diag.FileName;
                 Save();
             }
         }
 
         public override void LoadFile(string filename)
         {
-            _filename = filename;
+            FileName = filename;
             using (Bitmap img = (Bitmap)Bitmap.FromFile(filename))
             {
                 ImageEditor.SetImage(img);

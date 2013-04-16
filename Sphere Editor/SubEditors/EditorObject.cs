@@ -4,6 +4,8 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class EditorObject : UserControl
     {
+        public string FileName { get; protected set; }
+
         // file maintanence:
         public virtual void Save() { }
         public virtual void SaveAs() { }
@@ -27,5 +29,10 @@ namespace Sphere_Editor.SubEditors
         // misc:
         public ToolStripStatusLabel HelpLabel { get; set; }
         public virtual void SaveLayout() { }
+
+        protected bool IsSaved()
+        {
+            return !string.IsNullOrEmpty(FileName);
+        }
     }
 }

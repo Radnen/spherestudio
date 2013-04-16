@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("The Sphere Studio")]
-[assembly: AssemblyDescription("A newly improved sphere editor made for Windows with the .NET Framework 2.0 or higher. Special thanks to kyuu, and DaVince and anyone else helping with testing and feature requests, and Flik for making Sphere a reality, also a shoutout to my loyal tester Eggbert. Don't forget to visit us at www.spheredev.org!")]
+[assembly: AssemblyDescription("A newly improved sphere editor made for Windows with the .NET Framework 2.0 or higher. Special thanks to kyuu, DaVince, and anyone else helping with testing and feature requests, and to Flik for making Sphere a reality. Also a shoutout to my loyal testers Eggbert, and Lord English. Don't forget to visit us at www.spheredev.org!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]

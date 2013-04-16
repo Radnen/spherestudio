@@ -11,7 +11,6 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class ScriptEditor : EditorObject
     {
-        private string filename = null;
         Scintilla code_box = new Scintilla();
         readonly Encoding ISO_8859_1 = System.Text.Encoding.GetEncoding("iso-8859-1");
 
@@ -102,15 +101,9 @@ namespace Sphere_Editor.SubEditors
             code_box.Folding.IsEnabled = fold;
         }
 
-        public string FileName
-        {
-            get { return filename; }
-            set { filename = value; }
-        }
-
         public override void LoadFile(string filename)
         {
-            this.filename = filename;
+            FileName = filename;
             try
             {
                 using (StreamReader FileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
@@ -132,16 +125,16 @@ namespace Sphere_Editor.SubEditors
 
         public override void Save()
         {
-            if (this.filename == null) SaveAs();
+            if (!IsSaved()) SaveAs();
             else
             {
-                using (StreamWriter writer = new StreamWriter(filename, false, ISO_8859_1))
+                using (StreamWriter writer = new StreamWriter(FileName, false, ISO_8859_1))
                 {
                     if (Global.CurrentEditor.UseScriptUpdate)
                     {
                         code_box.UndoRedo.IsUndoEnabled = false;
                         if (code_box.Lines.Count > 1 && code_box.Lines[1].Text[0] == '*')
-                            code_box.Lines[1].Text = "* Script: " + Path.GetFileName(filename);
+                            code_box.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
                         if (code_box.Lines.Count > 2 && code_box.Lines[2].Text[0] == '*')
                             code_box.Lines[2].Text = "* Written by: " + Global.CurrentProject.Author;
                         if (code_box.Lines.Count > 3 && code_box.Lines[3].Text[0] == '*')
@@ -151,7 +144,7 @@ namespace Sphere_Editor.SubEditors
 
                     writer.Write(code_box.Text);
                 }
-                Parent.Text = Path.GetFileName(filename);
+                Parent.Text = Path.GetFileName(FileName);
             }
         }
 
@@ -166,7 +159,7 @@ namespace Sphere_Editor.SubEditors
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
-                    this.filename = diag.FileName;
+                    FileName = diag.FileName;
                     Save();
                 }
             }

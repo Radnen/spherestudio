@@ -418,10 +418,14 @@ namespace Sphere_Editor.SubEditors
 
             string s = node.Text;
 
-            if (EditorForm.ContainsDocument(Path.GetFileName(path)))
+            if (Global.CurrentEditor.UseDockForm)
             {
-                EditorForm.SelectDocument(Path.GetFileName(path));
-                return;
+                WeifenLuo.WinFormsUI.Docking.IDockContent content = EditorForm.GetDocument(path);
+                if (content != null)
+                {
+                    content.DockHandler.Activate();
+                    return;
+                }
             }
 
             if (Global.IsImage(ref s)) EditorForm.OpenImage(path);

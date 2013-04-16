@@ -90,8 +90,6 @@ namespace Sphere_Editor
         #region interfaces
         private void InitializeDocking()
         {
-            DockTest.ShowDocumentIcon = true;
-
             StartContent = new DockContent();
             StartContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
             StartContent.Text = "Start Page";
@@ -334,13 +332,24 @@ namespace Sphere_Editor
             if (!e.Cancel) obj.Dispose();
         }
 
-        public bool ContainsDocument(string name)
+        /// <summary>
+        /// Searches any EditorObject controls in the dock contents for a file.
+        /// </summary>
+        /// <param name="filepath">The name to search against.</param>
+        /// <returns>null if none found, or the IDockContent.</returns>
+        public IDockContent GetDocument(string filepath)
         {
+            Form form;
             foreach (IDockContent content in DockTest.Contents)
             {
-                if (content.DockHandler.TabText == name) return true;
+                form = content.DockHandler.Form;
+                if (form.Controls.Count > 0 && form.Controls[0] is EditorObject)
+                {
+                    if (((EditorObject)form.Controls[0]).FileName == filepath)
+                        return content;
+                }
             }
-            return false;
+            return null;
         }
 
         private DockContent FindDocument(string name)
@@ -352,6 +361,11 @@ namespace Sphere_Editor
             return null;
         }
 
+        /// <summary>
+        /// Selects a document by tab name, this is not ideal for editors but useful for
+        /// persistent objects like the project tree and plugins.
+        /// </summary>
+        /// <param name="name">The content's tab text to look for.</param>
         public void SelectDocument(string name)
         {
             foreach (IDockContent content in DockTest.Contents)
@@ -368,8 +382,11 @@ namespace Sphere_Editor
         private void SaveAllDocuments()
         {
             foreach (IDockContent content in DockTest.Contents)
-                if (content.DockHandler.Form.Controls[0] is EditorObject)
+            {
+                Form f = content.DockHandler.Form;
+                if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
                     ((EditorObject)content.DockHandler.Form.Controls[0]).Save();
+            }
         }
 
         #region open functions
@@ -998,13 +1015,20 @@ namespace Sphere_Editor
         {
             if (DockTest.Contents.Count == 0) return;
             ToolStripSeparator ts = new ToolStripSeparator();
-            ts.Name = "view_addition";
+            ts.Name = "zz_v";
             ViewMenu.DropDownItems.Add(ts);
             foreach (IDockContent content in DockTest.Contents)
             {
+                Form f = content.DockHandler.Form;
                 ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText);
-                item.Name = "view_addition";
+                item.Name = "zz_v";
                 item.Click += new EventHandler(item_Click);
+
+                if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
+                    item.Tag = ((EditorObject)f.Controls[0]).FileName;
+                else
+                    item.Tag = content.DockHandler.TabText;
+
                 if (content.DockHandler.IsActivated) item.CheckState = CheckState.Checked;
                 ViewMenu.DropDownItems.Add(item);
             }
@@ -1012,14 +1036,16 @@ namespace Sphere_Editor
 
         void item_Click(object sender, EventArgs e)
         {
-            SelectDocument(((ToolStripMenuItem)sender).Text);
+            IDockContent content = GetDocument((string)((ToolStripItem)sender).Tag);
+            if (content != null) content.DockHandler.Activate();
+            else SelectDocument((string)((ToolStripMenuItem)sender).Tag);
         }
 
         private void ViewMenu_DropDownClosed(object sender, EventArgs e)
         {
             for (int i = 0; i < ViewMenu.DropDownItems.Count; ++i)
             {
-                if (ViewMenu.DropDownItems[i].Name == "view_addition")
+                if (ViewMenu.DropDownItems[i].Name == "zz_v")
                 {
                     ViewMenu.DropDownItems.RemoveAt(i);
                     i--;
