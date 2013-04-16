@@ -124,12 +124,15 @@ namespace Sphere_Editor.EditorComponents
                 c = characters[i];
                 g = this.CreateGraphics();
                 int w = (int)(g.MeasureString(str, font)).Width;
+                if (stroke) w += 2;
+                int h = stroke ? font.Height + 2 : font.Height;
 
                 if (str == " ") w += 4; // to give it some breathing room.
 
-                Bitmap img = new Bitmap(Math.Max(1, w-2), font.Height);
+                Bitmap img = new Bitmap(Math.Max(1, w - 3), font.Height);
                 g = Graphics.FromImage(img);
                 g.SmoothingMode = SmoothingMode.None;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
 
                 if (gradient)
                 {
@@ -141,12 +144,16 @@ namespace Sphere_Editor.EditorComponents
                 {
                     if (stroke)
                     {
-                        g.DrawString(str, font, semi_black, -2, -3);
                         g.DrawString(str, font, semi_black, -1, -2);
+                        g.DrawString(str, font, semi_black, 0, -1);
+                        g.DrawString(str, font, semi_black, -1, 0);
                         g.DrawString(str, font, semi_black, -2, -1);
-                        g.DrawString(str, font, semi_black, -3, -2);
+                        g.DrawString(str, font, gradient_brush, -1, -1);
                     }
-                    g.DrawString(str, font, gradient_brush, -2, -2);
+                    else
+                    {
+                        g.DrawString(str, font, gradient_brush, -2, -2);
+                    }
                 }
                 catch { }
                 
