@@ -129,6 +129,7 @@ namespace Sphere_Editor.EditorComponents
 
                 Bitmap img = new Bitmap(Math.Max(1, w-2), font.Height);
                 g = Graphics.FromImage(img);
+                g.SmoothingMode = SmoothingMode.None;
 
                 if (gradient)
                 {

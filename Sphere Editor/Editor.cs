@@ -56,7 +56,9 @@ namespace Sphere_Editor
 
             Global.EvalPlugins((IPluginHost)this);
             Global.ActivatePlugins(Global.CurrentEditor.GetPluginList());
-            TreeContent.Activate();
+
+            // make sure this is active only when we use it.
+            if (TreeContent != null) TreeContent.Activate();
 
             int spaces = Global.CurrentEditor.GetInt("script-spaces", 2);
             TwoUnitsItem.Checked = (spaces == 2);
@@ -222,7 +224,7 @@ namespace Sphere_Editor
             Global.CurrentProject.LoadSettings(filename);
             RefreshProject();
             if (OnOpenProject != null) OnOpenProject(null, EventArgs.Empty);
-            TreeContent.Activate();
+            if (TreeContent != null) TreeContent.Activate();
             //_tasks.LoadList();
             HelpLabel.Text = "Game project loaded successfully!";
             UpdateButtons();
