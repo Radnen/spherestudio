@@ -173,7 +173,7 @@ namespace Sphere_Editor.Settings
                     Global.CurrentEditor.SaveSettings(file);
                     Global.CurrentEditor.SetSettings(old);
 
-                    PresetListBox.Items.Add(Path.GetFileName(file));
+                    PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(file));
                 }
             }
         }

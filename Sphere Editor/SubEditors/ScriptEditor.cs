@@ -87,7 +87,12 @@ namespace Sphere_Editor.SubEditors
         {
             for (int i = 0; i < 128; ++i)
                 code_box.Styles[i].Font = font;
-            code_box.Lexing.Colorize();
+            SetMarginSize(font);
+        }
+
+        private void SetMarginSize(Font font)
+        {
+            code_box.Margins[0].Width = 25 + (int)(Math.Log10(code_box.Lines.Count) * font.SizeInPoints);
         }
 
         private void SetFold(bool fold)
@@ -115,7 +120,7 @@ namespace Sphere_Editor.SubEditors
                     code_box.UndoRedo.IsUndoEnabled = true;
                     if (!Global.IsScript(ref filename)) CodeBox.ConfigurationManager.Language = "default";
                     Parent.Text = Path.GetFileName(filename);
-                    code_box.Margins[0].Width = 24+(int)Math.Log10(code_box.Lines.Count)*8;
+                    SetMarginSize(code_box.Styles[0].Font);
                 }
             }
             catch (FileNotFoundException)
