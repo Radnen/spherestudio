@@ -40,7 +40,6 @@ namespace Sphere_Editor.SubEditors
 
         private void InitializeDocking()
         {
-            if (!Global.CurrentEditor.UseDockForm) return;
             EditorDock.DocumentStyle = DocumentStyle.DockingSdi;
             this.Controls.Add(EditorDock);
 

@@ -198,6 +198,11 @@ namespace Sphere_Editor.EditorComponents
 
         private void ZoomInItem_Click(object sender, EventArgs e)
         {
+            ZoomIn();
+        }
+
+        public void ZoomIn()
+        {
             if (_zoom < 8)
             {
                 ZoomOutItem.Enabled = true;
@@ -205,11 +210,16 @@ namespace Sphere_Editor.EditorComponents
                 UpdateWidth();
                 if (_zoom == 8) ZoomInItem.Enabled = false;
                 if (LayoutZoomed != null) LayoutZoomed(this, new EventArgs());
-                Refresh();
+                Invalidate();
             }
         }
 
         private void ZoomOutItem_Click(object sender, EventArgs e)
+        {
+            ZoomOut();
+        }
+
+        public void ZoomOut()
         {
             if (_zoom > 1)
             {
@@ -218,7 +228,7 @@ namespace Sphere_Editor.EditorComponents
                 UpdateWidth();
                 if (_zoom == 1) ZoomOutItem.Enabled = false;
                 if (LayoutZoomed != null) LayoutZoomed(this, new EventArgs());
-                Refresh();
+                Invalidate();
             }
         }
 

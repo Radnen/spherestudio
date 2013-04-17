@@ -36,8 +36,6 @@ namespace Sphere_Editor.SubEditors
             InitializeComponent();
             InitializeDocking();
 
-            if (Global.CurrentEditor.UseDockForm) Controls.Remove(DirectionSplitter);
-
             _sprite = new Spriteset();
             DirectionAnim.Sprite = _sprite;
             FrameBaseEditor.Sprite = _sprite;
@@ -47,8 +45,8 @@ namespace Sphere_Editor.SubEditors
         #region dock content
         private void InitializeDocking()
         {
-            if (!Global.CurrentEditor.UseDockForm) return;
-
+            Controls.Remove(DirectionSplitter); 
+            
             SpriteDrawer.Dock = DockStyle.Fill;
             DrawContent = new DockContent();
             DrawContent.Text = "Sprite Drawer";
@@ -170,18 +168,20 @@ namespace Sphere_Editor.SubEditors
             _selected_frame.Index = tiles[0];
             DirectionHolder.Invalidate(true);
             SpriteDrawer.SetImage(_tileset_ctrl.Tileset.Tiles[tiles[0]].Graphic);
-            Modified(null, EventArgs.Empty);
+            MakeDirty();
         }
 
         void _tileset_ctrl_TileRemoved(short startindex, List<Tile> tiles)
         {
             _sprite.RemoveFrameReference(startindex);
             DirectionHolder.Invalidate(true);
+            MakeDirty();
         }
 
         void _tileset_ctrl_TileAdded(short startindex, List<Tile> tiles)
         {
             foreach (Tile t in tiles) _sprite.Images.Add(t.Graphic);
+            MakeDirty();
         }
 
         public override void CreateNew()
@@ -264,7 +264,7 @@ namespace Sphere_Editor.SubEditors
                 }
                 SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selected_frame.Index));
                 UpdateControls();
-                Modified(null, EventArgs.Empty);
+                MakeDirty();
             }
 
             // these method were made public to resize the contained image:
@@ -336,7 +336,7 @@ namespace Sphere_Editor.SubEditors
             layout.Zoom = _zoom;
             DirectionHolder.Controls.Add(layout);
             layout.Location = new Point(2, DirectionHolder.Controls.Count-1 * (layout.Height + 2) + 2);
-            Modified(null, EventArgs.Empty);
+            MakeDirty();
         }
 
         public void RemoveDirection(DirectionLayout layout)
@@ -344,7 +344,7 @@ namespace Sphere_Editor.SubEditors
             _sprite.Directions.Remove(layout.Direction);
             DirectionHolder.Controls.Remove(layout);
             UpdateControls();
-            Modified(null, EventArgs.Empty);
+            MakeDirty();
         }
 
         private void SpriteDrawer_ImageEdited(object sender, EventArgs e)
@@ -358,7 +358,7 @@ namespace Sphere_Editor.SubEditors
 
         private void Modified(object sender, EventArgs e)
         {
-            if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
     }
 }

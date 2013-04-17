@@ -167,6 +167,7 @@ namespace Sphere_Editor.SubEditors
         /// </summary>
         public void Pause()
         {
+            if (string.IsNullOrEmpty(SystemWatcher.Path)) return;
             SystemWatcher.EnableRaisingEvents = false;
         }
 
@@ -175,6 +176,7 @@ namespace Sphere_Editor.SubEditors
         /// </summary>
         public void Resume()
         {
+            if (string.IsNullOrEmpty(SystemWatcher.Path)) return;
             SystemWatcher.EnableRaisingEvents = true;
         }
 
@@ -418,14 +420,11 @@ namespace Sphere_Editor.SubEditors
 
             string s = node.Text;
 
-            if (Global.CurrentEditor.UseDockForm)
+            WeifenLuo.WinFormsUI.Docking.IDockContent content = EditorForm.GetDocument(path);
+            if (content != null)
             {
-                WeifenLuo.WinFormsUI.Docking.IDockContent content = EditorForm.GetDocument(path);
-                if (content != null)
-                {
-                    content.DockHandler.Activate();
-                    return;
-                }
+                content.DockHandler.Activate();
+                return;
             }
 
             if (Global.IsImage(ref s)) EditorForm.OpenImage(path);

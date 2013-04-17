@@ -29,12 +29,6 @@ namespace Sphere_Editor.Settings
             set { SetItem<string>("last_project_path", value); }
         }
 
-        public bool UseDockForm
-        {
-            get { return GetBool("use_docking"); }
-            set { SetItem<bool>("use_docking", value); }
-        }
-
         public bool UseSplash
         {
             get { return GetBool("use_splash"); }
@@ -94,7 +88,6 @@ namespace Sphere_Editor.Settings
             SetGamePaths(SettingForm.GamePaths);
             SetPluginList();
             ConfigPath = SettingForm.ConfigPath;
-            UseDockForm = SettingForm.UseDockForm;
             AutoOpen = SettingForm.AutoStart;
             UseScriptUpdate = SettingForm.UseScriptUpdate;
             LabelFont = SettingForm.LabelFont;

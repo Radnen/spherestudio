@@ -38,19 +38,13 @@ namespace Sphere_Editor.Settings
             set { FontComboBox.Text = value; }
         }
 
-        public bool UseDockForm
+        public bool UseScriptUpdate
         {
-            get { return !ItemCheckBox.GetItemChecked(0); }
-            set { ItemCheckBox.SetItemChecked(0, !value); }
+            get { return ItemCheckBox.GetItemChecked(0); }
+            set { ItemCheckBox.SetItemChecked(0, value); }
         }
 
         public bool AutoStart
-        {
-            get { return ItemCheckBox.GetItemChecked(2); }
-            set { ItemCheckBox.SetItemChecked(2, value); }
-        }
-
-        public bool UseScriptUpdate
         {
             get { return ItemCheckBox.GetItemChecked(1); }
             set { ItemCheckBox.SetItemChecked(1, value); }
@@ -70,7 +64,6 @@ namespace Sphere_Editor.Settings
             SpherePath = settings.SpherePath;
             ConfigPath = settings.ConfigPath;
             GamePaths = settings.GetGamePaths();
-            UseDockForm = settings.UseDockForm;
             AutoStart = settings.AutoOpen;
             UseScriptUpdate = settings.UseScriptUpdate;
             LabelFont = settings.LabelFont;

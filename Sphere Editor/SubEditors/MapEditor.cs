@@ -34,8 +34,6 @@ namespace Sphere_Editor.SubEditors
         #region docking
         public void InitializeDocking()
         {
-            if (!Global.CurrentEditor.UseDockForm) return;
-
             Controls.Remove(mapSplitter);
             Controls.Remove(SplitContainer);
             Controls.Remove(splitContainer1);
@@ -252,6 +250,7 @@ namespace Sphere_Editor.SubEditors
             MapControl.ResizeLayers(tile_width, tile_height);
             TilesetControl.UpdateTileSize();
             TilesetControl.Invalidate();
+            MakeDirty();
         }
 
         public void UpdateTileset(string filename)
@@ -275,6 +274,7 @@ namespace Sphere_Editor.SubEditors
             foreach (Zone zone in Map.Zones)
                 if (zone.Layer == layer.Index) zone.Visible = layer.Visible;
             MapControl.Invalidate();
+            MakeDirty();
         }
 
         private void Layers_LayerSelected(LayerControl sender, LayerItem layer)
@@ -291,7 +291,7 @@ namespace Sphere_Editor.SubEditors
             MapControl.SetLayers(layers, start);
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
 
         private void zoomInButton_Click(object sender, EventArgs e)
@@ -381,7 +381,7 @@ namespace Sphere_Editor.SubEditors
         {
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
 
         private void zoneButton_Click(object sender, EventArgs e)
@@ -398,7 +398,7 @@ namespace Sphere_Editor.SubEditors
             short th = TilesetControl.Tileset.TileHeight;
             TilesetControl.SetImages(TileDrawer.GetImages(tw, th));
             MapControl.RefreshLayers();
-            if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
 
         private void MapControl_Paint(object sender, PaintEventArgs e)
@@ -414,6 +414,7 @@ namespace Sphere_Editor.SubEditors
             LayerEditor.Layers.StartLayer = Map.StartLayer;
             LayerEditor.Layers.Invalidate();
             TilesetControl.Select(MapControl.CurrentTile);
+            SelectTiles(TilesetControl.Selected);
             MapControl.SelWidth = 1;
         }
 
@@ -432,6 +433,7 @@ namespace Sphere_Editor.SubEditors
             item.Visible = true;
             LayerEditor.Layers.AddItem(item);
             MapControl.RefreshLayers();
+            MakeDirty();
         }
 
         private void Layers_LayerRemoved(object sender, EventArgs e)
@@ -450,6 +452,7 @@ namespace Sphere_Editor.SubEditors
             Map.Layers.Remove(target);
             LayerEditor.Layers.RemoveItem(LayerEditor.Layers.SelectedIndex);
             MapControl.RefreshLayers();
+            MakeDirty();
         }
 
         private void TilesetControl_TileSelected(List<short> tiles)
@@ -468,7 +471,7 @@ namespace Sphere_Editor.SubEditors
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
-            if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
 
         private void TilesetControl_TileAdded(short tile, List<Tile> tiles)
@@ -482,7 +485,7 @@ namespace Sphere_Editor.SubEditors
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
-            if (!Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
     }
 }

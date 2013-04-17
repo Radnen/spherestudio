@@ -68,7 +68,7 @@ namespace Sphere_Editor.SubEditors
 
         void code_box_TextChanged(object sender, EventArgs e)
         {
-            if (Parent != null && !Parent.Text.EndsWith("*")) Parent.Text += "*";
+            MakeDirty();
         }
 
         public override void CreateNew()

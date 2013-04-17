@@ -491,6 +491,7 @@
             this.TilesetControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.TilesetControl.CanInsert = true;
             this.TilesetControl.Location = new System.Drawing.Point(3, 3);
+            this.TilesetControl.MultiSelect = false;
             this.TilesetControl.Name = "TilesetControl";
             this.TilesetControl.Selected = ((System.Collections.Generic.List<short>)(resources.GetObject("TilesetControl.Selected")));
             this.TilesetControl.Size = new System.Drawing.Size(0, 298);

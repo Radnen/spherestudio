@@ -218,7 +218,6 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ItemCheckBox.FormattingEnabled = true;
             this.ItemCheckBox.Items.AddRange(new object[] {
-            "Wine Mode",
             "Update Script Headers",
             "Open Last Project"});
             this.ItemCheckBox.Location = new System.Drawing.Point(5, 19);

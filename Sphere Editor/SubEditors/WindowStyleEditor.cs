@@ -27,9 +27,6 @@ namespace Sphere_Editor.SubEditors
         {
             InitializeComponent();
             InitializeDocking();
-
-            if (Global.CurrentEditor.UseDockForm) Controls.Remove(MainSplitter);
-
             Disposed += new EventHandler(WindowStyleEditor_Disposed);
         }
 
@@ -41,7 +38,7 @@ namespace Sphere_Editor.SubEditors
 
         private void InitializeDocking()
         {
-            if (!Global.CurrentEditor.UseDockForm) return;
+            Controls.Remove(MainSplitter);
 
             WindowHolder.Dock = DockStyle.Fill;
             StyleDrawer.Dock = DockStyle.Fill;
@@ -141,7 +138,7 @@ namespace Sphere_Editor.SubEditors
             style.Images[style.Selected] = StyleDrawer.GetImage();
             style.GeneratePreview(wind_w, wind_h);
             WindowPanel.Invalidate();
-            if (!Parent.Text.Contains("*")) Parent.Text += "*";
+            MakeDirty();
         }
 
         public override void Save()
@@ -149,7 +146,7 @@ namespace Sphere_Editor.SubEditors
             if (!IsSaved()) SaveAs();
             else
             {
-                this.Parent.Text = Path.GetFileName(FileName);
+                Parent.Text = Path.GetFileName(FileName);
                 style.Save(FileName);
             }
         }

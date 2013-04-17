@@ -64,6 +64,7 @@ namespace Sphere_Editor.SubEditors
         private void PreviewTextBox_TextChanged(object sender, EventArgs e)
         {
             CompilePreview();
+            MakeDirty();
         }
 
         private void CompilePreview()
@@ -115,6 +116,16 @@ namespace Sphere_Editor.SubEditors
             }
         }
 
+        public override void ZoomIn()
+        {
+            FontLayout.ZoomIn();
+        }
+
+        public override void ZoomOut()
+        {
+            FontLayout.ZoomOut();
+        }
+
         public override void Paste()
         {
             IDataObject Data = Clipboard.GetDataObject();
@@ -123,17 +134,26 @@ namespace Sphere_Editor.SubEditors
 
         private void GenerateButton_Click(object sender, EventArgs e)
         {
-            FontDialog diag = new FontDialog();
-            if (selected != null) diag.Font = selected;
-            if (diag.ShowDialog() == DialogResult.OK)
+            using (FontDialog diag = new FontDialog())
             {
-                selected = diag.Font;
-                FontLayout.GenerateFont(
-                    diag.Font, GradientCheckBox.Checked,
-                    GradientTop.SelectedColor, GradientBottom.SelectedColor,
-                    StrokeCheck.Checked, StrokeColor.SelectedColor
-                 );
-                CompilePreview();
+                if (selected != null) diag.Font = selected;
+                try
+                {
+                    if (diag.ShowDialog() == DialogResult.OK)
+                    {
+                        selected = diag.Font;
+                        FontLayout.GenerateFont(
+                            diag.Font, GradientCheckBox.Checked,
+                            GradientTop.SelectedColor, GradientBottom.SelectedColor,
+                            StrokeCheck.Checked, StrokeColor.SelectedColor
+                         );
+                        CompilePreview();
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("GDI+ only supports TrueType fonts.", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

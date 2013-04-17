@@ -62,8 +62,6 @@ namespace Sphere_Editor.SubEditors
 
         private void InitializeDocking()
         {
-            if (!Global.CurrentEditor.UseDockForm) return;
-
             EditorDock.DocumentStyle = DocumentStyle.DockingSdi;
             Controls.Add(EditorDock);
 
@@ -301,7 +299,7 @@ namespace Sphere_Editor.SubEditors
             if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
-            if (CanDirty && !Parent.Text.EndsWith("*")) Parent.Text += "*";
+            if (CanDirty) MakeDirty();
         }
 
         private void ImageEditor_Paint(object sender, PaintEventArgs e)

@@ -46,8 +46,7 @@ namespace Sphere_Editor
             start_page.HelpLabel = this.HelpLabel;
             start_page.PopulateGameList();
 
-            if (!Global.CurrentEditor.UseDockForm) InitializeAlternateInterface();
-            else InitializeDocking();
+            InitializeDocking();
 
             if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
@@ -68,6 +67,9 @@ namespace Sphere_Editor
             FoldItem.Checked = Global.CurrentEditor.GetBool("script-fold", true);
             HighlightLineItem.Checked = Global.CurrentEditor.GetBool("script-hiline", true);
             HighlightBracesItem.Checked = Global.CurrentEditor.GetBool("script-hibraces", true);
+
+            Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
+                (IntPtr.Size == 4) ? "x86" : "x64", Application.ProductVersion);
         }
 
         bool IsProjectOpen { get { return Global.CurrentProject != null; } }
@@ -112,27 +114,6 @@ namespace Sphere_Editor
             TaskContent.HideOnClose = true;
             TaskContent.Icon = Icon.FromHandle(Properties.Resources.application_view_list.GetHicon());
             TaskContent.Show(TreeContent.Pane, DockAlignment.Bottom, 0.40);*/
-        }
-
-        private void InitializeAlternateInterface()
-        {
-            this.IsMdiContainer = false;
-            this.Controls.Remove(DockTest);
-
-            this.Controls.Add(_tree);
-            _tree.Dock = DockStyle.Left;
-            _tree.BringToFront();
-
-            TabPage page = new TabPage();
-            page.Text = "Start Page";
-            page.Controls.Add(start_page);
-
-            AltTabInterface = new TabControl();
-            this.Controls.Add(AltTabInterface);
-            AltTabInterface.SelectedIndexChanged += new EventHandler(AltTabInterface_SelectedIndexChanged);
-            AltTabInterface.Dock = DockStyle.Fill;
-            AltTabInterface.BringToFront();
-            AltTabInterface.TabPages.Add(page);
         }
 
         public void DockControl(DockContent content, DockState state)
@@ -197,14 +178,11 @@ namespace Sphere_Editor
 
         private void EditorForm_Shown(object sender, EventArgs e)
         {
-            Text += " v" + Application.ProductVersion;
             if (_firsttime)
             {
                 MessageBox.Show("Hello! It's your first time here! I would love to help you " +
                                 "set a few things up!", "Welcome First Timer", MessageBoxButtons.OK,
                                 MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-                Global.CurrentEditor.UseDockForm = true;
-                Global.CurrentEditor.UseSplash = true;
                 OpenEditorSettings(this, null);
                 _firsttime = false;
             }
@@ -266,23 +244,13 @@ namespace Sphere_Editor
                 control.Dock = DockStyle.Fill;
                 content = new DockContent();
             }
-            if (Global.CurrentEditor.UseDockForm)
-            {
-                content.Controls.Add(control);
-                if (DockTest.DocumentsCount == 0) content.Show(DockTest, DockState.Document);
-                else content.Show(DockTest.Panes[0], null);
-                content.DockState = DockState.Document;
-                content.DockAreas = DockAreas.Document;
-                content.Text = text;
-                content.FormClosing += new FormClosingEventHandler(Content_FormClosing);
-            }
-            else // use alternate interface:
-            {
-                TabPage page = new TabPage(text);
-                page.Controls.Add(control);
-                AltTabInterface.TabPages.Add(page);
-                AltTabInterface.SelectedTab = page;
-            }
+            content.Controls.Add(control);
+            if (DockTest.DocumentsCount == 0) content.Show(DockTest, DockState.Document);
+            else content.Show(DockTest.Panes[0], null);
+            content.DockState = DockState.Document;
+            content.DockAreas = DockAreas.Document;
+            content.Text = text;
+            content.FormClosing += new FormClosingEventHandler(Content_FormClosing);
 
             ImageMenu.Visible = MapMenu.Visible = false;
             SpritesetMenu.Visible = false;
@@ -307,7 +275,7 @@ namespace Sphere_Editor
             else
                 content.Icon = Icon.FromHandle(Properties.Resources.page_white_edit.GetHicon());
 
-            if (CurrentControl != null) CurrentControl.HelpLabel = this.HelpLabel;
+            if (CurrentControl != null) CurrentControl.HelpLabel = HelpLabel;
         }
         #endregion
 
@@ -743,36 +711,11 @@ namespace Sphere_Editor
 
         public void OpenEditorSettings(object sender, EventArgs e)
         {
-            bool last = Global.CurrentEditor.UseDockForm;
-            if (_firsttime) last = false;
-            bool altered = Global.EditSettings();
-            if (altered)
+            if (Global.EditSettings())
             {
                 UpdateButtons();
-
-                if (last != Global.CurrentEditor.UseDockForm)
-                {
-                    switch (MessageBox.Show("The alternative Wine-friendly interface will require you to restart this application.",
-                        "Wine Mode", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk))
-                    {
-                        case System.Windows.Forms.DialogResult.OK:
-                            Close();
-                            break;
-                        case System.Windows.Forms.DialogResult.Cancel:
-                            Global.CurrentEditor.UseDockForm = last;
-                            Global.CurrentEditor.SaveSettings();
-                            break;
-                    }
-                }
+                start_page.PopulateGameList();
             }
-            else if (_firsttime)
-            {
-                Global.CurrentEditor.UseDockForm = false;
-                Global.CurrentEditor.UseSplash = false;
-                Global.CurrentEditor.SaveSettings();
-            }
-            this.Invalidate(true);
-            start_page.PopulateGameList();
         }
 
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
@@ -895,21 +838,14 @@ namespace Sphere_Editor
         #region view menu items
         private void StartPageMenuItem_Click(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.UseDockForm)
-            {
-                if (StartContent.IsHidden) StartContent.Show(DockTest);
-                else StartContent.Hide();
-            }
+            if (StartContent.IsHidden) StartContent.Show(DockTest);
+            else StartContent.Hide();
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, EventArgs e)
         {
-            if (Global.CurrentEditor.UseDockForm)
-            {
-                if (TreeContent.IsHidden) TreeContent.Show(DockTest, DockState.DockLeft);
-                else TreeContent.Hide();
-            }
-            else _tree.Visible = !_tree.Visible;
+            if (TreeContent.IsHidden) TreeContent.Show(DockTest, DockState.DockLeft);
+            else TreeContent.Hide();
         }
 
         private void TaskListMenuItem_Click(object sender, EventArgs e)

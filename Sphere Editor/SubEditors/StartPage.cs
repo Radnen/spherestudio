@@ -26,7 +26,6 @@ namespace Sphere_Editor.SubEditors
             InitializeComponent();
             InitializeDocking();
 
-            if (Global.CurrentEditor.UseDockForm) this.Controls.Remove(MainSplitter);
             _mainEditor = mainEditor;
 
             _imageicons.ImageSize = new System.Drawing.Size(32, 32);
@@ -39,7 +38,7 @@ namespace Sphere_Editor.SubEditors
 
         private void InitializeDocking()
         {
-            if (!Global.CurrentEditor.UseDockForm) return;
+            Controls.Remove(MainSplitter);
             StartDock.DocumentStyle = DocumentStyle.DockingWindow;
             StartDock.Dock = DockStyle.Fill;
             Controls.Add(StartDock);

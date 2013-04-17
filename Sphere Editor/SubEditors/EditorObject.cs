@@ -30,9 +30,31 @@ namespace Sphere_Editor.SubEditors
         public ToolStripStatusLabel HelpLabel { get; set; }
         public virtual void SaveLayout() { }
 
+        /// <summary>
+        /// Gets whether or not the file has been saved.
+        /// </summary>
+        /// <returns>True if saved, false otherwise.</returns>
         protected bool IsSaved()
         {
             return !string.IsNullOrEmpty(FileName);
+        }
+
+        /// <summary>
+        /// Gets whether or not the file has been modified.
+        /// </summary>
+        /// <returns>True if modified, otherwise false.</returns>
+        protected bool IsDirty()
+        {
+            return Parent.Text.EndsWith("*");
+        }
+
+        /// <summary>
+        /// Marks the document as modified if it already hasn't.
+        /// </summary>
+        protected void MakeDirty()
+        {
+            if (Parent == null || Parent.Text.EndsWith("*")) return;
+            Parent.Text += "*";
         }
     }
 }
