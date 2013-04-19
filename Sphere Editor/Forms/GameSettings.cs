@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using Sphere.Core.Settings;
 
-namespace Sphere_Editor.Settings
+namespace Sphere_Editor.Forms
 {
     public partial class GameSettings : Form
     {
@@ -27,6 +28,19 @@ namespace Sphere_Editor.Settings
             {
                 ScriptComboBox.Items.Add(scriptList[i].Name);
             }
+        }
+
+        public ProjectSettings GetSettings()
+        {
+            ProjectSettings settings = new ProjectSettings();
+            settings.SetRootPath(PathTextBox.Text);
+            settings.Name = NameTextBox.Text;
+            settings.Author = AuthorTextBox.Text;
+            settings.Description = DescTextBox.Text;
+            settings.Width = WidthTextBox.Text;
+            settings.Height = HeightTextBox.Text;
+            settings.Script = ScriptComboBox.Text;
+            return settings;
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)

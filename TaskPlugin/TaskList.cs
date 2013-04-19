@@ -63,12 +63,6 @@ namespace TaskPlugin
                 ObjectTaskList.RemoveObject(ObjectTaskList.SelectedObject);
         }
 
-        private void EditTaskItem_Click(object sender, EventArgs e)
-        {
-            if (ObjectTaskList.SelectedObject != null)
-                ObjectTaskList.SelectedItem.BeginEdit();
-        }
-
         private void RemoveCompletedItem_Click(object sender, EventArgs e)
         {
             foreach (Task task in ObjectTaskList.Objects)

@@ -5,7 +5,7 @@ using System.Collections;
 using System.IO;
 using System.Drawing;
 
-namespace Sphere.Core.SphereObjects
+namespace Sphere.Core
 {
     /// <summary>
     /// A representation of an entity.

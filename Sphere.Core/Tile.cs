@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Sphere.Core.Utility;
 
-namespace Sphere.Core.SphereObjects
+namespace Sphere.Core
 {
     /// <summary>
     /// A Sphere Tile object.

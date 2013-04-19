@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Sphere.Core.SphereObjects;
-using Sphere_Editor.SubEditors;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using Sphere.Core;
+using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.EditorComponents
 {

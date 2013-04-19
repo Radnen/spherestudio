@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 
-namespace Sphere_Editor.Settings
+namespace Sphere.Core.Settings
 {
+    /// <summary>
+    /// A general abstraction for INI-like settings documents
+    /// </summary>
     public abstract class GenSettings
     {
         private SortedList<string, string> items = new SortedList<string, string>();
 
-        public string RootPath { get; set; }
+        /// <summary>
+        /// Gets the path where this settings file is stored.
+        /// </summary>
+        public virtual string RootPath { get; protected set; }
 
         /// <summary>
         /// Attempts to get the string stored at the key.
@@ -54,8 +57,38 @@ namespace Sphere_Editor.Settings
             items[key] = item.ToString();
         }
 
+        /// <summary>
+        /// Used to store a string array to a single key element.
+        /// </summary>
+        /// <param name="key">Key to store at.</param>
+        /// <param name="items">The string array to store.</param>
+        public void StoreArray(string key, string[] items)
+        {
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            foreach (string s in items) builder.Append(s).Append(',');
+            if (builder.Length > 0) builder.Remove(builder.Length - 1, 1);
+            SetItem<string>(key, builder.ToString());
+        }
+
+        /// <summary>
+        /// Used to get an array of string elements.
+        /// </summary>
+        /// <param name="key">The key to load from.</param>
+        /// <returns>An array of zero or more string elements.</returns>
+        public string[] GetArray(string key)
+        {
+            string s = GetString(key);
+            if (!string.IsNullOrEmpty(s)) return s.Split(',');
+            else return new string[0];
+        }
+
+        /// <summary>
+        /// Sets these settings to that of another settings list.
+        /// </summary>
+        /// <param name="settings">The settings object to merge with.</param>
         public void SetSettings(GenSettings settings)
         {
+            RootPath = settings.RootPath;
             foreach (KeyValuePair<string, string> pair in settings.items)
                 items[pair.Key] = pair.Value;
         }
@@ -68,6 +101,10 @@ namespace Sphere_Editor.Settings
             return settings;
         }
 
+        /// <summary>
+        /// Saves these settings to file.
+        /// </summary>
+        /// <param name="path">Filepath to store the settings.</param>
         public virtual void SaveSettings(string path)
         {
             using (StreamWriter settings = new StreamWriter(path))

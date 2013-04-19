@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Sphere.Core.Utility;
 
-namespace Sphere.Core.SphereObjects
+namespace Sphere.Core
 {
     /// <summary>
     /// A Sphere spriteset object

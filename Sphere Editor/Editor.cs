@@ -4,13 +4,14 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Utility;
+using Sphere.Core.Settings;
 using Sphere.Plugins;
 using Sphere_Editor.Forms;
 using Sphere_Editor.RadEditors;
-using Sphere_Editor.Settings;
 using Sphere_Editor.SubEditors;
 using WeifenLuo.WinFormsUI.Docking;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace Sphere_Editor
 {
@@ -22,7 +23,6 @@ namespace Sphere_Editor
         private DockContent StartContent;
         private StartPage start_page;
         private EditorObject CurrentControl;
-        private TabControl AltTabInterface;
         private ProjectTree _tree;
         //private TaskList _tasks = new TaskList();
         private bool _firsttime;
@@ -54,7 +54,7 @@ namespace Sphere_Editor
             AutoCompleteItem.Checked = Global.CurrentEditor.ShowAutoComplete;
 
             Global.EvalPlugins((IPluginHost)this);
-            Global.ActivatePlugins(Global.CurrentEditor.GetPluginList());
+            Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
 
             // make sure this is active only when we use it.
             if (TreeContent != null) TreeContent.Activate();
@@ -127,13 +127,14 @@ namespace Sphere_Editor
             if (c != null) c.DockHandler.Close();
         }
 
-        public string ProjectPath
+        public ProjectSettings CurrentGame
         {
-            get
-            {
-                if (Global.CurrentProject == null) return "";
-                else return Global.CurrentProject.RootPath;
-            }
+            get { return Global.CurrentProject; }
+        }
+
+        public Sphere.Core.Settings.SphereSettings EditorSettings
+        {
+            get { return Global.CurrentEditor; }
         }
 
         private ToolStripMenuItem GetMenuItem(ToolStripItemCollection collection, string name)
@@ -173,6 +174,10 @@ namespace Sphere_Editor
         {
             if (item.OwnerItem is ToolStripMenuItem)
                 ((ToolStripMenuItem)item.OwnerItem).DropDownItems.Remove(item);
+        }
+
+        public void RegisterFiletype(string[] types)
+        {
         }
         #endregion
 
@@ -412,13 +417,9 @@ namespace Sphere_Editor
 
         public void CallNewProject(object sender, EventArgs e)
         {
-            Project MyProject = new Project();
+            NewProjectForm MyProject = new NewProjectForm();
+            MyProject.RootFolder = Global.CurrentEditor.GetArray("games_path")[0];
 
-            Control.ControlCollection NewProjectControls = MyProject.Controls["ProjectBox"].Controls;
-            MyProject.Text = "New Project";
-            string rootpath = Global.CurrentEditor.GetGamePaths()[0];
-            NewProjectControls["FolderBox"].Text = rootpath;
-            NewProjectControls["DirectoryBox"].Text = rootpath + "\\";
             if (MyProject.ShowDialog() == DialogResult.OK)
             {
                 CloseProject(null, EventArgs.Empty);
@@ -426,7 +427,7 @@ namespace Sphere_Editor
                 if (Global.CurrentProject == null)
                     Global.CurrentProject = new ProjectSettings();
 
-                Global.CurrentProject.SetDataNew(MyProject);
+                Global.CurrentProject.SetSettings(MyProject.GetSettings());
                 Global.CurrentProject.Create();
                 Global.CurrentProject.Script = "main.js";
                 Global.CurrentProject.SaveSettings();
@@ -452,7 +453,7 @@ namespace Sphere_Editor
                 ProjDiag.Title = "Open Project";
                 ProjDiag.Filter = "Game Files|*.sgm|All Files|*.*";
 
-                string[] paths = Global.CurrentEditor.GetGamePaths();
+                string[] paths = Global.CurrentEditor.GetArray("games_paths");
                 if (paths.Length > 0)
                     ProjDiag.InitialDirectory = paths[0];
 
@@ -699,11 +700,11 @@ namespace Sphere_Editor
 
         private void ViewGameSettings(object sender, EventArgs e)
         {
-            using (GameSettings ViewSettings = new GameSettings(Global.CurrentProject))
+            using (GameSettings settings = new GameSettings(Global.CurrentProject))
             {
-                if (ViewSettings.ShowDialog() == DialogResult.OK)
+                if (settings.ShowDialog() == DialogResult.OK)
                 {
-                    Global.CurrentProject.SetData(ViewSettings);
+                    Global.CurrentProject.SetSettings(settings.GetSettings());
                     Global.CurrentProject.SaveSettings();
                 }
             }
@@ -890,11 +891,6 @@ namespace Sphere_Editor
             Form form = DockTest.ActiveDocument.DockHandler.Form;
             if (form.Controls.Count == 0) return;
             SetCurrentControl(form.Controls[0]);
-        }
-
-        void AltTabInterface_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetCurrentControl(AltTabInterface.SelectedTab.Controls[0]);
         }
 
         private void EditorForm_FormClosed(object sender, FormClosedEventArgs e)

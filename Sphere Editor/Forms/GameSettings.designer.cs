@@ -1,4 +1,4 @@
-﻿namespace Sphere_Editor.Settings
+﻿namespace Sphere_Editor.Forms
 {
     partial class GameSettings
     {

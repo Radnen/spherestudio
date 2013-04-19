@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 
-namespace Sphere.Core.SphereObjects
+namespace Sphere.Core
 {
     /// <summary>
     /// A Sphere Zone object.

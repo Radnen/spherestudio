@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using Sphere.Core.Utility;
 
-namespace Sphere.Core.SphereObjects
+namespace Sphere.Core
 {
     /// <summary>
     /// A Sphere windowstyle object.

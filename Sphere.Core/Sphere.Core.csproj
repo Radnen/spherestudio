@@ -57,10 +57,16 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditorObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Entity.cs" />
+    <Compile Include="Settings\GameProject.cs" />
+    <Compile Include="Settings\GenSettings.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +76,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Segment.cs" />
+    <Compile Include="Settings\SphereSettings.cs" />
     <Compile Include="Spriteset.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Tileset.cs" />

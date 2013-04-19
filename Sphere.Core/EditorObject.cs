@@ -1,17 +1,39 @@
 ﻿using System.Windows.Forms;
 
-namespace Sphere_Editor.SubEditors
+namespace Sphere.Core
 {
+    /// <summary>
+    /// A class that opens up editor abilities.
+    /// </summary>
     public partial class EditorObject : UserControl
     {
+        /// <summary>
+        /// Gets the FileName associated with this control.
+        /// </summary>
         public string FileName { get; protected set; }
 
         // file maintanence:
+
+        /// <summary>
+        /// Override this to add custom saving logic.
+        /// </summary>
         public virtual void Save() { }
+
+        /// <summary>
+        /// Override this to add custom save as logic.
+        /// </summary>
         public virtual void SaveAs() { }
+
+        /// <summary>
+        /// Override this to add custom file loading logic.
+        /// </summary>
+        /// <param name="filename"></param>
         public virtual void LoadFile(string filename) { FileName = filename; }
+
+        /// <summary>
+        /// Override this to do something on new file.
+        /// </summary>
         public virtual void CreateNew() { }
-        public virtual void Destroy() { }
         
         // clipboard maintanence:
 
@@ -57,6 +79,10 @@ namespace Sphere_Editor.SubEditors
         public virtual void ZoomOut() { }
 
         // misc:
+
+        /// <summary>
+        /// Gets or sets the help label associated with this control.
+        /// </summary>
         public ToolStripStatusLabel HelpLabel { get; set; }
 
         /// <summary>

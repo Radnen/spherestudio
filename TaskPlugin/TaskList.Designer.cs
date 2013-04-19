@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.TaskListMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddTaskItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EditTaskItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.RemoveTaskItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveCompletedItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +58,6 @@
             // 
             this.TaskListMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddTaskItem,
-            this.EditTaskItem,
             this.Seperator1,
             this.RemoveTaskItem,
             this.RemoveCompletedItem,
@@ -77,14 +75,6 @@
             this.AddTaskItem.Size = new System.Drawing.Size(179, 22);
             this.AddTaskItem.Text = "&Add Task";
             this.AddTaskItem.Click += new System.EventHandler(this.AddTaskItem_Click);
-            // 
-            // EditTaskItem
-            // 
-            this.EditTaskItem.Image = global::TaskPlugin.Properties.Resources.page_white_edit;
-            this.EditTaskItem.Name = "EditTaskItem";
-            this.EditTaskItem.Size = new System.Drawing.Size(179, 22);
-            this.EditTaskItem.Text = "&Edit Task";
-            this.EditTaskItem.Click += new System.EventHandler(this.EditTaskItem_Click);
             // 
             // Seperator1
             // 
@@ -232,6 +222,7 @@
             // olvColumn1
             // 
             this.olvColumn1.AspectName = "Name";
+            this.olvColumn1.CellPadding = null;
             this.olvColumn1.Text = "Name";
             this.olvColumn1.UseInitialLetterForGroup = true;
             this.olvColumn1.Width = 96;
@@ -239,11 +230,13 @@
             // olvColumn2
             // 
             this.olvColumn2.AspectName = "Priority";
+            this.olvColumn2.CellPadding = null;
             this.olvColumn2.Text = "Priority";
             // 
             // olvColumn3
             // 
             this.olvColumn3.AspectName = "Type";
+            this.olvColumn3.CellPadding = null;
             this.olvColumn3.Text = "Type";
             // 
             // TaskList
@@ -270,7 +263,6 @@
         private System.Windows.Forms.ToolStripMenuItem RemoveTaskItem;
         private System.Windows.Forms.ToolStripMenuItem RemoveCompletedItem;
         private System.Windows.Forms.ToolStripMenuItem ClearAllItem;
-        private System.Windows.Forms.ToolStripMenuItem EditTaskItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton priorityUpButton;
         private System.Windows.Forms.ToolStripButton priorityDownButton;

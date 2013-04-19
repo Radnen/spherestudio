@@ -1,11 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Sphere_Editor.Settings;
 using Microsoft.VisualBasic.FileIO;
-using System.Diagnostics;
-using System.ComponentModel;
+using Sphere_Editor.Forms;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -323,11 +322,11 @@ namespace Sphere_Editor.SubEditors
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (GameSettings ViewSettings = new GameSettings(Global.CurrentProject))
+            using (GameSettings settings = new GameSettings(Global.CurrentProject))
             {
-                if (ViewSettings.ShowDialog() == DialogResult.OK)
+                if (settings.ShowDialog() == DialogResult.OK)
                 {
-                    Global.CurrentProject.SetData(ViewSettings);
+                    Global.CurrentProject.SetSettings(settings.GetSettings());
                     Global.CurrentProject.SaveSettings();
                 }
             }

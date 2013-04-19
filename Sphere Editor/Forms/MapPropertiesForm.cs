@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Sphere_Editor.SubEditors;
-using Sphere.Core.SphereObjects;
+using Sphere.Core;
 
 namespace Sphere_Editor.Forms
 {
