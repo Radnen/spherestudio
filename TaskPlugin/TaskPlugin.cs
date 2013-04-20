@@ -1,6 +1,7 @@
 ﻿using System;
-using Sphere.Plugins;
+using System.Drawing;
 using System.Windows.Forms;
+using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace TaskPlugin
@@ -9,19 +10,25 @@ namespace TaskPlugin
     {
         public string Name { get { return "Task List"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "A test task list."; } }
-        public string Version { get { return "1.0"; } }
+        public string Description { get { return "An ObjectListView task list."; } }
+        public string Version { get { return "1.1"; } }
 
         public IPluginHost Host { get; set; }
+        public Icon Icon { get; private set; }
 
         private TaskList _list;
         private DockContent _content;
         private ToolStripMenuItem _item;
 
+        public TaskPlugin()
+        {
+            Icon = Icon.FromHandle(Properties.Resources.lightbulb.GetHicon());
+        }
+
         /* Load the Task List */
         void OnProjectLoad(object sender, EventArgs e)
         {
-            _list.LoadList();
+            _list.LoadList(Host.CurrentGame.RootPath);
         }
 
         /* Close and empty the task List */
@@ -41,7 +48,6 @@ namespace TaskPlugin
         {
             // Create a new instance of your custom widget, like so:
             _list = new TaskList();
-            _list.Plugin = this;
             _list.Dock = System.Windows.Forms.DockStyle.Fill;
 
             // Add it to a dock content like so, and style your dock content
@@ -51,7 +57,7 @@ namespace TaskPlugin
             content.Controls.Add(_list);
             content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
             content.DockHandler.HideOnClose = true;
-            content.Icon = System.Drawing.Icon.FromHandle(Properties.Resources.lightbulb.GetHicon());
+            content.Icon = Icon;
             _content = content;
 
             // Add the widget to the main editor at the dock state:
@@ -73,7 +79,7 @@ namespace TaskPlugin
             Host.AddMenuItem("View", _item);
             
             // Here I ake sure the list is loaded when the plugin has been activated.
-            _list.LoadList();
+            _list.LoadList(Host.CurrentGame.RootPath);
         }
 
         public void Destroy()

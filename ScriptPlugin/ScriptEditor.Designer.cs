@@ -1,4 +1,4 @@
-﻿namespace Sphere_Editor.SubEditors
+﻿namespace ScriptPlugin
 {
     partial class ScriptEditor
     {

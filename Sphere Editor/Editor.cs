@@ -176,8 +176,14 @@ namespace Sphere_Editor
                 ((ToolStripMenuItem)item.OwnerItem).DropDownItems.Remove(item);
         }
 
-        public void RegisterFiletype(string[] types)
+        public void Register(string[] types, string name)
         {
+            ProjectTree.RegisterFiletypes(types, name);
+        }
+
+        public void Unregister(string[] types)
+        {
+            ProjectTree.Unregister(types);
         }
         #endregion
 
@@ -1068,6 +1074,16 @@ namespace Sphere_Editor
                 return;
             }
             else DockTest.ActiveDocument.DockHandler.Close();
+        }
+
+        internal void TestOpen(string plugin_name, string path)
+        {
+            IPlugin plugin = Global.plugins[plugin_name].Plugin;
+            if (plugin is IEditorPlugin)
+            {
+                DockContent content = ((IEditorPlugin)plugin).OpenEditor(path);
+                DockControl(content, DockState.Document);
+            }
         }
     }
 }

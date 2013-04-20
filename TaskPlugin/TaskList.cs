@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace TaskPlugin
 {
@@ -20,7 +17,8 @@ namespace TaskPlugin
         private Color _hiColor = Color.FromArgb(250, 150, 150);
         private Color _noColor = Color.FromArgb(255, 255, 255);
 
-        public TaskPlugin Plugin { get; set; }
+        // the location to search for a task list:
+        private string RootPath { get; set; }
 
         public TaskList()
         {
@@ -77,10 +75,10 @@ namespace TaskPlugin
         /// <returns>True if the file was clean, false if there is stuff to save.</returns>
         private bool Clean()
         {
-            if (string.IsNullOrEmpty(Plugin.Host.ProjectPath)) return true;
+            if (string.IsNullOrEmpty(RootPath)) return true;
             if (ObjectTaskList.GetItemCount() > 0) return false;
-            if (File.Exists(Plugin.Host.ProjectPath + "\\tasks.list"))
-                File.Delete(Plugin.Host.ProjectPath + "\\tasks.list");
+            if (File.Exists(RootPath + "\\tasks.list"))
+                File.Delete(RootPath + "\\tasks.list");
             return true;
         }
 
@@ -106,7 +104,7 @@ namespace TaskPlugin
             // clean the file
             if (Clean()) return;
 
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(Plugin.Host.ProjectPath + "\\tasks.list")))
+            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(RootPath + "\\tasks.list")))
             {
                 writer.Write(ObjectTaskList.GetItemCount());
                 foreach (Task task in ObjectTaskList.Objects)
@@ -120,11 +118,12 @@ namespace TaskPlugin
             }
         }
 
-        public void LoadList()
+        public void LoadList(string path)
         {
+            RootPath = path;
             ObjectTaskList.ClearObjects();
-            if (!File.Exists(Plugin.Host.ProjectPath + "\\tasks.list")) return;
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(Plugin.Host.ProjectPath + "\\tasks.list")))
+            if (!File.Exists(path + "\\tasks.list")) return;
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(RootPath + "\\tasks.list")))
             {
                 List<Task> tasks = new List<Task>();
                 int amt = reader.ReadInt32();

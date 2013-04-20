@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Sphere Editor\Plugins\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -81,6 +81,10 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+      <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
+      <Name>Sphere.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
       <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
       <Name>Sphere.Plugins</Name>

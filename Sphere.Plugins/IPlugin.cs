@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Drawing;
 
 namespace Sphere.Plugins
 {
+    /// <summary>
+    /// Used to implement a general plugin.
+    /// </summary>
     public interface IPlugin
     {
         string Name { get; }
@@ -13,6 +13,7 @@ namespace Sphere.Plugins
         string Version { get; }
 
         IPluginHost Host { get; set; }
+        Icon Icon { get; }
 
         void Initialize();
         void Destroy();

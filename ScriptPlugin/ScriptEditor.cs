@@ -17,8 +17,9 @@ namespace ScriptPlugin
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         public IPluginHost Host { get; set; }
 
-        public ScriptEditor()
+        public ScriptEditor(IPluginHost host)
         {
+            Host = host;
             string config_path = Application.StartupPath + "\\SphereLexer.xml";
             if (File.Exists(config_path))
                 code_box.ConfigurationManager.CustomLocation = config_path;

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 using Sphere_Editor.Forms;
@@ -14,6 +15,8 @@ namespace Sphere_Editor.SubEditors
         public EditorForm EditorForm { get; set; }
 
         private ImageList _iconlist = new ImageList();
+
+        private static Dictionary<string, string> _registered = new Dictionary<string, string>();
 
         public ProjectTree()
         {
@@ -36,6 +39,21 @@ namespace Sphere_Editor.SubEditors
 
             ProjectTreeView.ImageList = _iconlist;
             SetFont();
+        }
+
+        /// <summary>
+        /// If a filetype is found it is loaded with the associated plugin.
+        /// </summary>
+        public static void RegisterFiletypes(string[] filetypes, string plugin)
+        {
+            foreach (string s in filetypes)
+                _registered[s] = plugin;
+        }
+
+        public static void Unregister(string[] filetypes)
+        {
+            foreach (string s in filetypes)
+                _registered.Remove(s);
         }
 
         public string ProjectName
@@ -232,26 +250,35 @@ namespace Sphere_Editor.SubEditors
 
         private static void UpdateImage(TreeNode node)
         {
-            string s = node.Text;
-            if (Global.IsScript(ref s))
+            string s = Path.GetExtension(node.Text);
+            string plugin;
+            if (_registered.TryGetValue(s, out plugin))
+            {
                 node.SelectedImageIndex = node.ImageIndex = 5;
-            else if (Global.IsFont(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 8;
-            else if (Global.IsImage(ref s) || Global.IsSpriteset(ref s)
-                || Global.IsWindowStyle(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 4;
-            else if (Global.IsMap(ref s) || Global.IsTileset(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 6;
-            else if (Global.IsSound(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 7;
-            else if (Global.IsText(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 3;
-            else node.SelectedImageIndex = node.ImageIndex = 9;
+            }
+            else
+            {
+                s = node.Text;
+                if (Global.IsScript(ref s))
+                    node.SelectedImageIndex = node.ImageIndex = 5;
+                else if (Global.IsFont(ref s))
+                    node.SelectedImageIndex = node.ImageIndex = 8;
+                else if (Global.IsImage(ref s) || Global.IsSpriteset(ref s)
+                    || Global.IsWindowStyle(ref s))
+                    node.SelectedImageIndex = node.ImageIndex = 4;
+                else if (Global.IsMap(ref s) || Global.IsTileset(ref s))
+                    node.SelectedImageIndex = node.ImageIndex = 6;
+                else if (Global.IsSound(ref s))
+                    node.SelectedImageIndex = node.ImageIndex = 7;
+                else if (Global.IsText(ref s))
+                    node.SelectedImageIndex = node.ImageIndex = 3;
+                else node.SelectedImageIndex = node.ImageIndex = 9;
+            }
         }
 
         private void AddFolderItem_Click(object sender, EventArgs e)
         {
-            using (Sphere_Editor.Forms.StringInputForm form = new Sphere_Editor.Forms.StringInputForm())
+            using (StringInputForm form = new StringInputForm())
             {
                 form.Input = "Untitled Folder";
                 if (form.ShowDialog() == DialogResult.OK)
@@ -423,6 +450,13 @@ namespace Sphere_Editor.SubEditors
             if (content != null)
             {
                 content.DockHandler.Activate();
+                return;
+            }
+
+            string plugin;
+            if (_registered.TryGetValue(Path.GetExtension(s), out plugin))
+            {
+                EditorForm.TestOpen(plugin, path);
                 return;
             }
 

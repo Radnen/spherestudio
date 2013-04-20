@@ -664,6 +664,9 @@
     <None Include="SciLexer64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Plugins\ScriptPlugin.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -674,7 +677,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Libs\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll" />
-    <None Include="Sphere Editor_TemporaryKey.pfx" />
     <None Include="BarImage.png" />
     <Content Include="Docs\api.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
