@@ -1,79 +1,75 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Forms;
+using Sphere.Core;
 
 // This contains game project related stuff //
-namespace Sphere_Editor.Settings
+namespace Sphere.Core.Settings
 {
     public class ProjectSettings : GenSettings
     {
+        /// <summary>
+        /// Gets or sets the width of the Sphere game window.
+        /// </summary>
         public string Width
         {
             get { return GetString("screen_width"); }
             set { SetItem<string>("screen_width", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the height of the Sphere game window.
+        /// </summary>
         public string Height
         {
             get { return GetString("screen_height"); }
             set { SetItem<string>("screen_height", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the name of this Sphere game.
+        /// </summary>
         public string Name
         {
             get { return GetString("name"); }
             set { SetItem<string>("name", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the author of this Sphere game.
+        /// </summary>
         public string Author
         {
             get { return GetString("author"); }
             set { SetItem<string>("author", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the description of this Sphere game.
+        /// </summary>
         public string Description
         {
             get { return GetString("description"); }
             set { SetItem<string>("description", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the starting script for this Sphere game.
+        /// </summary>
         public string Script
         {
             get { return GetString("script"); }
             set { SetItem<string>("script", value); }
         }
 
-        public void SetDataNew(Form newForm)
-        {
-            Control.ControlCollection PropertyControls = newForm.Controls["PropertiesBox"].Controls;
-            Control.ControlCollection ProjectControls = newForm.Controls["ProjectBox"].Controls;
-            Width = PropertyControls["WidthBox"].Text;
-            Height = PropertyControls["HeightBox"].Text;
-            Author = PropertyControls["AuthorBox"].Text;
-            Description = PropertyControls["DescriptionBox"].Text;
-            Name = ProjectControls["NameBox"].Text;
-            RootPath = ProjectControls["DirectoryBox"].Text;
-        }
-
-        public void SetData(Form setForm)
-        {
-            Control.ControlCollection Controls = setForm.Controls;
-            Width = Controls["WidthTextBox"].Text;
-            Height = Controls["HeightTextBox"].Text;
-            Author = Controls["AuthorTextBox"].Text;
-            Description = Controls["DescTextBox"].Text;
-            Name = Controls["NameTextBox"].Text;
-            RootPath = Controls["PathTextBox"].Text;
-            Script = Controls["ScriptComboBox"].Text;
-        }
-
-        // save data to a .sgm file.
+        /// <summary>
+        /// Saves the settings to the \RootPath\ + 'game.sgm'
+        /// </summary>
         public void SaveSettings()
         {
-            SaveSettings(RootPath + "\\game.sgm");
+            SaveSettings(string.Format("{0}\\game.sgm", RootPath));
         }
 
-        internal void Create()
+        public void Create()
         {
             // Create The Main Folder //
             DirectoryInfo GameDir = new DirectoryInfo(RootPath);
@@ -86,6 +82,11 @@ namespace Sphere_Editor.Settings
                 DirectoryInfo subfolder = new DirectoryInfo(RootPath + "\\" + subfolders[i]);
                 subfolder.Create();
             }
+        }
+
+        public void SetRootPath(string path)
+        {
+            RootPath = path;
         }
     }
 }

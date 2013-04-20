@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Text;
 using System.Windows.Forms;
-using Sphere.Core.SphereObjects;
+using Sphere.Core;
 
 namespace Sphere_Editor.RadEditors
 {

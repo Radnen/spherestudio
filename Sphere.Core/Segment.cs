@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Drawing;
 
-namespace Sphere.Core.SphereObjects
+namespace Sphere.Core
 {
     /// <summary>
     /// An obstruction segment.

@@ -291,7 +291,6 @@
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="RadEditors\RadObjects.cs" />
-    <Compile Include="Settings\GenSettings.cs" />
     <Compile Include="EditorComponents\GraphicalLayer.cs" />
     <Compile Include="SubEditors\AudioPlayer.cs">
       <SubType>UserControl</SubType>
@@ -383,10 +382,10 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings\EditorSettings.cs">
+    <Compile Include="Forms\EditorSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\EditorSettings.Designer.cs">
+    <Compile Include="Forms\EditorSettings.Designer.cs">
       <DependentUpon>EditorSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ColorPicker\ColorBox.cs">
@@ -449,11 +448,10 @@
     <Compile Include="Forms\ZoneForm.Designer.cs">
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings\GameProject.cs" />
-    <Compile Include="Settings\GameSettings.cs">
+    <Compile Include="Forms\GameSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\GameSettings.designer.cs">
+    <Compile Include="Forms\GameSettings.designer.cs">
       <DependentUpon>GameSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="EditorComponents\ImageEditControl.cs">
@@ -549,7 +547,7 @@
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\EditorSettings.resx">
+    <EmbeddedResource Include="Forms\EditorSettings.resx">
       <DependentUpon>EditorSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker\ColorBox.resx">
@@ -582,7 +580,7 @@
     <EmbeddedResource Include="Forms\ZoneForm.resx">
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\GameSettings.resx">
+    <EmbeddedResource Include="Forms\GameSettings.resx">
       <DependentUpon>GameSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorComponents\ImageEditControl.resx">
@@ -611,7 +609,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="Settings\SphereSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

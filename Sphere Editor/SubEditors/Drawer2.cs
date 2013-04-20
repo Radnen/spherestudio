@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere_Editor.EditorComponents;
 using Sphere_Editor.Forms.ColorPicker;
-using Sphere.Core.SphereObjects;
+using Sphere.Core;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor.SubEditors

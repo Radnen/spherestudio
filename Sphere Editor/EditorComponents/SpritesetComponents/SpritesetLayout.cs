@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Sphere.Core;
 using Sphere_Editor.Forms;
-using Sphere.Core.SphereObjects;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.SpritesetComponents

@@ -1,52 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
-using Sphere_Editor.Utility;
+using Sphere.Core;
 
 // This Contains the Settings Dialogue Info
 // As well as any other Sphere Editor related
 // Information.
-namespace Sphere_Editor.Settings
+namespace Sphere.Core.Settings
 {
+    /// <summary>
+    /// A settings document representing the Sphere Studio Editor.
+    /// </summary>
     public class SphereSettings : GenSettings
     {
+        /// <summary>
+        /// Gets or sets the Sphere engine.exe filepath.
+        /// </summary>
         public string SpherePath
         {
             get { return GetString("sphere_path"); }
             set { SetItem<string>("sphere_path", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the Sphere config.exe path.
+        /// </summary>
         public string ConfigPath
         {
             get { return GetString("config_path"); }
             set { SetItem<string>("config_path", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the path of the last loaded project.
+        /// </summary>
         public string LastProjectPath
         {
             get { return GetString("last_project_path"); }
             set { SetItem<string>("last_project_path", value); }
         }
 
-        public bool UseSplash
-        {
-            get { return GetBool("use_splash"); }
-            set { SetItem<bool>("use_splash", value); }
-        }
-
+        /// <summary>
+        /// Gets or sets whether or not to update script headers.
+        /// </summary>
         public bool UseScriptUpdate
         {
             get { return GetBool("use_script_update"); }
             set { SetItem<bool>("use_script_update", value); }
         }
 
+        /// <summary>
+        /// Gets or sets whether or not to show script autocomplete.
+        /// </summary>
         public bool ShowAutoComplete
         {
             get { return GetBool("show_auto_c"); }
             set { SetItem<bool>("show_auto_c", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the start page's view.
+        /// </summary>
         public View StartView
         {
             get
@@ -58,18 +72,27 @@ namespace Sphere_Editor.Settings
             set { SetItem<View>("start_view", value); }
         }
 
+        /// <summary>
+        /// Gets or sets whether or not to automatically open the last opened project.
+        /// </summary>
         public bool AutoOpen
         {
             get { return GetBool("auto_open_project"); }
             set { SetItem<bool>("auto_open_project", value); }
         }
 
+        /// <summary>
+        /// Gets or sets whether or not to show delay in the spriteset editor.
+        /// </summary>
         public bool ShowDelay
         {
             get { return GetBool("show_delay"); }
             set { SetItem<bool>("show_delay", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the font used in editor labels.
+        /// </summary>
         public string LabelFont
         {
             get
@@ -79,49 +102,6 @@ namespace Sphere_Editor.Settings
                 else return k;
             }
             set { SetItem<string>("label_font", value); }
-        }
-
-        // this will set it's settings from the controls of a dialog window.
-        public void SetSettings(EditorSettings SettingForm)
-        {
-            SpherePath = SettingForm.SpherePath;
-            SetGamePaths(SettingForm.GamePaths);
-            SetPluginList();
-            ConfigPath = SettingForm.ConfigPath;
-            AutoOpen = SettingForm.AutoStart;
-            UseScriptUpdate = SettingForm.UseScriptUpdate;
-            LabelFont = SettingForm.LabelFont;
-        }
-
-        private void SetGamePaths(string[] list)
-        {
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
-            foreach (string o in list) builder.Append(o).Append(',');
-            if (builder.Length > 0) builder.Remove(builder.Length - 1, 1);
-            SetItem<string>("games_path", builder.ToString());
-        }
-
-        private void SetPluginList()
-        {
-            System.Text.StringBuilder builder = new System.Text.StringBuilder();
-            foreach (KeyValuePair<string, PluginWrapper> item in Global.plugins)
-                if (item.Value.Enabled) builder.Append(item.Value.Name).Append(',');
-            if (builder.Length > 0) builder.Remove(builder.Length - 1, 1);
-            SetItem<string>("plugins", builder.ToString());
-        }
-
-        public string[] GetGamePaths()
-        {
-            string s = GetString("games_path");
-            if (!string.IsNullOrEmpty(s)) return s.Split(',');
-            else return new string[0];
-        }
-
-        public string[] GetPluginList()
-        {
-            string s = GetString("plugins");
-            if (!string.IsNullOrEmpty(s)) return s.Split(',');
-            else return new string[0];
         }
 
         /// <summary>

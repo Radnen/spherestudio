@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Sphere.Core;
 using Sphere.Core.Utility;
-using Sphere.Core.SphereObjects;
 
 namespace Sphere_Editor.EditorComponents
 {

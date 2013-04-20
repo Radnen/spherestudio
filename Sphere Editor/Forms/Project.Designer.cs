@@ -1,6 +1,6 @@
 ﻿namespace Sphere_Editor.Forms
 {
-    partial class Project
+    partial class NewProjectForm
     {
         /// <summary>
         /// Required designer variable.

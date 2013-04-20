@@ -4,8 +4,9 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using Sphere.Core.Settings;
 using Sphere.Plugins;
-using Sphere_Editor.Settings;
+using Sphere_Editor.Forms;
 using Sphere_Editor.Utility;
 
 namespace Sphere_Editor
@@ -61,7 +62,7 @@ namespace Sphere_Editor
 
         public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
-        public static Sphere.Core.SphereObjects.Entity CopiedEnt { get; set; }
+        public static Sphere.Core.Entity CopiedEnt { get; set; }
 
         // Extention checking functions. Globally useable. :)
         public static bool IsScript(ref string name)
@@ -121,7 +122,7 @@ namespace Sphere_Editor
             EditorSettings Settings = new EditorSettings(Global.CurrentEditor);
             if (Settings.ShowDialog() == DialogResult.OK)
             {
-                Global.CurrentEditor.SetSettings(Settings);
+                Global.CurrentEditor.SetSettings(Settings.GetSettings());
                 return true;
             }
             return false;

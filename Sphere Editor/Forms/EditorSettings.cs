@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using Sphere.Core.Settings;
 using Sphere_Editor.Utility;
 
-namespace Sphere_Editor.Settings
+namespace Sphere_Editor.Forms
 {
     public partial class EditorSettings : Form
     {
@@ -63,10 +64,31 @@ namespace Sphere_Editor.Settings
         {
             SpherePath = settings.SpherePath;
             ConfigPath = settings.ConfigPath;
-            GamePaths = settings.GetGamePaths();
+            GamePaths = settings.GetArray("games_path");
             AutoStart = settings.AutoOpen;
             UseScriptUpdate = settings.UseScriptUpdate;
             LabelFont = settings.LabelFont;
+        }
+
+        /// <summary>
+        /// Gets a copy of the data put into this form.
+        /// </summary>
+        /// <returns>A GenSettings object representing the editor.</returns>
+        public SphereSettings GetSettings()
+        {
+            SphereSettings settings = new SphereSettings();
+            settings.AutoOpen = AutoStart;
+            settings.ConfigPath = ConfigPath;
+            settings.UseScriptUpdate = UseScriptUpdate;
+            settings.LabelFont = LabelFont;
+            settings.StoreArray("games_path", GamePaths);
+
+            int i = 0;
+            string[] str = new string[Global.plugins.Count];
+            foreach (var item in Global.plugins) str[i++] = item.Key;
+
+            settings.StoreArray("plugins", str);
+            return settings;
         }
 
         private void SpherePathButton_Click(object sender, EventArgs e)
@@ -160,7 +182,7 @@ namespace Sphere_Editor.Settings
                 if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     GenSettings old = Global.CurrentEditor.Clone();
-                    Global.CurrentEditor.SetSettings(this);
+                    Global.CurrentEditor.SetSettings(GetSettings());
 
                     string file = form.Input + ".preset";
                     Global.CurrentEditor.SaveSettings(file);

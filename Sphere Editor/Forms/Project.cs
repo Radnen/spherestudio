@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Windows.Forms;
+using Sphere.Core.Settings;
 
 namespace Sphere_Editor.Forms
 {
-    public partial class Project : Form
+    public partial class NewProjectForm : Form
     {
-        public Project()
+        public string RootFolder
+        {
+            get { return FolderBox.Text; }
+            set
+            {
+                FolderBox.Text = value;
+                DirectoryBox.Text = value + "//";
+            }
+        }
+
+        public NewProjectForm()
         {
             InitializeComponent();
         }
@@ -44,6 +55,21 @@ namespace Sphere_Editor.Forms
                 case 3: WidthBox.Text = "1024"; HeightBox.Text = "768";
                     break;
             }
+        }
+
+        public ProjectSettings GetSettings()
+        {
+            ProjectSettings settings = new ProjectSettings();
+
+            settings.Name = NameBox.Text;
+            settings.Author = AuthorBox.Text;
+            settings.Description = DescriptionBox.Text;
+            settings.Script = "main.js";
+            settings.Width = WidthBox.Text;
+            settings.Height = HeightBox.Text;
+            settings.SetRootPath(DirectoryBox.Text);
+
+            return settings;
         }
 
         private void CheckForOk()

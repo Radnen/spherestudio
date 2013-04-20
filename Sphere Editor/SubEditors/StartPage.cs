@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Sphere_Editor.Settings;
+using Sphere.Core.Settings;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor.SubEditors
@@ -86,7 +86,7 @@ namespace Sphere_Editor.SubEditors
             _imageicons.Images.Add(hold_on_to_me);
 
             // Search through a list of supplied directories.
-            string[] paths = Global.CurrentEditor.GetGamePaths();
+            string[] paths = Global.CurrentEditor.GetArray("games_path");
             foreach (string s in paths)
             {
                 if (string.IsNullOrEmpty(s)) continue;
@@ -179,19 +179,26 @@ namespace Sphere_Editor.SubEditors
             }
 
             ListViewItem item = GameFolders.Items[e.Item];
-            string path = Path.GetDirectoryName(GameFolders.Items[e.Item].Tag as string);
+            string path = Path.GetDirectoryName(Path.GetDirectoryName(GameFolders.Items[e.Item].Tag as string));
 
             if (File.Exists(path + e.Label)) e.CancelEdit = true;
-            else RenameProject(path + item.Text, path + e.Label);
+            else if (!RenameProject(path + "\\" + item.Text, path + "\\" + e.Label))
+            {
+                e.CancelEdit = true;
+            }
         }
 
-        private void RenameProject(string oldname, string newname)
+        private bool RenameProject(string oldname, string newname)
         {
-            Directory.Move(oldname, newname);
             if (oldname == Global.CurrentProject.RootPath)
             {
-                Global.CurrentProject.RootPath = newname;
-                _mainEditor.RefreshProject();
+                MessageBox.Show("Can't change name of active project.", "Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            else
+            {
+                Directory.Move(oldname, newname);
+                return true;
             }
         }
 

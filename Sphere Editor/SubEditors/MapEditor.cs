@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using Sphere.Core.SphereObjects;
+using Sphere.Core;
 using Sphere_Editor.EditorComponents;
 using WeifenLuo.WinFormsUI.Docking;
 

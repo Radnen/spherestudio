@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Collections.Generic;
-using Sphere.Core.SphereObjects;
+using System.Windows.Forms;
+using Sphere.Core;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.Forms

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Sphere.Core.SphereObjects;
+using Sphere.Core;
 using Sphere.Core.Utility;
 
 namespace Sphere_Editor.EditorComponents
