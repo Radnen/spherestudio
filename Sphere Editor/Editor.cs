@@ -19,12 +19,10 @@ namespace Sphere_Editor
     {
         // uninitialized data:
         private DockContent TreeContent;
-        //private DockContent TaskContent;
         private DockContent StartContent;
         private StartPage start_page;
         private EditorObject CurrentControl;
         private ProjectTree _tree;
-        //private TaskList _tasks = new TaskList();
         private bool _firsttime;
 
         public event EventHandler OnOpenProject;
@@ -38,7 +36,7 @@ namespace Sphere_Editor
             InitializeComponent();
 
             _tree = new ProjectTree();
-            _tree.Dock = DockStyle.Fill; // _tasks.Dock;
+            _tree.Dock = DockStyle.Fill;
             _tree.EditorForm = this;
 
             start_page = new StartPage(this);
@@ -106,14 +104,6 @@ namespace Sphere_Editor
             TreeContent.HideOnClose = true;
             TreeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
             TreeContent.Show(DockTest, DockState.DockLeft);
-
-            /*TaskContent = new DockContent();
-            TaskContent.Controls.Add(_tasks);
-            TaskContent.DockAreas = DockAreas.Document | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.DockBottom;
-            TaskContent.Text = "Project Task List";
-            TaskContent.HideOnClose = true;
-            TaskContent.Icon = Icon.FromHandle(Properties.Resources.application_view_list.GetHicon());
-            TaskContent.Show(TreeContent.Pane, DockAlignment.Bottom, 0.40);*/
         }
 
         public void DockControl(DockContent content, DockState state)
@@ -212,7 +202,6 @@ namespace Sphere_Editor
             RefreshProject();
             if (OnOpenProject != null) OnOpenProject(null, EventArgs.Empty);
             if (TreeContent != null) TreeContent.Activate();
-            //_tasks.LoadList();
             HelpLabel.Text = "Game project loaded successfully!";
             UpdateButtons();
         }
@@ -473,10 +462,8 @@ namespace Sphere_Editor
         {
             if (OnCloseProject != null) OnCloseProject(null, EventArgs.Empty);
             _tree.Close();
-            //_tasks.SaveList();
             Global.CurrentProject = null;
             _tree.ProjectName = "Project Name";
-            //_tasks.Clear();
             OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
             UpdateButtons();
         }
@@ -854,16 +841,6 @@ namespace Sphere_Editor
             if (TreeContent.IsHidden) TreeContent.Show(DockTest, DockState.DockLeft);
             else TreeContent.Hide();
         }
-
-        private void TaskListMenuItem_Click(object sender, EventArgs e)
-        {
-            /*if (Global.CurrentEditor.UseDockForm)
-            {
-                if (TaskContent.IsHidden) TaskContent.Show(DockTest, DockState.DockLeft);
-                else TaskContent.Hide();
-            }
-            else _tasks.Visible = !_tasks.Visible;*/
-        }
         #endregion
 
         #region help items
@@ -903,7 +880,6 @@ namespace Sphere_Editor
         {
             Global.CurrentEditor.SaveSettings();
             CloseProject(null, EventArgs.Empty);
-            //_tasks.SaveList();
         }
 
         private void MenuDesignerItem_Click(object sender, EventArgs e)
