@@ -78,6 +78,7 @@ namespace Sphere_Editor.Forms
         {
             SphereSettings settings = new SphereSettings();
             settings.AutoOpen = AutoStart;
+            settings.SpherePath = SpherePath;
             settings.ConfigPath = ConfigPath;
             settings.UseScriptUpdate = UseScriptUpdate;
             settings.LabelFont = LabelFont;

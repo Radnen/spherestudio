@@ -1,17 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Sphere.Core.Utility;
+using Sphere.Core;
 using Sphere.Core.Settings;
+using Sphere.Core.Utility;
 using Sphere.Plugins;
 using Sphere_Editor.Forms;
 using Sphere_Editor.RadEditors;
 using Sphere_Editor.SubEditors;
 using WeifenLuo.WinFormsUI.Docking;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 
 namespace Sphere_Editor
 {
@@ -614,11 +614,12 @@ namespace Sphere_Editor
             {
                 if (CurrentControl == null || CurrentControl is ScriptEditor)
                 {
-                    Bitmap img = BitmapLoader.BitmapFromDIB((MemoryStream)obj.GetData(DataFormats.Dib));
-                    Drawer DrawControl = new Drawer();
-                    DrawControl.SetImage(img);
-                    img.Dispose();
-                    AddDocument(DrawControl, "Unitiled.png");
+                    using (Bitmap img = BitmapLoader.BitmapFromDIB((MemoryStream)obj.GetData(DataFormats.Dib)))
+                    {
+                        Drawer2 DrawControl = new Drawer2();
+                        DrawControl.SetImage(img);
+                        AddDocument(DrawControl, "Unitiled.png");
+                    }
                 }
                 else CurrentControl.Paste();
             }

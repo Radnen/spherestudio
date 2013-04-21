@@ -27,13 +27,6 @@ namespace Sphere_Editor.SubEditors
         {
             InitializeComponent();
             InitializeDocking();
-            Disposed += new EventHandler(WindowStyleEditor_Disposed);
-        }
-
-        void WindowStyleEditor_Disposed(object sender, EventArgs e)
-        {
-            Destroy();
-            Disposed -= WindowStyleEditor_Disposed;
         }
 
         private void InitializeDocking()

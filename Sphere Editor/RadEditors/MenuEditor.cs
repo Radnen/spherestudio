@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Sphere.Core;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.RadEditors

@@ -2,11 +2,9 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Sphere.Core;
 using Sphere_Editor.EditorComponents;
 using Sphere_Editor.Forms.ColorPicker;
-using System.Drawing.Imaging;
-using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -29,13 +27,6 @@ namespace Sphere_Editor.SubEditors
             InitializeComponent();
             InitializeFontLayout();
             CompilePreview();
-            Disposed += new EventHandler(FontEditor_Disposed);
-        }
-
-        void FontEditor_Disposed(object sender, EventArgs e)
-        {
-            Destroy();
-            Disposed -= FontEditor_Disposed;
         }
 
         private void InitializeFontLayout()

@@ -258,18 +258,6 @@
     <Compile Include="SubEditors\Drawer2.Designer.cs">
       <DependentUpon>Drawer2.cs</DependentUpon>
     </Compile>
-    <Compile Include="SubEditors\Drawer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubEditors\Drawer.Designer.cs">
-      <DependentUpon>Drawer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SubEditors\EditorObject.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubEditors\EditorObject.Designer.cs">
-      <DependentUpon>EditorObject.cs</DependentUpon>
-    </Compile>
     <Compile Include="EditorComponents\Font.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -360,12 +348,6 @@
     <Compile Include="Forms\ColorPicker\ColorRectangle.Designer.cs">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ColorPicker\DynamicPalette.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\DynamicPalette.Designer.cs">
-      <DependentUpon>DynamicPalette.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\MapPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -408,12 +390,6 @@
     <Compile Include="Forms\GameSettings.designer.cs">
       <DependentUpon>GameSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditorComponents\ImageEditControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\ImageEditControl.Designer.cs">
-      <DependentUpon>ImageEditControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Forms\Project.cs">
       <SubType>Form</SubType>
@@ -422,7 +398,7 @@
       <DependentUpon>Project.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Plugin.cs" />
+    <Compile Include="Utility\PluginWrapper.cs" />
     <Compile Include="Utility\Task.cs" />
     <EmbeddedResource Include="EditorComponents\ImageEditControl2.resx">
       <DependentUpon>ImageEditControl2.cs</DependentUpon>
@@ -459,10 +435,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SubEditors\Drawer2.resx">
       <DependentUpon>Drawer2.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\Drawer.resx">
-      <DependentUpon>Drawer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorComponents\Font.resx">
@@ -513,9 +485,6 @@
     <EmbeddedResource Include="Forms\ColorPicker\ColorRectangle.resx">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ColorPicker\DynamicPalette.resx">
-      <DependentUpon>DynamicPalette.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MapPropertiesForm.resx">
       <DependentUpon>MapPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -536,9 +505,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameSettings.resx">
       <DependentUpon>GameSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorComponents\ImageEditControl.resx">
-      <DependentUpon>ImageEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Project.resx">
       <DependentUpon>Project.cs</DependentUpon>

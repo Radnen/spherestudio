@@ -272,12 +272,6 @@ namespace Sphere_Editor.SubEditors
             DirectionAnim.UpdateAnimPanel();
         }
 
-        public override void Destroy()
-        {
-            _tileset_ctrl.Dispose();
-            _sprite.Dispose();
-        }
-
         private void layout_OnFrameClick(object sender, EventArgs e)
         {
             if (_selected_frame != null) _selected_frame.Selected = false;

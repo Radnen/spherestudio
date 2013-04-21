@@ -93,7 +93,7 @@ namespace Sphere_Editor.SubEditors
             SetZoom(2);
         }
 
-        public override void Destroy()
+        /*public override void Destroy()
         {
             DrawContent.Dispose();
             LayerContent.Dispose();
@@ -103,7 +103,7 @@ namespace Sphere_Editor.SubEditors
             ImageEditor.Destroy();
             DynaPalette.Dispose();
             Dispose();
-        }
+        }*/
 
         public override void Save()
         {

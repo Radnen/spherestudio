@@ -16,7 +16,9 @@
             if (disposing)
             {
                 if (components != null) components.Dispose();
-                Destroy();
+                LayerEditor.Layers.LayerChanged -= Layers_LayerChanged;
+                LayerEditor.Layers.LayerSelected -= Layers_LayerSelected;
+                LayerEditor.Layers.LayerVisibilityChanged -= Layers_LayerVisibilityChanged;
             }
             base.Dispose(disposing);
         }

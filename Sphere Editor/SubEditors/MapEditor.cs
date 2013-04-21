@@ -136,13 +136,6 @@ namespace Sphere_Editor.SubEditors
             _main_panel.SaveAsXml("MapEditor.xml");
         }
 
-        public override void Destroy()
-        {
-            LayerEditor.Layers.LayerChanged -= Layers_LayerChanged;
-            LayerEditor.Layers.LayerSelected -= Layers_LayerSelected;
-            LayerEditor.Layers.LayerVisibilityChanged -= Layers_LayerVisibilityChanged;
-        }
-
         public override void LoadFile(string filename)
         {
             FileName = filename;

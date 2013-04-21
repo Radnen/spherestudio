@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
-using System.Drawing;
-using System.ComponentModel;
+using Sphere.Core;
 
 namespace Sphere_Editor.SubEditors
 {

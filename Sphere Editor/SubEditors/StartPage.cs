@@ -97,7 +97,7 @@ namespace Sphere_Editor.SubEditors
                 // search this folder for game:
                 if (File.Exists(path))
                 {
-                    int img = CheckForIcon(d.FullName + "/icon.png");
+                    int img = CheckForIcon(d.FullName);
                     ListViewItem item = new ListViewItem(d.Name, img);
                     item.Tag = path;
                     GameFolders.Items.Add(item);
@@ -119,7 +119,7 @@ namespace Sphere_Editor.SubEditors
             {
                 string path = d.FullName + "/game.sgm";
                 if (!File.Exists(path)) { Populate(d); continue; }
-                int img = CheckForIcon(d.FullName + "/icon.png");
+                int img = CheckForIcon(d.FullName);
                 ListViewItem item = new ListViewItem(d.Name, img);
                 item.Tag = path;
                 GameFolders.Items.Add(item);
@@ -128,10 +128,19 @@ namespace Sphere_Editor.SubEditors
 
         private int CheckForIcon(string fullpath)
         {
-            if (File.Exists(fullpath))
+            string[] files = Directory.GetFiles(fullpath);
+            foreach (string s in files)
             {
-                _imageicons.Images.Add(Image.FromFile(fullpath));
-                return _imageicons.Images.Count-1;
+                if (s.EndsWith(".png"))
+                {
+                    _imageicons.Images.Add(Image.FromFile(s));
+                    return _imageicons.Images.Count - 1;
+                }
+                else if (s.EndsWith(".ico"))
+                {
+                    _imageicons.Images.Add(new Icon(s));
+                    return _imageicons.Images.Count - 1;
+                }
             }
             return 0;
         }
