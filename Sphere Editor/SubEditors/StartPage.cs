@@ -90,6 +90,7 @@ namespace Sphere_Editor.SubEditors
             foreach (string s in paths)
             {
                 if (string.IsNullOrEmpty(s)) continue;
+                if (!Directory.Exists(s)) continue;
                 DirectoryInfo d = new DirectoryInfo(s);
                 Populate(d);
                 string path = d.FullName + "/game.sgm";
