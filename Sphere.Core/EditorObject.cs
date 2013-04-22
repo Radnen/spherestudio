@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace Sphere.Core
 {
@@ -11,6 +12,21 @@ namespace Sphere.Core
         /// Gets the FileName associated with this control.
         /// </summary>
         public string FileName { get; protected set; }
+
+        // editor stuff:
+
+        public event EventHandler OnActivate;
+        public event EventHandler OnDeactivate;
+
+        public void Activate()
+        {
+            if (OnActivate != null) OnActivate(this, EventArgs.Empty);
+        }
+
+        public void Deactivate()
+        {
+            if (OnDeactivate != null) OnDeactivate(this, EventArgs.Empty);
+        }
 
         // file maintanence:
 

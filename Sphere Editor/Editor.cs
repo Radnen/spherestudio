@@ -49,22 +49,11 @@ namespace Sphere_Editor
             if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
 
-            AutoCompleteItem.Checked = Global.CurrentEditor.ShowAutoComplete;
-
             Global.EvalPlugins((IPluginHost)this);
             Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
 
             // make sure this is active only when we use it.
             if (TreeContent != null) TreeContent.Activate();
-
-            int spaces = Global.CurrentEditor.GetInt("script-spaces", 2);
-            TwoUnitsItem.Checked = (spaces == 2);
-            FourUnitsItem.Checked = (spaces == 4);
-
-            UseTabsItem.Checked = Global.CurrentEditor.GetBool("script-tabs", true);
-            FoldItem.Checked = Global.CurrentEditor.GetBool("script-fold", true);
-            HighlightLineItem.Checked = Global.CurrentEditor.GetBool("script-hiline", true);
-            HighlightBracesItem.Checked = Global.CurrentEditor.GetBool("script-hibraces", true);
 
             Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
                 (IntPtr.Size == 4) ? "x86" : "x64", Application.ProductVersion);
@@ -111,6 +100,11 @@ namespace Sphere_Editor
             content.Show(DockTest, state);
         }
 
+        public DockContentCollection GetDocuments()
+        {
+            return DockTest.Contents;
+        }
+
         public void RemoveControl(string name)
         {
             DockContent c = FindDocument(name);
@@ -122,9 +116,21 @@ namespace Sphere_Editor
             get { return Global.CurrentProject; }
         }
 
-        public Sphere.Core.Settings.SphereSettings EditorSettings
+        public SphereSettings EditorSettings
         {
             get { return Global.CurrentEditor; }
+        }
+
+        public void AddMenuItem(ToolStripMenuItem item, string before = "")
+        {
+            if (string.IsNullOrEmpty(before)) EditorMenu.Items.Add(item);
+            int insertion = -1;
+            foreach (ToolStripItem menuitem in EditorMenu.Items)
+            {
+                if (menuitem.Text.Replace("&", "") == before)
+                    insertion = EditorMenu.Items.IndexOf(menuitem);
+            }
+            EditorMenu.Items.Insert(insertion, item);
         }
 
         private ToolStripMenuItem GetMenuItem(ToolStripItemCollection collection, string name)
@@ -147,12 +153,13 @@ namespace Sphere_Editor
                 EditorMenu.Items.Add(item);
             }
 
-            for (int i = 1; i < items.Length - 1; ++i)
+            for (int i = 1; i < items.Length; ++i)
             {
                 ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
                 if (menuitem == null)
                 {
-                    item.DropDownItems.Add(new ToolStripMenuItem(items[i]));
+                    menuitem = new ToolStripMenuItem(items[i]);
+                    item.DropDownItems.Add(menuitem);
                 }
                 item = menuitem;
             }
@@ -164,6 +171,15 @@ namespace Sphere_Editor
         {
             if (item.OwnerItem is ToolStripMenuItem)
                 ((ToolStripMenuItem)item.OwnerItem).DropDownItems.Remove(item);
+        }
+
+        public void RemoveMenuItem(string name)
+        {
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
+            if (item != null)
+            {
+                item.Dispose();
+            }
         }
 
         public void Register(string[] types, string name)
@@ -856,17 +872,17 @@ namespace Sphere_Editor
 
         private void SetCurrentControl(Control value)
         {
+            if (CurrentControl != null) CurrentControl.Deactivate();
+
             CurrentControl = (value is EditorObject) ? (EditorObject)value : null;
             SpritesetMenu.Visible = false;
-            MapMenu.Visible = ImageMenu.Visible = ScriptMenu.Visible = false;
+            MapMenu.Visible = ImageMenu.Visible;
 
             if (value is MapEditor) MapMenu.Visible = true;
             else if (value is Drawer2) ImageMenu.Visible = true;
-            else if (value is ScriptEditor) ScriptMenu.Visible = true;
             else if (value is SpritesetEditor) SpritesetMenu.Visible = true;
 
-            bool save = CurrentControl != null;
-            SaveAsMenuItem.Enabled = SaveToolButton.Enabled = SaveMenuItem.Enabled = save;
+            CurrentControl.Activate();
         }
 
         private void DockTest_ActiveDocumentChanged(object sender, EventArgs e)
@@ -920,12 +936,6 @@ namespace Sphere_Editor
             if (CurrentControl != null) CurrentControl.SaveLayout();
         }
 
-        // put here things to store into the settings file via menu-item check
-        private void UpdateCheck(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.ShowAutoComplete = AutoCompleteItem.Checked;
-        }
-
         private void ViewMenu_DropDownOpening(object sender, EventArgs e)
         {
             if (DockTest.Contents.Count == 0) return;
@@ -937,7 +947,7 @@ namespace Sphere_Editor
                 Form f = content.DockHandler.Form;
                 ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText);
                 item.Name = "zz_v";
-                item.Click += new EventHandler(item_Click);
+                item.Click += new EventHandler(ViewItem_Click);
 
                 if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
                     item.Tag = ((EditorObject)f.Controls[0]).FileName;
@@ -949,7 +959,7 @@ namespace Sphere_Editor
             }
         }
 
-        void item_Click(object sender, EventArgs e)
+        void ViewItem_Click(object sender, EventArgs e)
         {
             IDockContent content = GetDocument((string)((ToolStripItem)sender).Tag);
             if (content != null) content.DockHandler.Activate();
@@ -966,78 +976,6 @@ namespace Sphere_Editor
                     i--;
                 }
             }
-        }
-
-        private void UpdateScriptControls()
-        {
-            foreach (DockContent content in DockTest.Contents)
-                if (content.Controls[0] is ScriptEditor)
-                    ((ScriptEditor)content.Controls[0]).UpdateStyle();
-        }
-
-        private void ChangeFontItem_Click(object sender, EventArgs e)
-        {
-            using (FontDialog diag = new FontDialog())
-            {
-                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                string fontstring = Global.CurrentEditor.GetString("script-font");
-
-                if (!String.IsNullOrEmpty(fontstring))
-                    diag.Font = (Font)converter.ConvertFromString(fontstring);
-
-                try
-                {
-                    if (diag.ShowDialog() == DialogResult.OK)
-                    {
-                        fontstring = converter.ConvertToString(diag.Font);
-                        Global.CurrentEditor.SaveObject("script-font", fontstring);
-                        UpdateScriptControls();
-                    }
-                }
-                catch (ArgumentException)
-                {
-                    MessageBox.Show("GDI+ only uses TrueType fonts.", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void UseTabsItem_Click(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.SaveObject("script-tabs", UseTabsItem.Checked);
-            UpdateScriptControls();
-        }
-
-        private void TwoUnitsItem_Click(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.SaveObject("script-spaces", 2);
-            FourUnitsItem.CheckState = CheckState.Unchecked;
-            TwoUnitsItem.CheckState = CheckState.Checked;
-            UpdateScriptControls();
-        }
-
-        private void FourUnitsItem_Click(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.SaveObject("script-spaces", 4);
-            TwoUnitsItem.CheckState = CheckState.Unchecked;
-            FourUnitsItem.CheckState = CheckState.Checked;
-            UpdateScriptControls();
-        }
-
-        private void FoldItem_Click(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.SaveObject("script-fold", FoldItem.Checked);
-        }
-
-        private void HighlightLineItem_Click(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.SaveObject("script-hiline", HighlightLineItem.Checked);
-            UpdateScriptControls();
-        }
-
-        private void HighlightBracesItem_Click(object sender, EventArgs e)
-        {
-            Global.CurrentEditor.SaveObject("script-hibraces", HighlightBracesItem.Checked);
-            UpdateScriptControls();
         }
 
         private void ClosePaneItem_Click(object sender, EventArgs e)

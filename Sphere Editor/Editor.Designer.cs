@@ -130,18 +130,6 @@
             this.SpriteTilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ScriptMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.AutoCompleteItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FoldItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HighlightLineItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HighlightBracesItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.IndentationItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.UseTabsItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.TwoUnitsItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FourUnitsItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ChangeFontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImageMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -421,7 +409,6 @@
             this.ProjectMenu,
             this.MapMenu,
             this.SpritesetMenu,
-            this.ScriptMenu,
             this.ImageMenu,
             this.ViewMenu,
             this.HelpMenu});
@@ -1004,107 +991,6 @@
             this.ImportSsMenuItem.Text = "&Import From File...";
             this.ImportSsMenuItem.Click += new System.EventHandler(this.ImportSsMenuItem_Click);
             // 
-            // ScriptMenu
-            // 
-            this.ScriptMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AutoCompleteItem,
-            this.FoldItem,
-            this.HighlightLineItem,
-            this.HighlightBracesItem,
-            this.toolStripSeparator2,
-            this.IndentationItem,
-            this.ChangeFontItem});
-            this.ScriptMenu.Name = "ScriptMenu";
-            this.ScriptMenu.Size = new System.Drawing.Size(49, 20);
-            this.ScriptMenu.Text = "S&cript";
-            this.ScriptMenu.Visible = false;
-            // 
-            // AutoCompleteItem
-            // 
-            this.AutoCompleteItem.CheckOnClick = true;
-            this.AutoCompleteItem.Name = "AutoCompleteItem";
-            this.AutoCompleteItem.Size = new System.Drawing.Size(192, 22);
-            this.AutoCompleteItem.Text = "Use Auto Complete";
-            this.AutoCompleteItem.CheckedChanged += new System.EventHandler(this.UpdateCheck);
-            // 
-            // FoldItem
-            // 
-            this.FoldItem.CheckOnClick = true;
-            this.FoldItem.Name = "FoldItem";
-            this.FoldItem.Size = new System.Drawing.Size(192, 22);
-            this.FoldItem.Text = "Use Code Folding";
-            this.FoldItem.Click += new System.EventHandler(this.FoldItem_Click);
-            // 
-            // HighlightLineItem
-            // 
-            this.HighlightLineItem.CheckOnClick = true;
-            this.HighlightLineItem.Name = "HighlightLineItem";
-            this.HighlightLineItem.Size = new System.Drawing.Size(192, 22);
-            this.HighlightLineItem.Text = "Highlight Current Line";
-            this.HighlightLineItem.Click += new System.EventHandler(this.HighlightLineItem_Click);
-            // 
-            // HighlightBracesItem
-            // 
-            this.HighlightBracesItem.CheckOnClick = true;
-            this.HighlightBracesItem.Name = "HighlightBracesItem";
-            this.HighlightBracesItem.Size = new System.Drawing.Size(192, 22);
-            this.HighlightBracesItem.Text = "Highlight Braces";
-            this.HighlightBracesItem.Click += new System.EventHandler(this.HighlightBracesItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(189, 6);
-            // 
-            // IndentationItem
-            // 
-            this.IndentationItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UseTabsItem,
-            this.toolStripSeparator1,
-            this.TwoUnitsItem,
-            this.FourUnitsItem});
-            this.IndentationItem.Name = "IndentationItem";
-            this.IndentationItem.Size = new System.Drawing.Size(192, 22);
-            this.IndentationItem.Text = "Indentation";
-            // 
-            // UseTabsItem
-            // 
-            this.UseTabsItem.Checked = true;
-            this.UseTabsItem.CheckOnClick = true;
-            this.UseTabsItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.UseTabsItem.Name = "UseTabsItem";
-            this.UseTabsItem.Size = new System.Drawing.Size(121, 22);
-            this.UseTabsItem.Text = "Use Tabs";
-            this.UseTabsItem.Click += new System.EventHandler(this.UseTabsItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(118, 6);
-            // 
-            // TwoUnitsItem
-            // 
-            this.TwoUnitsItem.Checked = true;
-            this.TwoUnitsItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TwoUnitsItem.Name = "TwoUnitsItem";
-            this.TwoUnitsItem.Size = new System.Drawing.Size(121, 22);
-            this.TwoUnitsItem.Text = "2 units";
-            this.TwoUnitsItem.Click += new System.EventHandler(this.TwoUnitsItem_Click);
-            // 
-            // FourUnitsItem
-            // 
-            this.FourUnitsItem.Name = "FourUnitsItem";
-            this.FourUnitsItem.Size = new System.Drawing.Size(121, 22);
-            this.FourUnitsItem.Text = "4 units";
-            this.FourUnitsItem.Click += new System.EventHandler(this.FourUnitsItem_Click);
-            // 
-            // ChangeFontItem
-            // 
-            this.ChangeFontItem.Name = "ChangeFontItem";
-            this.ChangeFontItem.Size = new System.Drawing.Size(192, 22);
-            this.ChangeFontItem.Text = "Change Font...";
-            this.ChangeFontItem.Click += new System.EventHandler(this.ChangeFontItem_Click);
-            // 
             // ImageMenu
             // 
             this.ImageMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1119,7 +1005,7 @@
             // 
             this.ResizeMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.ResizeMenuItem.Name = "ResizeMenuItem";
-            this.ResizeMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.ResizeMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ResizeMenuItem.Text = "&Resize Image";
             this.ResizeMenuItem.Click += new System.EventHandler(this.ResizeMenuItem_Click);
             // 
@@ -1127,7 +1013,7 @@
             // 
             this.RescaleMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.RescaleMenuItem.Name = "RescaleMenuItem";
-            this.RescaleMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.RescaleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RescaleMenuItem.Text = "Re&scale Image";
             this.RescaleMenuItem.Click += new System.EventHandler(this.RescaleMenuItem_Click);
             // 
@@ -1334,18 +1220,6 @@
         private System.Windows.Forms.ToolStripSeparator Seperator8;
         private System.Windows.Forms.ToolStripMenuItem SaveLayoutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
-        private System.Windows.Forms.ToolStripMenuItem ScriptMenu;
-        private System.Windows.Forms.ToolStripMenuItem AutoCompleteItem;
-        private System.Windows.Forms.ToolStripMenuItem ChangeFontItem;
-        private System.Windows.Forms.ToolStripMenuItem IndentationItem;
-        private System.Windows.Forms.ToolStripMenuItem UseTabsItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem TwoUnitsItem;
-        private System.Windows.Forms.ToolStripMenuItem FourUnitsItem;
-        private System.Windows.Forms.ToolStripMenuItem FoldItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem HighlightLineItem;
-        private System.Windows.Forms.ToolStripMenuItem HighlightBracesItem;
         private System.Windows.Forms.ToolStripMenuItem ClosePaneItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }

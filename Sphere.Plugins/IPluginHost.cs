@@ -11,18 +11,82 @@ namespace Sphere.Plugins
     /// </summary>
     public interface IPluginHost
     {
+        /// <summary>
+        /// Gets the .ini settings of the editor.
+        /// </summary>
         SphereSettings EditorSettings { get; }
+
+        /// <summary>
+        /// Gets the .sgm settings of the currently loaded game, or null.
+        /// </summary>
         ProjectSettings CurrentGame { get; }
 
+        /// <summary>
+        /// Add event handlers to do things when a project opens.
+        /// </summary>
         event EventHandler OnOpenProject;
+
+        /// <summary>
+        /// Add event handlers to do things when a project closes.
+        /// </summary>
         event EventHandler OnCloseProject;
 
+        /// <summary>
+        /// Registers filetypes from the project tree.
+        /// </summary>
+        /// <param name="types">An array of types to remove; Ex: { '.js', '.txt' }</param>
+        /// <param name="plugin_name">The filename of the plugin to register to.</param>
         void Register(string[] types, string plugin_name);
+
+        /// <summary>
+        /// Unregisters filetypes from the project tree.
+        /// </summary>
+        /// <param name="types">An array of types to remove; Ex: { '.js', '.txt' }</param>
         void Unregister(string[] types);
 
+        /// <summary>
+        /// Adds a control to the main dock panel, at the associated state.
+        /// </summary>
+        /// <param name="content">The DockContent to add.</param>
+        /// <param name="state">The state to put it in.</param>
         void DockControl(DockContent content, DockState state);
+
+        /// <summary>
+        /// Removes the control with name 'name' from the main dock panel.
+        /// </summary>
+        /// <param name="name"></param>
         void RemoveControl(string name);
+
+        /// <summary>
+        /// Add a new root level item to the Sphere Studio menu bar.
+        /// </summary>
+        /// <param name="item">The ToolStripMenuItem to add.</param>
+        /// <param name="before">The name of the item you want to appear before, or none</param>
+        void AddMenuItem(ToolStripMenuItem item, string before = "");
+
+        /// <summary>
+        /// Add a new item to a sub-menu of the Sphere Studio menu bar.
+        /// </summary>
+        /// <param name="location">Ex: 'View' or 'View.extra1.extra2'</param>
+        /// <param name="item">The ToolStripMenuItem to add.</param>
         void AddMenuItem(string location, ToolStripItem item);
+
+        /// <summary>
+        /// Removes the menu item from it's containing drop down menu.
+        /// </summary>
+        /// <param name="item">The ToolStripMenuItem to remove.</param>
         void RemoveMenuItem(ToolStripItem item);
+
+        /// <summary>
+        /// Removes a root level menu item with the associated name.
+        /// </summary>
+        /// <param name="name">The name of the item to remove; Ex: 'View'.</param>
+        void RemoveMenuItem(string name);
+
+        /// <summary>
+        /// Gets a list of the documents in the Sphere Studio's main dock panel.
+        /// </summary>
+        /// <returns>A collection of DockContent objects.</returns>
+        DockContentCollection GetDocuments();
     }
 }
