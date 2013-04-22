@@ -648,7 +648,6 @@
             // 
             // SaveMenuItem
             // 
-            this.SaveMenuItem.Enabled = false;
             this.SaveMenuItem.Image = global::Sphere_Editor.Properties.Resources.disk;
             this.SaveMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveMenuItem.Name = "SaveMenuItem";
@@ -659,7 +658,6 @@
             // 
             // SaveAsMenuItem
             // 
-            this.SaveAsMenuItem.Enabled = false;
             this.SaveAsMenuItem.Image = global::Sphere_Editor.Properties.Resources.disk_multiple;
             this.SaveAsMenuItem.Name = "SaveAsMenuItem";
             this.SaveAsMenuItem.Size = new System.Drawing.Size(215, 22);
@@ -1005,7 +1003,7 @@
             // 
             this.ResizeMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.ResizeMenuItem.Name = "ResizeMenuItem";
-            this.ResizeMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ResizeMenuItem.Size = new System.Drawing.Size(149, 22);
             this.ResizeMenuItem.Text = "&Resize Image";
             this.ResizeMenuItem.Click += new System.EventHandler(this.ResizeMenuItem_Click);
             // 
@@ -1013,7 +1011,7 @@
             // 
             this.RescaleMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
             this.RescaleMenuItem.Name = "RescaleMenuItem";
-            this.RescaleMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RescaleMenuItem.Size = new System.Drawing.Size(149, 22);
             this.RescaleMenuItem.Text = "Re&scale Image";
             this.RescaleMenuItem.Click += new System.EventHandler(this.RescaleMenuItem_Click);
             // 

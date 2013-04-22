@@ -875,14 +875,13 @@ namespace Sphere_Editor
             if (CurrentControl != null) CurrentControl.Deactivate();
 
             CurrentControl = (value is EditorObject) ? (EditorObject)value : null;
-            SpritesetMenu.Visible = false;
-            MapMenu.Visible = ImageMenu.Visible;
+            MapMenu.Visible = ImageMenu.Visible = SpritesetMenu.Visible = false;
 
             if (value is MapEditor) MapMenu.Visible = true;
             else if (value is Drawer2) ImageMenu.Visible = true;
             else if (value is SpritesetEditor) SpritesetMenu.Visible = true;
 
-            CurrentControl.Activate();
+            if (CurrentControl != null) CurrentControl.Activate();
         }
 
         private void DockTest_ActiveDocumentChanged(object sender, EventArgs e)
@@ -997,6 +996,7 @@ namespace Sphere_Editor
             if (plugin is IEditorPlugin)
             {
                 DockContent content = ((IEditorPlugin)plugin).OpenEditor(path);
+                content.FormClosing += new FormClosingEventHandler(Content_FormClosing);
                 DockControl(content, DockState.Document);
             }
         }
