@@ -215,14 +215,55 @@ namespace Sphere_Editor.SubEditors
             if (Global.CurrentProject.RootPath.Length == 0) return;
 
             Cursor.Current = Cursors.WaitCursor;
+            
+            // Save currently selected item and folder expansion states
+            string selectedNodePath = ProjectTreeView.SelectedNode != null ? ProjectTreeView.SelectedNode.FullPath : null ;
+            Dictionary<string, bool> isExpandedTable = new Dictionary<string, bool>();
+            Queue<TreeNode> nodeQueue = new Queue<TreeNode>();
+            if (ProjectTreeView.TopNode != null)
+            {
+                nodeQueue.Enqueue(ProjectTreeView.TopNode);
+                while (nodeQueue.Count > 0)
+                {
+                    var node = nodeQueue.Dequeue();
+                    isExpandedTable.Add(node.FullPath, node.IsExpanded);
+                    foreach (TreeNode subnode in node.Nodes)
+                    {
+                        nodeQueue.Enqueue(subnode);
+                    }
+                }
+            }
+            
+            // Repopulate the tree
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
             ProjectTreeView.Nodes.Add(new TreeNode(Global.CurrentProject.Name));
             DirectoryInfo BaseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], BaseDir);
+            
+            // Re-expand folders and try to select previously-selected item
+            if (ProjectTreeView.TopNode != null)
+            {
+                nodeQueue.Clear();
+                nodeQueue.Enqueue(ProjectTreeView.TopNode);
+                while (nodeQueue.Count > 0)
+                {
+                    var node = nodeQueue.Dequeue();
+                    bool isExpanded = false;
+                    isExpandedTable.TryGetValue(node.FullPath, out isExpanded);
+                    if (isExpanded) node.Expand();
+                    if (node.FullPath == selectedNodePath) ProjectTreeView.SelectedNode = node;
+                    foreach (TreeNode subnode in node.Nodes)
+                    {
+                        nodeQueue.Enqueue(subnode);
+                    }
+                }
+            }
+
+            if (ProjectTreeView.SelectedNode == null) ProjectTreeView.SelectedNode = ProjectTreeView.TopNode;
             Cursor.Current = Cursors.Default;
 
-            if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Toggle();
+            if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Expand();
             ProjectTreeView.EndUpdate();
         }
 
