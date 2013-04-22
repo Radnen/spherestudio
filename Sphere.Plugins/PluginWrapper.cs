@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Sphere.Plugins;
-
-namespace Sphere_Editor.Utility
+﻿
+namespace Sphere.Plugins
 {
+    /// <summary>
+    /// A simple wrapper of a plugin object, used to activate and deactivate them.
+    /// </summary>
     public class PluginWrapper
     {
         public IPlugin Plugin { get; private set; }

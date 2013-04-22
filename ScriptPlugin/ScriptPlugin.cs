@@ -15,7 +15,7 @@ namespace ScriptPlugin
         public string Name { get { return "Scintilla Script Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "A Scintilla based script editor."; } }
-        public string Version { get { return "1.0"; } }
+        public string Version { get { return "1.1"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
@@ -26,7 +26,6 @@ namespace ScriptPlugin
         ToolStripMenuItem AutoCompleteItem, CodeFoldItem, HighlightLineItem;
         ToolStripMenuItem HighlightBracesItem, UseTabsItem, ChangeFontItem;
         ToolStripMenuItem TwoUnitItem, FourUnitItem, EightUnitItem;
-        ToolStripMenuItem LastUnit = null;
         ToolStripItem Separator1, Separator2;
 
         public ScriptPlugin()
@@ -58,15 +57,12 @@ namespace ScriptPlugin
             UseTabsItem.Click += new EventHandler(UseTabsItem_Click);
 
             TwoUnitItem = new ToolStripMenuItem("2 units");
-            TwoUnitItem.CheckOnClick = true;
             TwoUnitItem.Click += new EventHandler(TwoUnitItem_Click);
 
             FourUnitItem = new ToolStripMenuItem("4 units");
-            FourUnitItem.CheckOnClick = true;
             FourUnitItem.Click += new EventHandler(FourUnitItem_Click);
 
             EightUnitItem = new ToolStripMenuItem("8 units");
-            EightUnitItem.CheckOnClick = true;
             EightUnitItem.Click += new EventHandler(EightUnitItem_Click);
 
             ChangeFontItem = new ToolStripMenuItem("Change Font...", Properties.Resources.style);
@@ -94,24 +90,25 @@ namespace ScriptPlugin
 
         void EightUnitItem_Click(object sender, EventArgs e)
         {
-            UpdateUnitItem(8, sender as ToolStripMenuItem);
+            EightUnitItem.Checked = true;
+            TwoUnitItem.Checked = FourUnitItem.Checked = false;
+            Host.EditorSettings.SaveObject("script-spaces", 8);
+            UpdateScriptControls();
         }
 
         void FourUnitItem_Click(object sender, EventArgs e)
         {
-            UpdateUnitItem(4, sender as ToolStripMenuItem);
+            FourUnitItem.Checked = true;
+            TwoUnitItem.Checked = EightUnitItem.Checked = false;
+            Host.EditorSettings.SaveObject("script-spaces", 4);
+            UpdateScriptControls();
         }
 
         void TwoUnitItem_Click(object sender, EventArgs e)
         {
-            UpdateUnitItem(2, sender as ToolStripMenuItem);
-        }
-
-        private void UpdateUnitItem(int num, ToolStripMenuItem item)
-        {
-            if (LastUnit != null) LastUnit.Checked = false;
-            if (item != null) LastUnit = item;
-            Host.EditorSettings.SaveObject("script-spaces", num);
+            TwoUnitItem.Checked = true;
+            FourUnitItem.Checked = EightUnitItem.Checked = false;
+            Host.EditorSettings.SaveObject("script-spaces", 2);
             UpdateScriptControls();
         }
 
@@ -166,10 +163,11 @@ namespace ScriptPlugin
 
         void AutoCompleteItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.ShowAutoComplete = AutoCompleteItem.Checked;
+            Host.EditorSettings.SaveObject("script-autocomplete", AutoCompleteItem.Checked);
+            UpdateScriptControls();
         }
 
-        public static List<String> functions = new List<string>();
+        internal static List<String> functions = new List<string>();
 
         public static void LoadFunctions()
         {

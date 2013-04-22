@@ -209,8 +209,6 @@ namespace Sphere_Editor.SubEditors
 
         public void CodeBox_CharAdded(object sender, CharAddedEventArgs e)
         {
-            if (!Global.CurrentEditor.ShowAutoComplete) return;
-
             if (char.IsLetter(e.Ch))
             {
                 string word = code_box.GetWordFromPosition(code_box.CurrentPos).ToLower();

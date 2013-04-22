@@ -16,6 +16,7 @@ namespace ScriptPlugin
         Scintilla code_box = new Scintilla();
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         public IPluginHost Host { get; set; }
+        private bool _autocomplete;
 
         public ScriptEditor(IPluginHost host)
         {
@@ -64,6 +65,7 @@ namespace ScriptPlugin
             code_box.Indentation.UseTabs = Host.EditorSettings.GetBool("script-tabs", true);
             code_box.Caret.HighlightCurrentLine = Host.EditorSettings.GetBool("script-hiline", true);
             code_box.IsBraceMatching = Host.EditorSettings.GetBool("script-hibraces", true);
+            _autocomplete = Host.EditorSettings.GetBool("script-autocomplete", true);
 
             string fontstring = Host.EditorSettings.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
@@ -218,7 +220,7 @@ namespace ScriptPlugin
 
         public void CodeBox_CharAdded(object sender, CharAddedEventArgs e)
         {
-            if (!Host.EditorSettings.ShowAutoComplete) return;
+            if (!_autocomplete) return;
 
             if (char.IsLetter(e.Ch))
             {

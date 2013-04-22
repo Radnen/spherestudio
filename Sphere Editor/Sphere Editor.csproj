@@ -398,8 +398,6 @@
       <DependentUpon>Project.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\PluginWrapper.cs" />
-    <Compile Include="Utility\Task.cs" />
     <EmbeddedResource Include="EditorComponents\ImageEditControl2.resx">
       <DependentUpon>ImageEditControl2.cs</DependentUpon>
     </EmbeddedResource>

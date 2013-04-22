@@ -50,15 +50,6 @@ namespace Sphere.Core.Settings
         }
 
         /// <summary>
-        /// Gets or sets whether or not to show script autocomplete.
-        /// </summary>
-        public bool ShowAutoComplete
-        {
-            get { return GetBool("show_auto_c"); }
-            set { SetItem<bool>("show_auto_c", value); }
-        }
-
-        /// <summary>
         /// Gets or sets the start page's view.
         /// </summary>
         public View StartView

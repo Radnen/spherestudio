@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
 using Sphere_Editor.Forms;
-using Sphere_Editor.Utility;
 
 namespace Sphere_Editor
 {

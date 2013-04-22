@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Settings;
-using Sphere_Editor.Utility;
+using Sphere.Plugins;
 
 namespace Sphere_Editor.Forms
 {
