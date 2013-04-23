@@ -237,7 +237,9 @@ namespace Sphere_Editor.SubEditors
             // Repopulate the tree
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
-            ProjectTreeView.Nodes.Add(new TreeNode(Global.CurrentProject.Name));
+            TreeNode projectNode = new TreeNode(Global.CurrentProject.Name);
+            projectNode.Tag = (object)"project-node";
+            ProjectTreeView.Nodes.Add(projectNode);
             DirectoryInfo BaseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], BaseDir);
             
@@ -277,6 +279,7 @@ namespace Sphere_Editor.SubEditors
             foreach (DirectoryInfo d in dirs)
             {
                 subNode = new TreeNode(d.Name, 2, 1);
+                subNode.Tag = (object)"directory-node";
                 baseNode.Nodes.Add(subNode);
                 PopulateDirectoryNode(subNode, d);
             }
@@ -284,6 +287,7 @@ namespace Sphere_Editor.SubEditors
             for (int i = 0; i < files.Length; ++i)
             {
                 subNode = new TreeNode(files[i].Name, 9, 9);
+                subNode.Tag = (object)"file-node";
                 UpdateImage(subNode);
                 baseNode.Nodes.Add(subNode);
             }
@@ -493,6 +497,9 @@ namespace Sphere_Editor.SubEditors
                 content.DockHandler.Activate();
                 return;
             }
+
+            // if the node is anything other than a file, don't do anything
+            if ((string)node.Tag != "file-node") return;
 
             // open a registered filetype
             string plugin;
