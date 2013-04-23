@@ -214,7 +214,7 @@ namespace Sphere_Editor.RadEditors
 
         private void LabelButton_Click(object sender, EventArgs e)
         {
-            Panel new_panel = new Panel();
+            /*Panel new_panel = new Panel();
             RadLabel rad_label = new RadLabel(new_panel);
             rad_label.Name = "control_" + controls.Count;
             new_panel.MouseDown += new MouseEventHandler(Object_MouseDown);
@@ -233,7 +233,7 @@ namespace Sphere_Editor.RadEditors
                 rad_label.Parent = rad_base_panel;
                 base_panel.Controls.Add(new_panel);
             }
-            controls.Add(rad_label);
+            controls.Add(rad_label);*/
         }
 
         private void ImageButton_Click(object sender, EventArgs e)

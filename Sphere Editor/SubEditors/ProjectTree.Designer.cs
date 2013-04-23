@@ -43,7 +43,7 @@
             this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SystemWatcher = new System.IO.FileSystemWatcher();
-            this.ProjectNameLabel = new Sphere_Editor.EditorLabel();
+            this.ProjectNameLabel = new Sphere.Core.Editor.EditorLabel();
             this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ProjectFileContextMenu.SuspendLayout();
@@ -236,7 +236,7 @@
         private System.Windows.Forms.ToolStripMenuItem CopyPathItem;
         private System.Windows.Forms.ToolStripMenuItem ExecuteScriptItem;
         private System.IO.FileSystemWatcher SystemWatcher;
-        private EditorLabel ProjectNameLabel;
+        private Sphere.Core.Editor.EditorLabel ProjectNameLabel;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem FontItem;

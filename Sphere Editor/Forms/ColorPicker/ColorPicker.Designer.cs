@@ -38,8 +38,8 @@
             this.PaletteGroup = new System.Windows.Forms.GroupBox();
             this.PreviousLabel = new System.Windows.Forms.Label();
             this.SelectedLabel = new System.Windows.Forms.Label();
-            this.PreviousColorBox = new Sphere_Editor.Forms.ColorPicker.ColorBox();
-            this.SelectedColorBox = new Sphere_Editor.Forms.ColorPicker.ColorBox();
+            this.PreviousColorBox = new Sphere.Core.Editor.ColorBox();
+            this.SelectedColorBox = new Sphere.Core.Editor.ColorBox();
             this.ColorRect = new Sphere_Editor.Forms.ColorPicker.ColorRectangle();
             this.ColorGroup.SuspendLayout();
             this.PaletteGroup.SuspendLayout();
@@ -218,8 +218,8 @@
         private System.Windows.Forms.Panel ColorSlider;
         private System.Windows.Forms.GroupBox PaletteGroup;
         private ColorRectangle ColorRect;
-        private ColorBox SelectedColorBox;
-        private ColorBox PreviousColorBox;
+        private Sphere.Core.Editor.ColorBox SelectedColorBox;
+        private Sphere.Core.Editor.ColorBox PreviousColorBox;
         private System.Windows.Forms.Label PreviousLabel;
         private System.Windows.Forms.Label SelectedLabel;
     }

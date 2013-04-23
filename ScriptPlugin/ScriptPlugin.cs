@@ -15,14 +15,14 @@ namespace ScriptPlugin
         public string Name { get { return "Scintilla Script Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "A Scintilla based script editor."; } }
-        public string Version { get { return "1.1"; } }
+        public string Version { get { return "1.2"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
-        private string[] _filetypes = { ".js" };
+        private string[] _filetypes = { ".js", "*" };
 
-        ToolStripMenuItem RootMenu, IndentMenu;
+        ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem, OpenScriptItem;
         ToolStripMenuItem AutoCompleteItem, CodeFoldItem, HighlightLineItem;
         ToolStripMenuItem HighlightBracesItem, UseTabsItem, ChangeFontItem;
         ToolStripMenuItem TwoUnitItem, FourUnitItem, EightUnitItem;
@@ -85,7 +85,33 @@ namespace ScriptPlugin
             RootMenu.DropDownItems.Add(IndentMenu);
             RootMenu.DropDownItems.Add(ChangeFontItem);
             RootMenu.Visible = false;
+
+            NewScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
+            NewScriptItem.Click += new EventHandler(NewScriptItem_Click);
+
+            OpenScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
+            OpenScriptItem.Click += new EventHandler(OpenScriptItem_Click);
             #endregion
+        }
+
+        void OpenScriptItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog diag = new OpenFileDialog())
+            {
+                diag.Filter = "JS Files|*.js|All Files|*.*";
+                if (Host.CurrentGame != null)
+                    diag.InitialDirectory = Host.CurrentGame.RootPath + "\\scripts";
+
+                if (diag.ShowDialog() == DialogResult.OK)
+                {
+                    Host.DockControl(OpenEditor(diag.FileName), DockState.Document);
+                }
+            }
+        }
+
+        void NewScriptItem_Click(object sender, EventArgs e)
+        {
+            Host.DockControl(OpenEditor(), DockState.Document);
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)
@@ -181,7 +207,7 @@ namespace ScriptPlugin
             }
         }
 
-        public DockContent OpenEditor(string filename)
+        public DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
             ScriptEditor editor = new ScriptEditor(Host);
@@ -218,10 +244,12 @@ namespace ScriptPlugin
             LoadFunctions();
             Host.Register(_filetypes, "ScriptPlugin");
 
-            // Show thie root menu for this control; appearing before the 'View' menu.
+            // Show the root menu for this control; appearing before the 'View' menu.
             Host.AddMenuItem(RootMenu, "View");
+            Host.AddMenuItem("File.New", NewScriptItem);
+            Host.AddMenuItem("File.Open", OpenScriptItem);
 
-            AutoCompleteItem.Checked = Host.EditorSettings.ShowAutoComplete;
+            AutoCompleteItem.Checked = Host.EditorSettings.GetBool("script-autocomplete", true);
             CodeFoldItem.Checked = Host.EditorSettings.GetBool("script-fold", true);
             HighlightLineItem.Checked = Host.EditorSettings.GetBool("script-hiline", true);
             HighlightBracesItem.Checked = Host.EditorSettings.GetBool("script-hibraces", true);

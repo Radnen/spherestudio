@@ -3,26 +3,17 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Sphere.Core;
-using Sphere_Editor.EditorComponents;
-using Sphere_Editor.Forms.ColorPicker;
+using Sphere.Plugins;
 
-namespace Sphere_Editor.SubEditors
+namespace FontPlugin
 {
     public partial class FontEditor : EditorObject
     {
         FontSet FontLayout = new FontSet();
         Font selected = null;
+        internal IPluginHost Host { get; set; }
 
-        public FontEditor() { Setup(); }
-
-        public FontEditor(string filename)
-        {
-            FileName = filename;
-            FontLayout.LoadFromFile(filename);
-            Setup();
-        }
-
-        private void Setup()
+        public FontEditor()
         {
             InitializeComponent();
             InitializeFontLayout();
@@ -97,14 +88,22 @@ namespace Sphere_Editor.SubEditors
             SaveFileDialog diag = new SaveFileDialog();
             diag.Filter = "Font Files (.rfn)|*.rfn";
 
-            if (Global.CurrentProject.RootPath != null)
-                diag.InitialDirectory = Global.CurrentProject.RootPath + "\\fonts";
+            if (Host.CurrentGame != null)
+                diag.InitialDirectory = Host.CurrentGame.RootPath + "\\fonts";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {
                 FileName = diag.FileName;
                 Save();
             }
+        }
+
+        public override void LoadFile(string filename)
+        {
+            if (!File.Exists(filename)) return;
+            base.LoadFile(filename);
+            FontLayout.LoadFromFile(filename);
+            CompilePreview();
         }
 
         public override void ZoomIn()
@@ -158,8 +157,8 @@ namespace Sphere_Editor.SubEditors
             ColorDialog diag = new ColorDialog();
             if (diag.ShowDialog() == DialogResult.OK)
             {
-                ((ColorBox)sender).SelectedColor = diag.Color;
-                ((ColorBox)sender).Refresh();
+                ((Sphere.Core.Editor.ColorBox)sender).SelectedColor = diag.Color;
+                ((Sphere.Core.Editor.ColorBox)sender).Refresh();
             }
         }
     }

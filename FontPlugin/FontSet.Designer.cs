@@ -1,4 +1,4 @@
-﻿namespace Sphere_Editor.EditorComponents
+﻿namespace FontPlugin
 {
     partial class FontSet
     {
@@ -45,7 +45,7 @@
             // 
             // ZoomInItem
             // 
-            this.ZoomInItem.Image = global::Sphere_Editor.Properties.Resources.magnifier_zoom_in;
+            this.ZoomInItem.Image = global::FontPlugin.Properties.Resources.magnifier_zoom_in;
             this.ZoomInItem.Name = "ZoomInItem";
             this.ZoomInItem.Size = new System.Drawing.Size(152, 22);
             this.ZoomInItem.Text = "Zoom &In";
@@ -53,7 +53,7 @@
             // 
             // ZoomOutItem
             // 
-            this.ZoomOutItem.Image = global::Sphere_Editor.Properties.Resources.magnifier_zoom_out;
+            this.ZoomOutItem.Image = global::FontPlugin.Properties.Resources.magnifier_zoom_out;
             this.ZoomOutItem.Name = "ZoomOutItem";
             this.ZoomOutItem.Size = new System.Drawing.Size(152, 22);
             this.ZoomOutItem.Text = "Zoom &Out";
@@ -63,7 +63,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::Sphere_Editor.Properties.Resources.editbg;
+            this.BackgroundImage = global::FontPlugin.Properties.Resources.editbg;
             this.ContextMenuStrip = this.FontContextMenu;
             this.DoubleBuffered = true;
             this.Name = "FontSet";

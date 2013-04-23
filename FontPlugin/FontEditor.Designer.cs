@@ -1,4 +1,4 @@
-﻿namespace Sphere_Editor.SubEditors
+﻿namespace FontPlugin
 {
     partial class FontEditor
     {
@@ -37,20 +37,20 @@
             this.FontPreviewer = new System.Windows.Forms.Panel();
             this.PreviewImageBox = new System.Windows.Forms.PictureBox();
             this.PreviewTextBox = new System.Windows.Forms.TextBox();
-            this.FontPreviewLabel = new Sphere_Editor.EditorLabel();
+            this.FontPreviewLabel = new Sphere.Core.Editor.EditorLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.FontGenPanel = new System.Windows.Forms.Panel();
             this.StrokeColorLabel = new System.Windows.Forms.Label();
-            this.StrokeColor = new Sphere_Editor.Forms.ColorPicker.ColorBox();
+            this.StrokeColor = new Sphere.Core.Editor.ColorBox();
             this.GradientCheckBox = new System.Windows.Forms.CheckBox();
             this.GenerateButton = new System.Windows.Forms.Button();
-            this.FontGenLabel = new Sphere_Editor.EditorLabel();
-            this.GradientTop = new Sphere_Editor.Forms.ColorPicker.ColorBox();
+            this.FontGenLabel = new Sphere.Core.Editor.EditorLabel();
+            this.GradientTop = new Sphere.Core.Editor.ColorBox();
             this.StrokeCheck = new System.Windows.Forms.CheckBox();
-            this.GradientBottom = new Sphere_Editor.Forms.ColorPicker.ColorBox();
+            this.GradientBottom = new Sphere.Core.Editor.ColorBox();
             this.BottomLabel = new System.Windows.Forms.Label();
             this.TopLabel = new System.Windows.Forms.Label();
-            this.FontPanel = new Sphere_Editor.EditorPanel();
+            this.FontPanel = new Sphere.Core.Editor.EditorPanel();
             this.FontSplitter.Panel1.SuspendLayout();
             this.FontSplitter.Panel2.SuspendLayout();
             this.FontSplitter.SuspendLayout();
@@ -383,7 +383,7 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer FontSplitter;
-        private EditorPanel FontPanel;
+        private Sphere.Core.Editor.EditorPanel FontPanel;
         private System.Windows.Forms.Panel FontSettingPanel;
         private System.Windows.Forms.Label FontSizeLabel;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -392,18 +392,18 @@
         private System.Windows.Forms.TextBox PreviewTextBox;
         private System.Windows.Forms.Label CharacterLabel;
         private System.Windows.Forms.Label NumLabel;
-        private EditorLabel FontPreviewLabel;
+        private Sphere.Core.Editor.EditorLabel FontPreviewLabel;
         private System.Windows.Forms.Panel InfoPanel;
         private System.Windows.Forms.Button GenerateButton;
-        private Forms.ColorPicker.ColorBox GradientBottom;
-        private Forms.ColorPicker.ColorBox GradientTop;
+        private Sphere.Core.Editor.ColorBox GradientBottom;
+        private Sphere.Core.Editor.ColorBox GradientTop;
         private System.Windows.Forms.Panel FontGenPanel;
-        private EditorLabel FontGenLabel;
+        private Sphere.Core.Editor.EditorLabel FontGenLabel;
         private System.Windows.Forms.CheckBox StrokeCheck;
         private System.Windows.Forms.Label BottomLabel;
         private System.Windows.Forms.Label TopLabel;
         private System.Windows.Forms.CheckBox GradientCheckBox;
         private System.Windows.Forms.Label StrokeColorLabel;
-        private Forms.ColorPicker.ColorBox StrokeColor;
+        private Sphere.Core.Editor.ColorBox StrokeColor;
     }
 }

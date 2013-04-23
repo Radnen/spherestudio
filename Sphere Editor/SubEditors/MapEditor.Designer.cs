@@ -66,7 +66,7 @@
             this.TileEditor = new Sphere_Editor.EditorComponents.TileEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.LayerEditor = new Sphere_Editor.EditorComponents.LayerPanel();
-            this.TilesetPanel = new Sphere_Editor.EditorPanel();
+            this.TilesetPanel = new Sphere.Core.Editor.EditorPanel();
             this.TilesetControl = new Sphere_Editor.EditorComponents.TilesetControl2();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
@@ -553,7 +553,7 @@
         private System.Windows.Forms.ToolStripButton zoomInButton;
         private System.Windows.Forms.ToolStripButton zoomOutButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private EditorPanel TilesetPanel;
+        private Sphere.Core.Editor.EditorPanel TilesetPanel;
         private System.Windows.Forms.ToolStripContainer MapToolContainer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton undoButton;

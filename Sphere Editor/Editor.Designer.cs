@@ -73,20 +73,16 @@
             this.OpenLastProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewFontMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewMapMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewScriptMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewSpritesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewWindowStyleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.RadLibItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDesignerItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenFontMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenMapMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenScriptMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenSpritesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenSoundMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenWindowStyleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -271,7 +267,6 @@
             this.NewToolButton.Name = "NewToolButton";
             this.NewToolButton.Size = new System.Drawing.Size(23, 22);
             this.NewToolButton.Text = "&New";
-            this.NewToolButton.Click += new System.EventHandler(this.NewScript);
             // 
             // OpenToolButton
             // 
@@ -483,10 +478,8 @@
             // NewMenuItem
             // 
             this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewFontMenuItem,
             this.NewImageMenuItem,
             this.NewMapMenuItem,
-            this.NewScriptMenuItem,
             this.NewSpritesetMenuItem,
             this.NewWindowStyleMenuItem,
             this.NewSeparator1,
@@ -495,14 +488,6 @@
             this.NewMenuItem.Name = "NewMenuItem";
             this.NewMenuItem.Size = new System.Drawing.Size(215, 22);
             this.NewMenuItem.Text = "&New";
-            // 
-            // NewFontMenuItem
-            // 
-            this.NewFontMenuItem.Image = global::Sphere_Editor.Properties.Resources.style;
-            this.NewFontMenuItem.Name = "NewFontMenuItem";
-            this.NewFontMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.NewFontMenuItem.Text = "Font";
-            this.NewFontMenuItem.Click += new System.EventHandler(this.NewFont);
             // 
             // NewImageMenuItem
             // 
@@ -519,16 +504,6 @@
             this.NewMapMenuItem.Size = new System.Drawing.Size(144, 22);
             this.NewMapMenuItem.Text = "Map";
             this.NewMapMenuItem.Click += new System.EventHandler(this.NewMap);
-            // 
-            // NewScriptMenuItem
-            // 
-            this.NewScriptMenuItem.Image = global::Sphere_Editor.Properties.Resources.script_edit;
-            this.NewScriptMenuItem.Name = "NewScriptMenuItem";
-            this.NewScriptMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.NewScriptMenuItem.ShowShortcutKeys = false;
-            this.NewScriptMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.NewScriptMenuItem.Text = "Script";
-            this.NewScriptMenuItem.Click += new System.EventHandler(this.NewScript);
             // 
             // NewSpritesetMenuItem
             // 
@@ -573,10 +548,8 @@
             // OpenMenuItem
             // 
             this.OpenMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.OpenFontMenuItem,
             this.OpenImageMenuItem,
             this.OpenMapMenuItem,
-            this.OpenScriptMenuItem,
             this.OpenSpritesetMenuItem,
             this.OpenSoundMenuItem,
             this.OpenWindowStyleMenuItem});
@@ -585,19 +558,11 @@
             this.OpenMenuItem.Size = new System.Drawing.Size(215, 22);
             this.OpenMenuItem.Text = "Open";
             // 
-            // OpenFontMenuItem
-            // 
-            this.OpenFontMenuItem.Image = global::Sphere_Editor.Properties.Resources.style;
-            this.OpenFontMenuItem.Name = "OpenFontMenuItem";
-            this.OpenFontMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.OpenFontMenuItem.Text = "Font";
-            this.OpenFontMenuItem.Click += new System.EventHandler(this.OpenFontMenuItem_Click);
-            // 
             // OpenImageMenuItem
             // 
             this.OpenImageMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.OpenImageMenuItem.Name = "OpenImageMenuItem";
-            this.OpenImageMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenImageMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenImageMenuItem.Text = "Image";
             this.OpenImageMenuItem.Click += new System.EventHandler(this.OpenImageEvent);
             // 
@@ -605,23 +570,15 @@
             // 
             this.OpenMapMenuItem.Image = global::Sphere_Editor.Properties.Resources.map;
             this.OpenMapMenuItem.Name = "OpenMapMenuItem";
-            this.OpenMapMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenMapMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenMapMenuItem.Text = "Map";
             this.OpenMapMenuItem.Click += new System.EventHandler(this.OpenMapMenuItem_Click);
-            // 
-            // OpenScriptMenuItem
-            // 
-            this.OpenScriptMenuItem.Image = global::Sphere_Editor.Properties.Resources.script_edit;
-            this.OpenScriptMenuItem.Name = "OpenScriptMenuItem";
-            this.OpenScriptMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.OpenScriptMenuItem.Text = "Script";
-            this.OpenScriptMenuItem.Click += new System.EventHandler(this.OpenScriptEvent);
             // 
             // OpenSpritesetMenuItem
             // 
             this.OpenSpritesetMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.OpenSpritesetMenuItem.Name = "OpenSpritesetMenuItem";
-            this.OpenSpritesetMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenSpritesetMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenSpritesetMenuItem.Text = "Spriteset";
             this.OpenSpritesetMenuItem.Click += new System.EventHandler(this.OpenSpritesetMenuItem_Click);
             // 
@@ -629,7 +586,7 @@
             // 
             this.OpenSoundMenuItem.Image = global::Sphere_Editor.Properties.Resources.sound;
             this.OpenSoundMenuItem.Name = "OpenSoundMenuItem";
-            this.OpenSoundMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenSoundMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenSoundMenuItem.Text = "Sound";
             this.OpenSoundMenuItem.Click += new System.EventHandler(this.OpenSoundMenuItem_Click);
             // 
@@ -637,7 +594,7 @@
             // 
             this.OpenWindowStyleMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.OpenWindowStyleMenuItem.Name = "OpenWindowStyleMenuItem";
-            this.OpenWindowStyleMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.OpenWindowStyleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenWindowStyleMenuItem.Text = "WindowStyle";
             this.OpenWindowStyleMenuItem.Click += new System.EventHandler(this.OpenWindowStyleMenuItem_Click);
             // 
@@ -1143,7 +1100,6 @@
         private System.Windows.Forms.ToolStripMenuItem PasteMenuItem;
         private System.Windows.Forms.ToolStripSeparator Seperator5;
         private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
-        private System.Windows.Forms.ToolStripButton NewToolButton;
         private System.Windows.Forms.ToolStripButton OpenToolButton;
         private System.Windows.Forms.ToolStripButton SaveToolButton;
         private System.Windows.Forms.ToolStripSeparator ToolSeperator1;
@@ -1156,10 +1112,8 @@
         private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
         private System.Windows.Forms.ToolStripSeparator Separator1;
         private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewFontMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewImageMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewMapMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewScriptMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewSpritesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewWindowStyleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
@@ -1171,10 +1125,8 @@
         private System.Windows.Forms.ToolStripMenuItem HelpMenu;
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenFontMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenImageMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenMapMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenScriptMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenSpritesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenSoundMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenWindowStyleMenuItem;
@@ -1220,6 +1172,7 @@
         private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
         private System.Windows.Forms.ToolStripMenuItem ClosePaneItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton NewToolButton;
     }
 }
 

@@ -93,8 +93,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditorObject.cs">
+    <Compile Include="Editor\ColorBox.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\ColorBox.Designer.cs">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\EditorLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Editor\EditorObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\EditorPanel.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Entity.cs" />
     <Compile Include="Settings\GameProject.cs" />
@@ -120,6 +132,9 @@
     <Compile Include="Zone.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Editor\ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -130,6 +145,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\trigger.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\editbg2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BarImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

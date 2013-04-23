@@ -284,8 +284,6 @@ namespace Sphere_Editor
                 content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else if (Global.IsSound(ref text))
                 content.Icon = Icon.FromHandle(Properties.Resources.sound.GetHicon());
-            else if (control is FontEditor)
-                content.Icon = Icon.FromHandle(Properties.Resources.font.GetHicon());
             else if (control is WindowStyleEditor)
                 content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else
@@ -376,8 +374,8 @@ namespace Sphere_Editor
         #region open functions
         public void OpenFont(string filename)
         {
-            CurrentControl = new FontEditor(filename);
-            LoadDocument(CurrentControl, filename);
+            //CurrentControl = new FontEditor(filename);
+            //LoadDocument(CurrentControl, filename);
         }
 
         public void OpenImage(string filename)
@@ -515,11 +513,6 @@ namespace Sphere_Editor
         }
         #endregion
         #region new sub-menu items
-        public void NewFont(object sender, EventArgs e)
-        {
-            AddNewDocument(new FontEditor(), "Untitled.rfn");
-        }
-
         public void NewImage(object sender, EventArgs e)
         {
             AddNewDocument(new Drawer2(), "Untitled.png");
@@ -543,7 +536,7 @@ namespace Sphere_Editor
             AddNewDocument(new SpritesetEditor(), "Untitled.rss");
         }
 
-        public void NewScript(object sender, EventArgs e)
+        public void NewScript()
         {
             AddNewDocument(new ScriptEditor(), "Untitled.js");
         }
@@ -641,7 +634,7 @@ namespace Sphere_Editor
             }
             if (obj.GetDataPresent(DataFormats.Text))
             {
-                if (CurrentControl is ScriptEditor || CurrentControl is FontEditor)
+                if (CurrentControl is ScriptEditor)
                 {
                     CurrentControl.Paste();
                 }
@@ -990,7 +983,7 @@ namespace Sphere_Editor
             else DockTest.ActiveDocument.DockHandler.Close();
         }
 
-        internal void TestOpen(string plugin_name, string path)
+        internal void OpenDocument(string plugin_name, string path = "")
         {
             IPlugin plugin = Global.plugins[plugin_name].Plugin;
             if (plugin is IEditorPlugin)

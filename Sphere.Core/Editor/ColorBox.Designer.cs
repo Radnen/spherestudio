@@ -1,4 +1,4 @@
-﻿namespace Sphere_Editor.Forms.ColorPicker
+﻿namespace Sphere.Core.Editor
 {
     partial class ColorBox
     {

@@ -55,13 +55,13 @@
             this.XLabel = new System.Windows.Forms.Label();
             this.TileWidthBox = new System.Windows.Forms.TextBox();
             this.TileSizeLabel = new System.Windows.Forms.Label();
-            this.TilePropLabel = new Sphere_Editor.EditorLabel();
+            this.TilePropLabel = new Sphere.Core.Editor.EditorLabel();
             this.LayerHeightBox = new System.Windows.Forms.TextBox();
             this.XLabel2 = new System.Windows.Forms.Label();
             this.LayerWidthBox = new System.Windows.Forms.TextBox();
             this.LayerSizeLabel = new System.Windows.Forms.Label();
             this.LayerPropPanel = new System.Windows.Forms.Panel();
-            this.LayerPropLabel = new Sphere_Editor.EditorLabel();
+            this.LayerPropLabel = new Sphere.Core.Editor.EditorLabel();
             this.LayerNumLabel = new System.Windows.Forms.Label();
             this.EntityNumLabel = new System.Windows.Forms.Label();
             this.ZoneNumLabel = new System.Windows.Forms.Label();
@@ -537,7 +537,7 @@
         private System.Windows.Forms.Button TilesetButton;
         private System.Windows.Forms.Label ScriptLabel;
         private System.Windows.Forms.Panel TilePropPanel;
-        private EditorLabel TilePropLabel;
+        private Sphere.Core.Editor.EditorLabel TilePropLabel;
         private System.Windows.Forms.ComboBox TileSizeComboBox;
         private System.Windows.Forms.Label XLabel;
         private System.Windows.Forms.TextBox TileHeightBox;
@@ -548,7 +548,7 @@
         private System.Windows.Forms.TextBox LayerWidthBox;
         private System.Windows.Forms.Label LayerSizeLabel;
         private System.Windows.Forms.Panel LayerPropPanel;
-        private EditorLabel LayerPropLabel;
+        private Sphere.Core.Editor.EditorLabel LayerPropLabel;
         private System.Windows.Forms.CheckBox RescaleCheckBox;
         private System.Windows.Forms.Label LayerNumLabel;
         private System.Windows.Forms.Label EntityNumLabel;

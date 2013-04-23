@@ -363,7 +363,7 @@ namespace Sphere.Core
         /// <summary>
         /// Creates a new, empty frame.
         /// </summary>
-        public Frame() { }
+        public Frame() { Delay = 8; }
 
         /// <summary>
         /// Gets or sets the delay of this Frame.

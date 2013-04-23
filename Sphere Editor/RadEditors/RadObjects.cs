@@ -180,7 +180,7 @@ namespace Sphere_Editor.RadEditors
         }
     }
 
-    public class RadLabel : RadControl
+    /*public class RadLabel : RadControl
     {
         private string text;
         private Sphere_Editor.EditorComponents.FontSet font;
@@ -239,7 +239,7 @@ namespace Sphere_Editor.RadEditors
             if (Y > 4) WriteProperty(builder, "yy", (Y - 4).ToString());
             builder.AppendLine();
         }
-    }
+    }*/
 
     public class RadImage : RadControl
     {

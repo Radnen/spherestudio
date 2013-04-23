@@ -31,17 +31,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesetEditor));
-            this.DirectionHolder = new Sphere_Editor.EditorPanel();
+            this.DirectionHolder = new Sphere.Core.Editor.EditorPanel();
             this.SpriteDrawer = new Sphere_Editor.SubEditors.Drawer2();
             this.DirectionSplitter = new System.Windows.Forms.SplitContainer();
             this.ImagePanel = new System.Windows.Forms.Panel();
-            this.ImageHolder = new Sphere_Editor.EditorPanel();
-            this.ImagesLabel = new Sphere_Editor.EditorLabel();
+            this.ImageHolder = new Sphere.Core.Editor.EditorPanel();
+            this.ImagesLabel = new Sphere.Core.Editor.EditorLabel();
             this.BasePanel = new System.Windows.Forms.Panel();
-            this.BaseEditorLabel = new Sphere_Editor.EditorLabel();
+            this.BaseEditorLabel = new Sphere.Core.Editor.EditorLabel();
             this.FrameBaseEditor = new Sphere_Editor.SpritesetComponents.BaseEditor();
             this.AnimPanel = new System.Windows.Forms.Panel();
-            this.AnimLabel = new Sphere_Editor.EditorLabel();
+            this.AnimLabel = new Sphere.Core.Editor.EditorLabel();
             this.DirectionAnim = new Sphere_Editor.SpritesetComponents.DirectionAnimator();
             this.DirectionHolder.SuspendLayout();
             this.DirectionSplitter.Panel1.SuspendLayout();
@@ -232,17 +232,17 @@
 
         #endregion
 
-        private EditorPanel DirectionHolder;
+        private Sphere.Core.Editor.EditorPanel DirectionHolder;
         private System.Windows.Forms.SplitContainer DirectionSplitter;
         private SpritesetComponents.DirectionAnimator DirectionAnim;
         private SpritesetComponents.BaseEditor FrameBaseEditor;
         private System.Windows.Forms.Panel BasePanel;
-        private EditorLabel BaseEditorLabel;
+        private Sphere.Core.Editor.EditorLabel BaseEditorLabel;
         private System.Windows.Forms.Panel AnimPanel;
-        private EditorLabel AnimLabel;
+        private Sphere.Core.Editor.EditorLabel AnimLabel;
         private System.Windows.Forms.Panel ImagePanel;
-        private EditorLabel ImagesLabel;
-        private EditorPanel ImageHolder;
+        private Sphere.Core.Editor.EditorLabel ImagesLabel;
+        private Sphere.Core.Editor.EditorPanel ImageHolder;
         private Drawer2 SpriteDrawer;
     }
 }

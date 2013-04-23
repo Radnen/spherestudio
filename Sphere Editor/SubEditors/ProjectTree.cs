@@ -415,10 +415,10 @@ namespace Sphere_Editor.SubEditors
 
             if (name == "images") EditorForm.NewImage(null, EventArgs.Empty);
             else if (name == "maps") EditorForm.NewMap(null, EventArgs.Empty);
-            else if (name == "fonts") EditorForm.NewFont(null, EventArgs.Empty);
+            else if (name == "fonts" && _registered.ContainsKey(".rfn")) EditorForm.OpenDocument(_registered[".rfn"]);
             else if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
             else if (name == "windowstyles") EditorForm.NewWindowStyle(null, EventArgs.Empty);
-            else EditorForm.NewScript(null, EventArgs.Empty);
+            else EditorForm.NewScript();
         }
 
         // Assumption: The user knows the script has a game() function or the
@@ -494,17 +494,25 @@ namespace Sphere_Editor.SubEditors
                 return;
             }
 
+            // open a registered filetype
             string plugin;
             if (_registered.TryGetValue(Path.GetExtension(s), out plugin))
             {
-                EditorForm.TestOpen(plugin, path);
+                EditorForm.OpenDocument(plugin, path);
                 return;
             }
 
+            // otherwise try the wildcard type.
+            if (_registered.TryGetValue("*", out plugin))
+            {
+                EditorForm.OpenDocument(plugin, path);
+                return;
+            }
+
+            // otherwise one of these:
             if (Global.IsImage(ref s)) EditorForm.OpenImage(path);
             else if (Global.IsMap(ref s)) EditorForm.OpenMap(path);
             else if (Global.IsSound(ref s)) EditorForm.OpenSound(path);
-            else if (Global.IsFont(ref s)) EditorForm.OpenFont(path);
             else if (Global.IsSpriteset(ref s)) EditorForm.OpenSpriteset(path);
             else if (Global.IsWindowStyle(ref s)) EditorForm.OpenWindowStyle(path);
             else if (s.Contains(".")) EditorForm.OpenScript(path);

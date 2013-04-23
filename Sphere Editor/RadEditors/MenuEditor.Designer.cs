@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PreviewHolder = new Sphere_Editor.EditorPanel();
+            this.PreviewHolder = new Sphere.Core.Editor.EditorPanel();
             this.ScreenPanel = new System.Windows.Forms.Panel();
             this.base_panel = new System.Windows.Forms.Panel();
             this.ObjectPanel = new System.Windows.Forms.Panel();
@@ -41,10 +41,10 @@
             this.ImageButton = new System.Windows.Forms.Button();
             this.NameTextBox = new System.Windows.Forms.TextBox();
             this.NameLabel = new System.Windows.Forms.Label();
-            this.ObjectLabel = new Sphere_Editor.EditorLabel();
+            this.ObjectLabel = new Sphere.Core.Editor.EditorLabel();
             this.MainSplitter2 = new System.Windows.Forms.SplitContainer();
             this.PreviewPanel = new System.Windows.Forms.Panel();
-            this.PreviewLabel = new Sphere_Editor.EditorLabel();
+            this.PreviewLabel = new Sphere.Core.Editor.EditorLabel();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.ObjectPage = new System.Windows.Forms.TabPage();
             this.CodePage = new System.Windows.Forms.TabPage();
@@ -355,16 +355,16 @@
 
         #endregion
 
-        private EditorPanel PreviewHolder;
+        private Sphere.Core.Editor.EditorPanel PreviewHolder;
         private System.Windows.Forms.Panel ObjectPanel;
-        private EditorLabel ObjectLabel;
+        private Sphere.Core.Editor.EditorLabel ObjectLabel;
         private System.Windows.Forms.SplitContainer MainSplitter2;
         private System.Windows.Forms.Button ImageButton;
         private System.Windows.Forms.Button LabelButton;
         private System.Windows.Forms.Button ButtonButton;
         private System.Windows.Forms.Button PanelButton;
         private System.Windows.Forms.Panel PreviewPanel;
-        private EditorLabel PreviewLabel;
+        private Sphere.Core.Editor.EditorLabel PreviewLabel;
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage ObjectPage;
         private System.Windows.Forms.TabPage CodePage;

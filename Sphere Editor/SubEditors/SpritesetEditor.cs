@@ -148,8 +148,6 @@ namespace Sphere_Editor.SubEditors
             SpriteDrawer.ZoomIn();
             _tileset_ctrl = new TilesetControl2();
             _tileset_ctrl.Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite);
-            //_tileset_ctrl.IsMulti = false;
-            //_tileset_ctrl.CanDrag = true;
             _tileset_ctrl.CanInsert = false;
             _tileset_ctrl.ZoomIn();
             _tileset_ctrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;

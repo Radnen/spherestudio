@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sphere.Core.Properties {
+namespace FontPlugin.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Sphere.Core.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sphere.Core.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FontPlugin.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,30 +60,30 @@ namespace Sphere.Core.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap BarImage {
+        internal static System.Drawing.Bitmap editbg {
             get {
-                object obj = ResourceManager.GetObject("BarImage", resourceCulture);
+                object obj = ResourceManager.GetObject("editbg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap editbg2 {
+        internal static System.Drawing.Bitmap magnifier_zoom_in {
             get {
-                object obj = ResourceManager.GetObject("editbg2", resourceCulture);
+                object obj = ResourceManager.GetObject("magnifier_zoom_in", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap person {
+        internal static System.Drawing.Bitmap magnifier_zoom_out {
             get {
-                object obj = ResourceManager.GetObject("person", resourceCulture);
+                object obj = ResourceManager.GetObject("magnifier_zoom_out", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap trigger {
+        internal static System.Drawing.Bitmap style {
             get {
-                object obj = ResourceManager.GetObject("trigger", resourceCulture);
+                object obj = ResourceManager.GetObject("style", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

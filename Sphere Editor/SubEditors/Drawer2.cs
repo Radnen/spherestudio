@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Sphere_Editor.EditorComponents;
 using Sphere_Editor.Forms.ColorPicker;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor.SubEditors

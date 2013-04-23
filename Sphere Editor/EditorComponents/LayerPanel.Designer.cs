@@ -39,7 +39,7 @@
             this.MoveUpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveDownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenameLayerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LayersPanel = new Sphere_Editor.EditorPanel();
+            this.LayersPanel = new Sphere.Core.Editor.EditorPanel();
             this.LayerContextStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -180,6 +180,6 @@
         private System.Windows.Forms.ToolStripMenuItem MoveUpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MoveDownMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RenameLayerMenuItem;
-        private EditorPanel LayersPanel;
+        private Sphere.Core.Editor.EditorPanel LayersPanel;
     }
 }

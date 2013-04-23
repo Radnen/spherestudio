@@ -40,7 +40,7 @@
             this.StopButton = new System.Windows.Forms.Button();
             this.PlayButton = new System.Windows.Forms.Button();
             this.removeButton = new System.Windows.Forms.Button();
-            this.NameLabel = new Sphere_Editor.EditorLabel();
+            this.NameLabel = new Sphere.Core.Editor.EditorLabel();
             ((System.ComponentModel.ISupportInitialize)(this.AudioTracker)).BeginInit();
             this.SongPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeTracker)).BeginInit();
@@ -234,7 +234,7 @@
         private System.Windows.Forms.Button StopButton;
         private System.Windows.Forms.TrackBar AudioTracker;
         private System.Windows.Forms.CheckBox RepeatCheckBox;
-        private EditorLabel NameLabel;
+        private Sphere.Core.Editor.EditorLabel NameLabel;
         private System.Windows.Forms.Label TimeLabel;
         private System.Windows.Forms.Panel SongPanel;
         private System.Windows.Forms.TrackBar VolumeTracker;

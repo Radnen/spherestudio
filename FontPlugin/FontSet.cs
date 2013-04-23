@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Utility;
 
-namespace Sphere_Editor.EditorComponents
+namespace FontPlugin
 {
     public partial class FontSet : UserControl
     {

@@ -258,18 +258,6 @@
     <Compile Include="SubEditors\Drawer2.Designer.cs">
       <DependentUpon>Drawer2.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditorComponents\Font.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\Font.Designer.cs">
-      <DependentUpon>Font.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SubEditors\FontEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubEditors\FontEditor.Designer.cs">
-      <DependentUpon>FontEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="EditorComponents\LayerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -329,12 +317,6 @@
     </Compile>
     <Compile Include="Forms\EditorSettings.Designer.cs">
       <DependentUpon>EditorSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\ColorBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\ColorBox.Designer.cs">
-      <DependentUpon>ColorBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ColorPicker\ColorPicker.cs">
       <SubType>Form</SubType>
@@ -435,12 +417,6 @@
       <DependentUpon>Drawer2.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditorComponents\Font.resx">
-      <DependentUpon>Font.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\FontEditor.resx">
-      <DependentUpon>FontEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="EditorComponents\LayerControl.resx">
       <DependentUpon>LayerControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -473,9 +449,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditorSettings.resx">
       <DependentUpon>EditorSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ColorPicker\ColorBox.resx">
-      <DependentUpon>ColorBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
@@ -573,6 +546,9 @@
     <None Include="SciLexer64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Plugins\FontPlugin.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plugins\ScriptPlugin.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -36,7 +36,7 @@ namespace Sphere_Editor.SpritesetComponents
                 FrameTracker.Minimum = 0;
                 FrameTracker.Maximum = value.frames.Count - 1;
                 FrameTracker.Value = value.frames.Count - 1;
-                AnimTimer.Interval = value.frames[0].Delay * 10;
+                AnimTimer.Interval = Math.Max(10, value.frames[0].Delay * 10);
                 UpdateLabels();
                 PlayButton.Enabled = true;
             }
