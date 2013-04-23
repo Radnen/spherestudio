@@ -79,7 +79,7 @@ namespace TaskPlugin
             Host.AddMenuItem("View", _item);
             
             // Here I ake sure the list is loaded when the plugin has been activated.
-            _list.LoadList(Host.CurrentGame.RootPath);
+            if (Host.CurrentGame != null) _list.LoadList(Host.CurrentGame.RootPath);
         }
 
         public void Destroy()
