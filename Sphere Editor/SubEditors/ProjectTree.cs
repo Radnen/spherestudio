@@ -515,13 +515,9 @@ namespace Sphere_Editor.SubEditors
             else if (Global.IsSound(ref s)) EditorForm.OpenSound(path);
             else if (Global.IsSpriteset(ref s)) EditorForm.OpenSpriteset(path);
             else if (Global.IsWindowStyle(ref s)) EditorForm.OpenWindowStyle(path);
-
-            // otherwise try the wildcard type.
-            if (_registered.TryGetValue("*", out plugin))
-            {
+            // ortherwise the wildcard type:
+            else if (_registered.TryGetValue("*", out plugin))
                 EditorForm.OpenDocument(plugin, path);
-                return;
-            }
         }
         
         private void OpenFileItem_Click(object sender, EventArgs e)
