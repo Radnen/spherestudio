@@ -509,20 +509,19 @@ namespace Sphere_Editor.SubEditors
                 return;
             }
 
+            // otherwise one of these built-ins:
+            if (Global.IsImage(ref s)) EditorForm.OpenImage(path);
+            else if (Global.IsMap(ref s)) EditorForm.OpenMap(path);
+            else if (Global.IsSound(ref s)) EditorForm.OpenSound(path);
+            else if (Global.IsSpriteset(ref s)) EditorForm.OpenSpriteset(path);
+            else if (Global.IsWindowStyle(ref s)) EditorForm.OpenWindowStyle(path);
+
             // otherwise try the wildcard type.
             if (_registered.TryGetValue("*", out plugin))
             {
                 EditorForm.OpenDocument(plugin, path);
                 return;
             }
-
-            // otherwise one of these:
-            if (Global.IsImage(ref s)) EditorForm.OpenImage(path);
-            else if (Global.IsMap(ref s)) EditorForm.OpenMap(path);
-            else if (Global.IsSound(ref s)) EditorForm.OpenSound(path);
-            else if (Global.IsSpriteset(ref s)) EditorForm.OpenSpriteset(path);
-            else if (Global.IsWindowStyle(ref s)) EditorForm.OpenWindowStyle(path);
-            else if (s.Contains(".")) EditorForm.OpenScript(path);
         }
         
         private void OpenFileItem_Click(object sender, EventArgs e)

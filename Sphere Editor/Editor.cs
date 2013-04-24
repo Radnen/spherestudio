@@ -618,33 +618,7 @@ namespace Sphere_Editor
         #region edit items
         private void PasteMenuItem_Click(object sender, EventArgs e)
         {
-            IDataObject obj = System.Windows.Forms.Clipboard.GetDataObject();
-            if (obj.GetDataPresent(DataFormats.Dib))
-            {
-                if (CurrentControl == null || CurrentControl is ScriptEditor)
-                {
-                    using (Bitmap img = BitmapLoader.BitmapFromDIB((MemoryStream)obj.GetData(DataFormats.Dib)))
-                    {
-                        Drawer2 DrawControl = new Drawer2();
-                        DrawControl.SetImage(img);
-                        AddDocument(DrawControl, "Unitiled.png");
-                    }
-                }
-                else CurrentControl.Paste();
-            }
-            if (obj.GetDataPresent(DataFormats.Text))
-            {
-                if (CurrentControl is ScriptEditor)
-                {
-                    CurrentControl.Paste();
-                }
-                else
-                {
-                    ScriptEditor ScriptControl = new ScriptEditor();
-                    ScriptControl.Text = (string)obj.GetData(DataFormats.Text);
-                    AddNewDocument(ScriptControl, "Untitled.js");
-                }
-            }
+            if (CurrentControl != null) CurrentControl.Paste();
         }
 
         private void CopyMenuItem_Click(object sender, EventArgs e)
