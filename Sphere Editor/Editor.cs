@@ -44,6 +44,9 @@ namespace Sphere_Editor
             start_page.HelpLabel = this.HelpLabel;
             start_page.PopulateGameList();
 
+            NewToolButton.DropDown = NewMenuItem.DropDown;
+            OpenToolButton.DropDown = OpenMenuItem.DropDown;
+
             InitializeDocking();
 
             if (Global.CurrentEditor.AutoOpen)
@@ -74,6 +77,11 @@ namespace Sphere_Editor
 
             GameSettingsMenuItem.Enabled = GameToolButton.Enabled = IsProjectOpen;
             OpenDirectoryMenuItem.Enabled = RefreshMenuItem.Enabled = IsProjectOpen;
+
+            SaveToolButton.Enabled = CurrentControl != null;
+            CutToolButton.Enabled = CurrentControl != null;
+            CopyToolButton.Enabled = CurrentControl != null;
+
         }
 
         #region interfaces
@@ -857,24 +865,13 @@ namespace Sphere_Editor
             Form form = DockTest.ActiveDocument.DockHandler.Form;
             if (form.Controls.Count == 0) return;
             SetCurrentControl(form.Controls[0]);
+            UpdateButtons();
         }
 
         private void EditorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Global.CurrentEditor.SaveSettings();
             CloseProject(null, EventArgs.Empty);
-        }
-
-        private void MenuDesignerItem_Click(object sender, EventArgs e)
-        {
-            AddDocument(new StateEditor(), "RadLib Menu Editor");
-        }
-
-        private void TestItem_Click(object sender, EventArgs e)
-        {
-            //Sphere_Editor.Forms.ColorPicker.ColorPicker picker = new Forms.ColorPicker.ColorPicker();
-            //picker.Show();
-            GC.Collect();
         }
 
         private void SsResizeMenuItem_Click(object sender, EventArgs e)

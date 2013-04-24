@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptPlugin", "ScriptPlugi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontPlugin", "FontPlugin\FontPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlugin", "MyPlugin\MyPlugin.csproj", "{B320DA5E-0E67-4CE7-97E7-96009014E6EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -75,6 +77,12 @@ Global
 		{DD4965DE-8289-4E3F-839E-B008A06B3A97}.Release|x64.Build.0 = Release|x64
 		{DD4965DE-8289-4E3F-839E-B008A06B3A97}.Release|x86.ActiveCfg = Release|x86
 		{DD4965DE-8289-4E3F-839E-B008A06B3A97}.Release|x86.Build.0 = Release|x86
+		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|x64.ActiveCfg = Release|x64
+		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|x64.Build.0 = Release|x64
+		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|x86.ActiveCfg = Release|x86
+		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
