@@ -15,9 +15,9 @@ namespace SoundTestPlugin
     public partial class SoundPicker : UserControl
     {
         private readonly string[] fileTypes = new string[] {
-            "*.mp3/BGM",
-            "*.ogg/BGM",
-            "*.wav/Sound Effects"
+            "*.mp3/Music",
+            "*.ogg/Music",
+            "*.wav/Sounds"
         };
 
         private IPlugin plugin;
@@ -28,13 +28,15 @@ namespace SoundTestPlugin
         {
             ListViewItem chosenItem = this.trackList.SelectedItems[0];
             var filePath = (string)chosenItem.Tag;
-            bool playLooped = chosenItem.Group.Name == "BGM";
-            if (chosenItem.Group.Name == "BGM" && bgmSound != null)
+            bool playLooped = chosenItem.Group.Name == "Music";
+            if (chosenItem.Group.Name == "Music" && bgmSound != null)
             {
                 bgmSound.Stop();
+                bgmSound.Dispose();
             }
             bgmSound = this.soundEngine.Play2D(filePath, playLooped);
             this.playPauseTool.Enabled = true;
+            this.playPauseTool.CheckState = CheckState.Checked;
             this.stopTool.Enabled = true;
         }
 
@@ -69,6 +71,7 @@ namespace SoundTestPlugin
             {
                 bgmSound.Stop();
                 bgmSound.Dispose();
+                this.playPauseTool.CheckState = CheckState.Unchecked;
                 this.playPauseTool.Enabled = false;
                 this.stopTool.Enabled = false;
             }

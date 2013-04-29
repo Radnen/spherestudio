@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundPicker));
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.playPauseTool = new System.Windows.Forms.ToolStripButton();
@@ -35,6 +36,7 @@
             this.trackList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listIcons = new System.Windows.Forms.ImageList(this.components);
             this.toolbar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,12 +53,13 @@
             // 
             // playPauseTool
             // 
+            this.playPauseTool.CheckOnClick = true;
             this.playPauseTool.Enabled = false;
             this.playPauseTool.Image = ((System.Drawing.Image)(resources.GetObject("playPauseTool.Image")));
             this.playPauseTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.playPauseTool.Name = "playPauseTool";
-            this.playPauseTool.Size = new System.Drawing.Size(114, 22);
-            this.playPauseTool.Text = "Play/Pause BGM";
+            this.playPauseTool.Size = new System.Drawing.Size(85, 22);
+            this.playPauseTool.Text = "&Play/Pause";
             this.playPauseTool.Click += new System.EventHandler(this.playPauseTool_Click);
             // 
             // stopTool
@@ -65,12 +68,13 @@
             this.stopTool.Image = ((System.Drawing.Image)(resources.GetObject("stopTool.Image")));
             this.stopTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopTool.Name = "stopTool";
-            this.stopTool.Size = new System.Drawing.Size(80, 22);
-            this.stopTool.Text = "Stop BGM";
+            this.stopTool.Size = new System.Drawing.Size(51, 22);
+            this.stopTool.Text = "&Stop";
             this.stopTool.Click += new System.EventHandler(this.stopTool_Click);
             // 
             // trackList
             // 
+            this.trackList.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.trackList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -89,13 +93,19 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "File";
-            this.columnHeader1.Width = 120;
+            this.columnHeader1.Text = "Track";
+            this.columnHeader1.Width = 150;
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Path";
-            this.columnHeader2.Width = 150;
+            this.columnHeader2.Text = "Path (Relative)";
+            this.columnHeader2.Width = 300;
+            // 
+            // listIcons
+            // 
+            this.listIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.listIcons.ImageSize = new System.Drawing.Size(16, 16);
+            this.listIcons.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // SoundPicker
             // 
@@ -120,5 +130,6 @@
         private System.Windows.Forms.ListView trackList;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ImageList listIcons;
     }
 }

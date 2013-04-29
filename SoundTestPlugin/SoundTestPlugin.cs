@@ -18,8 +18,6 @@ namespace SoundTestPlugin
 
         private DockContent content;
         private SoundPicker soundPicker;
-        private ToolStripMenuItem playPauseMenuItem;
-        private ToolStripMenuItem stopMenuItem;
 
         private void host_projectOpen(object sender, EventArgs e)
         {
@@ -31,22 +29,8 @@ namespace SoundTestPlugin
             this.soundPicker.Clear();
         }
 
-        private void soundTestMenu_PlayPause_Click(object sender, EventArgs args)
-        {
-            this.soundPicker.PlayOrPauseBGM();
-        }
-
-        private void soundTestMenu_Stop_Click(object sender, EventArgs args)
-        {
-            this.soundPicker.StopBGM();
-        }
-
         public SoundTestPlugin()
         {
-            playPauseMenuItem = new ToolStripMenuItem("&Play/Pause");
-            stopMenuItem = new ToolStripMenuItem("&Stop");
-            playPauseMenuItem.Click += new EventHandler(soundTestMenu_PlayPause_Click);
-            stopMenuItem.Click += new EventHandler(soundTestMenu_Stop_Click);
         }
 
         public void Initialize()
@@ -60,11 +44,12 @@ namespace SoundTestPlugin
             this.content.DockHandler.HideOnClose = true;
             this.content.Icon = this.Icon;
             Host.DockControl(this.content, DockState.DockLeft);
-            Host.AddMenuItem(new ToolStripMenuItem("Sound Test"), "Help");
-            Host.AddMenuItem("Sound Test", playPauseMenuItem);
-            Host.AddMenuItem("Sound Test", stopMenuItem);
-            Host.OnOpenProject += host_projectOpen;
-            Host.OnCloseProject += host_projectClose;
+            Host.OnOpenProject += new EventHandler(host_projectOpen);
+            Host.OnCloseProject += new EventHandler(host_projectClose);
+            if (Host.CurrentGame != null)
+            {
+                this.soundPicker.RePopulate(Host.CurrentGame.RootPath);
+            }
         }
 
         public void Destroy()
