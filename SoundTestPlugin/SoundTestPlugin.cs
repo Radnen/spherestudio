@@ -33,10 +33,12 @@ namespace SoundTestPlugin
 
         private void soundTestMenu_PlayPause_Click(object sender, EventArgs args)
         {
+            this.soundPicker.PlayOrPauseBGM();
         }
 
         private void soundTestMenu_Stop_Click(object sender, EventArgs args)
         {
+            this.soundPicker.StopBGM();
         }
 
         public SoundTestPlugin()
@@ -49,7 +51,7 @@ namespace SoundTestPlugin
 
         public void Initialize()
         {
-            this.soundPicker = new SoundPicker();
+            this.soundPicker = new SoundPicker(this);
             this.soundPicker.Dock = DockStyle.Fill;
             this.content = new DockContent();
             this.content.Controls.Add(this.soundPicker);

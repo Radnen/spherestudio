@@ -51,21 +51,23 @@
             // 
             // playPauseTool
             // 
-            this.playPauseTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.playPauseTool.Enabled = false;
             this.playPauseTool.Image = ((System.Drawing.Image)(resources.GetObject("playPauseTool.Image")));
             this.playPauseTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.playPauseTool.Name = "playPauseTool";
-            this.playPauseTool.Size = new System.Drawing.Size(23, 22);
-            this.playPauseTool.Text = "toolStripButton1";
+            this.playPauseTool.Size = new System.Drawing.Size(114, 22);
+            this.playPauseTool.Text = "Play/Pause BGM";
+            this.playPauseTool.Click += new System.EventHandler(this.playPauseTool_Click);
             // 
             // stopTool
             // 
-            this.stopTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.stopTool.Enabled = false;
             this.stopTool.Image = ((System.Drawing.Image)(resources.GetObject("stopTool.Image")));
             this.stopTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopTool.Name = "stopTool";
-            this.stopTool.Size = new System.Drawing.Size(23, 22);
-            this.stopTool.Text = "toolStripButton2";
+            this.stopTool.Size = new System.Drawing.Size(80, 22);
+            this.stopTool.Text = "Stop BGM";
+            this.stopTool.Click += new System.EventHandler(this.stopTool_Click);
             // 
             // trackList
             // 

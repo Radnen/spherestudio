@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using Sphere.Plugins;
 
 using IrrKlang;
 
@@ -19,28 +20,69 @@ namespace SoundTestPlugin
             "*.wav/Sound Effects"
         };
 
+        private IPlugin plugin;
         private ISoundEngine soundEngine = new ISoundEngine();
+        private ISound bgmSound;
 
         private void trackList_DoubleClick(object sender, EventArgs e)
         {
             ListViewItem chosenItem = this.trackList.SelectedItems[0];
             var filePath = (string)chosenItem.Tag;
             bool playLooped = chosenItem.Group.Name == "BGM";
-            if (chosenItem.Group.Name == "BGM")
+            if (chosenItem.Group.Name == "BGM" && bgmSound != null)
             {
-                this.soundEngine.StopAllSounds();
+                bgmSound.Stop();
             }
-            this.soundEngine.Play2D(filePath, playLooped);
+            bgmSound = this.soundEngine.Play2D(filePath, playLooped);
+            this.playPauseTool.Enabled = true;
+            this.stopTool.Enabled = true;
+        }
+
+        private void playPauseTool_Click(object sender, EventArgs e)
+        {
+            this.PlayOrPauseBGM();
+        }
+
+        private void stopTool_Click(object sender, EventArgs e)
+        {
+            this.StopBGM();
         }
         
-        public SoundPicker()
+        public SoundPicker(IPlugin plugin)
         {
             InitializeComponent();
+            this.plugin = plugin;
             this.trackList.DoubleClick += this.trackList_DoubleClick;
         }
 
+        public void PlayOrPauseBGM()
+        {
+            if (bgmSound != null)
+            {
+                bgmSound.Paused = !bgmSound.Paused;
+            }
+        }
+
+        public void StopBGM()
+        {
+            if (bgmSound != null)
+            {
+                bgmSound.Stop();
+                bgmSound.Dispose();
+                this.playPauseTool.Enabled = false;
+                this.stopTool.Enabled = false;
+            }
+        }
+        
         public void Clear()
         {
+            if (bgmSound != null)
+            {
+                bgmSound.Stop();
+                bgmSound.Dispose();
+                this.playPauseTool.Enabled = false;
+                this.stopTool.Enabled = false;
+            }
             this.soundEngine.StopAllSounds();
             this.trackList.Items.Clear();
             this.trackList.Groups.Clear();
