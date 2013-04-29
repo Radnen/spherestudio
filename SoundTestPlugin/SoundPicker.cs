@@ -26,7 +26,10 @@ namespace SoundTestPlugin
             ListViewItem chosenItem = this.trackList.SelectedItems[0];
             var filePath = (string)chosenItem.Tag;
             bool playLooped = chosenItem.Group.Name == "BGM";
-            this.soundEngine.StopAllSounds();
+            if (chosenItem.Group.Name == "BGM")
+            {
+                this.soundEngine.StopAllSounds();
+            }
             this.soundEngine.Play2D(filePath, playLooped);
         }
         
@@ -65,7 +68,7 @@ namespace SoundTestPlugin
                 foreach (FileInfo fileInfo in allFilesInfo)
                 {
                     string path = Path.GetFullPath(fileInfo.FullName);
-                    ListViewItem listItem = this.trackList.Items.Add(fileInfo.Name);
+                    ListViewItem listItem = this.trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
                     listItem.Tag = (object)fileInfo.FullName;
                     listItem.Group = this.trackList.Groups[groupName];
                     listItem.SubItems.Add(path.Replace(gamePath + "\\", ""));

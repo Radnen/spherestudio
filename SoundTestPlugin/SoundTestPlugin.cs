@@ -10,7 +10,7 @@ namespace SoundTestPlugin
     {
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Bruce Pascoe"; } }
-        public string Description { get { return "Play BGM from your game without interrupting your work"; } }
+        public string Description { get { return "Listen to BGM and sounds from your game while you work!"; } }
         public string Version { get { return "1.0"; } }
         public Icon Icon { get; set; }
 

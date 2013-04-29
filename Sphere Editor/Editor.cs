@@ -49,11 +49,11 @@ namespace Sphere_Editor
 
             InitializeDocking();
 
-            if (Global.CurrentEditor.AutoOpen)
-                OpenLastProject(null, EventArgs.Empty);
-
             Global.EvalPlugins((IPluginHost)this);
             Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
+
+            if (Global.CurrentEditor.AutoOpen)
+                OpenLastProject(null, EventArgs.Empty);
 
             // make sure this is active only when we use it.
             if (TreeContent != null) TreeContent.Activate();
