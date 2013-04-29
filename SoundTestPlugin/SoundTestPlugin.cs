@@ -10,8 +10,8 @@ namespace SoundTestPlugin
     {
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Bruce Pascoe"; } }
-        public string Description { get { return "Listen to BGM and sounds from your game while you work!"; } }
-        public string Version { get { return "1.0"; } }
+        public string Description { get { return "Listen to sounds from your game while you work! :o)"; } }
+        public string Version { get { return "1.0b"; } }
         public Icon Icon { get; set; }
 
         public IPluginHost Host { get; set; }
@@ -60,6 +60,7 @@ namespace SoundTestPlugin
             this.content.DockHandler.HideOnClose = true;
             this.content.Icon = this.Icon;
             Host.DockControl(this.content, DockState.DockLeft);
+            Host.AddMenuItem(new ToolStripMenuItem("Sound Test"), "Help");
             Host.AddMenuItem("Sound Test", playPauseMenuItem);
             Host.AddMenuItem("Sound Test", stopMenuItem);
             Host.OnOpenProject += host_projectOpen;
