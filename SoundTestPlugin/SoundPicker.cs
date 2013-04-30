@@ -15,9 +15,9 @@ namespace SoundTestPlugin
     public partial class SoundPicker : UserControl
     {
         private readonly string[] fileTypes = new string[] {
-            "*.mp3/Music",
-            "*.ogg/Music",
-            "*.wav/Sounds"
+            "*.mp3/Music (BGM)",
+            "*.ogg/Music (BGM)",
+            "*.wav/Sound Effects"
         };
 
         private IPlugin plugin;
@@ -29,24 +29,21 @@ namespace SoundTestPlugin
         {
             ListViewItem chosenItem = this.trackList.SelectedItems[0];
             string filePath = (string)chosenItem.Tag;
-            bool playLooped = chosenItem.Group.Name == "Music";
-            if (chosenItem.Group.Name == "Music")
+            bool playLooped = chosenItem.Group.Name == "Music (BGM)";
+            ISound sound = this.soundEngine.Play2D(filePath, playLooped);
+            if (chosenItem.Group.Name == "Music (BGM)")
             {
                 this.StopMusic();
-            }
-            ISound sound = this.soundEngine.Play2D(filePath, playLooped);
-            if (chosenItem.Group.Name == "Music")
-            {
                 this.musicName = chosenItem.Text;
                 this.music = sound;
-                this.playPauseTool.Text = this.musicName;
-                this.playPauseTool.CheckState = CheckState.Checked;
-                this.playPauseTool.Enabled = true;
+                this.playTool.Text = this.musicName;
+                this.pauseTool.Enabled = true;
+                this.pauseTool.CheckState = CheckState.Unchecked;
                 this.stopTool.Enabled = true;
             }
         }
 
-        private void playPauseTool_Click(object sender, EventArgs e)
+        private void pauseTool_Click(object sender, EventArgs e)
         {
             this.PlayOrPauseMusic();
         }
@@ -60,15 +57,15 @@ namespace SoundTestPlugin
         {
             InitializeComponent();
             this.plugin = plugin;
+            this.playTool.Text = "(no music)";
         }
 
         public void PlayOrPauseMusic()
         {
             if (music != null)
             {
-                music.Paused = !music.Paused;
-                this.playPauseTool.CheckState = music.Paused ? CheckState.Unchecked : CheckState.Checked;
-                this.playPauseTool.Text = music.Paused ? "&Paused" : this.musicName;
+                this.music.Paused = !this.music.Paused;
+                this.pauseTool.CheckState = music.Paused ? CheckState.Checked : CheckState.Unchecked;
             }
         }
 
@@ -78,9 +75,9 @@ namespace SoundTestPlugin
             {
                 music.Stop();
                 music.Dispose();
-                this.playPauseTool.CheckState = CheckState.Unchecked;
-                this.playPauseTool.Enabled = false;
-                this.playPauseTool.Text = "no music";
+                this.playTool.Text = "(no music)";
+                this.pauseTool.CheckState = CheckState.Unchecked;
+                this.pauseTool.Enabled = false;
                 this.stopTool.Enabled = false;
             }
         }

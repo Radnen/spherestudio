@@ -31,7 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundPicker));
             this.toolbar = new System.Windows.Forms.ToolStrip();
-            this.playPauseTool = new System.Windows.Forms.ToolStripButton();
+            this.playTool = new System.Windows.Forms.ToolStripButton();
+            this.pauseTool = new System.Windows.Forms.ToolStripButton();
             this.stopTool = new System.Windows.Forms.ToolStripButton();
             this.trackList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,33 +44,44 @@
             // toolbar
             // 
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.playPauseTool,
-            this.stopTool});
+            this.playTool,
+            this.stopTool,
+            this.pauseTool});
             this.toolbar.Location = new System.Drawing.Point(0, 0);
             this.toolbar.Name = "toolbar";
+            this.toolbar.ShowItemToolTips = false;
             this.toolbar.Size = new System.Drawing.Size(350, 25);
             this.toolbar.TabIndex = 0;
             this.toolbar.Text = "toolStrip1";
             // 
-            // playPauseTool
+            // playTool
             // 
-            this.playPauseTool.CheckOnClick = true;
-            this.playPauseTool.Enabled = false;
-            this.playPauseTool.Image = ((System.Drawing.Image)(resources.GetObject("playPauseTool.Image")));
-            this.playPauseTool.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.playPauseTool.Name = "playPauseTool";
-            this.playPauseTool.Size = new System.Drawing.Size(76, 22);
-            this.playPauseTool.Text = "no music";
-            this.playPauseTool.Click += new System.EventHandler(this.playPauseTool_Click);
+            this.playTool.Enabled = false;
+            this.playTool.Image = ((System.Drawing.Image)(resources.GetObject("playTool.Image")));
+            this.playTool.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.playTool.Name = "playTool";
+            this.playTool.Size = new System.Drawing.Size(94, 22);
+            this.playTool.Text = "Now Playing";
+            // 
+            // pauseTool
+            // 
+            this.pauseTool.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.pauseTool.Enabled = false;
+            this.pauseTool.Image = ((System.Drawing.Image)(resources.GetObject("pauseTool.Image")));
+            this.pauseTool.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.pauseTool.Name = "pauseTool";
+            this.pauseTool.Size = new System.Drawing.Size(58, 22);
+            this.pauseTool.Text = "P&ause";
+            this.pauseTool.Click += new System.EventHandler(this.pauseTool_Click);
             // 
             // stopTool
             // 
-            this.stopTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.stopTool.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.stopTool.Enabled = false;
             this.stopTool.Image = ((System.Drawing.Image)(resources.GetObject("stopTool.Image")));
             this.stopTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopTool.Name = "stopTool";
-            this.stopTool.Size = new System.Drawing.Size(23, 22);
+            this.stopTool.Size = new System.Drawing.Size(51, 22);
             this.stopTool.Text = "&Stop";
             this.stopTool.Click += new System.EventHandler(this.stopTool_Click);
             // 
@@ -127,11 +139,12 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolbar;
-        private System.Windows.Forms.ToolStripButton playPauseTool;
+        private System.Windows.Forms.ToolStripButton playTool;
         private System.Windows.Forms.ToolStripButton stopTool;
         private System.Windows.Forms.ListView trackList;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ImageList listIcons;
+        private System.Windows.Forms.ToolStripButton pauseTool;
     }
 }
