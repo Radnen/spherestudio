@@ -22,70 +22,72 @@ namespace SoundTestPlugin
 
         private IPlugin plugin;
         private ISoundEngine soundEngine = new ISoundEngine();
-        private ISound bgmSound;
+        private ISound music;
+        private string musicName;
 
         private void trackList_DoubleClick(object sender, EventArgs e)
         {
             ListViewItem chosenItem = this.trackList.SelectedItems[0];
-            var filePath = (string)chosenItem.Tag;
+            string filePath = (string)chosenItem.Tag;
             bool playLooped = chosenItem.Group.Name == "Music";
-            if (chosenItem.Group.Name == "Music" && bgmSound != null)
+            if (chosenItem.Group.Name == "Music")
             {
-                bgmSound.Stop();
-                bgmSound.Dispose();
+                this.StopMusic();
             }
-            bgmSound = this.soundEngine.Play2D(filePath, playLooped);
-            this.playPauseTool.Enabled = true;
-            this.playPauseTool.CheckState = CheckState.Checked;
-            this.stopTool.Enabled = true;
+            ISound sound = this.soundEngine.Play2D(filePath, playLooped);
+            if (chosenItem.Group.Name == "Music")
+            {
+                this.musicName = chosenItem.Text;
+                this.music = sound;
+                this.playPauseTool.Text = this.musicName;
+                this.playPauseTool.CheckState = CheckState.Checked;
+                this.playPauseTool.Enabled = true;
+                this.stopTool.Enabled = true;
+            }
         }
 
         private void playPauseTool_Click(object sender, EventArgs e)
         {
-            this.PlayOrPauseBGM();
+            this.PlayOrPauseMusic();
         }
 
         private void stopTool_Click(object sender, EventArgs e)
         {
-            this.StopBGM();
+            this.StopMusic();
         }
-        
+
         public SoundPicker(IPlugin plugin)
         {
             InitializeComponent();
             this.plugin = plugin;
-            this.trackList.DoubleClick += this.trackList_DoubleClick;
         }
 
-        public void PlayOrPauseBGM()
+        public void PlayOrPauseMusic()
         {
-            if (bgmSound != null)
+            if (music != null)
             {
-                bgmSound.Paused = !bgmSound.Paused;
+                music.Paused = !music.Paused;
+                this.playPauseTool.CheckState = music.Paused ? CheckState.Unchecked : CheckState.Checked;
+                this.playPauseTool.Text = music.Paused ? "&Paused" : this.musicName;
             }
         }
 
-        public void StopBGM()
+        public void StopMusic()
         {
-            if (bgmSound != null)
+            if (music != null)
             {
-                bgmSound.Stop();
-                bgmSound.Dispose();
+                music.Stop();
+                music.Dispose();
                 this.playPauseTool.CheckState = CheckState.Unchecked;
                 this.playPauseTool.Enabled = false;
+                this.playPauseTool.Text = "no music";
                 this.stopTool.Enabled = false;
             }
         }
         
         public void Clear()
         {
-            if (bgmSound != null)
-            {
-                bgmSound.Stop();
-                bgmSound.Dispose();
-                this.playPauseTool.Enabled = false;
-                this.stopTool.Enabled = false;
-            }
+            this.StopMusic();
             this.soundEngine.StopAllSounds();
             this.trackList.Items.Clear();
             this.trackList.Groups.Clear();

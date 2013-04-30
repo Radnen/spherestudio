@@ -58,17 +58,18 @@
             this.playPauseTool.Image = ((System.Drawing.Image)(resources.GetObject("playPauseTool.Image")));
             this.playPauseTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.playPauseTool.Name = "playPauseTool";
-            this.playPauseTool.Size = new System.Drawing.Size(85, 22);
-            this.playPauseTool.Text = "&Play/Pause";
+            this.playPauseTool.Size = new System.Drawing.Size(76, 22);
+            this.playPauseTool.Text = "no music";
             this.playPauseTool.Click += new System.EventHandler(this.playPauseTool_Click);
             // 
             // stopTool
             // 
+            this.stopTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.stopTool.Enabled = false;
             this.stopTool.Image = ((System.Drawing.Image)(resources.GetObject("stopTool.Image")));
             this.stopTool.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stopTool.Name = "stopTool";
-            this.stopTool.Size = new System.Drawing.Size(51, 22);
+            this.stopTool.Size = new System.Drawing.Size(23, 22);
             this.stopTool.Text = "&Stop";
             this.stopTool.Click += new System.EventHandler(this.stopTool_Click);
             // 
@@ -90,6 +91,7 @@
             this.trackList.TabIndex = 1;
             this.trackList.UseCompatibleStateImageBehavior = false;
             this.trackList.View = System.Windows.Forms.View.Details;
+            this.trackList.DoubleClick += new System.EventHandler(this.trackList_DoubleClick);
             // 
             // columnHeader1
             // 
