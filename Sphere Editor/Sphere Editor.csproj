@@ -535,6 +535,10 @@
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
       <Name>ScriptPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SoundTestPlugin\SoundTestPlugin.csproj">
+      <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
+      <Name>SoundTestPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
       <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
       <Name>Sphere.Core</Name>

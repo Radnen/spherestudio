@@ -25,8 +25,9 @@ namespace Sphere_Editor
         private ProjectTree _tree;
         private bool _firsttime;
 
-        public event EventHandler OnOpenProject;
-        public event EventHandler OnCloseProject;
+        public event EventHandler LoadProject;
+        public event EventHandler UnloadProject;
+        public event EventHandler TestGame;
 
         public EditorForm()
         {
@@ -49,11 +50,11 @@ namespace Sphere_Editor
 
             InitializeDocking();
 
-            if (Global.CurrentEditor.AutoOpen)
-                OpenLastProject(null, EventArgs.Empty);
-
             Global.EvalPlugins((IPluginHost)this);
             Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
+
+            if (Global.CurrentEditor.AutoOpen)
+                OpenLastProject(null, EventArgs.Empty);
 
             // make sure this is active only when we use it.
             if (TreeContent != null) TreeContent.Activate();
@@ -224,7 +225,7 @@ namespace Sphere_Editor
             Global.CurrentProject = new ProjectSettings();
             Global.CurrentProject.LoadSettings(filename);
             RefreshProject();
-            if (OnOpenProject != null) OnOpenProject(null, EventArgs.Empty);
+            if (LoadProject != null) LoadProject(null, EventArgs.Empty);
             if (TreeContent != null) TreeContent.Activate();
             HelpLabel.Text = "Game project loaded successfully!";
             UpdateButtons();
@@ -482,7 +483,7 @@ namespace Sphere_Editor
         // remember to clear opened tabs!
         private void CloseProject(object sender, EventArgs e)
         {
-            if (OnCloseProject != null) OnCloseProject(null, EventArgs.Empty);
+            if (UnloadProject != null) UnloadProject(null, EventArgs.Empty);
             _tree.Close();
             Global.CurrentProject = null;
             _tree.ProjectName = "Project Name";
@@ -715,6 +716,7 @@ namespace Sphere_Editor
         {
             if (File.Exists(Global.CurrentEditor.SpherePath))
             {
+                if (TestGame != null) TestGame(null, EventArgs.Empty);
                 _tree.Pause();
                 Process p;
 
