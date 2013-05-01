@@ -66,8 +66,8 @@ namespace TaskPlugin
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
             // so in this case we can use these to our advantage.
-            Host.OnOpenProject += new EventHandler(OnProjectLoad);
-            Host.OnCloseProject += new EventHandler(OnProjectClose);
+            Host.LoadProject += new EventHandler(OnProjectLoad);
+            Host.UnloadProject += new EventHandler(OnProjectClose);
 
             // Now, we can add a menu item like so.
             // 'View' will search the 'View' menu item.
@@ -89,8 +89,8 @@ namespace TaskPlugin
 
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
-            Host.OnOpenProject -= new EventHandler(OnProjectLoad);
-            Host.OnCloseProject -= new EventHandler(OnProjectClose);
+            Host.LoadProject -= new EventHandler(OnProjectLoad);
+            Host.UnloadProject -= new EventHandler(OnProjectClose);
 
             // And furthermore that menu item must be deleted as well!
             _item.Click -= new EventHandler(ItemClick);

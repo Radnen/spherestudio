@@ -26,14 +26,19 @@ namespace SoundTestPlugin
         private DockContent content;
         private SoundPicker soundPicker;
 
-        private void host_projectOpen(object sender, EventArgs e)
+        private void host_LoadProject(object sender, EventArgs e)
         {
             this.soundPicker.Refresh();
         }
 
-        private void host_projectClose(object sender, EventArgs e)
+        private void host_UnloadProject(object sender, EventArgs e)
         {
             this.soundPicker.Reset();
+        }
+
+        private void host_TestGame(object sender, EventArgs e)
+        {
+            this.soundPicker.ForcePause();
         }
 
         public SoundTestPlugin()
@@ -53,8 +58,9 @@ namespace SoundTestPlugin
             this.content.DockHandler.HideOnClose = true;
             this.content.Icon = this.Icon;
             Host.DockControl(this.content, DockState.DockLeft);
-            Host.OnOpenProject += new EventHandler(host_projectOpen);
-            Host.OnCloseProject += new EventHandler(host_projectClose);
+            Host.LoadProject += new EventHandler(host_LoadProject);
+            Host.UnloadProject += new EventHandler(host_UnloadProject);
+            Host.TestGame += new EventHandler(host_TestGame);
         }
 
         public void Destroy()
