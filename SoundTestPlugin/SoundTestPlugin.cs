@@ -28,12 +28,12 @@ namespace SoundTestPlugin
 
         private void host_LoadProject(object sender, EventArgs e)
         {
-            this.soundPicker.Refresh();
+            this.soundPicker.WatchProject(this.Host.CurrentGame);
         }
 
         private void host_UnloadProject(object sender, EventArgs e)
         {
-            this.soundPicker.Reset();
+            this.soundPicker.WatchProject(null);
         }
 
         private void host_TestGame(object sender, EventArgs e)

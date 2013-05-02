@@ -6,6 +6,8 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using Sphere.Core;
+using Sphere.Core.Settings;
 using Sphere.Plugins;
 
 using IrrKlang;
@@ -21,10 +23,16 @@ namespace SoundTestPlugin
         };
 
         private IPlugin plugin;
+        private FileSystemWatcher fileWatcher;
         private ISoundEngine soundEngine = new ISoundEngine();
         private ISound music;
         private string musicName;
 
+        private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            this.Refresh();
+        }
+        
         private void pauseTool_Click(object sender, EventArgs e)
         {
             this.PlayOrPauseMusic();
@@ -64,7 +72,27 @@ namespace SoundTestPlugin
         {
             InitializeComponent();
             this.plugin = plugin;
+            this.fileWatcher = new FileSystemWatcher();
+            this.fileWatcher.Changed += fileWatcher_Changed;
+            this.fileWatcher.Filter = "*.*";
+            this.fileWatcher.IncludeSubdirectories = true;
+            this.fileWatcher.EnableRaisingEvents = false;
+            WatchProject(this.plugin.Host.CurrentGame);
             this.StopMusic();
+        }
+
+        public void WatchProject(ProjectSettings game)
+        {
+            if (game != null)
+            {
+                this.fileWatcher.Path = game.RootPath;
+                this.fileWatcher.EnableRaisingEvents = true;
+            }
+            else
+            {
+                this.fileWatcher.EnableRaisingEvents = false;
+            }
+            this.Refresh();
         }
 
         public void ForcePause()
