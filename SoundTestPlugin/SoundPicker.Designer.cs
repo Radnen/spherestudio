@@ -99,7 +99,6 @@
             this.trackList.Location = new System.Drawing.Point(0, 45);
             this.trackList.MultiSelect = false;
             this.trackList.Name = "trackList";
-            this.trackList.Scrollable = false;
             this.trackList.ShowItemToolTips = true;
             this.trackList.Size = new System.Drawing.Size(351, 433);
             this.trackList.TabIndex = 1;
