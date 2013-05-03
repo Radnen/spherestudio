@@ -26,8 +26,9 @@ namespace Sphere_Editor
         private bool _firsttime;
 
         public event EventHandler LoadProject;
-        public event EventHandler UnloadProject;
         public event EventHandler TestGame;
+        public event EditFileEventHandler TryEditFile;
+        public event EventHandler UnloadProject;
 
         public EditorForm()
         {
@@ -64,6 +65,14 @@ namespace Sphere_Editor
         }
 
         bool IsProjectOpen { get { return Global.CurrentProject != null; } }
+
+        // This method is a horrible abomination and shouldn't even exist,
+        // but I couldn't figure out any other way to raise the event from a different class
+        // so...
+        internal void RaiseEditFileEvent(EditFileEventArgs e)
+        {
+            TryEditFile(null, e);
+        }
 
         private void UpdateButtons()
         {
@@ -189,16 +198,6 @@ namespace Sphere_Editor
             {
                 item.Dispose();
             }
-        }
-
-        public void Register(string[] types, string name)
-        {
-            ProjectTree.RegisterFiletypes(types, name);
-        }
-
-        public void Unregister(string[] types)
-        {
-            ProjectTree.Unregister(types);
         }
         #endregion
 
@@ -954,17 +953,6 @@ namespace Sphere_Editor
                 return;
             }
             else DockTest.ActiveDocument.DockHandler.Close();
-        }
-
-        internal void OpenDocument(string plugin_name, string path = "")
-        {
-            IPlugin plugin = Global.plugins[plugin_name].Plugin;
-            if (plugin is IEditorPlugin)
-            {
-                DockContent content = ((IEditorPlugin)plugin).OpenEditor(path);
-                content.FormClosing += new FormClosingEventHandler(Content_FormClosing);
-                DockControl(content, DockState.Document);
-            }
         }
     }
 }

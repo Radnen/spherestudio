@@ -27,27 +27,19 @@ namespace Sphere.Plugins
         event EventHandler LoadProject;
 
         /// <summary>
-        /// Add event handlers to do things when a project closes.
-        /// </summary>
-        event EventHandler UnloadProject;
-
-        /// <summary>
         /// Add event handlers to do things when the Test Game command is clicked.
         /// </summary>
         event EventHandler TestGame;
 
         /// <summary>
-        /// Registers filetypes from the project tree.
+        /// Add event handlers to attempt to open files double-clicked in the project tree.
         /// </summary>
-        /// <param name="types">An array of types to remove; Ex: { '.js', '.txt' }</param>
-        /// <param name="plugin_name">The filename of the plugin to register to.</param>
-        void Register(string[] types, string plugin_name);
+        event EditFileEventHandler TryEditFile;
 
         /// <summary>
-        /// Unregisters filetypes from the project tree.
+        /// Add event handlers to do things when a project closes.
         /// </summary>
-        /// <param name="types">An array of types to remove; Ex: { '.js', '.txt' }</param>
-        void Unregister(string[] types);
+        event EventHandler UnloadProject;
 
         /// <summary>
         /// Adds a control to the main dock panel, at the associated state.
