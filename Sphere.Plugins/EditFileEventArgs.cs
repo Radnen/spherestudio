@@ -9,8 +9,8 @@ namespace Sphere.Plugins
     {
         public EditFileEventArgs(string filePath, bool useWildcard = false)
         {
-            this.FileFullPath = (filePath != null && filePath[0] == '.') ? null : filePath;
-            this.FileExtension = useWildcard ? "*" : Path.GetExtension(filePath);
+            this.FileFullPath = (filePath != null && filePath[0] == '?') ? null : filePath;
+            this.FileExtension = useWildcard ? "*" : Path.GetExtension(filePath).ToLower();
             this.IsAlreadyMatched = false;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -24,6 +25,7 @@ namespace Sphere_Editor
         private EditorObject CurrentControl;
         private ProjectTree _tree;
         private bool _firsttime;
+        private Dictionary<string, string> _openFileTypes = new Dictionary<string,string>();
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
@@ -66,12 +68,56 @@ namespace Sphere_Editor
 
         bool IsProjectOpen { get { return Global.CurrentProject != null; } }
 
-        // This method is a horrible abomination and shouldn't even exist,
-        // but I couldn't figure out any other way to raise the event from a different class
-        // so...
-        internal void RaiseEditFileEvent(EditFileEventArgs e)
+        internal string[] GetFilesToOpen(bool multiselect)
         {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Images|*.png;*.gif;*.jpg;*.bmp|"
+                            + "Sphere Maps|*.rmp;*.rts|"
+                            + "Sphere Spritesets|*.rss|"
+                            + "Sphere Windowstyles|*.rws";
+            foreach (string filter in _openFileTypes.Keys)
+            {
+                dialog.Filter += String.Format("|{0}|{1}", _openFileTypes[filter], filter);
+            }
+            dialog.Filter += "|All Files|*.*";
+            dialog.FilterIndex = 5 + _openFileTypes.Count;
+            dialog.InitialDirectory = Global.CurrentProject.RootPath;
+            dialog.Multiselect = multiselect;
+            DialogResult result = dialog.ShowDialog(this);
+            dialog.Dispose();
+            if (result == DialogResult.OK) return dialog.FileNames;
+            else return null;
+        }
+        
+        internal void OpenDocument(string filePath)
+        {
+            // raise a TryEditFile event first to see if any plugins take the bait
+            EditFileEventArgs e = new EditFileEventArgs(filePath);
             TryEditFile(null, e);
+            if (e.IsAlreadyMatched)
+            {
+                // Someone took the bait, we don't have to do anything else
+                return;
+            }
+
+            // no fish biting today, try one of the built-in fish--er, editors
+            if (Global.IsImage(ref filePath)) OpenImage(filePath);
+            else if (Global.IsMap(ref filePath)) OpenMap(filePath);
+            else if (Global.IsSpriteset(ref filePath)) OpenSpriteset(filePath);
+            else if (Global.IsWindowStyle(ref filePath)) OpenWindowStyle(filePath);
+
+            // still nothing? let's go fishing for editor plugins again, maybe we were using the
+            // wrong lure... fish like stars right? (i.e. try wildcard extension "*")
+            else
+            {
+                e = new EditFileEventArgs(filePath, true);
+                TryEditFile(null, e);
+                if (!e.IsAlreadyMatched)
+                {
+                    MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file.\n\n\nFile Type: {0}\n\nPath to File:\n{1}", Path.GetExtension(filePath).ToUpper(), filePath),
+                        "Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void UpdateButtons()
@@ -116,6 +162,17 @@ namespace Sphere_Editor
         public void DockControl(DockContent content, DockState state)
         {
             content.Show(DockTest, state);
+        }
+
+        public void RegisterOpenFileType(string typeName, string filters)
+        {
+            _openFileTypes.Add(filters, typeName);
+        }
+
+        public void UnregisterOpenFileType(string filters)
+        {
+            if (!_openFileTypes.ContainsKey(filters)) return;
+            _openFileTypes.Remove(filters);
         }
 
         public DockContentCollection GetDocuments()
@@ -953,6 +1010,13 @@ namespace Sphere_Editor
                 return;
             }
             else DockTest.ActiveDocument.DockHandler.Close();
+        }
+        
+        private void OpenMenuItem_Click(object sender, System.EventArgs e)
+        {
+            string[] fileNames = GetFilesToOpen(false);
+            if (fileNames == null) return;
+            OpenDocument(fileNames[0]);
         }
     }
 }

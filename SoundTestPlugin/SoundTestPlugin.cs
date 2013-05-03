@@ -17,6 +17,13 @@ namespace SoundTestPlugin
 
         public IPluginHost Host { get; set; }
 
+        private string _openFileFilter = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
+        private string[] _fileTypes = new string[] {
+            ".mp3", ".ogg", ".flac",  // compressed audio
+            ".mod", ".it", ".s3d",    // tracker formats
+            ".wav"                    // uncompressed/PCM
+        };
+
         private DockContent _content;
         private SoundPicker _soundPicker;
 
@@ -32,14 +39,8 @@ namespace SoundTestPlugin
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
         {
-            string[] fileTypes = new string[] {
-                ".mp3", ".ogg", ".flac",  // compressed audio
-                ".mod", ".it", ".s3d",    // tracker formats
-                ".wav"                    // uncompressed/PCM
-            };
-            
             if (e.IsAlreadyMatched) return;
-            foreach (string type in fileTypes)
+            foreach (string type in _fileTypes)
             {
                 if (e.FileExtension == type)
                 {
@@ -73,14 +74,15 @@ namespace SoundTestPlugin
             Host.DockControl(_content, DockState.DockLeft);
             Host.LoadProject += new EventHandler(host_LoadProject);
             Host.UnloadProject += new EventHandler(host_UnloadProject);
-            Host.TryEditFile += new EditFileEventHandler(host_TryEditFile);
             Host.TestGame += new EventHandler(host_TestGame);
-
+            Host.RegisterOpenFileType("Audio", _openFileFilter);
+            Host.TryEditFile += new EditFileEventHandler(host_TryEditFile);
             _soundPicker.WatchProject(Host.CurrentGame);
         }
 
         public void Destroy()
         {
+            Host.UnregisterOpenFileType(_openFileFilter);
             _soundPicker.WatchProject(null);
             Host.RemoveControl("Sound Test");
         }
