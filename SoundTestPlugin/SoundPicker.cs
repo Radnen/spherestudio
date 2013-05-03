@@ -16,7 +16,7 @@ namespace SoundTestPlugin
 {
     public partial class SoundPicker : UserControl
     {
-        private readonly string[] fileTypes = new string[] 
+        private readonly string[] _fileTypes = new string[] 
         {
             "*.mp3:Music",
             "*.ogg:Music",
@@ -29,175 +29,204 @@ namespace SoundTestPlugin
             "*.wav:Sounds"
         };
 
-        private IPlugin plugin;
-        private FileSystemWatcher fileWatcher;
-        private ISoundEngine soundEngine = new ISoundEngine();
-        private ISound music;
-        private string musicName;
+        private IPlugin _plugin;
+        private FileSystemWatcher _fileWatcher;
+        private ISoundEngine _soundEngine = new ISoundEngine();
+        private ISound _music;
+        private string _musicName;
 
         private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            this.Refresh();
+            Refresh();
         }
         
         private void pauseTool_Click(object sender, EventArgs e)
         {
-            this.PlayOrPauseMusic();
+            PlayOrPauseMusic();
         }
 
         private void stopTool_Click(object sender, EventArgs e)
         {
-            this.StopMusic();
+            StopMusic();
         }
 
         private void trackList_Click(object sender, EventArgs e)
         {
-            ListViewItem chosenItem = this.trackList.SelectedItems[0];
+            ListViewItem chosenItem = trackList.SelectedItems[0];
         }
         
         private void trackList_DoubleClick(object sender, EventArgs e)
         {
-            ListViewItem chosenItem = this.trackList.SelectedItems[0];
+            ListViewItem chosenItem = trackList.SelectedItems[0];
             string filePath = (string)chosenItem.Tag;
-            this.PlayFile(filePath);
+            PlayFile(filePath);
         }
 
         public SoundPicker(IPlugin plugin)
         {
             InitializeComponent();
-            this.plugin = plugin;
-            this.fileWatcher = new FileSystemWatcher();
-            this.fileWatcher.Changed += fileWatcher_Changed;
-            this.fileWatcher.Filter = "*.*";
-            this.fileWatcher.IncludeSubdirectories = true;
-            this.fileWatcher.EnableRaisingEvents = false;
-            WatchProject(this.plugin.Host.CurrentGame);
-            this.StopMusic();
+            _plugin = plugin;
+            _fileWatcher = new FileSystemWatcher();
+            _fileWatcher.Changed += fileWatcher_Changed;
+            _fileWatcher.Filter = "*.*";
+            _fileWatcher.IncludeSubdirectories = true;
+            _fileWatcher.EnableRaisingEvents = false;
+            WatchProject(_plugin.Host.CurrentGame);
+            StopMusic();
         }
 
+        /// <summary>
+        /// Used by fgilesystem watcher to attempt to automatically
+        /// add new additions to the sound list.
+        /// </summary>
+        /// <param name="game"></param>
         public void WatchProject(ProjectSettings game)
         {
             if (game != null)
             {
-                this.fileWatcher.Path = game.RootPath;
-                this.fileWatcher.EnableRaisingEvents = true;
+                _fileWatcher.Path = game.RootPath;
+                _fileWatcher.EnableRaisingEvents = true;
             }
             else
             {
-                this.fileWatcher.EnableRaisingEvents = false;
+                _fileWatcher.EnableRaisingEvents = false;
             }
-            this.Refresh();
+            Refresh();
         }
 
+        /// <summary>
+        /// Forces pause on songs.
+        /// </summary>
         public void ForcePause()
         {
-            if (this.music != null)
-            {
-                this.music.Paused = true;
-                this.pauseTool.CheckState = CheckState.Checked;
-                this.playTool.Image = this.playIcons.Images["pause"];
-                this.playTool.Text = "PAUSE";
-            }
+            if (_music == null) return;
+            _music.Paused = true;
+            pauseTool.CheckState = CheckState.Checked;
+            playTool.Image = playIcons.Images["pause"];
+            playTool.Text = "PAUSE";
         }
 
+        /// <summary>
+        /// Plays the song located at the path's location.
+        /// </summary>
+        /// <param name="path">The path to load from.</param>
         public void PlayFile(string path)
         {
             bool isMusic = Path.GetExtension(path) != ".wav";
-            ISound sound = this.soundEngine.Play2D(path, isMusic);
+            ISound sound = _soundEngine.Play2D(path, isMusic);
             if (isMusic)
             {
-                this.StopMusic();
-                this.musicName = Path.GetFileNameWithoutExtension(path);
-                this.music = sound;
-                this.trackNameTextBox.Text = "Now Playing: " + this.musicName;
-                this.playTool.Text = "PLAY";
-                this.playTool.Image = this.playIcons.Images["play"];
-                this.pauseTool.Enabled = true;
-                this.pauseTool.CheckState = CheckState.Unchecked;
-                this.stopTool.Enabled = true;
+                StopMusic();
+                _musicName = Path.GetFileNameWithoutExtension(path);
+                _music = sound;
+                trackNameTextBox.Text = "Now Playing: " + _musicName;
+                playTool.Text = "PLAY";
+                playTool.Image = playIcons.Images["play"];
+                pauseTool.Enabled = true;
+                pauseTool.CheckState = CheckState.Unchecked;
+                stopTool.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Toggles between the playing and pausing of the current music file.
+        /// </summary>
         public void PlayOrPauseMusic()
         {
-            if (music != null)
-            {
-                this.music.Paused = !this.music.Paused;
-                this.pauseTool.CheckState = this.music.Paused ? CheckState.Checked : CheckState.Unchecked;
-                this.playTool.Image = this.music.Paused ? this.playIcons.Images["pause"] : this.playIcons.Images["play"];
-                this.playTool.Text = this.music.Paused ? "PAUSE" : "PLAY";
-            }
+            if (_music == null) return;
+            _music.Paused = !this._music.Paused;
+            pauseTool.CheckState = _music.Paused ? CheckState.Checked : CheckState.Unchecked;
+            playTool.Image = _music.Paused ? playIcons.Images["pause"] : playIcons.Images["play"];
+            playTool.Text = _music.Paused ? "PAUSE" : "PLAY";
         }
 
+        /// <summary>
+        /// Overrides the refresh method to re-add the items
+        /// found in your music and sound paths.
+        /// </summary>
         public override void Refresh()
         {
             base.Refresh();
-            if (this.plugin.Host.CurrentGame != null)
+            if (_plugin.Host.CurrentGame == null) { Reset(); return; }
+
+            string currentItemName = null;
+            
+            if (trackList.SelectedItems.Count > 0)
+                currentItemName = trackList.SelectedItems[0].Text;
+            
+            trackList.Items.Clear();
+            trackList.Groups.Clear();
+
+            UpdateTrackList();
+
+            if (!string.IsNullOrEmpty(currentItemName))
             {
-                string gamePath = this.plugin.Host.CurrentGame.RootPath;
-                this.trackList.BeginUpdate();
-                string currentItemName = null;
-                if (this.trackList.SelectedItems.Count > 0)
-                {
-                    currentItemName = this.trackList.SelectedItems[0].Text;
-                }
-                this.trackList.Items.Clear();
-                this.trackList.Groups.Clear();
-                foreach (string filterInfo in this.fileTypes)
-                {
-                    string[] parsedFilter = filterInfo.Split(':');
-                    string searchFilter = parsedFilter[0];
-                    string groupName = parsedFilter[1];
-                    this.trackList.Groups.Add(groupName, groupName);
-                    DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(gamePath, "sounds"));
-                    FileInfo[] allFilesInfo = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
-                    foreach (FileInfo fileInfo in allFilesInfo)
-                    {
-                        string path = Path.GetFullPath(fileInfo.FullName);
-                        ListViewItem listItem = this.trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
-                        listItem.Tag = (object)fileInfo.FullName;
-                        listItem.Group = this.trackList.Groups[groupName];
-                        listItem.SubItems.Add(path.Replace(gamePath + "\\", ""));
-                    }
-                }
-                if (currentItemName != null)
-                {
-                    ListViewItem itemToSelect = this.trackList.FindItemWithText(currentItemName);
-                    if (itemToSelect != null)
-                    {
-                        itemToSelect.Selected = true;
-                    }
-                }
-                this.trackList.EndUpdate();
-            }
-            else
-            {
-                this.Reset();
+                ListViewItem itemToSelect = trackList.FindItemWithText(currentItemName);
+                if (itemToSelect != null)
+                    itemToSelect.Selected = true;
             }
         }
 
+        /// <summary>
+        /// Fills out the list with the music and sound files in your game path.
+        /// </summary>
+        private void UpdateTrackList()
+        {
+            string gamePath = _plugin.Host.CurrentGame.RootPath;
+
+            trackList.BeginUpdate();
+            foreach (string filterInfo in _fileTypes)
+            {
+                string[] parsedFilter = filterInfo.Split(':');
+                string searchFilter = parsedFilter[0];
+                string groupName = parsedFilter[1];
+                
+                trackList.Groups.Add(groupName, groupName);
+                
+                DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(gamePath, "sounds"));
+                FileInfo[] allFilesInfo = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
+
+                foreach (FileInfo fileInfo in allFilesInfo)
+                {
+                    string path = Path.GetFullPath(fileInfo.FullName);
+                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
+                    listItem.Tag = (object)fileInfo.FullName;
+                    listItem.Group = trackList.Groups[groupName];
+                    listItem.SubItems.Add(path.Replace(gamePath + "\\", ""));
+                }
+            }
+            trackList.EndUpdate();
+        }
+
+        /// <summary>
+        /// Resets the IrrKlang Sound Engine.
+        /// </summary>
         public void Reset()
         {
-            this.StopMusic();
-            this.soundEngine.StopAllSounds();
-            this.trackList.Items.Clear();
-            this.trackList.Groups.Clear();
+            StopMusic();
+            _soundEngine.StopAllSounds();
+            trackList.Items.Clear();
+            trackList.Groups.Clear();
         }
 
+        /// <summary>
+        /// Stops any currently playing music
+        /// </summary>
         public void StopMusic()
         {
-            if (this.music != null)
+            if (_music != null)
             {
-                this.music.Stop();
-                this.music.Dispose();
-                this.music = null;
+                _music.Stop();
+                _music.Dispose();
+                _music = null;
             }
-            this.trackNameTextBox.Text = "-";
-            this.playTool.Image = this.playIcons.Images["stop"];
-            this.playTool.Text = "STOP";
-            this.pauseTool.CheckState = CheckState.Unchecked;
-            this.pauseTool.Enabled = false;
-            this.stopTool.Enabled = false;
+
+            trackNameTextBox.Text = "-";
+            playTool.Image = playIcons.Images["stop"];
+            playTool.Text = "STOP";
+            pauseTool.CheckState = CheckState.Unchecked;
+            pauseTool.Enabled = false;
+            stopTool.Enabled = false;
         }
     }
 }

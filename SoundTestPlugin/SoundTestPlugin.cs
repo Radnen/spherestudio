@@ -17,17 +17,17 @@ namespace SoundTestPlugin
 
         public IPluginHost Host { get; set; }
 
-        private DockContent content;
-        private SoundPicker soundPicker;
+        private DockContent _content;
+        private SoundPicker _soundPicker;
 
         private void host_LoadProject(object sender, EventArgs e)
         {
-            this.soundPicker.WatchProject(this.Host.CurrentGame);
+            _soundPicker.WatchProject(Host.CurrentGame);
         }
 
         private void host_UnloadProject(object sender, EventArgs e)
         {
-            this.soundPicker.WatchProject(null);
+            _soundPicker.WatchProject(null);
         }
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
@@ -43,7 +43,7 @@ namespace SoundTestPlugin
             {
                 if (e.FileExtension == type)
                 {
-                    this.soundPicker.PlayFile(e.FileFullPath);
+                    _soundPicker.PlayFile(e.FileFullPath);
                     e.IsAlreadyMatched = true;
                 }
             }
@@ -51,34 +51,38 @@ namespace SoundTestPlugin
 
         private void host_TestGame(object sender, EventArgs e)
         {
-            this.soundPicker.ForcePause();
+            _soundPicker.ForcePause();
         }
 
         public SoundTestPlugin()
         {
-            this.Icon = Icon.FromHandle(Properties.Resources.Icon.GetHicon());
+            Icon = Icon.FromHandle(Properties.Resources.Icon.GetHicon());
         }
 
         public void Initialize()
         {
-            this.soundPicker = new SoundPicker(this);
-            this.soundPicker.Dock = DockStyle.Fill;
-            this.soundPicker.Refresh();
-            this.content = new DockContent();
-            this.content.Controls.Add(this.soundPicker);
-            this.content.Text = "Sound Test";
-            this.content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
-            this.content.DockHandler.HideOnClose = true;
-            this.content.Icon = this.Icon;
-            Host.DockControl(this.content, DockState.DockLeft);
+            _soundPicker = new SoundPicker(this);
+            _soundPicker.Dock = DockStyle.Fill;
+            _soundPicker.Refresh();
+            _content = new DockContent();
+            _content.Controls.Add(_soundPicker);
+            _content.Text = "Sound Test";
+            _content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
+            _content.DockHandler.HideOnClose = true;
+            _content.Icon = Icon;
+            Host.DockControl(_content, DockState.DockLeft);
             Host.LoadProject += new EventHandler(host_LoadProject);
             Host.UnloadProject += new EventHandler(host_UnloadProject);
             Host.TryEditFile += new EditFileEventHandler(host_TryEditFile);
             Host.TestGame += new EventHandler(host_TestGame);
+
+            _soundPicker.WatchProject(Host.CurrentGame);
         }
 
         public void Destroy()
         {
+            _soundPicker.WatchProject(null);
+            Host.RemoveControl("Sound Test");
         }
     }
 }
