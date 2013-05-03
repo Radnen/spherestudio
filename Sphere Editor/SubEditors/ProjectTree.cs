@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 using Sphere_Editor.Forms;
+using Sphere.Plugins;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -15,8 +16,6 @@ namespace Sphere_Editor.SubEditors
         public EditorForm EditorForm { get; set; }
 
         private ImageList _iconlist = new ImageList();
-
-        private static Dictionary<string, string> _registered = new Dictionary<string, string>();
 
         public ProjectTree()
         {
@@ -39,21 +38,6 @@ namespace Sphere_Editor.SubEditors
 
             ProjectTreeView.ImageList = _iconlist;
             SetFont();
-        }
-
-        /// <summary>
-        /// If a filetype is found it is loaded with the associated plugin.
-        /// </summary>
-        public static void RegisterFiletypes(string[] filetypes, string plugin)
-        {
-            foreach (string s in filetypes)
-                _registered[s] = plugin;
-        }
-
-        public static void Unregister(string[] filetypes)
-        {
-            foreach (string s in filetypes)
-                _registered.Remove(s);
         }
 
         public string ProjectName
@@ -295,30 +279,21 @@ namespace Sphere_Editor.SubEditors
 
         private static void UpdateImage(TreeNode node)
         {
-            string s = Path.GetExtension(node.Text);
-            string plugin;
-            if (_registered.TryGetValue(s, out plugin))
-            {
+            string s = node.Text;
+            if (Global.IsScript(ref s))
                 node.SelectedImageIndex = node.ImageIndex = 5;
-            }
-            else
-            {
-                s = node.Text;
-                if (Global.IsScript(ref s))
-                    node.SelectedImageIndex = node.ImageIndex = 5;
-                else if (Global.IsFont(ref s))
-                    node.SelectedImageIndex = node.ImageIndex = 8;
-                else if (Global.IsImage(ref s) || Global.IsSpriteset(ref s)
-                    || Global.IsWindowStyle(ref s))
-                    node.SelectedImageIndex = node.ImageIndex = 4;
-                else if (Global.IsMap(ref s) || Global.IsTileset(ref s))
-                    node.SelectedImageIndex = node.ImageIndex = 6;
-                else if (Global.IsSound(ref s))
-                    node.SelectedImageIndex = node.ImageIndex = 7;
-                else if (Global.IsText(ref s))
-                    node.SelectedImageIndex = node.ImageIndex = 3;
-                else node.SelectedImageIndex = node.ImageIndex = 9;
-            }
+            else if (Global.IsFont(ref s))
+                node.SelectedImageIndex = node.ImageIndex = 8;
+            else if (Global.IsImage(ref s) || Global.IsSpriteset(ref s)
+                || Global.IsWindowStyle(ref s))
+                node.SelectedImageIndex = node.ImageIndex = 4;
+            else if (Global.IsMap(ref s) || Global.IsTileset(ref s))
+                node.SelectedImageIndex = node.ImageIndex = 6;
+            else if (Global.IsSound(ref s))
+                node.SelectedImageIndex = node.ImageIndex = 7;
+            else if (Global.IsText(ref s))
+                node.SelectedImageIndex = node.ImageIndex = 3;
+            else node.SelectedImageIndex = node.ImageIndex = 9;
         }
 
         private void AddFolderItem_Click(object sender, EventArgs e)
@@ -416,13 +391,36 @@ namespace Sphere_Editor.SubEditors
             string fullname = node.FullPath.ToLower();
             string name = fullname.Substring(fullname.IndexOf('\\') + 1);
             if (name.Contains("\\")) name = name.Substring(0, name.IndexOf('\\'));
-
+            
+            // try opening document with plugins
+            // note: this is a hack and there should be a method for plugins to register as a New handler for a given folder
+            // or something, but I'm too lazy to implement that right now
+            string extension = null;
+            switch (name)
+            {
+                case "fonts": extension = ".rfn"; break;
+                case "scripts": extension = ".js"; break;
+            }
+            if (extension != null)
+            {    
+                EditFileEventArgs evt = new EditFileEventArgs(extension);
+                EditorForm.RaiseEditFileEvent(evt);
+                if (evt.IsAlreadyMatched) return;  // plugin matched extension, nothing else to do
+            }
+            
+            // try built-in editors
             if (name == "images") EditorForm.NewImage(null, EventArgs.Empty);
             else if (name == "maps") EditorForm.NewMap(null, EventArgs.Empty);
-            else if (name == "fonts" && _registered.ContainsKey(".rfn")) EditorForm.OpenDocument(_registered[".rfn"]);
             else if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
             else if (name == "windowstyles") EditorForm.NewWindowStyle(null, EventArgs.Empty);
-            else EditorForm.NewScript();
+
+            // try wildcard extension, and if not fall back on built-in text editor
+            else
+            {
+                EditFileEventArgs evt = new EditFileEventArgs(null, true);
+                EditorForm.RaiseEditFileEvent(evt);
+                if (!evt.IsAlreadyMatched) EditorForm.NewScript();
+            }
         }
 
         // Assumption: The user knows the script has a game() function or the
@@ -501,23 +499,29 @@ namespace Sphere_Editor.SubEditors
             // if the node is anything other than a file, don't do anything
             if ((string)node.Tag != "file-node") return;
 
-            // open a registered filetype
-            string plugin;
-            if (_registered.TryGetValue(Path.GetExtension(s), out plugin))
+            // raise a TryEditFile event first to see if any plugins take the bait
+            EditFileEventArgs eventArgs = new EditFileEventArgs(path);
+            EditorForm.RaiseEditFileEvent(eventArgs); // Why do I have to do this, this is horrible! -_-
+            if (eventArgs.IsAlreadyMatched)
             {
-                EditorForm.OpenDocument(plugin, path);
+                // Someone took the bait, we don't have to do anything else
                 return;
             }
-
-            // otherwise one of these built-ins:
+            
+            // no fish biting today, try one of the built-in fish--er, editors
             if (Global.IsImage(ref s)) EditorForm.OpenImage(path);
             else if (Global.IsMap(ref s)) EditorForm.OpenMap(path);
             else if (Global.IsSound(ref s)) EditorForm.OpenSound(path);
             else if (Global.IsSpriteset(ref s)) EditorForm.OpenSpriteset(path);
             else if (Global.IsWindowStyle(ref s)) EditorForm.OpenWindowStyle(path);
-            // ortherwise the wildcard type:
-            else if (_registered.TryGetValue("*", out plugin))
-                EditorForm.OpenDocument(plugin, path);
+            
+            // still nothing? let's go fishing for editor plugins again, maybe we were using the
+            // wrong lure... fish like asterisks right? (i.e. try wildcard extension "*")
+            else
+            {
+                eventArgs = new EditFileEventArgs(path, true);
+                EditorForm.RaiseEditFileEvent(eventArgs);
+            }
         }
         
         private void OpenFileItem_Click(object sender, EventArgs e)
