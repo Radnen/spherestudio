@@ -770,22 +770,18 @@ namespace Sphere_Editor
 
         private void RunToolButton_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Global.CurrentEditor.SpherePath))
-            {
-                if (TestGame != null) TestGame(null, EventArgs.Empty);
-                _tree.Pause();
-                Process p;
+            if (!File.Exists(Global.CurrentEditor.SpherePath)) return;
 
-                if (IsProjectOpen)
-                {
-                    Global.CurrentProject.SaveSettings();
-                    p = Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + Global.CurrentProject.RootPath + "\"");
-                }
-                else
-                    p = Process.Start(Global.CurrentEditor.SpherePath);
-                p.EnableRaisingEvents = true;
-                p.Exited += delegate { _tree.Resume(); };
+            if (TestGame != null) TestGame(null, EventArgs.Empty);
+            
+            Process p;
+            if (IsProjectOpen)
+            {
+                Global.CurrentProject.SaveSettings();
+                p = Process.Start(Global.CurrentEditor.SpherePath, "-game \"" + Global.CurrentProject.RootPath + "\"");
             }
+            else
+                p = Process.Start(Global.CurrentEditor.SpherePath);
         }
 
         public void RefreshProject()

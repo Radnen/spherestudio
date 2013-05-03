@@ -42,10 +42,10 @@
             this.ExecuteScriptItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SystemWatcher = new System.IO.FileSystemWatcher();
             this.ProjectNameLabel = new Sphere.Core.Editor.EditorLabel();
-            this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ProjectFileContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).BeginInit();
             this.SuspendLayout();
@@ -176,23 +176,10 @@
             this.EngineSettingsItem.Text = "Edit &Editor Settings";
             this.EngineSettingsItem.Click += new System.EventHandler(this.EngineSettingsItem_Click);
             // 
-            // SystemWatcher
+            // toolStripSeparator1
             // 
-            this.SystemWatcher.EnableRaisingEvents = true;
-            this.SystemWatcher.SynchronizingObject = this;
-            this.SystemWatcher.Changed += new System.IO.FileSystemEventHandler(this.SystemWatcher_Changed);
-            // 
-            // ProjectNameLabel
-            // 
-            this.ProjectNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ProjectNameLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
-            this.ProjectNameLabel.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.ProjectNameLabel.Location = new System.Drawing.Point(0, 0);
-            this.ProjectNameLabel.Name = "ProjectNameLabel";
-            this.ProjectNameLabel.Size = new System.Drawing.Size(191, 23);
-            this.ProjectNameLabel.TabIndex = 4;
-            this.ProjectNameLabel.Text = "Project Name";
-            this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
             // 
             // FontItem
             // 
@@ -202,10 +189,24 @@
             this.FontItem.Text = "Change Font";
             this.FontItem.Click += new System.EventHandler(this.FontItem_Click);
             // 
-            // toolStripSeparator1
+            // SystemWatcher
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
+            this.SystemWatcher.EnableRaisingEvents = true;
+            this.SystemWatcher.IncludeSubdirectories = true;
+            this.SystemWatcher.SynchronizingObject = this;
+            this.SystemWatcher.Changed += new System.IO.FileSystemEventHandler(this.SystemWatcher_Changed);
+            // 
+            // ProjectNameLabel
+            // 
+            this.ProjectNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ProjectNameLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ProjectNameLabel.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.ProjectNameLabel.Location = new System.Drawing.Point(0, 0);
+            this.ProjectNameLabel.Name = "ProjectNameLabel";
+            this.ProjectNameLabel.Size = new System.Drawing.Size(191, 23);
+            this.ProjectNameLabel.TabIndex = 4;
+            this.ProjectNameLabel.Text = "Project Name";
+            this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ProjectTree
             // 
