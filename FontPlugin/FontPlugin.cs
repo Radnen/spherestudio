@@ -16,6 +16,9 @@ namespace FontPlugin
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
+        private string[] _fileTypes = { ".rfn" };
+        private string _openFileFilters = "*.rfn";
+        
         private ToolStripMenuItem NewFontItem, OpenFontItem;
 
         public FontPlugin()
@@ -86,6 +89,7 @@ namespace FontPlugin
 
         public void Initialize()
         {
+            Host.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
             Host.TryEditFile += host_TryEditFile;
             
             Host.AddMenuItem("File.New", NewFontItem);
@@ -94,6 +98,7 @@ namespace FontPlugin
 
         public void Destroy()
         {
+            Host.UnregisterOpenFileType(_openFileFilters);
         }
     }
 }

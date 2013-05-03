@@ -124,6 +124,7 @@
             this.trackNameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.trackNameTextBox.Location = new System.Drawing.Point(0, 25);
             this.trackNameTextBox.Name = "trackNameTextBox";
+            this.trackNameTextBox.ReadOnly = true;
             this.trackNameTextBox.Size = new System.Drawing.Size(351, 20);
             this.trackNameTextBox.TabIndex = 2;
             this.trackNameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

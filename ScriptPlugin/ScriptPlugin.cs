@@ -20,6 +20,9 @@ namespace ScriptPlugin
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
+        private string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore" };
+        private string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm";
+        
         ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem, OpenScriptItem;
         ToolStripMenuItem AutoCompleteItem, CodeFoldItem, HighlightLineItem;
         ToolStripMenuItem HighlightBracesItem, UseTabsItem, ChangeFontItem;
@@ -94,10 +97,8 @@ namespace ScriptPlugin
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
         {
-            string[] fileTypes = { ".js", "*" };
-
             if (e.IsAlreadyMatched) return;
-            foreach (string type in fileTypes)
+            foreach (string type in _fileTypes)
             {
                 if (e.FileExtension == type)
                 {
@@ -259,6 +260,9 @@ namespace ScriptPlugin
             // register event handlers
             Host.TryEditFile += host_TryEditFile;
 
+            // register Open dialog file types
+            Host.RegisterOpenFileType("Script/Text Files", _openFileFilters);
+
             // Show the root menu for this control; appearing before the 'View' menu.
             Host.AddMenuItem(RootMenu, "View");
             Host.AddMenuItem("File.New", NewScriptItem);
@@ -278,6 +282,7 @@ namespace ScriptPlugin
 
         public void Destroy()
         {
+            Host.UnregisterOpenFileType(_openFileFilters);
             functions.Clear();
             Host.RemoveMenuItem("ScriptPlugin");
         }
