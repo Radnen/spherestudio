@@ -48,59 +48,35 @@ namespace Sphere_Editor.SubEditors
 
         private void ImportFileItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Font Files (.rfn)|*.rfn|Image Files (.png, .gif, .jpg, .bmp)|*.png;*.gif;*.jpg;*.bmp|" +
-                                    "Map Files (.rts, .rmp)|*.rmp;*.rts|Script Files (.js)|*.js|Sound Files (.wav, .mp3, .ogg, .mod, .it, .s3m, xm)|" +
-                                    "*.wav;*.mp3;*.ogg;*.it;*.mod;*.xm;*.s3m|Spriteset Files (.rss)|*.rss|" +
-                                    "Windowstyle Files (.rws)|*.rws|All Files|*.*";
-            dialog.InitialDirectory = Global.CurrentProject.RootPath;
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
             string path = Global.CurrentProject.RootPath + pathtop;
-            string fullname = node.FullPath.ToLower();
-            string name = fullname.Substring(fullname.IndexOf('\\')+1);
-
-            name = Path.GetDirectoryName(node.FullPath.ToLower());
-
-            if (name.Contains("\\")) name = name.Substring(0, name.IndexOf('\\'));
-            int type = 8; // file type
-
-            if (name == "fonts") type = 1;
-            else if (name == "images") type = 2;
-            else if (name == "maps") type = 3;
-            else if (name == "scripts") type = 4;
-            else if (name == "sounds") type = 5;
-            else if (name == "spritesets") type = 6;
-            else if (name == "windowstyles") type = 7;
-
-            dialog.FilterIndex = type;
-            dialog.Multiselect = true;
-            if (dialog.ShowDialog() == DialogResult.OK)
+            string[] filesToAdd = EditorForm.GetFilesToOpen(true);
+            if (filesToAdd != null)
             {
                 string newpath;
                 TreeNode new_node;
-                for(int i = 0; i < dialog.FileNames.Length; ++i)
+                foreach (string filePath in filesToAdd)
                 {
-                    newpath = path + "\\" + dialog.SafeFileNames[i];
+                    newpath = path + "\\" + Path.GetFileName(filePath);
                     if (System.IO.File.Exists(newpath))
                     {
-                        if (MessageBox.Show("File: " + dialog.FileNames[i] + " seems to exist.\nOverwrite destination?",
+                        if (MessageBox.Show("File: " + newpath + " seems to exist.\nOverwrite destination?",
                             "Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
                             MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                         {
-                            System.IO.File.Copy(dialog.FileNames[i], newpath, true);
+                            System.IO.File.Copy(filePath, newpath, true);
                         }
                     }
                     else
                     {
-                        System.IO.File.Copy(dialog.FileNames[i], newpath, true);
-                        new_node = new TreeNode(dialog.SafeFileNames[i]);
+                        System.IO.File.Copy(filePath, newpath, true);
+                        new_node = new TreeNode(Path.GetFileName(filePath));
                         UpdateImage(new_node);
                     }
                 }
             }
 
-            dialog.Dispose();
             UpdateTree();
         }
 
@@ -391,36 +367,23 @@ namespace Sphere_Editor.SubEditors
             string fullname = node.FullPath.ToLower();
             string name = fullname.Substring(fullname.IndexOf('\\') + 1);
             if (name.Contains("\\")) name = name.Substring(0, name.IndexOf('\\'));
+
+            // built-in editors
+            if (name == "images") EditorForm.NewImage(null, EventArgs.Empty);
+            else if (name == "maps") EditorForm.NewMap(null, EventArgs.Empty);
+            else if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
+            else if (name == "windowstyles") EditorForm.NewWindowStyle(null, EventArgs.Empty);
             
-            // try opening document with plugins
+            // no built-in support, have editor fish for plugins
             // note: this is a hack and there should be a method for plugins to register as a New handler for a given folder
             // or something, but I'm too lazy to implement that right now
-            string extension = null;
+            string extension = ".*";
             switch (name)
             {
                 case "fonts": extension = ".rfn"; break;
                 case "scripts": extension = ".js"; break;
             }
-            if (extension != null)
-            {    
-                EditFileEventArgs evt = new EditFileEventArgs(extension);
-                EditorForm.RaiseEditFileEvent(evt);
-                if (evt.IsAlreadyMatched) return;  // plugin matched extension, nothing else to do
-            }
-            
-            // try built-in editors
-            if (name == "images") EditorForm.NewImage(null, EventArgs.Empty);
-            else if (name == "maps") EditorForm.NewMap(null, EventArgs.Empty);
-            else if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
-            else if (name == "windowstyles") EditorForm.NewWindowStyle(null, EventArgs.Empty);
-
-            // try wildcard extension, and if not fall back on built-in text editor
-            else
-            {
-                EditFileEventArgs evt = new EditFileEventArgs(null, true);
-                EditorForm.RaiseEditFileEvent(evt);
-                if (!evt.IsAlreadyMatched) EditorForm.NewScript();
-            }
+            EditorForm.OpenDocument("?" + extension);
         }
 
         // Assumption: The user knows the script has a game() function or the
@@ -499,29 +462,7 @@ namespace Sphere_Editor.SubEditors
             // if the node is anything other than a file, don't do anything
             if ((string)node.Tag != "file-node") return;
 
-            // raise a TryEditFile event first to see if any plugins take the bait
-            EditFileEventArgs eventArgs = new EditFileEventArgs(path);
-            EditorForm.RaiseEditFileEvent(eventArgs); // Why do I have to do this, this is horrible! -_-
-            if (eventArgs.IsAlreadyMatched)
-            {
-                // Someone took the bait, we don't have to do anything else
-                return;
-            }
-            
-            // no fish biting today, try one of the built-in fish--er, editors
-            if (Global.IsImage(ref s)) EditorForm.OpenImage(path);
-            else if (Global.IsMap(ref s)) EditorForm.OpenMap(path);
-            else if (Global.IsSound(ref s)) EditorForm.OpenSound(path);
-            else if (Global.IsSpriteset(ref s)) EditorForm.OpenSpriteset(path);
-            else if (Global.IsWindowStyle(ref s)) EditorForm.OpenWindowStyle(path);
-            
-            // still nothing? let's go fishing for editor plugins again, maybe we were using the
-            // wrong lure... fish like asterisks right? (i.e. try wildcard extension "*")
-            else
-            {
-                eventArgs = new EditFileEventArgs(path, true);
-                EditorForm.RaiseEditFileEvent(eventArgs);
-            }
+            EditorForm.OpenDocument(path);
         }
         
         private void OpenFileItem_Click(object sender, EventArgs e)
