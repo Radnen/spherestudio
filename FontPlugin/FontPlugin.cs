@@ -6,7 +6,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace FontPlugin
 {
-    public class FontPlugin : IEditorPlugin
+    public class FontPlugin : IPlugin
     {
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Radnen"; } }
@@ -18,8 +18,6 @@ namespace FontPlugin
 
         private ToolStripMenuItem NewFontItem, OpenFontItem;
 
-        private string[] _filetypes = { ".rfn" };
-
         public FontPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.style.GetHicon());
@@ -29,6 +27,21 @@ namespace FontPlugin
 
             OpenFontItem = new ToolStripMenuItem("Font", Properties.Resources.style);
             OpenFontItem.Click += new EventHandler(OpenFontItem_Click);
+        }
+
+        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        {
+            string[] fileTypes = { ".rfn" };
+
+            if (e.IsAlreadyMatched) return;
+            foreach (string type in fileTypes)
+            {
+                if (e.FileExtension == type)
+                {
+                    Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
+                    e.IsAlreadyMatched = true;
+                }
+            }
         }
 
         void OpenFontItem_Click(object sender, EventArgs e)
@@ -73,14 +86,14 @@ namespace FontPlugin
 
         public void Initialize()
         {
-            Host.Register(_filetypes, "FontPlugin");
+            Host.TryEditFile += host_TryEditFile;
+            
             Host.AddMenuItem("File.New", NewFontItem);
             Host.AddMenuItem("File.Open", OpenFontItem);
         }
 
         public void Destroy()
         {
-            Host.Unregister(_filetypes);
         }
     }
 }

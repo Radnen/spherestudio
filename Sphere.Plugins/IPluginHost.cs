@@ -42,19 +42,6 @@ namespace Sphere.Plugins
         event EventHandler UnloadProject;
 
         /// <summary>
-        /// Registers filetypes from the project tree.
-        /// </summary>
-        /// <param name="types">An array of types to remove; Ex: { '.js', '.txt' }</param>
-        /// <param name="plugin_name">The filename of the plugin to register to.</param>
-        void Register(string[] types, string plugin_name);
-
-        /// <summary>
-        /// Unregisters filetypes from the project tree.
-        /// </summary>
-        /// <param name="types">An array of types to remove; Ex: { '.js', '.txt' }</param>
-        void Unregister(string[] types);
-
-        /// <summary>
         /// Adds a control to the main dock panel, at the associated state.
         /// </summary>
         /// <param name="content">The DockContent to add.</param>

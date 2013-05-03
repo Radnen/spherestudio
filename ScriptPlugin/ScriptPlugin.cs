@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace ScriptPlugin
 {
-    public class ScriptPlugin : IEditorPlugin
+    public class ScriptPlugin : IPlugin
     {
         public string Name { get { return "Scintilla Script Editor"; } }
         public string Author { get { return "Radnen"; } }
@@ -19,8 +19,6 @@ namespace ScriptPlugin
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
-
-        private string[] _filetypes = { ".js", "*" };
 
         ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem, OpenScriptItem;
         ToolStripMenuItem AutoCompleteItem, CodeFoldItem, HighlightLineItem;
@@ -92,6 +90,21 @@ namespace ScriptPlugin
             OpenScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
             OpenScriptItem.Click += new EventHandler(OpenScriptItem_Click);
             #endregion
+        }
+
+        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        {
+            string[] fileTypes = { ".js", "*" };
+
+            if (e.IsAlreadyMatched) return;
+            foreach (string type in fileTypes)
+            {
+                if (e.FileExtension == type)
+                {
+                    Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
+                    e.IsAlreadyMatched = true;
+                }
+            }
         }
 
         void OpenScriptItem_Click(object sender, EventArgs e)
@@ -242,7 +255,9 @@ namespace ScriptPlugin
         public void Initialize()
         {
             LoadFunctions();
-            Host.Register(_filetypes, "ScriptPlugin");
+            
+            // register event handlers
+            Host.TryEditFile += host_TryEditFile;
 
             // Show the root menu for this control; appearing before the 'View' menu.
             Host.AddMenuItem(RootMenu, "View");
@@ -264,7 +279,6 @@ namespace ScriptPlugin
         public void Destroy()
         {
             functions.Clear();
-            Host.Unregister(_filetypes);
             Host.RemoveMenuItem("ScriptPlugin");
         }
 

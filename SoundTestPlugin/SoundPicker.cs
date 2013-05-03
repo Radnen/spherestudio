@@ -18,7 +18,14 @@ namespace SoundTestPlugin
     {
         private readonly string[] fileTypes = new string[] 
         {
-            "*.mp3:Music", "*.ogg:Music", "*.flac:Music", "*.mod:Music", "*.xm:Music", "*.it:Music", "*.s3d:Music",
+            "*.mp3:Music",
+            "*.ogg:Music",
+            "*.flac:Music",
+            "*.mod:Music",
+            "*.xm:Music",
+            "*.it:Music",
+            "*.s3d:Music",
+            
             "*.wav:Sounds"
         };
 

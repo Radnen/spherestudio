@@ -60,8 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditFileEvent.cs" />
-    <Compile Include="IEditorPlugin.cs" />
+    <Compile Include="EditFileEventArgs.cs" />
     <Compile Include="IPluginHost.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="PluginWrapper.cs" />

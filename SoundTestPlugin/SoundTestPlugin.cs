@@ -32,23 +32,19 @@ namespace SoundTestPlugin
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
         {
-            if (e.IsAlreadyMatched)
-            {
-                return;
-            }
-            string[] validExtensions = new string[] {
-                ".mp3",
-                ".ogg",
-                ".mod",
-                ".it",
-                ".wav"
+            string[] fileTypes = new string[] {
+                ".mp3", ".ogg", ".flac",  // compressed audio
+                ".mod", ".it", ".s3d",    // tracker formats
+                ".wav"                    // uncompressed/PCM
             };
-            foreach (string extension in validExtensions)
+            
+            if (e.IsAlreadyMatched) return;
+            foreach (string type in fileTypes)
             {
-                if (e.FileExtension == extension)
+                if (e.FileExtension == type)
                 {
-                    e.IsAlreadyMatched = true;
                     this.soundPicker.PlayFile(e.FileFullPath);
+                    e.IsAlreadyMatched = true;
                 }
             }
         }
@@ -83,7 +79,6 @@ namespace SoundTestPlugin
 
         public void Destroy()
         {
-            Host.RemoveMenuItem("Sound Test");
         }
     }
 }

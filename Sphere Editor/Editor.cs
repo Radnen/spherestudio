@@ -199,16 +199,6 @@ namespace Sphere_Editor
                 item.Dispose();
             }
         }
-
-        public void Register(string[] types, string name)
-        {
-            ProjectTree.RegisterFiletypes(types, name);
-        }
-
-        public void Unregister(string[] types)
-        {
-            ProjectTree.Unregister(types);
-        }
         #endregion
 
         private void EditorForm_Shown(object sender, EventArgs e)
@@ -963,17 +953,6 @@ namespace Sphere_Editor
                 return;
             }
             else DockTest.ActiveDocument.DockHandler.Close();
-        }
-
-        internal void OpenDocument(string plugin_name, string path = "")
-        {
-            IPlugin plugin = Global.plugins[plugin_name].Plugin;
-            if (plugin is IEditorPlugin)
-            {
-                DockContent content = ((IEditorPlugin)plugin).OpenEditor(path);
-                content.FormClosing += new FormClosingEventHandler(Content_FormClosing);
-                DockControl(content, DockState.Document);
-            }
         }
     }
 }
