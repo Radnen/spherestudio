@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 using Sphere_Editor.Forms;
+using Sphere.Plugins;
 
 namespace Sphere_Editor.SubEditors
 {
@@ -501,6 +502,15 @@ namespace Sphere_Editor.SubEditors
             // if the node is anything other than a file, don't do anything
             if ((string)node.Tag != "file-node") return;
 
+            // raise a TryEditFile event first to see if any plugins take the bait
+            EditFileEventArgs eventArgs = new EditFileEventArgs(path);
+            EditorForm.RaiseEditFileEvent(eventArgs); // HORRIBLE HACK!
+            if (eventArgs.IsAlreadyMatched)
+            {
+                // Someone took the bait, we don't have to do anything else
+                return;
+            }
+            
             // open a registered filetype
             string plugin;
             if (_registered.TryGetValue(Path.GetExtension(s), out plugin))

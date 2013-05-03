@@ -27,14 +27,19 @@ namespace Sphere.Plugins
         event EventHandler LoadProject;
 
         /// <summary>
-        /// Add event handlers to do things when a project closes.
-        /// </summary>
-        event EventHandler UnloadProject;
-
-        /// <summary>
         /// Add event handlers to do things when the Test Game command is clicked.
         /// </summary>
         event EventHandler TestGame;
+
+        /// <summary>
+        /// Add event handlers to attempt to open files double-clicked in the project tree.
+        /// </summary>
+        event EditFileEventHandler TryEditFile;
+
+        /// <summary>
+        /// Add event handlers to do things when a project closes.
+        /// </summary>
+        event EventHandler UnloadProject;
 
         /// <summary>
         /// Registers filetypes from the project tree.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Sphere.Core;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -16,13 +17,6 @@ namespace SoundTestPlugin
 
         public IPluginHost Host { get; set; }
 
-        private string[] fileTypes = new string[]
-        {
-            "*.mp3",
-            "*.ogg",
-            "*.wav"
-        };
-
         private DockContent content;
         private SoundPicker soundPicker;
 
@@ -34,6 +28,29 @@ namespace SoundTestPlugin
         private void host_UnloadProject(object sender, EventArgs e)
         {
             this.soundPicker.WatchProject(null);
+        }
+
+        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        {
+            if (e.IsAlreadyMatched)
+            {
+                return;
+            }
+            string[] validExtensions = new string[] {
+                ".mp3",
+                ".ogg",
+                ".mod",
+                ".it",
+                ".wav"
+            };
+            foreach (string extension in validExtensions)
+            {
+                if (e.FileExtension == extension)
+                {
+                    e.IsAlreadyMatched = true;
+                    this.soundPicker.PlayFile(e.FileFullPath);
+                }
+            }
         }
 
         private void host_TestGame(object sender, EventArgs e)
@@ -60,6 +77,7 @@ namespace SoundTestPlugin
             Host.DockControl(this.content, DockState.DockLeft);
             Host.LoadProject += new EventHandler(host_LoadProject);
             Host.UnloadProject += new EventHandler(host_UnloadProject);
+            Host.TryEditFile += new EditFileEventHandler(host_TryEditFile);
             Host.TestGame += new EventHandler(host_TestGame);
         }
 

@@ -52,20 +52,7 @@ namespace SoundTestPlugin
         {
             ListViewItem chosenItem = this.trackList.SelectedItems[0];
             string filePath = (string)chosenItem.Tag;
-            bool playLooped = chosenItem.Group.Name == "Music";
-            ISound sound = this.soundEngine.Play2D(filePath, playLooped);
-            if (chosenItem.Group.Name == "Music")
-            {
-                this.StopMusic();
-                this.musicName = chosenItem.Text;
-                this.music = sound;
-                this.trackNameTextBox.Text = "Now Playing: " + chosenItem.Text;
-                this.playTool.Text = "PLAY";
-                this.playTool.Image = this.playIcons.Images["play"];
-                this.pauseTool.Enabled = true;
-                this.pauseTool.CheckState = CheckState.Unchecked;
-                this.stopTool.Enabled = true;
-            }
+            this.PlayFile(filePath);
         }
 
         public SoundPicker(IPlugin plugin)
@@ -108,7 +95,20 @@ namespace SoundTestPlugin
 
         public void PlayFile(string path)
         {
-            //TODO: implement me!
+            bool isMusic = Path.GetExtension(path) != ".wav";
+            ISound sound = this.soundEngine.Play2D(path, isMusic);
+            if (isMusic)
+            {
+                this.StopMusic();
+                this.musicName = Path.GetFileNameWithoutExtension(path);
+                this.music = sound;
+                this.trackNameTextBox.Text = "Now Playing: " + this.musicName;
+                this.playTool.Text = "PLAY";
+                this.playTool.Image = this.playIcons.Images["play"];
+                this.pauseTool.Enabled = true;
+                this.pauseTool.CheckState = CheckState.Unchecked;
+                this.stopTool.Enabled = true;
+            }
         }
 
         public void PlayOrPauseMusic()
