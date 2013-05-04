@@ -7,28 +7,29 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace ScriptPlugin
+namespace FastScriptPlugin
 {
-    public class ScriptPlugin : IPlugin
+    public class ScripterPlugin : IPlugin
     {
-        public string Name { get { return "Scintilla Script Editor"; } }
+
+        public string Name { get { return "Fast Script Editor"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "A Scintilla based script editor."; } }
-        public string Version { get { return "1.2"; } }
+        public string Description { get { return "A faster, neater code editor for the Sphere Studio."; } }
+        public string Version { get { return "1.0a"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
         private string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore" };
         private string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm";
-        
+
         ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem, OpenScriptItem;
-        ToolStripMenuItem AutoCompleteItem, CodeFoldItem, HighlightLineItem;
-        ToolStripMenuItem HighlightBracesItem, UseTabsItem, ChangeFontItem;
+        ToolStripMenuItem AutoCompleteItem, CodeFoldItem;
+        ToolStripMenuItem UseTabsItem, ChangeFontItem;
         ToolStripMenuItem TwoUnitItem, FourUnitItem, EightUnitItem;
         ToolStripItem Separator1, Separator2;
 
-        public ScriptPlugin()
+        public ScripterPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
 
@@ -40,14 +41,6 @@ namespace ScriptPlugin
             CodeFoldItem = new ToolStripMenuItem("Code Folding");
             CodeFoldItem.CheckOnClick = true;
             CodeFoldItem.Click += new EventHandler(CodeFoldItem_Click);
-
-            HighlightLineItem = new ToolStripMenuItem("Highlight Current Line");
-            HighlightLineItem.CheckOnClick = true;
-            HighlightLineItem.Click += new EventHandler(HighlightLineItem_Click);
-
-            HighlightBracesItem = new ToolStripMenuItem("Highlight Braces");
-            HighlightBracesItem.CheckOnClick = true;
-            HighlightBracesItem.Click += new EventHandler(HighlightBracesItem_Click);
 
             Separator1 = new ToolStripSeparator();
             Separator2 = new ToolStripSeparator();
@@ -71,8 +64,6 @@ namespace ScriptPlugin
             RootMenu = new ToolStripMenuItem("&Script");
             RootMenu.DropDownItems.Add(AutoCompleteItem);
             RootMenu.DropDownItems.Add(CodeFoldItem);
-            RootMenu.DropDownItems.Add(HighlightLineItem);
-            RootMenu.DropDownItems.Add(HighlightBracesItem);
             RootMenu.DropDownItems.Add(Separator1);
 
             IndentMenu = new ToolStripMenuItem("Indentation");
@@ -94,55 +85,25 @@ namespace ScriptPlugin
             #endregion
         }
 
-        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        private void AutoCompleteItem_Click(object sender, EventArgs e)
         {
-            if (e.IsAlreadyMatched) return;
-            foreach (string type in _fileTypes)
-            {
-                if (e.FileExtension == type)
-                {
-                    Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
-                    e.IsAlreadyMatched = true;
-                }
-            }
-        }
-
-        void OpenScriptItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog diag = new OpenFileDialog())
-            {
-                diag.Filter = _openFileFilters;
-
-                if (Host.CurrentGame != null)
-                    diag.InitialDirectory = Host.CurrentGame.RootPath + "\\scripts";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                    Host.DockControl(OpenEditor(diag.FileName), DockState.Document);
-            }
-        }
-
-        void NewScriptItem_Click(object sender, EventArgs e)
-        {
-            Host.DockControl(OpenEditor(), DockState.Document);
-        }
-
-        void EightUnitItem_Click(object sender, EventArgs e)
-        {
-            EightUnitItem.Checked = true;
-            TwoUnitItem.Checked = FourUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 8);
+            Host.EditorSettings.SaveObject("script-autocomplete", AutoCompleteItem.Checked);
             UpdateScriptControls();
         }
 
-        void FourUnitItem_Click(object sender, EventArgs e)
+        private void CodeFoldItem_Click(object sender, EventArgs e)
         {
-            FourUnitItem.Checked = true;
-            TwoUnitItem.Checked = EightUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 4);
+            Host.EditorSettings.SaveObject("script-fold", CodeFoldItem.Checked);
             UpdateScriptControls();
         }
 
-        void TwoUnitItem_Click(object sender, EventArgs e)
+        private void UseTabsItem_Click(object sender, EventArgs e)
+        {
+            Host.EditorSettings.SaveObject("script-tabs", UseTabsItem.Checked);
+            UpdateScriptControls();
+        }
+
+        private void TwoUnitItem_Click(object sender, EventArgs e)
         {
             TwoUnitItem.Checked = true;
             FourUnitItem.Checked = EightUnitItem.Checked = false;
@@ -150,7 +111,23 @@ namespace ScriptPlugin
             UpdateScriptControls();
         }
 
-        void ChangeFontItem_Click(object sender, EventArgs e)
+        private void FourUnitItem_Click(object sender, EventArgs e)
+        {
+            FourUnitItem.Checked = true;
+            TwoUnitItem.Checked = EightUnitItem.Checked = false;
+            Host.EditorSettings.SaveObject("script-spaces", 4);
+            UpdateScriptControls();
+        }
+
+        private void EightUnitItem_Click(object sender, EventArgs e)
+        {
+            EightUnitItem.Checked = true;
+            TwoUnitItem.Checked = FourUnitItem.Checked = false;
+            Host.EditorSettings.SaveObject("script-spaces", 8);
+            UpdateScriptControls();
+        }
+
+        private void ChangeFontItem_Click(object sender, EventArgs e)
         {
             using (FontDialog diag = new FontDialog())
             {
@@ -176,67 +153,41 @@ namespace ScriptPlugin
             }
         }
 
-        void UseTabsItem_Click(object sender, EventArgs e)
+        private void NewScriptItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-tabs", UseTabsItem.Checked);
-            UpdateScriptControls();
+            Host.DockControl(OpenEditor(), DockState.Document);
         }
 
-        void HighlightBracesItem_Click(object sender, EventArgs e)
+        private void OpenScriptItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-hibraces", HighlightBracesItem.Checked);
-            UpdateScriptControls();
-        }
-
-        void HighlightLineItem_Click(object sender, EventArgs e)
-        {
-            Host.EditorSettings.SaveObject("script-hiline", HighlightLineItem.Checked);
-            UpdateScriptControls();
-        }
-
-        void CodeFoldItem_Click(object sender, EventArgs e)
-        {
-            Host.EditorSettings.SaveObject("script-fold", CodeFoldItem.Checked);
-        }
-
-        void AutoCompleteItem_Click(object sender, EventArgs e)
-        {
-            Host.EditorSettings.SaveObject("script-autocomplete", AutoCompleteItem.Checked);
-            UpdateScriptControls();
-        }
-
-        internal static List<String> functions = new List<string>();
-
-        public static void LoadFunctions()
-        {
-            FileInfo file = new FileInfo(Application.StartupPath + "/docs/functions.txt");
-            if (!file.Exists) return;
-
-            using (StreamReader reader = file.OpenText())
+            using (OpenFileDialog diag = new OpenFileDialog())
             {
-                while (!reader.EndOfStream)
-                    functions.Add(reader.ReadLine());
+                diag.Filter = _openFileFilters;
+
+                if (Host.CurrentGame != null)
+                    diag.InitialDirectory = Host.CurrentGame.RootPath + "\\scripts";
+
+                if (diag.ShowDialog() == DialogResult.OK)
+                    Host.DockControl(OpenEditor(diag.FileName), DockState.Document);
             }
         }
 
         public DockContent OpenEditor(string filename = "")
         {
-            // Creates a new editor instance:
-            ScriptEditor editor = new ScriptEditor(Host);
+            Scripter script_editor = new Scripter(Host);
+            
+            script_editor.OnActivate += new EventHandler(editor_OnActivate);
+            script_editor.OnDeactivate += new EventHandler(editor_OnDeactivate);
 
-            editor.OnActivate += new EventHandler(editor_OnActivate);
-            editor.OnDeactivate += new EventHandler(editor_OnDeactivate);
+            script_editor.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            editor.Dock = DockStyle.Fill;
-
-            // And creates + styles a dock panel:
             DockContent content = new DockContent();
-            content.Text = "Script Editor";
-            content.Controls.Add(editor);
+            content.Text = "Untitled.js";
+            content.Controls.Add(script_editor);
             content.DockAreas = DockAreas.Document;
             content.Icon = Icon;
 
-            if (!string.IsNullOrEmpty(filename)) editor.LoadFile(filename);
+            if (!string.IsNullOrEmpty(filename)) script_editor.LoadFile(filename);
 
             return content;
         }
@@ -250,26 +201,30 @@ namespace ScriptPlugin
         {
             RootMenu.Visible = true;
         }
+        
+        void Host_TryEditFile(object sender, EditFileEventArgs e)
+        {
+            if (e.IsAlreadyMatched) return;
+            foreach (string type in _fileTypes)
+            {
+                if (e.FileExtension == type)
+                {
+                    Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
+                }
+            }
+        }
 
         public void Initialize()
         {
-            LoadFunctions();
-            
-            // register event handlers
-            Host.TryEditFile += host_TryEditFile;
-
-            // register Open dialog file types
+            Host.TryEditFile += Host_TryEditFile;
             Host.RegisterOpenFileType("Script/Text Files", _openFileFilters);
 
-            // Show the root menu for this control; appearing before the 'View' menu.
             Host.AddMenuItem(RootMenu, "View");
             Host.AddMenuItem("File.New", NewScriptItem);
             Host.AddMenuItem("File.Open", OpenScriptItem);
 
             AutoCompleteItem.Checked = Host.EditorSettings.GetBool("script-autocomplete", true);
             CodeFoldItem.Checked = Host.EditorSettings.GetBool("script-fold", true);
-            HighlightLineItem.Checked = Host.EditorSettings.GetBool("script-hiline", true);
-            HighlightBracesItem.Checked = Host.EditorSettings.GetBool("script-hibraces", true);
             UseTabsItem.Checked = Host.EditorSettings.GetBool("script-tabs", true);
 
             int spaces = Host.EditorSettings.GetInt("script-spaces", 2);
@@ -281,16 +236,17 @@ namespace ScriptPlugin
         public void Destroy()
         {
             Host.UnregisterOpenFileType(_openFileFilters);
-            functions.Clear();
-            Host.RemoveMenuItem("ScriptPlugin");
+            Host.RemoveMenuItem("Script");
+            Host.RemoveMenuItem(NewScriptItem);
+            Host.RemoveMenuItem(OpenScriptItem);
         }
 
         private void UpdateScriptControls()
         {
             DockContentCollection docs = Host.GetDocuments();
             foreach (DockContent content in docs)
-                if (content.Controls[0] is ScriptEditor)
-                    ((ScriptEditor)content.Controls[0]).UpdateStyle();
+                if (content.Controls[0] is Scripter)
+                    ((Scripter)content.Controls[0]).UpdateStyle();
         }
     }
 }

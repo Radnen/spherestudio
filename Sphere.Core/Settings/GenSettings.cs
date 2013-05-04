@@ -8,7 +8,7 @@ namespace Sphere.Core.Settings
     /// </summary>
     public abstract class GenSettings
     {
-        private SortedList<string, string> items = new SortedList<string, string>();
+        private SortedList<string, string> _items = new SortedList<string, string>();
 
         /// <summary>
         /// Gets the path where this settings file is stored.
@@ -22,7 +22,7 @@ namespace Sphere.Core.Settings
         /// <returns>A string or string.Empty if it failed.</returns>
         public string GetString(string key)
         {
-            if (items.ContainsKey(key)) return items[key];
+            if (_items.ContainsKey(key)) return _items[key];
             else return string.Empty;
         }
 
@@ -54,7 +54,7 @@ namespace Sphere.Core.Settings
 
         protected void SetItem<T>(string key, T item)
         {
-            items[key] = item.ToString();
+            _items[key] = item.ToString();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Sphere.Core.Settings
         /// </summary>
         /// <param name="key">Key to store at.</param>
         /// <param name="items">The string array to store.</param>
-        public void StoreArray(string key, string[] items)
+        public void StoreArray(string key, IEnumerable<string> items)
         {
             System.Text.StringBuilder builder = new System.Text.StringBuilder();
             foreach (string s in items) builder.Append(s).Append(',');
@@ -89,14 +89,14 @@ namespace Sphere.Core.Settings
         public void SetSettings(GenSettings settings)
         {
             RootPath = settings.RootPath;
-            foreach (KeyValuePair<string, string> pair in settings.items)
-                items[pair.Key] = pair.Value;
+            foreach (KeyValuePair<string, string> pair in settings._items)
+                _items[pair.Key] = pair.Value;
         }
 
         protected GenSettings Clone(GenSettings settings)
         {
-            foreach (KeyValuePair<string, string> pair in items)
-                settings.items[pair.Key] = pair.Value;
+            foreach (KeyValuePair<string, string> pair in _items)
+                settings._items[pair.Key] = pair.Value;
             settings.RootPath = RootPath;
             return settings;
         }
@@ -109,10 +109,10 @@ namespace Sphere.Core.Settings
         {
             using (StreamWriter settings = new StreamWriter(path))
             {
-                for (int i = 0; i < items.Count; ++i)
+                for (int i = 0; i < _items.Count; ++i)
                 {
-                    string key = items.Keys[i];
-                    settings.WriteLine(key + "=" + items[key]);
+                    string key = _items.Keys[i];
+                    settings.WriteLine(key + "=" + _items[key]);
                 }
                 settings.Flush();
             }
@@ -125,7 +125,7 @@ namespace Sphere.Core.Settings
         /// <param name="data">The data serialized as a string.</param>
         public void SaveObject(string key, object data)
         {
-            items[key] = data.ToString();
+            _items[key] = data.ToString();
         }
 
         // loads the editor settings such as sphere engine path or config path.
@@ -140,7 +140,7 @@ namespace Sphere.Core.Settings
                 while (!settings.EndOfStream)
                 {
                     string[] lines = settings.ReadLine().Split(new char[] { '=' }, 2);
-                    if (lines.Length > 1) items[lines[0]] = lines[1];
+                    if (lines.Length > 1) _items[lines[0]] = lines[1];
                 }
                 return true;
             }

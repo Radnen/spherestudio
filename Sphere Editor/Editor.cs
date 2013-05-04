@@ -166,7 +166,7 @@ namespace Sphere_Editor
 
         public void RegisterOpenFileType(string typeName, string filters)
         {
-            _openFileTypes.Add(filters, typeName);
+            _openFileTypes[filters] = typeName;
         }
 
         public void UnregisterOpenFileType(string filters)

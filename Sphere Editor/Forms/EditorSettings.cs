@@ -84,11 +84,13 @@ namespace Sphere_Editor.Forms
             settings.LabelFont = LabelFont;
             settings.StoreArray("games_path", GamePaths);
 
-            int i = 0;
-            string[] str = new string[Global.plugins.Count];
-            foreach (var item in Global.plugins) str[i++] = item.Key;
+            List<string> activated = new List<string>();
+            foreach (var item in Global.plugins)
+            {
+                if (item.Value.Enabled) activated.Add(item.Key);
+            }
 
-            settings.StoreArray("plugins", str);
+            settings.StoreArray("plugins", activated);
             return settings;
         }
 
