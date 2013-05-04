@@ -30,14 +30,17 @@ namespace SoundTestPlugin
         };
 
         private IPlugin _plugin;
-        private FileSystemWatcher _fileWatcher;
+        private static FileSystemWatcher _fileWatcher;
         private ISoundEngine _soundEngine = new ISoundEngine();
         private ISound _music;
         private string _musicName;
 
+        delegate void SafeRefresh();
+        SafeRefresh MySafeRefresh;
+
         private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Refresh();
+            Invoke(MySafeRefresh);
         }
         
         private void pauseTool_Click(object sender, EventArgs e)
@@ -68,11 +71,11 @@ namespace SoundTestPlugin
             _plugin = plugin;
             _fileWatcher = new FileSystemWatcher();
             _fileWatcher.Changed += fileWatcher_Changed;
-            _fileWatcher.Filter = "*.*";
             _fileWatcher.IncludeSubdirectories = true;
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(_plugin.Host.CurrentGame);
             StopMusic();
+            SafeRefresh MySafeRefresh = new SafeRefresh(Refresh);
         }
 
         /// <summary>
