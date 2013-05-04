@@ -31,6 +31,7 @@ namespace SoundTestPlugin
 
         private IPlugin _plugin;
         private static FileSystemWatcher _fileWatcher;
+        private ImageList playIcons = new ImageList();
         private ISoundEngine _soundEngine = new ISoundEngine();
         private ISound _music;
         private string _musicName;
@@ -68,6 +69,11 @@ namespace SoundTestPlugin
         public SoundPicker(IPlugin plugin)
         {
             InitializeComponent();
+
+            playIcons.Images.Add(Properties.Resources.play_tool);
+            playIcons.Images.Add(Properties.Resources.pause_tool);
+            playIcons.Images.Add(Properties.Resources.stop_tool);
+
             _plugin = plugin;
             _fileWatcher = new FileSystemWatcher();
             _fileWatcher.Changed += fileWatcher_Changed;
@@ -122,7 +128,7 @@ namespace SoundTestPlugin
                 StopMusic();
                 _musicName = Path.GetFileNameWithoutExtension(path);
                 _music = sound;
-                trackNameTextBox.Text = "Now Playing: " + _musicName;
+                trackNameLabel.Text = "Now Playing: " + _musicName;
                 playTool.Text = "PLAY";
                 playTool.Image = playIcons.Images["play"];
                 pauseTool.Enabled = true;
@@ -185,11 +191,15 @@ namespace SoundTestPlugin
                 string groupName = parsedFilter[1];
                 
                 trackList.Groups.Add(groupName, groupName);
-                
-                DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(gamePath, "sounds"));
-                FileInfo[] allFilesInfo = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
 
-                foreach (FileInfo fileInfo in allFilesInfo)
+                DirectoryInfo dirInfo;
+                List<FileInfo> fileInfoList = new List<FileInfo>();
+                dirInfo = new DirectoryInfo(Path.Combine(gamePath, "sounds"));
+                fileInfoList.AddRange(dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories));
+                dirInfo = new DirectoryInfo(Path.Combine(gamePath, "music"));
+                fileInfoList.AddRange(dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories));
+
+                foreach (FileInfo fileInfo in fileInfoList)
                 {
                     string path = Path.GetFullPath(fileInfo.FullName);
                     ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
@@ -224,7 +234,7 @@ namespace SoundTestPlugin
                 _music = null;
             }
 
-            trackNameTextBox.Text = "-";
+            trackNameLabel.Text = "-";
             playTool.Image = playIcons.Images["stop"];
             playTool.Text = "STOP";
             pauseTool.CheckState = CheckState.Unchecked;
