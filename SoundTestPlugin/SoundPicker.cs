@@ -81,7 +81,7 @@ namespace SoundTestPlugin
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(_plugin.Host.CurrentGame);
             StopMusic();
-            SafeRefresh MySafeRefresh = new SafeRefresh(Refresh);
+            MySafeRefresh = new SafeRefresh(Refresh);
         }
 
         /// <summary>
@@ -192,14 +192,10 @@ namespace SoundTestPlugin
                 
                 trackList.Groups.Add(groupName, groupName);
 
-                DirectoryInfo dirInfo;
-                List<FileInfo> fileInfoList = new List<FileInfo>();
-                dirInfo = new DirectoryInfo(Path.Combine(gamePath, "sounds"));
-                fileInfoList.AddRange(dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories));
-                dirInfo = new DirectoryInfo(Path.Combine(gamePath, "music"));
-                fileInfoList.AddRange(dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories));
+                DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
+                FileInfo[] fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
 
-                foreach (FileInfo fileInfo in fileInfoList)
+                foreach (FileInfo fileInfo in fileInfos)
                 {
                     string path = Path.GetFullPath(fileInfo.FullName);
                     ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));

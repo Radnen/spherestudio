@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sphere_Editor</RootNamespace>
     <AssemblyName>Sphere Editor</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Editor.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -115,8 +115,8 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="irrKlang.NET2.0">
-      <HintPath>Libs\IrrKlang\irrKlang.NET2.0.dll</HintPath>
+    <Reference Include="irrKlang.NET4">
+      <HintPath>Libs\irrklang\irrKlang.NET4.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="ObjectListView, Version=2.5.1.20896, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
