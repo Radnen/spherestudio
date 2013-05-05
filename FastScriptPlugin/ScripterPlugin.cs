@@ -15,7 +15,7 @@ namespace FastScriptPlugin
         public string Name { get { return "Fast Script Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "A faster, neater code editor for the Sphere Studio."; } }
-        public string Version { get { return "1.0a"; } }
+        public string Version { get { return "1.0b"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
@@ -24,7 +24,7 @@ namespace FastScriptPlugin
         private string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm";
 
         ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem, OpenScriptItem;
-        ToolStripMenuItem AutoCompleteItem, CodeFoldItem;
+        ToolStripMenuItem AutoCompleteItem, HighlightLineItem, CodeFoldItem;
         ToolStripMenuItem UseTabsItem, ChangeFontItem;
         ToolStripMenuItem TwoUnitItem, FourUnitItem, EightUnitItem;
         ToolStripItem Separator1, Separator2;
@@ -41,6 +41,10 @@ namespace FastScriptPlugin
             CodeFoldItem = new ToolStripMenuItem("Code Folding");
             CodeFoldItem.CheckOnClick = true;
             CodeFoldItem.Click += new EventHandler(CodeFoldItem_Click);
+
+            HighlightLineItem = new ToolStripMenuItem("Highlight Current Line");
+            HighlightLineItem.CheckOnClick = true;
+            HighlightLineItem.Click += new EventHandler(HighlightLineItem_Click);
 
             Separator1 = new ToolStripSeparator();
             Separator2 = new ToolStripSeparator();
@@ -64,6 +68,7 @@ namespace FastScriptPlugin
             RootMenu = new ToolStripMenuItem("&Script");
             RootMenu.DropDownItems.Add(AutoCompleteItem);
             RootMenu.DropDownItems.Add(CodeFoldItem);
+            RootMenu.DropDownItems.Add(HighlightLineItem);
             RootMenu.DropDownItems.Add(Separator1);
 
             IndentMenu = new ToolStripMenuItem("Indentation");
@@ -94,6 +99,12 @@ namespace FastScriptPlugin
         private void CodeFoldItem_Click(object sender, EventArgs e)
         {
             Host.EditorSettings.SaveObject("script-fold", CodeFoldItem.Checked);
+            UpdateScriptControls();
+        }
+
+        void HighlightLineItem_Click(object sender, EventArgs e)
+        {
+            Host.EditorSettings.SaveObject("script-hiline", HighlightLineItem.Checked);
             UpdateScriptControls();
         }
 
@@ -210,6 +221,7 @@ namespace FastScriptPlugin
                 if (e.FileExtension == type)
                 {
                     Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
+                    e.IsAlreadyMatched = true;
                 }
             }
         }
@@ -226,6 +238,7 @@ namespace FastScriptPlugin
             AutoCompleteItem.Checked = Host.EditorSettings.GetBool("script-autocomplete", true);
             CodeFoldItem.Checked = Host.EditorSettings.GetBool("script-fold", true);
             UseTabsItem.Checked = Host.EditorSettings.GetBool("script-tabs", true);
+            HighlightLineItem.Checked = Host.EditorSettings.GetBool("script-hiline", true);
 
             int spaces = Host.EditorSettings.GetInt("script-spaces", 2);
             TwoUnitItem.Checked = spaces == 2;

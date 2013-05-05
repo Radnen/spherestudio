@@ -547,9 +547,17 @@
     <Content Include="Editor.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FastScriptPlugin\ScripterPlugin.csproj">
+      <Project>{6b3428fe-c5fc-4c04-a93d-9a1ee50fca2b}</Project>
+      <Name>ScripterPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FontPlugin\FontPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyPlugin\MyPlugin.csproj">
+      <Project>{b320da5e-0e67-4ce7-97e7-96009014e6ee}</Project>
+      <Name>MyPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScriptPlugin\ScriptPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>

@@ -161,6 +161,10 @@ namespace Sphere_Editor
 
         public void DockControl(DockContent content, DockState state)
         {
+            // adds an event to find 'dirtied' forms.
+            if (content.Controls.Count > 0 && content.Controls[0] is EditorObject)
+                content.FormClosing += Content_FormClosing;
+
             content.Show(DockTest, state);
         }
 

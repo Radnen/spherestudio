@@ -22,12 +22,12 @@ namespace FastScriptPlugin
             InitializeComponent();
             _textbox = new FastColoredTextBox();
             _textbox.Dock = DockStyle.Fill;
-            _textbox.TextChanged += _textbox_TextChanged;
+            _textbox.TextChangedDelayed += _textbox_TextChangedDelayed;
             Controls.Add(_textbox);
             UpdateStyle();
         }
 
-        void _textbox_TextChanged(object sender, TextChangedEventArgs e)
+        void _textbox_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
             MakeDirty();
         }
@@ -36,12 +36,18 @@ namespace FastScriptPlugin
         {
             _textbox.TabLength = _host.EditorSettings.GetInt("script-spaces", 2);
             _textbox.AcceptsTab = _host.EditorSettings.GetBool("script-tabs", _textbox.AcceptsTab);
+            _textbox.ShowFoldingLines = _host.EditorSettings.GetBool("script-fold", true);
+            
+            if (_host.EditorSettings.GetBool("script-hiline", true))
+                _textbox.CurrentLineColor = Color.Yellow;
+            else
+                _textbox.CurrentLineColor = Color.White;
 
             string fontstring = _host.EditorSettings.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                _textbox.Font =(Font)converter.ConvertFromString(fontstring);
+                _textbox.Font = (Font)converter.ConvertFromString(fontstring);
             }
         }
 
@@ -58,12 +64,8 @@ namespace FastScriptPlugin
             {
                 _textbox.Text = reader.ReadToEnd();
                 _textbox.ClearUndo();
+                Parent.Text = Path.GetFileName(FileName);
             }
-        }
-
-        public override void SelectAll()
-        {
-            _textbox.SelectAll();
         }
 
         public override void Save()
@@ -74,9 +76,9 @@ namespace FastScriptPlugin
                 using (StreamWriter writer = new StreamWriter(FileName, false, ISO_8859_1))
                 {
                     writer.Write(_textbox.Text);
+                    Parent.Text = Path.GetFileName(FileName);
                 }
             }
-            Parent.Text = Path.GetFileName(FileName);
         }
 
         public override void SaveAs()
@@ -96,6 +98,11 @@ namespace FastScriptPlugin
             }
         }
 
+        public override void SelectAll()
+        {
+            _textbox.SelectAll();
+        }
+
         public override void Copy()
         {
             _textbox.Copy();
@@ -109,6 +116,16 @@ namespace FastScriptPlugin
         public override void Cut()
         {
             _textbox.Cut();
+        }
+
+        public override void Undo()
+        {
+            _textbox.Undo();
+        }
+
+        public override void Redo()
+        {
+            _textbox.Redo();
         }
     }
 }

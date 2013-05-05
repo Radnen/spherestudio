@@ -18,11 +18,17 @@ namespace Sphere.Core
         public event EventHandler OnActivate;
         public event EventHandler OnDeactivate;
 
+        /// <summary>
+        /// Occurs when entering the control on the main dock panel.
+        /// </summary>
         public void Activate()
         {
             if (OnActivate != null) OnActivate(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Occurs when leaving the control on the main dock panel.
+        /// </summary>
         public void Deactivate()
         {
             if (OnDeactivate != null) OnDeactivate(this, EventArgs.Empty);
