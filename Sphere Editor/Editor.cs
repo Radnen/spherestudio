@@ -1014,5 +1014,10 @@ namespace Sphere_Editor
             if (fileNames == null) return;
             OpenDocument(fileNames[0]);
         }
+
+        private void ApiDocsMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenDocument(Path.Combine(Application.StartupPath,"Docs/api.txt"));
+        }
     }
 }

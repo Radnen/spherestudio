@@ -70,9 +70,10 @@ namespace SoundTestPlugin
         {
             InitializeComponent();
 
-            playIcons.Images.Add(Properties.Resources.play_tool);
-            playIcons.Images.Add(Properties.Resources.pause_tool);
-            playIcons.Images.Add(Properties.Resources.stop_tool);
+            playIcons.ColorDepth = ColorDepth.Depth32Bit;
+            playIcons.Images.Add("play", Properties.Resources.play_tool);
+            playIcons.Images.Add("pause", Properties.Resources.pause_tool);
+            playIcons.Images.Add("stop", Properties.Resources.stop_tool);
 
             _plugin = plugin;
             _fileWatcher = new FileSystemWatcher();
