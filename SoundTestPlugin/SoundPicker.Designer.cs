@@ -123,6 +123,7 @@
             this.trackNameLabel.Name = "trackNameLabel";
             this.trackNameLabel.Size = new System.Drawing.Size(351, 23);
             this.trackNameLabel.TabIndex = 2;
+            this.trackNameLabel.Text = "Now Playing";
             this.trackNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SoundPicker
