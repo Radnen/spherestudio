@@ -46,6 +46,7 @@
             this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SystemWatcher = new System.IO.FileSystemWatcher();
             this.ProjectNameLabel = new Sphere.Core.Editor.EditorLabel();
+            this.autoRefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.ProjectFileContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).BeginInit();
             this.SuspendLayout();
@@ -84,7 +85,7 @@
             this.toolStripSeparator1,
             this.FontItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 296);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 274);
             // 
             // NewFileItem
             // 
@@ -194,7 +195,9 @@
             this.SystemWatcher.EnableRaisingEvents = true;
             this.SystemWatcher.IncludeSubdirectories = true;
             this.SystemWatcher.SynchronizingObject = this;
-            this.SystemWatcher.Changed += new System.IO.FileSystemEventHandler(this.SystemWatcher_Changed);
+            this.SystemWatcher.Created += new System.IO.FileSystemEventHandler(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Deleted += new System.IO.FileSystemEventHandler(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Renamed += new System.IO.RenamedEventHandler(this.SystemWatcher_EventRaised);
             // 
             // ProjectNameLabel
             // 
@@ -207,6 +210,11 @@
             this.ProjectNameLabel.TabIndex = 4;
             this.ProjectNameLabel.Text = "Project Name";
             this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // refreshTimer
+            // 
+            this.autoRefreshTimer.Interval = 1000;
+            this.autoRefreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 
             // ProjectTree
             // 
@@ -241,5 +249,6 @@
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem FontItem;
+        private System.Windows.Forms.Timer autoRefreshTimer;
     }
 }

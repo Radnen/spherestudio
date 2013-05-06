@@ -72,11 +72,11 @@ namespace SoundTestPlugin
             _content.DockHandler.HideOnClose = true;
             _content.Icon = Icon;
             Host.DockControl(_content, DockState.DockLeft);
-            Host.LoadProject += new EventHandler(host_LoadProject);
-            Host.UnloadProject += new EventHandler(host_UnloadProject);
-            Host.TestGame += new EventHandler(host_TestGame);
             Host.RegisterOpenFileType("Audio", _openFileFilter);
-            Host.TryEditFile += new EditFileEventHandler(host_TryEditFile);
+            Host.LoadProject += host_LoadProject;
+            Host.UnloadProject += host_UnloadProject;
+            Host.TestGame += host_TestGame;
+            Host.TryEditFile += host_TryEditFile;
             _soundPicker.WatchProject(Host.CurrentGame);
         }
 
