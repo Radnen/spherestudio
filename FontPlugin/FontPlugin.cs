@@ -98,6 +98,7 @@ namespace FontPlugin
 
         public void Destroy()
         {
+            Host.TryEditFile -= host_TryEditFile;
             Host.UnregisterOpenFileType(_openFileFilters);
         }
     }
