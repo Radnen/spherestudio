@@ -280,6 +280,7 @@ namespace ScriptPlugin
 
         public void Destroy()
         {
+            Host.TryEditFile -= host_TryEditFile;
             Host.UnregisterOpenFileType(_openFileFilters);
             functions.Clear();
             Host.RemoveMenuItem("ScriptPlugin");
