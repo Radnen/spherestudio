@@ -248,7 +248,6 @@ namespace FastScriptPlugin
 
         public void Destroy()
         {
-            Host.TryEditFile -= Host_TryEditFile;
             Host.UnregisterOpenFileType(_openFileFilters);
             Host.RemoveMenuItem("Script");
             Host.RemoveMenuItem(NewScriptItem);

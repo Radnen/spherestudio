@@ -82,10 +82,6 @@ namespace SoundTestPlugin
 
         public void Destroy()
         {
-            Host.LoadProject -= host_LoadProject;
-            Host.UnloadProject -= host_UnloadProject;
-            Host.TestGame -= host_TestGame;
-            Host.TryEditFile -= host_TryEditFile;
             Host.UnregisterOpenFileType(_openFileFilter);
             _soundPicker.WatchProject(null);
             Host.RemoveControl("Sound Test");
