@@ -403,7 +403,9 @@ namespace Sphere_Editor.SubEditors
 
         private void SystemWatcher_EventRaised(object sender, EventArgs e)
         {
-            UpdateTree();
+            autoRefreshTimer.Enabled = true;
+            autoRefreshTimer.Stop();
+            autoRefreshTimer.Start();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
@@ -505,6 +507,13 @@ namespace Sphere_Editor.SubEditors
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
                 ProjectTreeView.Font = (Font)converter.ConvertFromString(fontstring);
             }
+        }
+
+        private void refreshTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateTree();
+            autoRefreshTimer.Stop();
+            autoRefreshTimer.Enabled = false;
         }
     }
 }

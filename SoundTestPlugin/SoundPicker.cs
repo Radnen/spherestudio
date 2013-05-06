@@ -41,7 +41,9 @@ namespace SoundTestPlugin
 
         private void fileWatcher_EventRaised(object sender, EventArgs e)
         {
-            Invoke(MySafeRefresh);
+            autoRefreshTimer.Enabled = true;
+            autoRefreshTimer.Stop();
+            autoRefreshTimer.Start();
         }
 
         private void pauseTool_Click(object sender, EventArgs e)
@@ -239,6 +241,13 @@ namespace SoundTestPlugin
             pauseTool.CheckState = CheckState.Unchecked;
             pauseTool.Enabled = false;
             stopTool.Enabled = false;
+        }
+
+        private void autoRefreshTimer_Tick(object sender, EventArgs e)
+        {
+            Invoke(MySafeRefresh);
+            autoRefreshTimer.Stop();
+            autoRefreshTimer.Enabled = false;
         }
     }
 }

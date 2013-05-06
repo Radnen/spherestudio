@@ -46,6 +46,7 @@
             this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SystemWatcher = new System.IO.FileSystemWatcher();
             this.ProjectNameLabel = new Sphere.Core.Editor.EditorLabel();
+            this.autoRefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.ProjectFileContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).BeginInit();
             this.SuspendLayout();
@@ -210,6 +211,11 @@
             this.ProjectNameLabel.Text = "Project Name";
             this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // refreshTimer
+            // 
+            this.autoRefreshTimer.Interval = 1000;
+            this.autoRefreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
+            // 
             // ProjectTree
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -243,5 +249,6 @@
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem FontItem;
+        private System.Windows.Forms.Timer autoRefreshTimer;
     }
 }
