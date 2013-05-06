@@ -84,7 +84,7 @@
             this.toolStripSeparator1,
             this.FontItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 296);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 274);
             // 
             // NewFileItem
             // 
@@ -194,7 +194,9 @@
             this.SystemWatcher.EnableRaisingEvents = true;
             this.SystemWatcher.IncludeSubdirectories = true;
             this.SystemWatcher.SynchronizingObject = this;
-            this.SystemWatcher.Changed += new System.IO.FileSystemEventHandler(this.SystemWatcher_Changed);
+            this.SystemWatcher.Created += new System.IO.FileSystemEventHandler(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Deleted += new System.IO.FileSystemEventHandler(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Renamed += new System.IO.RenamedEventHandler(this.SystemWatcher_EventRaised);
             // 
             // ProjectNameLabel
             // 

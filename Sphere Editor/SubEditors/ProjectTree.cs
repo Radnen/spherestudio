@@ -401,7 +401,7 @@ namespace Sphere_Editor.SubEditors
             Global.CurrentProject.Script = old_script;
         }
 
-        private void SystemWatcher_Changed(object sender, FileSystemEventArgs e)
+        private void SystemWatcher_EventRaised(object sender, EventArgs e)
         {
             UpdateTree();
         }
