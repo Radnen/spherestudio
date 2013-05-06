@@ -17,7 +17,6 @@ namespace ScriptPlugin
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         public IPluginHost Host { get; set; }
         private bool _autocomplete;
-        private Font _font;
 
         public ScriptEditor(IPluginHost host)
         {
@@ -35,7 +34,8 @@ namespace ScriptPlugin
             code_box.SupressControlCharacters = true;
 
             code_box.Folding.MarkerScheme = FoldMarkerScheme.Custom;
-            code_box.Folding.UseCompactFolding = true;
+            code_box.Folding.Flags = FoldFlag.LineAfterContracted;
+            code_box.Folding.UseCompactFolding = false;
             code_box.Margins.Margin1.IsClickable = true;
             code_box.Margins.Margin1.IsFoldMargin = true;
 
@@ -50,7 +50,6 @@ namespace ScriptPlugin
             code_box.TextInserted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
             code_box.Dock = DockStyle.Fill;
 
-            code_box.Commands.AddBinding(Keys.D, Keys.Control, BindableCommand.LineDuplicate);
             Controls.Add(code_box);
 
             UpdateStyle();
@@ -99,7 +98,6 @@ namespace ScriptPlugin
 
         private void SetFont(Font font)
         {
-            _font = font;
             for (int i = 0; i < 128; ++i)
                 code_box.Styles[i].Font = font;
             SetMarginSize(font);
