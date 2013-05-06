@@ -85,6 +85,10 @@ namespace SoundTestPlugin
             Host.UnregisterOpenFileType(_openFileFilter);
             _soundPicker.WatchProject(null);
             Host.RemoveControl("Sound Test");
+            Host.TryEditFile -= host_TryEditFile;
+            Host.TestGame -= host_TestGame;
+            Host.LoadProject -= host_LoadProject;
+            Host.UnloadProject -= host_UnloadProject;
         }
     }
 }

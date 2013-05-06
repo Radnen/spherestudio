@@ -17,6 +17,7 @@ namespace ScriptPlugin
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         public IPluginHost Host { get; set; }
         private bool _autocomplete;
+        private Font _font;
 
         public ScriptEditor(IPluginHost host)
         {
@@ -32,12 +33,11 @@ namespace ScriptPlugin
             code_box.AutoComplete.ListSeparator = ';';
             code_box.AutoComplete.IsCaseSensitive = false;
             code_box.SupressControlCharacters = true;
-            
-            code_box.Folding.MarkerScheme = FoldMarkerScheme.Arrow;
-            code_box.Margins[0].Width = 36;
 
-            bool fold = Host.EditorSettings.GetBool("script-fold", true);
-            if (fold) SetFold(fold);
+            code_box.Folding.MarkerScheme = FoldMarkerScheme.Custom;
+            code_box.Folding.UseCompactFolding = true;
+            code_box.Margins.Margin1.IsClickable = true;
+            code_box.Margins.Margin1.IsFoldMargin = true;
 
             code_box.Indentation.SmartIndentType = SmartIndent.CPP;
             code_box.Styles.BraceLight.ForeColor = Color.Black;
@@ -65,19 +65,25 @@ namespace ScriptPlugin
             code_box.Indentation.UseTabs = Host.EditorSettings.GetBool("script-tabs", true);
             code_box.Caret.HighlightCurrentLine = Host.EditorSettings.GetBool("script-hiline", true);
             code_box.IsBraceMatching = Host.EditorSettings.GetBool("script-hibraces", true);
+            
             _autocomplete = Host.EditorSettings.GetBool("script-autocomplete", true);
 
-            string fontstring = Host.EditorSettings.GetString("script-font");
+            bool fold = Host.EditorSettings.GetBool("script-fold", true);
+            if (fold) code_box.Margins.Margin1.Width = 16;
+            else code_box.Margins.Margin1.Width = 0;
+
+            /*string fontstring = Host.EditorSettings.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
                 SetFont((Font)converter.ConvertFromString(fontstring));
-            }
+            }*/
         }
 
         void code_box_TextChanged(object sender, EventArgs e)
         {
             MakeDirty();
+            SetMarginSize(code_box.Styles[StylesCommon.LineNumber].Font);
         }
 
         public override void CreateNew()
@@ -93,6 +99,7 @@ namespace ScriptPlugin
 
         private void SetFont(Font font)
         {
+            _font = font;
             for (int i = 0; i < 128; ++i)
                 code_box.Styles[i].Font = font;
             SetMarginSize(font);
@@ -100,14 +107,8 @@ namespace ScriptPlugin
 
         private void SetMarginSize(Font font)
         {
-            code_box.Margins[0].Width = 25 + (int)(Math.Log10(code_box.Lines.Count) * font.SizeInPoints);
-        }
-
-        private void SetFold(bool fold)
-        {
-            code_box.Margins[0].IsFoldMargin = fold;
-            code_box.Margins[0].IsClickable = fold;
-            code_box.Folding.IsEnabled = fold;
+            int spaces = (int)Math.Log10(code_box.Lines.Count) + 1;
+            code_box.Margins[0].Width = 2 + spaces * (int)font.SizeInPoints;
         }
 
         public override void LoadFile(string filename)

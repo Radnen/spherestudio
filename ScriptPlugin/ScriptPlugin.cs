@@ -67,6 +67,7 @@ namespace ScriptPlugin
 
             ChangeFontItem = new ToolStripMenuItem("Change Font...", Properties.Resources.style);
             ChangeFontItem.Click += new EventHandler(ChangeFontItem_Click);
+            ChangeFontItem.Enabled = false;
 
             RootMenu = new ToolStripMenuItem("&Script");
             RootMenu.DropDownItems.Add(AutoCompleteItem);
@@ -197,6 +198,7 @@ namespace ScriptPlugin
         void CodeFoldItem_Click(object sender, EventArgs e)
         {
             Host.EditorSettings.SaveObject("script-fold", CodeFoldItem.Checked);
+            UpdateScriptControls();
         }
 
         void AutoCompleteItem_Click(object sender, EventArgs e)
@@ -283,6 +285,7 @@ namespace ScriptPlugin
             Host.UnregisterOpenFileType(_openFileFilters);
             functions.Clear();
             Host.RemoveMenuItem("ScriptPlugin");
+            Host.TryEditFile -= host_TryEditFile;
         }
 
         private void UpdateScriptControls()

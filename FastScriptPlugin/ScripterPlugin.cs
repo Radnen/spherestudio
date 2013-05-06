@@ -252,6 +252,7 @@ namespace FastScriptPlugin
             Host.RemoveMenuItem("Script");
             Host.RemoveMenuItem(NewScriptItem);
             Host.RemoveMenuItem(OpenScriptItem);
+            Host.TryEditFile -= Host_TryEditFile;
         }
 
         private void UpdateScriptControls()
