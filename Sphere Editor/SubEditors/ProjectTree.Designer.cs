@@ -44,9 +44,8 @@
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.FontItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SystemWatcher = new System.IO.FileSystemWatcher();
             this.ProjectNameLabel = new Sphere.Core.Editor.EditorLabel();
-            this.autoRefreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.SystemWatcher = new Sphere.Core.Editor.DeferredFileSystemWatcher();
             this.ProjectFileContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).BeginInit();
             this.SuspendLayout();
@@ -190,15 +189,6 @@
             this.FontItem.Text = "Change Font";
             this.FontItem.Click += new System.EventHandler(this.FontItem_Click);
             // 
-            // SystemWatcher
-            // 
-            this.SystemWatcher.EnableRaisingEvents = true;
-            this.SystemWatcher.IncludeSubdirectories = true;
-            this.SystemWatcher.SynchronizingObject = this;
-            this.SystemWatcher.Created += new System.IO.FileSystemEventHandler(this.SystemWatcher_EventRaised);
-            this.SystemWatcher.Deleted += new System.IO.FileSystemEventHandler(this.SystemWatcher_EventRaised);
-            this.SystemWatcher.Renamed += new System.IO.RenamedEventHandler(this.SystemWatcher_EventRaised);
-            // 
             // ProjectNameLabel
             // 
             this.ProjectNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -211,10 +201,15 @@
             this.ProjectNameLabel.Text = "Project Name";
             this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // refreshTimer
+            // SystemWatcher
             // 
-            this.autoRefreshTimer.Interval = 1000;
-            this.autoRefreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
+            this.SystemWatcher.Delay = 1000D;
+            this.SystemWatcher.EnableRaisingEvents = true;
+            this.SystemWatcher.IncludeSubdirectories = true;
+            this.SystemWatcher.SynchronizingObject = this;
+            this.SystemWatcher.Created += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Deleted += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Renamed += new Sphere.Core.Editor.BatchEventHandler<System.IO.RenamedEventArgs>(this.SystemWatcher_EventRaised);
             // 
             // ProjectTree
             // 
@@ -244,11 +239,10 @@
         private System.Windows.Forms.ToolStripMenuItem AddSubfolderItem;
         private System.Windows.Forms.ToolStripMenuItem CopyPathItem;
         private System.Windows.Forms.ToolStripMenuItem ExecuteScriptItem;
-        private System.IO.FileSystemWatcher SystemWatcher;
         private Sphere.Core.Editor.EditorLabel ProjectNameLabel;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem FontItem;
-        private System.Windows.Forms.Timer autoRefreshTimer;
+        private Sphere.Core.Editor.DeferredFileSystemWatcher SystemWatcher;
     }
 }

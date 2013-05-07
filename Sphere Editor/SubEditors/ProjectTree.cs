@@ -16,10 +16,13 @@ namespace Sphere_Editor.SubEditors
         public EditorForm EditorForm { get; set; }
 
         private ImageList _iconlist = new ImageList();
+        private delegate void SafeRefresh();
+        private SafeRefresh MySafeRefresh;
 
         public ProjectTree()
         {
             InitializeComponent();
+            MySafeRefresh = UpdateTree;
             tip.ToolTipTitle = "Image";
             tip.ToolTipIcon = ToolTipIcon.Info;
             tip.UseFading = true;
@@ -401,11 +404,9 @@ namespace Sphere_Editor.SubEditors
             Global.CurrentProject.Script = old_script;
         }
 
-        private void SystemWatcher_EventRaised(object sender, EventArgs e)
+        private void SystemWatcher_EventRaised(object sender, IEnumerable<EventArgs> eList)
         {
-            autoRefreshTimer.Enabled = true;
-            autoRefreshTimer.Stop();
-            autoRefreshTimer.Start();
+            Invoke(MySafeRefresh);
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
@@ -509,11 +510,9 @@ namespace Sphere_Editor.SubEditors
             }
         }
 
-        private void refreshTimer_Tick(object sender, EventArgs e)
+        private void SystemWatcher_EventRaised(object sender)
         {
-            UpdateTree();
-            autoRefreshTimer.Stop();
-            autoRefreshTimer.Enabled = false;
+
         }
     }
 }
