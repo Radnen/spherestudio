@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
 
@@ -30,7 +31,7 @@ namespace SoundTestPlugin
         };
 
         private IPlugin _plugin;
-        private static FileSystemWatcher _fileWatcher;
+        private static DeferredFileSystemWatcher _fileWatcher;
         private ImageList playIcons = new ImageList();
         private ISoundEngine _soundEngine = new ISoundEngine();
         private ISound _music;
@@ -39,11 +40,9 @@ namespace SoundTestPlugin
         delegate void SafeRefresh();
         SafeRefresh MySafeRefresh;
 
-        private void fileWatcher_EventRaised(object sender, EventArgs e)
+        private void fileWatcher_EventRaised(object sender, IEnumerable<EventArgs> eList)
         {
-            autoRefreshTimer.Enabled = true;
-            autoRefreshTimer.Stop();
-            autoRefreshTimer.Start();
+            Invoke(MySafeRefresh);
         }
 
         private void pauseTool_Click(object sender, EventArgs e)
@@ -78,7 +77,8 @@ namespace SoundTestPlugin
             playIcons.Images.Add("stop", Properties.Resources.stop_tool);
 
             _plugin = plugin;
-            _fileWatcher = new FileSystemWatcher();
+            _fileWatcher = new DeferredFileSystemWatcher();
+            _fileWatcher.Delay = 1000;
             _fileWatcher.Created += fileWatcher_EventRaised;
             _fileWatcher.Deleted += fileWatcher_EventRaised;
             _fileWatcher.Changed += fileWatcher_EventRaised;
@@ -241,13 +241,6 @@ namespace SoundTestPlugin
             pauseTool.CheckState = CheckState.Unchecked;
             pauseTool.Enabled = false;
             stopTool.Enabled = false;
-        }
-
-        private void autoRefreshTimer_Tick(object sender, EventArgs e)
-        {
-            Invoke(MySafeRefresh);
-            autoRefreshTimer.Stop();
-            autoRefreshTimer.Enabled = false;
         }
     }
 }

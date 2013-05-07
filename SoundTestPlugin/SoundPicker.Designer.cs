@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundPicker));
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.playTool = new System.Windows.Forms.ToolStripButton();
@@ -38,7 +37,6 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.trackNameLabel = new System.Windows.Forms.Label();
-            this.autoRefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.toolbar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -128,11 +126,6 @@
             this.trackNameLabel.Text = "Now Playing";
             this.trackNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // autoRefreshTimer
-            // 
-            this.autoRefreshTimer.Interval = 1000;
-            this.autoRefreshTimer.Tick += new System.EventHandler(this.autoRefreshTimer_Tick);
-            // 
             // SoundPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +152,5 @@
         private System.Windows.Forms.ToolStripButton pauseTool;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label trackNameLabel;
-        private System.Windows.Forms.Timer autoRefreshTimer;
     }
 }
