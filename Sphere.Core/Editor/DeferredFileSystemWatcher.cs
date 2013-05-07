@@ -17,28 +17,28 @@ namespace Sphere.Core.Editor
         private LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
         private LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
 
-        private void watcher_Changed(object sender, FileSystemEventArgs e)
+        private void base_Changed(object sender, FileSystemEventArgs e)
         {
             _changeEvents.AddLast(e);
             _timer.Stop();
             _timer.Start();
         }
         
-        private void watcher_Created(object sender, FileSystemEventArgs e)
+        private void base_Created(object sender, FileSystemEventArgs e)
         {
             _createEvents.AddLast(e);
             _timer.Stop();
             _timer.Start();
         }
         
-        private void watcher_Deleted(object sender, FileSystemEventArgs e)
+        private void base_Deleted(object sender, FileSystemEventArgs e)
         {
             _deleteEvents.AddLast(e);
             _timer.Stop();
             _timer.Start();
         }
         
-        private void watcher_Renamed(object sender, RenamedEventArgs e)
+        private void base_Renamed(object sender, RenamedEventArgs e)
         {
             _renameEvents.AddLast(e);
             _timer.Stop();
@@ -59,16 +59,19 @@ namespace Sphere.Core.Editor
 
         protected override void Dispose(bool disposing)
         {
-            _timer.Dispose();
+            if (disposing)
+            {
+                _timer.Dispose();
+            }
             base.Dispose(disposing);
         }
 
         public DeferredFileSystemWatcher()
         {
-            base.Changed += watcher_Changed;
-            base.Created += watcher_Created;
-            base.Deleted += watcher_Deleted;
-            base.Renamed += watcher_Renamed;
+            base.Changed += base_Changed;
+            base.Created += base_Created;
+            base.Deleted += base_Deleted;
+            base.Renamed += base_Renamed;
             _timer = new Timer();
             _timer.Elapsed += _timer_Elapsed;
             _timer.AutoReset = false;

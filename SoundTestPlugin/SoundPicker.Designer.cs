@@ -86,7 +86,6 @@
             // 
             // trackList
             // 
-            this.trackList.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.trackList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
