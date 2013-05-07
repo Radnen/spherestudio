@@ -38,6 +38,8 @@ namespace ScriptPlugin
             code_box.Folding.UseCompactFolding = false;
             code_box.Margins.Margin1.IsClickable = true;
             code_box.Margins.Margin1.IsFoldMargin = true;
+            code_box.Styles.LineNumber.BackColor = Color.FromArgb(235, 235, 255);
+            code_box.Margins.FoldMarginColor = Color.FromArgb(235, 235, 255);
 
             code_box.Indentation.SmartIndentType = SmartIndent.CPP;
             code_box.Styles.BraceLight.ForeColor = Color.Black;
@@ -124,7 +126,7 @@ namespace ScriptPlugin
                         CodeBox.ConfigurationManager.Language = "default";
                     
                     Parent.Text = Path.GetFileName(filename);
-                    SetMarginSize(code_box.Styles[0].Font);
+                    SetMarginSize(code_box.Styles[StylesCommon.LineNumber].Font);
                 }
             }
             catch (FileNotFoundException)

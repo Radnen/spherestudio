@@ -94,8 +94,6 @@ namespace FontPlugin
             
             Host.AddMenuItem("File.New", NewFontItem);
             Host.AddMenuItem("File.Open", OpenFontItem);
-
-            Host.TryEditFile -= host_TryEditFile;
         }
 
         public void Destroy()
