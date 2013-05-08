@@ -404,7 +404,7 @@ namespace Sphere_Editor.SubEditors
             Global.CurrentProject.Script = old_script;
         }
 
-        private void SystemWatcher_EventRaised(object sender, IEnumerable<EventArgs> eList)
+        private void SystemWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
         {
             Invoke(MySafeRefresh);
         }
