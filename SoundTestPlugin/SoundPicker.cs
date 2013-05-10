@@ -40,7 +40,7 @@ namespace SoundTestPlugin
         delegate void SafeRefresh();
         SafeRefresh MySafeRefresh;
 
-        private void fileWatcher_EventRaised(object sender, IEnumerable<EventArgs> eList)
+        private void fileWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
         {
             Invoke(MySafeRefresh);
         }

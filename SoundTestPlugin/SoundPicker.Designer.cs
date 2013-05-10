@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundPicker));
             this.toolbar = new System.Windows.Forms.ToolStrip();
-            this.playTool = new System.Windows.Forms.ToolStripButton();
             this.stopTool = new System.Windows.Forms.ToolStripButton();
             this.pauseTool = new System.Windows.Forms.ToolStripButton();
+            this.playTool = new System.Windows.Forms.ToolStripButton();
             this.trackList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,24 +43,15 @@
             // toolbar
             // 
             this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.playTool,
             this.stopTool,
-            this.pauseTool});
+            this.pauseTool,
+            this.playTool});
             this.toolbar.Location = new System.Drawing.Point(0, 0);
             this.toolbar.Name = "toolbar";
             this.toolbar.ShowItemToolTips = false;
             this.toolbar.Size = new System.Drawing.Size(351, 25);
             this.toolbar.TabIndex = 0;
             this.toolbar.Text = "toolStrip1";
-            // 
-            // playTool
-            // 
-            this.playTool.Enabled = false;
-            this.playTool.Image = ((System.Drawing.Image)(resources.GetObject("playTool.Image")));
-            this.playTool.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.playTool.Name = "playTool";
-            this.playTool.Size = new System.Drawing.Size(109, 22);
-            this.playTool.Text = "Playback Status";
             // 
             // stopTool
             // 
@@ -83,6 +74,15 @@
             this.pauseTool.Size = new System.Drawing.Size(58, 22);
             this.pauseTool.Text = "P&ause";
             this.pauseTool.Click += new System.EventHandler(this.pauseTool_Click);
+            // 
+            // playTool
+            // 
+            this.playTool.Enabled = false;
+            this.playTool.Image = ((System.Drawing.Image)(resources.GetObject("playTool.Image")));
+            this.playTool.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.playTool.Name = "playTool";
+            this.playTool.Size = new System.Drawing.Size(109, 22);
+            this.playTool.Text = "Playback Status";
             // 
             // trackList
             // 
@@ -116,8 +116,11 @@
             // 
             // trackNameLabel
             // 
+            this.trackNameLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(48)))));
+            this.trackNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.trackNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.trackNameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.trackNameLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.trackNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
             this.trackNameLabel.Location = new System.Drawing.Point(0, 25);
             this.trackNameLabel.Name = "trackNameLabel";
             this.trackNameLabel.Size = new System.Drawing.Size(351, 23);
@@ -144,12 +147,12 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolbar;
-        private System.Windows.Forms.ToolStripButton playTool;
         private System.Windows.Forms.ToolStripButton stopTool;
         private System.Windows.Forms.ListView trackList;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ToolStripButton pauseTool;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label trackNameLabel;
+        private System.Windows.Forms.ToolStripButton playTool;
     }
 }
