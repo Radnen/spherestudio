@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 using Microsoft.VisualBasic.FileIO;
 using Sphere_Editor.Forms;
 using Sphere.Plugins;
@@ -239,7 +240,7 @@ namespace Sphere_Editor.SubEditors
             FileInfo[] files = dir.GetFiles();
             TreeNode subNode;
 
-            foreach (DirectoryInfo d in dirs)
+            foreach (DirectoryInfo d in from d in dirs orderby d.Name select d)
             {
                 subNode = new TreeNode(d.Name, 2, 1);
                 subNode.Tag = (object)"directory-node";
@@ -247,9 +248,9 @@ namespace Sphere_Editor.SubEditors
                 PopulateDirectoryNode(subNode, d);
             }
 
-            for (int i = 0; i < files.Length; ++i)
+            foreach (FileInfo f in from f in files orderby f.Name select f)
             {
-                subNode = new TreeNode(files[i].Name, 9, 9);
+                subNode = new TreeNode(f.Name, 9, 9);
                 subNode.Tag = (object)"file-node";
                 UpdateImage(subNode);
                 baseNode.Nodes.Add(subNode);
