@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace Sphere.Core.Editor
 {
-    public delegate void BatchEventHandler<T>(object sender, IEnumerable<T> eList);
+    public delegate void BatchEventHandler<T>(object sender, IEnumerable<T> eAll);
     
     public class DeferredFileSystemWatcher : FileSystemWatcher
     {
@@ -16,7 +16,7 @@ namespace Sphere.Core.Editor
         private LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
         private LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
         private LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
-
+        
         private void base_Changed(object sender, FileSystemEventArgs e)
         {
             _changeEvents.AddLast(e);
@@ -75,6 +75,7 @@ namespace Sphere.Core.Editor
             _timer = new Timer();
             _timer.Elapsed += _timer_Elapsed;
             _timer.AutoReset = false;
+            this.Delay = 250;
         }
 
         public new event BatchEventHandler<FileSystemEventArgs> Changed;
