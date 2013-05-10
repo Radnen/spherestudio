@@ -476,7 +476,7 @@ namespace Sphere_Editor.SubEditors
         
         private void ProjectTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            OpenItem(e.Node);
+            OpenItem(ProjectTreeView.SelectedNode);
         }
 
         private void FontItem_Click(object sender, EventArgs e)
@@ -511,9 +511,17 @@ namespace Sphere_Editor.SubEditors
             }
         }
 
-        private void SystemWatcher_EventRaised(object sender)
+        private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            if (ProjectTreeView.SelectedNode == null || (string)ProjectTreeView.SelectedNode.Tag != "file-node")
+            {
+                return;
+            }
+            if (e.KeyChar == '\r')
+            {
+                OpenItem(ProjectTreeView.SelectedNode);
+                e.Handled = true;
+            }
         }
     }
 }
