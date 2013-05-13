@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
@@ -20,50 +18,46 @@ namespace FastScriptPlugin
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
-        private string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore" };
-        private string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm";
+        private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore" };
+        private const string OpenFileFilters = "*.js;*.txt;*.log;*.md;*.sgm";
 
-        ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem, OpenScriptItem;
-        ToolStripMenuItem AutoCompleteItem, HighlightLineItem, CodeFoldItem;
-        ToolStripMenuItem UseTabsItem, ChangeFontItem;
-        ToolStripMenuItem TwoUnitItem, FourUnitItem, EightUnitItem;
-        ToolStripItem Separator1, Separator2;
+        private ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem;
+        private ToolStripMenuItem AutoCompleteItem, HighlightLineItem, CodeFoldItem;
+        private ToolStripMenuItem UseTabsItem, ChangeFontItem;
+        private ToolStripMenuItem TwoUnitItem, FourUnitItem, EightUnitItem;
+        private ToolStripItem Separator1, Separator2;
 
         public ScripterPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
 
             #region menu items
-            AutoCompleteItem = new ToolStripMenuItem("Auto Complete");
-            AutoCompleteItem.CheckOnClick = true;
-            AutoCompleteItem.Click += new EventHandler(AutoCompleteItem_Click);
+            AutoCompleteItem = new ToolStripMenuItem("Auto Complete") {CheckOnClick = true};
+            AutoCompleteItem.Click += AutoCompleteItem_Click;
 
-            CodeFoldItem = new ToolStripMenuItem("Code Folding");
-            CodeFoldItem.CheckOnClick = true;
-            CodeFoldItem.Click += new EventHandler(CodeFoldItem_Click);
+            CodeFoldItem = new ToolStripMenuItem("Code Folding") {CheckOnClick = true};
+            CodeFoldItem.Click += CodeFoldItem_Click;
 
-            HighlightLineItem = new ToolStripMenuItem("Highlight Current Line");
-            HighlightLineItem.CheckOnClick = true;
-            HighlightLineItem.Click += new EventHandler(HighlightLineItem_Click);
+            HighlightLineItem = new ToolStripMenuItem("Highlight Current Line") {CheckOnClick = true};
+            HighlightLineItem.Click += HighlightLineItem_Click;
 
             Separator1 = new ToolStripSeparator();
             Separator2 = new ToolStripSeparator();
 
-            UseTabsItem = new ToolStripMenuItem("Use Tabs");
-            UseTabsItem.CheckOnClick = true;
-            UseTabsItem.Click += new EventHandler(UseTabsItem_Click);
+            UseTabsItem = new ToolStripMenuItem("Use Tabs") {CheckOnClick = true};
+            UseTabsItem.Click += UseTabsItem_Click;
 
             TwoUnitItem = new ToolStripMenuItem("2 units");
-            TwoUnitItem.Click += new EventHandler(TwoUnitItem_Click);
+            TwoUnitItem.Click += TwoUnitItem_Click;
 
             FourUnitItem = new ToolStripMenuItem("4 units");
-            FourUnitItem.Click += new EventHandler(FourUnitItem_Click);
+            FourUnitItem.Click += FourUnitItem_Click;
 
             EightUnitItem = new ToolStripMenuItem("8 units");
-            EightUnitItem.Click += new EventHandler(EightUnitItem_Click);
+            EightUnitItem.Click += EightUnitItem_Click;
 
             ChangeFontItem = new ToolStripMenuItem("Change Font...", Properties.Resources.style);
-            ChangeFontItem.Click += new EventHandler(ChangeFontItem_Click);
+            ChangeFontItem.Click += ChangeFontItem_Click;
 
             RootMenu = new ToolStripMenuItem("&Script");
             RootMenu.DropDownItems.Add(AutoCompleteItem);
@@ -83,10 +77,7 @@ namespace FastScriptPlugin
             RootMenu.Visible = false;
 
             NewScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
-            NewScriptItem.Click += new EventHandler(NewScriptItem_Click);
-
-            OpenScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
-            OpenScriptItem.Click += new EventHandler(OpenScriptItem_Click);
+            NewScriptItem.Click += NewScriptItem_Click;
             #endregion
         }
 
@@ -159,7 +150,7 @@ namespace FastScriptPlugin
                 }
                 catch (ArgumentException)
                 {
-                    MessageBox.Show("GDI+ only uses TrueType fonts.", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"GDI+ only uses TrueType fonts.", @"Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -169,36 +160,21 @@ namespace FastScriptPlugin
             Host.DockControl(OpenEditor(), DockState.Document);
         }
 
-        private void OpenScriptItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog diag = new OpenFileDialog())
-            {
-                diag.Filter = _openFileFilters;
-
-                if (Host.CurrentGame != null)
-                    diag.InitialDirectory = Host.CurrentGame.RootPath + "\\scripts";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                    Host.DockControl(OpenEditor(diag.FileName), DockState.Document);
-            }
-        }
-
         public DockContent OpenEditor(string filename = "")
         {
-            Scripter script_editor = new Scripter(Host);
+            Scripter scriptEditor = new Scripter(Host);
             
-            script_editor.OnActivate += new EventHandler(editor_OnActivate);
-            script_editor.OnDeactivate += new EventHandler(editor_OnDeactivate);
+            scriptEditor.OnActivate += editor_OnActivate;
+            scriptEditor.OnDeactivate += editor_OnDeactivate;
 
-            script_editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            scriptEditor.Dock = DockStyle.Fill;
 
-            DockContent content = new DockContent();
-            content.Text = "Untitled.js";
-            content.Controls.Add(script_editor);
+            DockContent content = new DockContent {Text = @"Untitled.js"};
+            content.Controls.Add(scriptEditor);
             content.DockAreas = DockAreas.Document;
             content.Icon = Icon;
 
-            if (!string.IsNullOrEmpty(filename)) script_editor.LoadFile(filename);
+            if (!string.IsNullOrEmpty(filename)) scriptEditor.LoadFile(filename);
 
             return content;
         }
@@ -229,11 +205,10 @@ namespace FastScriptPlugin
         public void Initialize()
         {
             Host.TryEditFile += Host_TryEditFile;
-            Host.RegisterOpenFileType("Script/Text Files", _openFileFilters);
+            Host.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
 
             Host.AddMenuItem(RootMenu, "View");
             Host.AddMenuItem("File.New", NewScriptItem);
-            Host.AddMenuItem("File.Open", OpenScriptItem);
 
             AutoCompleteItem.Checked = Host.EditorSettings.GetBool("script-autocomplete", true);
             CodeFoldItem.Checked = Host.EditorSettings.GetBool("script-fold", true);
@@ -248,10 +223,9 @@ namespace FastScriptPlugin
 
         public void Destroy()
         {
-            Host.UnregisterOpenFileType(_openFileFilters);
+            Host.UnregisterOpenFileType(OpenFileFilters);
             Host.RemoveMenuItem("Script");
             Host.RemoveMenuItem(NewScriptItem);
-            Host.RemoveMenuItem(OpenScriptItem);
             Host.TryEditFile -= Host_TryEditFile;
         }
 
@@ -259,8 +233,11 @@ namespace FastScriptPlugin
         {
             DockContentCollection docs = Host.GetDocuments();
             foreach (DockContent content in docs)
-                if (content.Controls[0] is Scripter)
-                    ((Scripter)content.Controls[0]).UpdateStyle();
+            {
+                Scripter scripter = content.Controls[0] as Scripter;
+                if (scripter != null)
+                    scripter.UpdateStyle();
+            }
         }
     }
 }

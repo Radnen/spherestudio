@@ -9,9 +9,9 @@ namespace Sphere.Core.Utility
     /// </summary>
     public class BitmapSaver
     {
-        private Rectangle _rect;
+        private readonly Rectangle _rect;
         private BitmapData _data;
-        private int _size;
+        private readonly int _size;
 
         /// <summary>
         /// Creates a bitmap saver, which saves bitmaps to filestreams.

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Sphere.Plugins
 {
@@ -9,12 +7,15 @@ namespace Sphere.Plugins
     {
         public EditFileEventArgs(string filePath, bool useWildcard = false)
         {
-            this.FileFullPath = (filePath != null && filePath[0] == '?') ? null : filePath;
-            this.FileExtension = useWildcard ? "*" : Path.GetExtension(filePath).ToLower();
-            this.IsAlreadyMatched = false;
+            FileFullPath = (filePath != null && filePath[0] == '?') ? null : filePath;
+            string extension = Path.GetExtension(filePath);
+            if (extension != null)
+                FileExtension = useWildcard ? "*" : extension.ToLower();
+            IsAlreadyMatched = false;
         }
 
         public string FileFullPath { get; private set; }
+
         public string FileExtension { get; private set; }
         public bool IsAlreadyMatched { get; set; }
     }

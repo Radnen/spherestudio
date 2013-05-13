@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Sphere.Core
+namespace Sphere.Core.Editor
 {
     /// <summary>
     /// A class that opens up editor abilities.
     /// </summary>
-    public partial class EditorObject : UserControl
+    public class EditorObject : UserControl
     {
         /// <summary>
         /// Gets the FileName associated with this control.
@@ -15,7 +15,14 @@ namespace Sphere.Core
 
         // editor stuff:
 
+        /// <summary>
+        /// Event handler; triggers when the control goes into view.
+        /// </summary>
         public event EventHandler OnActivate;
+
+        /// <summary>
+        /// Event handler; triggers when control leaves view.
+        /// </summary>
         public event EventHandler OnDeactivate;
 
         /// <summary>

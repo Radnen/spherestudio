@@ -3,11 +3,14 @@ using System.Windows.Forms;
 
 namespace Sphere.Core.Editor
 {
-    public class EditorPanel : Panel
+    /// <summary>
+    /// A fast drawing panel for editing, without worrying about odd scroll-to behavior.
+    /// </summary>
+    public sealed class EditorPanel : Panel
     {
-        private int _y_snap = 0;
-        private int _x_snap = 0;
-
+        /// <summary>
+        /// Initializes a new instance of the EditorPanel.
+        /// </summary>
         public EditorPanel()
         {
             DoubleBuffered = true;
@@ -16,33 +19,40 @@ namespace Sphere.Core.Editor
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
+        /// <summary>
+        /// For fixing the horrendous scroll-to behavior.
+        /// </summary>
+        /// <param name="activeControl">Doesn't matter.</param>
+        /// <returns>The display location of where you wanted to be.</returns>
         protected override Point ScrollToControl(Control activeControl)
         {
             return DisplayRectangle.Location;
         }
 
+        /// <summary>
+        /// Overrides the default scroll behavior to add grid snapping.
+        /// </summary>
+        /// <param name="se">The scrolling properties.</param>
         protected override void OnScroll(ScrollEventArgs se)
         {
-            if (_x_snap == 0 && _y_snap == 0) base.OnScroll(se);
+            if (XSnap == 0 && YSnap == 0) base.OnScroll(se);
             else
             {
                 if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-                    HorizontalScroll.Value = se.NewValue / _x_snap * _x_snap;
+                    HorizontalScroll.Value = se.NewValue / XSnap * XSnap;
                 else
-                    VerticalScroll.Value = se.NewValue / _y_snap * _y_snap;
+                    VerticalScroll.Value = se.NewValue / YSnap * YSnap;
             }
         }
 
-        public int XSnap
-        {
-            get { return _x_snap; }
-            set { _x_snap = value; }
-        }
+        /// <summary>
+        /// Gets or sets the grid snap size of the x axis.
+        /// </summary>
+        public int XSnap { get; set; }
 
-        public int YSnap
-        {
-            get { return _y_snap; }
-            set { _y_snap = value; }
-        }
+        /// <summary>
+        /// Gets or sets the grid snap size of the y axis.
+        /// </summary>
+        public int YSnap { get; set; }
     }
 }

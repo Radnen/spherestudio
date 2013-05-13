@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Sphere.Core;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -17,8 +16,9 @@ namespace SoundTestPlugin
 
         public IPluginHost Host { get; set; }
 
-        private string _openFileFilter = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
-        private string[] _fileTypes = new string[] {
+        private const string OpenFileFilter = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
+
+        private readonly string[] _fileTypes = new[] {
             ".mp3", ".ogg", ".flac",  // compressed audio
             ".mod", ".it", ".s3d",    // tracker formats
             ".wav"                    // uncompressed/PCM
@@ -62,17 +62,16 @@ namespace SoundTestPlugin
 
         public void Initialize()
         {
-            _soundPicker = new SoundPicker(this);
-            _soundPicker.Dock = DockStyle.Fill;
+            _soundPicker = new SoundPicker(this) {Dock = DockStyle.Fill};
             _soundPicker.Refresh();
             _content = new DockContent();
             _content.Controls.Add(_soundPicker);
-            _content.Text = "Sound Test";
+            _content.Text = @"Sound Test";
             _content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
             _content.DockHandler.HideOnClose = true;
             _content.Icon = Icon;
             Host.DockControl(_content, DockState.DockLeft);
-            Host.RegisterOpenFileType("Audio", _openFileFilter);
+            Host.RegisterOpenFileType("Audio", OpenFileFilter);
             Host.LoadProject += host_LoadProject;
             Host.UnloadProject += host_UnloadProject;
             Host.TestGame += host_TestGame;
@@ -82,8 +81,9 @@ namespace SoundTestPlugin
 
         public void Destroy()
         {
-            Host.UnregisterOpenFileType(_openFileFilter);
+            Host.UnregisterOpenFileType(OpenFileFilter);
             _soundPicker.WatchProject(null);
+            _soundPicker.StopMusic();
             Host.RemoveControl("Sound Test");
             Host.TryEditFile -= host_TryEditFile;
             Host.TestGame -= host_TestGame;

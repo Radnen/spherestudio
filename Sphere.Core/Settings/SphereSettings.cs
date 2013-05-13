@@ -19,7 +19,7 @@ namespace Sphere.Core.Settings
         public string SpherePath
         {
             get { return GetString("sphere_path"); }
-            set { SetItem<string>("sphere_path", value); }
+            set { SetItem("sphere_path", value); }
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Sphere.Core.Settings
         public string ConfigPath
         {
             get { return GetString("config_path"); }
-            set { SetItem<string>("config_path", value); }
+            set { SetItem("config_path", value); }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Sphere.Core.Settings
         public string LastProjectPath
         {
             get { return GetString("last_project_path"); }
-            set { SetItem<string>("last_project_path", value); }
+            set { SetItem("last_project_path", value); }
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Sphere.Core.Settings
         public bool UseScriptUpdate
         {
             get { return GetBool("use_script_update"); }
-            set { SetItem<bool>("use_script_update", value); }
+            set { SetItem("use_script_update", value); }
         }
 
         /// <summary>
@@ -57,10 +57,9 @@ namespace Sphere.Core.Settings
             get
             {
                 string val = GetString("start_view");
-                if (val == string.Empty) return View.Tile;
-                else return (View)Enum.Parse(typeof(View), val);
+                return val == string.Empty ? View.Tile : (View) Enum.Parse(typeof (View), val);
             }
-            set { SetItem<View>("start_view", value); }
+            set { SetItem("start_view", value); }
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace Sphere.Core.Settings
         public bool AutoOpen
         {
             get { return GetBool("auto_open_project"); }
-            set { SetItem<bool>("auto_open_project", value); }
+            set { SetItem("auto_open_project", value); }
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace Sphere.Core.Settings
         public bool ShowDelay
         {
             get { return GetBool("show_delay"); }
-            set { SetItem<bool>("show_delay", value); }
+            set { SetItem("show_delay", value); }
         }
 
         /// <summary>
@@ -89,10 +88,9 @@ namespace Sphere.Core.Settings
             get
             {
                 string k = GetString("label_font");
-                if (k == string.Empty) return "Verdana";
-                else return k;
+                return k == string.Empty ? "Verdana" : k;
             }
-            set { SetItem<string>("label_font", value); }
+            set { SetItem("label_font", value); }
         }
 
         /// <summary>

@@ -97,9 +97,8 @@ namespace Sphere.Core
         /// <returns>A copy of the Tile object.</returns>
         public Tile Clone()
         {
-            Tile new_tile = new Tile((Bitmap)_graphic.Clone());
-            new_tile.Name = (String)Name.Clone();
-            return new_tile;
+            Tile newTile = new Tile((Bitmap) _graphic.Clone()) {Name = Name};
+            return newTile;
         }
     }
 }

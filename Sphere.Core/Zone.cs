@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 using System.Drawing;
 
 namespace Sphere.Core
@@ -35,9 +32,9 @@ namespace Sphere.Core
         /// </summary>
         public bool Visible { get; set; }
 
-        private static Brush _bg = new SolidBrush(Color.FromArgb(125, Color.Red));
-        private static Brush _bg2 = new SolidBrush(Color.FromArgb(125, Color.Yellow));
-        private static Pen _off_pen;
+        private static readonly Brush Bg = new SolidBrush(Color.FromArgb(125, Color.Red));
+        private static readonly Brush Bg2 = new SolidBrush(Color.FromArgb(125, Color.Yellow));
+        private static Pen _offPen;
         #endregion
 
         /// <summary>
@@ -65,10 +62,9 @@ namespace Sphere.Core
         /// </summary>
         public Zone()
         {
-            if (_off_pen == null)
+            if (_offPen == null)
             {
-                _off_pen = new Pen(Color.Red);
-                _off_pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                _offPen = new Pen(Color.Red) {DashStyle = System.Drawing.Drawing2D.DashStyle.Dash};
             }
 
             Function = "";
@@ -84,15 +80,17 @@ namespace Sphere.Core
         /// <returns>A zone object.</returns>
         public static Zone FromBinary(BinaryReader reader)
         {
-            Zone zone = new Zone();
+            Zone zone = new Zone
+                {
+                    _x1 = reader.ReadInt16(),
+                    _y1 = reader.ReadInt16(),
+                    _x2 = reader.ReadInt16(),
+                    _y2 = reader.ReadInt16(),
+                    Layer = reader.ReadInt16(),
+                    NumSteps = reader.ReadInt16()
+                };
 
             // read header:
-            zone._x1 = reader.ReadInt16();
-            zone._y1 = reader.ReadInt16();
-            zone._x2 = reader.ReadInt16();
-            zone._y2 = reader.ReadInt16();
-            zone.Layer = reader.ReadInt16();
-            zone.NumSteps = reader.ReadInt16();
             reader.ReadBytes(4);
 
             // read function:
@@ -148,16 +146,16 @@ namespace Sphere.Core
             int h = Height * zoom;
             if (lighted < 0) // disabled
             {
-                map.DrawRectangle(_off_pen, x, y, w, h);
+                map.DrawRectangle(_offPen, x, y, w, h);
             }
             else if (lighted > 0) // hovered
             {
-                map.FillRectangle(_bg2, x, y, w, h);
+                map.FillRectangle(Bg2, x, y, w, h);
                 map.DrawRectangle(Pens.Yellow, x, y, w, h);
             }
             else // enabled
             {
-                map.FillRectangle(_bg, x, y, w, h);
+                map.FillRectangle(Bg, x, y, w, h);
                 map.DrawRectangle(Pens.Red, x, y, w, h);
                 Point p = new Point(x + 4, y + 4);
                 map.DrawString("Layer: " + Layer, SystemFonts.DialogFont, Brushes.White, p);
@@ -170,16 +168,16 @@ namespace Sphere.Core
         /// <returns>A Zone object.</returns>
         public Zone Clone()
         {
-            Zone zone = new Zone();
-            zone.X = X;
-            zone.Y = Y;
-            zone.Width = Width;
-            zone.Height = Height;
-            zone.Layer = Layer;
-            zone.NumSteps = NumSteps;
-            zone.Function = Function;
-
-            return zone;
+            return new Zone
+                {
+                    X = X,
+                    Y = Y,
+                    Width = Width,
+                    Height = Height,
+                    Layer = Layer,
+                    NumSteps = NumSteps,
+                    Function = Function
+                };
         }
     }
 }

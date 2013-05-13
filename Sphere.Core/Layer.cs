@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
 using System.IO;
 
 namespace Sphere.Core
@@ -111,7 +107,8 @@ namespace Sphere.Core
                     writer.Write(_tiles[x, y]);
 
             // save segments:
-            for (int i = 0; i < Segments.Count; ++i) Segments[i].Save(writer);
+            foreach (Segment segment in Segments)
+                segment.Save(writer);
         }
 
         /// <summary>
@@ -121,10 +118,13 @@ namespace Sphere.Core
         /// <returns>Sphere Layer object.</returns>
         public static Layer FromBinary(BinaryReader reader)
         {
-            Layer layer = new Layer();
-            layer.Width = reader.ReadInt16();
-            layer.Height = reader.ReadInt16();
-            layer.Flags = reader.ReadInt16();
+            Layer layer = new Layer
+                {
+                    Width = reader.ReadInt16(),
+                    Height = reader.ReadInt16(),
+                    Flags = reader.ReadInt16()
+                };
+
             layer.Visible = (~layer.Flags & 1) == 1;
             layer.Parallax = (layer.Flags & 2) == 2;
             layer.ParallaxX = reader.ReadSingle();
@@ -138,7 +138,7 @@ namespace Sphere.Core
             short length = reader.ReadInt16();
             layer.Name = new string(reader.ReadChars(length));
 
-            layer._tiles = new short[layer.Width, layer.Height];
+            layer._tiles = new short[layer.Width,layer.Height];
             for (int y = 0; y < layer.Height; ++y)
                 for (int x = 0; x < layer.Width; ++x)
                     layer._tiles[x, y] = reader.ReadInt16();
@@ -192,11 +192,9 @@ namespace Sphere.Core
                 for (int x = 0; x < Width; ++x)
                 {
                     short index = _tiles[x, y];
-                    if (index >= max)
-                    {
-                        index = _tiles[x, y] = 0;
-                        retVal = false;
-                    }
+                    if (index < max) continue;
+                    _tiles[x, y] = 0;
+                    retVal = false;
                 }
             }
             return retVal;
@@ -253,7 +251,7 @@ namespace Sphere.Core
         public short GetTile(int x, int y)
         {
             if (x < 0 || y < 0 || x >= Width || y >= Height) return -1;
-            else return _tiles[x, y];
+            return _tiles[x, y];
         }
 
         /// <summary>
@@ -263,18 +261,18 @@ namespace Sphere.Core
         /// <param name="height">New height of the field.</param>
         public void Resize(short width, short height)
         {
-            short[,] new_tiles = new short[width, height];
+            short[,] newTiles = new short[width, height];
 
             int w = Math.Min(width, Width);
             int h = Math.Min(height, Height);
 
             for (int x = 0; x <  w; ++x)
                 for (int y = 0; y < h; ++y)
-                    new_tiles[x, y] = _tiles[x, y];
+                    newTiles[x, y] = _tiles[x, y];
 
             Width = width;
             Height = height;
-            _tiles = new_tiles;
+            _tiles = newTiles;
         }
     }
 }

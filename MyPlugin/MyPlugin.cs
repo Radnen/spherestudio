@@ -14,12 +14,12 @@ namespace MyPlugin
         public Icon Icon { get; set; }
         public IPluginHost Host { get; set; }
 
-        private ToolStripMenuItem my_item;
+        private readonly ToolStripMenuItem _myItem;
 
         public MyPlugin()
         {
-            my_item = new ToolStripMenuItem("Print Me");
-            my_item.Click += new EventHandler(MyClick);
+            _myItem = new ToolStripMenuItem("Print Me");
+            _myItem.Click += MyClick;
         }
 
         /* Custom method shows a .NET message box containing '42'. */
@@ -31,7 +31,7 @@ namespace MyPlugin
         /* Here we talk to the host, adding a menu item */
         public void Initialize()
         {
-           Host.AddMenuItem("NewMenu", my_item);
+           Host.AddMenuItem("NewMenu", _myItem);
         }
 
         /* Here we talk to the host, removing the item */

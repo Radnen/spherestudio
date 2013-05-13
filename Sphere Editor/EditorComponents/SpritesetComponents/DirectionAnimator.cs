@@ -34,9 +34,9 @@ namespace Sphere_Editor.SpritesetComponents
                 if (value == null) return;
                 _dir = value;
                 FrameTracker.Minimum = 0;
-                FrameTracker.Maximum = value.frames.Count - 1;
-                FrameTracker.Value = value.frames.Count - 1;
-                AnimTimer.Interval = Math.Max(10, value.frames[0].Delay * 10);
+                FrameTracker.Maximum = value.Frames.Count - 1;
+                FrameTracker.Value = value.Frames.Count - 1;
+                AnimTimer.Interval = Math.Max(10, value.Frames[0].Delay * 10);
                 UpdateLabels();
                 PlayButton.Enabled = true;
             }
@@ -44,14 +44,14 @@ namespace Sphere_Editor.SpritesetComponents
 
         private void AnimTimer_Tick(object sender, EventArgs e)
         {
-            FrameTracker.Maximum = _dir.frames.Count - 1;
+            FrameTracker.Maximum = _dir.Frames.Count - 1;
             if (FrameTracker.Maximum <= 0) StopButton_Click(null, EventArgs.Empty);
             else
             {
                 if (FrameTracker.Value - 1 == -1) FrameTracker.Value = FrameTracker.Maximum;
                 else FrameTracker.Value--;
                 AnimPanel.Refresh();
-                AnimTimer.Interval = _dir.frames[FrameTracker.Maximum - FrameTracker.Value].Delay * 10;
+                AnimTimer.Interval = _dir.Frames[FrameTracker.Maximum - FrameTracker.Value].Delay * 10;
                 UpdateLabels();
             }
         }
@@ -77,7 +77,7 @@ namespace Sphere_Editor.SpritesetComponents
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            if (_dir.frames.Count > 1)
+            if (_dir.Frames.Count > 1)
             {
                 AnimTimer.Start();
                 PlayButton.Enabled = false;
@@ -98,7 +98,7 @@ namespace Sphere_Editor.SpritesetComponents
 
         private void AnimPanel_Paint(object sender, PaintEventArgs e)
         {
-            if (_sprite == null || _dir.frames.Count == 0)
+            if (_sprite == null || _dir.Frames.Count == 0)
             {
                 Point ur = new Point(AnimPanel.Width, 0);
                 Point lr = new Point(AnimPanel.Width, AnimPanel.Height);

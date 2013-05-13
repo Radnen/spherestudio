@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
-using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere.Plugins;
 
 namespace ScriptPlugin
 {
     public partial class ScriptEditor : EditorObject
     {
-        Scintilla code_box = new Scintilla();
+        Scintilla _codeBox = new Scintilla();
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         public IPluginHost Host { get; set; }
         private bool _autocomplete;
@@ -21,38 +21,38 @@ namespace ScriptPlugin
         public ScriptEditor(IPluginHost host)
         {
             Host = host;
-            string config_path = Application.StartupPath + "\\SphereLexer.xml";
-            if (File.Exists(config_path))
-                code_box.ConfigurationManager.CustomLocation = config_path;
+            string configPath = Application.StartupPath + "\\SphereLexer.xml";
+            if (File.Exists(configPath))
+                _codeBox.ConfigurationManager.CustomLocation = configPath;
 
-            code_box.ConfigurationManager.Language = "js";
-            code_box.AutoComplete.SingleLineAccept = false;
-            code_box.AutoComplete.FillUpCharacters = "";
-            code_box.AutoComplete.StopCharacters = "(";
-            code_box.AutoComplete.ListSeparator = ';';
-            code_box.AutoComplete.IsCaseSensitive = false;
-            code_box.SupressControlCharacters = true;
+            _codeBox.ConfigurationManager.Language = "js";
+            _codeBox.AutoComplete.SingleLineAccept = false;
+            _codeBox.AutoComplete.FillUpCharacters = "";
+            _codeBox.AutoComplete.StopCharacters = "(";
+            _codeBox.AutoComplete.ListSeparator = ';';
+            _codeBox.AutoComplete.IsCaseSensitive = false;
+            _codeBox.SupressControlCharacters = true;
 
-            code_box.Folding.MarkerScheme = FoldMarkerScheme.Custom;
-            code_box.Folding.Flags = FoldFlag.LineAfterContracted;
-            code_box.Folding.UseCompactFolding = false;
-            code_box.Margins.Margin1.IsClickable = true;
-            code_box.Margins.Margin1.IsFoldMargin = true;
-            code_box.Styles.LineNumber.BackColor = Color.FromArgb(235, 235, 255);
-            code_box.Margins.FoldMarginColor = Color.FromArgb(235, 235, 255);
+            _codeBox.Folding.MarkerScheme = FoldMarkerScheme.Custom;
+            _codeBox.Folding.Flags = FoldFlag.LineAfterContracted;
+            _codeBox.Folding.UseCompactFolding = false;
+            _codeBox.Margins.Margin1.IsClickable = true;
+            _codeBox.Margins.Margin1.IsFoldMargin = true;
+            _codeBox.Styles.LineNumber.BackColor = Color.FromArgb(235, 235, 255);
+            _codeBox.Margins.FoldMarginColor = Color.FromArgb(235, 235, 255);
 
-            code_box.Indentation.SmartIndentType = SmartIndent.CPP;
-            code_box.Styles.BraceLight.ForeColor = Color.Black;
-            code_box.Styles.BraceLight.BackColor = Color.LightGray;
+            _codeBox.Indentation.SmartIndentType = SmartIndent.CPP;
+            _codeBox.Styles.BraceLight.ForeColor = Color.Black;
+            _codeBox.Styles.BraceLight.BackColor = Color.LightGray;
 
-            code_box.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
+            _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
 
-            code_box.CharAdded += new EventHandler<CharAddedEventArgs>(CodeBox_CharAdded);
-            code_box.TextDeleted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
-            code_box.TextInserted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
-            code_box.Dock = DockStyle.Fill;
+            _codeBox.CharAdded += CodeBox_CharAdded;
+            _codeBox.TextDeleted += code_box_TextChanged;
+            _codeBox.TextInserted += code_box_TextChanged;
+            _codeBox.Dock = DockStyle.Fill;
 
-            Controls.Add(code_box);
+            Controls.Add(_codeBox);
 
             UpdateStyle();
         }
@@ -62,16 +62,15 @@ namespace ScriptPlugin
         /// </summary>
         public void UpdateStyle()
         {
-            code_box.Indentation.TabWidth = Host.EditorSettings.GetInt("script-spaces", 2);
-            code_box.Indentation.UseTabs = Host.EditorSettings.GetBool("script-tabs", true);
-            code_box.Caret.HighlightCurrentLine = Host.EditorSettings.GetBool("script-hiline", true);
-            code_box.IsBraceMatching = Host.EditorSettings.GetBool("script-hibraces", true);
+            _codeBox.Indentation.TabWidth = Host.EditorSettings.GetInt("script-spaces", 2);
+            _codeBox.Indentation.UseTabs = Host.EditorSettings.GetBool("script-tabs", true);
+            _codeBox.Caret.HighlightCurrentLine = Host.EditorSettings.GetBool("script-hiline", true);
+            _codeBox.IsBraceMatching = Host.EditorSettings.GetBool("script-hibraces", true);
             
             _autocomplete = Host.EditorSettings.GetBool("script-autocomplete", true);
 
             bool fold = Host.EditorSettings.GetBool("script-fold", true);
-            if (fold) code_box.Margins.Margin1.Width = 16;
-            else code_box.Margins.Margin1.Width = 0;
+            _codeBox.Margins.Margin1.Width = fold ? 16 : 0;
 
             /*string fontstring = Host.EditorSettings.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
@@ -84,7 +83,7 @@ namespace ScriptPlugin
         void code_box_TextChanged(object sender, EventArgs e)
         {
             MakeDirty();
-            SetMarginSize(code_box.Styles[StylesCommon.LineNumber].Font);
+            SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
         }
 
         public override void CreateNew()
@@ -92,23 +91,16 @@ namespace ScriptPlugin
             if (Host.EditorSettings.GetBool("use_script_update"))
             {
                 string author = (Host.CurrentGame != null) ? Host.CurrentGame.Author: "Unnamed";
-                string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
-                code_box.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
-                code_box.UndoRedo.EmptyUndoBuffer();
+                const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
+                _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
+                _codeBox.UndoRedo.EmptyUndoBuffer();
             }
-        }
-
-        private void SetFont(Font font)
-        {
-            for (int i = 0; i < 128; ++i)
-                code_box.Styles[i].Font = font;
-            SetMarginSize(font);
         }
 
         private void SetMarginSize(Font font)
         {
-            int spaces = (int)Math.Log10(code_box.Lines.Count) + 1;
-            code_box.Margins[0].Width = 2 + spaces * (int)font.SizeInPoints;
+            int spaces = (int)Math.Log10(_codeBox.Lines.Count) + 1;
+            _codeBox.Margins[0].Width = 2 + spaces * (int)font.SizeInPoints;
         }
 
         public override void LoadFile(string filename)
@@ -116,22 +108,22 @@ namespace ScriptPlugin
             FileName = filename;
             try
             {
-                using (StreamReader FileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
+                using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
                 {
-                    code_box.UndoRedo.IsUndoEnabled = false;
-                    code_box.Text = FileReader.ReadToEnd();
-                    code_box.UndoRedo.IsUndoEnabled = true;
+                    _codeBox.UndoRedo.IsUndoEnabled = false;
+                    _codeBox.Text = fileReader.ReadToEnd();
+                    _codeBox.UndoRedo.IsUndoEnabled = true;
                     
                     if (Path.GetExtension(filename) != ".js")
                         CodeBox.ConfigurationManager.Language = "default";
                     
                     Parent.Text = Path.GetFileName(filename);
-                    SetMarginSize(code_box.Styles[StylesCommon.LineNumber].Font);
+                    SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
                 }
             }
             catch (FileNotFoundException)
             {
-                MessageBox.Show("File: " + filename + " not found!", "File Not Found");
+                MessageBox.Show(@"File: " + filename + @" not found!", @"File Not Found");
                 Parent.Controls.Remove(this);
             }
         }
@@ -145,17 +137,17 @@ namespace ScriptPlugin
                 {
                     if (Host.EditorSettings.UseScriptUpdate)
                     {
-                        code_box.UndoRedo.IsUndoEnabled = false;
-                        if (code_box.Lines.Count > 1 && code_box.Lines[1].Text[0] == '*')
-                            code_box.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
-                        if (code_box.Lines.Count > 2 && code_box.Lines[2].Text[0] == '*')
-                            code_box.Lines[2].Text = "* Written by: " + Host.CurrentGame.Author;
-                        if (code_box.Lines.Count > 3 && code_box.Lines[3].Text[0] == '*')
-                            code_box.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
-                        code_box.UndoRedo.IsUndoEnabled = true;
+                        _codeBox.UndoRedo.IsUndoEnabled = false;
+                        if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
+                            _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
+                        if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
+                            _codeBox.Lines[2].Text = "* Written by: " + Host.CurrentGame.Author;
+                        if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
+                            _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
+                        _codeBox.UndoRedo.IsUndoEnabled = true;
                     }
 
-                    writer.Write(code_box.Text);
+                    writer.Write(_codeBox.Text);
                 }
                 Parent.Text = Path.GetFileName(FileName);
             }
@@ -165,7 +157,7 @@ namespace ScriptPlugin
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = "Sphere Script Files (.js)|*.js";
+                diag.Filter = @"Sphere Script Files (.js)|*.js";
 
                 if (Host.CurrentGame != null)
                     diag.InitialDirectory = Host.CurrentGame.RootPath + "\\scripts";
@@ -180,42 +172,42 @@ namespace ScriptPlugin
 
         public override void Copy()
         {
-            code_box.Clipboard.Copy();
+            _codeBox.Clipboard.Copy();
         }
 
         public override void Paste()
         {
-            if (code_box.Clipboard.CanPaste)
-                code_box.Clipboard.Paste();
+            if (_codeBox.Clipboard.CanPaste)
+                _codeBox.Clipboard.Paste();
         }
 
         public override void Cut()
         {
-            code_box.Clipboard.Cut();
+            _codeBox.Clipboard.Cut();
         }
 
         public override void SelectAll()
         {
-            code_box.Selection.SelectAll();
+            _codeBox.Selection.SelectAll();
         }
 
         public override void Undo()
         {
-            if (code_box.UndoRedo.CanUndo) code_box.UndoRedo.Undo();
+            if (_codeBox.UndoRedo.CanUndo) _codeBox.UndoRedo.Undo();
         }
 
         public override void Redo()
         {
-            if (code_box.UndoRedo.CanRedo) code_box.UndoRedo.Redo();
+            if (_codeBox.UndoRedo.CanRedo) _codeBox.UndoRedo.Redo();
         }
 
         public override string Text
         {
-            get { return code_box.Text; }
+            get { return _codeBox.Text; }
             set
             {
-                code_box.Text = value;
-                code_box.UndoRedo.EmptyUndoBuffer();
+                _codeBox.Text = value;
+                _codeBox.UndoRedo.EmptyUndoBuffer();
             }
         }
 
@@ -225,26 +217,21 @@ namespace ScriptPlugin
 
             if (char.IsLetter(e.Ch))
             {
-                string word = code_box.GetWordFromPosition(code_box.CurrentPos).ToLower();
-                List<string> filter = new List<string>();
-
-                foreach (string s in ScriptPlugin.functions)
-                {
-                    if (s.ToLower().Contains(word)) filter.Add(s.Replace(";", ""));
-                }
+                string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
+                List<string> filter = (from s in ScriptPlugin.Functions where s.ToLower().Contains(word) select s.Replace(";", "")).ToList();
 
                 if (filter.Count != 0)
                 {
-                    code_box.AutoComplete.List = filter;
-                    code_box.AutoComplete.Show(word.Length);
+                    _codeBox.AutoComplete.List = filter;
+                    _codeBox.AutoComplete.Show(word.Length);
                 }
             }
         }
 
         public Scintilla CodeBox
         {
-            get { return code_box; }
-            set { code_box = value; }
+            get { return _codeBox; }
+            set { _codeBox = value; }
         }
     }
 }

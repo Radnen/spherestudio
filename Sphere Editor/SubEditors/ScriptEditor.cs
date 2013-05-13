@@ -3,48 +3,49 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
-using Sphere.Core;
+using Sphere.Core.Editor;
 
 namespace Sphere_Editor.SubEditors
 {
     public partial class ScriptEditor : EditorObject
     {
-        Scintilla code_box = new Scintilla();
-        readonly Encoding ISO_8859_1 = System.Text.Encoding.GetEncoding("iso-8859-1");
+        Scintilla _codeBox = new Scintilla();
+        readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
 
         public ScriptEditor()
         {
-            code_box.ConfigurationManager.CustomLocation = Application.StartupPath + "\\SphereLexer.xml";
-            code_box.ConfigurationManager.Language = "js";
-            code_box.AutoComplete.SingleLineAccept = false;
-            code_box.AutoComplete.FillUpCharacters = "";
-            code_box.AutoComplete.StopCharacters = "(";
-            code_box.AutoComplete.ListSeparator = ';';
-            code_box.AutoComplete.IsCaseSensitive = false;
-            code_box.SupressControlCharacters = true;
+            _codeBox.ConfigurationManager.CustomLocation = Application.StartupPath + "\\SphereLexer.xml";
+            _codeBox.ConfigurationManager.Language = "js";
+            _codeBox.AutoComplete.SingleLineAccept = false;
+            _codeBox.AutoComplete.FillUpCharacters = "";
+            _codeBox.AutoComplete.StopCharacters = "(";
+            _codeBox.AutoComplete.ListSeparator = ';';
+            _codeBox.AutoComplete.IsCaseSensitive = false;
+            _codeBox.SupressControlCharacters = true;
             
-            code_box.Folding.MarkerScheme = FoldMarkerScheme.Arrow;
-            code_box.Margins[0].Width = 36;
+            _codeBox.Folding.MarkerScheme = FoldMarkerScheme.Arrow;
+            _codeBox.Margins[0].Width = 36;
 
             bool fold = Global.CurrentEditor.GetBool("script-fold", true);
-            if (fold) SetFold(fold);
+            if (fold) SetFold(true);
 
-            code_box.Indentation.SmartIndentType = SmartIndent.CPP;
-            code_box.Styles.BraceLight.ForeColor = Color.Black;
-            code_box.Styles.BraceLight.BackColor = Color.LightGray;
+            _codeBox.Indentation.SmartIndentType = SmartIndent.CPP;
+            _codeBox.Styles.BraceLight.ForeColor = Color.Black;
+            _codeBox.Styles.BraceLight.BackColor = Color.LightGray;
 
-            code_box.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
+            _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
 
-            code_box.CharAdded += new EventHandler<CharAddedEventArgs>(CodeBox_CharAdded);
-            code_box.TextDeleted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
-            code_box.TextInserted += new EventHandler<TextModifiedEventArgs>(code_box_TextChanged);
-            code_box.Dock = DockStyle.Fill;
+            _codeBox.CharAdded += CodeBox_CharAdded;
+            _codeBox.TextDeleted += code_box_TextChanged;
+            _codeBox.TextInserted += code_box_TextChanged;
+            _codeBox.Dock = DockStyle.Fill;
 
-            code_box.Commands.AddBinding(Keys.D, Keys.Control, BindableCommand.LineDuplicate);
-            Controls.Add(code_box);
+            _codeBox.Commands.AddBinding(Keys.D, Keys.Control, BindableCommand.LineDuplicate);
+            Controls.Add(_codeBox);
 
             UpdateStyle();
         }
@@ -54,10 +55,10 @@ namespace Sphere_Editor.SubEditors
         /// </summary>
         public void UpdateStyle()
         {
-            code_box.Indentation.TabWidth = Global.CurrentEditor.GetInt("script-spaces", 2);
-            code_box.Indentation.UseTabs = Global.CurrentEditor.GetBool("script-tabs", true);
-            code_box.Caret.HighlightCurrentLine = Global.CurrentEditor.GetBool("script-hiline", true);
-            code_box.IsBraceMatching = Global.CurrentEditor.GetBool("script-hibraces", true);
+            _codeBox.Indentation.TabWidth = Global.CurrentEditor.GetInt("script-spaces", 2);
+            _codeBox.Indentation.UseTabs = Global.CurrentEditor.GetBool("script-tabs", true);
+            _codeBox.Caret.HighlightCurrentLine = Global.CurrentEditor.GetBool("script-hiline", true);
+            _codeBox.IsBraceMatching = Global.CurrentEditor.GetBool("script-hibraces", true);
 
             string fontstring = Global.CurrentEditor.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
@@ -77,29 +78,29 @@ namespace Sphere_Editor.SubEditors
             if (Global.CurrentEditor.UseScriptUpdate)
             {
                 string author = (Global.CurrentProject != null) ? Global.CurrentProject.Author : "Unnamed";
-                string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
-                code_box.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
-                code_box.UndoRedo.EmptyUndoBuffer();
+                const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
+                _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
+                _codeBox.UndoRedo.EmptyUndoBuffer();
             }
         }
 
         private void SetFont(Font font)
         {
             for (int i = 0; i < 128; ++i)
-                code_box.Styles[i].Font = font;
+                _codeBox.Styles[i].Font = font;
             SetMarginSize(font);
         }
 
         private void SetMarginSize(Font font)
         {
-            code_box.Margins[0].Width = 25 + (int)(Math.Log10(code_box.Lines.Count) * font.SizeInPoints);
+            _codeBox.Margins[0].Width = 25 + (int)(Math.Log10(_codeBox.Lines.Count) * font.SizeInPoints);
         }
 
         private void SetFold(bool fold)
         {
-            code_box.Margins[0].IsFoldMargin = fold;
-            code_box.Margins[0].IsClickable = fold;
-            code_box.Folding.IsEnabled = fold;
+            _codeBox.Margins[0].IsFoldMargin = fold;
+            _codeBox.Margins[0].IsClickable = fold;
+            _codeBox.Folding.IsEnabled = fold;
         }
 
         public override void LoadFile(string filename)
@@ -107,19 +108,19 @@ namespace Sphere_Editor.SubEditors
             FileName = filename;
             try
             {
-                using (StreamReader FileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
+                using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
                 {
-                    code_box.UndoRedo.IsUndoEnabled = false;
-                    code_box.Text = FileReader.ReadToEnd();
-                    code_box.UndoRedo.IsUndoEnabled = true;
+                    _codeBox.UndoRedo.IsUndoEnabled = false;
+                    _codeBox.Text = fileReader.ReadToEnd();
+                    _codeBox.UndoRedo.IsUndoEnabled = true;
                     if (!Global.IsScript(ref filename)) CodeBox.ConfigurationManager.Language = "default";
                     Parent.Text = Path.GetFileName(filename);
-                    SetMarginSize(code_box.Styles[0].Font);
+                    SetMarginSize(_codeBox.Styles[0].Font);
                 }
             }
             catch (FileNotFoundException)
             {
-                MessageBox.Show("File: " + filename + " not found!", "File Not Found");
+                MessageBox.Show(@"File: " + filename + @" not found!", @"File Not Found");
                 Parent.Controls.Remove(this);
             }
         }
@@ -133,17 +134,17 @@ namespace Sphere_Editor.SubEditors
                 {
                     if (Global.CurrentEditor.UseScriptUpdate)
                     {
-                        code_box.UndoRedo.IsUndoEnabled = false;
-                        if (code_box.Lines.Count > 1 && code_box.Lines[1].Text[0] == '*')
-                            code_box.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
-                        if (code_box.Lines.Count > 2 && code_box.Lines[2].Text[0] == '*')
-                            code_box.Lines[2].Text = "* Written by: " + Global.CurrentProject.Author;
-                        if (code_box.Lines.Count > 3 && code_box.Lines[3].Text[0] == '*')
-                            code_box.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
-                        code_box.UndoRedo.IsUndoEnabled = true;
+                        _codeBox.UndoRedo.IsUndoEnabled = false;
+                        if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
+                            _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
+                        if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
+                            _codeBox.Lines[2].Text = "* Written by: " + Global.CurrentProject.Author;
+                        if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
+                            _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
+                        _codeBox.UndoRedo.IsUndoEnabled = true;
                     }
 
-                    writer.Write(code_box.Text);
+                    writer.Write(_codeBox.Text);
                 }
                 Parent.Text = Path.GetFileName(FileName);
             }
@@ -153,7 +154,7 @@ namespace Sphere_Editor.SubEditors
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = "Sphere Script Files (.js)|*.js";
+                diag.Filter = @"Sphere Script Files (.js)|*.js";
 
                 if (Global.CurrentProject != null)
                     diag.InitialDirectory = Global.CurrentProject.RootPath + "\\scripts";
@@ -168,42 +169,43 @@ namespace Sphere_Editor.SubEditors
 
         public override void Copy()
         {
-            code_box.Clipboard.Copy();
+            _codeBox.Clipboard.Copy();
         }
 
         public override void Paste()
         {
-            if (code_box.Clipboard.CanPaste)
-                code_box.Clipboard.Paste();
+            if (_codeBox.Clipboard.CanPaste)
+                _codeBox.Clipboard.Paste();
         }
 
         public override void Cut()
         {
-            code_box.Clipboard.Cut();
+            _codeBox.Clipboard.Cut();
         }
 
         public override void SelectAll()
         {
-            code_box.Selection.SelectAll();
+            _codeBox.Selection.SelectAll();
         }
 
         public override void Undo()
         {
-            if (code_box.UndoRedo.CanUndo) code_box.UndoRedo.Undo();
+            if (_codeBox.UndoRedo.CanUndo) _codeBox.UndoRedo.Undo();
         }
 
         public override void Redo()
         {
-            if (code_box.UndoRedo.CanRedo) code_box.UndoRedo.Redo();
+            if (_codeBox.UndoRedo.CanRedo) _codeBox.UndoRedo.Redo();
         }
 
+        [Localizable(false)]
         public override string Text
         {
-            get { return code_box.Text; }
+            get { return _codeBox.Text; }
             set
             {
-                code_box.Text = value;
-                code_box.UndoRedo.EmptyUndoBuffer();
+                _codeBox.Text = value;
+                _codeBox.UndoRedo.EmptyUndoBuffer();
             }
         }
 
@@ -211,26 +213,21 @@ namespace Sphere_Editor.SubEditors
         {
             if (char.IsLetter(e.Ch))
             {
-                string word = code_box.GetWordFromPosition(code_box.CurrentPos).ToLower();
-                List<string> filter = new List<string>();
-
-                foreach (string s in Global.functions)
-                {
-                    if (s.ToLower().Contains(word)) filter.Add(s.Replace(";", ""));
-                }
+                string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
+                List<string> filter = (from s in Global.functions where s.ToLower().Contains(word) select s.Replace(";", "")).ToList();
 
                 if (filter.Count != 0)
                 {
-                    code_box.AutoComplete.List = filter;
-                    code_box.AutoComplete.Show(word.Length);
+                    _codeBox.AutoComplete.List = filter;
+                    _codeBox.AutoComplete.Show(word.Length);
                 }
             }
         }
 
         public Scintilla CodeBox
         {
-            get { return code_box; }
-            set { code_box = value; }
+            get { return _codeBox; }
+            set { _codeBox = value; }
         }
     }
 }

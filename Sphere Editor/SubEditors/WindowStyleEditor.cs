@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor.SubEditors
@@ -10,17 +11,16 @@ namespace Sphere_Editor.SubEditors
     public partial class WindowStyleEditor : EditorObject
     {
         #region attributes
-        private Windowstyle style;
-        private bool _move = false;
-        private int tx = 0;
-        private int ty = 0;
-        private int wind_h = 0;
-        private int wind_w = 0;
-
+        private Windowstyle _style;
+        private bool _move;
+        private int _tx, _ty;
+        private int _windH, _windW;
+        private int _id = -1;
+        
         /* Docking Data */
-        private DockContent StyleContent;
-        private DockContent ImageContent;
-        private DockPanel StyleDockPanel;
+        private DockContent _styleContent;
+        private DockContent _imageContent;
+        private DockPanel _styleDockPanel;
         #endregion
 
         public WindowStyleEditor()
@@ -35,43 +35,38 @@ namespace Sphere_Editor.SubEditors
 
             WindowHolder.Dock = DockStyle.Fill;
             StyleDrawer.Dock = DockStyle.Fill;
-            StyleContent = new DockContent();
-            StyleContent.Text = "WindowStyle Preview";
-            StyleContent.Controls.Add(WindowHolder);
-            StyleContent.Controls.Add(StyleStatusStrip);
-            StyleContent.Controls.Add(StyleToolStrip);
+            _styleContent = new DockContent {Text = @"WindowStyle Preview"};
+            _styleContent.Controls.Add(WindowHolder);
+            _styleContent.Controls.Add(StyleStatusStrip);
+            _styleContent.Controls.Add(StyleToolStrip);
             StyleStatusStrip.SendToBack();
             StyleToolStrip.BringToFront();
 
-            ImageContent = new DockContent();
-            ImageContent.Text = "WindowStyle Image Editor";
-            ImageContent.Controls.Add(StyleDrawer);
-            StyleContent.CloseButtonVisible = ImageContent.CloseButtonVisible = false;
+            _imageContent = new DockContent {Text = @"WindowStyle Image Editor"};
+            _imageContent.Controls.Add(StyleDrawer);
+            _styleContent.CloseButtonVisible = _imageContent.CloseButtonVisible = false;
 
-            StyleDockPanel = new DockPanel();
-            StyleDockPanel.Dock = DockStyle.Fill;
-            StyleDockPanel.DocumentStyle = DocumentStyle.DockingWindow;
-            if (System.IO.File.Exists("WindowEditor.xml"))
+            _styleDockPanel = new DockPanel {Dock = DockStyle.Fill, DocumentStyle = DocumentStyle.DockingWindow};
+            if (File.Exists("WindowEditor.xml"))
             {
-                DeserializeDockContent dc = new DeserializeDockContent(GetContent);
-                StyleDockPanel.LoadFromXml("WindowEditor.xml", dc);
+                DeserializeDockContent dc = GetContent;
+                _styleDockPanel.LoadFromXml("WindowEditor.xml", dc);
             }
             else
             {
-                StyleContent.Show(StyleDockPanel, DockState.Document);
-                ImageContent.Show(StyleContent.Pane, DockAlignment.Bottom, 0.40);
+                _styleContent.Show(_styleDockPanel, DockState.Document);
+                _imageContent.Show(_styleContent.Pane, DockAlignment.Bottom, 0.40);
             }
 
-            Controls.Add(StyleDockPanel);
-            StyleDockPanel.BringToFront();
+            Controls.Add(_styleDockPanel);
+            _styleDockPanel.BringToFront();
         }
 
         public override void SaveLayout()
         {
-            StyleDockPanel.SaveAsXml("WindowEditor.xml");
+            _styleDockPanel.SaveAsXml("WindowEditor.xml");
         }
 
-        private int _id = -1;
         public IDockContent GetContent(string persist)
         {
             if (persist == "WeifenLuo.WinFormsUI.Docking.DockContent")
@@ -79,18 +74,17 @@ namespace Sphere_Editor.SubEditors
                 _id++;
                 switch (_id)
                 {
-                    case 0: return StyleContent;
-                    case 1: return ImageContent;
+                    case 0: return _styleContent;
+                    case 1: return _imageContent;
                     default: return new DockContent();
                 }
             }
-            else return new DockContent();
+            return new DockContent();
         }
-        
+
         public override void CreateNew()
         {
-            style = new Windowstyle();
-            style.Grid = true;
+            _style = new Windowstyle {Grid = true};
             InitWindow();
         }
 
@@ -99,9 +93,9 @@ namespace Sphere_Editor.SubEditors
             FileName = filename;
             using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
             {
-                style = new Windowstyle(reader);
+                _style = new Windowstyle(reader);
             }
-            style.Grid = true;
+            _style.Grid = true;
             InitWindow();
         }
 
@@ -112,11 +106,11 @@ namespace Sphere_Editor.SubEditors
 
         private void InitWindow()
         {
-            style.GeneratePreview(WindowPanel.Width, WindowPanel.Height);
-            StyleDrawer.SetImage(style.Images[0]);
+            _style.GeneratePreview(WindowPanel.Width, WindowPanel.Height);
+            StyleDrawer.SetImage(_style.Images[0]);
             StyleDrawer.ZoomIn();
-            wind_w = WindowPanel.Width;
-            wind_h = WindowPanel.Height;
+            _windW = WindowPanel.Width;
+            _windH = WindowPanel.Height;
         }
 
         private void CenterInContainer()
@@ -128,8 +122,8 @@ namespace Sphere_Editor.SubEditors
 
         private void StyleDrawer_ImageEdited(object sender, EventArgs e)
         {
-            style.Images[style.Selected] = StyleDrawer.GetImage();
-            style.GeneratePreview(wind_w, wind_h);
+            _style.Images[_style.Selected] = StyleDrawer.GetImage();
+            _style.GeneratePreview(_windW, _windH);
             WindowPanel.Invalidate();
             MakeDirty();
         }
@@ -140,7 +134,7 @@ namespace Sphere_Editor.SubEditors
             else
             {
                 Parent.Text = Path.GetFileName(FileName);
-                style.Save(FileName);
+                _style.Save(FileName);
             }
         }
 
@@ -148,7 +142,7 @@ namespace Sphere_Editor.SubEditors
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = "WindowStyle Files (.rws)|*.rws";
+                diag.Filter = @"WindowStyle Files (.rws)|*.rws";
 
                 if (Global.CurrentProject.RootPath != null)
                     diag.InitialDirectory = Global.CurrentProject.RootPath + "\\windowstyles";
@@ -171,24 +165,23 @@ namespace Sphere_Editor.SubEditors
 
         private void TestPanel_Paint(object sender, PaintEventArgs e)
         {
-            if (style == null) return;
-            style.DrawWindow(e.Graphics);
+            if (_style == null) return;
+            _style.DrawWindow(e.Graphics);
         }
 
         private void TestPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (_move)
             {
-                WindowPanel.Top -= (ty - e.Y);
-                WindowPanel.Left -= (tx - e.X);
+                WindowPanel.Top -= (_ty - e.Y);
+                WindowPanel.Left -= (_tx - e.X);
             }
 
-            int x = style.Images[0].Width*style.Zoom;
-            int y = style.Images[0].Height*style.Zoom;
+            int x = _style.Images[0].Width*_style.Zoom;
+            int y = _style.Images[0].Height*_style.Zoom;
             int w = WindowPanel.Width - (x + x);
             int h = WindowPanel.Height - (y + y);
-            if (PointWithin(e.Location, x, y, w, h)) Cursor = Cursors.SizeAll;
-            else Cursor = Cursors.Default;
+            Cursor = PointWithin(e.Location, x, y, w, h) ? Cursors.SizeAll : Cursors.Default;
         }
 
         private bool PointWithin(Point pos, int x, int y, int width, int height)
@@ -198,22 +191,22 @@ namespace Sphere_Editor.SubEditors
 
         private void SelectImage(int num)
         {
-            style.Selected = num;
-            StyleDrawer.SetImage(style.Images[num]);
+            _style.Selected = num;
+            StyleDrawer.SetImage(_style.Images[num]);
             WindowPanel.Refresh();
         }
 
         private void TestPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Right) return;
+            if (e.Button == MouseButtons.Right) return;
             for (int i = 0; i < 8; ++i)
             {
-                if (style.IsPointWithinSection(e.Location, i)) SelectImage(i);
+                if (_style.IsPointWithinSection(e.Location, i)) SelectImage(i);
             }
 
             _move = true;
-            tx = e.X;
-            ty = e.Y;
+            _tx = e.X;
+            _ty = e.Y;
         }
 
         private void TestPanel_MouseUp(object sender, MouseEventArgs e)
@@ -223,21 +216,21 @@ namespace Sphere_Editor.SubEditors
 
         private void GridItem_Click(object sender, EventArgs e)
         {
-            style.Grid = !style.Grid;
+            _style.Grid = !_style.Grid;
             WindowPanel.Refresh();
         }
 
         private void ZoomInItem_Click(object sender, EventArgs e)
         {
             ZoomOutItem.Enabled = ZoomOutButton.Enabled = true;
-            if (style.Zoom < 4)
+            if (_style.Zoom < 4)
             {
-                style.Zoom++;
-                if (style.Zoom == 4) ZoomInItem.Enabled = ZoomInButton.Enabled = false;
+                _style.Zoom++;
+                if (_style.Zoom == 4) ZoomInItem.Enabled = ZoomInButton.Enabled = false;
             }
-            WindowPanel.Width = wind_w * style.Zoom;
-            WindowPanel.Height = wind_h * style.Zoom;
-            ZoomLabel.Text = "Zoom: " + style.Zoom;
+            WindowPanel.Width = _windW * _style.Zoom;
+            WindowPanel.Height = _windH * _style.Zoom;
+            ZoomLabel.Text = @"Zoom: " + _style.Zoom;
             CenterInContainer();
             WindowPanel.Refresh();
         }
@@ -245,41 +238,41 @@ namespace Sphere_Editor.SubEditors
         private void ZoomOutItem_Click(object sender, EventArgs e)
         {
             ZoomInItem.Enabled = ZoomInButton.Enabled = true;
-            if (style.Zoom > 1)
+            if (_style.Zoom > 1)
             {
-                style.Zoom--;
-                if (style.Zoom == 1) ZoomOutItem.Enabled = ZoomOutButton.Enabled = false;
+                _style.Zoom--;
+                if (_style.Zoom == 1) ZoomOutItem.Enabled = ZoomOutButton.Enabled = false;
             }
-            WindowPanel.Width = wind_w * style.Zoom;
-            WindowPanel.Height = wind_h * style.Zoom;
-            ZoomLabel.Text = "Zoom: " + style.Zoom;
+            WindowPanel.Width = _windW * _style.Zoom;
+            WindowPanel.Height = _windH * _style.Zoom;
+            ZoomLabel.Text = @"Zoom: " + _style.Zoom;
             CenterInContainer();
             WindowPanel.Refresh();
         }
 
         private void EditBGItem_Click(object sender, EventArgs e)
         {
-            style.Selected = 8;
-            StyleDrawer.SetImage(style.Images[8]);
+            _style.Selected = 8;
+            StyleDrawer.SetImage(_style.Images[8]);
             WindowPanel.Refresh();
         }
 
         private void LeftButton_Click(object sender, EventArgs e)
         {
-            if (style.Selected > 0) style.Selected--;
-            SelectImage(style.Selected);
-            ImgLabel.Text = "Image: " + style.Selected;
-            LeftButton.Enabled = style.Selected > 0;
+            if (_style.Selected > 0) _style.Selected--;
+            SelectImage(_style.Selected);
+            ImgLabel.Text = @"Image: " + _style.Selected;
+            LeftButton.Enabled = _style.Selected > 0;
             if (!LeftButton.Enabled) HelpLabel.Text = "";
             RightButton.Enabled = true;
         }
 
         private void RightButton_Click(object sender, EventArgs e)
         {
-            if (style.Selected < 8) style.Selected++;
-            SelectImage(style.Selected);
-            ImgLabel.Text = "Image: " + style.Selected;
-            RightButton.Enabled = style.Selected < 8;
+            if (_style.Selected < 8) _style.Selected++;
+            SelectImage(_style.Selected);
+            ImgLabel.Text = @"Image: " + _style.Selected;
+            RightButton.Enabled = _style.Selected < 8;
             if (!RightButton.Enabled) HelpLabel.Text = "";
             LeftButton.Enabled = true;
         }
@@ -287,54 +280,45 @@ namespace Sphere_Editor.SubEditors
         #region tip texts
         private void ClearTip(object sender, EventArgs e)
         {
-            this.HelpLabel.Text = "";
+            HelpLabel.Text = "";
         }
 
         private void WindowPanel_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Selecting a side allows you to edit that portion.";
+            HelpLabel.Text = @"Selecting a side allows you to edit that portion.";
         }
 
         private void WindowPanel_MouseLeave(object sender, EventArgs e)
         {
-            this.HelpLabel.Text = "";
-            this.Cursor = Cursors.Default;
+            HelpLabel.Text = "";
+            Cursor = Cursors.Default;
         }
 
         private void GridButton_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "The grid can show you the window sections.";
-        }
-
-        private void StyleDrawer_MouseEnter(object sender, EventArgs e)
-        {
-            HelpLabel.Text = "The drawer will automatically update the windowstyle.";
+            HelpLabel.Text = @"The grid can show you the window sections.";
         }
 
         private void WindowHolder_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Right-click to show the context menu.";
+            HelpLabel.Text = @"Right-click to show the context menu.";
         }
 
         private void LeftButton_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Click to set last image.";
+            HelpLabel.Text = @"Click to set last image.";
         }
 
         private void RightButton_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Click to set next image.";
+            HelpLabel.Text = @"Click to set next image.";
         }
 
         private void EditBGItem_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Directly edit the window background.";
+            HelpLabel.Text = @"Directly edit the window background.";
         }
 
-        private void CenterButton_MouseEnter(object sender, EventArgs e)
-        {
-            HelpLabel.Text = "Click to center the windowstyle.";
-        }
         #endregion
 
         private void WindowHolder_Resize(object sender, EventArgs e)

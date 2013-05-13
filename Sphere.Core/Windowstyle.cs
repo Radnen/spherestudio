@@ -14,48 +14,48 @@ namespace Sphere.Core
     {
         // Different Directions:
         private Bitmap[] _images = new Bitmap[9];
-        private Rectangle[] _rectangles = new Rectangle[9];
-        private Pen _grid_pen = new Pen(Brushes.LimeGreen);
-        private Pen _sel_pen = new Pen(Brushes.Red);
-        private Image _preview = null;
-        private int _zoom = 1, _sel = 0;
-        private int _p_width = 0;
-        private int _p_height = 0;
+        private readonly Rectangle[] _rectangles = new Rectangle[9];
+        private Pen _gridPen = new Pen(Brushes.LimeGreen);
+        private Pen _selPen = new Pen(Brushes.Red);
+        private Image _preview;
+        private int _zoom = 1, _sel;
+        private int _pWidth;
+        private int _pHeight;
 
         /// <summary>
         /// nested class for working with colors
         /// </summary>
         private class RGBA
         {
-            byte red = 0;
-            byte blue = 0;
-            byte green = 0;
-            byte alpha = 0;
+            byte _red;
+            byte _blue;
+            byte _green;
+            byte _alpha;
 
             public void ReadData(BinaryReader binread)
             {
-                red = binread.ReadByte();
-                green = binread.ReadByte();
-                blue = binread.ReadByte();
-                alpha = binread.ReadByte();
+                _red = binread.ReadByte();
+                _green = binread.ReadByte();
+                _blue = binread.ReadByte();
+                _alpha = binread.ReadByte();
             }
 
             public void SaveData(BinaryWriter binwrite)
             {
-                binwrite.Write(this.red);
-                binwrite.Write(this.blue);
-                binwrite.Write(this.green);
-                binwrite.Write(this.alpha);
+                binwrite.Write(_red);
+                binwrite.Write(_blue);
+                binwrite.Write(_green);
+                binwrite.Write(_alpha);
             }
         }
 
         // Header data:
         string _sig = ".rws";
         short _version = 1;
-        byte _edge_width = 0;
-        byte _background_mode = 0;
-        RGBA[] _edge_colors = new RGBA[4];
-        byte[] _edge_offset = new byte[4];
+        byte _edgeWidth;
+        byte _backgroundMode;
+        readonly RGBA[] _edgeColors = new RGBA[4];
+        readonly byte[] _edgeOffset = new byte[4];
 
         /// <summary>
         /// Instantitates a blank window for your use.
@@ -63,7 +63,7 @@ namespace Sphere.Core
         public Windowstyle()
         {
             _version = 2;
-            for (int i = 0; i < _edge_colors.Length; ++i) _edge_colors[i] = new RGBA();
+            for (int i = 0; i < _edgeColors.Length; ++i) _edgeColors[i] = new RGBA();
             for (int i = 0; i < _images.Length; ++i) _images[i] = new Bitmap(16, 16, PixelFormat.Format32bppPArgb);
         }
 
@@ -106,13 +106,13 @@ namespace Sphere.Core
                 {
                     foreach (Bitmap b in _images) b.Dispose();
                     if (_preview != null) _preview.Dispose();
-                    _grid_pen.Dispose();
-                    _sel_pen.Dispose();
+                    _gridPen.Dispose();
+                    _selPen.Dispose();
                 }
 
                 _preview = null;
-                _grid_pen = null;
-                _sel_pen = null;
+                _gridPen = null;
+                _selPen = null;
                 _images = null;
             }
             _disposed = true;
@@ -128,21 +128,20 @@ namespace Sphere.Core
             {
                 writer.Write(_sig.ToCharArray());
                 writer.Write(_version);
-                writer.Write(_edge_width);
-                writer.Write(_background_mode);
-                for (int i = 0; i < _edge_colors.Length; ++i) _edge_colors[i].SaveData(writer);
-                for (int i = 0; i < _edge_offset.Length; ++i) writer.Write(_edge_offset[i]);
+                writer.Write(_edgeWidth);
+                writer.Write(_backgroundMode);
+                foreach (RGBA color in _edgeColors) color.SaveData(writer);
+                foreach (byte edge in _edgeOffset) writer.Write(edge);
                 writer.Write(new byte[36]);
 
                 switch (_version)
                 {
                     case 2:
-                        BitmapSaver saver;
                         foreach (Bitmap b in _images)
                         {
                             writer.Write((short)b.Width);
                             writer.Write((short)b.Height);
-                            saver = new BitmapSaver(b.Width, b.Height);
+                            BitmapSaver saver = new BitmapSaver(b.Width, b.Height);
                             saver.SaveToStream(b, writer);
                         }
                         break;
@@ -160,25 +159,24 @@ namespace Sphere.Core
         {
             _sig = new string(binread.ReadChars(4));
             _version = binread.ReadInt16();
-            _edge_width = binread.ReadByte();
-            _background_mode = binread.ReadByte();
-            for (int i = 0; i < _edge_colors.Length; ++i)
+            _edgeWidth = binread.ReadByte();
+            _backgroundMode = binread.ReadByte();
+            for (int i = 0; i < _edgeColors.Length; ++i)
             {
-                _edge_colors[i] = new RGBA();
-                _edge_colors[i].ReadData(binread);
+                _edgeColors[i] = new RGBA();
+                _edgeColors[i].ReadData(binread);
             }
-            for (int i = 0; i < _edge_offset.Length; ++i) _edge_offset[1] = binread.ReadByte();
+            for (int i = 0; i < _edgeOffset.Length; ++i) _edgeOffset[1] = binread.ReadByte();
             binread.ReadBytes(36); // reserved
 
             switch (_version)
             {
                 case 2:
-                    BitmapLoader loader;
                     for (int i = 0; i < _images.Length; ++i)
                     {
                         short width = binread.ReadInt16();
                         short height = binread.ReadInt16();
-                        loader = new BitmapLoader(width, height);
+                        BitmapLoader loader = new BitmapLoader(width, height);
                         _images[i] = loader.LoadFromStream(binread, width * height * 4);
                         loader.Close();
                     }
@@ -205,8 +203,8 @@ namespace Sphere.Core
             set
             {
                 _zoom = value;
-                _p_width = _preview.Width * value;
-                _p_height = _preview.Height * value;
+                _pWidth = _preview.Width * value;
+                _pHeight = _preview.Height * value;
             }
         }
 
@@ -228,8 +226,8 @@ namespace Sphere.Core
         {
             if (_preview != null) _preview.Dispose();
             _preview = new Bitmap(w, h, PixelFormat.Format32bppPArgb);
-            _p_width = w * _zoom;
-            _p_height = h * _zoom;
+            _pWidth = w * _zoom;
+            _pHeight = h * _zoom;
 
             Graphics g = Graphics.FromImage(_preview);
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -267,22 +265,22 @@ namespace Sphere.Core
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             g.PixelOffsetMode = PixelOffsetMode.Half;
             g.CompositingQuality = CompositingQuality.HighSpeed;
-            g.DrawImage(_preview, 0, 0, _p_width, _p_height);
+            g.DrawImage(_preview, 0, 0, _pWidth, _pHeight);
 
             int w = _preview.Width*_zoom;
             int h = _preview.Height*_zoom;
             if (Grid)
             {
-                g.DrawRectangle(_grid_pen, 1, 1, w - 1, h - 1);
-                g.DrawLine(_grid_pen, 0, _images[0].Height*_zoom, w, _images[2].Height*_zoom);
-                g.DrawLine(_grid_pen, _images[0].Width*_zoom, 0, _images[6].Width*_zoom, h);
-                g.DrawLine(_grid_pen, 0, h - _images[6].Height*_zoom, w, h - _images[4].Height*_zoom);
-                g.DrawLine(_grid_pen, w - _images[2].Width*_zoom, 0, w - _images[4].Width*_zoom, h);
+                g.DrawRectangle(_gridPen, 1, 1, w - 1, h - 1);
+                g.DrawLine(_gridPen, 0, _images[0].Height*_zoom, w, _images[2].Height*_zoom);
+                g.DrawLine(_gridPen, _images[0].Width*_zoom, 0, _images[6].Width*_zoom, h);
+                g.DrawLine(_gridPen, 0, h - _images[6].Height*_zoom, w, h - _images[4].Height*_zoom);
+                g.DrawLine(_gridPen, w - _images[2].Width*_zoom, 0, w - _images[4].Width*_zoom, h);
 
                 if (_sel >= 0)
                 {
                     g.PixelOffsetMode = PixelOffsetMode.None;
-                    g.DrawRectangle(_sel_pen, _rectangles[_sel].X * _zoom, _rectangles[_sel].Y * _zoom,
+                    g.DrawRectangle(_selPen, _rectangles[_sel].X * _zoom, _rectangles[_sel].Y * _zoom,
                         _rectangles[_sel].Width * _zoom - 1, _rectangles[_sel].Height * _zoom - 1);
                 }
             }

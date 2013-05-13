@@ -11,14 +11,14 @@ namespace Sphere.Core.Utility
     /// </summary>
     unsafe public class FastBitmap
     {
-        Rectangle bounds;
-        int width;
-        Bitmap image;
-        BitmapData imageData;
+        Rectangle _bounds;
+        int _width;
+        Bitmap _image;
+        BitmapData _imageData;
 
-        byte* pBase;
-        PixelData* pixelData;
-        ColorFormat c_format = ColorFormat.FormatABGR;
+        byte* _pBase;
+        PixelData* _pixelData;
+        ColorFormat _cFormat = ColorFormat.FormatABGR;
 
         /// <summary>
         /// Creates a FastBitmap wrapper for an image object.
@@ -26,7 +26,7 @@ namespace Sphere.Core.Utility
         /// <param name="img">The image object to wrap.</param>
         public FastBitmap(Bitmap img)
         {
-            image = img;
+            _image = img;
         }
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace Sphere.Core.Utility
         /// </summary>
         public void LockImage()
         {
-            bounds = new Rectangle(Point.Empty, image.Size);
-            width = (int)(bounds.Width * sizeof(PixelData));
-            if (width % 4 != 0) width = ((width >> 2) + 1) << 2;
+            _bounds = new Rectangle(Point.Empty, _image.Size);
+            _width = _bounds.Width * sizeof(PixelData);
+            if (_width % 4 != 0) _width = ((_width >> 2) + 1) << 2;
 
-            imageData = image.LockBits(bounds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            pBase = (byte*)imageData.Scan0.ToPointer();
+            _imageData = _image.LockBits(_bounds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            _pBase = (byte*)_imageData.Scan0.ToPointer();
         }
 
         /// <summary>
@@ -51,18 +51,18 @@ namespace Sphere.Core.Utility
         /// <exception cref="Exception">Invalid color format.</exception>
         public Color GetPixel(int x, int y)
         {
-            pixelData = (PixelData*)(pBase + y * width + x * sizeof(PixelData));
+            _pixelData = (PixelData*)(_pBase + y * _width + x * sizeof(PixelData));
 
-            switch (c_format)
+            switch (_cFormat)
             {
                 case ColorFormat.FormatABGR:
-                    return Color.FromArgb(pixelData->a, pixelData->b, pixelData->g, pixelData->r);
+                    return Color.FromArgb(_pixelData->a, _pixelData->b, _pixelData->g, _pixelData->r);
                 case ColorFormat.FormatARGB:
-                    return Color.FromArgb(pixelData->a, pixelData->r, pixelData->g, pixelData->b);
+                    return Color.FromArgb(_pixelData->a, _pixelData->r, _pixelData->g, _pixelData->b);
                 case ColorFormat.FormatBGRA:
-                    return Color.FromArgb(pixelData->b, pixelData->g, pixelData->r, pixelData->a);
+                    return Color.FromArgb(_pixelData->b, _pixelData->g, _pixelData->r, _pixelData->a);
                 case ColorFormat.FormatRGBA:
-                    return Color.FromArgb(pixelData->r, pixelData->g, pixelData->b, pixelData->a);
+                    return Color.FromArgb(_pixelData->r, _pixelData->g, _pixelData->b, _pixelData->a);
             }
 
             throw new Exception("Invalid color format.");
@@ -76,8 +76,8 @@ namespace Sphere.Core.Utility
         /// <param name="color">The color to set the pixel to.</param>
         public void SetPixel(int x, int y, Color color)
         {
-            PixelData* pixel = (PixelData*)(pBase + y * width + x * sizeof(PixelData));            
-            switch (c_format) {
+            PixelData* pixel = (PixelData*)(_pBase + y * _width + x * sizeof(PixelData));            
+            switch (_cFormat) {
                 case ColorFormat.FormatABGR:
                     pixel->a = color.A; pixel->r = color.B;
                     pixel->g = color.G; pixel->b = color.R;
@@ -99,13 +99,13 @@ namespace Sphere.Core.Utility
 
         private void SetAlpha(int x, int y, byte alpha)
         {
-            PixelData* pixel = (PixelData*)(pBase + y * width + x * sizeof(PixelData));
+            PixelData* pixel = (PixelData*)(_pBase + y * _width + x * sizeof(PixelData));
             pixel->a = alpha;
         }
 
         private void ToGray(int x, int y)
         {
-            PixelData* pixel = (PixelData*)(pBase + y * width + x * sizeof(PixelData));
+            PixelData* pixel = (PixelData*)(_pBase + y * _width + x * sizeof(PixelData));
             pixel->r = pixel->g;
             pixel->b = pixel->g;
         }
@@ -115,7 +115,7 @@ namespace Sphere.Core.Utility
         /// </summary>
         public void UnlockImage()
         {
-            image.UnlockBits(imageData);
+            _image.UnlockBits(_imageData);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Sphere.Core.Utility
         /// <returns>A copy of the image object.</returns>
         public Bitmap Clone()
         {
-            return image.Clone(bounds, PixelFormat.Format32bppArgb);
+            return _image.Clone(_bounds, PixelFormat.Format32bppArgb);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Sphere.Core.Utility
         /// <returns>A sub-bitmap object.</returns>
         public Bitmap Clone(Rectangle rect, PixelFormat format)
         {
-            return image.Clone(rect, format);
+            return _image.Clone(rect, format);
         }
 
         /// <summary>
@@ -146,26 +146,26 @@ namespace Sphere.Core.Utility
         /// <returns>A sub-bitmap object.</returns>
         public Bitmap Clone(RectangleF rect, PixelFormat format)
         {
-            return image.Clone(rect, format);
+            return _image.Clone(rect, format);
         }
 
         /// <summary>
         /// Gets the width of the wrapped Image.
         /// </summary>
-        public int Width { get { return image.Width; } }
+        public int Width { get { return _image.Width; } }
 
         /// <summary>
         /// Gets the height of the wrapped Image.
         /// </summary>
-        public int Height { get { return image.Height; } }
+        public int Height { get { return _image.Height; } }
 
         /// <summary>
         /// Gets or sets the image wrapped by this.
         /// </summary>
         public Bitmap Image
         {
-            get { return image; }
-            set { image = value; }
+            get { return _image; }
+            set { _image = value; }
         }
 
         /// <summary>
@@ -173,22 +173,22 @@ namespace Sphere.Core.Utility
         /// </summary>
         public ColorFormat ColorFormat
         {
-            get { return c_format; }
-            set { c_format = value; }
+            get { return _cFormat; }
+            set { _cFormat = value; }
         }
 
         /// <summary>
         /// Replaces an old color with a new color.
         /// </summary>
-        /// <param name="old_c">The color in the image to edit.</param>
-        /// <param name="new_c">The color to replace with.</param>
-        public void ReplaceColor(Color old_c, Color new_c)
+        /// <param name="oldC">The color in the image to edit.</param>
+        /// <param name="newC">The color to replace with.</param>
+        public void ReplaceColor(Color oldC, Color newC)
         {
-            for (int y = 0; y < image.Height; ++y)
+            for (int y = 0; y < _image.Height; ++y)
             {
-                for (int x = 0; x < image.Width; ++x)
+                for (int x = 0; x < _image.Width; ++x)
                 {
-                    if (ColorsEqual(GetPixel(x, y), old_c)) SetPixel(x, y, new_c);
+                    if (ColorsEqual(GetPixel(x, y), oldC)) SetPixel(x, y, newC);
                 }
             }
         }
@@ -198,9 +198,9 @@ namespace Sphere.Core.Utility
         /// </summary>
         public void Grayscale()
         {
-            for (int y = 0; y < image.Height; ++y)
+            for (int y = 0; y < _image.Height; ++y)
             {
-                for (int x = 0; x < image.Width; ++x) ToGray(x, y);
+                for (int x = 0; x < _image.Width; ++x) ToGray(x, y);
             }
         }
 
@@ -209,9 +209,9 @@ namespace Sphere.Core.Utility
         /// </summary>
         public void FlattenAlpha()
         {
-            for (int y = 0; y < image.Height; ++y)
+            for (int y = 0; y < _image.Height; ++y)
             {
-                for (int x = 0; x < image.Width; ++x) SetAlpha(x, y, 255);
+                for (int x = 0; x < _image.Width; ++x) SetAlpha(x, y, 255);
             }
         }
 
@@ -220,43 +220,43 @@ namespace Sphere.Core.Utility
         /// </summary>
         /// <param name="x">start x</param>
         /// <param name="y">start y</param>
-        /// <param name="new_color">color to replace with</param>
+        /// <param name="newColor">color to replace with</param>
         /// <returns>rectangle of the affetced area.</returns>
-        public Rectangle FloodFill(int x, int y, Color new_color)
+        public Rectangle FloodFill(int x, int y, Color newColor)
         {
-            Color old_color = GetPixel(x, y);
-            if (ColorsEqual(old_color, new_color)) return Rectangle.Empty;
-            Rectangle edit_region = new Rectangle(x, y, 0, 0);
+            Color oldColor = GetPixel(x, y);
+            if (ColorsEqual(oldColor, newColor)) return Rectangle.Empty;
+            Rectangle editRegion = new Rectangle(x, y, 0, 0);
             
             Stack<Point> points = new Stack<Point>();
             points.Push(new Point(x, y));
-            SetPixel(x, y, new_color);
+            SetPixel(x, y, newColor);
 
             while (points.Count > 0)
             {
                 Point pt = points.Pop();
-                if (pt.X > 0) CheckFloodPoint(points, pt.X - 1, pt.Y, old_color, new_color);
-                if (pt.Y > 0) CheckFloodPoint(points, pt.X, pt.Y - 1, old_color, new_color);
-                if (pt.X < Width - 1) CheckFloodPoint(points, pt.X + 1, pt.Y, old_color, new_color);
-                if (pt.Y < Height - 1) CheckFloodPoint(points, pt.X, pt.Y + 1, old_color, new_color);
+                if (pt.X > 0) CheckFloodPoint(points, pt.X - 1, pt.Y, oldColor, newColor);
+                if (pt.Y > 0) CheckFloodPoint(points, pt.X, pt.Y - 1, oldColor, newColor);
+                if (pt.X < Width - 1) CheckFloodPoint(points, pt.X + 1, pt.Y, oldColor, newColor);
+                if (pt.Y < Height - 1) CheckFloodPoint(points, pt.X, pt.Y + 1, oldColor, newColor);
 
                 // grow the edit region:
-                if (pt.X < edit_region.X) { edit_region.Width += edit_region.X - pt.X; edit_region.X = pt.X; }
-                else if (pt.X > edit_region.Right) { edit_region.Width = pt.X - edit_region.X; }
+                if (pt.X < editRegion.X) { editRegion.Width += editRegion.X - pt.X; editRegion.X = pt.X; }
+                else if (pt.X > editRegion.Right) { editRegion.Width = pt.X - editRegion.X; }
 
-                if (pt.Y < edit_region.Y) { edit_region.Height += edit_region.Y - pt.Y; edit_region.Y = pt.Y; }
-                else if (pt.Y > edit_region.Bottom) { edit_region.Height = pt.Y - edit_region.Y; }
+                if (pt.Y < editRegion.Y) { editRegion.Height += editRegion.Y - pt.Y; editRegion.Y = pt.Y; }
+                else if (pt.Y > editRegion.Bottom) { editRegion.Height = pt.Y - editRegion.Y; }
             }
 
-            return edit_region;
+            return editRegion;
         }
 
-        private void CheckFloodPoint(Stack<Point> points, int x, int y, Color old_c, Color new_c)
+        private void CheckFloodPoint(Stack<Point> points, int x, int y, Color oldC, Color newC)
         {
-            if (ColorsEqual(GetPixel(x, y), old_c))
+            if (ColorsEqual(GetPixel(x, y), oldC))
             {
                 points.Push(new Point(x, y));
-                SetPixel(x, y, new_c);
+                SetPixel(x, y, newC);
             }
         }
 
@@ -281,15 +281,15 @@ namespace Sphere.Core.Utility
         /// <param name="y">y location in pixels.</param>
         public void DrawImage(Bitmap img, int x, int y)
         {
-            FastBitmap fast_source = new FastBitmap(img);
-            fast_source.LockImage();
-            for (int yy = 0; yy < image.Height; ++yy)
-                for (int xx = 0; xx < image.Width; ++xx)
+            FastBitmap fastSource = new FastBitmap(img);
+            fastSource.LockImage();
+            for (int yy = 0; yy < _image.Height; ++yy)
+                for (int xx = 0; xx < _image.Width; ++xx)
                 {
                     if (x + xx >= Width || y + yy >= Height) break;
-                    SetPixel(x + xx, y + yy, fast_source.GetPixel(xx, yy));
+                    SetPixel(x + xx, y + yy, fastSource.GetPixel(xx, yy));
                 }
-            fast_source.UnlockImage();
+            fastSource.UnlockImage();
         }
     }
 

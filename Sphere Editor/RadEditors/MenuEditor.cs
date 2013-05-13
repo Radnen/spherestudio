@@ -1,37 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.RadEditors
 {
     public partial class StateEditor : EditorObject
     {
-        private ScriptEditor code_box = new ScriptEditor();
-        private RadPanel rad_base_panel;
-        private RadControl current_ctrl;
-        private List<RadControl> controls = new List<RadControl>();
+        private readonly ScriptEditor _codeBox = new ScriptEditor();
+        private readonly RadPanel _radBasePanel;
+        private RadControl _currentCtrl;
+        private readonly List<RadControl> _controls = new List<RadControl>();
 
         public StateEditor()
         {
             InitializeComponent();
-            rad_base_panel = new RadPanel(base_panel);
-            code_box.Dock = DockStyle.Fill;
-            CodePage.Controls.Add(code_box);
-            rad_base_panel.Name = "base_panel";
-            current_ctrl = rad_base_panel;
-            MainPropGrid.SelectedObject = rad_base_panel;
+            _radBasePanel = new RadPanel(base_panel);
+            _codeBox.Dock = DockStyle.Fill;
+            CodePage.Controls.Add(_codeBox);
+            _radBasePanel.Name = "base_panel";
+            _currentCtrl = _radBasePanel;
+            MainPropGrid.SelectedObject = _radBasePanel;
         }
 
         void MainPanel_MouseClick(object sender, MouseEventArgs e)
         {
-            if (current_ctrl != null) current_ctrl.Outlined = false;
-            current_ctrl = rad_base_panel;
-            current_ctrl.Outlined = true;
-            MainPropGrid.SelectedObject = rad_base_panel;
+            if (_currentCtrl != null) _currentCtrl.Outlined = false;
+            _currentCtrl = _radBasePanel;
+            _currentCtrl.Outlined = true;
+            MainPropGrid.SelectedObject = _radBasePanel;
         }
 
         private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -56,18 +57,18 @@ namespace Sphere_Editor.RadEditors
             build.AppendLine("{");
             build.AppendLine("\tthis.inherit = GUIState;");
             build.Append("\tthis.inherit(name"); build.Append(", ");
-            build.Append(rad_base_panel.X); build.Append(", ");
-            build.Append(rad_base_panel.Y); build.Append(", ");
-            build.Append(rad_base_panel.W); build.Append(", ");
-            build.Append(rad_base_panel.H); build.AppendLine(");");
+            build.Append(_radBasePanel.X); build.Append(", ");
+            build.Append(_radBasePanel.Y); build.Append(", ");
+            build.Append(_radBasePanel.W); build.Append(", ");
+            build.Append(_radBasePanel.H); build.AppendLine(");");
             build.AppendLine();
             build.AppendLine("\tvar base_panel = this.createBasePanel();");
-            if (!rad_base_panel.UseWindow) build.AppendLine("\tbase_panel.useWindow = false;");
-            if (!rad_base_panel.BackColor.Equals(Color.Transparent))
+            if (!_radBasePanel.UseWindow) build.AppendLine("\tbase_panel.useWindow = false;");
+            if (!_radBasePanel.BackColor.Equals(Color.Transparent))
             {
-                rad_base_panel.WriteProperty(build, "backColor");
+                _radBasePanel.WriteProperty(build, "backColor");
                 build.Append("CreateColor(");
-                StateEditor.ToSphereColorString(build, rad_base_panel.BackColor);
+                ToSphereColorString(build, _radBasePanel.BackColor);
                 build.AppendLine(");");
             }
             build.AppendLine();
@@ -78,17 +79,17 @@ namespace Sphere_Editor.RadEditors
 
             // body info:
             build.AppendLine("\t//Component Creation Step:");
-            foreach (RadControl c in controls) c.ToBaseCode(build);
+            foreach (RadControl c in _controls) c.ToBaseCode(build);
 
             // end info:
             build.AppendLine("\t//Component Addition Step:");
-            foreach (RadControl c in controls) c.ToAddCode(build);
+            foreach (RadControl c in _controls) c.ToAddCode(build);
 
-            code_box.Text = build.ToString(0, build.Length);
+            _codeBox.Text = build.ToString(0, build.Length);
 
-            if (code_box.Text[code_box.Text.Length - 2] != '}')
+            if (_codeBox.Text[_codeBox.Text.Length - 2] != '}')
             {
-                code_box.Text += "}\n";
+                _codeBox.Text += "}\n";
             }
         }
 
@@ -100,13 +101,9 @@ namespace Sphere_Editor.RadEditors
             builder.Append(col.A);
         }
 
-        private RadControl FindControl(string Name)
+        private RadControl FindControl(string name)
         {
-            for (int i = 0; i < controls.Count; ++i)
-            {
-                if (controls[i].Name == Name) return controls[i];
-            }
-            return null;
+            return _controls.FirstOrDefault(t => t.Name == name);
         }
 
         private void Object_Paint(object sender, PaintEventArgs e)
@@ -116,100 +113,98 @@ namespace Sphere_Editor.RadEditors
             if (ctrl != null)
             {
                 Rectangle rect = new Rectangle(1, 1, ((Control)sender).Width-1, ((Control)sender).Height-1);
-                if (ctrl.Outlined) e.Graphics.DrawRectangle(Pens.Red, rect);
-                else e.Graphics.DrawRectangle(Pens.Gray, rect);
+                e.Graphics.DrawRectangle(ctrl.Outlined ? Pens.Red : Pens.Gray, rect);
             }
         }
 
-        private bool move = false;
-        private int mode = 0;
-        private Point last = Point.Empty, cur = Point.Empty;
+        private bool _move;
+        private int _mode;
+        private Point _last = Point.Empty, _cur = Point.Empty;
         private void Object_MouseDown(object sender, MouseEventArgs e)
         {
-            move = true;
-            Control net_ctrl = (Control)sender;
-            last = net_ctrl.Parent.PointToClient(Cursor.Position);
-            cur = net_ctrl.Location;
-            net_ctrl.Cursor = Cursors.SizeAll;
-            RadControl rad_ctrl = FindControl(((Control)sender).Name);
-            if (rad_ctrl != null)
+            _move = true;
+            Control netCtrl = (Control)sender;
+            _last = netCtrl.Parent.PointToClient(Cursor.Position);
+            _cur = netCtrl.Location;
+            netCtrl.Cursor = Cursors.SizeAll;
+            RadControl radCtrl = FindControl(((Control)sender).Name);
+            if (radCtrl != null)
             {
-                if (current_ctrl != null) current_ctrl.Outlined = false;
-                current_ctrl = rad_ctrl;
-                current_ctrl.Outlined = true;
-                MainPropGrid.SelectedObject = rad_ctrl;
+                if (_currentCtrl != null) _currentCtrl.Outlined = false;
+                _currentCtrl = radCtrl;
+                _currentCtrl.Outlined = true;
+                MainPropGrid.SelectedObject = radCtrl;
             }
         }
 
         private void Object_MouseMove(object sender, MouseEventArgs e)
         {
             Control ctrl = (Control)sender;
-            if (move)
+            if (_move)
             {
-                if (mode == 0)
+                if (_mode == 0)
                 {
                     Point mouse = ctrl.Parent.PointToClient(Cursor.Position);
-                    ctrl.Location = new Point(cur.X + mouse.X - last.X, cur.Y + mouse.Y - last.Y);
+                    ctrl.Location = new Point(_cur.X + mouse.X - _last.X, _cur.Y + mouse.Y - _last.Y);
                 }
-                else if (current_ctrl.CanResize)
+                else if (_currentCtrl.CanResize)
                 {
-                    if (mode == 1) { ctrl.Width = e.X; ctrl.Height = e.Y; }
-                    else if (mode == 2) ctrl.Height = e.Y;
-                    else if (mode == 3) ctrl.Width = e.X;
+                    if (_mode == 1) { ctrl.Width = e.X; ctrl.Height = e.Y; }
+                    else if (_mode == 2) ctrl.Height = e.Y;
+                    else if (_mode == 3) ctrl.Width = e.X;
                 }
             }
             else
             {
-                if (current_ctrl.CanResize)
+                if (_currentCtrl.CanResize)
                 {
-                    bool y_reach = (e.Y > ctrl.Height - 6);
-                    bool x_reach = (e.X > ctrl.Width - 6);
-                    if (y_reach && x_reach) { ctrl.Cursor = Cursors.SizeNWSE; mode = 1; }
-                    else if (y_reach) { ctrl.Cursor = Cursors.SizeNS; mode = 2; }
-                    else if (x_reach) { ctrl.Cursor = Cursors.SizeWE; mode = 3; }
-                    else { ctrl.Cursor = Cursors.Default; mode = 0; }
+                    bool yReach = (e.Y > ctrl.Height - 6);
+                    bool xReach = (e.X > ctrl.Width - 6);
+                    if (yReach && xReach) { ctrl.Cursor = Cursors.SizeNWSE; _mode = 1; }
+                    else if (yReach) { ctrl.Cursor = Cursors.SizeNS; _mode = 2; }
+                    else if (xReach) { ctrl.Cursor = Cursors.SizeWE; _mode = 3; }
+                    else { ctrl.Cursor = Cursors.Default; _mode = 0; }
                 }
-                else { ctrl.Cursor = Cursors.Default; mode = 0; }
+                else { ctrl.Cursor = Cursors.Default; _mode = 0; }
             }
         }
 
         private void Object_MouseUp(object sender, MouseEventArgs e)
         {
-            move = false;
-            Control net_ctrl = (Control)sender;
-            RadControl rad_ctrl = FindControl(net_ctrl.Name);
-            if (rad_ctrl != null)
+            _move = false;
+            Control netCtrl = (Control)sender;
+            RadControl radCtrl = FindControl(netCtrl.Name);
+            if (radCtrl != null)
             {
-                rad_ctrl.X = net_ctrl.Location.X;
-                rad_ctrl.Y = net_ctrl.Location.Y;
-                rad_ctrl.W = net_ctrl.Width;
-                rad_ctrl.H = net_ctrl.Height;
+                radCtrl.X = netCtrl.Location.X;
+                radCtrl.Y = netCtrl.Location.Y;
+                radCtrl.W = netCtrl.Width;
+                radCtrl.H = netCtrl.Height;
             }
-            net_ctrl.Cursor = Cursors.Default;
+            netCtrl.Cursor = Cursors.Default;
         }
 
         private void PanelButton_Click(object sender, EventArgs e)
         {
-            Panel new_panel = new Panel();
-            RadPanel rad_panel = new RadPanel(new_panel);
-            rad_panel.Name = "control_" + controls.Count;
-            new_panel.MouseDown += new MouseEventHandler(Object_MouseDown);
-            new_panel.MouseMove += new MouseEventHandler(Object_MouseMove);
-            new_panel.MouseUp += new MouseEventHandler(Object_MouseUp);
-            new_panel.Paint += new PaintEventHandler(Object_Paint);
-            rad_panel.X = rad_panel.Y = 3;
-            rad_panel.W = 64; rad_panel.H = 32;
-            if (current_ctrl is RadPanel)
+            Panel newPanel = new Panel();
+            RadPanel radPanel = new RadPanel(newPanel) {Name = "control_" + _controls.Count};
+            newPanel.MouseDown += Object_MouseDown;
+            newPanel.MouseMove += Object_MouseMove;
+            newPanel.MouseUp += Object_MouseUp;
+            newPanel.Paint += Object_Paint;
+            radPanel.X = radPanel.Y = 3;
+            radPanel.W = 64; radPanel.H = 32;
+            if (_currentCtrl is RadPanel)
             {
-                rad_panel.Parent = current_ctrl;
-                current_ctrl.Preview.Controls.Add(new_panel);
+                radPanel.Parent = _currentCtrl;
+                _currentCtrl.Preview.Controls.Add(newPanel);
             }
             else
             {
-                rad_panel.Parent = rad_base_panel;
-                base_panel.Controls.Add(new_panel);
+                radPanel.Parent = _radBasePanel;
+                base_panel.Controls.Add(newPanel);
             }
-            controls.Add(rad_panel);
+            _controls.Add(radPanel);
         }
 
         private void LabelButton_Click(object sender, EventArgs e)
@@ -238,28 +233,27 @@ namespace Sphere_Editor.RadEditors
 
         private void ImageButton_Click(object sender, EventArgs e)
         {
-            Panel new_panel = new Panel();
-            RadImage rad_image = new RadImage(new_panel);
-            rad_image.Name = "control_" + controls.Count;
-            new_panel.MouseDown += new MouseEventHandler(Object_MouseDown);
-            new_panel.MouseMove += new MouseEventHandler(Object_MouseMove);
-            new_panel.MouseUp += new MouseEventHandler(Object_MouseUp);
-            new_panel.Paint += new PaintEventHandler(Object_Paint);
+            Panel newPanel = new Panel();
+            RadImage radImage = new RadImage(newPanel) {Name = "control_" + _controls.Count};
+            newPanel.MouseDown += Object_MouseDown;
+            newPanel.MouseMove += Object_MouseMove;
+            newPanel.MouseUp += Object_MouseUp;
+            newPanel.Paint += Object_Paint;
 
-            rad_image.X = rad_image.Y = 3;
-            rad_image.W = 32; rad_image.H = 32;
+            radImage.X = radImage.Y = 3;
+            radImage.W = 32; radImage.H = 32;
             
-            if (current_ctrl is RadPanel)
+            if (_currentCtrl is RadPanel)
             {
-                rad_image.Parent = current_ctrl;
-                current_ctrl.Preview.Controls.Add(new_panel);
+                radImage.Parent = _currentCtrl;
+                _currentCtrl.Preview.Controls.Add(newPanel);
             }
             else
             {
-                rad_image.Parent = rad_base_panel;
-                base_panel.Controls.Add(new_panel);
+                radImage.Parent = _radBasePanel;
+                base_panel.Controls.Add(newPanel);
             }
-            controls.Add(rad_image);
+            _controls.Add(radImage);
         }
     }
 }

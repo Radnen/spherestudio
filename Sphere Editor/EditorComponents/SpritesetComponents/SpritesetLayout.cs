@@ -32,7 +32,7 @@ namespace Sphere_Editor.SpritesetComponents
             _direction = direction;
             _parent_editor = parent;
 
-            foreach (Frame f in direction.frames) { AddImage(f); }
+            foreach (Frame f in direction.Frames) { AddImage(f); }
         }
 
         public void AddImage(Frame frame)
@@ -94,7 +94,7 @@ namespace Sphere_Editor.SpritesetComponents
         {
             Frame f = new Frame();
             AddImage(f);
-            _direction.frames.Add(f);
+            _direction.Frames.Add(f);
         }
 
         private void RemoveFrameButton_Click(object sender, EventArgs e)
@@ -102,7 +102,7 @@ namespace Sphere_Editor.SpritesetComponents
             if (ImagesPanel.Controls.Count > 0)
             {
                 ImagesPanel.Controls.RemoveAt(0);
-                _direction.frames.RemoveAt(_direction.frames.Count-1);
+                _direction.Frames.RemoveAt(_direction.Frames.Count-1);
                 if (Modified != null) Modified(this, new EventArgs());
             }
         }
@@ -135,7 +135,7 @@ namespace Sphere_Editor.SpritesetComponents
                 if (_panel_to_add.Parent != null)
                 {
                     DirectionLayout last_dir = ((DirectionLayout)_panel_to_add.Parent.Parent);
-                    last_dir._direction.frames.RemoveAt(last_dir._direction.frames.IndexOf(_panel_to_add.Frame));
+                    last_dir._direction.Frames.RemoveAt(last_dir._direction.Frames.IndexOf(_panel_to_add.Frame));
                 }
 
                 ImagesPanel.Controls.Add(_panel_to_add);
@@ -145,8 +145,8 @@ namespace Sphere_Editor.SpritesetComponents
                 ImagesPanel.Controls.SetChildIndex(_panel_to_add, ImagesPanel.Controls.IndexOf(place_panel));
 
                 // and add the frame to the dragged_to direction:
-                int pos = _direction.frames.Count - (ImagesPanel.Controls.IndexOf(_panel_to_add));
-                _direction.frames.Insert(pos, _panel_to_add.Frame);
+                int pos = _direction.Frames.Count - (ImagesPanel.Controls.IndexOf(_panel_to_add));
+                _direction.Frames.Insert(pos, _panel_to_add.Frame);
 
                 _panel_to_add = null;
                 Invalidate(true);
@@ -165,7 +165,7 @@ namespace Sphere_Editor.SpritesetComponents
 
             int index = SelectedFrame.Parent.Controls.IndexOf(SelectedFrame);
             SelectedFrame.Parent.Controls.Remove(SelectedFrame);
-            _direction.frames.RemoveAt(_direction.frames.Count - 1 - index);
+            _direction.Frames.RemoveAt(_direction.Frames.Count - 1 - index);
 
             if (index < ImagesPanel.Controls.Count && ImagesPanel.Controls[index] is FramePanel)
                 SelectedFrame = (FramePanel)ImagesPanel.Controls[index];

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
 using Sphere.Core.Utility;
 
 namespace Sphere.Core
@@ -13,43 +12,38 @@ namespace Sphere.Core
     /// </summary>
     public class Spriteset : IDisposable
     {
-        private short version = 3;
-        private short frame_width = 16, frame_height = 32;
+        private short _version = 3;
+        private short _frameWidth = 16, _frameHeight = 32;
 
-        private Base sprite_base = new Base();
-        private List<Direction> directions = new List<Direction>();
-        private List<Bitmap> images = new List<Bitmap>();
-
-        /// <summary>
-        /// Creates a new blank Spriteset object.
-        /// </summary>
-        public Spriteset() { }
+        private Base _spriteBase = new Base();
+        private readonly List<Direction> _directions = new List<Direction>();
+        private List<Bitmap> _images = new List<Bitmap>();
 
         /// <summary>
         /// Populates this spriteset with default info.
         /// </summary>
         public void MakeNew()
         {
-            this.images.Add(new Bitmap(frame_width, frame_height));
-            directions.Add(new Direction("north"));
-            directions.Add(new Direction("northeast"));
-            directions.Add(new Direction("east"));
-            directions.Add(new Direction("southeast"));
-            directions.Add(new Direction("south"));
-            directions.Add(new Direction("southwest"));
-            directions.Add(new Direction("west"));
-            directions.Add(new Direction("northwest"));
-            foreach (Direction d in directions) d.frames.Add(new Frame());
+            _images.Add(new Bitmap(_frameWidth, _frameHeight));
+            _directions.Add(new Direction("north"));
+            _directions.Add(new Direction("northeast"));
+            _directions.Add(new Direction("east"));
+            _directions.Add(new Direction("southeast"));
+            _directions.Add(new Direction("south"));
+            _directions.Add(new Direction("southwest"));
+            _directions.Add(new Direction("west"));
+            _directions.Add(new Direction("northwest"));
+            foreach (Direction d in _directions) d.Frames.Add(new Frame());
         }
 
         private void Purge()
         {
-            version = 3;
-            frame_width = frame_height = 0;
-            sprite_base = new Base();
-            directions.Clear();
-            foreach (Bitmap b in images) b.Dispose();
-            images.Clear();
+            _version = 3;
+            _frameWidth = _frameHeight = 0;
+            _spriteBase = new Base();
+            _directions.Clear();
+            foreach (Bitmap b in _images) b.Dispose();
+            _images.Clear();
         }
 
         /// <summary>
@@ -64,54 +58,48 @@ namespace Sphere.Core
             {
 
                 // purge anything already inside this object:
-                this.Purge();
+                Purge();
 
                 // start reading the header //
                 string sig = new string(stream.ReadChars(4));
                 if (sig != ".rss") return false;
 
-                version = stream.ReadInt16();
-                short num_images = stream.ReadInt16();
-                frame_width = stream.ReadInt16();
-                frame_height = stream.ReadInt16();
-                short num_dirs = stream.ReadInt16();
+                _version = stream.ReadInt16();
+                short numImages = stream.ReadInt16();
+                _frameWidth = stream.ReadInt16();
+                _frameHeight = stream.ReadInt16();
+                short numDirs = stream.ReadInt16();
 
                 // read sprite base //
-                sprite_base.x1 = stream.ReadInt16();
-                sprite_base.y1 = stream.ReadInt16();
-                sprite_base.x2 = stream.ReadInt16();
-                sprite_base.y2 = stream.ReadInt16();
+                _spriteBase.X1 = stream.ReadInt16();
+                _spriteBase.Y1 = stream.ReadInt16();
+                _spriteBase.X2 = stream.ReadInt16();
+                _spriteBase.Y2 = stream.ReadInt16();
 
                 // reserved //
                 stream.ReadBytes(106);
-                switch (version)
+                switch (_version)
                 {
                     case 3:
-                        BitmapLoader loader = new BitmapLoader(frame_width, frame_height);
-                        int amt = frame_width * frame_height * 4;
-                        while (num_images-- > 0) images.Add(loader.LoadFromStream(stream, amt));
+                        BitmapLoader loader = new BitmapLoader(_frameWidth, _frameHeight);
+                        int amt = _frameWidth * _frameHeight * 4;
+                        while (numImages-- > 0) _images.Add(loader.LoadFromStream(stream, amt));
                         loader.Close();
 
-                        short num_frames;
-                        string name;
-                        short length;
-                        while (num_dirs-- > 0)
+                        while (numDirs-- > 0)
                         {
-                            num_frames = stream.ReadInt16();
+                            short numFrames = stream.ReadInt16();
                             stream.ReadBytes(6);
-                            length = stream.ReadInt16();
-                            name = new String(stream.ReadChars(length)).Substring(0, length - 1);
+                            short length = stream.ReadInt16();
+                            string name = new String(stream.ReadChars(length)).Substring(0, length - 1);
                             Direction dir = new Direction(name);
-                            Frame f;
-                            while (num_frames-- > 0)
+                            while (numFrames-- > 0)
                             {
-                                f = new Frame();
-                                f.Index = stream.ReadInt16();
-                                f.Delay = stream.ReadInt16();
+                                Frame f = new Frame {Index = stream.ReadInt16(), Delay = stream.ReadInt16()};
+                                dir.Frames.Add(f);
                                 stream.ReadBytes(4);
-                                dir.frames.Add(f);
                             }
-                            directions.Add(dir);
+                            _directions.Add(dir);
                         }
                         break;
                 }
@@ -129,33 +117,33 @@ namespace Sphere.Core
             {
                 // save header data:
                 writer.Write(".rss".ToCharArray());
-                writer.Write(version);
-                writer.Write((short)images.Count);
-                writer.Write(frame_width);
-                writer.Write(frame_height);
-                writer.Write((short)directions.Count);
+                writer.Write(_version);
+                writer.Write((short)_images.Count);
+                writer.Write(_frameWidth);
+                writer.Write(_frameHeight);
+                writer.Write((short)_directions.Count);
 
                 // save the sprite base:
-                writer.Write(sprite_base.x1);
-                writer.Write(sprite_base.y1);
-                writer.Write(sprite_base.x2);
-                writer.Write(sprite_base.y2);
+                writer.Write(_spriteBase.X1);
+                writer.Write(_spriteBase.Y1);
+                writer.Write(_spriteBase.X2);
+                writer.Write(_spriteBase.Y2);
 
                 //reserved:
                 writer.Write(new byte[106]);
 
-                switch (version)
+                switch (_version)
                 {
                     case 3:
-                        BitmapSaver saver = new BitmapSaver(frame_width, frame_height);
-                        for (short i = 0; i < images.Count; ++i) saver.SaveToStream(Images[i], writer);
-                        foreach (Direction d in directions)
+                        BitmapSaver saver = new BitmapSaver(_frameWidth, _frameHeight);
+                        for (short i = 0; i < _images.Count; ++i) saver.SaveToStream(Images[i], writer);
+                        foreach (Direction d in _directions)
                         {
-                            writer.Write((short)d.frames.Count);
+                            writer.Write((short)d.Frames.Count);
                             writer.Write(new byte[6]);
                             writer.Write((short)(d.Name.Length + 1));
                             writer.Write((d.Name + "\0").ToCharArray());
-                            foreach (Frame f in d.frames)
+                            foreach (Frame f in d.Frames)
                             {
                                 writer.Write(f.Index);
                                 writer.Write(f.Delay);
@@ -186,14 +174,14 @@ namespace Sphere.Core
             {
                 if (disposing)
                 {
-                    if (images != null)
+                    if (_images != null)
                     {
-                        foreach (Bitmap b in images) b.Dispose();
-                        images.Clear();
+                        foreach (Bitmap b in _images) b.Dispose();
+                        _images.Clear();
                     }
                 }
 
-                images = null;
+                _images = null;
             }
             _disposed = true;
         }
@@ -204,15 +192,15 @@ namespace Sphere.Core
         /// <param name="reference"></param>
         public void RemoveFrameReference(int reference)
         {
-            foreach (Direction d in directions)
+            foreach (Direction d in _directions)
             {
-                foreach (Frame f in d.frames)
+                foreach (Frame f in d.Frames)
                 {
                     if (f.Index == reference) f.Index = 0;
                     if (f.Index > reference) f.Index--;
                 }
             }
-            images.RemoveAt(reference);
+            _images.RemoveAt(reference);
         }
 
         /// <summary>
@@ -223,13 +211,8 @@ namespace Sphere.Core
         /// <returns>null if it can't find an image or the System.Drawing.Image.</returns>
         public Image GetImage(string direction, int frame = 0)
         {
-            Direction dir = null;
-            foreach (Direction d in directions)
-            {
-                if (d.Name.Equals(direction)) { dir = d; break; }
-            }
-            if (dir == null) return null;
-            return images[dir.frames[frame].Index];
+            Direction dir = _directions.FirstOrDefault(d => d.Name.Equals(direction));
+            return dir == null ? null : _images[dir.Frames[frame].Index];
         }
 
         /// <summary>
@@ -237,8 +220,8 @@ namespace Sphere.Core
         /// </summary>
         public short SpriteWidth
         {
-            get { return frame_width; }
-            set { frame_width = value; }
+            get { return _frameWidth; }
+            set { _frameWidth = value; }
         }
 
         /// <summary>
@@ -246,8 +229,8 @@ namespace Sphere.Core
         /// </summary>
         public short SpriteHeight
         {
-            get { return frame_height; }
-            set { frame_height = value; }
+            get { return _frameHeight; }
+            set { _frameHeight = value; }
         }
 
         /// <summary>
@@ -257,7 +240,7 @@ namespace Sphere.Core
         /// <returns>The System.Drawing.Image at the index.</returns>
         public Image GetImage(int index)
         {
-            return images[index];
+            return _images[index];
         }
 
         /// <summary>
@@ -265,8 +248,8 @@ namespace Sphere.Core
         /// </summary>
         public Base SpriteBase
         {
-            get { return sprite_base; }
-            set { sprite_base = value; }
+            get { return _spriteBase; }
+            set { _spriteBase = value; }
         }
 
         /// <summary>
@@ -274,7 +257,7 @@ namespace Sphere.Core
         /// </summary>
         public List<Direction> Directions
         {
-            get { return this.directions; }
+            get { return _directions; }
         }
 
         /// <summary>
@@ -282,7 +265,7 @@ namespace Sphere.Core
         /// </summary>
         public List<Bitmap> Images
         {
-            get { return this.images; }
+            get { return _images; }
         }
 
         /// <summary>
@@ -291,9 +274,9 @@ namespace Sphere.Core
         /// <returns>A string[] of the directions.</returns>
         public string[] GetDirections()
         {
-            string[] dirs = new string[directions.Count];
-            for (int i = 0; i < directions.Count; ++i)
-                dirs[i] = directions[i].Name;
+            string[] dirs = new string[_directions.Count];
+            for (int i = 0; i < _directions.Count; ++i)
+                dirs[i] = _directions[i].Name;
             return dirs;
         }
     }
@@ -306,29 +289,29 @@ namespace Sphere.Core
         /// <summary>
         /// The upper-left x location.
         /// </summary>
-        public short x1 = 0;
+        public short X1 = 0;
         
         /// <summary>
         /// The upper-left y location.
         /// </summary>
-        public short y1 = 15;
+        public short Y1 = 15;
         
         /// <summary>
         /// The lower-right x location.
         /// </summary>
-        public short x2 = 15;
+        public short X2 = 15;
 
         /// <summary>
         /// the lower-right y location.
         /// </summary>
-        public short y2 = 31;
+        public short Y2 = 31;
 
         /// <summary>
         /// Gets the height of the spriteset Base.
         /// </summary>
         public int Height
         {
-            get { return (int)(y2 - y1); }
+            get { return Y2 - Y1; }
         }
 
         /// <summary>
@@ -336,7 +319,7 @@ namespace Sphere.Core
         /// </summary>
         public int Width
         {
-            get { return (int)(x2 - x1); }
+            get { return X2 - X1; }
         }
 
         /// <summary>
@@ -344,13 +327,13 @@ namespace Sphere.Core
         /// </summary>
         public Rectangle Rectangle
         {
-            get { return new Rectangle(x1, y1, Width, Height); }
+            get { return new Rectangle(X1, Y1, Width, Height); }
             set
             {
-                x1 = (short)value.X;
-                y1 = (short)value.Y;
-                x2 = (short)(value.X + value.Width);
-                y2 = (short)(value.Y + value.Height);
+                X1 = (short)value.X;
+                Y1 = (short)value.Y;
+                X2 = (short)(value.X + value.Width);
+                Y2 = (short)(value.Y + value.Height);
             }
         }
     }
@@ -384,7 +367,7 @@ namespace Sphere.Core
         /// <summary>
         /// The frames used witnin this Direction.
         /// </summary>
-        public List<Frame> frames = new List<Frame>();
+        public List<Frame> Frames { get; set; }
 
         /// <summary>
         /// Creates a new direction with the given name.
@@ -392,6 +375,7 @@ namespace Sphere.Core
         /// <param name="name">Name of the direction.</param>
         public Direction(string name)
         {
+            Frames = new List<Frame>();
             Name = name;
         }
 

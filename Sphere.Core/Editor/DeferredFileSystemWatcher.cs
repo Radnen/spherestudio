@@ -1,21 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Timers;
 
 namespace Sphere.Core.Editor
 {
-    public delegate void BatchEventHandler<T>(object sender, IEnumerable<T> eAll);
+    /// <summary>
+    /// The event handler used for batching files in the DeferredFileSystemWatcher
+    /// </summary>
+    /// <param name="sender">Usually the calling object.</param>
+    /// <param name="eAll">The items.</param>
+    /// <typeparam name="T">The type of the items.</typeparam>
+    public delegate void BatchEventHandler<in T>(object sender, IEnumerable<T> eAll);
     
+    /// <summary>
+    /// A FileSystemWatcher that only triggers after so long of a delay.
+    /// </summary>
     public class DeferredFileSystemWatcher : FileSystemWatcher
     {
-        private Timer _timer;
-        private LinkedList<FileSystemEventArgs> _changeEvents = new LinkedList<FileSystemEventArgs>();
-        private LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
-        private LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
-        private LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
+        private readonly Timer _timer;
+        private readonly LinkedList<FileSystemEventArgs> _changeEvents = new LinkedList<FileSystemEventArgs>();
+        private readonly LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
+        private readonly LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
+        private readonly LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
         
         private void base_Changed(object sender, FileSystemEventArgs e)
         {
@@ -57,6 +63,10 @@ namespace Sphere.Core.Editor
             _renameEvents.Clear();
         }
 
+        /// <summary>
+        /// Overrides the default dispose method to dispose the timer.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -66,23 +76,43 @@ namespace Sphere.Core.Editor
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the DeferredFileSystemWatcher.
+        /// </summary>
         public DeferredFileSystemWatcher()
         {
             base.Changed += base_Changed;
             base.Created += base_Created;
             base.Deleted += base_Deleted;
             base.Renamed += base_Renamed;
-            _timer = new Timer();
+            _timer = new Timer {AutoReset = false};
             _timer.Elapsed += _timer_Elapsed;
-            _timer.AutoReset = false;
-            this.Delay = 250;
+            Delay = 250;
         }
 
+        /// <summary>
+        /// Event handler for when a file has been changed.
+        /// </summary>
         public new event BatchEventHandler<FileSystemEventArgs> Changed;
+
+        /// <summary>
+        /// Event handler for when a file is created.
+        /// </summary>
         public new event BatchEventHandler<FileSystemEventArgs> Created;
+
+        /// <summary>
+        /// Event handler for when a file has been deleted.
+        /// </summary>
         public new event BatchEventHandler<FileSystemEventArgs> Deleted;
+
+        /// <summary>
+        /// Event handler for when a file has been renamed.
+        /// </summary>
         public new event BatchEventHandler<RenamedEventArgs> Renamed;
         
+        /// <summary>
+        /// Gets or sets the interval in milliseconds in which the tree updates on.
+        /// </summary>
         public double Delay
         {
             get { return _timer.Interval; }

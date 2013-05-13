@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TaskPlugin
+﻿namespace TaskPlugin
 {
     enum TaskPriority { Hi, Med, Lo, None };
     enum TaskType { Addition, Art, Bug, Feature, Gameplay, Other, UI };

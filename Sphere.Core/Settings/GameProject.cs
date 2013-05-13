@@ -1,10 +1,11 @@
 ﻿using System.IO;
-using System.Windows.Forms;
-using Sphere.Core;
 
 // This contains game project related stuff //
 namespace Sphere.Core.Settings
 {
+    /// <summary>
+    /// The settings that describe a sphere game.
+    /// </summary>
     public class ProjectSettings : GenSettings
     {
         /// <summary>
@@ -13,7 +14,7 @@ namespace Sphere.Core.Settings
         public string Width
         {
             get { return GetString("screen_width"); }
-            set { SetItem<string>("screen_width", value); }
+            set { SetItem("screen_width", value); }
         }
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace Sphere.Core.Settings
         public string Height
         {
             get { return GetString("screen_height"); }
-            set { SetItem<string>("screen_height", value); }
+            set { SetItem("screen_height", value); }
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Sphere.Core.Settings
         public string Name
         {
             get { return GetString("name"); }
-            set { SetItem<string>("name", value); }
+            set { SetItem("name", value); }
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace Sphere.Core.Settings
         public string Author
         {
             get { return GetString("author"); }
-            set { SetItem<string>("author", value); }
+            set { SetItem("author", value); }
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Sphere.Core.Settings
         public string Description
         {
             get { return GetString("description"); }
-            set { SetItem<string>("description", value); }
+            set { SetItem("description", value); }
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace Sphere.Core.Settings
         public string Script
         {
             get { return GetString("script"); }
-            set { SetItem<string>("script", value); }
+            set { SetItem("script", value); }
         }
 
         /// <summary>
@@ -69,21 +70,28 @@ namespace Sphere.Core.Settings
             SaveSettings(string.Format("{0}\\game.sgm", RootPath));
         }
 
+        /// <summary>
+        /// Creates the default setup used by a Sphere game.
+        /// </summary>
         public void Create()
         {
             // Create The Main Folder //
-            DirectoryInfo GameDir = new DirectoryInfo(RootPath);
-            GameDir.Create();
+            var gameDir = new DirectoryInfo(RootPath);
+            gameDir.Create();
 
             // Create the Sub-folders //
             string[] subfolders = { "animations", "fonts", "images", "maps", "scripts", "sounds", "spritesets", "windowstyles" };
-            for (int i = 0; i < subfolders.Length; ++i)
+            foreach (string folder in subfolders)
             {
-                DirectoryInfo subfolder = new DirectoryInfo(RootPath + "\\" + subfolders[i]);
+                var subfolder = new DirectoryInfo(RootPath + "\\" + folder);
                 subfolder.Create();
             }
         }
 
+        /// <summary>
+        /// Sets the rootpath of this game project.
+        /// </summary>
+        /// <param name="path">Path to the directory of the game.sgm file.</param>
         public void SetRootPath(string path)
         {
             RootPath = path;

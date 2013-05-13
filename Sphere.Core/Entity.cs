@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Collections;
 using System.IO;
 using System.Drawing;
 
@@ -88,9 +86,9 @@ namespace Sphere.Core
             Scripts = new List<string>();
             for (int i = 0; i < 5; ++i) Scripts.Add("");
             if (type == EntityType.Person)
-                _graphic = new Bitmap(Sphere.Core.Properties.Resources.person);
+                _graphic = new Bitmap(Properties.Resources.person);
             else
-                _graphic = new Bitmap(Sphere.Core.Properties.Resources.trigger);
+                _graphic = new Bitmap(Properties.Resources.trigger);
         }
 
         /// <summary>
@@ -123,13 +121,13 @@ namespace Sphere.Core
                 }
 
                 stream.ReadBytes(16); // reserved
-                _graphic = new Bitmap(Sphere.Core.Properties.Resources.person);
+                _graphic = new Bitmap(Properties.Resources.person);
             }
             else
             {
                 len = stream.ReadInt16();
                 Function = new string(stream.ReadChars(len));
-                _graphic = new Bitmap(Sphere.Core.Properties.Resources.trigger);
+                _graphic = new Bitmap(Properties.Resources.trigger);
             }
         }
 
@@ -176,17 +174,19 @@ namespace Sphere.Core
         /// <returns>A System.Draw.Bitmap representing the entity.</returns>
         public Image GetSSImage(string rootpath)
         {
-            if (Type == EntityType.Trigger) return Sphere.Core.Properties.Resources.trigger;
-            using (Spriteset s = new Spriteset())
+            if (Type == EntityType.Trigger) return Properties.Resources.trigger;
+            using (var s = new Spriteset())
             {
-                 if (s.Load(rootpath + "/spritesets/" + Spriteset))
-                 {
-                     Image img = s.GetImage("south", 0);
-                     if (img == null && s.Images.Count > 0) img = s.Images[0];
-                     if (s.Images.Count == 0) return Sphere.Core.Properties.Resources.person;
-                     else return new Bitmap(img);
-                 }
-                 else return Sphere.Core.Properties.Resources.person;
+                if (s.Load(rootpath + "/spritesets/" + Spriteset))
+                {
+                    Image img = s.GetImage("south");
+                    if (img == null && s.Images.Count > 0) img = s.Images[0];
+                    if (img != null)
+                    {
+                        return s.Images.Count == 0 ? Properties.Resources.person : new Bitmap(img);
+                    }
+                }
+                return Properties.Resources.person;
             }
         }
 
@@ -194,15 +194,15 @@ namespace Sphere.Core
         /// Draws this Entity onto a System.Drawing.Graphics object.
         /// </summary>
         /// <param name="g">The System.Drawing.Graphics object to use.</param>
-        /// <param name="tile_width">The tile width for the map.</param>
-        /// <param name="tile_height">The tile height for the map.</param>
+        /// <param name="tileWidth">The tile width for the map.</param>
+        /// <param name="tileHeight">The tile height for the map.</param>
         /// <param name="offset">The x/y offset to draw at.</param>
         /// <param name="zoom">The zoom factor of the map.</param>
-        public void Draw(Graphics g, int tile_width, int tile_height, ref Point offset, int zoom)
+        public void Draw(Graphics g, int tileWidth, int tileHeight, ref Point offset, int zoom)
         {
             if (!Visible) return;
-            int x = offset.X + (X / tile_width) * tile_width * zoom;
-            int y = offset.Y + (Y / tile_height) * tile_height * zoom;
+            int x = offset.X + (X / tileWidth) * tileWidth * zoom;
+            int y = offset.Y + (Y / tileHeight) * tileHeight * zoom;
             g.DrawImage(_graphic, x, y, _graphic.Width * zoom, _graphic.Height * zoom);
         }
 
@@ -212,8 +212,8 @@ namespace Sphere.Core
         /// <param name="others">A List of other types</param>
         public void FigureOutName(List<Entity> others)
         {
-            string base_name = Path.GetFileNameWithoutExtension(Spriteset);
-            string name = base_name + 1;
+            string baseName = Path.GetFileNameWithoutExtension(Spriteset);
+            string name = baseName + 1;
 
             int num = 1;
             for (int i = 0; i < others.Count; ++i)
@@ -221,7 +221,7 @@ namespace Sphere.Core
                 if (others[i].Name == name)
                 {
                     num++;
-                    name = base_name + num;
+                    name = baseName + num;
                     i = 0;
                 }
             }
@@ -235,11 +235,7 @@ namespace Sphere.Core
         /// <returns>A copy of the Entity.</returns>
         public Entity Copy()
         {
-            Entity ent = new Entity(Type);
-            ent.X = X;
-            ent.Y = Y;
-            ent.Layer = Layer;
-            ent.Visible = Visible;
+            Entity ent = new Entity(Type) {X = X, Y = Y, Layer = Layer, Visible = Visible};
             if (Type == EntityType.Person)
             {
                 string[] strings = new string[5];
@@ -248,12 +244,12 @@ namespace Sphere.Core
                 ent.Scripts.Clear();
                 ent.Scripts.AddRange(strings);
                 ent.Spriteset = Spriteset;
-                ent._graphic = new Bitmap(Sphere.Core.Properties.Resources.person);
+                ent._graphic = new Bitmap(Properties.Resources.person);
             }
             else if (Type == EntityType.Trigger)
             {
                 ent.Function = Function;
-                ent._graphic = new Bitmap(Sphere.Core.Properties.Resources.trigger);
+                ent._graphic = new Bitmap(Properties.Resources.trigger);
             }
             return ent;
         }

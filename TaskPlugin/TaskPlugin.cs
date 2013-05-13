@@ -47,13 +47,11 @@ namespace TaskPlugin
         public void Initialize()
         {
             // Create a new instance of your custom widget, like so:
-            _list = new TaskList();
-            _list.Dock = System.Windows.Forms.DockStyle.Fill;
+            _list = new TaskList {Dock = DockStyle.Fill};
 
             // Add it to a dock content like so, and style your dock content
             // however you want to!
-            DockContent content = new DockContent();
-            content.Text = "Task List";
+            DockContent content = new DockContent {Text = @"Task List"};
             content.Controls.Add(_list);
             content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
             content.DockHandler.HideOnClose = true;
@@ -75,7 +73,7 @@ namespace TaskPlugin
             // You can even do paths such as 'View.Subitem.Subitem.Subitem'
             // And it'll generate the neccessary stubs before adding the item.
             _item = new ToolStripMenuItem("Task List", Properties.Resources.lightbulb);
-            _item.Click += new EventHandler(ItemClick);
+            _item.Click += ItemClick;
             Host.AddMenuItem("View", _item);
             
             // Here I ake sure the list is loaded when the plugin has been activated.
@@ -93,7 +91,7 @@ namespace TaskPlugin
             Host.UnloadProject -= OnProjectClose;
 
             // And furthermore that menu item must be deleted as well!
-            _item.Click -= new EventHandler(ItemClick);
+            _item.Click -= ItemClick;
             Host.RemoveMenuItem(_item);
 
             // And we can optionally null things out just to be safe:

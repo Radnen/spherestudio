@@ -78,8 +78,8 @@ namespace Sphere.Plugins
         /// Add a new item to a sub-menu of the Sphere Studio menu bar.
         /// </summary>
         /// <param name="location">Ex: 'View' or 'View.extra1.extra2'</param>
-        /// <param name="item">The ToolStripMenuItem to add.</param>
-        void AddMenuItem(string location, ToolStripItem item);
+        /// <param name="newItem">The ToolStripMenuItem to add.</param>
+        void AddMenuItem(string location, ToolStripItem newItem);
 
         /// <summary>
         /// Removes the menu item from it's containing drop down menu.

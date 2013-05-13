@@ -24,7 +24,7 @@ namespace Sphere_Editor.SpritesetComponents
             set
             {
                 this._frame = value;
-                XYLabel.Text = "X, Y = (" + _sprite.SpriteBase.x1 + ", " + _sprite.SpriteBase.y1 + ")";
+                XYLabel.Text = "X, Y = (" + _sprite.SpriteBase.X1 + ", " + _sprite.SpriteBase.Y1 + ")";
                 WHLabel.Text = "W, H = (" + _sprite.SpriteBase.Width + ", " + _sprite.SpriteBase.Height + ")";
                 UpdateCenterFrame();
             }
@@ -80,17 +80,17 @@ namespace Sphere_Editor.SpritesetComponents
 
         private void FrameImage_MouseDown(object sender, MouseEventArgs e)
         {
-            _sprite.SpriteBase.x1 = (short)(e.X / _zoom);
-            _sprite.SpriteBase.y1 = (short)(e.Y / _zoom);
-            XYLabel.Text = "X, Y = (" + (_sprite.SpriteBase.x1 + 1) + ", " + (_sprite.SpriteBase.y1 + 1) + ")";
+            _sprite.SpriteBase.X1 = (short)(e.X / _zoom);
+            _sprite.SpriteBase.Y1 = (short)(e.Y / _zoom);
+            XYLabel.Text = "X, Y = (" + (_sprite.SpriteBase.X1 + 1) + ", " + (_sprite.SpriteBase.Y1 + 1) + ")";
             _draw = true;
         }
 
         private void FrameImage_MouseUp(object sender, MouseEventArgs e)
         {
             _draw = false;
-            _sprite.SpriteBase.x2 = Math.Max((short)(_sprite.SpriteBase.x1 + 1), _sprite.SpriteBase.x2);
-            _sprite.SpriteBase.y2 = Math.Max((short)(_sprite.SpriteBase.y1 + 1), _sprite.SpriteBase.y2);
+            _sprite.SpriteBase.X2 = Math.Max((short)(_sprite.SpriteBase.X1 + 1), _sprite.SpriteBase.X2);
+            _sprite.SpriteBase.Y2 = Math.Max((short)(_sprite.SpriteBase.Y1 + 1), _sprite.SpriteBase.Y2);
             if (Modified != null) Modified(this, new EventArgs());
             FrameImage.Refresh();
         }
@@ -99,8 +99,8 @@ namespace Sphere_Editor.SpritesetComponents
         {
             if (_draw)
             {
-                _sprite.SpriteBase.x2 = (short)(e.X / _zoom);
-                _sprite.SpriteBase.y2 = (short)(e.Y / _zoom);
+                _sprite.SpriteBase.X2 = (short)(e.X / _zoom);
+                _sprite.SpriteBase.Y2 = (short)(e.Y / _zoom);
                 WHLabel.Text = "W, H = (" + (_sprite.SpriteBase.Width + 1) + ", " + (_sprite.SpriteBase.Height + 1) + ")";
                 FrameImage.Refresh();
             }

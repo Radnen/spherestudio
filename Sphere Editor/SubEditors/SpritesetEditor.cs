@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere_Editor.Forms;
 using Sphere_Editor.EditorComponents;
 using Sphere_Editor.SpritesetComponents;
@@ -16,19 +14,19 @@ namespace Sphere_Editor.SubEditors
     public partial class SpritesetEditor : EditorObject
     {
         #region attributes
-        private Spriteset _sprite = null;
+        private readonly Spriteset _sprite;
         private int _zoom = 3;
-        private DirectionLayout _selected_direction = null;
-        private TilesetControl2 _tileset_ctrl = null;
-        private FramePanel _selected_frame = null;
+        private DirectionLayout _selectedDirection;
+        private TilesetControl2 _tilesetCtrl;
+        private FramePanel _selectedFrame;
 
         // Dock controls:
-        private DockPanel MainDockPanel      = null;
-        private DockContent DrawContent      = null;
-        private DockContent DirectionContent = null;
-        private DockContent ImageContent     = null;
-        private DockContent AnimContent      = null;
-        private DockContent BaseContent      = null;
+        private DockPanel _mainDockPanel;
+        private DockContent _drawContent;
+        private DockContent _directionContent;
+        private DockContent _imageContent;
+        private DockContent _animContent;
+        private DockContent _baseContent;
         #endregion
 
         public SpritesetEditor()
@@ -48,64 +46,62 @@ namespace Sphere_Editor.SubEditors
             Controls.Remove(DirectionSplitter); 
             
             SpriteDrawer.Dock = DockStyle.Fill;
-            DrawContent = new DockContent();
-            DrawContent.Text = "Sprite Drawer";
-            DrawContent.DockAreas = DockAreas.Document;
-            DrawContent.DockHandler.CloseButtonVisible = false;
-            DrawContent.Controls.Add(SpriteDrawer);
+            _drawContent = new DockContent {Text = @"Sprite Drawer", DockAreas = DockAreas.Document};
+            _drawContent.DockHandler.CloseButtonVisible = false;
+            _drawContent.Controls.Add(SpriteDrawer);
 
             DirectionHolder.Dock = DockStyle.Fill;
-            DirectionContent = new DockContent();
-            DirectionContent.Text = "Sprite Directions";
-            DirectionContent.DockAreas = DockAreas.Document;
-            DirectionContent.DockHandler.CloseButtonVisible = false;
-            DirectionContent.Controls.Add(DirectionHolder);
+            _directionContent = new DockContent {Text = @"Sprite Directions", DockAreas = DockAreas.Document};
+            _directionContent.DockHandler.CloseButtonVisible = false;
+            _directionContent.Controls.Add(DirectionHolder);
 
             ImagePanel.Dock = DockStyle.Fill;
-            ImageContent = new DockContent();
-            ImageContent.Text = "Spriteset Images";
-            ImageContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.Float;
-            ImageContent.DockHandler.CloseButtonVisible = false;
-            ImageContent.Controls.Add(ImagePanel);
+            _imageContent = new DockContent
+                {
+                    Text = @"Spriteset Images",
+                    DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.Float
+                };
+            _imageContent.DockHandler.CloseButtonVisible = false;
+            _imageContent.Controls.Add(ImagePanel);
 
             AnimPanel.Dock = DockStyle.Fill;
-            AnimContent = new DockContent();
-            AnimContent.Text = "Direction Animation";
-            AnimContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.Float | DockAreas.DockBottom | DockAreas.DockTop;
-            AnimContent.DockHandler.CloseButtonVisible = false;
-            AnimContent.Controls.Add(AnimPanel);
+            _animContent = new DockContent
+                {
+                    Text = @"Direction Animation",
+                    DockAreas =
+                        DockAreas.DockLeft | DockAreas.DockRight | DockAreas.Float | DockAreas.DockBottom |
+                        DockAreas.DockTop
+                };
+            _animContent.DockHandler.CloseButtonVisible = false;
+            _animContent.Controls.Add(AnimPanel);
 
             BasePanel.Dock = DockStyle.Fill;
-            BaseContent = new DockContent();
-            BaseContent.Text = "Base Editor";
-            BaseContent.DockAreas = DockAreas.Document | DockAreas.DockTop | DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight;
-            BaseContent.DockHandler.CloseButtonVisible = false;
-            BaseContent.Controls.Add(BasePanel);
+            _baseContent = new DockContent
+                {
+                    Text = @"Base Editor",
+                    DockAreas =
+                        DockAreas.Document | DockAreas.DockTop | DockAreas.DockBottom | DockAreas.DockLeft |
+                        DockAreas.DockRight
+                };
+            _baseContent.DockHandler.CloseButtonVisible = false;
+            _baseContent.Controls.Add(BasePanel);
 
-            MainDockPanel = new DockPanel();
-            MainDockPanel.DocumentStyle = DocumentStyle.DockingWindow;
-            MainDockPanel.Dock = DockStyle.Fill;
+            _mainDockPanel = new DockPanel {DocumentStyle = DocumentStyle.DockingWindow, Dock = DockStyle.Fill};
             if (System.IO.File.Exists("SpriteEditor.xml"))
             {
-                DeserializeDockContent dc = new DeserializeDockContent(GetContent);
-                MainDockPanel.LoadFromXml("SpriteEditor.xml", dc);
+                DeserializeDockContent dc = GetContent;
+                _mainDockPanel.LoadFromXml("SpriteEditor.xml", dc);
             }
             else
             {
-                DirectionContent.Show(MainDockPanel, DockState.Document);
-                BaseContent.Show(DirectionContent.Pane, DockAlignment.Bottom, 0.40);
-                DrawContent.Show(BaseContent.PanelPane, BaseContent);
-                ImageContent.Show(MainDockPanel, DockState.DockRight);
-                AnimContent.Show(ImageContent.Pane, DockAlignment.Bottom, 0.40);
+                _directionContent.Show(_mainDockPanel, DockState.Document);
+                _baseContent.Show(_directionContent.Pane, DockAlignment.Bottom, 0.40);
+                _drawContent.Show(_baseContent.PanelPane, _baseContent);
+                _imageContent.Show(_mainDockPanel, DockState.DockRight);
+                _animContent.Show(_imageContent.Pane, DockAlignment.Bottom, 0.40);
             }
 
-            Controls.Add(MainDockPanel);
-        }
-
-        private WeifenLuo.WinFormsUI.Docking.IDockContent GetContentFromPersistString(string persistString)
-        {
-            if (persistString == "WeifenLuo.WinFormsUI.Docking.DockContent") return DirectionContent;
-            else return null;
+            Controls.Add(_mainDockPanel);
         }
 
         private int _id = -1;
@@ -116,56 +112,54 @@ namespace Sphere_Editor.SubEditors
                 _id++;
                 switch (_id)
                 {
-                    case 0: return DirectionContent;
-                    case 1: return BaseContent;
-                    case 2: return DrawContent;
-                    case 3: return ImageContent;
-                    case 4: return AnimContent;
+                    case 0: return _directionContent;
+                    case 1: return _baseContent;
+                    case 2: return _drawContent;
+                    case 3: return _imageContent;
+                    case 4: return _animContent;
                     default: return new DockContent();
                 }
             }
-            else return new DockContent();
+            return new DockContent();
         }
+
         #endregion
 
         public void Init()
         {
-            DirectionLayout layout;
             int i = 0;
             foreach (Direction d in _sprite.Directions)
             {
-                layout = new DirectionLayout(_sprite, d, this);
-                layout.OnFrameClick += new System.EventHandler(layout_OnFrameClick);
-                layout.Modified += new System.EventHandler(Modified);
+                DirectionLayout layout = new DirectionLayout(_sprite, d, this);
+                layout.OnFrameClick += layout_OnFrameClick;
+                layout.Modified += Modified;
                 layout.Zoom = _zoom;
                 DirectionHolder.Controls.Add(layout);
                 layout.Location = new Point(2, i++ * (layout.Height + 2) + 2);
             }
             ((DirectionLayout)DirectionHolder.Controls[0]).Select(0);
-            _selected_frame = ((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame;
+            _selectedFrame = ((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame;
             SpriteDrawer.SetImage((Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index)));
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
-            _tileset_ctrl = new TilesetControl2();
-            _tileset_ctrl.Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite);
-            _tileset_ctrl.CanInsert = false;
-            _tileset_ctrl.ZoomIn();
-            _tileset_ctrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            _tileset_ctrl.TileSelected += new TilesetControl2.SelectedHandler(_tileset_ctrl_TileSelected);
-            _tileset_ctrl.TileAdded += new TilesetControl2.TileHandler(_tileset_ctrl_TileAdded);
-            _tileset_ctrl.TileRemoved += new TilesetControl2.TileHandler(_tileset_ctrl_TileRemoved);
-            ImageHolder.Controls.Add(_tileset_ctrl);
-            _tileset_ctrl.Width = ImageHolder.Width - 6;
+            _tilesetCtrl = new TilesetControl2 {Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite), CanInsert = false};
+            _tilesetCtrl.ZoomIn();
+            _tilesetCtrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            _tilesetCtrl.TileSelected += _tileset_ctrl_TileSelected;
+            _tilesetCtrl.TileAdded += _tileset_ctrl_TileAdded;
+            _tilesetCtrl.TileRemoved += _tileset_ctrl_TileRemoved;
+            ImageHolder.Controls.Add(_tilesetCtrl);
+            _tilesetCtrl.Width = ImageHolder.Width - 6;
             DirectionAnim.Sprite = _sprite;
             DirectionAnim.Direction = _sprite.Directions[0];
-            FrameBaseEditor.Frame = _sprite.Directions[0].frames[0];
+            FrameBaseEditor.Frame = _sprite.Directions[0].Frames[0];
         }
 
         void _tileset_ctrl_TileSelected(List<short> tiles)
         {
-            _selected_frame.Index = tiles[0];
+            _selectedFrame.Index = tiles[0];
             DirectionHolder.Invalidate(true);
-            SpriteDrawer.SetImage(_tileset_ctrl.Tileset.Tiles[tiles[0]].Graphic);
+            SpriteDrawer.SetImage(_tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic);
             MakeDirty();
         }
 
@@ -197,8 +191,8 @@ namespace Sphere_Editor.SubEditors
             }
             else
             {
-                MessageBox.Show("Error: Can't load spriteset: " + filename);
-                ((DockContent)this.Parent).Close();
+                MessageBox.Show(@"Error: Can't load spriteset: " + filename);
+                ((DockContent)Parent).Close();
             }
         }
 
@@ -214,8 +208,7 @@ namespace Sphere_Editor.SubEditors
 
         public override void SaveAs()
         {
-            SaveFileDialog diag = new SaveFileDialog();
-            diag.Filter = "Spriteset Files (.rss)|*.rss";
+            SaveFileDialog diag = new SaveFileDialog {Filter = @"Spriteset Files (.rss)|*.rss"};
 
             if (Global.CurrentProject.RootPath != null)
                 diag.InitialDirectory = Global.CurrentProject.RootPath + "\\spritesets";
@@ -229,7 +222,7 @@ namespace Sphere_Editor.SubEditors
 
         public override void SaveLayout()
         {
-            MainDockPanel.SaveAsXml("SpriteEditor.xml");
+            _mainDockPanel.SaveAsXml("SpriteEditor.xml");
         }
 
         public void ResizeAll()
@@ -251,16 +244,16 @@ namespace Sphere_Editor.SubEditors
                 frm.UseScale = rescale;
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    _tileset_ctrl.ResizeTileset((short)frm.WidthSize, (short)frm.HeightSize, rescale);
+                    _tilesetCtrl.ResizeTileset((short)frm.WidthSize, (short)frm.HeightSize, rescale);
                     for (short i = 0; i < _sprite.Images.Count; ++i)
                     {
                         _sprite.Images[i].Dispose();
-                        _sprite.Images[i] = _tileset_ctrl.Tileset.Tiles[i].Graphic;
+                        _sprite.Images[i] = _tilesetCtrl.Tileset.Tiles[i].Graphic;
                     }
                     _sprite.SpriteWidth = (short)frm.WidthSize;
                     _sprite.SpriteHeight = (short)frm.HeightSize;
                 }
-                SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selected_frame.Index));
+                SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selectedFrame.Index));
                 UpdateControls();
                 MakeDirty();
             }
@@ -272,12 +265,12 @@ namespace Sphere_Editor.SubEditors
 
         private void layout_OnFrameClick(object sender, EventArgs e)
         {
-            if (_selected_frame != null) _selected_frame.Selected = false;
-            _selected_direction = (DirectionLayout)sender;
-            _selected_frame = _selected_direction.SelectedFrame;
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selected_frame.Index));
-            FrameBaseEditor.Frame = _selected_frame.Frame;
-            DirectionAnim.Direction = _selected_direction.Direction;
+            if (_selectedFrame != null) _selectedFrame.Selected = false;
+            _selectedDirection = (DirectionLayout)sender;
+            _selectedFrame = _selectedDirection.SelectedFrame;
+            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selectedFrame.Index));
+            FrameBaseEditor.Frame = _selectedFrame.Frame;
+            DirectionAnim.Direction = _selectedDirection.Direction;
             DirectionAnim.Invalidate(true);
         }
 
@@ -313,18 +306,18 @@ namespace Sphere_Editor.SubEditors
         public bool CanZoomOut { get { return _zoom > 1; } }
         public TilesetControl2 Tileset
         {
-            get { return _tileset_ctrl; }
-            set { _tileset_ctrl = value; }
+            get { return _tilesetCtrl; }
+            set { _tilesetCtrl = value; }
         }
 
         public void AddNewDirection()
         {
             Direction d = new Direction("Direction_" + DirectionHolder.Controls.Count);
-            d.frames.Add(new Frame());
+            d.Frames.Add(new Frame());
             _sprite.Directions.Add(d);
             DirectionLayout layout = new DirectionLayout(_sprite, d, this);
-            layout.OnFrameClick += new System.EventHandler(layout_OnFrameClick);
-            layout.Modified += new System.EventHandler(Modified);
+            layout.OnFrameClick += layout_OnFrameClick;
+            layout.Modified += Modified;
             layout.Zoom = _zoom;
             DirectionHolder.Controls.Add(layout);
             layout.Location = new Point(2, DirectionHolder.Controls.Count-1 * (layout.Height + 2) + 2);
@@ -342,8 +335,8 @@ namespace Sphere_Editor.SubEditors
         private void SpriteDrawer_ImageEdited(object sender, EventArgs e)
         {
             Bitmap img = SpriteDrawer.GetImage();
-            _sprite.Images[_selected_frame.Index] = img;
-            _tileset_ctrl.Tileset.Tiles[_selected_frame.Index].Graphic = img;
+            _sprite.Images[_selectedFrame.Index] = img;
+            _tilesetCtrl.Tileset.Tiles[_selectedFrame.Index].Graphic = img;
             Modified(null, EventArgs.Empty);
             Invalidate(true);
         }

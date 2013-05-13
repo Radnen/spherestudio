@@ -13,8 +13,8 @@ namespace Sphere.Core.Utility
     /// </summary>
     public class BitmapLoader : IDisposable
     {
-        private Rectangle _rect;
-        private FastBitmap _fast_img;
+        private readonly Rectangle _rect;
+        private readonly FastBitmap _fastImg;
         private Bitmap _image;
         private Bitmap _copy;
         private BitmapData _data;
@@ -29,10 +29,10 @@ namespace Sphere.Core.Utility
             _rect = new Rectangle(0, 0, width, height);
 
             _copy = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            _data = this._copy.LockBits(_rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            _data = _copy.LockBits(_rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
             _image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            _fast_img = new FastBitmap(_image);
+            _fastImg = new FastBitmap(_image);
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace Sphere.Core.Utility
         /// <returns>A new bitmap object.</returns>
         public Bitmap LoadFromStream(BinaryReader reader, int amount)
         {
-            byte[] bmp_bytes = reader.ReadBytes(amount);
-            Marshal.Copy(bmp_bytes, 0, _data.Scan0, amount);
-            _fast_img.LockImage();
+            byte[] bmpBytes = reader.ReadBytes(amount);
+            Marshal.Copy(bmpBytes, 0, _data.Scan0, amount);
+            _fastImg.LockImage();
             unsafe
             {
                 byte* ptr = (byte*)_data.Scan0;
@@ -76,12 +76,12 @@ namespace Sphere.Core.Utility
                     for (int x = 0; x < _copy.Width; ++x)
                     {
                         int value = *(ptr);
-                        _fast_img.SetPixel(x, y, Color.FromArgb(*(ptr + 3), value, *(ptr + 1), *(ptr + 2)));
+                        _fastImg.SetPixel(x, y, Color.FromArgb(*(ptr + 3), value, *(ptr + 1), *(ptr + 2)));
                         ptr += 4;
                     }
                 }
             }
-            _fast_img.UnlockImage();
+            _fastImg.UnlockImage();
             return new Bitmap(_image);
         }
 
@@ -103,8 +103,8 @@ namespace Sphere.Core.Utility
         /// </summary>
         public ColorFormat ColorFormat
         {
-            get { return _fast_img.ColorFormat; }
-            set { _fast_img.ColorFormat = value; }
+            get { return _fastImg.ColorFormat; }
+            set { _fastImg.ColorFormat = value; }
         }
 
         private bool _disposed;

@@ -7,7 +7,7 @@ namespace Sphere.Core.Utility
     /// </summary>
     public class Line
     {
-        private short x1, y1, x2, y2;
+        private short _x1, _y1, _x2, _y2;
 
         /// <summary>
         /// Creates a new, empty Line.
@@ -23,10 +23,10 @@ namespace Sphere.Core.Utility
         /// <param name="y2">The end y.</param>
         public Line(short x1, short y1, short x2, short y2)
         {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
+            _x1 = x1;
+            _y1 = y1;
+            _x2 = x2;
+            _y2 = y2;
         }
 
         /// <summary>
@@ -42,15 +42,15 @@ namespace Sphere.Core.Utility
         /// </summary>
         /// <param name="copy">The other line to copy from.</param>
         public Line(Line copy) :
-            this(copy.x1, copy.y1, copy.x2, copy.y2) { }
+            this(copy._x1, copy._y1, copy._x2, copy._y2) { }
 
         /// <summary>
         /// Gets or sets the starting x value.
         /// </summary>
         public short X1
         {
-            get { return x1; }
-            set { x1 = value; }
+            get { return _x1; }
+            set { _x1 = value; }
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace Sphere.Core.Utility
         /// </summary>
         public short Y1
         {
-            get { return y1; }
-            set { y1 = value; }
+            get { return _y1; }
+            set { _y1 = value; }
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace Sphere.Core.Utility
         /// </summary>
         public short X2
         {
-            get { return x2; }
-            set { x2 = value; }
+            get { return _x2; }
+            set { _x2 = value; }
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace Sphere.Core.Utility
         /// </summary>
         public short Y2
         {
-            get { return y2; }
-            set { y2 = value; }
+            get { return _y2; }
+            set { _y2 = value; }
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace Sphere.Core.Utility
         /// </summary>
         public Point Start
         {
-            get { return new Point(x1, y1); }
-            set { x1 = (short)value.X; y1 = (short)value.Y; }
+            get { return new Point(_x1, _y1); }
+            set { _x1 = (short)value.X; _y1 = (short)value.Y; }
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace Sphere.Core.Utility
         /// </summary>
         public Point End
         {
-            get { return new Point(x2, y2); }
-            set { x2 = (short)value.X; y2 = (short)value.Y; }
+            get { return new Point(_x2, _y2); }
+            set { _x2 = (short)value.X; _y2 = (short)value.Y; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Sphere.Core.Utility
         /// <param name="pen">The pen style to use.</param>
         public void DrawLine(Graphics g, Pen pen)
         {
-            g.DrawLine(pen, this.x1, this.y1, this.x2, this.y2);
+            g.DrawLine(pen, _x1, _y1, _x2, _y2);
         }
 
         /// <summary>
@@ -117,12 +117,12 @@ namespace Sphere.Core.Utility
         {
             Line copy = new Line(l);
 
-            if (l.x2 < l.x1) { copy.x1 = l.x2; copy.x2 = l.x1; }
-            if (l.y2 < l.y1) { copy.y1 = l.y2; copy.y2 = l.y1; }
+            if (l._x2 < l._x1) { copy._x1 = l._x2; copy._x2 = l._x1; }
+            if (l._y2 < l._y1) { copy._y1 = l._y2; copy._y2 = l._y1; }
 
-            int w = copy.x2 - copy.x1;
-            int h = copy.y2 - copy.y1;
-            return new Rectangle(copy.x1, copy.y1, w, h);
+            int w = copy._x2 - copy._x1;
+            int h = copy._y2 - copy._y1;
+            return new Rectangle(copy._x1, copy._y1, w, h);
         }
 
         /// <summary>

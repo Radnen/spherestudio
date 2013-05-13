@@ -2,19 +2,20 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere.Plugins;
 
 namespace FontPlugin
 {
     public partial class FontEditor : EditorObject
     {
-        FontSet FontLayout = new FontSet();
-        Font selected = null;
+        readonly FontSet _fontLayout;
+        Font _selected;
         internal IPluginHost Host { get; set; }
 
         public FontEditor()
         {
+            _fontLayout = new FontSet();
             InitializeComponent();
             InitializeFontLayout();
             CompilePreview();
@@ -22,23 +23,23 @@ namespace FontPlugin
 
         private void InitializeFontLayout()
         {
-            FontLayout.Dock = DockStyle.Left;
+            _fontLayout.Dock = DockStyle.Left;
             //FontLayout.Anchor = (AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom);
-            FontLayout.CharSelected += new FontSet.EventHandler(FontLayout_CharSelected);
-            FontLayout.LayoutZoomed += new FontSet.EventHandler(FontLayout_LayoutZoomed);
-            FontLayout.Selection = 65;
-            FontPanel.Controls.Add(FontLayout);
+            _fontLayout.CharSelected += FontLayout_CharSelected;
+            _fontLayout.LayoutZoomed += FontLayout_LayoutZoomed;
+            _fontLayout.Selection = 65;
+            FontPanel.Controls.Add(_fontLayout);
         }
 
         private void FontPanel_Scroll(object sender, ScrollEventArgs e)
         {
-            FontLayout.Refresh();
+            _fontLayout.Refresh();
         }
 
         private void FontLayout_CharSelected(object sender, EventArgs e)
         {
-            Character ch = FontLayout.Characters[FontLayout.Selection];
-            FontSizeLabel.Text = "Size: " + ch.Width + " x " + ch.Height;
+            Character ch = _fontLayout.Characters[_fontLayout.Selection];
+            FontSizeLabel.Text = @"Size: " + ch.Width + @" x " + ch.Height;
             FontSizeLabel.Refresh();
         }
 
@@ -57,10 +58,10 @@ namespace FontPlugin
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             int x = 0;
-            int zoom = FontLayout.Zoom;
-            for (int i = 0; i < str.Length; ++i)
+            int zoom = _fontLayout.Zoom;
+            foreach (char ch in str)
             {
-                Bitmap charImg = FontLayout.Characters[(int)str[i]].Image;
+                Bitmap charImg = _fontLayout.Characters[ch].Image;
                 g.DrawImage(charImg, 4+x, 4, charImg.Width*zoom, charImg.Height*zoom);
                 x += charImg.Width*zoom;
             }
@@ -79,14 +80,13 @@ namespace FontPlugin
             else
             {
                 Parent.Text = Path.GetFileName(FileName);
-                FontLayout.SaveToFile(FileName);
+                _fontLayout.SaveToFile(FileName);
             }
         }
 
         public override void SaveAs()
         {
-            SaveFileDialog diag = new SaveFileDialog();
-            diag.Filter = "Font Files (.rfn)|*.rfn";
+            SaveFileDialog diag = new SaveFileDialog {Filter = @"Font Files (.rfn)|*.rfn"};
 
             if (Host.CurrentGame != null)
                 diag.InitialDirectory = Host.CurrentGame.RootPath + "\\fonts";
@@ -102,37 +102,37 @@ namespace FontPlugin
         {
             if (!File.Exists(filename)) return;
             base.LoadFile(filename);
-            FontLayout.LoadFromFile(filename);
+            _fontLayout.LoadFromFile(filename);
             CompilePreview();
         }
 
         public override void ZoomIn()
         {
-            FontLayout.ZoomIn();
+            _fontLayout.ZoomIn();
         }
 
         public override void ZoomOut()
         {
-            FontLayout.ZoomOut();
+            _fontLayout.ZoomOut();
         }
 
         public override void Paste()
         {
-            IDataObject Data = Clipboard.GetDataObject();
-            if (Data.GetDataPresent(DataFormats.Text)) PreviewTextBox.Text = (string)Data.GetData(DataFormats.Text);
+            IDataObject data = Clipboard.GetDataObject();
+            if (data != null && data.GetDataPresent(DataFormats.Text)) PreviewTextBox.Text = (string)data.GetData(DataFormats.Text);
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)
         {
             using (FontDialog diag = new FontDialog())
             {
-                if (selected != null) diag.Font = selected;
+                if (_selected != null) diag.Font = _selected;
                 try
                 {
                     if (diag.ShowDialog() == DialogResult.OK)
                     {
-                        selected = diag.Font;
-                        FontLayout.GenerateFont(
+                        _selected = diag.Font;
+                        _fontLayout.GenerateFont(
                             diag.Font, GradientCheckBox.Checked,
                             GradientTop.SelectedColor, GradientBottom.SelectedColor,
                             StrokeCheck.Checked, StrokeColor.SelectedColor
@@ -142,7 +142,7 @@ namespace FontPlugin
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("GDI+ only supports TrueType fonts.", "Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"GDI+ only supports TrueType fonts.", @"Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -157,8 +157,8 @@ namespace FontPlugin
             ColorDialog diag = new ColorDialog();
             if (diag.ShowDialog() == DialogResult.OK)
             {
-                ((Sphere.Core.Editor.ColorBox)sender).SelectedColor = diag.Color;
-                ((Sphere.Core.Editor.ColorBox)sender).Refresh();
+                ((ColorBox)sender).SelectedColor = diag.Color;
+                ((ColorBox)sender).Refresh();
             }
         }
     }

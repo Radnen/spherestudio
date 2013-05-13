@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere_Editor.EditorComponents;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -14,12 +13,12 @@ namespace Sphere_Editor.SubEditors
     public partial class MapEditor : EditorObject
     {
         #region attributes
-        private DockContent _map_content;
-        private DockContent _draw_content;
-        private DockContent _tile_content;
-        private DockContent _layer_content;
-        private DockContent _tileset_content;
-        private DockPanel _main_panel;
+        private DockContent _mapContent;
+        private DockContent _drawContent;
+        private DockContent _tileContent;
+        private DockContent _layerContent;
+        private DockContent _tilesetContent;
+        private DockPanel _mainPanel;
         public Map Map { get { return MapControl.BaseMap; } }
         #endregion
 
@@ -39,59 +38,57 @@ namespace Sphere_Editor.SubEditors
             Controls.Remove(splitContainer1);
             Controls.Remove(EditorTabs);
 
-            _map_content = new DockContent();
-            _map_content.Controls.Add(MapToolContainer);
-            _map_content.Text = "Map Editor";
-            _map_content.DockAreas = DockAreas.DockBottom | DockAreas.Document | DockAreas.DockTop;
-            _map_content.DockHandler.CloseButtonVisible = false;
+            _mapContent = new DockContent();
+            _mapContent.Controls.Add(MapToolContainer);
+            _mapContent.Text = @"Map Editor";
+            _mapContent.DockAreas = DockAreas.DockBottom | DockAreas.Document | DockAreas.DockTop;
+            _mapContent.DockHandler.CloseButtonVisible = false;
 
-            _draw_content = new DockContent();
-            _draw_content.Controls.Add(TileDrawer);
-            _draw_content.Text = "Tile Image Editor";
-            _draw_content.DockAreas = DockAreas.DockBottom | DockAreas.DockTop | DockAreas.Document;
-            _draw_content.DockHandler.CloseButtonVisible = false;
+            _drawContent = new DockContent();
+            _drawContent.Controls.Add(TileDrawer);
+            _drawContent.Text = @"Tile Image Editor";
+            _drawContent.DockAreas = DockAreas.DockBottom | DockAreas.DockTop | DockAreas.Document;
+            _drawContent.DockHandler.CloseButtonVisible = false;
 
-            _tileset_content = new DockContent();
-            _tileset_content.Controls.Add(TilesetPanel);
+            _tilesetContent = new DockContent();
+            _tilesetContent.Controls.Add(TilesetPanel);
             TilesetControl.Width = TilesetPanel.Width - 2;
-            _tileset_content.Text = "Tileset";
-            _tileset_content.DockAreas = DockAreas.DockRight | DockAreas.DockLeft;
-            _tileset_content.DockHandler.CloseButtonVisible = false;
-            _tileset_content.AutoScroll = true;
+            _tilesetContent.Text = @"Tileset";
+            _tilesetContent.DockAreas = DockAreas.DockRight | DockAreas.DockLeft;
+            _tilesetContent.DockHandler.CloseButtonVisible = false;
+            _tilesetContent.AutoScroll = true;
 
-            _tile_content = new DockContent();
-            _tile_content.Controls.Add(TileEditor);
-            _tile_content.Text = "Tile Properties";
-            _tile_content.DockAreas = DockAreas.DockBottom | DockAreas.DockTop | DockAreas.Document;
-            _tile_content.DockHandler.CloseButtonVisible = false;
+            _tileContent = new DockContent();
+            _tileContent.Controls.Add(TileEditor);
+            _tileContent.Text = @"Tile Properties";
+            _tileContent.DockAreas = DockAreas.DockBottom | DockAreas.DockTop | DockAreas.Document;
+            _tileContent.DockHandler.CloseButtonVisible = false;
 
-            _layer_content = new DockContent();
-            _layer_content.Controls.Add(LayerEditor);
-            LayerEditor.Layers.LayerChanged += new LayerControl.LayerEvent(Layers_LayerChanged);
-            LayerEditor.Layers.LayerSelected += new LayerControl.LayerEvent(Layers_LayerSelected);
-            LayerEditor.Layers.LayerVisibilityChanged += new LayerControl.LayerEvent(Layers_LayerVisibilityChanged);
-            _layer_content.Text = "Map Layers";
-            _layer_content.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
-            _layer_content.DockHandler.CloseButtonVisible = false;
+            _layerContent = new DockContent();
+            _layerContent.Controls.Add(LayerEditor);
+            LayerEditor.Layers.LayerChanged += Layers_LayerChanged;
+            LayerEditor.Layers.LayerSelected += Layers_LayerSelected;
+            LayerEditor.Layers.LayerVisibilityChanged += Layers_LayerVisibilityChanged;
+            _layerContent.Text = @"Map Layers";
+            _layerContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
+            _layerContent.DockHandler.CloseButtonVisible = false;
 
-            _main_panel = new DockPanel();
-            _main_panel.Dock = DockStyle.Fill;
-            _main_panel.DocumentStyle = DocumentStyle.DockingWindow;
+            _mainPanel = new DockPanel {Dock = DockStyle.Fill, DocumentStyle = DocumentStyle.DockingWindow};
             if (System.IO.File.Exists("MapEditor.xml"))
             {
-                DeserializeDockContent dc = new DeserializeDockContent(GetContent);
-                _main_panel.LoadFromXml("MapEditor.xml", dc);
+                DeserializeDockContent dc = GetContent;
+                _mainPanel.LoadFromXml("MapEditor.xml", dc);
             }
             else
             {
-                _map_content.Show(_main_panel, DockState.Document);
-                _tile_content.Show(_map_content.Pane, DockAlignment.Bottom, 0.40);
-                _draw_content.Show(_tile_content.PanelPane, _tile_content);
-                _layer_content.Show(_main_panel, DockState.DockRight);
-                _tileset_content.Show(_layer_content.Pane, DockAlignment.Bottom, 0.80);
+                _mapContent.Show(_mainPanel, DockState.Document);
+                _tileContent.Show(_mapContent.Pane, DockAlignment.Bottom, 0.40);
+                _drawContent.Show(_tileContent.PanelPane, _tileContent);
+                _layerContent.Show(_mainPanel, DockState.DockRight);
+                _tilesetContent.Show(_layerContent.Pane, DockAlignment.Bottom, 0.80);
             }
 
-            Controls.Add(_main_panel);
+            Controls.Add(_mainPanel);
         }
 
         private int _id = -1;
@@ -102,24 +99,25 @@ namespace Sphere_Editor.SubEditors
                 _id++;
                 switch (_id)
                 {
-                    case 0: return _map_content;
-                    case 1: return _tile_content;
-                    case 2: return _draw_content;
-                    case 3: return _layer_content;
-                    case 4: return _tileset_content;
+                    case 0: return _mapContent;
+                    case 1: return _tileContent;
+                    case 2: return _drawContent;
+                    case 3: return _layerContent;
+                    case 4: return _tilesetContent;
                     default: return new DockContent();
                 }
             }
-            else return new DockContent();
+            return new DockContent();
         }
+
         #endregion
 
         public void CreateNew(short width = 20,
-                              short height = 15, short tile_width = 16,
-                              short tile_height = 16, string tileset_path = null)
+                              short height = 15, short tileWidth = 16,
+                              short tileHeight = 16, string tilesetPath = null)
         {
             Map map = new Map();
-            map.CreateNew(width, height, tile_width, tile_height, tileset_path);
+            map.CreateNew(width, height, tileWidth, tileHeight, tilesetPath);
             MapControl.BaseMap = map;
 
             TilesetControl.Tileset = MapControl.BaseMap.Tileset;
@@ -133,7 +131,7 @@ namespace Sphere_Editor.SubEditors
 
         public override void SaveLayout()
         {
-            _main_panel.SaveAsXml("MapEditor.xml");
+            _mainPanel.SaveAsXml("MapEditor.xml");
         }
 
         public override void LoadFile(string filename)
@@ -161,11 +159,11 @@ namespace Sphere_Editor.SubEditors
             {
                 if (!Map.Save(FileName))
                 {
-                    if (MessageBox.Show("Tileset needs to be saved.", "Save the Tileset", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                    if (MessageBox.Show(@"Tileset needs to be saved.", @"Save the Tileset", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                     {
                         using (SaveFileDialog diag = new SaveFileDialog())
                         {
-                            diag.Filter = "Tileset Files (.rts)|*.rts";
+                            diag.Filter = @"Tileset Files (.rts)|*.rts";
                             diag.InitialDirectory = Global.CurrentProject.RootPath + "\\maps";
                             if (diag.ShowDialog() == DialogResult.OK)
                             {
@@ -184,7 +182,7 @@ namespace Sphere_Editor.SubEditors
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = "Map Files (.rmp)|*.rmp";
+                diag.Filter = @"Map Files (.rmp)|*.rmp";
                 diag.InitialDirectory = Global.CurrentProject.RootPath + "\\maps";
                 diag.DefaultExt = "rmp";
                 if (diag.ShowDialog() == DialogResult.OK)
@@ -238,9 +236,9 @@ namespace Sphere_Editor.SubEditors
             InitLayers();
         }
 
-        public void SetTileSize(int tile_width, int tile_height)
+        public void SetTileSize(int tileWidth, int tileHeight)
         {
-            MapControl.ResizeLayers(tile_width, tile_height);
+            MapControl.ResizeLayers(tileWidth, tileHeight);
             TilesetControl.UpdateTileSize();
             TilesetControl.Invalidate();
             MakeDirty();
@@ -259,7 +257,7 @@ namespace Sphere_Editor.SubEditors
             Map.Tileset.SaveImage(filename);
         }
 
-        private void Layers_LayerVisibilityChanged(LayerControl sender, EditorComponents.LayerItem layer)
+        private void Layers_LayerVisibilityChanged(LayerControl sender, LayerItem layer)
         {
             Map.Layers[layer.Index].Visible = layer.Visible;
             foreach (Entity ent in Map.Entities)
@@ -277,8 +275,7 @@ namespace Sphere_Editor.SubEditors
 
         private void Layers_LayerChanged(LayerControl sender, LayerItem layer)
         {
-            List<Layer> layers = new List<Layer>();
-            foreach (LayerItem li in sender.Items) layers.Add(li.Layer);
+            List<Layer> layers = sender.Items.Select(li => li.Layer).ToList();
             byte start = (byte)((layer.Start) ? layer.Index : sender.StartLayer);
             if (layer.State == ListViewItemStates.Selected) MapControl.CurrentLayer = (short)layer.Index;
             MapControl.SetLayers(layers, start);
@@ -319,7 +316,7 @@ namespace Sphere_Editor.SubEditors
         {
             UncheckButtons();
             FloodFillButton.Checked = true;
-            MapControl.Tool = EditorComponents.MapControl.MapTool.FloodFill;
+            MapControl.Tool = MapControl.MapTool.FloodFill;
             MapControl.Invalidate();
         }
 
@@ -327,7 +324,7 @@ namespace Sphere_Editor.SubEditors
         {
             UncheckButtons();
             LineButton.Checked = true;
-            MapControl.Tool = EditorComponents.MapControl.MapTool.Line;
+            MapControl.Tool = MapControl.MapTool.Line;
             MapControl.Invalidate();
         }
 
@@ -397,7 +394,7 @@ namespace Sphere_Editor.SubEditors
         private void MapControl_Paint(object sender, PaintEventArgs e)
         {
             map_pos_label.Text = MapControl.Tile.ToString();
-            map_pos_label.Text += " Start: " + Map.StartLayer;
+            map_pos_label.Text += @" Start: " + Map.StartLayer;
             zoomInButton.Enabled = MapControl.CanZoomIn;
             zoomOutButton.Enabled = MapControl.CanZoomOut;
         }
@@ -421,9 +418,7 @@ namespace Sphere_Editor.SubEditors
         private void Layers_LayerAdded(object sender, EventArgs e)
         {
             Layer lay = MapControl.AddLayer();
-            LayerItem item = new LayerItem(new Layer());
-            item.Text = "Untitled";
-            item.Visible = true;
+            LayerItem item = new LayerItem(lay) {Text = "Untitled", Visible = true};
             LayerEditor.Layers.AddItem(item);
             MapControl.RefreshLayers();
             MakeDirty();

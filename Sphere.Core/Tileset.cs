@@ -27,30 +27,31 @@ namespace Sphere.Core
         public short TileHeight { get; set; }
 
         private short _version = 1;
-        private byte _has_obstruct, _compression;
+        private byte _hasObstruct, _compression;
 
         /// <summary>
         /// Gets if this has disposed or not.
         /// </summary>
-        public bool IsDisposed { get { return _disposed; } }
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Creates a fresh, empty tileset.
         /// </summary>
         public Tileset()
         {
+            IsDisposed = false;
             Tiles = new List<Tile>();
         }
 
         /// <summary>
         /// Adds a blank tile to the list of tiles.
         /// </summary>
-        /// <param name="tile_width">The tile width in pixels.</param>
-        /// <param name="tile_height">The tile height in pixels.</param>
-        public void CreateNew(short tile_width, short tile_height)
+        /// <param name="tileWidth">The tile width in pixels.</param>
+        /// <param name="tileHeight">The tile height in pixels.</param>
+        public void CreateNew(short tileWidth, short tileHeight)
         {
-            TileWidth = tile_width;
-            TileHeight = tile_height;
+            TileWidth = tileWidth;
+            TileHeight = tileHeight;
             Tiles.Add(new Tile(TileWidth, TileHeight));
         }
 
@@ -95,24 +96,23 @@ namespace Sphere.Core
             Tileset ts = new Tileset();
             reader.ReadChars(4); // sign
             ts._version = reader.ReadInt16();  // version
-            short num_tiles = reader.ReadInt16();
+            short numTiles = reader.ReadInt16();
             ts.TileWidth = reader.ReadInt16();
             ts.TileHeight = reader.ReadInt16();
             reader.ReadInt16(); // tile_bpp
             ts._compression = reader.ReadByte();
-            ts._has_obstruct = reader.ReadByte();
+            ts._hasObstruct = reader.ReadByte();
             reader.ReadBytes(240);
 
             using (BitmapLoader loader = new BitmapLoader(ts.TileWidth, ts.TileHeight))
             {
-                int bit_size = ts.TileWidth * ts.TileHeight * 4;
-                Tile new_tile;
+                int bitSize = ts.TileWidth * ts.TileHeight * 4;
 
-                while (num_tiles-- > 0)
+                while (numTiles-- > 0)
                 {
-                    new_tile = new Tile(ts.TileWidth, ts.TileHeight);
-                    new_tile.Graphic = loader.LoadFromStream(reader, bit_size);
-                    ts.Tiles.Add(new_tile);
+                    Tile newTile = new Tile(ts.TileWidth, ts.TileHeight);
+                    newTile.Graphic = loader.LoadFromStream(reader, bitSize);
+                    ts.Tiles.Add(newTile);
                 }
             }
 
@@ -156,15 +156,15 @@ namespace Sphere.Core
                 writer.Write(_compression);
 
                 foreach (Tile t in Tiles)
-                    if (t.Obstructions.Count > 0) _has_obstruct = 1;
+                    if (t.Obstructions.Count > 0) _hasObstruct = 1;
 
-                writer.Write(_has_obstruct);
+                writer.Write(_hasObstruct);
                 writer.Write(new byte[240]);
 
                 // save tile pixels:
                 BitmapSaver saver = new BitmapSaver(TileWidth, TileHeight);
-                for (int i = 0; i < Tiles.Count; ++i)
-                    saver.SaveToStream(Tiles[i].Graphic, writer);
+                foreach (Tile tile in Tiles)
+                    saver.SaveToStream(tile.Graphic, writer);
 
                 // save tile info:
                 foreach (Tile t in Tiles)
@@ -199,22 +199,21 @@ namespace Sphere.Core
             GC.SuppressFinalize(this);
         }
 
-        private bool _disposed = false;
         private void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!IsDisposed)
             {
                 if (disposing)
                 {
-                    for (int i = 0; i < Tiles.Count; ++i)
+                    foreach (Tile tile in Tiles)
                     {
-                        Tiles[i].Graphic.Dispose();
-                        Tiles[i].Graphic = null;
+                        if (tile.Graphic != null) tile.Graphic.Dispose();
+                        tile.Graphic = null;
                     }
                 }
                 Tiles = null;
             }
-            _disposed = true;
+            IsDisposed = true;
         }
 
         /// <summary>
@@ -252,7 +251,7 @@ namespace Sphere.Core
         /// <param name="filename"></param>
         public void UpdateFromImage(string filename)
         {
-            Bitmap img = (Bitmap)Bitmap.FromFile(filename);
+            Bitmap img = (Bitmap)Image.FromFile(filename);
             Rectangle rect = new Rectangle(0, 0, TileWidth, TileHeight);
 
             int index = 0;

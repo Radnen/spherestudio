@@ -16,7 +16,7 @@
             if (disposing)
             {
                 if (components != null) components.Dispose();
-                _tileset_ctrl.Dispose();
+                _tilesetCtrl.Dispose();
                 _sprite.Dispose();
             }
             base.Dispose(disposing);

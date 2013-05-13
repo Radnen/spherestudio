@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using FastColoredTextBoxNS;
-using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere.Plugins;
 
 namespace FastScriptPlugin
@@ -13,15 +13,14 @@ namespace FastScriptPlugin
     public partial class Scripter : EditorObject
     {
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
-        private FastColoredTextBox _textbox;
-        private IPluginHost _host;
+        private readonly FastColoredTextBox _textbox;
+        private readonly IPluginHost _host;
 
         public Scripter(IPluginHost host)
         {
             _host = host;
             InitializeComponent();
-            _textbox = new FastColoredTextBox();
-            _textbox.Dock = DockStyle.Fill;
+            _textbox = new FastColoredTextBox {Dock = DockStyle.Fill};
             _textbox.TextChangedDelayed += _textbox_TextChangedDelayed;
             Controls.Add(_textbox);
             UpdateStyle();
@@ -38,27 +37,21 @@ namespace FastScriptPlugin
             _textbox.AcceptsTab = _host.EditorSettings.GetBool("script-tabs", _textbox.AcceptsTab);
             _textbox.ShowFoldingLines = _host.EditorSettings.GetBool("script-fold", true);
             
-            if (_host.EditorSettings.GetBool("script-hiline", true))
-                _textbox.CurrentLineColor = Color.Yellow;
-            else
-                _textbox.CurrentLineColor = Color.White;
+            _textbox.CurrentLineColor = _host.EditorSettings.GetBool("script-hiline", true) ? Color.Yellow : Color.White;
 
             string fontstring = _host.EditorSettings.GetString("script-font");
-            if (!String.IsNullOrEmpty(fontstring))
-            {
-                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                _textbox.Font = (Font)converter.ConvertFromString(fontstring);
-            }
+            if (String.IsNullOrEmpty(fontstring)) return;
+
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
+            Font f = (Font)converter.ConvertFromString(fontstring);
+            if (f != null) _textbox.Font = f;
         }
 
         public override void LoadFile(string filename)
         {
             base.LoadFile(filename);
 
-            if (filename.EndsWith(".js"))
-                _textbox.Language = Language.JS;
-            else
-                _textbox.Language = Language.Custom;
+            _textbox.Language = filename.EndsWith(".js") ? Language.JS : Language.Custom;
 
             using (StreamReader reader = new StreamReader(filename))
             {
@@ -85,7 +78,7 @@ namespace FastScriptPlugin
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = "Sphere Script Files (.js)|*.js";
+                diag.Filter = @"Sphere Script Files (.js)|*.js";
 
                 if (_host.CurrentGame != null)
                     diag.InitialDirectory = _host.CurrentGame.RootPath + "\\scripts";

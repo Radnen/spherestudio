@@ -16,20 +16,16 @@ namespace FontPlugin
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
-        private string[] _fileTypes = { ".rfn" };
-        private string _openFileFilters = "*.rfn";
-        
-        private ToolStripMenuItem NewFontItem, OpenFontItem;
+        private const string OpenFileFilters = "*.rfn";
+
+        private readonly ToolStripMenuItem _newFontItem;
 
         public FontPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.style.GetHicon());
 
-            NewFontItem = new ToolStripMenuItem("Font", Properties.Resources.style);
-            NewFontItem.Click += new EventHandler(FontItem_Click);
-
-            OpenFontItem = new ToolStripMenuItem("Font", Properties.Resources.style);
-            OpenFontItem.Click += new EventHandler(OpenFontItem_Click);
+            _newFontItem = new ToolStripMenuItem("Font", Properties.Resources.style);
+            _newFontItem.Click += FontItem_Click;
         }
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
@@ -47,21 +43,6 @@ namespace FontPlugin
             }
         }
 
-        void OpenFontItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog diag = new OpenFileDialog())
-            {
-                diag.Filter = "Font Files|*.rfn";
-                if (Host.CurrentGame != null)
-                    diag.InitialDirectory = Host.CurrentGame.RootPath + "\\fonts";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    Host.DockControl(OpenEditor(diag.FileName), DockState.Document);
-                }
-            }
-        }
-
         void FontItem_Click(object sender, EventArgs e)
         {
             Host.DockControl(OpenEditor(), DockState.Document);
@@ -70,14 +51,10 @@ namespace FontPlugin
         public DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
-            FontEditor editor = new FontEditor();
-            editor.Host = Host;
-
-            editor.Dock = DockStyle.Fill;
+            FontEditor editor = new FontEditor {Host = Host, Dock = DockStyle.Fill};
 
             // And creates + styles a dock panel:
-            DockContent content = new DockContent();
-            content.Text = "Font Importer";
+            DockContent content = new DockContent {Text = @"Font Importer"};
             content.Controls.Add(editor);
             content.DockAreas = DockAreas.Document;
             content.Icon = Icon;
@@ -89,17 +66,16 @@ namespace FontPlugin
 
         public void Initialize()
         {
-            Host.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
+            Host.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
             Host.TryEditFile += host_TryEditFile;
             
-            Host.AddMenuItem("File.New", NewFontItem);
-            Host.AddMenuItem("File.Open", OpenFontItem);
+            Host.AddMenuItem("File.New", _newFontItem);
         }
 
         public void Destroy()
         {
             Host.TryEditFile -= host_TryEditFile;
-            Host.UnregisterOpenFileType(_openFileFilters);
+            Host.UnregisterOpenFileType(OpenFileFilters);
         }
     }
 }
