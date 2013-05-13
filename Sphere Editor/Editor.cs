@@ -93,7 +93,7 @@ namespace Sphere_Editor
             // raise a TryEditFile event first to see if any plugins take the bait
             EditFileEventArgs e = new EditFileEventArgs(filePath);
             TryEditFile(null, e);
-            if (e.IsAlreadyMatched)
+            if (e.Handled)
             {
                 // Someone took the bait, we don't have to do anything else
                 return;
@@ -111,7 +111,7 @@ namespace Sphere_Editor
             {
                 e = new EditFileEventArgs(filePath, true);
                 TryEditFile(null, e);
-                if (!e.IsAlreadyMatched)
+                if (!e.Handled)
                 {
                     string extension = Path.GetExtension(filePath);
                     if (extension == null) return;

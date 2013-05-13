@@ -5,19 +5,19 @@ namespace Sphere.Plugins
 {
     public class EditFileEventArgs : EventArgs
     {
-        public EditFileEventArgs(string filePath, bool useWildcard = false)
+        public EditFileEventArgs(string path, bool useWildcard = false)
         {
-            FileFullPath = (filePath != null && filePath[0] == '?') ? null : filePath;
-            string extension = Path.GetExtension(filePath);
+            Path = (path != null && path[0] == '?') ? null : path;
+            string extension = System.IO.Path.GetExtension(path);
             if (extension != null)
-                FileExtension = useWildcard ? "*" : extension.ToLower();
-            IsAlreadyMatched = false;
+                Extension = useWildcard ? "*" : extension.ToLower();
+            Handled = false;
         }
 
-        public string FileFullPath { get; private set; }
+        public string Path { get; private set; }
 
-        public string FileExtension { get; private set; }
-        public bool IsAlreadyMatched { get; set; }
+        public string Extension { get; private set; }
+        public bool Handled { get; set; }
     }
 
     public delegate void EditFileEventHandler(object sender, EditFileEventArgs e);
