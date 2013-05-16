@@ -32,13 +32,13 @@ namespace FontPlugin
         {
             string[] fileTypes = { ".rfn" };
 
-            if (e.IsAlreadyMatched) return;
+            if (e.Handled) return;
             foreach (string type in fileTypes)
             {
-                if (e.FileExtension == type)
+                if (e.Extension == type)
                 {
-                    Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
-                    e.IsAlreadyMatched = true;
+                    Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                    e.Handled = true;
                 }
             }
         }

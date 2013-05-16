@@ -39,13 +39,13 @@ namespace SoundTestPlugin
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
         {
-            if (e.IsAlreadyMatched) return;
+            if (e.Handled) return;
             foreach (string type in _fileTypes)
             {
-                if (e.FileExtension == type)
+                if (e.Extension == type)
                 {
-                    _soundPicker.PlayFile(e.FileFullPath);
-                    e.IsAlreadyMatched = true;
+                    _soundPicker.PlayFile(e.Path);
+                    e.Handled = true;
                 }
             }
         }

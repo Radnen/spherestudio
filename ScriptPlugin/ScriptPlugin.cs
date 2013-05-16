@@ -90,13 +90,13 @@ namespace ScriptPlugin
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
         {
-            if (e.IsAlreadyMatched) return;
+            if (e.Handled) return;
             foreach (string type in _fileTypes)
             {
-                if (e.FileExtension == type)
+                if (e.Extension == type)
                 {
-                    Host.DockControl(OpenEditor(e.FileFullPath), DockState.Document);
-                    e.IsAlreadyMatched = true;
+                    Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                    e.Handled = true;
                 }
             }
         }

@@ -1,23 +1,36 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 
 namespace Sphere.Plugins
 {
-    public class EditFileEventArgs : EventArgs
+    /// <summary>
+    /// Provides data for Sphere Studio 'edit file' events.
+    /// </summary>
+    public class EditFileEventArgs : HandledEventArgs
     {
-        public EditFileEventArgs(string filePath, bool useWildcard = false)
+        /// <summary>
+        /// Initializes a new instance of the EditFileEventArgs class, which provides data for Sphere Studio 'edit file' events.
+        /// </summary>
+        /// <param name="path">The full path of the file to be edited.</param>
+        /// <param name="useWildcard">If true, reports a wildcard ('*') in place of the file's actual extension.</param>
+        public EditFileEventArgs(string path, bool useWildcard = false)
         {
-            FileFullPath = (filePath != null && filePath[0] == '?') ? null : filePath;
-            string extension = Path.GetExtension(filePath);
-            if (extension != null)
-                FileExtension = useWildcard ? "*" : extension.ToLower();
-            IsAlreadyMatched = false;
+            Path = (path != null && path[0] == '?') ? null : path;
+            string fileExtension = System.IO.Path.GetExtension(path);
+            if (fileExtension != null)
+                Extension = useWildcard ? "*" : fileExtension.ToLower();
         }
 
-        public string FileFullPath { get; private set; }
-
-        public string FileExtension { get; private set; }
-        public bool IsAlreadyMatched { get; set; }
+        /// <summary>
+        /// The file extension of the file to be edited, including the dot ('.').
+        /// </summary>
+        public string Extension { get; private set; }
+        
+        /// <summary>
+        /// The full path of the file to be edited.
+        /// </summary>
+        public string Path { get; private set; }
     }
 
     public delegate void EditFileEventHandler(object sender, EditFileEventArgs e);
