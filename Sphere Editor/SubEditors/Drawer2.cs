@@ -4,8 +4,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere_Editor.EditorComponents;
-using Sphere_Editor.Forms.ColorPicker;
-using Sphere.Core;
 using Sphere.Core.Editor;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -25,11 +23,11 @@ namespace Sphere_Editor.SubEditors
         public int ImageWidth { get { return ImageEditor.EditImage.Width; } }
         public int ImageHeight { get { return ImageEditor.EditImage.Height; } }
 
-        private DockContent DrawContent = new DockContent();
-        private DockContent PaletteContent = new DockContent();
-        private DockPanel EditorDock = new DockPanel();
+        private readonly DockContent _drawContent = new DockContent();
+        private readonly DockContent _paletteContent = new DockContent();
+        private readonly DockPanel _editorDock = new DockPanel();
 
-        private ColorBox _selected_box;
+        private ColorBox _selectedBox;
 
         public Drawer2()
         {
@@ -38,10 +36,9 @@ namespace Sphere_Editor.SubEditors
 
             for (int i = 0; i < 8; ++i)
             {
-                ColorBox box = new ColorBox();
-                box.SelectedColor = Color.White;
-                box.ColorChanged += new EventHandler(ColorUpdated);
-                box.MouseClick += new MouseEventHandler(box_MouseClick);
+                ColorBox box = new ColorBox {SelectedColor = Color.White};
+                box.ColorChanged += ColorUpdated;
+                box.MouseClick += box_MouseClick;
                 ColorFlow.Controls.Add(box);
             }
 
@@ -53,30 +50,30 @@ namespace Sphere_Editor.SubEditors
             foreach (ColorBox box in ColorFlow.Controls)
                 box.Selected = false;
 
-            _selected_box = (ColorBox)sender;
+            _selectedBox = (ColorBox)sender;
 
-            _selected_box.Selected = true;
-            ImageEditor.DrawColor = _selected_box.SelectedColor;
-            AlphaTracker.Value = _selected_box.SelectedColor.A;
+            _selectedBox.Selected = true;
+            ImageEditor.DrawColor = _selectedBox.SelectedColor;
+            AlphaTracker.Value = _selectedBox.SelectedColor.A;
             Invalidate();
         }
 
         private void InitializeDocking()
         {
-            EditorDock.DocumentStyle = DocumentStyle.DockingSdi;
-            Controls.Add(EditorDock);
+            _editorDock.DocumentStyle = DocumentStyle.DockingSdi;
+            Controls.Add(_editorDock);
 
             EditorPanel.Dock = DrawerPanel.Dock = DockStyle.Fill;
-            DrawContent.Controls.Add(DrawerPanel);
+            _drawContent.Controls.Add(DrawerPanel);
 
-            PaletteContent.Controls.Add(EditorPanel);
-            PaletteContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
-            PaletteContent.Text = "Palette";
-            PaletteContent.DockHandler.CloseButtonVisible = false;
+            _paletteContent.Controls.Add(EditorPanel);
+            _paletteContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
+            _paletteContent.Text = @"Palette";
+            _paletteContent.DockHandler.CloseButtonVisible = false;
 
-            DrawContent.Show(EditorDock, DockState.Document);
-            PaletteContent.Show(EditorDock, DockState.DockRight);
-            EditorDock.Dock = DockStyle.Fill;
+            _drawContent.Show(_editorDock, DockState.Document);
+            _paletteContent.Show(_editorDock, DockState.DockRight);
+            _editorDock.Dock = DockStyle.Fill;
         }
 
 
@@ -103,8 +100,10 @@ namespace Sphere_Editor.SubEditors
 
         public override void SaveAs()
         {
-            SaveFileDialog diag = new SaveFileDialog();
-            diag.Filter = "Image Files (.png, .gif, .bmp, .jpg)|*.png;*.gif;*.bmp;*.jpg";
+            SaveFileDialog diag = new SaveFileDialog
+                {
+                    Filter = @"Image Files (.png, .gif, .bmp, .jpg)|*.png;*.gif;*.bmp;*.jpg"
+                };
 
             if (Global.CurrentProject.RootPath != null)
                 diag.InitialDirectory = Global.CurrentProject.RootPath + "\\images";
@@ -119,7 +118,7 @@ namespace Sphere_Editor.SubEditors
         public override void LoadFile(string filename)
         {
             FileName = filename;
-            using (Bitmap img = (Bitmap)Bitmap.FromFile(filename))
+            using (Bitmap img = (Bitmap)Image.FromFile(filename))
             {
                 ImageEditor.SetImage(img);
             }
@@ -147,10 +146,10 @@ namespace Sphere_Editor.SubEditors
             ImageEditor.Invalidate();
         }
 
-        public void SetImage(Bitmap image, bool clear_history)
+        public void SetImage(Bitmap image, bool clearHistory)
         {
             ImageEditor.SetImage(image);
-            if (clear_history)
+            if (clearHistory)
             {
                 ImageEditor.ClearHistory();
                 UndoButton.Enabled = RedoButton.Enabled = false;
@@ -161,20 +160,20 @@ namespace Sphere_Editor.SubEditors
         /// <summary>
         /// Cuts up and returns a list of sub-images.
         /// </summary>
-        /// <param name="tile_width">Width of sub-image.</param>
-        /// <param name="tile_height">Height of sub-image.</param>
+        /// <param name="tileWidth">Width of sub-image.</param>
+        /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public List<Bitmap> GetImages(short tile_width,short tile_height)
+        public List<Bitmap> GetImages(short tileWidth,short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;
-            Rectangle sourceRect = new Rectangle(0, 0, tile_width, tile_height);
+            Rectangle sourceRect = new Rectangle(0, 0, tileWidth, tileHeight);
             int w = ImageEditor.EditImage.Width;
             int h = ImageEditor.EditImage.Height;
-            for (int y = 0; y < h; y += tile_height)
+            for (int y = 0; y < h; y += tileHeight)
             {
                 sourceRect.Y = y;
-                for (int x = 0; x < w; x += tile_width)
+                for (int x = 0; x < w; x += tileWidth)
                 {
                     sourceRect.X = x;
                     images.Add(source.Clone(sourceRect, System.Drawing.Imaging.PixelFormat.Format32bppPArgb));
@@ -223,10 +222,10 @@ namespace Sphere_Editor.SubEditors
 
         private void AlphaTracker_Scroll(object sender, EventArgs e)
         {
-            AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
+            AlphaLabel.Text = @"Alpha: " + AlphaTracker.Value;
 
-            _selected_box.SelectedColor = Color.FromArgb(AlphaTracker.Value, _selected_box.SelectedColor);
-            ImageEditor.DrawColor = _selected_box.SelectedColor;
+            _selectedBox.SelectedColor = Color.FromArgb(AlphaTracker.Value, _selectedBox.SelectedColor);
+            ImageEditor.DrawColor = _selectedBox.SelectedColor;
         }
 
         // sure there might be a better way, but this is more elegamt due to it's simplicity.
@@ -305,14 +304,14 @@ namespace Sphere_Editor.SubEditors
 
         private void ImageEditor_Paint(object sender, PaintEventArgs e)
         {
-            ZoomLabel.Text = "Zoom: " + ImageEditor.Zoom;
+            ZoomLabel.Text = @"Zoom: " + ImageEditor.Zoom;
         }
 
         private void ImageEditor_ColorChanged(object sender, EventArgs e)
         {
-            _selected_box.SelectedColor = ImageEditor.DrawColor;
+            _selectedBox.SelectedColor = ImageEditor.DrawColor;
             AlphaTracker.Value = ImageEditor.DrawColor.A;
-            AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
+            AlphaLabel.Text = @"Alpha: " + AlphaTracker.Value;
         }
 
         private void MirrorButton_Click(object sender, EventArgs e)
@@ -322,7 +321,7 @@ namespace Sphere_Editor.SubEditors
 
         private void AlphaTracker_ValueChanged(object sender, EventArgs e)
         {
-            AlphaLabel.Text = "Alpha: " + AlphaTracker.Value;
+            AlphaLabel.Text = @"Alpha: " + AlphaTracker.Value;
         }
 
         private void MirrorHButton_Click(object sender, EventArgs e)

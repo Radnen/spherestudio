@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere_Editor.SubEditors;
@@ -8,7 +9,7 @@ namespace Sphere_Editor.Forms
     public partial class ZoneForm : Form
     {
         public Zone Zone { get; private set; }
-        ScriptEditor ScriptBox = new ScriptEditor();
+        readonly ScriptEditor _scriptBox = new ScriptEditor();
 
         public ZoneForm()
         {
@@ -19,12 +20,12 @@ namespace Sphere_Editor.Forms
         {
             Zone = zone;
             InitializeComponent();
-            ScriptPanel.Controls.Add(ScriptBox);
-            StepTextBox.Text = zone.NumSteps.ToString();
-            LayerComboBox.Text = "Layer: " + zone.Layer;
-            ScriptBox.Text = zone.Function;
-            ScriptBox.Dock = DockStyle.Fill;
-            PositionLabel.Text = "(X: " + zone.X + ", Y: " + zone.Y + ")";
+            ScriptPanel.Controls.Add(_scriptBox);
+            StepTextBox.Text = zone.NumSteps.ToString(CultureInfo.InvariantCulture);
+            LayerComboBox.Text = @"Layer: " + zone.Layer;
+            _scriptBox.Text = zone.Function;
+            _scriptBox.Dock = DockStyle.Fill;
+            PositionLabel.Text = string.Format(@"(X: {0}, Y: {1})", zone.X, zone.Y);
         }
 
         public void AddString(string text)
@@ -40,7 +41,7 @@ namespace Sphere_Editor.Forms
         private void OkayButton_Click(object sender, EventArgs e)
         {
             Zone.NumSteps = Convert.ToInt16(StepTextBox.Text);
-            Zone.Function = ScriptBox.Text;
+            Zone.Function = _scriptBox.Text;
         }
 
         private void LayerComboBox_SelectedIndexChanged(object sender, EventArgs e)

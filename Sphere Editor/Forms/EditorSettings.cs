@@ -85,7 +85,7 @@ namespace Sphere_Editor.Forms
             settings.StoreArray("games_path", GamePaths);
 
             List<string> activated = new List<string>();
-            foreach (var item in Global.plugins)
+            foreach (var item in Global.Plugins)
             {
                 if (item.Value.Enabled) activated.Add(item.Key);
             }
@@ -136,7 +136,7 @@ namespace Sphere_Editor.Forms
         private void EditorSettings_Load(object sender, EventArgs e)
         {
             _updatePlugins = false;
-            foreach (KeyValuePair<string, PluginWrapper> pair in Global.plugins)
+            foreach (KeyValuePair<string, PluginWrapper> pair in Global.Plugins)
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = pair.Value.Plugin.Name;
@@ -160,8 +160,8 @@ namespace Sphere_Editor.Forms
         {
             if (!_updatePlugins) return;
             ListViewItem item = PluginList.Items[e.Index];
-            if (e.NewValue == CheckState.Checked) Global.plugins[(string)item.Tag].Activate();
-            else Global.plugins[(string)item.Tag].Deactivate();
+            if (e.NewValue == CheckState.Checked) Global.Plugins[(string)item.Tag].Activate();
+            else Global.Plugins[(string)item.Tag].Deactivate();
         }
 
         private void PresetListBox_SelectedIndexChanged(object sender, EventArgs e)

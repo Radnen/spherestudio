@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -12,8 +13,8 @@ namespace Sphere_Editor
 {
     public class Global
     {
-        public static Dictionary<string, PluginWrapper> plugins = new Dictionary<string, PluginWrapper>();
-        public static List<string> functions = new List<string>();
+        public static Dictionary<string, PluginWrapper> Plugins = new Dictionary<string, PluginWrapper>();
+        public static List<string> Functions = new List<string>();
 
         public static void EvalPlugins(IPluginHost host)
         {
@@ -33,17 +34,17 @@ namespace Sphere_Editor
                         if (b == null) continue;
                         b.Host = host;
                         string name = Path.GetFileNameWithoutExtension(file.Name);
-                        plugins[name] = new PluginWrapper(b, name);
+                        if (name != null) Plugins[name] = new PluginWrapper(b, name);
                     }
                 }
             }
         }
 
-        public static void ActivatePlugins(string[] plugin_names)
+        public static void ActivatePlugins(string[] pluginNames)
         {
-            foreach (string s in plugin_names)
+            foreach (string s in pluginNames)
             {
-                if (plugins.ContainsKey(s)) plugins[s].Activate();
+                if (Plugins.ContainsKey(s)) Plugins[s].Activate();
             }
         }
 
@@ -55,7 +56,7 @@ namespace Sphere_Editor
             using (StreamReader reader = file.OpenText())
             {
                 while (!reader.EndOfStream)
-                    functions.Add(reader.ReadLine());
+                    Functions.Add(reader.ReadLine());
             }
         }
 
@@ -118,10 +119,10 @@ namespace Sphere_Editor
         // returns true if settings were altered
         public static bool EditSettings()
         {
-            EditorSettings Settings = new EditorSettings(Global.CurrentEditor);
-            if (Settings.ShowDialog() == DialogResult.OK)
+            EditorSettings settings = new EditorSettings(CurrentEditor);
+            if (settings.ShowDialog() == DialogResult.OK)
             {
-                Global.CurrentEditor.SetSettings(Settings.GetSettings());
+                CurrentEditor.SetSettings(settings.GetSettings());
                 return true;
             }
             return false;
@@ -130,16 +131,13 @@ namespace Sphere_Editor
 
     class TipLabel : Label
     {
-        private bool show = false;
-        private bool clear = true;
-
-        public TipLabel() { }
+        private bool _clear = true;
 
         protected override void OnCreateControl()
         {
-            Image = Sphere_Editor.Properties.Resources.resultset_next;
+            Image = Properties.Resources.resultset_next;
             Text = "Rollover an item to view help.";
-            Font = new System.Drawing.Font(Global.CurrentEditor.LabelFont, 7.75F);
+            Font = new Font(Global.CurrentEditor.LabelFont, 7.75F);
             TextAlign = ContentAlignment.MiddleCenter;
             ImageAlign = ContentAlignment.MiddleLeft;
             AutoSize = false;
@@ -151,37 +149,34 @@ namespace Sphere_Editor
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            this.Font = new System.Drawing.Font(Global.CurrentEditor.LabelFont, 7.75F);
+            Font = new Font(Global.CurrentEditor.LabelFont, 7.75F);
             base.OnPaint(e);
         }
 
+        [Localizable(false)]
         public override string Text
         {
             get { return base.Text; }
             set
             {
-                if (this.clear)
+                if (_clear)
                 {
-                    this.Image = Sphere_Editor.Properties.Resources.information;
-                    this.TextAlign = ContentAlignment.MiddleCenter;
-                    this.clear = false;
+                    Image = Properties.Resources.information;
+                    TextAlign = ContentAlignment.MiddleCenter;
+                    _clear = false;
                 }
                 base.Text = value;
             }
         }
 
-        public bool AlwaysShow
-        {
-            get { return show; }
-            set { show = value; }
-        }
+        public bool AlwaysShow { get; set; }
 
         public void Clear()
         {
-            this.Image = Sphere_Editor.Properties.Resources.resultset_next;
-            this.TextAlign = ContentAlignment.MiddleCenter;
-            this.Text = "Rollover an item to view help.";
-            this.clear = true;
+            Image = Properties.Resources.resultset_next;
+            TextAlign = ContentAlignment.MiddleCenter;
+            Text = "Rollover an item to view help.";
+            _clear = true;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere_Editor.SubEditors;
+using System.Linq;
 
 namespace Sphere_Editor.Forms
 {
@@ -10,17 +11,17 @@ namespace Sphere_Editor.Forms
     {
         public Entity Person { get; private set; }
         public List<Entity> EntityList { get; private set; }
-        ScriptEditor ScriptBox = new ScriptEditor();
-        private int last = 0;
+        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        private int _last;
 
         public PersonForm(List<Entity> entities)
         {
             EntityList = entities;
             Person = new Entity(Entity.EntityType.Person);
             InitializeComponent();
-            ScriptBox.Text = (string)Person.Scripts[0];
-            ScriptBox.Dock = DockStyle.Fill;
-            CodePanel.Controls.Add(ScriptBox);
+            _scriptBox.Text = Person.Scripts[0];
+            _scriptBox.Dock = DockStyle.Fill;
+            CodePanel.Controls.Add(_scriptBox);
         }
 
         public PersonForm(Entity entity, List<Entity> entities)
@@ -29,9 +30,9 @@ namespace Sphere_Editor.Forms
             Person = entity;
             Person.Type = Entity.EntityType.Person;
             InitializeComponent();
-            ScriptBox.Text = (string)Person.Scripts[0];
-            ScriptBox.Dock = DockStyle.Fill;
-            CodePanel.Controls.Add(ScriptBox);
+            _scriptBox.Text = Person.Scripts[0];
+            _scriptBox.Dock = DockStyle.Fill;
+            CodePanel.Controls.Add(_scriptBox);
         }
 
         public void AddString(string text)
@@ -57,14 +58,14 @@ namespace Sphere_Editor.Forms
             string[] dirs = Person.GetSpriteDirections(Global.CurrentProject.RootPath);
             if (dirs != null) DirectionBox.Items.AddRange(dirs);
             
-            PositionLabel.Text = "(X: " + Person.X + ", Y: " + Person.Y + ")";
+            PositionLabel.Text = string.Format("(X: {0}, Y: {1})", Person.X, Person.Y);
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
             Person.Name = NameTextBox.Text;
             Person.Spriteset = SpritesetBox.Text;
-            Person.Scripts[last] = ScriptBox.Text;
+            Person.Scripts[_last] = _scriptBox.Text;
         }
 
         private void LayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,33 +75,33 @@ namespace Sphere_Editor.Forms
 
         private void ScriptTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Person.Scripts[last] = ScriptBox.Text;
-            ScriptBox.Text = (string)Person.Scripts[ScriptTabControl.SelectedIndex];
-            last = ScriptTabControl.SelectedIndex;
+            Person.Scripts[_last] = _scriptBox.Text;
+            _scriptBox.Text = Person.Scripts[ScriptTabControl.SelectedIndex];
+            _last = ScriptTabControl.SelectedIndex;
         }
 
         private void SpritesetButton_Click(object sender, EventArgs e)
         {
             String path = Global.CurrentProject.RootPath + "\\spritesets";
-            using (OpenFileDialog sprite_diag = new OpenFileDialog())
+            using (OpenFileDialog spriteDiag = new OpenFileDialog())
             {
-                sprite_diag.Filter = "Sprite Files (*.rss)|*.rss";
+                spriteDiag.Filter = @"Sprite Files (*.rss)|*.rss";
                 if (System.IO.Directory.Exists(path))
-                    sprite_diag.InitialDirectory = path;
-                if (sprite_diag.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    spriteDiag.InitialDirectory = path;
+                if (spriteDiag.ShowDialog() == DialogResult.OK)
                 {
                     // Figure out its relative path:
-                    String sprite_path = sprite_diag.FileName;
-                    sprite_path = sprite_path.Substring(sprite_path.LastIndexOf("spritesets"));
-                    sprite_path = sprite_path.Substring(sprite_path.IndexOf("\\") + 1);
-                    SpritesetBox.Text = sprite_path.Replace("\\", "/");
+                    String spritePath = spriteDiag.FileName;
+                    spritePath = spritePath.Substring(spritePath.LastIndexOf("spritesets", StringComparison.Ordinal));
+                    spritePath = spritePath.Substring(spritePath.IndexOf("\\", StringComparison.Ordinal) + 1);
+                    SpritesetBox.Text = spritePath.Replace("\\", "/");
                     Person.Spriteset = SpritesetBox.Text;
 
                     // Load a spriteset image as a preview:
                     SpritePreview.Image = Person.GetSSImage(Global.CurrentProject.RootPath);
                     
                     DirectionBox.Items.Clear();
-                    string[] dirs = Person.GetSpriteDirections(Global.CurrentProject.RootPath);
+                    object[] dirs = Person.GetSpriteDirections(Global.CurrentProject.RootPath);
                     if (dirs != null) DirectionBox.Items.AddRange(dirs);
                 }
             }
@@ -109,9 +110,9 @@ namespace Sphere_Editor.Forms
         private void DirectionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string dir = (string)DirectionBox.SelectedItem;
-            string script = (string)Person.Scripts[0];
-            script = "SetPersonDirection(\"" + NameTextBox.Text + "\", \"" + dir + "\");\n" + script;
-            ScriptBox.Text = script;
+            string script = Person.Scripts[0];
+            script = string.Format("SetPersonDirection(\"{0}\", \"{1}\");\n{2}", NameTextBox.Text, dir, script);
+            _scriptBox.Text = script;
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)

@@ -11,15 +11,15 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class StartPage : UserControl
     {
-        private ProjectSettings proj = new ProjectSettings();
-        private ListViewItem current_item = null;
+        private readonly ProjectSettings _proj = new ProjectSettings();
+        private ListViewItem _currentItem;
 
-        private DockPanel StartDock = new DockPanel();
-        private DockContent GameContent = new DockContent();
-        private DockContent InfoContent = new DockContent();
-        private EditorForm _mainEditor;
+        private readonly DockPanel _startDock = new DockPanel();
+        private readonly DockContent _gameContent = new DockContent();
+        private readonly DockContent _infoContent = new DockContent();
+        private readonly EditorForm _mainEditor;
 
-        private ImageList _imageicons = new ImageList();
+        private readonly ImageList _imageicons = new ImageList();
 
         public StartPage(EditorForm mainEditor)
         {
@@ -28,9 +28,9 @@ namespace Sphere_Editor.SubEditors
 
             _mainEditor = mainEditor;
 
-            _imageicons.ImageSize = new System.Drawing.Size(32, 32);
+            _imageicons.ImageSize = new Size(32, 32);
             _imageicons.ColorDepth = ColorDepth.Depth32Bit;
-            _imageicons.Images.Add(Sphere_Editor.Properties.Resources.SphereEditor);
+            _imageicons.Images.Add(Properties.Resources.SphereEditor);
             GameFolders.LargeImageList = _imageicons;
 
             InitializeView();
@@ -39,22 +39,22 @@ namespace Sphere_Editor.SubEditors
         private void InitializeDocking()
         {
             Controls.Remove(MainSplitter);
-            StartDock.DocumentStyle = DocumentStyle.DockingWindow;
-            StartDock.Dock = DockStyle.Fill;
-            Controls.Add(StartDock);
+            _startDock.DocumentStyle = DocumentStyle.DockingWindow;
+            _startDock.Dock = DockStyle.Fill;
+            Controls.Add(_startDock);
 
             GamesPanel.Dock = InfoPanel.Dock = DockStyle.Fill;
-            GameContent.Controls.Add(GamesPanel);
-            GameContent.DockAreas = DockAreas.DockTop | DockAreas.DockBottom | DockAreas.Document;
-            GameContent.AllowEndUserDocking = false;
-            GameContent.DockHandler.CloseButtonVisible = false;
-            GameContent.Text = "Local Projects";
-            InfoContent.Controls.Add(InfoPanel);
-            InfoContent.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight;
-            InfoContent.Text = "Game Information";
+            _gameContent.Controls.Add(GamesPanel);
+            _gameContent.DockAreas = DockAreas.DockTop | DockAreas.DockBottom | DockAreas.Document;
+            _gameContent.AllowEndUserDocking = false;
+            _gameContent.DockHandler.CloseButtonVisible = false;
+            _gameContent.Text = @"Local Projects";
+            _infoContent.Controls.Add(InfoPanel);
+            _infoContent.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight;
+            _infoContent.Text = @"Game Information";
 
-            GameContent.Show(StartDock, DockState.Document);
-            InfoContent.Show(StartDock, DockState.DockBottom);
+            _gameContent.Show(_startDock, DockState.Document);
+            _infoContent.Show(_startDock, DockState.DockBottom);
         }
 
         private void InitializeView()
@@ -81,9 +81,9 @@ namespace Sphere_Editor.SubEditors
             GameFolders.Items.Clear();
             GameFolders.BeginUpdate();
             if (_imageicons.Images.Count == 0) return;
-            Image hold_on_to_me = _imageicons.Images[0]; // keep this sucker alive.
+            Image holdOnToMe = _imageicons.Images[0]; // keep this sucker alive.
             _imageicons.Images.Clear();
-            _imageicons.Images.Add(hold_on_to_me);
+            _imageicons.Images.Add(holdOnToMe);
 
             // Search through a list of supplied directories.
             string[] paths = Global.CurrentEditor.GetArray("games_path");
@@ -96,13 +96,11 @@ namespace Sphere_Editor.SubEditors
                 string path = d.FullName + "/game.sgm";
 
                 // search this folder for game:
-                if (File.Exists(path))
-                {
-                    int img = CheckForIcon(d.FullName);
-                    ListViewItem item = new ListViewItem(d.Name, img);
-                    item.Tag = path;
-                    GameFolders.Items.Add(item);
-                }
+                if (!File.Exists(path)) continue;
+
+                int img = CheckForIcon(d.FullName);
+                ListViewItem item = new ListViewItem(d.Name, img) {Tag = path};
+                GameFolders.Items.Add(item);
             }
             GameFolders.EndUpdate();
             GameFolders.Invalidate();
@@ -112,17 +110,16 @@ namespace Sphere_Editor.SubEditors
         /// Searches the subfolders of /base_dir/ for games
         /// to add to the games panel.
         /// </summary>
-        /// <param name="base_dir">Directory to start looking from.</param>
-        private void Populate(DirectoryInfo base_dir)
+        /// <param name="baseDir">Directory to start looking from.</param>
+        private void Populate(DirectoryInfo baseDir)
         {
-            DirectoryInfo[] dirs = base_dir.GetDirectories();
+            DirectoryInfo[] dirs = baseDir.GetDirectories();
             foreach (DirectoryInfo d in dirs)
             {
                 string path = d.FullName + "/game.sgm";
                 if (!File.Exists(path)) { Populate(d); continue; }
                 int img = CheckForIcon(d.FullName);
-                ListViewItem item = new ListViewItem(d.Name, img);
-                item.Tag = path;
+                ListViewItem item = new ListViewItem(d.Name, img) {Tag = path};
                 GameFolders.Items.Add(item);
             }
         }
@@ -137,7 +134,7 @@ namespace Sphere_Editor.SubEditors
                     _imageicons.Images.Add(Image.FromFile(s));
                     return _imageicons.Images.Count - 1;
                 }
-                else if (s.EndsWith(".ico"))
+                if (s.EndsWith(".ico"))
                 {
                     _imageicons.Images.Add(new Icon(s));
                     return _imageicons.Images.Count - 1;
@@ -148,36 +145,36 @@ namespace Sphere_Editor.SubEditors
 
         private void GameFolders_MouseClick(object sender, MouseEventArgs e)
         {
-            current_item = GameFolders.GetItemAt(e.X, e.Y);
-            if (current_item == null) return;
-            proj.LoadSettings((string)current_item.Tag);
+            _currentItem = GameFolders.GetItemAt(e.X, e.Y);
+            if (_currentItem == null) return;
+            _proj.LoadSettings((string)_currentItem.Tag);
             SetProjData();
         }
 
         public void SetProjData()
         {
-            NameLabel.Text = "Name: " + proj.Name;
-            AuthorLabel.Text = "Author: " + proj.Author;
-            SizeLabel.Text = "Resolution: " + proj.Width.ToString() + "x" + proj.Height.ToString();
-            DescTextLabel.Text = proj.Description;
+            NameLabel.Text = @"Name: " + _proj.Name;
+            AuthorLabel.Text = @"Author: " + _proj.Author;
+            SizeLabel.Text = string.Format(@"Resolution: {0}x{1}", _proj.Width, _proj.Height);
+            DescTextLabel.Text = _proj.Description;
         }
 
         private void PlayMenuItem_Click(object sender, EventArgs e)
         {
             if (!File.Exists(Global.CurrentEditor.SpherePath)) return;
-            string args = string.Format("-game\"{0}\"", proj.RootPath);
+            string args = string.Format("-game\"{0}\"", _proj.RootPath);
             Process.Start(Global.CurrentEditor.SpherePath, args);
         }
 
         private void LoadMenuItem_Click(object sender, EventArgs e)
         {
-            if (current_item == null) return;
-            _mainEditor.OpenProject((string)current_item.Tag);
+            if (_currentItem == null) return;
+            _mainEditor.OpenProject((string)_currentItem.Tag);
         }
 
         private void RenameMenuItem_Click(object sender, EventArgs e)
         {
-            current_item.BeginEdit();
+            _currentItem.BeginEdit();
         }
 
         private void GameFolders_AfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -202,40 +199,37 @@ namespace Sphere_Editor.SubEditors
         {
             if (oldname == Global.CurrentProject.RootPath)
             {
-                MessageBox.Show("Can't change name of active project.", "Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(@"Can't change name of active project.", @"Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-            else
-            {
-                Directory.Move(oldname, newname);
-                return true;
-            }
+            Directory.Move(oldname, newname);
+            return true;
         }
 
         private void SetIconItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                string sel_path = Path.GetDirectoryName((string)current_item.Tag);
-                diag.Filter = "image files (.png)|*.png";
-                diag.InitialDirectory = sel_path;
+                string selPath = Path.GetDirectoryName((string)_currentItem.Tag);
+                diag.Filter = @"image files (.png)|*.png";
+                diag.InitialDirectory = selPath;
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
-                    if (diag.FileName == sel_path + "\\icon.png") return;
-                    if (File.Exists(sel_path + "\\icon.png")) File.Delete(sel_path + "\\icon.png");
-                    File.Copy(diag.FileName, sel_path + "\\icon.png");
+                    if (diag.FileName == selPath + "\\icon.png") return;
+                    if (File.Exists(selPath + "\\icon.png")) File.Delete(selPath + "\\icon.png");
+                    File.Copy(diag.FileName, selPath + "\\icon.png");
 
-                    if (current_item.ImageIndex == 0)
+                    if (_currentItem.ImageIndex == 0)
                     {
-                        _imageicons.Images.Add(Image.FromFile(sel_path + "\\icon.png"));
-                        current_item.ImageIndex = _imageicons.Images.Count - 1;
+                        _imageicons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
+                        _currentItem.ImageIndex = _imageicons.Images.Count - 1;
                     }
                     else
                     {
-                        _imageicons.Images.RemoveAt(current_item.ImageIndex);
-                        _imageicons.Images.Add(Image.FromFile(sel_path + "\\icon.png"));
-                        current_item.ImageIndex = _imageicons.Images.Count - 1;
+                        _imageicons.Images.RemoveAt(_currentItem.ImageIndex);
+                        _imageicons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
+                        _currentItem.ImageIndex = _imageicons.Images.Count - 1;
                     }
                     PopulateGameList();
                 }
@@ -269,18 +263,18 @@ namespace Sphere_Editor.SubEditors
         private void ItemContextStrip_Opening(object sender, CancelEventArgs e)
         {
             Point p = GameFolders.PointToClient(Cursor.Position);
-            current_item = GameFolders.GetItemAt(p.X, p.Y);
+            _currentItem = GameFolders.GetItemAt(p.X, p.Y);
             PlayGameItem.Visible = LoadMenuItem.Visible =
                 RenameProjectItem.Visible = SetIconItem.Visible =
-                    OpenFolderItem.Visible = (current_item != null);
+                    OpenFolderItem.Visible = (_currentItem != null);
             PlayGameItem.Visible = !string.IsNullOrEmpty(Global.CurrentEditor.SpherePath);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName((string)current_item.Tag);
+            string path = Path.GetDirectoryName((string)_currentItem.Tag);
             Process p = Process.Start("explorer.exe", string.Format("/select,\"{0}\\game.sgm\"", path));
-            p.Dispose();
+            if (p != null) p.Dispose();
         }
 
         private void RefreshItem_Click(object sender, EventArgs e)
@@ -296,25 +290,25 @@ namespace Sphere_Editor.SubEditors
 
         private void GameFolders_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Right-click to view context menu.";
+            HelpLabel.Text = @"Right-click to view context menu.";
         }
 
         private void SetIconItem_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "Sets a project icon mainly for the editors use.";
+            HelpLabel.Text = @"Sets a project icon mainly for the editors use.";
         }
 
         private void InfoPanel_MouseEnter(object sender, EventArgs e)
         {
-            HelpLabel.Text = "These are the games properties stored in their \"game.sgm\" file.";
+            HelpLabel.Text = @"These are the games properties stored in their ""game.sgm"" file.";
         }
         #endregion
 
         private void GameFolders_ItemActivate(object sender, EventArgs e)
         {
-            current_item = GameFolders.SelectedItems[0];
-            if (current_item == null) return;
-            _mainEditor.OpenProject((string)current_item.Tag);
+            _currentItem = GameFolders.SelectedItems[0];
+            if (_currentItem == null) return;
+            _mainEditor.OpenProject((string)_currentItem.Tag);
 
             /*if (current_item != null && File.Exists((string)current_item.Tag))
             {

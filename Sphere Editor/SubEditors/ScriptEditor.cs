@@ -214,7 +214,7 @@ namespace Sphere_Editor.SubEditors
             if (char.IsLetter(e.Ch))
             {
                 string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
-                List<string> filter = (from s in Global.functions where s.ToLower().Contains(word) select s.Replace(";", "")).ToList();
+                List<string> filter = (from s in Global.Functions where s.ToLower().Contains(word) select s.Replace(";", "")).ToList();
 
                 if (filter.Count != 0)
                 {

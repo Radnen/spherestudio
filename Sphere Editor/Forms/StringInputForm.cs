@@ -5,7 +5,7 @@ namespace Sphere_Editor.Forms
 {
     public partial class StringInputForm : Form
     {
-        private bool num_only;
+        private bool _numOnly;
 
         /// <summary>
         /// Used to 
@@ -20,8 +20,8 @@ namespace Sphere_Editor.Forms
         /// </summary>
         public bool NumOnly
         {
-            get { return num_only; }
-            set { num_only = value; }
+            get { return _numOnly; }
+            set { _numOnly = value; }
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Sphere_Editor.Forms
 
         private void StringTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = (num_only && !Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+            e.Handled = (_numOnly && !Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
         }
     }
 }

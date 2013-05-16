@@ -8,7 +8,7 @@ namespace Sphere_Editor.Forms
     public partial class TriggerForm : Form
     {
         public Entity Trigger { get; private set; }
-        ScriptEditor ScriptBox = new ScriptEditor();
+        readonly ScriptEditor _scriptBox = new ScriptEditor();
 
         public TriggerForm()
         {
@@ -18,9 +18,9 @@ namespace Sphere_Editor.Forms
 
         public TriggerForm(Entity trigger)
         {
-            this.Trigger = trigger;
+            Trigger = trigger;
             InitializeComponent();
-            LayerComboBox.Text = "Layer: " + trigger.Layer;
+            LayerComboBox.Text = @"Layer: " + trigger.Layer;
         }
 
         public int SelectedIndex
@@ -35,14 +35,14 @@ namespace Sphere_Editor.Forms
 
         private void TriggerForm_Load(object sender, EventArgs e)
         {
-            ScriptBox.Dock = DockStyle.Fill;
-            FunctionPanel.Controls.Add(ScriptBox);
-            ScriptBox.Text = Trigger.Function;
+            _scriptBox.Dock = DockStyle.Fill;
+            FunctionPanel.Controls.Add(_scriptBox);
+            _scriptBox.Text = Trigger.Function;
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            Trigger.Function = ScriptBox.Text;
+            Trigger.Function = _scriptBox.Text;
         }
 
         private void LayerComboBox_SelectedIndexChanged(object sender, EventArgs e)

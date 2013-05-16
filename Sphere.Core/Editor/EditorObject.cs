@@ -143,7 +143,7 @@ namespace Sphere.Core.Editor
         protected void MakeDirty()
         {
             if (Parent == null || Parent.Text.EndsWith("*")) return;
-            Parent.Text += "*";
+            Parent.Text += @"*";
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Sphere_Editor.Forms
             set
             {
                 FolderBox.Text = value;
-                DirectoryBox.Text = value + "//";
+                DirectoryBox.Text = value + @"//";
             }
         }
 
@@ -23,7 +23,7 @@ namespace Sphere_Editor.Forms
 
         private void FillDirectory(object sender, KeyEventArgs e)
         {
-            DirectoryBox.Text = FolderBox.Text + "\\" + NameBox.Text;
+            DirectoryBox.Text = FolderBox.Text + @"\" + NameBox.Text;
             CheckForOk();
         }
 
@@ -32,7 +32,7 @@ namespace Sphere_Editor.Forms
             if (FolderFinder.ShowDialog() == DialogResult.OK)
             {
                 FolderBox.Text = FolderFinder.SelectedPath;
-                DirectoryBox.Text = FolderBox.Text + "\\" + NameBox.Text;
+                DirectoryBox.Text = FolderBox.Text + @"\" + NameBox.Text;
                 CheckForOk();
             }
         }
@@ -46,27 +46,29 @@ namespace Sphere_Editor.Forms
         {
             switch (ResoComboBox.SelectedIndex)
             {
-                case 0: WidthBox.Text = "320"; HeightBox.Text = "240";
+                case 0: WidthBox.Text = @"320"; HeightBox.Text = @"240";
                     break;
-                case 1: WidthBox.Text = "640"; HeightBox.Text = "480";
+                case 1: WidthBox.Text = @"640"; HeightBox.Text = @"480";
                     break;
-                case 2: WidthBox.Text = "800"; HeightBox.Text = "600";
+                case 2: WidthBox.Text = @"800"; HeightBox.Text = @"600";
                     break;
-                case 3: WidthBox.Text = "1024"; HeightBox.Text = "768";
+                case 3: WidthBox.Text = @"1024"; HeightBox.Text = @"768";
                     break;
             }
         }
 
         public ProjectSettings GetSettings()
         {
-            ProjectSettings settings = new ProjectSettings();
+            ProjectSettings settings = new ProjectSettings
+                {
+                    Name = NameBox.Text,
+                    Author = AuthorBox.Text,
+                    Description = DescriptionBox.Text,
+                    Script = "main.js",
+                    Width = WidthBox.Text,
+                    Height = HeightBox.Text
+                };
 
-            settings.Name = NameBox.Text;
-            settings.Author = AuthorBox.Text;
-            settings.Description = DescriptionBox.Text;
-            settings.Script = "main.js";
-            settings.Width = WidthBox.Text;
-            settings.Height = HeightBox.Text;
             settings.SetRootPath(DirectoryBox.Text);
 
             return settings;
@@ -75,36 +77,34 @@ namespace Sphere_Editor.Forms
         private void CheckForOk()
         {
             OKButton.Enabled = true;
-            StatusLabel.Text = "Ready.";
-            String Name = NameBox.Text;
+            StatusLabel.Text = @"Ready.";
+            String text = NameBox.Text;
             String path = DirectoryBox.Text;
-            if (Name.Length == 0)
+            if (text.Length == 0)
             {
                 OKButton.Enabled = false;
-                if (FolderBox.Text.Length < 2)
-                    StatusLabel.Text = "You'll need a name and directory.";
-                else StatusLabel.Text = "You'll need a name.";
+                StatusLabel.Text = FolderBox.Text.Length < 2 ? "You'll need a name and directory." : "You'll need a name.";
             }
             else if (FolderBox.Text.Length < 2)
             {
                 OKButton.Enabled = false;
-                StatusLabel.Text = "The directory must be more than 2 letters.";
+                StatusLabel.Text = @"The directory must be more than 2 letters.";
             }
 
-            if (path.Contains("|") || Name.Contains("\\") || path.Contains("?") || path.Contains("<") ||
+            if (path.Contains("|") || text.Contains("\\") || path.Contains("?") || path.Contains("<") ||
                 path.Contains("/") || path.Contains("\"") || path.Contains("*") || path.Contains(">") ||
                 path.LastIndexOf(':') > 1 || path.Contains("\'"))
             {
                 OKButton.Enabled = false;
-                StatusLabel.Text = "Path or name contains invalid characters.";
+                StatusLabel.Text = @"Path or name contains invalid characters.";
             }
             else
             {
                 System.IO.DirectoryInfo directory = new System.IO.DirectoryInfo(DirectoryBox.Text);
-                if (directory.Exists && Name.Length > 0)
+                if (directory.Exists && text.Length > 0)
                 {
                     OKButton.Enabled = false;
-                    StatusLabel.Text = "Project Name Already Exists!";
+                    StatusLabel.Text = @"Project Name Already Exists!";
                 }
             }
         }

@@ -784,7 +784,7 @@ namespace Sphere_Editor
                 form.WidthSize = ((Drawer2)_currentControl).ImageWidth;
                 form.HeightSize = ((Drawer2)_currentControl).ImageHeight;
                 if (form.ShowDialog() == DialogResult.OK)
-                    ((Drawer2)_currentControl).SetScale(form.WidthSize, form.HeightSize, form.mode);
+                    ((Drawer2)_currentControl).SetScale(form.WidthSize, form.HeightSize, form.Mode);
             }
         }
         #endregion

@@ -1,16 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Sphere_Editor.Forms
 {
     public partial class SizeForm : Form
     {
-        private int width;
-        private int height;
+        private int _width;
+        private int _height;
 
         public SizeForm()
         {
@@ -20,20 +18,20 @@ namespace Sphere_Editor.Forms
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            this.width = int.Parse(WidthTextBox.Text);
-            this.height = int.Parse(HeightTextBox.Text);
+            _width = int.Parse(WidthTextBox.Text);
+            _height = int.Parse(HeightTextBox.Text);
         }
 
         public int WidthSize
         {
-            get { return width; }
-            set { width = value; WidthTextBox.Text = value.ToString(); }
+            get { return _width; }
+            set { _width = value; WidthTextBox.Text = value.ToString(CultureInfo.InvariantCulture); }
         }
 
         public int HeightSize
         {
-            get { return height; }
-            set { height = value; HeightTextBox.Text = value.ToString(); }
+            get { return _height; }
+            set { _height = value; HeightTextBox.Text = value.ToString(CultureInfo.InvariantCulture); }
         }
 
         public bool UseScale
@@ -47,7 +45,7 @@ namespace Sphere_Editor.Forms
             e.Handled = (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
         }
 
-        public InterpolationMode mode
+        public InterpolationMode Mode
         {
             get
             {
