@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Sphere.Core;
@@ -90,7 +91,7 @@ namespace SoundTestPlugin
         }
 
         /// <summary>
-        /// Used by fgilesystem watcher to attempt to automatically
+        /// Used by filesystem watcher to attempt to automatically
         /// add new additions to the sound list.
         /// </summary>
         /// <param name="game"></param>
@@ -121,9 +122,9 @@ namespace SoundTestPlugin
         }
 
         /// <summary>
-        /// Plays the song located at the path's location.
+        /// Plays the song or sound located at the path's location.
         /// </summary>
-        /// <param name="path">The path to load from.</param>
+        /// <param name="path">The full path of the file to play.</param>
         public void PlayFile(string path)
         {
             bool isMusic = Path.GetExtension(path) != ".wav";
@@ -155,8 +156,8 @@ namespace SoundTestPlugin
         }
 
         /// <summary>
-        /// Overrides the refresh method to re-add the items
-        /// found in your music and sound paths.
+        /// Overrides the refresh method to re-add the music and sounds
+        /// found in your project.
         /// </summary>
         public override void Refresh()
         {
@@ -200,13 +201,12 @@ namespace SoundTestPlugin
                 DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
                 FileInfo[] fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
 
-                foreach (FileInfo fileInfo in fileInfos)
+                foreach (FileInfo f in from f in fileInfos orderby f.Name select f)
                 {
-                    string path = Path.GetFullPath(fileInfo.FullName);
-                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
-                    listItem.Tag = (object)fileInfo.FullName;
+                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(f.FullName));
+                    listItem.Tag = (object)f.FullName;
                     listItem.Group = trackList.Groups[groupName];
-                    listItem.SubItems.Add(path.Replace(gamePath + "\\", ""));
+                    listItem.SubItems.Add(f.FullName.Replace(gamePath + "\\", ""));
                 }
             }
             trackList.EndUpdate();
