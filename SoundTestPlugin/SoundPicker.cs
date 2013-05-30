@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
@@ -17,7 +13,7 @@ namespace SoundTestPlugin
 {
     public partial class SoundPicker : UserControl
     {
-        private readonly string[] _fileTypes = new string[] 
+        private readonly string[] _fileTypes = new[] 
         {
             "*.mp3:Music",
             "*.ogg:Music",
@@ -30,19 +26,23 @@ namespace SoundTestPlugin
             "*.wav:Sounds"
         };
 
-        private IPlugin _plugin;
+        private readonly IPlugin _plugin;
+        private readonly Color _labelColor = Color.FromArgb(0, 160, 255);
+        private readonly Brush _trackBackColor;
+        private readonly Brush _trackForeColor;
         private static DeferredFileSystemWatcher _fileWatcher;
-        private ImageList playIcons = new ImageList();
-        private ISoundEngine _soundEngine = new ISoundEngine();
+        private readonly ImageList _playIcons = new ImageList();
+        private readonly ISoundEngine _soundEngine = new ISoundEngine();
         private ISound _music;
         private string _musicName;
 
         delegate void SafeRefresh();
-        SafeRefresh MySafeRefresh;
+
+        readonly SafeRefresh _mySafeRefresh;
 
         private void fileWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
         {
-            Invoke(MySafeRefresh);
+            Invoke(_mySafeRefresh);
         }
 
         private void pauseTool_Click(object sender, EventArgs e)
@@ -57,7 +57,6 @@ namespace SoundTestPlugin
 
         private void trackList_Click(object sender, EventArgs e)
         {
-            ListViewItem chosenItem = trackList.SelectedItems[0];
         }
         
         private void trackList_DoubleClick(object sender, EventArgs e)
@@ -71,14 +70,13 @@ namespace SoundTestPlugin
         {
             InitializeComponent();
 
-            playIcons.ColorDepth = ColorDepth.Depth32Bit;
-            playIcons.Images.Add("play", Properties.Resources.play_tool);
-            playIcons.Images.Add("pause", Properties.Resources.pause_tool);
-            playIcons.Images.Add("stop", Properties.Resources.stop_tool);
+            _playIcons.ColorDepth = ColorDepth.Depth32Bit;
+            _playIcons.Images.Add("play", Properties.Resources.play_tool);
+            _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
+            _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
 
             _plugin = plugin;
-            _fileWatcher = new DeferredFileSystemWatcher();
-            _fileWatcher.Delay = 1000;
+            _fileWatcher = new DeferredFileSystemWatcher {Delay = 1000};
             _fileWatcher.Created += fileWatcher_EventRaised;
             _fileWatcher.Deleted += fileWatcher_EventRaised;
             _fileWatcher.Changed += fileWatcher_EventRaised;
@@ -86,7 +84,9 @@ namespace SoundTestPlugin
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(_plugin.Host.CurrentGame);
             StopMusic();
-            MySafeRefresh = new SafeRefresh(Refresh);
+            _mySafeRefresh = Refresh;
+            _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
+            _trackForeColor = new SolidBrush(_labelColor);
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace SoundTestPlugin
             if (_music == null) return;
             _music.Paused = true;
             pauseTool.CheckState = CheckState.Checked;
-            playTool.Image = playIcons.Images["pause"];
-            playTool.Text = "PAUSE";
+            playTool.Image = _playIcons.Images["pause"];
+            playTool.Text = @"Paused";
         }
 
         /// <summary>
@@ -133,9 +133,9 @@ namespace SoundTestPlugin
                 StopMusic();
                 _musicName = Path.GetFileNameWithoutExtension(path);
                 _music = sound;
-                trackNameLabel.Text = "Now Playing: " + _musicName;
-                playTool.Text = "PLAY";
-                playTool.Image = playIcons.Images["play"];
+                trackNameLabel.Text = @"Now Playing: " + _musicName;
+                playTool.Text = @"Playing";
+                playTool.Image = _playIcons.Images["play"];
                 pauseTool.Enabled = true;
                 pauseTool.CheckState = CheckState.Unchecked;
                 stopTool.Enabled = true;
@@ -148,10 +148,10 @@ namespace SoundTestPlugin
         public void PlayOrPauseMusic()
         {
             if (_music == null) return;
-            _music.Paused = !this._music.Paused;
+            _music.Paused = !_music.Paused;
             pauseTool.CheckState = _music.Paused ? CheckState.Checked : CheckState.Unchecked;
-            playTool.Image = _music.Paused ? playIcons.Images["pause"] : playIcons.Images["play"];
-            playTool.Text = _music.Paused ? "PAUSE" : "PLAY";
+            playTool.Image = _music.Paused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
+            playTool.Text = _music.Paused ? "Paused" : "Playing";
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace SoundTestPlugin
                 {
                     string path = Path.GetFullPath(fileInfo.FullName);
                     ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fileInfo.Name));
-                    listItem.Tag = (object)fileInfo.FullName;
+                    listItem.Tag = fileInfo.FullName;
                     listItem.Group = trackList.Groups[groupName];
                     listItem.SubItems.Add(path.Replace(gamePath + "\\", ""));
                 }
@@ -235,12 +235,34 @@ namespace SoundTestPlugin
                 _music = null;
             }
 
-            trackNameLabel.Text = "-";
-            playTool.Image = playIcons.Images["stop"];
-            playTool.Text = "STOP";
+            trackNameLabel.Text = @"-";
+            playTool.Image = _playIcons.Images["stop"];
+            playTool.Text = @"Stopped";
             pauseTool.CheckState = CheckState.Unchecked;
             pauseTool.Enabled = false;
             stopTool.Enabled = false;
+        }
+
+        private void trackNameLabel_Paint(object sender, PaintEventArgs e)
+        {
+            if (_music == null) return;
+            int width = trackNameLabel.Width, height = trackNameLabel.Height;
+            double delta = _music.PlayPosition / (double) _music.PlayLength;
+            e.Graphics.Clear(Color.Black);
+            e.Graphics.FillRectangle(_trackBackColor, 0, 0, (int)(delta * width), height);
+            e.Graphics.FillRectangle(_trackForeColor, (int)(delta * width), 0, 2, height);
+
+            SizeF textsize = e.Graphics.MeasureString(trackNameLabel.Text, trackNameLabel.Font);
+            int x = width/2 - (int) textsize.Width / 2;
+            int y = trackNameLabel.Height/2 - (int) textsize.Height/2;
+
+            e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, Brushes.Black, x+1, y+1);
+            e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, _trackForeColor, x, y);
+        }
+
+        private void playTimer_Tick(object sender, EventArgs e)
+        {
+            trackNameLabel.Invalidate();
         }
     }
 }

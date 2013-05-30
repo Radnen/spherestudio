@@ -18,8 +18,8 @@ namespace FastScriptPlugin
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
-        private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore" };
-        private const string OpenFileFilters = "*.js;*.txt;*.log;*.md;*.sgm";
+        private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" };
+        private const string OpenFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
 
         private ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem;
         private ToolStripMenuItem AutoCompleteItem, HighlightLineItem, CodeFoldItem;
