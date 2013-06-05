@@ -550,7 +550,7 @@ namespace Sphere_Editor
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Close();
         }
         #endregion
         #region new sub-menu items
