@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundPicker));
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.stopTool = new System.Windows.Forms.ToolStripButton();
@@ -37,6 +38,7 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.trackNameLabel = new System.Windows.Forms.Label();
+            this.playTimer = new System.Windows.Forms.Timer(this.components);
             this.toolbar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,6 +129,12 @@
             this.trackNameLabel.TabIndex = 2;
             this.trackNameLabel.Text = "Now Playing";
             this.trackNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.trackNameLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.trackNameLabel_Paint);
+            // 
+            // playTimer
+            // 
+            this.playTimer.Enabled = true;
+            this.playTimer.Tick += new System.EventHandler(this.playTimer_Tick);
             // 
             // SoundPicker
             // 
@@ -154,5 +162,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label trackNameLabel;
         private System.Windows.Forms.ToolStripButton playTool;
+        private System.Windows.Forms.Timer playTimer;
     }
 }

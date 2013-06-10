@@ -115,9 +115,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SoundPicker.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="SoundPicker.cs" />
     <Compile Include="SoundPicker.Designer.cs">
       <DependentUpon>SoundPicker.cs</DependentUpon>
     </Compile>
