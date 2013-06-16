@@ -15,14 +15,12 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class ProjectTree : UserControl
     {
-        private readonly SafeRefresh _mySafeRefresh;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
         public ProjectTree()
         {
             InitializeComponent();
-            _mySafeRefresh = UpdateTree;
             _tip.ToolTipTitle = "Image";
             _tip.ToolTipIcon = ToolTipIcon.Info;
             _tip.UseFading = true;
@@ -415,7 +413,7 @@ namespace Sphere_Editor.SubEditors
 
         private void SystemWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
         {
-            Invoke(_mySafeRefresh);
+            UpdateTree();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
@@ -540,7 +538,5 @@ namespace Sphere_Editor.SubEditors
             // the beeps will just annoy the user, this suppresses them
             if (e.KeyChar == '\r') e.Handled = true;
         }
-
-        private delegate void SafeRefresh();
     }
 }

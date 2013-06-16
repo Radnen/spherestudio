@@ -38,13 +38,9 @@ namespace SoundTestPlugin
         private ISound _music;
         private string _musicName;
 
-        delegate void SafeRefresh();
-
-        readonly SafeRefresh _mySafeRefresh;
-
         private void fileWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
         {
-            Invoke(_mySafeRefresh);
+            Refresh();
         }
 
         private void pauseTool_Click(object sender, EventArgs e)
@@ -79,6 +75,7 @@ namespace SoundTestPlugin
 
             _plugin = plugin;
             _fileWatcher = new DeferredFileSystemWatcher {Delay = 1000};
+            _fileWatcher.SynchronizingObject = this;
             _fileWatcher.Created += fileWatcher_EventRaised;
             _fileWatcher.Deleted += fileWatcher_EventRaised;
             _fileWatcher.Changed += fileWatcher_EventRaised;
@@ -86,7 +83,6 @@ namespace SoundTestPlugin
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(_plugin.Host.CurrentGame);
             StopMusic();
-            _mySafeRefresh = Refresh;
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
         }
