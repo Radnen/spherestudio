@@ -516,16 +516,29 @@ namespace Sphere_Editor.SubEditors
             if (f != null) ProjectTreeView.Font = f;
         }
 
-        private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
+        private void ProjectTreeView_KeyDown(object sender, KeyEventArgs e)
         {
             TreeNode node = ProjectTreeView.SelectedNode;
-            if (node == null || e.KeyChar != '\r') return;
-
-            string tag = ProjectTreeView.SelectedNode.Tag as string;
-            if (tag != "file-node") return;
-
-            OpenItem(ProjectTreeView.SelectedNode);
-            e.Handled = true;
+            if (node == null) return;
+            switch (e.KeyCode)
+            {
+                case Keys.Return:
+                    if (node.Tag as string != "file-node") return;
+                    OpenItem(ProjectTreeView.SelectedNode);
+                    e.Handled = true;
+                    break;
+                case Keys.F2:
+                    ProjectTreeView.SelectedNode.BeginEdit();
+                    e.Handled = true;
+                    break;
+            }
+        }
+        
+        private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // treeview normally beeps when user presses enter. since we handle that in the KeyDown event,
+            // the beeps will just annoy the user, this suppresses them
+            if (e.KeyChar == '\r') e.Handled = true;
         }
 
         private delegate void SafeRefresh();
