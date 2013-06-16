@@ -64,6 +64,7 @@
             this.ProjectTreeView.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTreeView_AfterExpand);
             this.ProjectTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.ProjectTreeView_NodeMouseClick);
             this.ProjectTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.ProjectTreeView_NodeMouseDoubleClick);
+            this.ProjectTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProjectTreeView_KeyDown);
             this.ProjectTreeView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ProjectTreeView_KeyPress);
             // 
             // ProjectFileContextMenu

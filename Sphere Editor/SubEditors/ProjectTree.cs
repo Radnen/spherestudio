@@ -15,14 +15,12 @@ namespace Sphere_Editor.SubEditors
 {
     public partial class ProjectTree : UserControl
     {
-        private readonly SafeRefresh _mySafeRefresh;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
         public ProjectTree()
         {
             InitializeComponent();
-            _mySafeRefresh = UpdateTree;
             _tip.ToolTipTitle = "Image";
             _tip.ToolTipIcon = ToolTipIcon.Info;
             _tip.UseFading = true;
@@ -415,7 +413,7 @@ namespace Sphere_Editor.SubEditors
 
         private void SystemWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
         {
-            Invoke(_mySafeRefresh);
+            UpdateTree();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
@@ -516,18 +514,29 @@ namespace Sphere_Editor.SubEditors
             if (f != null) ProjectTreeView.Font = f;
         }
 
-        private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
+        private void ProjectTreeView_KeyDown(object sender, KeyEventArgs e)
         {
             TreeNode node = ProjectTreeView.SelectedNode;
-            if (node == null || e.KeyChar != '\r') return;
-
-            string tag = ProjectTreeView.SelectedNode.Tag as string;
-            if (tag != "file-node") return;
-
-            OpenItem(ProjectTreeView.SelectedNode);
-            e.Handled = true;
+            if (node == null) return;
+            switch (e.KeyCode)
+            {
+                case Keys.Return:
+                    if (node.Tag as string != "file-node") return;
+                    OpenItem(ProjectTreeView.SelectedNode);
+                    e.Handled = true;
+                    break;
+                case Keys.F2:
+                    ProjectTreeView.SelectedNode.BeginEdit();
+                    e.Handled = true;
+                    break;
+            }
         }
-
-        private delegate void SafeRefresh();
+        
+        private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // treeview normally beeps when user presses enter. since we handle that in the KeyDown event,
+            // the beeps will just annoy the user, this suppresses them
+            if (e.KeyChar == '\r') e.Handled = true;
+        }
     }
 }
