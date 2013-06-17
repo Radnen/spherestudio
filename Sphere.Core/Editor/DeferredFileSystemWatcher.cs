@@ -19,10 +19,10 @@ namespace Sphere.Core.Editor
     public class DeferredFileSystemWatcher : FileSystemWatcher
     {
         private readonly Timer _timer;
-        private readonly LinkedList<FileSystemEventArgs> _changeEvents = new LinkedList<FileSystemEventArgs>();
-        private readonly LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
-        private readonly LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
-        private readonly LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
+        private LinkedList<FileSystemEventArgs> _changeEvents = new LinkedList<FileSystemEventArgs>();
+        private LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
+        private LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
+        private LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
         
         private void base_Changed(object sender, FileSystemEventArgs e)
         {
@@ -58,10 +58,13 @@ namespace Sphere.Core.Editor
             if (Created != null && _createEvents.Count > 0) Created(this, _createEvents);
             if (Deleted != null && _deleteEvents.Count > 0) Deleted(this, _deleteEvents);
             if (Renamed != null && _renameEvents.Count > 0) Renamed(this, _renameEvents);
-            _changeEvents.Clear();
-            _createEvents.Clear();
-            _deleteEvents.Clear();
-            _renameEvents.Clear();
+            
+            // making new LinkedLists here is unfortunately necessary; events might be handled on a
+            // different thread, so reusing the existing lists wouldn't be threadsafe
+            _changeEvents = new LinkedList<FileSystemEventArgs>();
+            _createEvents = new LinkedList<FileSystemEventArgs>();
+            _deleteEvents = new LinkedList<FileSystemEventArgs>();
+            _renameEvents = new LinkedList<RenamedEventArgs>();
         }
 
         /// <summary>
@@ -126,7 +129,7 @@ namespace Sphere.Core.Editor
 
         /// <summary>
         /// Gets or sets how much time, in milliseconds, must pass after the last FileSystemWatcher event
-        /// before a batch event is raised.
+        /// before batched event(s) are raised.
         /// </summary>
         public double Delay
         {
