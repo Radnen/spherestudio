@@ -38,7 +38,7 @@ namespace SoundTestPlugin
         private ISound _music;
         private string _musicName;
 
-        private void fileWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
+        private void fileWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
@@ -74,11 +74,8 @@ namespace SoundTestPlugin
             _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
 
             _plugin = plugin;
-            _fileWatcher = new DeferredFileSystemWatcher {Delay = 1000};
-            _fileWatcher.SynchronizingObject = this;
-            _fileWatcher.Created += fileWatcher_EventRaised;
-            _fileWatcher.Deleted += fileWatcher_EventRaised;
-            _fileWatcher.Changed += fileWatcher_EventRaised;
+            _fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
+            _fileWatcher.Changed += fileWatcher_Changed;
             _fileWatcher.IncludeSubdirectories = true;
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(_plugin.Host.CurrentGame);

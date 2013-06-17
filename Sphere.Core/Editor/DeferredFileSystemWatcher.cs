@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Timers;
 
@@ -18,10 +19,10 @@ namespace Sphere.Core.Editor
     public class DeferredFileSystemWatcher : FileSystemWatcher
     {
         private readonly Timer _timer;
-        private readonly LinkedList<FileSystemEventArgs> _changeEvents = new LinkedList<FileSystemEventArgs>();
-        private readonly LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
-        private readonly LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
-        private readonly LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
+        private LinkedList<FileSystemEventArgs> _changeEvents = new LinkedList<FileSystemEventArgs>();
+        private LinkedList<FileSystemEventArgs> _createEvents = new LinkedList<FileSystemEventArgs>();
+        private LinkedList<FileSystemEventArgs> _deleteEvents = new LinkedList<FileSystemEventArgs>();
+        private LinkedList<RenamedEventArgs> _renameEvents = new LinkedList<RenamedEventArgs>();
         
         private void base_Changed(object sender, FileSystemEventArgs e)
         {
@@ -53,14 +54,17 @@ namespace Sphere.Core.Editor
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (Changed != null && _changeEvents.Count > 0) Changed(null, _changeEvents);
-            if (Created != null && _createEvents.Count > 0) Created(null, _createEvents);
-            if (Deleted != null && _deleteEvents.Count > 0) Deleted(null, _deleteEvents);
-            if (Renamed != null && _renameEvents.Count > 0) Renamed(null, _renameEvents);
-            _changeEvents.Clear();
-            _createEvents.Clear();
-            _deleteEvents.Clear();
-            _renameEvents.Clear();
+            if (Changed != null && _changeEvents.Count > 0) Changed(this, _changeEvents);
+            if (Created != null && _createEvents.Count > 0) Created(this, _createEvents);
+            if (Deleted != null && _deleteEvents.Count > 0) Deleted(this, _deleteEvents);
+            if (Renamed != null && _renameEvents.Count > 0) Renamed(this, _renameEvents);
+            
+            // making new LinkedLists here is unfortunately necessary; events might be handled on a
+            // different thread, so reusing the existing lists wouldn't be threadsafe
+            _changeEvents = new LinkedList<FileSystemEventArgs>();
+            _createEvents = new LinkedList<FileSystemEventArgs>();
+            _deleteEvents = new LinkedList<FileSystemEventArgs>();
+            _renameEvents = new LinkedList<RenamedEventArgs>();
         }
 
         /// <summary>
@@ -85,9 +89,22 @@ namespace Sphere.Core.Editor
             base.Created += base_Created;
             base.Deleted += base_Deleted;
             base.Renamed += base_Renamed;
-            _timer = new Timer {AutoReset = false};
+            _timer = new Timer { AutoReset = false };
             _timer.Elapsed += _timer_Elapsed;
             Delay = 250;
+        }
+
+        /// <summary>
+        /// The component whose thread the event delegates will be invoked on.
+        /// </summary>
+        public new ISynchronizeInvoke SynchronizingObject
+        {
+            get { return base.SynchronizingObject; }
+            set
+            {
+                base.SynchronizingObject = value;
+                _timer.SynchronizingObject = value;
+            }
         }
 
         /// <summary>
@@ -109,9 +126,10 @@ namespace Sphere.Core.Editor
         /// Event handler for when a file has been renamed.
         /// </summary>
         public new event BatchEventHandler<RenamedEventArgs> Renamed;
-        
+
         /// <summary>
-        /// Gets or sets the interval in milliseconds in which the tree updates on.
+        /// Gets or sets how much time, in milliseconds, must pass after the last FileSystemWatcher event
+        /// before batched event(s) are raised.
         /// </summary>
         public double Delay
         {
