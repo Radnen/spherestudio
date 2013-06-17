@@ -700,7 +700,7 @@ namespace Sphere_Editor
         public void RefreshProject()
         {
             _tree.Open();
-            _tree.UpdateTree();
+            _tree.Refresh();
             Global.CurrentEditor.LastProjectPath = Global.CurrentProject.RootPath;
             Global.CurrentEditor.SaveSettings();
             UpdateButtons();

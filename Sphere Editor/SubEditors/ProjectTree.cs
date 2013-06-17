@@ -78,7 +78,7 @@ namespace Sphere_Editor.SubEditors
                 }
             }
 
-            UpdateTree();
+            Refresh();
         }
 
         private void ProjectTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -135,7 +135,7 @@ namespace Sphere_Editor.SubEditors
             {
                 return;
             }
-            UpdateTree();
+            Refresh();
         }
 
         /// <summary>
@@ -167,10 +167,12 @@ namespace Sphere_Editor.SubEditors
         }
 
         /// <summary>
-        ///     Updates the contents of the tree.
+        ///     Extends the Refresh method to update the contents of the tree.
         /// </summary>
-        public void UpdateTree()
+        public override void Refresh()
         {
+            base.Refresh();
+
             if (Global.CurrentProject.RootPath.Length == 0) return;
 
             Cursor.Current = Cursors.WaitCursor;
@@ -180,17 +182,19 @@ namespace Sphere_Editor.SubEditors
                                           ? ProjectTreeView.SelectedNode.FullPath
                                           : null;
             var isExpandedTable = new Dictionary<string, bool>();
-            var nodeQueue = new Queue<TreeNode>();
+            var nodesToCheck = new Queue<TreeNode>();
             if (ProjectTreeView.TopNode != null)
             {
-                nodeQueue.Enqueue(ProjectTreeView.TopNode);
-                while (nodeQueue.Count > 0)
+                nodesToCheck.Enqueue(ProjectTreeView.TopNode);
+                while (nodesToCheck.Count > 0)
                 {
-                    TreeNode node = nodeQueue.Dequeue();
+                    TreeNode node = nodesToCheck.Dequeue();
                     isExpandedTable.Add(node.FullPath, node.IsExpanded);
                     foreach (TreeNode subnode in node.Nodes)
                     {
-                        nodeQueue.Enqueue(subnode);
+                        // this is a good trick to know: you can almost always implement a recursive
+                        // operation inline using a queue.
+                        nodesToCheck.Enqueue(subnode);
                     }
                 }
             }
@@ -206,18 +210,18 @@ namespace Sphere_Editor.SubEditors
             // Re-expand folders and try to select previously-selected item
             if (ProjectTreeView.TopNode != null)
             {
-                nodeQueue.Clear();
-                nodeQueue.Enqueue(ProjectTreeView.TopNode);
-                while (nodeQueue.Count > 0)
+                nodesToCheck.Clear();
+                nodesToCheck.Enqueue(ProjectTreeView.TopNode);
+                while (nodesToCheck.Count > 0)
                 {
-                    TreeNode node = nodeQueue.Dequeue();
+                    TreeNode node = nodesToCheck.Dequeue();
                     bool isExpanded;
                     isExpandedTable.TryGetValue(node.FullPath, out isExpanded);
                     if (isExpanded) node.Expand();
                     if (node.FullPath == selectedNodePath) ProjectTreeView.SelectedNode = node;
                     foreach (TreeNode subnode in node.Nodes)
                     {
-                        nodeQueue.Enqueue(subnode);
+                        nodesToCheck.Enqueue(subnode);
                     }
                 }
             }
@@ -411,9 +415,9 @@ namespace Sphere_Editor.SubEditors
             Global.CurrentProject.Script = oldScript;
         }
 
-        private void SystemWatcher_EventRaised(object sender, IEnumerable<EventArgs> eAll)
+        private void SystemWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
-            UpdateTree();
+            //Refresh();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
@@ -537,6 +541,11 @@ namespace Sphere_Editor.SubEditors
             // treeview normally beeps when user presses enter. since we handle that in the KeyDown event,
             // the beeps will just annoy the user, this suppresses them
             if (e.KeyChar == '\r') e.Handled = true;
+        }
+
+        private void SystemWatcher_Changed(object sender)
+        {
+
         }
     }
 }
