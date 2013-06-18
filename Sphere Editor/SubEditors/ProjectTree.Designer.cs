@@ -209,9 +209,7 @@
             this.SystemWatcher.EnableRaisingEvents = true;
             this.SystemWatcher.IncludeSubdirectories = true;
             this.SystemWatcher.SynchronizingObject = this;
-            this.SystemWatcher.Created += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_EventRaised);
-            this.SystemWatcher.Deleted += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_EventRaised);
-            this.SystemWatcher.Renamed += new Sphere.Core.Editor.BatchEventHandler<System.IO.RenamedEventArgs>(this.SystemWatcher_EventRaised);
+            this.SystemWatcher.Changed += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Changed);
             // 
             // ProjectTree
             // 
