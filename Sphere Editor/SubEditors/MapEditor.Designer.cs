@@ -31,6 +31,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapEditor));
             this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
@@ -59,6 +60,7 @@
             this.showCameraButton = new System.Windows.Forms.ToolStripButton();
             this.zoneButton = new System.Windows.Forms.ToolStripButton();
             this.EntityButton = new System.Windows.Forms.ToolStripButton();
+            this.ShowNumButton = new System.Windows.Forms.ToolStripButton();
             this.EditorTabs = new System.Windows.Forms.TabControl();
             this.imageTab = new System.Windows.Forms.TabPage();
             this.TileDrawer = new Sphere_Editor.SubEditors.Drawer2();
@@ -68,9 +70,11 @@
             this.LayerEditor = new Sphere_Editor.EditorComponents.LayerPanel();
             this.TilesetPanel = new Sphere.Core.Editor.EditorPanel();
             this.TilesetControl = new Sphere_Editor.EditorComponents.TilesetControl2();
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
             this.SplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mapSplitter)).BeginInit();
             this.mapSplitter.Panel1.SuspendLayout();
             this.mapSplitter.Panel2.SuspendLayout();
             this.mapSplitter.SuspendLayout();
@@ -82,6 +86,7 @@
             this.EditorTabs.SuspendLayout();
             this.imageTab.SuspendLayout();
             this.tileTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -205,6 +210,7 @@
             this.MapControl.Name = "MapControl";
             this.MapControl.SelWidth = 1;
             this.MapControl.ShowCameraBounds = false;
+            this.MapControl.ShowTileNums = false;
             this.MapControl.Size = new System.Drawing.Size(457, 158);
             this.MapControl.TabIndex = 1;
             this.MapControl.Tiles = null;
@@ -225,9 +231,9 @@
             // 
             // map_pos_label
             // 
-            this.map_pos_label.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.map_pos_label.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.map_pos_label.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
             this.map_pos_label.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.map_pos_label.Name = "map_pos_label";
@@ -251,10 +257,11 @@
             this.toolStripSeparator3,
             this.showCameraButton,
             this.zoneButton,
-            this.EntityButton});
+            this.EntityButton,
+            this.ShowNumButton});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(283, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(306, 25);
             this.toolStrip1.TabIndex = 0;
             // 
             // PenButton
@@ -387,6 +394,17 @@
             this.EntityButton.Text = "Entity Mover";
             this.EntityButton.Click += new System.EventHandler(this.EntityButton_Click);
             // 
+            // ShowNumButton
+            // 
+            this.ShowNumButton.CheckOnClick = true;
+            this.ShowNumButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ShowNumButton.Image = global::Sphere_Editor.Properties.Resources.style;
+            this.ShowNumButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ShowNumButton.Name = "ShowNumButton";
+            this.ShowNumButton.Size = new System.Drawing.Size(23, 22);
+            this.ShowNumButton.Text = "Show Tile Nums";
+            this.ShowNumButton.Click += new System.EventHandler(this.ShowNumButton_Click);
+            // 
             // EditorTabs
             // 
             this.EditorTabs.Controls.Add(this.imageTab);
@@ -487,8 +505,8 @@
             // 
             // TilesetControl
             // 
-            this.TilesetControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.TilesetControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TilesetControl.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TilesetControl.BackgroundImage")));
             this.TilesetControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.TilesetControl.CanInsert = true;
@@ -512,9 +530,11 @@
             this.Size = new System.Drawing.Size(681, 453);
             this.SplitContainer.Panel1.ResumeLayout(false);
             this.SplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
             this.mapSplitter.Panel1.ResumeLayout(false);
             this.mapSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mapSplitter)).EndInit();
             this.mapSplitter.ResumeLayout(false);
             this.MapToolContainer.ContentPanel.ResumeLayout(false);
             this.MapToolContainer.ContentPanel.PerformLayout();
@@ -531,6 +551,7 @@
             this.tileTab.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.TilesetPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -575,6 +596,7 @@
         private EditorComponents.TileEditor TileEditor;
         public EditorComponents.TilesetControl2 TilesetControl;
         public EditorComponents.MapControl MapControl;
+        private System.Windows.Forms.ToolStripButton ShowNumButton;
 
     }
 }

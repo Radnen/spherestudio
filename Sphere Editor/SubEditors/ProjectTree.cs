@@ -454,7 +454,7 @@ namespace Sphere_Editor.SubEditors
 
         private void OpenItem(TreeNode node)
         {
-            if (EditorForm == null) return;
+            if (EditorForm == null || node == null) return;
             string pathtop = node.FullPath;
 
             int idx = pathtop.IndexOf('\\');

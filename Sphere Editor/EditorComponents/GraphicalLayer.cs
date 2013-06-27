@@ -16,7 +16,7 @@ namespace Sphere_Editor.EditorComponents
             private int _zoom = 1;
             private int _vw, _vh;
             
-            public Point Offset { get; private set; }            
+            public Point Offset { get; private set; }
             public Bitmap Image { get; private set; }
             private Graphics _canvas;
 
@@ -38,6 +38,8 @@ namespace Sphere_Editor.EditorComponents
                 Image = new Bitmap(_mul * _tile_w, _mul * _tile_h, PixelFormat.Format32bppPArgb);
                 _canvas = Graphics.FromImage(Image);
                 _canvas.CompositingMode = CompositingMode.SourceCopy;
+                _canvas.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+                _canvas.SmoothingMode = SmoothingMode.None;
                 _canvas.CompositingQuality = CompositingQuality.HighSpeed;
                 _canvas.InterpolationMode = InterpolationMode.NearestNeighbor;
 
@@ -55,11 +57,10 @@ namespace Sphere_Editor.EditorComponents
                     for (int y = 0; y < _mul; ++y)
                     {
                         tile = layer.GetTile(x + Offset.X, y + Offset.Y);
-                        if (tile >= 0)
-                        {
-                            ty = y * _tile_h;
-                            _canvas.DrawImageUnscaled(tileset.Tiles[tile].Graphic, tx, ty);
-                        }
+                        if (tile < 0) continue;
+
+                        ty = y * _tile_h;
+                        _canvas.DrawImageUnscaled(tileset.Tiles[tile].Graphic, tx, ty);
                     }
                 }
             }
@@ -153,7 +154,7 @@ namespace Sphere_Editor.EditorComponents
             for (int i = 0; i < _cells.Length; ++i) _cells[i].Redraw(TargetLayer, tileset);
         }
 
-        public void Refresh(Layer target, Tileset tileset)
+        public void Refresh(Layer target, Tileset tileset, bool shownums = false)
         {
             if (tileset.IsDisposed) return;
 
@@ -166,14 +167,14 @@ namespace Sphere_Editor.EditorComponents
         {
             if (tileset.IsDisposed) return;
 
-            int cell_x, cell_y;
+            int cell_x = _tile_w * _zoom, cell_y = _tile_h * _zoom;
             int size = _mul * _tile_w * _zoom;
             foreach (LayerCell cell in _cells)
             {
-                cell_x = cell.Offset.X * _tile_w * _zoom + offset.X;
-                cell_y = cell.Offset.Y * _tile_h * _zoom + offset.Y;
+                int x = cell.Offset.X * cell_x + offset.X;
+                int y = cell.Offset.Y * cell_y + offset.Y;
 
-                if (cell_x < -size || cell_y < -size || cell_x > bounds.Width || cell_y > bounds.Height)
+                if (x < -size || y < -size || x > bounds.Width || y > bounds.Height)
                     cell.Deallocate();
                 else
                     cell.Allocate(TargetLayer, tileset);

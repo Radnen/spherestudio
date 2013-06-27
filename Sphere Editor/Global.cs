@@ -72,17 +72,17 @@ namespace Sphere_Editor
 
         public static bool IsSound(ref string name)
         {
-            name = name.ToLower();
-            return (name.EndsWith(".mod") || name.EndsWith(".xm") || name.EndsWith(".it") ||
-                  name.EndsWith(".mp3") || name.EndsWith(".ogg") || name.EndsWith(".wav") ||
-                  name.EndsWith(".s3m"));
+            string test = Path.GetExtension(name).ToLower();
+            return (test == ".mod" || test == ".xm" || test == ".it" ||
+                    test == ".mp3" || test == ".ogg" || test == ".wav" ||
+                    test == ".s3m");
         }
 
         public static bool IsImage(ref string name)
         {
-            name = name.ToLower();
-            return (name.Contains(".png") || name.Contains(".gif") ||
-                    name.Contains(".jpg") || name.Contains(".bmp"));
+            string test = Path.GetExtension(name).ToLower();
+            return (test == ".png" || test == ".gif" || test == ".tga" ||
+                    test == ".jpg" || test == ".bmp");
         }
 
         public static bool IsSpriteset(ref string name)
@@ -112,8 +112,9 @@ namespace Sphere_Editor
 
         public static bool IsText(ref string name)
         {
-            return (name.Contains(".txt") || name.Contains(".sav") || name.Contains(".sgm") ||
-                name.Contains(".rtf") || name.Contains(".dat") || name.Contains(".ini"));
+            string test = Path.GetExtension(name).ToLower();
+            return (test == ".txt" || test == ".sav" || test == ".sgm" ||
+                    test == ".rtf" || test == ".dat" || test == ".ini");
         }
 
         // returns true if settings were altered

@@ -271,6 +271,7 @@ namespace Sphere_Editor.SubEditors
         private void Layers_LayerSelected(LayerControl sender, LayerItem layer)
         {
             MapControl.CurrentLayer = (short)layer.Index;
+            MapControl.Invalidate();
         }
 
         private void Layers_LayerChanged(LayerControl sender, LayerItem layer)
@@ -393,7 +394,7 @@ namespace Sphere_Editor.SubEditors
 
         private void MapControl_Paint(object sender, PaintEventArgs e)
         {
-            map_pos_label.Text = MapControl.Tile.ToString();
+            map_pos_label.Text = MapControl.MouseTile.ToString();
             map_pos_label.Text += @" Start: " + Map.StartLayer;
             zoomInButton.Enabled = MapControl.CanZoomIn;
             zoomOutButton.Enabled = MapControl.CanZoomOut;
@@ -474,6 +475,27 @@ namespace Sphere_Editor.SubEditors
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
             MakeDirty();
+        }
+
+        private void ShowNumButton_Click(object sender, EventArgs e)
+        {
+            MapControl.ShowTileNums = ShowNumButton.Checked;
+            MapControl.Invalidate();
+        }
+
+        private void TilesetControl_TileSelected()
+        {
+
+        }
+
+        private void TilesetControl_TileRemoved(short startindex)
+        {
+
+        }
+
+        private void TilesetControl_TileAdded(short startindex)
+        {
+
         }
     }
 }

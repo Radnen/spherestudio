@@ -34,7 +34,12 @@ namespace Sphere_Editor.EditorComponents
         public short CurrentTile { get; set; }
         public short CurrentLayer { get; set; }
         public bool ShowCameraBounds { get; set; }
-        public Point Tile
+        public bool ShowTileNums { get; set; }
+
+        /// <summary>
+        /// Gets the location of the mouse in tiles.
+        /// </summary>
+        public Point MouseTile
         {
             get
             {
@@ -69,6 +74,9 @@ namespace Sphere_Editor.EditorComponents
                     _vw = value.Width * _tile_w_zoom;
                     _vh = value.Height * _tile_h_zoom;
                     UpdateScrollBars();
+
+                    if (GraphicLayers != null)
+                        foreach (GraphicalLayer layer in GraphicLayers) layer.Dispose();
                     GraphicLayers = new List<GraphicalLayer>(value.Layers.Count);
 
                     for (int i = 0; i < value.Layers.Count; ++i)
@@ -269,10 +277,10 @@ namespace Sphere_Editor.EditorComponents
 
             DrawGraphicLayers(e.Graphics);
 
+            if (ShowTileNums) DrawTileNums(e.Graphics);
+
             DrawZones(e.Graphics);
             
-            DrawEntities(e.Graphics);
-
             if (_paint && Tool == MapTool.Zone)
                 DrawTool(e.Graphics);
 
@@ -283,12 +291,40 @@ namespace Sphere_Editor.EditorComponents
 
             e.Graphics.DrawRectangle(Pens.Black, _offset.X, _offset.Y, _vw, _vh);
 
+            DrawEntities(e.Graphics);
+
             int sx = _base_map.StartX / TileWidth * TileWidth * Zoom + _offset.X;
             int sy = _base_map.StartY / TileHeight * TileHeight * Zoom + _offset.Y;
 
             e.Graphics.DrawImage(Sphere_Editor.Properties.Resources.startpos, sx, sy, _tile_w_zoom, _tile_h_zoom);
 
             if (ShowCameraBounds) DrawCameraBounds(e.Graphics);
+        }
+
+        private static Font _numFont = new Font("Courier", 8.0f);
+
+        public void DrawTileNums(Graphics graphics)
+        {
+            int h = _base_map.Height * _tile_h_zoom;
+            int w = _base_map.Width * _tile_w_zoom;
+            for (int y = 0; y < h; y += _tile_h_zoom)
+            {
+                for (int x = 0; x < w; x += _tile_h_zoom)
+                {
+                    var tile = _base_map.Layers[CurrentLayer].GetTile(x / _tile_w_zoom, y / _tile_h_zoom);
+                    if (tile < 0) continue;
+
+                    if (x < -_offset.X || y < -_offset.Y) continue;
+                    if (x > -_offset.X + Width || y > -_offset.Y + Height) continue;
+
+                    int tx = _offset.X + x;
+                    int ty = _offset.Y + y;
+
+                    string s = tile.ToString();
+                    graphics.DrawString(s, _numFont, Brushes.Black, tx + 1, ty + 1);
+                    graphics.DrawString(s, _numFont, Brushes.White, tx, ty);
+                }
+            }
         }
 
         private void DrawGraphicLayers(Graphics g)
@@ -320,12 +356,19 @@ namespace Sphere_Editor.EditorComponents
             if (!mouse_in) return;
             if (Tiles == null || SelWidth == 0) return;
 
+            Brush yellow = new SolidBrush(Color.FromArgb(125, Color.Yellow));
             int ox = _offset.X + _mouse.X; // origin x/y
             int oy = _offset.Y + _mouse.Y;
 
             if (single)
             {
-                g.DrawRectangle(Pens.Yellow, ox, oy, _tile_w_zoom, _tile_h_zoom);
+                if (Tool == MapTool.Entity && _cur_ent != null && _cur_ent.Layer == CurrentLayer)
+                {
+                    g.FillRectangle(yellow, ox, oy, _tile_w_zoom, _tile_h_zoom);
+                    g.DrawRectangle(Pens.White, ox, oy, _tile_w_zoom, _tile_h_zoom);
+                }
+                else
+                    g.DrawRectangle(Pens.Yellow, ox, oy, _tile_w_zoom, _tile_h_zoom);
                 return;
             }
 
@@ -374,6 +417,7 @@ namespace Sphere_Editor.EditorComponents
                     return true;
                 }
             }
+            _cur_ent = null;
             return false;
         }
 
@@ -480,6 +524,8 @@ namespace Sphere_Editor.EditorComponents
                     _cur_ent.Y = (short)(_mouse.Y / Zoom + TileHeight / 2 - 1);
                 }
             }
+            else if (Tool == MapTool.Entity)
+                GetEntityAtMouse();
 
             InvalidateCursor();
             _last_mouse = _mouse;
@@ -505,8 +551,6 @@ namespace Sphere_Editor.EditorComponents
                     _old_cache = _base_map.Layers[CurrentLayer].CloneTiles();
                     StampTiles(_mouse.X / _tile_w_zoom, _mouse.Y / _tile_h_zoom);
                 }
-                else if (Tool == MapTool.Entity)
-                    GetEntityAtMouse();
                 else
                     _anchor = _mouse;
 
