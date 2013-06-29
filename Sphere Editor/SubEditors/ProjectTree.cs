@@ -417,7 +417,7 @@ namespace Sphere_Editor.SubEditors
 
         private void SystemWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
-            //Refresh();
+            Refresh();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
