@@ -20,6 +20,7 @@ namespace Sphere.Core
         public Tile(Bitmap image)
         {
             Obstructions = new List<Line>();
+            Name = "";
             Width = image.Width;
             Height = image.Height;
             _graphic = image;
@@ -33,6 +34,7 @@ namespace Sphere.Core
         public Tile(int width, int height)
         {
             Obstructions = new List<Line>();
+            Name = "";
             Width = width;
             Height = height;
             _graphic = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
