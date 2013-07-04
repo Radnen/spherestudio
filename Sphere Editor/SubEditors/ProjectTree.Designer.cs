@@ -210,6 +210,8 @@
             this.SystemWatcher.IncludeSubdirectories = true;
             this.SystemWatcher.SynchronizingObject = this;
             this.SystemWatcher.Changed += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Changed);
+            this.SystemWatcher.Deleted += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Deleted);
+            this.SystemWatcher.Renamed += new Sphere.Core.Editor.BatchEventHandler<System.IO.RenamedEventArgs>(this.SystemWatcher_Renamed);
             // 
             // ProjectTree
             // 

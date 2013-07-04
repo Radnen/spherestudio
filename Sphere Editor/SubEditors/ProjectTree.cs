@@ -93,22 +93,22 @@ namespace Sphere_Editor.SubEditors
             AddSubfolderItem.Visible = DeleteFolderItem.Visible = false;
             ExecuteScriptItem.Visible = false;
 
-            // If the node is the name of the project: 
-            if (e.Node.Index == 0)
-                GameSettingsItem.Visible = EngineSettingsItem.Visible = true;
-                // If the node is a file object:
-            else if (e.Node.Tag.Equals("file-node"))
+            string tag = e.Node.Tag as string;
+            switch (tag)
             {
-                OpenFileItem.Visible = DeleteFileItem.Visible = true;
-                RenameFileItem.Visible = CopyPathItem.Visible = true;
-                string s = e.Node.Text;
-                if (Global.IsScript(ref s)) ExecuteScriptItem.Visible = true;
-            }
-                // If the node is a folder object:
-            else
-            {
-                NewFileItem.Visible = ImportFileItem.Visible = true;
-                AddSubfolderItem.Visible = DeleteFolderItem.Visible = true;
+                case "project-node":
+                    GameSettingsItem.Visible = EngineSettingsItem.Visible = true;
+                    break;
+                case "file-node":
+                    OpenFileItem.Visible = DeleteFileItem.Visible = true;
+                    RenameFileItem.Visible = CopyPathItem.Visible = true;
+                    string s = e.Node.Text;
+                    if (Global.IsScript(ref s)) ExecuteScriptItem.Visible = true;
+                    break;
+                case "directory-node":
+                    NewFileItem.Visible = ImportFileItem.Visible = true;
+                    AddSubfolderItem.Visible = DeleteFolderItem.Visible = true;
+                    break;
             }
 
             ProjectFileContextMenu.Show(ProjectTreeView, e.Location);
@@ -117,7 +117,7 @@ namespace Sphere_Editor.SubEditors
         private void RenameFileItem_Click(object sender, EventArgs e)
         {
             TreeNode node = ProjectTreeView.SelectedNode;
-            if (node.Text.Contains(".")) ProjectTreeView.SelectedNode.BeginEdit();
+            if (node.Tag.Equals("file-node")) node.BeginEdit();
         }
 
         private void DeleteFileItem_Click(object sender, EventArgs e)
@@ -135,7 +135,10 @@ namespace Sphere_Editor.SubEditors
             {
                 return;
             }
-            Refresh();
+            finally
+            {
+                Refresh();
+            }
         }
 
         /// <summary>
@@ -194,7 +197,7 @@ namespace Sphere_Editor.SubEditors
                     {
                         // this is a good trick to know: you can almost always implement a recursive
                         // operation inline using a queue.
-                        nodesToCheck.Enqueue(subnode);
+                        if (!node.Tag.Equals("file-node")) nodesToCheck.Enqueue(subnode);
                     }
                 }
             }
@@ -202,7 +205,8 @@ namespace Sphere_Editor.SubEditors
             // Repopulate the tree
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
-            var projectNode = new TreeNode(Global.CurrentProject.Name) {Tag = "project-node"};
+            var projectNode = new TreeNode(Global.CurrentProject.Name) { Tag = "project-node" };
+            projectNode.Expand();
             ProjectTreeView.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], baseDir);
@@ -221,15 +225,13 @@ namespace Sphere_Editor.SubEditors
                     if (node.FullPath == selectedNodePath) ProjectTreeView.SelectedNode = node;
                     foreach (TreeNode subnode in node.Nodes)
                     {
-                        nodesToCheck.Enqueue(subnode);
+                        if (!subnode.Tag.Equals("file-node")) nodesToCheck.Enqueue(subnode);
                     }
                 }
             }
 
             if (ProjectTreeView.SelectedNode == null) ProjectTreeView.SelectedNode = ProjectTreeView.TopNode;
             Cursor.Current = Cursors.Default;
-
-            if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Expand();
             ProjectTreeView.EndUpdate();
         }
 
@@ -242,14 +244,14 @@ namespace Sphere_Editor.SubEditors
 
             foreach (DirectoryInfo d in (from d in dirs orderby d.Name select d))
             {
-                subNode = new TreeNode(d.Name, 2, 1) {Tag = "directory-node"};
+                subNode = new TreeNode(d.Name, 2, 1) { Tag = "directory-node" };
                 baseNode.Nodes.Add(subNode);
                 PopulateDirectoryNode(subNode, d);
             }
 
             foreach (FileInfo f in (from f in files orderby f.Name select f))
             {
-                subNode = new TreeNode(f.Name, 9, 9) {Tag = "file-node"};
+                subNode = new TreeNode(f.Name, 9, 9) { Tag = "file-node" };
                 UpdateImage(subNode);
                 baseNode.Nodes.Add(subNode);
             }
@@ -287,7 +289,12 @@ namespace Sphere_Editor.SubEditors
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
-                        ProjectTreeView.SelectedNode.Nodes.Add(new TreeNode(form.Input, 2, 1));
+                        TreeNode node = new TreeNode(form.Input, 2, 1) { Tag = "directory-node" };
+                        ProjectTreeView.SelectedNode.Nodes.Add(node);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Directory already exists!", "Directory Exists", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
             }
@@ -295,57 +302,44 @@ namespace Sphere_Editor.SubEditors
 
         private void ProjectTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if (e.Label == null)
-            {
-                e.CancelEdit = true;
-                return;
-            }
-            if (!e.Label.Contains(".") || e.Label.IndexOf('.') == 0)
-            {
-                e.CancelEdit = true;
-                return;
+            var pathtop = (e.Node.Parent.Index == 0) ? "" : e.Node.Parent.Text + '\\';
+            var oldpath = Global.CurrentProject.RootPath + '\\' + pathtop + e.Node.Text;
+            var newpath = Global.CurrentProject.RootPath + '\\' + pathtop + e.Label;
+
+            var ow = File.Exists(newpath) && !oldpath.Equals(newpath);
+            var do_ow = false;
+
+            if (ow) {
+                do_ow = MessageBox.Show("Overwrite existing file?\n\n" + oldpath + "\n\nto:\n\n" + newpath, "File Replacement",
+                                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                                        MessageBoxDefaultButton.Button2) == DialogResult.Yes;
             }
 
-            string pathtop = e.Node.FullPath.Substring(e.Node.FullPath.IndexOf('\\'));
-            string path = Global.CurrentProject.RootPath + pathtop;
-            string newtop = pathtop.Substring(0, pathtop.LastIndexOf('\\'));
-            string newpath = Global.CurrentProject.RootPath + newtop + "\\" + e.Label;
+            if ((ow && !do_ow) || e.Label == null) { e.CancelEdit = true; return; }
 
-            if (File.Exists(newpath))
+            try
             {
-                if (newpath.ToLower().Equals(path.ToLower()))
-                {
-                    File.Move(path, newpath + 2);
-                    File.Move(newpath + 2, newpath);
-                    e.Node.Name = e.Label;
-                }
-                else if (MessageBox.Show(@"Overwrite existing file?" + newpath, @"File Replacement",
-                                         MessageBoxButtons.OKCancel, MessageBoxIcon.Warning,
-                                         MessageBoxDefaultButton.Button2) == DialogResult.OK)
-                {
-                    File.Delete(newpath);
-                    File.Move(path, newpath);
-                    e.Node.Remove();
-                    e.Node.Name = e.Label;
-                }
-                else e.CancelEdit = true;
+                if (do_ow) File.Delete(newpath);
+                File.Move(oldpath, newpath);
             }
-            else
+            catch (Exception exc)
             {
-                File.Move(path, newpath);
-                e.Node.Name = e.Label;
+                MessageBox.Show("Error in renaming file:\n" + exc.Message,
+                                "Rename Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (do_ow) e.Node.Remove();
             }
         }
 
         private void CopyPathItem_Click(object sender, EventArgs e)
         {
-            ProjectTreeView.PathSeparator = "/";
-            string text = ProjectTreeView.SelectedNode.FullPath;
+            string text = ProjectTreeView.SelectedNode.FullPath.Replace('\\', '/');
             text = text.Substring(text.IndexOf('/') + 1);
             text = text.Substring(text.IndexOf('/') + 1);
             Clipboard.Clear();
             Clipboard.SetText(string.Format("\"{0}\"", text), TextDataFormat.Text);
-            ProjectTreeView.PathSeparator = "\\";
         }
 
         private void ProjectTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
@@ -415,26 +409,23 @@ namespace Sphere_Editor.SubEditors
             Global.CurrentProject.Script = oldScript;
         }
 
-        private void SystemWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
-        {
-            Refresh();
-        }
-
         private void DeleteFolderItem_Click(object sender, EventArgs e)
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
             string path = Global.CurrentProject.RootPath + pathtop;
 
-            if (MessageBox.Show(@"Are you sure you want to delete:" + path,
-                                @"Confirm File Deletion", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation,
-                                MessageBoxDefaultButton.Button3) == DialogResult.Yes)
+            if (Directory.Exists(path))
             {
-                if (Directory.Exists(path))
+                try
                 {
                     FileSystem.DeleteDirectory(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
-                    node.Remove();
                 }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+                node.Remove();
             }
         }
 
@@ -525,7 +516,7 @@ namespace Sphere_Editor.SubEditors
             switch (e.KeyCode)
             {
                 case Keys.Return:
-                    if (node.Tag as string != "file-node") return;
+                    if (!node.Tag.Equals("file-node")) return;
                     OpenItem(ProjectTreeView.SelectedNode);
                     e.Handled = true;
                     break;
@@ -538,14 +529,23 @@ namespace Sphere_Editor.SubEditors
         
         private void ProjectTreeView_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // treeview normally beeps when user presses enter. since we handle that in the KeyDown event,
-            // the beeps will just annoy the user, this suppresses them
+            // stops the beeping annoyance when user presses enter
             if (e.KeyChar == '\r') e.Handled = true;
         }
 
-        private void SystemWatcher_Changed(object sender)
+        private void SystemWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
+            Refresh();
+        }
 
+        private void SystemWatcher_Deleted(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        {
+            Refresh();
+        }
+
+        private void SystemWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        {
+            Refresh();
         }
     }
 }
