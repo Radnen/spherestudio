@@ -195,9 +195,8 @@ namespace Sphere_Editor.SubEditors
                     isExpandedTable.Add(node.FullPath, node.IsExpanded);
                     foreach (TreeNode subnode in node.Nodes)
                     {
-                        // this is a good trick to know: you can almost always implement a recursive
-                        // operation inline using a queue.
-                        if (!node.Tag.Equals("file-node")) nodesToCheck.Enqueue(subnode);
+                        // emulate a recursive search of the tree view:
+                        nodesToCheck.Enqueue(subnode);
                     }
                 }
             }
@@ -206,7 +205,6 @@ namespace Sphere_Editor.SubEditors
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
             var projectNode = new TreeNode(Global.CurrentProject.Name) { Tag = "project-node" };
-            projectNode.Expand();
             ProjectTreeView.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], baseDir);
@@ -225,12 +223,14 @@ namespace Sphere_Editor.SubEditors
                     if (node.FullPath == selectedNodePath) ProjectTreeView.SelectedNode = node;
                     foreach (TreeNode subnode in node.Nodes)
                     {
-                        if (!subnode.Tag.Equals("file-node")) nodesToCheck.Enqueue(subnode);
+                        // emulate a recursive search of the tree view:
+                        nodesToCheck.Enqueue(subnode);
                     }
                 }
             }
 
             if (ProjectTreeView.SelectedNode == null) ProjectTreeView.SelectedNode = ProjectTreeView.TopNode;
+            if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Expand();
             Cursor.Current = Cursors.Default;
             ProjectTreeView.EndUpdate();
         }
