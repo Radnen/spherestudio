@@ -9,9 +9,9 @@ namespace SoundTestPlugin
     public class SoundTestPlugin : IPlugin
     {
         public string Name { get { return "Sound Test"; } }
-        public string Author { get { return "Bruce Pascoe"; } }
+        public string Author { get { return "Lord English"; } }
         public string Description { get { return "Listen to sounds from your game while you work! :o)"; } }
-        public string Version { get { return "1.0"; } }
+        public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; set; }
 
         public IPluginHost Host { get; set; }

@@ -77,7 +77,7 @@
             // 
             this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(115, 12);
+            this.cancelButton.Location = new System.Drawing.Point(184, 12);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 0;
@@ -88,7 +88,7 @@
             // 
             this.OkButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OkButton.Location = new System.Drawing.Point(204, 12);
+            this.OkButton.Location = new System.Drawing.Point(273, 12);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 1;
@@ -106,18 +106,18 @@
             // 
             // SpherePathBox
             // 
-            this.SpherePathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpherePathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.SpherePathBox.Location = new System.Drawing.Point(5, 19);
             this.SpherePathBox.Name = "SpherePathBox";
-            this.SpherePathBox.Size = new System.Drawing.Size(339, 20);
+            this.SpherePathBox.Size = new System.Drawing.Size(478, 20);
             this.SpherePathBox.TabIndex = 5;
             // 
             // SpherePathButton
             // 
             this.SpherePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SpherePathButton.Image = global::Sphere_Editor.Properties.Resources.folder;
-            this.SpherePathButton.Location = new System.Drawing.Point(349, 17);
+            this.SpherePathButton.Location = new System.Drawing.Point(488, 17);
             this.SpherePathButton.Name = "SpherePathButton";
             this.SpherePathButton.Size = new System.Drawing.Size(31, 23);
             this.SpherePathButton.TabIndex = 8;
@@ -145,11 +145,11 @@
             // 
             // ConfigPathBox
             // 
-            this.ConfigPathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConfigPathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ConfigPathBox.Location = new System.Drawing.Point(7, 58);
             this.ConfigPathBox.Name = "ConfigPathBox";
-            this.ConfigPathBox.Size = new System.Drawing.Size(338, 20);
+            this.ConfigPathBox.Size = new System.Drawing.Size(477, 20);
             this.ConfigPathBox.TabIndex = 6;
             // 
             // FontComboBox
@@ -186,7 +186,7 @@
             this.SettingsTabs.Location = new System.Drawing.Point(0, 0);
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
-            this.SettingsTabs.Size = new System.Drawing.Size(394, 251);
+            this.SettingsTabs.Size = new System.Drawing.Size(533, 353);
             this.SettingsTabs.TabIndex = 14;
             // 
             // tabPage1
@@ -198,7 +198,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(386, 225);
+            this.tabPage1.Size = new System.Drawing.Size(525, 327);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -214,15 +214,15 @@
             // 
             // ItemCheckBox
             // 
-            this.ItemCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ItemCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ItemCheckBox.FormattingEnabled = true;
             this.ItemCheckBox.Items.AddRange(new object[] {
             "Update Script Headers",
             "Open Last Project"});
             this.ItemCheckBox.Location = new System.Drawing.Point(5, 19);
             this.ItemCheckBox.Name = "ItemCheckBox";
-            this.ItemCheckBox.Size = new System.Drawing.Size(373, 94);
+            this.ItemCheckBox.Size = new System.Drawing.Size(512, 94);
             this.ItemCheckBox.TabIndex = 18;
             // 
             // tabPage2
@@ -239,7 +239,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(386, 225);
+            this.tabPage2.Size = new System.Drawing.Size(525, 327);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -248,7 +248,7 @@
             // 
             this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RemoveButton.Enabled = false;
-            this.RemoveButton.Location = new System.Drawing.Point(76, 198);
+            this.RemoveButton.Location = new System.Drawing.Point(76, 300);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(64, 23);
             this.RemoveButton.TabIndex = 11;
@@ -260,7 +260,7 @@
             // AddButton
             // 
             this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.AddButton.Location = new System.Drawing.Point(7, 198);
+            this.AddButton.Location = new System.Drawing.Point(7, 300);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(64, 23);
             this.AddButton.TabIndex = 10;
@@ -271,13 +271,13 @@
             // 
             // PathListBox
             // 
-            this.PathListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.PathListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PathListBox.FormattingEnabled = true;
             this.PathListBox.Location = new System.Drawing.Point(5, 97);
             this.PathListBox.Name = "PathListBox";
-            this.PathListBox.Size = new System.Drawing.Size(340, 95);
+            this.PathListBox.Size = new System.Drawing.Size(479, 186);
             this.PathListBox.TabIndex = 9;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
@@ -288,7 +288,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(386, 225);
+            this.tabPage3.Size = new System.Drawing.Size(525, 327);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plugins";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -306,7 +306,8 @@
             this.PluginList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.PluginList.Location = new System.Drawing.Point(3, 36);
             this.PluginList.Name = "PluginList";
-            this.PluginList.Size = new System.Drawing.Size(380, 186);
+            this.PluginList.ShowItemToolTips = true;
+            this.PluginList.Size = new System.Drawing.Size(519, 288);
             this.PluginList.TabIndex = 0;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
@@ -315,11 +316,12 @@
             // NameCol
             // 
             this.NameCol.Text = "Name";
-            this.NameCol.Width = 70;
+            this.NameCol.Width = 150;
             // 
             // AuthorCol
             // 
             this.AuthorCol.Text = "Author";
+            this.AuthorCol.Width = 100;
             // 
             // VersionCol
             // 
@@ -337,7 +339,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(380, 33);
+            this.panel2.Size = new System.Drawing.Size(519, 33);
             this.panel2.TabIndex = 1;
             // 
             // label1
@@ -345,10 +347,10 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(380, 33);
+            this.label1.Size = new System.Drawing.Size(519, 33);
             this.label1.TabIndex = 0;
-            this.label1.Text = "This is a list of plugins that are present in the /plugins directory.\r\nHit the ch" +
-                "eck boxes to add or remove features from the editor.";
+            this.label1.Text = "This is a list of plugins that are present in the /plugins directory.\r\nClick on t" +
+    "he check boxes to add or remove features from the editor.";
             // 
             // tabPage4
             // 
@@ -367,9 +369,9 @@
             // 
             // PresetListBox
             // 
-            this.PresetListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.PresetListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PresetListBox.FormattingEnabled = true;
             this.PresetListBox.Location = new System.Drawing.Point(6, 36);
             this.PresetListBox.Name = "PresetListBox";
@@ -423,16 +425,16 @@
             this.label2.Size = new System.Drawing.Size(380, 30);
             this.label2.TabIndex = 1;
             this.label2.Text = "Editor presets allow you to target different sphere versions,\r\ngame paths and plu" +
-                "gin lists to suit your development needs.";
+    "gin lists to suit your development needs.";
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.cancelButton);
             this.panel1.Controls.Add(this.OkButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 251);
+            this.panel1.Location = new System.Drawing.Point(0, 353);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(394, 46);
+            this.panel1.Size = new System.Drawing.Size(533, 46);
             this.panel1.TabIndex = 15;
             // 
             // EditorSettings
@@ -440,7 +442,7 @@
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 297);
+            this.ClientSize = new System.Drawing.Size(533, 399);
             this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
