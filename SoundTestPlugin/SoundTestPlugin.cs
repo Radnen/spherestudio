@@ -6,7 +6,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SoundTestPlugin
 {
-    class SoundTestPlugin : IPlugin
+    public class SoundTestPlugin : IPlugin
     {
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Bruce Pascoe"; } }

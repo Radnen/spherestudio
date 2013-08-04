@@ -235,12 +235,6 @@
     </Compile>
     <Compile Include="RadEditors\RadObjects.cs" />
     <Compile Include="EditorComponents\GraphicalLayer.cs" />
-    <Compile Include="SubEditors\AudioPlayer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubEditors\AudioPlayer.Designer.cs">
-      <DependentUpon>AudioPlayer.cs</DependentUpon>
-    </Compile>
     <Compile Include="SubEditors\Drawer2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -398,9 +392,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\AudioPlayer.resx">
-      <DependentUpon>AudioPlayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SubEditors\Drawer2.resx">
       <DependentUpon>Drawer2.cs</DependentUpon>
@@ -561,9 +552,9 @@
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MyPlugin\MyPlugin.csproj">
-      <Project>{b320da5e-0e67-4ce7-97e7-96009014e6ee}</Project>
-      <Name>MyPlugin</Name>
+    <ProjectReference Include="..\MapEditorPlugin\MapEditorPlugin.csproj">
+      <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
+      <Name>MapEditorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScriptPlugin\ScriptPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>

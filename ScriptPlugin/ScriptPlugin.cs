@@ -11,10 +11,10 @@ namespace ScriptPlugin
 {
     public class ScriptPlugin : IPlugin
     {
-        public string Name { get { return "Scintilla Script Editor"; } }
+        public string Name { get { return "Script Editor"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "A Scintilla based script editor."; } }
-        public string Version { get { return "1.2"; } }
+        public string Description { get { return "Sphere Studio default script editor."; } }
+        public string Version { get { return "1.1.6.0"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
@@ -211,7 +211,7 @@ namespace ScriptPlugin
             editor.Dock = DockStyle.Fill;
 
             // And creates + styles a dock panel:
-            DockContent content = new DockContent {Text = @"Script Editor"};
+            DockContent content = new DockContent() { Text = @"Untitled" };
             content.Controls.Add(editor);
             content.DockAreas = DockAreas.Document;
             content.Icon = Icon;
