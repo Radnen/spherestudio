@@ -90,7 +90,6 @@
       <DependentUpon>Drawer2.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\GraphicalLayer.cs" />
-    <Compile Include="Components\HistoryManager.cs" />
     <Compile Include="Components\ImageEditControl2.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,6 +170,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UndoRedo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">

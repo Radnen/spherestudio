@@ -9,6 +9,7 @@ using Sphere.Core.Editor;
 using WeifenLuo.WinFormsUI.Docking;
 using MapEditorPlugin.Components;
 using MapEditorPlugin.Forms;
+using MapEditorPlugin.UndoRedo;
 
 namespace MapEditorPlugin
 {

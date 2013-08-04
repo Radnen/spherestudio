@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScripterPlugin", "FastScrip
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditorPlugin", "MapEditorPlugin\MapEditorPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageEditPlugin", "ImageEditPlugin\ImageEditPlugin.csproj", "{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +154,18 @@ Global
 		{E17C35BE-A26F-411D-B814-979017F290DF}.Release|x64.Build.0 = Release|x64
 		{E17C35BE-A26F-411D-B814-979017F290DF}.Release|x86.ActiveCfg = Release|x86
 		{E17C35BE-A26F-411D-B814-979017F290DF}.Release|x86.Build.0 = Release|x86
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Debug|x64.ActiveCfg = Debug|x64
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Debug|x64.Build.0 = Debug|x64
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Debug|x86.ActiveCfg = Debug|x86
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Debug|x86.Build.0 = Debug|x86
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Release|x64.ActiveCfg = Release|x64
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Release|x64.Build.0 = Release|x64
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Release|x86.ActiveCfg = Release|x86
+		{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

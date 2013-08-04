@@ -5,8 +5,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere.Core.Utility;
 using MapEditorPlugin.Forms;
+using MapEditorPlugin.UndoRedo;
 
 namespace MapEditorPlugin.Components
 {

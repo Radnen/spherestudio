@@ -100,9 +100,9 @@ namespace Sphere_Editor
             }
 
             // no fish biting today, try one of the built-in fish--er, editors
-            if (Global.IsImage(ref filePath)) OpenImage(filePath);
+            //if (Global.IsImage(ref filePath)) filePath);
             //else if (Global.IsMap(ref filePath)) OpenMap(filePath);
-            else if (Global.IsSpriteset(ref filePath)) OpenSpriteset(filePath);
+            if (Global.IsSpriteset(ref filePath)) OpenSpriteset(filePath);
             else if (Global.IsWindowStyle(ref filePath)) OpenWindowStyle(filePath);
 
             // still nothing? let's go fishing for editor plugins again, maybe we were using the

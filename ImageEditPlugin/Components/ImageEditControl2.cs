@@ -6,11 +6,11 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Core.Utility;
-using MapEditorPlugin.UndoRedo;
+using ImageEditPlugin.UndoRedo;
 
-namespace MapEditorPlugin.Components
+namespace ImageEditPlugin.Components
 {
-    public partial class ImageEditControl2 : UserControl
+    internal partial class ImageEditControl2 : UserControl
     {
         #region attributes
         private Bitmap _image;

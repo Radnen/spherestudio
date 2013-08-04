@@ -73,9 +73,9 @@
             this.OpenLastProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewSpritesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewWindowStyleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -130,7 +130,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -470,7 +469,6 @@
             // NewMenuItem
             // 
             this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewImageMenuItem,
             this.NewSpritesetMenuItem,
             this.NewWindowStyleMenuItem,
             this.toolStripSeparator2});
@@ -478,14 +476,6 @@
             this.NewMenuItem.Name = "NewMenuItem";
             this.NewMenuItem.Size = new System.Drawing.Size(215, 22);
             this.NewMenuItem.Text = "&New";
-            // 
-            // NewImageMenuItem
-            // 
-            this.NewImageMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
-            this.NewImageMenuItem.Name = "NewImageMenuItem";
-            this.NewImageMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.NewImageMenuItem.Text = "Image";
-            this.NewImageMenuItem.Click += new System.EventHandler(this.NewImage);
             // 
             // NewSpritesetMenuItem
             // 
@@ -502,6 +492,11 @@
             this.NewWindowStyleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewWindowStyleMenuItem.Text = "WindowStyle";
             this.NewWindowStyleMenuItem.Click += new System.EventHandler(this.NewWindowStyle);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // OpenMenuItem
             // 
@@ -966,11 +961,6 @@
             this.WebsiteMenuItem.Text = "Visit Website!";
             this.WebsiteMenuItem.Visible = false;
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
-            // 
             // EditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1037,7 +1027,6 @@
         private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
         private System.Windows.Forms.ToolStripSeparator Separator1;
         private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewImageMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewSpritesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewWindowStyleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ProjectMenu;

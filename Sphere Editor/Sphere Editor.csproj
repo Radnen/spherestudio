@@ -552,6 +552,10 @@
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ImageEditPlugin\ImageEditPlugin.csproj">
+      <Project>{83d6d166-7f7d-46ca-81bf-9baf8e35f6bc}</Project>
+      <Name>ImageEditPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapEditorPlugin\MapEditorPlugin.csproj">
       <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
       <Name>MapEditorPlugin</Name>

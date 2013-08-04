@@ -112,6 +112,7 @@
     <Compile Include="Editor\EditorPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Editor\HistoryManager.cs" />
     <Compile Include="Editor\StringInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
