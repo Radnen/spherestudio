@@ -10,8 +10,8 @@ namespace TaskPlugin
     {
         public string Name { get { return "Task List"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "An ObjectListView task list."; } }
-        public string Version { get { return "1.1"; } }
+        public string Description { get { return "Keep track of game development tasks."; } }
+        public string Version { get { return "1.1.6.0"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }

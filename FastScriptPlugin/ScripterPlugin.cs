@@ -205,7 +205,7 @@ namespace FastScriptPlugin
         public void Initialize()
         {
             Host.TryEditFile += Host_TryEditFile;
-            Host.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
+            PluginManager.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
 
             Host.AddMenuItem(RootMenu, "View");
             Host.AddMenuItem("File.New", NewScriptItem);
@@ -223,7 +223,7 @@ namespace FastScriptPlugin
 
         public void Destroy()
         {
-            Host.UnregisterOpenFileType(OpenFileFilters);
+            PluginManager.UnregisterOpenFileType(OpenFileFilters);
             Host.RemoveMenuItem("Script");
             Host.RemoveMenuItem(NewScriptItem);
             Host.TryEditFile -= Host_TryEditFile;

@@ -73,10 +73,9 @@
             this.OpenLastProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewMapMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewSpritesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewWindowStyleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,10 +126,10 @@
             this.StartPageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ProjectExplorerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ApiDocsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.ApiDocsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -470,36 +469,19 @@
             // NewMenuItem
             // 
             this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewImageMenuItem,
-            this.NewMapMenuItem,
             this.NewSpritesetMenuItem,
-            this.NewWindowStyleMenuItem});
+            this.NewWindowStyleMenuItem,
+            this.toolStripSeparator2});
             this.NewMenuItem.Image = global::Sphere_Editor.Properties.Resources.page_white_edit;
             this.NewMenuItem.Name = "NewMenuItem";
             this.NewMenuItem.Size = new System.Drawing.Size(215, 22);
             this.NewMenuItem.Text = "&New";
             // 
-            // NewImageMenuItem
-            // 
-            this.NewImageMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
-            this.NewImageMenuItem.Name = "NewImageMenuItem";
-            this.NewImageMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.NewImageMenuItem.Text = "Image";
-            this.NewImageMenuItem.Click += new System.EventHandler(this.NewImage);
-            // 
-            // NewMapMenuItem
-            // 
-            this.NewMapMenuItem.Image = global::Sphere_Editor.Properties.Resources.map;
-            this.NewMapMenuItem.Name = "NewMapMenuItem";
-            this.NewMapMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.NewMapMenuItem.Text = "Map";
-            this.NewMapMenuItem.Click += new System.EventHandler(this.NewMap);
-            // 
             // NewSpritesetMenuItem
             // 
             this.NewSpritesetMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.NewSpritesetMenuItem.Name = "NewSpritesetMenuItem";
-            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewSpritesetMenuItem.Text = "Spriteset";
             this.NewSpritesetMenuItem.Click += new System.EventHandler(this.NewSpriteset);
             // 
@@ -507,9 +489,14 @@
             // 
             this.NewWindowStyleMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.NewWindowStyleMenuItem.Name = "NewWindowStyleMenuItem";
-            this.NewWindowStyleMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.NewWindowStyleMenuItem.Size = new System.Drawing.Size(152, 22);
             this.NewWindowStyleMenuItem.Text = "WindowStyle";
             this.NewWindowStyleMenuItem.Click += new System.EventHandler(this.NewWindowStyle);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // OpenMenuItem
             // 
@@ -946,6 +933,19 @@
             this.HelpMenu.Size = new System.Drawing.Size(44, 20);
             this.HelpMenu.Text = "&Help";
             // 
+            // ApiDocsMenuItem
+            // 
+            this.ApiDocsMenuItem.Image = global::Sphere_Editor.Properties.Resources.help;
+            this.ApiDocsMenuItem.Name = "ApiDocsMenuItem";
+            this.ApiDocsMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.ApiDocsMenuItem.Text = "Sphere &API Reference";
+            this.ApiDocsMenuItem.Click += new System.EventHandler(this.ApiDocsMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
+            // 
             // AboutMenuItem
             // 
             this.AboutMenuItem.Image = global::Sphere_Editor.Properties.Resources.information;
@@ -960,19 +960,6 @@
             this.WebsiteMenuItem.Size = new System.Drawing.Size(186, 22);
             this.WebsiteMenuItem.Text = "Visit Website!";
             this.WebsiteMenuItem.Visible = false;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
-            // 
-            // ApiDocsMenuItem
-            // 
-            this.ApiDocsMenuItem.Image = global::Sphere_Editor.Properties.Resources.help;
-            this.ApiDocsMenuItem.Name = "ApiDocsMenuItem";
-            this.ApiDocsMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.ApiDocsMenuItem.Text = "Sphere &API Reference";
-            this.ApiDocsMenuItem.Click += new System.EventHandler(this.ApiDocsMenuItem_Click);
             // 
             // EditorForm
             // 
@@ -1040,8 +1027,6 @@
         private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
         private System.Windows.Forms.ToolStripSeparator Separator1;
         private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewImageMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewMapMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewSpritesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewWindowStyleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
@@ -1095,6 +1080,7 @@
         private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ApiDocsMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 

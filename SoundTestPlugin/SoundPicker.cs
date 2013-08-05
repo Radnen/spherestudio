@@ -13,7 +13,7 @@ using IrrKlang;
 
 namespace SoundTestPlugin
 {
-    public partial class SoundPicker : UserControl
+    internal partial class SoundPicker : UserControl
     {
         private readonly string[] _fileTypes = new[] 
         {
