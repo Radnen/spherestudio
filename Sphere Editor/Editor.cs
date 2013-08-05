@@ -24,6 +24,7 @@ namespace Sphere_Editor
         private readonly ProjectTree _tree;
         private bool _firsttime;
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string,string>();
+        private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType,IEditorPlugin>();
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
@@ -72,11 +73,9 @@ namespace Sphere_Editor
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                dialog.Filter = @"Images|*.png;*.gif;*.jpg;*.bmp|"
-                                + @"Sphere Maps|*.rmp;*.rts|"
-                                + @"Sphere Spritesets|*.rss|"
+                dialog.Filter = @"Sphere Spritesets|*.rss|"
                                 + @"Sphere Windowstyles|*.rws";
-                foreach (string filter in _openFileTypes.Keys)
+                foreach (string filter in PluginManager.OpenFileTypes.Keys)
                 {
                     dialog.Filter += String.Format("|{0}|{1}", _openFileTypes[filter], filter);
                 }
@@ -100,9 +99,9 @@ namespace Sphere_Editor
             }
 
             // no fish biting today, try one of the built-in fish--er, editors
-            if (Global.IsImage(ref filePath)) OpenImage(filePath);
-            else if (Global.IsMap(ref filePath)) OpenMap(filePath);
-            else if (Global.IsSpriteset(ref filePath)) OpenSpriteset(filePath);
+            //if (Global.IsImage(ref filePath)) filePath);
+            //else if (Global.IsMap(ref filePath)) OpenMap(filePath);
+            if (Global.IsSpriteset(ref filePath)) OpenSpriteset(filePath);
             else if (Global.IsWindowStyle(ref filePath)) OpenWindowStyle(filePath);
 
             // still nothing? let's go fishing for editor plugins again, maybe we were using the
@@ -164,22 +163,13 @@ namespace Sphere_Editor
 
         public void DockControl(DockContent content, DockState state)
         {
+            if (content == null) return;
+            
             // adds an event to find 'dirtied' forms.
             if (content.Controls.Count > 0 && content.Controls[0] is EditorObject)
                 content.FormClosing += Content_FormClosing;
 
             content.Show(DockTest, state);
-        }
-
-        public void RegisterOpenFileType(string typeName, string filters)
-        {
-            _openFileTypes[filters] = typeName;
-        }
-
-        public void UnregisterOpenFileType(string filters)
-        {
-            if (!_openFileTypes.ContainsKey(filters)) return;
-            _openFileTypes.Remove(filters);
         }
 
         public DockContentCollection GetDocuments()
@@ -304,18 +294,10 @@ namespace Sphere_Editor
         private void AddDocument(Control control, string text)
         {
             DockContent content;
-            if (control is AudioPlayer)
-            {
-                control.Dock = DockStyle.Top;
-                content = FindDocument("Audio") ?? new DockContent();
-            }
-            else
-            {
-                Drawer2 drawer2 = control as Drawer2;
-                if (drawer2 != null) drawer2.CanDirty = true;
-                control.Dock = DockStyle.Fill;
-                content = new DockContent();
-            }
+            Drawer2 drawer2 = control as Drawer2;
+            if (drawer2 != null) drawer2.CanDirty = true;
+            control.Dock = DockStyle.Fill;
+            content = new DockContent();
             content.Controls.Add(control);
             if (DockTest.DocumentsCount == 0) content.Show(DockTest, DockState.Document);
             else content.Show(DockTest.Panes[0], null);
@@ -436,12 +418,6 @@ namespace Sphere_Editor
         {
             _currentControl = new ScriptEditor();
             LoadDocument(_currentControl, filename);
-        }
-
-        public void OpenSound(string filename)
-        {
-            _currentControl = null;
-            AddDocument(new AudioPlayer(filename), "Audio");
         }
 
         public void OpenSpriteset(string filename)

@@ -10,8 +10,8 @@ namespace FontPlugin
     {
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "A Sphere font importer."; } }
-        public string Version { get { return "1.0"; } }
+        public string Description { get { return "Convert TTF fonts to .rfn for use with Sphere."; } }
+        public string Version { get { return "1.1.6.0"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
@@ -66,7 +66,7 @@ namespace FontPlugin
 
         public void Initialize()
         {
-            Host.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
+            PluginManager.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
             Host.TryEditFile += host_TryEditFile;
             
             Host.AddMenuItem("File.New", _newFontItem);
@@ -74,8 +74,8 @@ namespace FontPlugin
 
         public void Destroy()
         {
+            PluginManager.UnregisterOpenFileType(OpenFileFilters);
             Host.TryEditFile -= host_TryEditFile;
-            Host.UnregisterOpenFileType(OpenFileFilters);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -40,19 +41,6 @@ namespace Sphere.Plugins
         /// Add event handlers to do things when a project closes.
         /// </summary>
         event EventHandler UnloadProject;
-
-        /// <summary>
-        /// Adds a filetype to the Sphere Studio open file dialog.
-        /// </summary>
-        /// <param name="typeName">The pluralized name of the filetype, e.g. "Images"</param>
-        /// <param name="filters">A semicolon-delimited list of file filters for this filetype, e.g. "*.jpg;*.png;*.bmp"</param>
-        void RegisterOpenFileType(string typeName, string filters);
-
-        /// <summary>
-        /// Unregisters a filetype previously registered with RegisterFileType.
-        /// </summary>
-        /// <param name="filters">The file filters for the filetype, as passed to RegisterFileType.</param>
-        void UnregisterOpenFileType(string filters);
 
         /// <summary>
         /// Adds a control to the main dock panel, at the associated state.

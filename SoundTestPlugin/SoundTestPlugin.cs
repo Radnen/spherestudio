@@ -6,12 +6,12 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SoundTestPlugin
 {
-    class SoundTestPlugin : IPlugin
+    public class SoundTestPlugin : IPlugin
     {
         public string Name { get { return "Sound Test"; } }
-        public string Author { get { return "Bruce Pascoe"; } }
+        public string Author { get { return "Lord English"; } }
         public string Description { get { return "Listen to sounds from your game while you work! :o)"; } }
-        public string Version { get { return "1.0"; } }
+        public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; set; }
 
         public IPluginHost Host { get; set; }
@@ -71,7 +71,7 @@ namespace SoundTestPlugin
             _content.DockHandler.HideOnClose = true;
             _content.Icon = Icon;
             Host.DockControl(_content, DockState.DockLeft);
-            Host.RegisterOpenFileType("Audio", OpenFileFilter);
+            PluginManager.RegisterOpenFileType("Audio", OpenFileFilter);
             Host.LoadProject += host_LoadProject;
             Host.UnloadProject += host_UnloadProject;
             Host.TestGame += host_TestGame;
@@ -81,7 +81,7 @@ namespace SoundTestPlugin
 
         public void Destroy()
         {
-            Host.UnregisterOpenFileType(OpenFileFilter);
+            PluginManager.UnregisterOpenFileType(OpenFileFilter);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
             Host.RemoveControl("Sound Test");
