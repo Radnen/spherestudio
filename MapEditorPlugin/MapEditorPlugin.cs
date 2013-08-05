@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
 
-namespace MapEditorPlugin
+namespace MapEditPlugin
 {
     public class MapEditorPlugin : IPlugin
     {
@@ -23,7 +23,7 @@ namespace MapEditorPlugin
         public MapEditorPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
-            _extensions.AddRange(new[]{ ".rmp" });
+            _extensions.AddRange(new[] { ".rmp" });
             _newMapMenuItem.Click += _newMapMenuItem_Click;
         }
 
@@ -31,12 +31,13 @@ namespace MapEditorPlugin
         {
             PluginData.Host = Host;
             Host.AddMenuItem("File.New", _newMapMenuItem);
-            Host.RegisterOpenFileType("Sphere map files", _mapOpenFilters);
+            PluginManager.RegisterOpenFileType("Sphere Map Files", _mapOpenFilters);
             Host.TryEditFile += Host_TryEditFile;
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterOpenFileType(_mapOpenFilters);
             Host.TryEditFile -= Host_TryEditFile;
         }
 

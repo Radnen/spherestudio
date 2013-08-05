@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Components
+﻿namespace MapEditPlugin.Components
 {
     partial class MapControl
     {
@@ -77,7 +77,7 @@
             // 
             // SelectItem
             // 
-            this.SelectItem.Image = global::MapEditorPlugin.Properties.Resources.pencil;
+            this.SelectItem.Image = global::MapEditPlugin.Properties.Resources.pencil;
             this.SelectItem.Name = "SelectItem";
             this.SelectItem.Size = new System.Drawing.Size(152, 22);
             this.SelectItem.Text = "Select &Tile";
@@ -85,7 +85,7 @@
             // 
             // SetStartItem
             // 
-            this.SetStartItem.Image = global::MapEditorPlugin.Properties.Resources.startpos;
+            this.SetStartItem.Image = global::MapEditPlugin.Properties.Resources.startpos;
             this.SetStartItem.Name = "SetStartItem";
             this.SetStartItem.Size = new System.Drawing.Size(152, 22);
             this.SetStartItem.Text = "Set &Start";
@@ -121,7 +121,7 @@
             // 
             // PersonItem
             // 
-            this.PersonItem.Image = global::MapEditorPlugin.Properties.Resources.person;
+            this.PersonItem.Image = global::MapEditPlugin.Properties.Resources.person;
             this.PersonItem.Name = "PersonItem";
             this.PersonItem.Size = new System.Drawing.Size(112, 22);
             this.PersonItem.Text = "Person";
@@ -129,7 +129,7 @@
             // 
             // TriggerItem
             // 
-            this.TriggerItem.Image = global::MapEditorPlugin.Properties.Resources.trigger;
+            this.TriggerItem.Image = global::MapEditPlugin.Properties.Resources.trigger;
             this.TriggerItem.Name = "TriggerItem";
             this.TriggerItem.Size = new System.Drawing.Size(112, 22);
             this.TriggerItem.Text = "Trigger";

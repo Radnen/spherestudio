@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
 
 namespace ImageEditPlugin
 {
-    public class ImageEditPlugin : IPlugin
+    public class ImageEditPlugin : IEditorPlugin
     {
         public string Name { get { return "Image Editor"; } }
         public string Author { get { return "Radnen"; } }
@@ -21,23 +22,32 @@ namespace ImageEditPlugin
         
         public IPluginHost Host { get; set; }
 
+        #region IEditor implementation
+        public EditorObject CreateEditControl()
+        {
+            return new Drawer2();
+        }
+        #endregion
+
         public ImageEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
-            _extensions.AddRange(new[]{ ".bmp", ".gif", ".jpg", ".png" });
+            _extensions.AddRange(new[] { ".bmp", ".gif", ".jpg", ".png" });
             _newImageMenuItem.Click += _newImageMenuItem_Click;
         }
 
         public void Initialize()
         {
             PluginData.Host = Host;
+            PluginManager.RegisterEditor(EditorType.Image, this);
+            PluginManager.RegisterOpenFileType("Images", _openFileFilters);
             Host.AddMenuItem("File.New", _newImageMenuItem);
-            Host.RegisterOpenFileType("Image files", _openFileFilters);
             Host.TryEditFile += Host_TryEditFile;
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterEditor(this);
             Host.TryEditFile -= Host_TryEditFile;
         }
 

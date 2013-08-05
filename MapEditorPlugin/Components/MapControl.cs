@@ -7,10 +7,10 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Core.Utility;
-using MapEditorPlugin.Forms;
-using MapEditorPlugin.UndoRedo;
+using MapEditPlugin.Forms;
+using MapEditPlugin.UndoRedo;
 
-namespace MapEditorPlugin.Components
+namespace MapEditPlugin.Components
 {
     internal partial class MapControl : UserControl
     {

@@ -1,6 +1,6 @@
-﻿namespace MapEditPlugin.Components
+﻿namespace Sphere.Plugins.Shims
 {
-    partial class ScriptEditor
+    partial class ImageEditShim
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,18 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.statusLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // ScriptEditor
+            // statusLabel
+            // 
+            this.statusLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusLabel.Location = new System.Drawing.Point(0, 0);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(315, 259);
+            this.statusLabel.TabIndex = 0;
+            this.statusLabel.Text = "Image Editor";
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ImageEditShim
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "ScriptEditor";
+            this.Controls.Add(this.statusLabel);
+            this.Name = "ImageEditShim";
+            this.Size = new System.Drawing.Size(315, 259);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Label statusLabel;
     }
 }

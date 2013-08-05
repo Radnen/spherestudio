@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin
+﻿namespace MapEditPlugin
 {
     partial class MapEditor
     {
@@ -42,7 +42,7 @@
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.mapSplitter = new System.Windows.Forms.SplitContainer();
             this.MapToolContainer = new System.Windows.Forms.ToolStripContainer();
-            this.MapControl = new Components.MapControl();
+            this.MapControl = new MapEditPlugin.Components.MapControl();
             this.mapstatus = new System.Windows.Forms.StatusStrip();
             this.map_pos_label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -63,13 +63,13 @@
             this.ShowNumButton = new System.Windows.Forms.ToolStripButton();
             this.EditorTabs = new System.Windows.Forms.TabControl();
             this.imageTab = new System.Windows.Forms.TabPage();
-            this.TileDrawer = new Components.Drawer2();
+            this.TileDrawer = new Sphere.Plugins.Shims.ImageEditShim();
             this.tileTab = new System.Windows.Forms.TabPage();
-            this.TileEditor = new Components.TileEditor();
+            this.TileEditor = new MapEditPlugin.Components.TileEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.LayerEditor = new Components.LayerPanel();
+            this.LayerEditor = new MapEditPlugin.Components.LayerPanel();
             this.TilesetPanel = new Sphere.Core.Editor.EditorPanel();
-            this.TilesetControl = new Components.TilesetControl2();
+            this.TilesetControl = new MapEditPlugin.Components.TilesetControl2();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
@@ -214,7 +214,7 @@
             this.MapControl.Size = new System.Drawing.Size(457, 158);
             this.MapControl.TabIndex = 1;
             this.MapControl.Tiles = null;
-            this.MapControl.Tool = Components.MapControl.MapTool.Pen;
+            this.MapControl.Tool = MapEditPlugin.Components.MapControl.MapTool.Pen;
             this.MapControl.PropChanged += new System.EventHandler(this.MapControl_PropChanged);
             this.MapControl.Edited += new System.EventHandler(this.MapControl_Edited);
             this.MapControl.Paint += new System.Windows.Forms.PaintEventHandler(this.MapControl_Paint);
@@ -269,7 +269,7 @@
             this.PenButton.Checked = true;
             this.PenButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PenButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.PenButton.Image = global::MapEditorPlugin.Properties.Resources.pencil;
+            this.PenButton.Image = global::MapEditPlugin.Properties.Resources.pencil;
             this.PenButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PenButton.Name = "PenButton";
             this.PenButton.Size = new System.Drawing.Size(23, 22);
@@ -279,7 +279,7 @@
             // LineButton
             // 
             this.LineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LineButton.Image = global::MapEditorPlugin.Properties.Resources.line;
+            this.LineButton.Image = global::MapEditPlugin.Properties.Resources.line;
             this.LineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LineButton.Name = "LineButton";
             this.LineButton.Size = new System.Drawing.Size(23, 22);
@@ -289,7 +289,7 @@
             // RectangleButton
             // 
             this.RectangleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.RectangleButton.Image = global::MapEditorPlugin.Properties.Resources.rectangle;
+            this.RectangleButton.Image = global::MapEditPlugin.Properties.Resources.rectangle;
             this.RectangleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RectangleButton.Name = "RectangleButton";
             this.RectangleButton.Size = new System.Drawing.Size(23, 22);
@@ -299,7 +299,7 @@
             // FloodFillButton
             // 
             this.FloodFillButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.FloodFillButton.Image = global::MapEditorPlugin.Properties.Resources.paintcan;
+            this.FloodFillButton.Image = global::MapEditPlugin.Properties.Resources.paintcan;
             this.FloodFillButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FloodFillButton.Name = "FloodFillButton";
             this.FloodFillButton.Size = new System.Drawing.Size(23, 22);
@@ -314,7 +314,7 @@
             // zoomInButton
             // 
             this.zoomInButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.zoomInButton.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_in;
+            this.zoomInButton.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_in;
             this.zoomInButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoomInButton.Name = "zoomInButton";
             this.zoomInButton.Size = new System.Drawing.Size(23, 22);
@@ -325,7 +325,7 @@
             // 
             this.zoomOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.zoomOutButton.Enabled = false;
-            this.zoomOutButton.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_out;
+            this.zoomOutButton.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_out;
             this.zoomOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoomOutButton.Name = "zoomOutButton";
             this.zoomOutButton.Size = new System.Drawing.Size(23, 22);
@@ -341,7 +341,7 @@
             // 
             this.undoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.undoButton.Enabled = false;
-            this.undoButton.Image = global::MapEditorPlugin.Properties.Resources.arrow_undo;
+            this.undoButton.Image = global::MapEditPlugin.Properties.Resources.arrow_undo;
             this.undoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(23, 22);
@@ -352,7 +352,7 @@
             // 
             this.redoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.redoButton.Enabled = false;
-            this.redoButton.Image = global::MapEditorPlugin.Properties.Resources.arrow_redo;
+            this.redoButton.Image = global::MapEditPlugin.Properties.Resources.arrow_redo;
             this.redoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.redoButton.Name = "redoButton";
             this.redoButton.Size = new System.Drawing.Size(23, 22);
@@ -367,7 +367,7 @@
             // showCameraButton
             // 
             this.showCameraButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.showCameraButton.Image = global::MapEditorPlugin.Properties.Resources.eye;
+            this.showCameraButton.Image = global::MapEditPlugin.Properties.Resources.eye;
             this.showCameraButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.showCameraButton.Name = "showCameraButton";
             this.showCameraButton.Size = new System.Drawing.Size(23, 22);
@@ -377,7 +377,7 @@
             // zoneButton
             // 
             this.zoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.zoneButton.Image = global::MapEditorPlugin.Properties.Resources.zone;
+            this.zoneButton.Image = global::MapEditPlugin.Properties.Resources.zone;
             this.zoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoneButton.Name = "zoneButton";
             this.zoneButton.Size = new System.Drawing.Size(23, 22);
@@ -387,7 +387,7 @@
             // EntityButton
             // 
             this.EntityButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EntityButton.Image = global::MapEditorPlugin.Properties.Resources.arrow_inout;
+            this.EntityButton.Image = global::MapEditPlugin.Properties.Resources.arrow_inout;
             this.EntityButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EntityButton.Name = "EntityButton";
             this.EntityButton.Size = new System.Drawing.Size(23, 22);
@@ -398,7 +398,7 @@
             // 
             this.ShowNumButton.CheckOnClick = true;
             this.ShowNumButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ShowNumButton.Image = global::MapEditorPlugin.Properties.Resources.style;
+            this.ShowNumButton.Image = global::MapEditPlugin.Properties.Resources.style;
             this.ShowNumButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ShowNumButton.Name = "ShowNumButton";
             this.ShowNumButton.Size = new System.Drawing.Size(23, 22);
@@ -429,10 +429,7 @@
             // 
             // TileDrawer
             // 
-            this.TileDrawer.CanDirty = false;
             this.TileDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TileDrawer.FixedSize = true;
-            this.TileDrawer.HelpLabel = null;
             this.TileDrawer.Location = new System.Drawing.Point(3, 3);
             this.TileDrawer.Name = "TileDrawer";
             this.TileDrawer.Size = new System.Drawing.Size(443, 210);
@@ -517,9 +514,9 @@
             this.TilesetControl.Size = new System.Drawing.Size(0, 298);
             this.TilesetControl.TabIndex = 0;
             this.TilesetControl.Tileset = null;
-            this.TilesetControl.TileSelected += new Components.TilesetControl2.SelectedHandler(this.TilesetControl_TileSelected);
-            this.TilesetControl.TileRemoved += new Components.TilesetControl2.TileHandler(this.TilesetControl_TileRemoved);
-            this.TilesetControl.TileAdded += new Components.TilesetControl2.TileHandler(this.TilesetControl_TileAdded);
+            this.TilesetControl.TileSelected += new MapEditPlugin.Components.TilesetControl2.SelectedHandler(this.TilesetControl_TileSelected);
+            this.TilesetControl.TileRemoved += new MapEditPlugin.Components.TilesetControl2.TileHandler(this.TilesetControl_TileRemoved);
+            this.TilesetControl.TileAdded += new MapEditPlugin.Components.TilesetControl2.TileHandler(this.TilesetControl_TileAdded);
             // 
             // MapEditor
             // 
@@ -586,7 +583,6 @@
         private System.Windows.Forms.ToolStripStatusLabel map_pos_label;
         private Components.LayerPanel LayerEditor;
         private System.Windows.Forms.ToolStripButton EntityButton;
-        private Components.Drawer2 TileDrawer;
         private System.Windows.Forms.ToolStripButton LineButton;
         private System.Windows.Forms.ToolStripButton FloodFillButton;
         private System.Windows.Forms.ToolStripButton showCameraButton;
@@ -597,6 +593,7 @@
         public Components.TilesetControl2 TilesetControl;
         public Components.MapControl MapControl;
         private System.Windows.Forms.ToolStripButton ShowNumButton;
+        private Sphere.Plugins.Shims.ImageEditShim TileDrawer;
 
     }
 }

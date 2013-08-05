@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace MapEditorPlugin.Forms
+namespace MapEditPlugin.Forms
 {
     public partial class NewMapDialogue : Form
     {

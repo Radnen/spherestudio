@@ -130,90 +130,89 @@
   <data name="TilesetControl.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        6QAACukB/XXO0wAAAAd0SU1FB9oICQctIsIMnCwAABMbSURBVHhe7duhEcNAEARB5R+VMrPJ8GvxbfJo
+        6tHCe96Pfh+VsTJWxspYGStjZayMlbEyVsbKWBkrYxvAoYyVsTJWxspYGStjZayMlbEN4FDGylgZK2Nl
+        rIyVsTJWxsrYBnAoY2WsjJWxMlbGylgZK2NlbAM4lLEyVsbKWBkrY2WsjJWxMrYBHMpYGStjZayMlbEy
+        VsbKWBnbAA5lrIyVsTJWxspYGStjZayMbQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWxMlbGylgZ
+        K2MbwKGMlbEyVsbKWBkrY2WsjJWxDeBQxspYGStjZayMlbEyVsbK2AZwKGNlrIyVsTJWxspYGStjZWwD
+        OJSxMlbGylgZK2NlrIyVsTK2ARzKWBkrY2WsjJWxMlbGylgZ2wAOZayMlbEyVsbKWBkrY2WsjG0AhzJW
+        xspYGStjZayMlbEyVsaeXtY/rIyVsTJWxspYGStjZayMlbEyVsbKWBnbAA5lrIyVsTJWxspYGStjZayM
+        bQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWxMlbGylgZK2MbwKGMlbEyVsbKWBkrY2WsjJWxDeBQ
+        xspYGStjZayMlbEyVsbK2AZwKGNlrIyVsTJWxspYGStjZWwDOJSxMlbGylgZK2NlrIyVsTK2ARzKWBkr
+        Y2WsjJWxMlbGylgZ2wAOZayMlbEyVsbKWBkrY2WsjG0AhzJWxspYGStjZayMlbEyVsY2gEMZK2NlrIyV
+        sTJWxspYGStjG8ChjJWxMlbGylgZK2NlrIyVsQ3gUMbKWBkrY2WsjJWxMlbGytgGcChjZayMlbEyVsbK
+        WBkrY2VsAziUsTJWxspYGStjZayMlbEytoOYQxkrY2WsjJWxMlbGylgZK2MbwKGMlbEyVsbKWBkrY2Ws
+        jJWxDeBQxspYGStjZayMlbEyVsbK2AZwKGNlrIyVsTJWxspYGStjZWwDOJSxMlbGylgZK2NlrIyVsTK2
+        ARzKWBkrY2WsjJWxMlbGylgZ2wAOZayMlbEyVsbKWBkrY2WsjG0AhzJWxspYGStjZayMlbEyVsY2gEMZ
+        K2NlrIyVsTJWxspYGStjG8ChjJWxMlbGylgZK2NlrIyVsQ3gUMbKWBkrY2WsjJWxMlbGytgGcChjZayM
+        lbEyVsbKWBkrY2VsAziUsTJWxspYGStjZayMlbEytgEcylgZK2NlrIyVsTJWxspYGdsADmWsjJWxMlbG
+        ylgZK2NlrIxtAIcyVsbKWBkrY2WsjJWxMlbGdhBzKGNlrIyVsTJWxspYGStjZWwDOJSxMlbGylgZK2Nl
+        rIyVsTK2ARzKWBkrY2WsjJWxMlbGylgZ2wAOZayMlbEyVsbKWBkrY2WsjG0AhzJWxspYGStjZayMlbEy
+        VsY2gEMZK2NlrIyVsTJWxspYGStjG8ChjJWxMlbGylgZK2NlrIyVsQ3gUMbKWBkrY2WsjJWxMlbGytgG
+        cChjZayMlbEyVsbKWBkrY2VsAziUsTJWxspYGStjZayMlbEytgEcylgZK2NlrIyVsTJWxspYGdsADmWs
+        jJWxMlbGylgZK2NlrIxtAIcyVsbKWBkrY2WsjJWxMlbGNoBDGStjZayMlbEyVsbKWBkrYxvAoYyVsTJW
+        xspYGStjZayMlbEN4FDGylgZK2NlrIyVsTJWxsrYDmIOZayMlbEyVsbKWBkrY2WsjG0AhzJWxspYGStj
+        ZayMlbEyVsY2gEMZK2NlrIyVsTJWxspYGStjG8ChjJWxMlbGylgZK2NlrIyVsQ3gUMbKWBkrY2WsjJWx
+        MlbGytgGcChjZayMlbEyVsbKWBkrY2VsAziUsTJWxspYGStjZayMlbEytgEcylgZK2NlrIyVsTJWxspY
+        GdsADmWsjJWxMlbGylgZK2NlrIxtAIcyVsbKWBkrY2WsjJWxMlbGNoBDGStjZayMlbEyVsbKWBkrYxvA
+        oYyVsTJWxspYGStjZayMlbEN4FDGylgZK2NlrIyVsTJWxsrYBnAoY2WsjJWxMlbGylgZK2NlbAM4lLEy
+        VsbKWBkrY2WsjJWxMrYBHMpYGStjZayMlbEyVsbKWBnbQcyhjJWxMlbGylgZK2NlrIyVsQ3gUMbKWBkr
         Y2WsjJWxMlbGytgGcChjZayMlbEyVsbKWBkrY2VsAziUsTJWxspYGStjZayMlbEytgEcylgZK2NlrIyV
         sTJWxspYGdsADmWsjJWxMlbGylgZK2NlrIxtAIcyVsbKWBkrY2WsjJWxMlbGNoBDGStjZayMlbEyVsbK
         WBkrYxvAoYyVsTJWxspYGStjZayMlbEN4FDGylgZK2NlrIyVsTJWxsrYBnAoY2WsjJWxMlbGylgZK2Nl
-        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
+        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
-        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
+        ZayMbQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWxMlbGylgZK2MbwKGMlbEyVsbKWBkrY2WsjJWx
+        DeBQxspYGStjZayMlbEyVsbK2AZwKGNlrIyVsTJWxspYGStjZWwHMYcyVsbKWBkrY2WsjJWxMlbGNoBD
         GStjZayMlbEyVsbKWBkrYxvAoYyVsTJWxspYGStjZayMlbEN4FDGylgZK2NlrIyVsTJWxsrYBnAoY2Ws
         jJWxMlbGylgZK2NlbAM4lLEyVsbKWBkrY2WsjJWxMrYBHMpYGStjZayMlbEyVsbKWBnbAA5lrIyVsTJW
         xspYGStjZayMbQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWxMlbGylgZK2MbwKGMlbEyVsbKWBkr
-        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
+        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
-        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
+        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
-        GStjZayMlbEyVsY2gEMZK2NlrIyVsTJWxspYGStjO4g5lLEyVsbKWBkrY2WsjJWxMrYBHMpYGStjZayM
-        lbEyVsbKWBnbAA5lrIyVsTJWxspYGStjZayMbQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWxMlbG
+        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
-        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
+        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
-        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
+        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
-        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
+        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
-        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
+        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
-        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
+        VsbKWBnbAA5lrIyVsTJWxspYGStjZayMbQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWxMlbGylgZ
+        K2MbwKGMlbEyVsbKWBkrY2WsjJWxDeBQxspYGStjZayMlbEyVsbK2AZwKGNlrIyVsTJWxspYGStjZWwH
+        MYcyVsbKWBkrY2WsjJWxMlbGNoBDGStjZayMlbEyVsbKWBkrYxvAoYyVsTJWxspYGStjZayMlbEN4FDG
         ylgZK2NlrIyVsTJWxsrYBnAoY2WsjJWxMlbGylgZK2NlbAM4lLEyVsbKWBkrY2WsjJWxMrYBHMpYGStj
         ZayMlbEyVsbKWBnbAA5lrIyVsTJWxspYGStjZayMbQCHMlbGylgZK2NlrIyVsTJWxjaAQxkrY2WsjJWx
-        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
-        OKdDHMpwsgAAAABJRU5ErkJggg==
+        MlbGylgZK2MbwKGMlbEyVsbKWBkrY2WsjJWxDeBQxspYGStjZayMlbEyVsbK2AZwKGNlrIyVsTJWxspY
+        GStjZWwDOJSxMlbGylgZK2NlrIyVsTK2ARzKWBkrY2WsjJWxMlbGylgZ2wAOZayMlbEyVsbKWBkrY2Ws
+        DL3vH1s4p0McynCyAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="TilesetControl.Selected" mimetype="application/x-microsoft.net.object.binary.base64">

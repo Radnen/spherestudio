@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Components
+﻿namespace MapEditPlugin.Components
 {
     partial class TileEditor
     {
@@ -99,7 +99,7 @@
             this.EditorLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.EditorLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.EditorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EditorLabel.Image = global::MapEditorPlugin.Properties.Resources.BarImage;
+            this.EditorLabel.Image = global::MapEditPlugin.Properties.Resources.BarImage;
             this.EditorLabel.Location = new System.Drawing.Point(0, 0);
             this.EditorLabel.Name = "EditorLabel";
             this.EditorLabel.Size = new System.Drawing.Size(277, 23);
@@ -122,7 +122,7 @@
             // TileImage
             // 
             this.TileImage.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.TileImage.BackgroundImage = global::MapEditorPlugin.Properties.Resources.editbg2;
+            this.TileImage.BackgroundImage = global::MapEditPlugin.Properties.Resources.editbg2;
             this.TileImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TileImage.Location = new System.Drawing.Point(150, 103);
             this.TileImage.Name = "TileImage";
@@ -138,7 +138,7 @@
             // ZoomStatusStrip
             // 
             this.ZoomStatusStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.ZoomStatusStrip.BackgroundImage = global::MapEditorPlugin.Properties.Resources.BarImage;
+            this.ZoomStatusStrip.BackgroundImage = global::MapEditPlugin.Properties.Resources.BarImage;
             this.ZoomStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ZoomLabel});
             this.ZoomStatusStrip.Location = new System.Drawing.Point(0, 315);
@@ -185,7 +185,7 @@
             this.LineButton.CheckOnClick = true;
             this.LineButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LineButton.Image = global::MapEditorPlugin.Properties.Resources.line;
+            this.LineButton.Image = global::MapEditPlugin.Properties.Resources.line;
             this.LineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LineButton.Name = "LineButton";
             this.LineButton.Size = new System.Drawing.Size(29, 20);
@@ -196,7 +196,7 @@
             // 
             this.RectangleButton.CheckOnClick = true;
             this.RectangleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.RectangleButton.Image = global::MapEditorPlugin.Properties.Resources.rectangle;
+            this.RectangleButton.Image = global::MapEditPlugin.Properties.Resources.rectangle;
             this.RectangleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RectangleButton.Name = "RectangleButton";
             this.RectangleButton.Size = new System.Drawing.Size(29, 20);
@@ -207,7 +207,7 @@
             // 
             this.ClearObstButton.CheckOnClick = true;
             this.ClearObstButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ClearObstButton.Image = global::MapEditorPlugin.Properties.Resources.delete;
+            this.ClearObstButton.Image = global::MapEditPlugin.Properties.Resources.delete;
             this.ClearObstButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ClearObstButton.Name = "ClearObstButton";
             this.ClearObstButton.Size = new System.Drawing.Size(29, 20);
@@ -222,7 +222,7 @@
             // ZoomInButton
             // 
             this.ZoomInButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ZoomInButton.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_in;
+            this.ZoomInButton.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_in;
             this.ZoomInButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomInButton.Name = "ZoomInButton";
             this.ZoomInButton.Size = new System.Drawing.Size(29, 20);
@@ -232,7 +232,7 @@
             // ZoomOutButton
             // 
             this.ZoomOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ZoomOutButton.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_out;
+            this.ZoomOutButton.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_out;
             this.ZoomOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomOutButton.Name = "ZoomOutButton";
             this.ZoomOutButton.Size = new System.Drawing.Size(29, 20);
@@ -258,7 +258,7 @@
             this.UpperRightItem,
             this.LowerRightItem,
             this.LowerLeftItem});
-            this.PresetButton.Image = global::MapEditorPlugin.Properties.Resources.add;
+            this.PresetButton.Image = global::MapEditPlugin.Properties.Resources.add;
             this.PresetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PresetButton.Name = "PresetButton";
             this.PresetButton.Size = new System.Drawing.Size(27, 20);
@@ -266,7 +266,7 @@
             // 
             // NoneItem
             // 
-            this.NoneItem.Image = global::MapEditorPlugin.Properties.Resources.cross;
+            this.NoneItem.Image = global::MapEditPlugin.Properties.Resources.cross;
             this.NoneItem.Name = "NoneItem";
             this.NoneItem.Size = new System.Drawing.Size(152, 22);
             this.NoneItem.Text = "None";
@@ -274,7 +274,7 @@
             // 
             // FullItem
             // 
-            this.FullItem.Image = global::MapEditorPlugin.Properties.Resources.rectangle;
+            this.FullItem.Image = global::MapEditPlugin.Properties.Resources.rectangle;
             this.FullItem.Name = "FullItem";
             this.FullItem.Size = new System.Drawing.Size(152, 22);
             this.FullItem.Text = "Full";
@@ -345,7 +345,7 @@
             // 
             this.PlayAnimButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.PlayAnimButton.Enabled = false;
-            this.PlayAnimButton.Image = global::MapEditorPlugin.Properties.Resources.resultset_next;
+            this.PlayAnimButton.Image = global::MapEditPlugin.Properties.Resources.resultset_next;
             this.PlayAnimButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PlayAnimButton.Name = "PlayAnimButton";
             this.PlayAnimButton.Size = new System.Drawing.Size(29, 20);
@@ -355,7 +355,7 @@
             // 
             this.StopAnimButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.StopAnimButton.Enabled = false;
-            this.StopAnimButton.Image = global::MapEditorPlugin.Properties.Resources.cross;
+            this.StopAnimButton.Image = global::MapEditPlugin.Properties.Resources.cross;
             this.StopAnimButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.StopAnimButton.Name = "StopAnimButton";
             this.StopAnimButton.Size = new System.Drawing.Size(29, 20);
@@ -480,7 +480,7 @@
             // BackButton
             // 
             this.BackButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.BackButton.Image = global::MapEditorPlugin.Properties.Resources.resultset_previous;
+            this.BackButton.Image = global::MapEditPlugin.Properties.Resources.resultset_previous;
             this.BackButton.Location = new System.Drawing.Point(53, 41);
             this.BackButton.Name = "BackButton";
             this.BackButton.Size = new System.Drawing.Size(75, 27);
@@ -493,7 +493,7 @@
             // NextButton
             // 
             this.NextButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.NextButton.Image = global::MapEditorPlugin.Properties.Resources.resultset_next;
+            this.NextButton.Image = global::MapEditPlugin.Properties.Resources.resultset_next;
             this.NextButton.Location = new System.Drawing.Point(134, 41);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(75, 27);
@@ -565,7 +565,7 @@
             this.AnimLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.AnimLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.AnimLabel.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AnimLabel.Image = global::MapEditorPlugin.Properties.Resources.BarImage;
+            this.AnimLabel.Image = global::MapEditPlugin.Properties.Resources.BarImage;
             this.AnimLabel.Location = new System.Drawing.Point(0, 0);
             this.AnimLabel.Name = "AnimLabel";
             this.AnimLabel.Size = new System.Drawing.Size(263, 23);
@@ -597,7 +597,7 @@
             // 
             // ZoomInItem
             // 
-            this.ZoomInItem.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_in;
+            this.ZoomInItem.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_in;
             this.ZoomInItem.Name = "ZoomInItem";
             this.ZoomInItem.Size = new System.Drawing.Size(189, 22);
             this.ZoomInItem.Text = "Zoom &In";
@@ -605,7 +605,7 @@
             // 
             // ZoomOutItem
             // 
-            this.ZoomOutItem.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_out;
+            this.ZoomOutItem.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_out;
             this.ZoomOutItem.Name = "ZoomOutItem";
             this.ZoomOutItem.Size = new System.Drawing.Size(189, 22);
             this.ZoomOutItem.Text = "Zoom &Out";
@@ -618,7 +618,7 @@
             // 
             // ClearItem
             // 
-            this.ClearItem.Image = global::MapEditorPlugin.Properties.Resources.delete;
+            this.ClearItem.Image = global::MapEditPlugin.Properties.Resources.delete;
             this.ClearItem.Name = "ClearItem";
             this.ClearItem.Size = new System.Drawing.Size(189, 22);
             this.ClearItem.Text = "Clear &All Obstructions";

@@ -24,6 +24,7 @@ namespace Sphere_Editor
         private readonly ProjectTree _tree;
         private bool _firsttime;
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string,string>();
+        private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType,IEditorPlugin>();
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
@@ -72,11 +73,9 @@ namespace Sphere_Editor
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                dialog.Filter = @"Images|*.png;*.gif;*.jpg;*.bmp|"
-                                + @"Sphere Maps|*.rmp;*.rts|"
-                                + @"Sphere Spritesets|*.rss|"
+                dialog.Filter = @"Sphere Spritesets|*.rss|"
                                 + @"Sphere Windowstyles|*.rws";
-                foreach (string filter in _openFileTypes.Keys)
+                foreach (string filter in PluginManager.OpenFileTypes.Keys)
                 {
                     dialog.Filter += String.Format("|{0}|{1}", _openFileTypes[filter], filter);
                 }
@@ -171,17 +170,6 @@ namespace Sphere_Editor
                 content.FormClosing += Content_FormClosing;
 
             content.Show(DockTest, state);
-        }
-
-        public void RegisterOpenFileType(string typeName, string filters)
-        {
-            _openFileTypes[filters] = typeName;
-        }
-
-        public void UnregisterOpenFileType(string filters)
-        {
-            if (!_openFileTypes.ContainsKey(filters)) return;
-            _openFileTypes.Remove(filters);
         }
 
         public DockContentCollection GetDocuments()

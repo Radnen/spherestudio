@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Forms
+﻿namespace MapEditPlugin.Forms
 {
     partial class PersonForm
     {
@@ -163,7 +163,7 @@
             // SpritesetButton
             // 
             this.SpritesetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpritesetButton.Image = global::MapEditorPlugin.Properties.Resources.palette;
+            this.SpritesetButton.Image = global::MapEditPlugin.Properties.Resources.palette;
             this.SpritesetButton.Location = new System.Drawing.Point(344, 38);
             this.SpritesetButton.Name = "SpritesetButton";
             this.SpritesetButton.Size = new System.Drawing.Size(24, 23);
@@ -186,7 +186,7 @@
             // 
             // SpritePreview
             // 
-            this.SpritePreview.BackgroundImage = global::MapEditorPlugin.Properties.Resources.editbg;
+            this.SpritePreview.BackgroundImage = global::MapEditPlugin.Properties.Resources.editbg;
             this.SpritePreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SpritePreview.Location = new System.Drawing.Point(16, 24);
             this.SpritePreview.Name = "SpritePreview";
@@ -236,7 +236,7 @@
             // GenerateButton
             // 
             this.GenerateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.GenerateButton.Image = global::MapEditorPlugin.Properties.Resources.arrow_refresh;
+            this.GenerateButton.Image = global::MapEditPlugin.Properties.Resources.arrow_refresh;
             this.GenerateButton.Location = new System.Drawing.Point(344, 10);
             this.GenerateButton.Name = "GenerateButton";
             this.GenerateButton.Size = new System.Drawing.Size(24, 23);

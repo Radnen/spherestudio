@@ -13,14 +13,14 @@ namespace ScriptPlugin
     {
         public string Name { get { return "Script Editor"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "Sphere Studio default script editor."; } }
+        public string Description { get { return "Sphere Studio default script editor"; } }
         public string Version { get { return "1.1.6.0"; } }
 
         public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
         private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" };
-        private const string OpenFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
+        private const string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
         readonly ToolStripMenuItem _autoCompleteItem, _codeFoldItem;
@@ -239,7 +239,7 @@ namespace ScriptPlugin
             Host.TryEditFile += host_TryEditFile;
 
             // register Open dialog file types
-            Host.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
+            PluginManager.RegisterOpenFileType("Script/Text Files", _openFileFilters);
 
             // Show the root menu for this control; appearing before the 'View' menu.
             Host.AddMenuItem(_rootMenu, "View");
@@ -259,7 +259,7 @@ namespace ScriptPlugin
 
         public void Destroy()
         {
-            Host.UnregisterOpenFileType(OpenFileFilters);
+            PluginManager.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
             Host.RemoveMenuItem("ScriptPlugin");
             Host.TryEditFile -= host_TryEditFile;

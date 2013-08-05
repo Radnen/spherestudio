@@ -71,7 +71,7 @@ namespace SoundTestPlugin
             _content.DockHandler.HideOnClose = true;
             _content.Icon = Icon;
             Host.DockControl(_content, DockState.DockLeft);
-            Host.RegisterOpenFileType("Audio", OpenFileFilter);
+            PluginManager.RegisterOpenFileType("Audio", OpenFileFilter);
             Host.LoadProject += host_LoadProject;
             Host.UnloadProject += host_UnloadProject;
             Host.TestGame += host_TestGame;
@@ -81,7 +81,7 @@ namespace SoundTestPlugin
 
         public void Destroy()
         {
-            Host.UnregisterOpenFileType(OpenFileFilter);
+            PluginManager.UnregisterOpenFileType(OpenFileFilter);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
             Host.RemoveControl("Sound Test");

@@ -5,12 +5,13 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 using ImageEditPlugin.Components;
 
 namespace ImageEditPlugin
 {
-    internal partial class Drawer2 : EditorObject
+    internal partial class Drawer2 : EditorObject, IImageEditor
     {
         public event EventHandler ImageEdited;
         public bool CanDirty { get; set; }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
-using MapEditorPlugin.Components;
+using MapEditPlugin.Components;
 
-namespace MapEditorPlugin.Forms
+namespace MapEditPlugin.Forms
 {
     public partial class PersonForm : Form
     {

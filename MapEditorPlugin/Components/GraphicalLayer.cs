@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Sphere.Core;
 
-namespace MapEditorPlugin.Components
+namespace MapEditPlugin.Components
 {
     public class GraphicalLayer : IDisposable
     {

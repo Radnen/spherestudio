@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Forms
+﻿namespace MapEditPlugin.Forms
 {
     partial class NewMapDialogue
     {
@@ -145,7 +145,7 @@
             // 
             this.TilesetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TilesetButton.Enabled = false;
-            this.TilesetButton.Image = global::MapEditorPlugin.Properties.Resources.folder;
+            this.TilesetButton.Image = global::MapEditPlugin.Properties.Resources.folder;
             this.TilesetButton.Location = new System.Drawing.Point(10, 49);
             this.TilesetButton.Name = "TilesetButton";
             this.TilesetButton.Size = new System.Drawing.Size(34, 23);
@@ -187,7 +187,7 @@
             // ImageBox
             // 
             this.ImageBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ImageBox.Image = global::MapEditorPlugin.Properties.Resources.NewMap;
+            this.ImageBox.Image = global::MapEditPlugin.Properties.Resources.NewMap;
             this.ImageBox.InitialImage = null;
             this.ImageBox.Location = new System.Drawing.Point(0, 0);
             this.ImageBox.Name = "ImageBox";

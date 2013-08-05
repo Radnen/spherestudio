@@ -8,7 +8,7 @@ using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Core.Utility;
 
-namespace MapEditorPlugin.Components
+namespace MapEditPlugin.Components
 {
     public partial class TilesetControl2 : UserControl
     {

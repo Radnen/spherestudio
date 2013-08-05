@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Utility;
 
-namespace MapEditorPlugin.Components
+namespace MapEditPlugin.Components
 {
     public partial class TileEditor : UserControl
     {

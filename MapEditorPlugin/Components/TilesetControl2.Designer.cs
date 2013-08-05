@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Components
+﻿namespace MapEditPlugin.Components
 {
     partial class TilesetControl2
     {
@@ -59,7 +59,7 @@
             // 
             // addItem
             // 
-            this.addItem.Image = global::MapEditorPlugin.Properties.Resources.add;
+            this.addItem.Image = global::MapEditPlugin.Properties.Resources.add;
             this.addItem.Name = "addItem";
             this.addItem.Size = new System.Drawing.Size(153, 22);
             this.addItem.Text = "&Add";
@@ -67,7 +67,7 @@
             // 
             // removeItem
             // 
-            this.removeItem.Image = global::MapEditorPlugin.Properties.Resources.cross;
+            this.removeItem.Image = global::MapEditPlugin.Properties.Resources.cross;
             this.removeItem.Name = "removeItem";
             this.removeItem.Size = new System.Drawing.Size(153, 22);
             this.removeItem.Text = "&Remove";
@@ -101,7 +101,7 @@
             // 
             // zoomInItem
             // 
-            this.zoomInItem.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_in;
+            this.zoomInItem.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_in;
             this.zoomInItem.Name = "zoomInItem";
             this.zoomInItem.Size = new System.Drawing.Size(153, 22);
             this.zoomInItem.Text = "Zoom In";
@@ -109,7 +109,7 @@
             // 
             // zoomOutItem
             // 
-            this.zoomOutItem.Image = global::MapEditorPlugin.Properties.Resources.magnifier_zoom_out;
+            this.zoomOutItem.Image = global::MapEditPlugin.Properties.Resources.magnifier_zoom_out;
             this.zoomOutItem.Name = "zoomOutItem";
             this.zoomOutItem.Size = new System.Drawing.Size(153, 22);
             this.zoomOutItem.Text = "Zoom Out";
@@ -119,7 +119,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::MapEditorPlugin.Properties.Resources.editbg2;
+            this.BackgroundImage = global::MapEditPlugin.Properties.Resources.editbg2;
             this.DoubleBuffered = true;
             this.Name = "TilesetControl2";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TilesetControl2_Paint);

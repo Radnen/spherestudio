@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ScintillaNET;
 using Sphere.Core.Editor;
 
-namespace MapEditorPlugin.Components
+namespace MapEditPlugin.Components
 {
     internal partial class ScriptEditor : EditorObject
     {

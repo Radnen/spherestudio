@@ -66,7 +66,7 @@ namespace FontPlugin
 
         public void Initialize()
         {
-            Host.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
+            PluginManager.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
             Host.TryEditFile += host_TryEditFile;
             
             Host.AddMenuItem("File.New", _newFontItem);
@@ -74,8 +74,8 @@ namespace FontPlugin
 
         public void Destroy()
         {
+            PluginManager.UnregisterOpenFileType(OpenFileFilters);
             Host.TryEditFile -= host_TryEditFile;
-            Host.UnregisterOpenFileType(OpenFileFilters);
         }
     }
 }

@@ -7,7 +7,7 @@
     <ProjectGuid>{E17C35BE-A26F-411D-B814-979017F290DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MapEditorPlugin</RootNamespace>
+    <RootNamespace>MapEditPlugin</RootNamespace>
     <AssemblyName>MapEditorPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -83,19 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Drawer2.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\Drawer2.Designer.cs">
-      <DependentUpon>Drawer2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Components\GraphicalLayer.cs" />
-    <Compile Include="Components\ImageEditControl2.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\ImageEditControl2.Designer.cs">
-      <DependentUpon>ImageEditControl2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Components\LayerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -183,13 +171,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Components\Drawer2.resx">
-      <DependentUpon>Drawer2.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\ImageEditControl2.resx">
-      <DependentUpon>ImageEditControl2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Components\LayerControl.resx">
       <DependentUpon>LayerControl.cs</DependentUpon>
     </EmbeddedResource>

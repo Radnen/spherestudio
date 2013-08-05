@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Sphere.Core;
-using MapEditorPlugin.Components;
+using MapEditPlugin.Components;
 
-namespace MapEditorPlugin.Forms
+namespace MapEditPlugin.Forms
 {
     public partial class TriggerForm : Form
     {

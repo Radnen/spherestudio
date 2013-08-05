@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Plugins;
 
-namespace MapEditorPlugin
+namespace MapEditPlugin
 {
     internal static class PluginData
     {

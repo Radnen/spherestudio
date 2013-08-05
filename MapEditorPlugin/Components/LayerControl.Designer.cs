@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Components
+﻿namespace MapEditPlugin.Components
 {
     partial class LayerControl
     {

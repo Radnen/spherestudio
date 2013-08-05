@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere.Core;
 
-namespace MapEditorPlugin.Components
+namespace MapEditPlugin.Components
 {
     public partial class LayerControl : UserControl
     {

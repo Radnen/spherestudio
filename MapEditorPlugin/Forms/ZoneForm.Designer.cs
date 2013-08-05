@@ -1,4 +1,4 @@
-﻿namespace MapEditorPlugin.Forms
+﻿namespace MapEditPlugin.Forms
 {
     partial class ZoneForm
     {

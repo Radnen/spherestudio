@@ -6,12 +6,13 @@ using System.Linq;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
-using MapEditorPlugin.Components;
-using MapEditorPlugin.Forms;
-using MapEditorPlugin.UndoRedo;
+using MapEditPlugin.Components;
+using MapEditPlugin.Forms;
+using MapEditPlugin.UndoRedo;
 
-namespace MapEditorPlugin
+namespace MapEditPlugin
 {
     internal partial class MapEditor : EditorObject
     {
@@ -360,7 +361,7 @@ namespace MapEditorPlugin
             MapControl.SelWidth = TilesetControl.Selection.Width;
             MapControl.CurrentTile = tiles[0];
             Bitmap img = TilesetControl.GetCompiledImage();
-            TileDrawer.SetImage(img, true);
+            TileDrawer.SetImage(img);
             img.Dispose();
             TileEditor.Tile = Map.Tileset.Tiles[tiles[0]];
         }
