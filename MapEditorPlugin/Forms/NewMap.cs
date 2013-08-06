@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Sphere.Plugins;
 
 namespace MapEditPlugin.Forms
 {
@@ -45,7 +46,7 @@ namespace MapEditPlugin.Forms
             using (OpenFileDialog diag = new OpenFileDialog())
             {
                 diag.Filter = "Tileset Files (.rts)|*.rts";
-                diag.InitialDirectory = PluginData.Host.CurrentGame.RootPath + "\\maps";
+                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
                 if (diag.ShowDialog() == DialogResult.OK) Tileset = diag.FileName;
             }
         }

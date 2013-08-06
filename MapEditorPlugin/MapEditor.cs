@@ -169,7 +169,7 @@ namespace MapEditPlugin
                         using (SaveFileDialog diag = new SaveFileDialog())
                         {
                             diag.Filter = @"Tileset Files (.rts)|*.rts";
-                            diag.InitialDirectory = PluginData.Host.CurrentGame.RootPath + "\\maps";
+                            diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
                             if (diag.ShowDialog() == DialogResult.OK)
                             {
                                 Map.Scripts[0] = System.IO.Path.GetFileName(diag.FileName);
@@ -188,7 +188,7 @@ namespace MapEditPlugin
             using (SaveFileDialog diag = new SaveFileDialog())
             {
                 diag.Filter = @"Map Files (.rmp)|*.rmp";
-                diag.InitialDirectory = PluginData.Host.CurrentGame.RootPath + "\\maps";
+                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
                 diag.DefaultExt = "rmp";
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

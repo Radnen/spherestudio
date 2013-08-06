@@ -12,7 +12,6 @@ namespace Sphere.Plugins
         string Description { get; }
         string Version { get; }
 
-        IPluginHost Host { get; set; }
         Icon Icon { get; }
 
         void Initialize();

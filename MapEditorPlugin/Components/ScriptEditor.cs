@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 
 namespace MapEditPlugin.Components
 {
@@ -30,7 +31,7 @@ namespace MapEditPlugin.Components
             _codeBox.Folding.MarkerScheme = FoldMarkerScheme.Arrow;
             _codeBox.Margins[0].Width = 36;
 
-            bool fold = PluginData.Host.EditorSettings.GetBool("script-fold", true);
+            bool fold = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
             if (fold) SetFold(true);
 
             _codeBox.Indentation.SmartIndentType = SmartIndent.CPP;
@@ -55,12 +56,12 @@ namespace MapEditPlugin.Components
         /// </summary>
         public void UpdateStyle()
         {
-            _codeBox.Indentation.TabWidth = PluginData.Host.EditorSettings.GetInt("script-spaces", 2);
-            _codeBox.Indentation.UseTabs = PluginData.Host.EditorSettings.GetBool("script-tabs", true);
-            _codeBox.Caret.HighlightCurrentLine = PluginData.Host.EditorSettings.GetBool("script-hiline", true);
-            _codeBox.IsBraceMatching = PluginData.Host.EditorSettings.GetBool("script-hibraces", true);
+            _codeBox.Indentation.TabWidth = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
+            _codeBox.Indentation.UseTabs = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
+            _codeBox.Caret.HighlightCurrentLine = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
+            _codeBox.IsBraceMatching = PluginManager.IDE.EditorSettings.GetBool("script-hibraces", true);
 
-            string fontstring = PluginData.Host.EditorSettings.GetString("script-font");
+            string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
@@ -75,9 +76,9 @@ namespace MapEditPlugin.Components
 
         public override void CreateNew()
         {
-            if (PluginData.Host.EditorSettings.UseScriptUpdate)
+            if (PluginManager.IDE.EditorSettings.UseScriptUpdate)
             {
-                string author = (PluginData.Host.CurrentGame != null) ? PluginData.Host.CurrentGame.Author : "Unnamed";
+                string author = (PluginManager.IDE.CurrentGame != null) ? PluginManager.IDE.CurrentGame.Author : "Unnamed";
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
                 _codeBox.UndoRedo.EmptyUndoBuffer();
@@ -131,13 +132,13 @@ namespace MapEditPlugin.Components
             {
                 using (StreamWriter writer = new StreamWriter(FileName, false, ISO_8859_1))
                 {
-                    if (PluginData.Host.EditorSettings.UseScriptUpdate)
+                    if (PluginManager.IDE.EditorSettings.UseScriptUpdate)
                     {
                         _codeBox.UndoRedo.IsUndoEnabled = false;
                         if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
                             _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
                         if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
-                            _codeBox.Lines[2].Text = "* Written by: " + PluginData.Host.CurrentGame.Author;
+                            _codeBox.Lines[2].Text = "* Written by: " + PluginManager.IDE.CurrentGame.Author;
                         if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
                             _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
                         _codeBox.UndoRedo.IsUndoEnabled = true;
@@ -155,8 +156,8 @@ namespace MapEditPlugin.Components
             {
                 diag.Filter = @"Sphere Script Files (.js)|*.js";
 
-                if (PluginData.Host.CurrentGame != null)
-                    diag.InitialDirectory = PluginData.Host.CurrentGame.RootPath + "\\scripts";
+                if (PluginManager.IDE.CurrentGame != null)
+                    diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\scripts";
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

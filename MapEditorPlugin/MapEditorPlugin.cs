@@ -18,8 +18,6 @@ namespace MapEditPlugin
         public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; set; }
         
-        public IPluginHost Host { get; set; }
-
         public MapEditorPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
@@ -29,16 +27,15 @@ namespace MapEditPlugin
 
         public void Initialize()
         {
-            PluginData.Host = Host;
-            Host.AddMenuItem("File.New", _newMapMenuItem);
-            PluginManager.RegisterOpenFileType("Sphere Map Files", _mapOpenFilters);
-            Host.TryEditFile += Host_TryEditFile;
+            PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
+            PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _mapOpenFilters);
+            PluginManager.IDE.TryEditFile += Host_TryEditFile;
         }
 
         public void Destroy()
         {
-            PluginManager.UnregisterOpenFileType(_mapOpenFilters);
-            Host.TryEditFile -= Host_TryEditFile;
+            PluginManager.IDE.UnregisterOpenFileType(_mapOpenFilters);
+            PluginManager.IDE.TryEditFile -= Host_TryEditFile;
         }
 
         private readonly List<string> _extensions = new List<string>();
@@ -49,14 +46,14 @@ namespace MapEditPlugin
         {
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant())) {
-                Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;
             }
         }
 
         private void _newMapMenuItem_Click(object sender, EventArgs e)
         {
-            Host.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
         }
 
         private DockContent OpenEditor(string filename = "")

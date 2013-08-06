@@ -14,7 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace Sphere_Editor
 {
-    public partial class EditorForm : Form, IPluginHost
+    public partial class EditorForm : Form, IIDE
     {
         // uninitialized data:
         private DockContent _treeContent;
@@ -48,7 +48,8 @@ namespace Sphere_Editor
 
             InitializeDocking();
 
-            Global.EvalPlugins(this);
+            PluginManager.IDE = this;
+            Global.EvalPlugins();
             Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
 
             if (Global.CurrentEditor.AutoOpen)
@@ -75,7 +76,7 @@ namespace Sphere_Editor
             {
                 dialog.Filter = @"Sphere Spritesets|*.rss|"
                                 + @"Sphere Windowstyles|*.rws";
-                foreach (string filter in PluginManager.OpenFileTypes.Keys)
+                foreach (string filter in _openFileTypes.Keys)
                 {
                     dialog.Filter += String.Format("|{0}|{1}", _openFileTypes[filter], filter);
                 }
@@ -234,6 +235,11 @@ namespace Sphere_Editor
             item.DropDownItems.Add(newItem);
         }
 
+        public void RegisterOpenFileType(string typeName, string filters)
+        {
+            _openFileTypes[filters] = typeName;
+        }
+
         public void RemoveMenuItem(ToolStripItem item)
         {
             ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
@@ -244,6 +250,12 @@ namespace Sphere_Editor
         {
             ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
             if (item != null) item.Dispose();
+        }
+        
+        public void UnregisterOpenFileType(string filters)
+        {
+            if (!_openFileTypes.ContainsKey(filters)) return;
+            _openFileTypes.Remove(filters);
         }
         #endregion
 

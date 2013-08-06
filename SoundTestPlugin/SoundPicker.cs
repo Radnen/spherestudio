@@ -28,7 +28,6 @@ namespace SoundTestPlugin
             "*.wav:Sounds"
         };
 
-        private readonly IPlugin _plugin;
         private readonly Color _labelColor = Color.FromArgb(0, 160, 255);
         private readonly Brush _trackBackColor;
         private readonly Brush _trackForeColor;
@@ -64,7 +63,7 @@ namespace SoundTestPlugin
             PlayFile(filePath);
         }
 
-        public SoundPicker(IPlugin plugin)
+        public SoundPicker()
         {
             InitializeComponent();
 
@@ -73,12 +72,11 @@ namespace SoundTestPlugin
             _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
             _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
 
-            _plugin = plugin;
             _fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
             _fileWatcher.Changed += fileWatcher_Changed;
             _fileWatcher.IncludeSubdirectories = true;
             _fileWatcher.EnableRaisingEvents = false;
-            WatchProject(_plugin.Host.CurrentGame);
+            WatchProject(PluginManager.IDE.CurrentGame);
             StopMusic();
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
@@ -156,7 +154,7 @@ namespace SoundTestPlugin
         public override void Refresh()
         {
             base.Refresh();
-            if (_plugin.Host.CurrentGame == null) { Reset(); return; }
+            if (PluginManager.IDE.CurrentGame == null) { Reset(); return; }
 
             string currentItemName = null;
             
@@ -181,7 +179,7 @@ namespace SoundTestPlugin
         /// </summary>
         private void UpdateTrackList()
         {
-            string gamePath = _plugin.Host.CurrentGame.RootPath;
+            string gamePath = PluginManager.IDE.CurrentGame.RootPath;
 
             trackList.BeginUpdate();
             foreach (string filterInfo in _fileTypes)

@@ -7,10 +7,9 @@ using WeifenLuo.WinFormsUI.Docking;
 namespace Sphere.Plugins
 {
     /// <summary>
-    /// Used by a host program to implement an API the
-    /// plugins use to talk to it.
+    /// Specifies the interface for the Sphere Studio IDE.
     /// </summary>
-    public interface IPluginHost
+    public interface IIDE
     {
         /// <summary>
         /// Gets the .ini settings of the editor.
@@ -69,6 +68,22 @@ namespace Sphere.Plugins
         /// <param name="newItem">The ToolStripMenuItem to add.</param>
         void AddMenuItem(string location, ToolStripItem newItem);
 
+        /// <summary>
+        /// Registers a file type to be shown in the "Open File" dialog of the IDE.
+        /// </summary>
+        /// <param name="typeName">The pluralized name of the type, e.g. "Images".</param>
+        /// <param name="filters">
+        /// A semicolon-delimited list of filename filters to associate with the type.
+        /// e.g. "*.bmp;*.gif;*.jpg;*.png"
+        /// </param>
+        void RegisterOpenFileType(string typeName, string filters);
+
+        /// <summary>
+        /// Reverses a previous call to RegisterOpenFileType.
+        /// </summary>
+        /// <param name="filters">The list of filters associated with the type. Must be exactly as passed to RegisterOpenFileType.</param>
+        void UnregisterOpenFileType(string filters);
+        
         /// <summary>
         /// Removes the menu item from it's containing drop down menu.
         /// </summary>

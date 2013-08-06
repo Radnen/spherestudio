@@ -11,7 +11,6 @@ namespace FontPlugin
     {
         readonly FontSet _fontLayout;
         Font _selected;
-        internal IPluginHost Host { get; set; }
 
         public FontEditor()
         {
@@ -88,8 +87,8 @@ namespace FontPlugin
         {
             SaveFileDialog diag = new SaveFileDialog {Filter = @"Font Files (.rfn)|*.rfn"};
 
-            if (Host.CurrentGame != null)
-                diag.InitialDirectory = Host.CurrentGame.RootPath + "\\fonts";
+            if (PluginManager.IDE.CurrentGame != null)
+                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\fonts";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

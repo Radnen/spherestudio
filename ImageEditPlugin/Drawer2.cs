@@ -107,8 +107,8 @@ namespace ImageEditPlugin
                     Filter = @"Image Files (.png, .gif, .bmp, .jpg)|*.png;*.gif;*.bmp;*.jpg"
                 };
 
-            if (PluginData.Host.CurrentGame.RootPath != null)
-                diag.InitialDirectory = PluginData.Host.CurrentGame.RootPath + "\\images";
+            if (PluginManager.IDE.CurrentGame.RootPath != null)
+                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\images";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

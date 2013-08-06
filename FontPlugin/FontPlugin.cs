@@ -13,7 +13,6 @@ namespace FontPlugin
         public string Description { get { return "Convert TTF fonts to .rfn for use with Sphere."; } }
         public string Version { get { return "1.1.6.0"; } }
 
-        public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
         private const string OpenFileFilters = "*.rfn";
@@ -37,7 +36,7 @@ namespace FontPlugin
             {
                 if (e.Extension == type)
                 {
-                    Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                    PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                     e.Handled = true;
                 }
             }
@@ -45,13 +44,13 @@ namespace FontPlugin
 
         void FontItem_Click(object sender, EventArgs e)
         {
-            Host.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
         }
 
         public DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
-            FontEditor editor = new FontEditor {Host = Host, Dock = DockStyle.Fill};
+            FontEditor editor = new FontEditor() { Dock = DockStyle.Fill };
 
             // And creates + styles a dock panel:
             DockContent content = new DockContent {Text = @"Font Importer"};
@@ -66,16 +65,16 @@ namespace FontPlugin
 
         public void Initialize()
         {
-            PluginManager.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
-            Host.TryEditFile += host_TryEditFile;
-            
-            Host.AddMenuItem("File.New", _newFontItem);
+            PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
+            PluginManager.IDE.TryEditFile += host_TryEditFile;
+
+            PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
         }
 
         public void Destroy()
         {
-            PluginManager.UnregisterOpenFileType(OpenFileFilters);
-            Host.TryEditFile -= host_TryEditFile;
+            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilters);
+            PluginManager.IDE.TryEditFile -= host_TryEditFile;
         }
     }
 }

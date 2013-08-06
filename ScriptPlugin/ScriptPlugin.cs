@@ -15,8 +15,6 @@ namespace ScriptPlugin
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default script editor"; } }
         public string Version { get { return "1.1.6.0"; } }
-
-        public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
         private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" };
@@ -95,7 +93,7 @@ namespace ScriptPlugin
             {
                 if (e.Extension == type)
                 {
-                    Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                    PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                     e.Handled = true;
                 }
             }
@@ -103,14 +101,14 @@ namespace ScriptPlugin
 
         void NewScriptItem_Click(object sender, EventArgs e)
         {
-            Host.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)
         {
             _eightUnitItem.Checked = true;
             _twoUnitItem.Checked = _fourUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 8);
+            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 8);
             UpdateScriptControls();
         }
 
@@ -118,7 +116,7 @@ namespace ScriptPlugin
         {
             _fourUnitItem.Checked = true;
             _twoUnitItem.Checked = _eightUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 4);
+            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 4);
             UpdateScriptControls();
         }
 
@@ -126,7 +124,7 @@ namespace ScriptPlugin
         {
             _twoUnitItem.Checked = true;
             _fourUnitItem.Checked = _eightUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 2);
+            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 2);
             UpdateScriptControls();
         }
 
@@ -135,7 +133,7 @@ namespace ScriptPlugin
             using (FontDialog diag = new FontDialog())
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                string fontstring = Host.EditorSettings.GetString("script-font");
+                string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
 
                 if (!String.IsNullOrEmpty(fontstring))
                     diag.Font = (Font)converter.ConvertFromString(fontstring);
@@ -145,7 +143,7 @@ namespace ScriptPlugin
                     if (diag.ShowDialog() == DialogResult.OK)
                     {
                         fontstring = converter.ConvertToString(diag.Font);
-                        Host.EditorSettings.SaveObject("script-font", fontstring);
+                        PluginManager.IDE.EditorSettings.SaveObject("script-font", fontstring);
                         UpdateScriptControls();
                     }
                 }
@@ -158,31 +156,31 @@ namespace ScriptPlugin
 
         void UseTabsItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-tabs", _useTabsItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-tabs", _useTabsItem.Checked);
             UpdateScriptControls();
         }
 
         void HighlightBracesItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-hibraces", _highlightBracesItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-hibraces", _highlightBracesItem.Checked);
             UpdateScriptControls();
         }
 
         void HighlightLineItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-hiline", _highlightLineItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-hiline", _highlightLineItem.Checked);
             UpdateScriptControls();
         }
 
         void CodeFoldItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-fold", _codeFoldItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-fold", _codeFoldItem.Checked);
             UpdateScriptControls();
         }
 
         void AutoCompleteItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-autocomplete", _autoCompleteItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-autocomplete", _autoCompleteItem.Checked);
             UpdateScriptControls();
         }
 
@@ -203,7 +201,7 @@ namespace ScriptPlugin
         public DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
-            ScriptEditor editor = new ScriptEditor(Host);
+            ScriptEditor editor = new ScriptEditor();
 
             editor.OnActivate += editor_OnActivate;
             editor.OnDeactivate += editor_OnDeactivate;
@@ -236,22 +234,22 @@ namespace ScriptPlugin
             LoadFunctions();
             
             // register event handlers
-            Host.TryEditFile += host_TryEditFile;
+            PluginManager.IDE.TryEditFile += host_TryEditFile;
 
             // register Open dialog file types
-            PluginManager.RegisterOpenFileType("Script/Text Files", _openFileFilters);
+            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
 
             // Show the root menu for this control; appearing before the 'View' menu.
-            Host.AddMenuItem(_rootMenu, "View");
-            Host.AddMenuItem("File.New", _newScriptItem);
+            PluginManager.IDE.AddMenuItem(_rootMenu, "View");
+            PluginManager.IDE.AddMenuItem("File.New", _newScriptItem);
 
-            _autoCompleteItem.Checked = Host.EditorSettings.GetBool("script-autocomplete", true);
-            _codeFoldItem.Checked = Host.EditorSettings.GetBool("script-fold", true);
-            _highlightLineItem.Checked = Host.EditorSettings.GetBool("script-hiline", true);
-            _highlightBracesItem.Checked = Host.EditorSettings.GetBool("script-hibraces", true);
-            _useTabsItem.Checked = Host.EditorSettings.GetBool("script-tabs", true);
+            _autoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
+            _codeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
+            _highlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
+            _highlightBracesItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hibraces", true);
+            _useTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
 
-            int spaces = Host.EditorSettings.GetInt("script-spaces", 2);
+            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
             _twoUnitItem.Checked = spaces == 2;
             _fourUnitItem.Checked = spaces == 4;
             _eightUnitItem.Checked = spaces == 8;
@@ -259,15 +257,15 @@ namespace ScriptPlugin
 
         public void Destroy()
         {
-            PluginManager.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
-            Host.RemoveMenuItem("ScriptPlugin");
-            Host.TryEditFile -= host_TryEditFile;
+            PluginManager.IDE.RemoveMenuItem("ScriptPlugin");
+            PluginManager.IDE.TryEditFile -= host_TryEditFile;
         }
 
         private void UpdateScriptControls()
         {
-            DockContentCollection docs = Host.GetDocuments();
+            DockContentCollection docs = PluginManager.IDE.GetDocuments();
             foreach (DockContent content in docs)
             {
                 ScriptEditor editor = content.Controls[0] as ScriptEditor;

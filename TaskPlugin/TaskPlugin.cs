@@ -12,8 +12,6 @@ namespace TaskPlugin
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Keep track of game development tasks."; } }
         public string Version { get { return "1.1.6.0"; } }
-
-        public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
         private TaskList _list;
@@ -28,7 +26,7 @@ namespace TaskPlugin
         /* Load the Task List */
         void OnProjectLoad(object sender, EventArgs e)
         {
-            _list.LoadList(Host.CurrentGame.RootPath);
+            _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
 
         /* Close and empty the task List */
@@ -59,13 +57,13 @@ namespace TaskPlugin
             _content = content;
 
             // Add the widget to the main editor at the dock state:
-            Host.DockControl(content, DockState.DockLeft);
+            PluginManager.IDE.DockControl(content, DockState.DockLeft);
 
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
             // so in this case we can use these to our advantage.
-            Host.LoadProject += OnProjectLoad;
-            Host.UnloadProject += OnProjectClose;
+            PluginManager.IDE.LoadProject += OnProjectLoad;
+            PluginManager.IDE.UnloadProject += OnProjectClose;
 
             // Now, we can add a menu item like so.
             // 'View' will search the 'View' menu item.
@@ -74,25 +72,25 @@ namespace TaskPlugin
             // And it'll generate the neccessary stubs before adding the item.
             _item = new ToolStripMenuItem("Task List", Properties.Resources.lightbulb);
             _item.Click += ItemClick;
-            Host.AddMenuItem("View", _item);
+            PluginManager.IDE.AddMenuItem("View", _item);
             
             // Here I ake sure the list is loaded when the plugin has been activated.
-            if (Host.CurrentGame != null) _list.LoadList(Host.CurrentGame.RootPath);
+            if (PluginManager.IDE.CurrentGame != null) _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
 
         public void Destroy()
         {
             // Now we need to remove anything we add to the editor
-            Host.RemoveControl("Task List");
+            PluginManager.IDE.RemoveControl("Task List");
 
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
-            Host.LoadProject -= OnProjectLoad;
-            Host.UnloadProject -= OnProjectClose;
+            PluginManager.IDE.LoadProject -= OnProjectLoad;
+            PluginManager.IDE.UnloadProject -= OnProjectClose;
 
             // And furthermore that menu item must be deleted as well!
             _item.Click -= ItemClick;
-            Host.RemoveMenuItem(_item);
+            PluginManager.IDE.RemoveMenuItem(_item);
 
             // And we can optionally null things out just to be safe:
             _list.Dispose(); _list = null;

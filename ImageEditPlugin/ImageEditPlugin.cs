@@ -20,9 +20,7 @@ namespace ImageEditPlugin
         public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; set; }
         
-        public IPluginHost Host { get; set; }
-
-        #region IEditor implementation
+        #region IEditorPlugin implementation
         public EditorObject CreateEditControl()
         {
             return new Drawer2();
@@ -38,17 +36,17 @@ namespace ImageEditPlugin
 
         public void Initialize()
         {
-            PluginData.Host = Host;
             PluginManager.RegisterEditor(EditorType.Image, this);
-            PluginManager.RegisterOpenFileType("Images", _openFileFilters);
-            Host.AddMenuItem("File.New", _newImageMenuItem);
-            Host.TryEditFile += Host_TryEditFile;
+            PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
+            PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
+            PluginManager.IDE.TryEditFile += Host_TryEditFile;
         }
 
         public void Destroy()
         {
             PluginManager.UnregisterEditor(this);
-            Host.TryEditFile -= Host_TryEditFile;
+            PluginManager.IDE.RemoveMenuItem(_newImageMenuItem);
+            PluginManager.IDE.TryEditFile -= Host_TryEditFile;
         }
 
         private readonly List<string> _extensions = new List<string>();
@@ -60,14 +58,14 @@ namespace ImageEditPlugin
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;
             }
         }
 
         private void _newImageMenuItem_Click(object sender, EventArgs e)
         {
-            Host.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
         }
 
         private DockContent OpenEditor(string filename = "")

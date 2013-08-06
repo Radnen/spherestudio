@@ -88,7 +88,7 @@
     <Compile Include="EditFileEventArgs.cs" />
     <Compile Include="IEditorPlugin.cs" />
     <Compile Include="IImageEditor.cs" />
-    <Compile Include="IPluginHost.cs" />
+    <Compile Include="IIDE.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginWrapper.cs" />

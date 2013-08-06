@@ -14,7 +14,6 @@ namespace MapEditPlugin
     {
         public static Entity CopiedEnt;
         public static List<string> Functions = new List<string>();
-        public static IPluginHost Host;
 
         static PluginData()
         {

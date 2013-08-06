@@ -14,8 +14,6 @@ namespace FastScriptPlugin
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "A faster, neater code editor for the Sphere Studio."; } }
         public string Version { get { return "1.0b"; } }
-
-        public IPluginHost Host { get; set; }
         public Icon Icon { get; private set; }
 
         private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" };
@@ -83,25 +81,25 @@ namespace FastScriptPlugin
 
         private void AutoCompleteItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-autocomplete", AutoCompleteItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-autocomplete", AutoCompleteItem.Checked);
             UpdateScriptControls();
         }
 
         private void CodeFoldItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-fold", CodeFoldItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-fold", CodeFoldItem.Checked);
             UpdateScriptControls();
         }
 
         void HighlightLineItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-hiline", HighlightLineItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-hiline", HighlightLineItem.Checked);
             UpdateScriptControls();
         }
 
         private void UseTabsItem_Click(object sender, EventArgs e)
         {
-            Host.EditorSettings.SaveObject("script-tabs", UseTabsItem.Checked);
+            PluginManager.IDE.EditorSettings.SaveObject("script-tabs", UseTabsItem.Checked);
             UpdateScriptControls();
         }
 
@@ -109,7 +107,7 @@ namespace FastScriptPlugin
         {
             TwoUnitItem.Checked = true;
             FourUnitItem.Checked = EightUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 2);
+            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 2);
             UpdateScriptControls();
         }
 
@@ -117,7 +115,7 @@ namespace FastScriptPlugin
         {
             FourUnitItem.Checked = true;
             TwoUnitItem.Checked = EightUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 4);
+            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 4);
             UpdateScriptControls();
         }
 
@@ -125,7 +123,7 @@ namespace FastScriptPlugin
         {
             EightUnitItem.Checked = true;
             TwoUnitItem.Checked = FourUnitItem.Checked = false;
-            Host.EditorSettings.SaveObject("script-spaces", 8);
+            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 8);
             UpdateScriptControls();
         }
 
@@ -134,7 +132,7 @@ namespace FastScriptPlugin
             using (FontDialog diag = new FontDialog())
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                string fontstring = Host.EditorSettings.GetString("script-font");
+                string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
 
                 if (!String.IsNullOrEmpty(fontstring))
                     diag.Font = (Font)converter.ConvertFromString(fontstring);
@@ -144,7 +142,7 @@ namespace FastScriptPlugin
                     if (diag.ShowDialog() == DialogResult.OK)
                     {
                         fontstring = converter.ConvertToString(diag.Font);
-                        Host.EditorSettings.SaveObject("script-font", fontstring);
+                        PluginManager.IDE.EditorSettings.SaveObject("script-font", fontstring);
                         UpdateScriptControls();
                     }
                 }
@@ -157,12 +155,12 @@ namespace FastScriptPlugin
 
         private void NewScriptItem_Click(object sender, EventArgs e)
         {
-            Host.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
         }
 
         public DockContent OpenEditor(string filename = "")
         {
-            Scripter scriptEditor = new Scripter(Host);
+            Scripter scriptEditor = new Scripter();
             
             scriptEditor.OnActivate += editor_OnActivate;
             scriptEditor.OnDeactivate += editor_OnDeactivate;
@@ -196,7 +194,7 @@ namespace FastScriptPlugin
             {
                 if (e.Extension == type)
                 {
-                    Host.DockControl(OpenEditor(e.Path), DockState.Document);
+                    PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                     e.Handled = true;
                 }
             }
@@ -204,18 +202,18 @@ namespace FastScriptPlugin
 
         public void Initialize()
         {
-            Host.TryEditFile += Host_TryEditFile;
-            PluginManager.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
+            PluginManager.IDE.TryEditFile += Host_TryEditFile;
+            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
 
-            Host.AddMenuItem(RootMenu, "View");
-            Host.AddMenuItem("File.New", NewScriptItem);
+            PluginManager.IDE.AddMenuItem(RootMenu, "View");
+            PluginManager.IDE.AddMenuItem("File.New", NewScriptItem);
 
-            AutoCompleteItem.Checked = Host.EditorSettings.GetBool("script-autocomplete", true);
-            CodeFoldItem.Checked = Host.EditorSettings.GetBool("script-fold", true);
-            UseTabsItem.Checked = Host.EditorSettings.GetBool("script-tabs", true);
-            HighlightLineItem.Checked = Host.EditorSettings.GetBool("script-hiline", true);
+            AutoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
+            CodeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
+            UseTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
+            HighlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
 
-            int spaces = Host.EditorSettings.GetInt("script-spaces", 2);
+            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
             TwoUnitItem.Checked = spaces == 2;
             FourUnitItem.Checked = spaces == 4;
             EightUnitItem.Checked = spaces == 8;
@@ -223,15 +221,15 @@ namespace FastScriptPlugin
 
         public void Destroy()
         {
-            PluginManager.UnregisterOpenFileType(OpenFileFilters);
-            Host.RemoveMenuItem("Script");
-            Host.RemoveMenuItem(NewScriptItem);
-            Host.TryEditFile -= Host_TryEditFile;
+            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilters);
+            PluginManager.IDE.RemoveMenuItem("Script");
+            PluginManager.IDE.RemoveMenuItem(NewScriptItem);
+            PluginManager.IDE.TryEditFile -= Host_TryEditFile;
         }
 
         private void UpdateScriptControls()
         {
-            DockContentCollection docs = Host.GetDocuments();
+            DockContentCollection docs = PluginManager.IDE.GetDocuments();
             foreach (DockContent content in docs)
             {
                 Scripter scripter = content.Controls[0] as Scripter;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 using MapEditPlugin.Components;
 
 namespace MapEditPlugin.Forms
@@ -53,10 +54,10 @@ namespace MapEditPlugin.Forms
             LayerComboBox.SelectedIndex = Person.Layer;
 
             // set sprite preview:
-            SpritePreview.Image = Person.GetSSImage(PluginData.Host.CurrentGame.RootPath);
+            SpritePreview.Image = Person.GetSSImage(PluginManager.IDE.CurrentGame.RootPath);
 
             // fill in sprite directions:
-            string[] dirs = Person.GetSpriteDirections(PluginData.Host.CurrentGame.RootPath);
+            string[] dirs = Person.GetSpriteDirections(PluginManager.IDE.CurrentGame.RootPath);
             if (dirs != null) DirectionBox.Items.AddRange(dirs);
             
             PositionLabel.Text = string.Format("(X: {0}, Y: {1})", Person.X, Person.Y);
@@ -83,7 +84,7 @@ namespace MapEditPlugin.Forms
 
         private void SpritesetButton_Click(object sender, EventArgs e)
         {
-            String path = PluginData.Host.CurrentGame.RootPath + "\\spritesets";
+            String path = PluginManager.IDE.CurrentGame.RootPath + "\\spritesets";
             using (OpenFileDialog spriteDiag = new OpenFileDialog())
             {
                 spriteDiag.Filter = @"Sprite Files (*.rss)|*.rss";
@@ -99,10 +100,10 @@ namespace MapEditPlugin.Forms
                     Person.Spriteset = SpritesetBox.Text;
 
                     // Load a spriteset image as a preview:
-                    SpritePreview.Image = Person.GetSSImage(PluginData.Host.CurrentGame.RootPath);
+                    SpritePreview.Image = Person.GetSSImage(PluginManager.IDE.CurrentGame.RootPath);
                     
                     DirectionBox.Items.Clear();
-                    object[] dirs = Person.GetSpriteDirections(PluginData.Host.CurrentGame.RootPath);
+                    object[] dirs = Person.GetSpriteDirections(PluginManager.IDE.CurrentGame.RootPath);
                     if (dirs != null) DirectionBox.Items.AddRange(dirs);
                 }
             }

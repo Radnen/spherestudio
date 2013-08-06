@@ -16,7 +16,7 @@ namespace Sphere_Editor
         public static Dictionary<string, PluginWrapper> Plugins = new Dictionary<string, PluginWrapper>();
         public static List<string> Functions = new List<string>();
 
-        public static void EvalPlugins(IPluginHost host)
+        public static void EvalPlugins()
         {
             string path = Application.StartupPath + "/Plugins";
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
@@ -32,7 +32,6 @@ namespace Sphere_Editor
                                                    BindingFlags.CreateInstance,
                                                    null, null, null) as IPlugin;
                         if (b == null) continue;
-                        b.Host = host;
                         string name = Path.GetFileNameWithoutExtension(file.Name);
                         if (name != null) Plugins[name] = new PluginWrapper(b, name);
                     }

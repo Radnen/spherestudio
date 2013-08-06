@@ -14,11 +14,9 @@ namespace FastScriptPlugin
     {
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         private readonly FastColoredTextBox _textbox;
-        private readonly IPluginHost _host;
 
-        public Scripter(IPluginHost host)
+        public Scripter()
         {
-            _host = host;
             InitializeComponent();
             _textbox = new FastColoredTextBox {Dock = DockStyle.Fill};
             _textbox.TextChangedDelayed += _textbox_TextChangedDelayed;
@@ -33,13 +31,13 @@ namespace FastScriptPlugin
 
         public void UpdateStyle()
         {
-            _textbox.TabLength = _host.EditorSettings.GetInt("script-spaces", 2);
-            _textbox.AcceptsTab = _host.EditorSettings.GetBool("script-tabs", _textbox.AcceptsTab);
-            _textbox.ShowFoldingLines = _host.EditorSettings.GetBool("script-fold", true);
+            _textbox.TabLength = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
+            _textbox.AcceptsTab = PluginManager.IDE.EditorSettings.GetBool("script-tabs", _textbox.AcceptsTab);
+            _textbox.ShowFoldingLines = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
             
-            _textbox.CurrentLineColor = _host.EditorSettings.GetBool("script-hiline", true) ? Color.Yellow : Color.White;
+            _textbox.CurrentLineColor = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true) ? Color.Yellow : Color.White;
 
-            string fontstring = _host.EditorSettings.GetString("script-font");
+            string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
             if (String.IsNullOrEmpty(fontstring)) return;
 
             TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
@@ -80,8 +78,8 @@ namespace FastScriptPlugin
             {
                 diag.Filter = @"Sphere Script Files (.js)|*.js";
 
-                if (_host.CurrentGame != null)
-                    diag.InitialDirectory = _host.CurrentGame.RootPath + "\\scripts";
+                if (PluginManager.IDE.CurrentGame != null)
+                    diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\scripts";
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
