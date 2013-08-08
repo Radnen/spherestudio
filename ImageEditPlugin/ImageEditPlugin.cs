@@ -21,13 +21,6 @@ namespace ImageEditPlugin
         public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; set; }
         
-        #region IEditorPlugin implementation
-        public EditorObject CreateEditControl()
-        {
-            return new Drawer2();
-        }
-        #endregion
-
         public ImageEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
@@ -62,6 +55,11 @@ namespace ImageEditPlugin
             PluginManager.IDE.TryEditFile -= OnTryEditFile;
         }
 
+        public EditorObject CreateEditControl()
+        {
+            return new Drawer2();
+        }
+        
         private readonly List<string> _extensions = new List<string>();
         private const string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
 

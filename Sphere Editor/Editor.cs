@@ -75,13 +75,11 @@ namespace Sphere_Editor
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                dialog.Filter = @"Sphere Spritesets|*.rss|"
-                                + @"Sphere Windowstyles|*.rws";
                 foreach (string filter in _openFileTypes.Keys)
                 {
-                    dialog.Filter += String.Format("|{0}|{1}", _openFileTypes[filter], filter);
+                    dialog.Filter += String.Format("{0}|{1}|", _openFileTypes[filter], filter);
                 }
-                dialog.Filter += @"|All Files|*.*";
+                dialog.Filter += @"All Files|*.*";
                 dialog.FilterIndex = 5 + _openFileTypes.Count;
                 dialog.InitialDirectory = Global.CurrentProject.RootPath;
                 dialog.Multiselect = multiselect;
@@ -100,25 +98,16 @@ namespace Sphere_Editor
                 return;
             }
 
-            // no fish biting today, try one of the built-in fish--er, editors
-            //if (Global.IsImage(ref filePath)) filePath);
-            //else if (Global.IsMap(ref filePath)) OpenMap(filePath);
-            if (Global.IsSpriteset(ref filePath)) OpenSpriteset(filePath);
-            else if (Global.IsWindowStyle(ref filePath)) OpenWindowStyle(filePath);
-
-            // still nothing? let's go fishing for editor plugins again, maybe we were using the
+            // nothing huh? try fishing for plugins again, maybe we were using the
             // wrong lure... fish like stars right? (i.e. try wildcard extension "*")
-            else
+            e = new EditFileEventArgs(filePath, true);
+            if (TryEditFile != null) TryEditFile(null, e);
+            if (!e.Handled)
             {
-                e = new EditFileEventArgs(filePath, true);
-                if (TryEditFile != null) TryEditFile(null, e);
-                if (!e.Handled)
-                {
-                    string extension = Path.GetExtension(filePath);
-                    if (extension == null) return;
-                    MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file.\n\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToUpper(), filePath),
-                                    @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                string extension = Path.GetExtension(filePath);
+                if (extension == null) return;
+                MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file.\n\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToUpper(), filePath),
+                                @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -322,15 +311,9 @@ namespace Sphere_Editor
             content.Text = text;
             content.FormClosing += Content_FormClosing;
 
-            SpritesetMenu.Visible = false;
-
             SetCurrentControl(control);
 
             if (text == "Sphere") { content.AllowEndUserDocking = false; }
-            else if (control is SpritesetEditor)
-                content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
-            else if (control is WindowStyleEditor)
-                content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else
                 content.Icon = Icon.FromHandle(Properties.Resources.page_white_edit.GetHicon());
 
@@ -401,20 +384,6 @@ namespace Sphere_Editor
                     ((EditorObject)content.DockHandler.Form.Controls[0]).Save();
             }
         }
-
-        #region open functions
-        public void OpenSpriteset(string filename)
-        {
-            _currentControl = new SpritesetEditor();
-            LoadDocument(_currentControl, filename);
-        }
-
-        public void OpenWindowStyle(string filename)
-        {
-            _currentControl = new WindowStyleEditor();
-            LoadDocument(_currentControl, filename);
-        }
-        #endregion
 
         #region file menu options
         private void FileMenu_DropDownOpened(object sender, EventArgs e)
@@ -512,17 +481,7 @@ namespace Sphere_Editor
             Close();
         }
         #endregion
-        #region new sub-menu items
-        public void NewSpriteset(object sender, EventArgs e)
-        {
-            AddNewDocument(new SpritesetEditor(), "Untitled.rss");
-        }
-
-        public void NewWindowStyle(object sender, EventArgs e)
-        {
-            AddNewDocument(new WindowStyleEditor(), "Untitled.rws");
-        }
-        #endregion
+        
         #region open sub-menu items
 
         #endregion
@@ -678,9 +637,6 @@ namespace Sphere_Editor
             if (_currentControl != null) _currentControl.Deactivate();
 
             _currentControl = (value is EditorObject) ? (EditorObject)value : null;
-            SpritesetMenu.Visible = false;
-
-            if (value is SpritesetEditor) SpritesetMenu.Visible = true;
 
             if (_currentControl != null) _currentControl.Activate();
         }
@@ -698,26 +654,6 @@ namespace Sphere_Editor
         {
             Global.CurrentEditor.SaveSettings();
             CloseProject(null, EventArgs.Empty);
-        }
-
-        private void SsResizeMenuItem_Click(object sender, EventArgs e)
-        {
-            ((SpritesetEditor)_currentControl).ResizeAll();
-        }
-
-        private void SsRescaleMenuItem_Click(object sender, EventArgs e)
-        {
-            ((SpritesetEditor)_currentControl).RescaleAll();
-        }
-
-        private void ExportSsMenuItem_Click(object sender, EventArgs e)
-        {
-            // not implemented.
-        }
-
-        private void ImportSsMenuItem_Click(object sender, EventArgs e)
-        {
-            // not implemented.
         }
 
         private void SaveLayoutMenuItem_Click(object sender, EventArgs e)

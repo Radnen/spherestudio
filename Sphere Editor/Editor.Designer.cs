@@ -74,7 +74,6 @@
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewSpritesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewWindowStyleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -105,13 +104,6 @@
             this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
             this.TestGameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RefreshMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SpritesetMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SsRescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SpriteTilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImageMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ClosePaneItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -122,6 +114,11 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SsRescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SpriteTilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PropertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recenterMapItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -392,8 +389,6 @@
             this.FileMenu,
             this.EditMenu,
             this.ProjectMenu,
-            this.SpritesetMenu,
-            this.ImageMenu,
             this.ViewMenu,
             this.HelpMenu});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
@@ -468,7 +463,6 @@
             // 
             this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewSpritesetMenuItem,
-            this.NewWindowStyleMenuItem,
             this.toolStripSeparator2});
             this.NewMenuItem.Image = global::Sphere_Editor.Properties.Resources.page_white_edit;
             this.NewMenuItem.Name = "NewMenuItem";
@@ -479,22 +473,13 @@
             // 
             this.NewSpritesetMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
             this.NewSpritesetMenuItem.Name = "NewSpritesetMenuItem";
-            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(119, 22);
             this.NewSpritesetMenuItem.Text = "Spriteset";
-            this.NewSpritesetMenuItem.Click += new System.EventHandler(this.NewSpriteset);
-            // 
-            // NewWindowStyleMenuItem
-            // 
-            this.NewWindowStyleMenuItem.Image = global::Sphere_Editor.Properties.Resources.palette;
-            this.NewWindowStyleMenuItem.Name = "NewWindowStyleMenuItem";
-            this.NewWindowStyleMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.NewWindowStyleMenuItem.Text = "WindowStyle";
-            this.NewWindowStyleMenuItem.Click += new System.EventHandler(this.NewWindowStyle);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(140, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(116, 6);
             // 
             // OpenMenuItem
             // 
@@ -750,61 +735,6 @@
             this.RefreshMenuItem.Text = "&Refresh";
             this.RefreshMenuItem.Click += new System.EventHandler(this.RefreshProject);
             // 
-            // SpritesetMenu
-            // 
-            this.SpritesetMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SsResizeMenuItem,
-            this.SsRescaleMenuItem,
-            this.SpriteTilesetMenuItem});
-            this.SpritesetMenu.Name = "SpritesetMenu";
-            this.SpritesetMenu.Size = new System.Drawing.Size(64, 20);
-            this.SpritesetMenu.Text = "&Spriteset";
-            this.SpritesetMenu.Visible = false;
-            // 
-            // SsResizeMenuItem
-            // 
-            this.SsResizeMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
-            this.SsResizeMenuItem.Name = "SsResizeMenuItem";
-            this.SsResizeMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.SsResizeMenuItem.Text = "&Resize Images";
-            this.SsResizeMenuItem.Click += new System.EventHandler(this.SsResizeMenuItem_Click);
-            // 
-            // SsRescaleMenuItem
-            // 
-            this.SsRescaleMenuItem.Image = global::Sphere_Editor.Properties.Resources.arrow_inout;
-            this.SsRescaleMenuItem.Name = "SsRescaleMenuItem";
-            this.SsRescaleMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.SsRescaleMenuItem.Text = "Re&scale Images";
-            this.SsRescaleMenuItem.Click += new System.EventHandler(this.SsRescaleMenuItem_Click);
-            // 
-            // SpriteTilesetMenuItem
-            // 
-            this.SpriteTilesetMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ExportSsMenuItem,
-            this.ImportSsMenuItem});
-            this.SpriteTilesetMenuItem.Name = "SpriteTilesetMenuItem";
-            this.SpriteTilesetMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.SpriteTilesetMenuItem.Text = "&Spriteset";
-            // 
-            // ExportSsMenuItem
-            // 
-            this.ExportSsMenuItem.Name = "ExportSsMenuItem";
-            this.ExportSsMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.ExportSsMenuItem.Text = "&Export Spriteset...";
-            this.ExportSsMenuItem.Click += new System.EventHandler(this.ExportSsMenuItem_Click);
-            // 
-            // ImportSsMenuItem
-            // 
-            this.ImportSsMenuItem.Name = "ImportSsMenuItem";
-            this.ImportSsMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.ImportSsMenuItem.Text = "&Import From File...";
-            this.ImportSsMenuItem.Click += new System.EventHandler(this.ImportSsMenuItem_Click);
-            // 
-            // ImageMenu
-            // 
-            this.ImageMenu.Name = "ImageMenu";
-            this.ImageMenu.Size = new System.Drawing.Size(12, 20);
-            // 
             // ViewMenu
             // 
             this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -885,6 +815,31 @@
             this.WebsiteMenuItem.Size = new System.Drawing.Size(186, 22);
             this.WebsiteMenuItem.Text = "Visit Website!";
             this.WebsiteMenuItem.Visible = false;
+            // 
+            // SsResizeMenuItem
+            // 
+            this.SsResizeMenuItem.Name = "SsResizeMenuItem";
+            this.SsResizeMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // SsRescaleMenuItem
+            // 
+            this.SsRescaleMenuItem.Name = "SsRescaleMenuItem";
+            this.SsRescaleMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // SpriteTilesetMenuItem
+            // 
+            this.SpriteTilesetMenuItem.Name = "SpriteTilesetMenuItem";
+            this.SpriteTilesetMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // ExportSsMenuItem
+            // 
+            this.ExportSsMenuItem.Name = "ExportSsMenuItem";
+            this.ExportSsMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // ImportSsMenuItem
+            // 
+            this.ImportSsMenuItem.Name = "ImportSsMenuItem";
+            this.ImportSsMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // PropertiesMenuItem
             // 
@@ -988,7 +943,6 @@
         private System.Windows.Forms.ToolStripSeparator Separator1;
         private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewSpritesetMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewWindowStyleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
         private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GameSettingsMenuItem;
@@ -1006,7 +960,6 @@
         private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ViewMenu;
         private System.Windows.Forms.ToolStripMenuItem StartPageMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ImageMenu;
         private System.Windows.Forms.ToolStripMenuItem ResizeMenuItem;
         private WeifenLuo.WinFormsUI.Docking.DockPanel DockTest;
         private System.Windows.Forms.ToolStripMenuItem ProjectExplorerMenuItem;
@@ -1023,7 +976,6 @@
         private System.Windows.Forms.ToolStripMenuItem ZoomInMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ZoomOutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveOpenedItem;
-        private System.Windows.Forms.ToolStripMenuItem SpritesetMenu;
         private System.Windows.Forms.ToolStripMenuItem SsResizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SsRescaleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SpriteTilesetMenuItem;

@@ -155,33 +155,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditorComponents\SpritesetComponents\BaseEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\SpritesetComponents\BaseEditor.Designer.cs">
-      <DependentUpon>BaseEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditorComponents\SpritesetComponents\DirectionAnimator.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\SpritesetComponents\DirectionAnimator.Designer.cs">
-      <DependentUpon>DirectionAnimator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditorComponents\SpritesetComponents\FramePanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\SpritesetComponents\SpritesetLayout.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\SpritesetComponents\SpritesetLayout.Designer.cs">
-      <DependentUpon>SpritesetLayout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditorComponents\TilesetControl2.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="EditorComponents\TilesetControl2.designer.cs">
-      <DependentUpon>TilesetControl2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\AboutSphereEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,23 +177,11 @@
     <Compile Include="SubEditors\ProjectTree.Designer.cs">
       <DependentUpon>ProjectTree.cs</DependentUpon>
     </Compile>
-    <Compile Include="SubEditors\SpritesetEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubEditors\SpritesetEditor.Designer.cs">
-      <DependentUpon>SpritesetEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="SubEditors\StartPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SubEditors\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SubEditors\WindowStyleEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubEditors\WindowStyleEditor.Designer.cs">
-      <DependentUpon>WindowStyleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
@@ -246,12 +207,6 @@
     <Compile Include="Forms\ColorPicker\ColorRectangle.Designer.cs">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SizeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SizeForm.Designer.cs">
-      <DependentUpon>SizeForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\GameSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,18 +221,6 @@
       <DependentUpon>NewProjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="EditorComponents\SpritesetComponents\BaseEditor.resx">
-      <DependentUpon>BaseEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorComponents\SpritesetComponents\DirectionAnimator.resx">
-      <DependentUpon>DirectionAnimator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorComponents\SpritesetComponents\SpritesetLayout.resx">
-      <DependentUpon>SpritesetLayout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditorComponents\TilesetControl2.resx">
-      <DependentUpon>TilesetControl2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutSphereEditor.resx">
       <DependentUpon>AboutSphereEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -288,15 +231,9 @@
       <DependentUpon>ProjectTree.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\SpritesetEditor.resx">
-      <DependentUpon>SpritesetEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SubEditors\StartPage.resx">
       <DependentUpon>StartPage.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\WindowStyleEditor.resx">
-      <DependentUpon>WindowStyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
@@ -309,9 +246,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker\ColorRectangle.resx">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SizeForm.resx">
-      <DependentUpon>SizeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameSettings.resx">
       <DependentUpon>GameSettings.cs</DependentUpon>
@@ -435,9 +369,17 @@
       <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
       <Name>Sphere.Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditPlugin.csproj">
+      <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
+      <Name>SpritesetEditPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TaskPlugin\TaskPlugin.csproj">
       <Project>{f7434dec-a94a-409c-a320-7585b4083a6a}</Project>
       <Name>TaskPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowstyleEditPlugin\WindowstyleEditPlugin.csproj">
+      <Project>{65bcdeef-c718-492a-8c82-7886a3af8b7b}</Project>
+      <Name>WindowstyleEditPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

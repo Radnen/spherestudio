@@ -373,13 +373,8 @@ namespace Sphere_Editor.SubEditors
             string name = fullname.Substring(fullname.IndexOf('\\') + 1);
             if (name.Contains("\\")) name = name.Substring(0, name.IndexOf('\\'));
 
-            // built-in editors
-            if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
-            else if (name == "windowstyles") EditorForm.NewWindowStyle(null, EventArgs.Empty);
-
-            // no built-in support, have editor fish for plugins
-            // note: this is a hack and there should be a method for plugins to register as a New handler for a given folder
-            // or something, but I'm too lazy to implement that right now
+            // have editor fish for plugins
+            // TODO: plugins should be able to register as a New handler for a folder
             string extension = ".*";
             switch (name)
             {
