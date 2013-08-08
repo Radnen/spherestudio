@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
+using Sphere.Core.Editor;
 using Sphere_Editor.Forms;
 using Sphere_Editor.Properties;
 using WeifenLuo.WinFormsUI.Docking;

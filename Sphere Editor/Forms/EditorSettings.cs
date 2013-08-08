@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
 
@@ -180,7 +181,7 @@ namespace Sphere_Editor.Forms
 
         private void SavePresetButton_Click(object sender, EventArgs e)
         {
-            using (Sphere_Editor.Forms.StringInputForm form = new Sphere_Editor.Forms.StringInputForm())
+            using (StringInputForm form = new StringInputForm())
             {
                 if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {

@@ -188,12 +188,6 @@
     <Compile Include="Forms\AboutSphereEditor.Designer.cs">
       <DependentUpon>AboutSphereEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewMap.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\NewMap.Designer.cs">
-      <DependentUpon>NewMap.cs</DependentUpon>
-    </Compile>
     <Compile Include="Global.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -252,41 +246,11 @@
     <Compile Include="Forms\ColorPicker\ColorRectangle.Designer.cs">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MapPropertiesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MapPropertiesForm.Designer.cs">
-      <DependentUpon>MapPropertiesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PersonForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PersonForm.Designer.cs">
-      <DependentUpon>PersonForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\SizeForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SizeForm.Designer.cs">
       <DependentUpon>SizeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\StringInputForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\StringInputForm.Designer.cs">
-      <DependentUpon>StringInputForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\TriggerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\TriggerForm.Designer.cs">
-      <DependentUpon>TriggerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ZoneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ZoneForm.Designer.cs">
-      <DependentUpon>ZoneForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\GameSettings.cs">
       <SubType>Form</SubType>
@@ -295,11 +259,11 @@
       <DependentUpon>GameSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Forms\Project.cs">
+    <Compile Include="Forms\NewProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Project.Designer.cs">
-      <DependentUpon>Project.cs</DependentUpon>
+    <Compile Include="Forms\NewProjectForm.Designer.cs">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="EditorComponents\SpritesetComponents\BaseEditor.resx">
@@ -316,9 +280,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutSphereEditor.resx">
       <DependentUpon>AboutSphereEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewMap.resx">
-      <DependentUpon>NewMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>
@@ -349,29 +310,14 @@
     <EmbeddedResource Include="Forms\ColorPicker\ColorRectangle.resx">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MapPropertiesForm.resx">
-      <DependentUpon>MapPropertiesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PersonForm.resx">
-      <DependentUpon>PersonForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SizeForm.resx">
       <DependentUpon>SizeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\StringInputForm.resx">
-      <DependentUpon>StringInputForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TriggerForm.resx">
-      <DependentUpon>TriggerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ZoneForm.resx">
-      <DependentUpon>ZoneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameSettings.resx">
       <DependentUpon>GameSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Project.resx">
-      <DependentUpon>Project.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\NewProjectForm.resx">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

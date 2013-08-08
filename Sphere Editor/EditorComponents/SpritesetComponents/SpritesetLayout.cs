@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere_Editor.Forms;
 using Sphere_Editor.SubEditors;
 

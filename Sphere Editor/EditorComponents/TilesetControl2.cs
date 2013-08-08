@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 using Sphere.Core.Utility;
 
 namespace Sphere_Editor.EditorComponents
@@ -238,7 +239,7 @@ namespace Sphere_Editor.EditorComponents
 
         private void appendTilesItem_Click(object sender, EventArgs e)
         {
-            using (Sphere_Editor.Forms.StringInputForm form = new Forms.StringInputForm())
+            using (StringInputForm form = new StringInputForm())
             {
                 form.NumOnly = true;
                 if (form.ShowDialog() == DialogResult.OK)
@@ -253,7 +254,7 @@ namespace Sphere_Editor.EditorComponents
 
         private void removeTilesItem_Click(object sender, EventArgs e)
         {
-            using (Sphere_Editor.Forms.StringInputForm form = new Forms.StringInputForm())
+            using (StringInputForm form = new StringInputForm())
             {
                 form.NumOnly = true;
                 if (form.ShowDialog() == DialogResult.OK)
