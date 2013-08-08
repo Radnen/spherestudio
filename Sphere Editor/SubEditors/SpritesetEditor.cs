@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Sphere_Editor.EditorComponents;
 using Sphere.Core;
 using Sphere.Core.Editor;
+using Sphere.Plugins.EditShims;
 using Sphere_Editor.Forms;
-using Sphere_Editor.EditorComponents;
 using Sphere_Editor.SpritesetComponents;
 using WeifenLuo.WinFormsUI.Docking;
 

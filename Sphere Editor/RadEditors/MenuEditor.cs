@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
+using Sphere.Plugins.EditShims;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.RadEditors
 {
     public partial class StateEditor : EditorObject
     {
-        private readonly ScriptEditor _codeBox = new ScriptEditor();
+        private readonly ScriptEditShim _codeBox = new ScriptEditShim();
         private readonly RadPanel _radBasePanel;
         private RadControl _currentCtrl;
         private readonly List<RadControl> _controls = new List<RadControl>();

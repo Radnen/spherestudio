@@ -32,7 +32,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesetEditor));
             this.DirectionHolder = new Sphere.Core.Editor.EditorPanel();
-            this.SpriteDrawer = new Sphere_Editor.SubEditors.Drawer2();
+            this.SpriteDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
             this.DirectionSplitter = new System.Windows.Forms.SplitContainer();
             this.ImagePanel = new System.Windows.Forms.Panel();
             this.ImageHolder = new Sphere.Core.Editor.EditorPanel();
@@ -68,10 +68,7 @@
             // 
             // SpriteDrawer
             // 
-            this.SpriteDrawer.CanDirty = false;
             this.SpriteDrawer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.SpriteDrawer.FixedSize = true;
-            this.SpriteDrawer.HelpLabel = null;
             this.SpriteDrawer.Location = new System.Drawing.Point(0, 313);
             this.SpriteDrawer.Name = "SpriteDrawer";
             this.SpriteDrawer.Size = new System.Drawing.Size(528, 174);
@@ -243,6 +240,6 @@
         private System.Windows.Forms.Panel ImagePanel;
         private Sphere.Core.Editor.EditorLabel ImagesLabel;
         private Sphere.Core.Editor.EditorPanel ImageHolder;
-        private Drawer2 SpriteDrawer;
+        private Sphere.Plugins.EditShims.ImageEditShim SpriteDrawer;
     }
 }

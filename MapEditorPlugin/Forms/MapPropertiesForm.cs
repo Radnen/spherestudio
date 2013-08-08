@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Sphere_Editor.SubEditors;
 using Sphere.Core;
 using Sphere.Plugins.EditShims;
 
-namespace Sphere_Editor.Forms
+namespace MapEditPlugin.Forms
 {
     public partial class MapPropertiesForm : Form
     {

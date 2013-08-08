@@ -51,7 +51,7 @@
             this.ZoomLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.EditorPanel = new System.Windows.Forms.Panel();
             this.MainSplitter = new System.Windows.Forms.SplitContainer();
-            this.StyleDrawer = new Sphere_Editor.SubEditors.Drawer2();
+            this.StyleDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
             this.StyleContextStrip.SuspendLayout();
             this.WindowHolder.SuspendLayout();
             this.StyleToolStrip.SuspendLayout();
@@ -290,10 +290,7 @@
             // 
             // StyleDrawer
             // 
-            this.StyleDrawer.CanDirty = false;
             this.StyleDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StyleDrawer.FixedSize = true;
-            this.StyleDrawer.HelpLabel = null;
             this.StyleDrawer.Location = new System.Drawing.Point(0, 0);
             this.StyleDrawer.Name = "StyleDrawer";
             this.StyleDrawer.Size = new System.Drawing.Size(520, 157);
@@ -347,6 +344,6 @@
         private System.Windows.Forms.ToolStripSeparator Seperator3;
         private System.Windows.Forms.Panel EditorPanel;
         private System.Windows.Forms.SplitContainer MainSplitter;
-        private Drawer2 StyleDrawer;
+        private Sphere.Plugins.EditShims.ImageEditShim StyleDrawer;
     }
 }

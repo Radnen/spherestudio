@@ -11,7 +11,7 @@ using Sphere_Editor.Forms;
 
 namespace Sphere_Editor
 {
-    public class Global
+    public static class Global
     {
         public static Dictionary<string, PluginWrapper> Plugins = new Dictionary<string, PluginWrapper>();
         public static List<string> Functions = new List<string>();

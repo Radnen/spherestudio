@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere_Editor.SubEditors;
 using System.Linq;
+using Sphere.Plugins.EditShims;
 
 namespace Sphere_Editor.Forms
 {
@@ -11,7 +12,7 @@ namespace Sphere_Editor.Forms
     {
         public Entity Person { get; private set; }
         public List<Entity> EntityList { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
         private int _last;
 
         public PersonForm(List<Entity> entities)

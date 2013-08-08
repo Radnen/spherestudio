@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
+using Sphere.Plugins.EditShims;
 using Sphere_Editor.Forms;
 using Sphere_Editor.SubEditors;
 using WeifenLuo.WinFormsUI.Docking;
@@ -184,6 +185,11 @@ namespace Sphere_Editor
             if (c != null) c.DockHandler.Close();
         }
 
+        public EditorObject CurrentDocument
+        {
+            get { return _currentControl; }
+        }
+        
         public ProjectSettings CurrentGame
         {
             get { return Global.CurrentProject; }
@@ -306,8 +312,6 @@ namespace Sphere_Editor
         private void AddDocument(Control control, string text)
         {
             DockContent content;
-            Drawer2 drawer2 = control as Drawer2;
-            if (drawer2 != null) drawer2.CanDirty = true;
             control.Dock = DockStyle.Fill;
             content = new DockContent();
             content.Controls.Add(control);
@@ -318,22 +322,13 @@ namespace Sphere_Editor
             content.Text = text;
             content.FormClosing += Content_FormClosing;
 
-            ImageMenu.Visible = MapMenu.Visible = false;
             SpritesetMenu.Visible = false;
 
             SetCurrentControl(control);
 
             if (text == "Sphere") { content.AllowEndUserDocking = false; }
-            else if (control is Drawer2)
-                content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
-            else if (control is ScriptEditor)
-                content.Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
-            else if (control is MapEditor)
-                content.Icon = Icon.FromHandle(Properties.Resources.map.GetHicon());
             else if (control is SpritesetEditor)
                 content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
-            else if (Global.IsSound(ref text))
-                content.Icon = Icon.FromHandle(Properties.Resources.sound.GetHicon());
             else if (control is WindowStyleEditor)
                 content.Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
             else
@@ -408,30 +403,6 @@ namespace Sphere_Editor
         }
 
         #region open functions
-        public void OpenFont(string filename)
-        {
-            //CurrentControl = new FontEditor(filename);
-            //LoadDocument(CurrentControl, filename);
-        }
-
-        public void OpenImage(string filename)
-        {
-            _currentControl = new Drawer2();
-            LoadDocument(_currentControl, filename);
-        }
-
-        public void OpenMap(string filename)
-        {
-            _currentControl = new MapEditor();
-            LoadDocument(_currentControl, filename);
-        }
-
-        public void OpenScript(string filename)
-        {
-            _currentControl = new ScriptEditor();
-            LoadDocument(_currentControl, filename);
-        }
-
         public void OpenSpriteset(string filename)
         {
             _currentControl = new SpritesetEditor();
@@ -480,7 +451,7 @@ namespace Sphere_Editor
 
                 RefreshProject(null, EventArgs.Empty);
                 _startPage.PopulateGameList();
-                OpenScript(Global.CurrentProject.RootPath + "\\scripts\\main.js");
+                OpenDocument(Global.CurrentProject.RootPath + "\\scripts\\main.js");
             }
         }
 
@@ -542,32 +513,9 @@ namespace Sphere_Editor
         }
         #endregion
         #region new sub-menu items
-        public void NewImage(object sender, EventArgs e)
-        {
-            AddNewDocument(new Drawer2(), "Untitled.png");
-        }
-
-        public void NewMap(object sender, EventArgs e)
-        {
-            using (NewMapDialogue diag = new NewMapDialogue())
-            {
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    MapEditor x = new MapEditor();
-                    x.CreateNew(diag.MapWidth, diag.MapHeight, diag.TileWidth, diag.TileHeight, diag.Tileset);
-                    AddDocument(x, "Untitled.rmp");
-                }
-            }
-        }
-
         public void NewSpriteset(object sender, EventArgs e)
         {
             AddNewDocument(new SpritesetEditor(), "Untitled.rss");
-        }
-
-        public void NewScript()
-        {
-            AddNewDocument(new ScriptEditor(), "Untitled.js");
         }
 
         public void NewWindowStyle(object sender, EventArgs e)
@@ -597,11 +545,11 @@ namespace Sphere_Editor
 
         private void EditMenu_DropDownOpening(object sender, EventArgs e)
         {
-            CutMenuItem.Enabled = SelectAllMenuItem.Enabled = _currentControl is ScriptEditor;
+            CutMenuItem.Enabled = SelectAllMenuItem.Enabled = _currentControl is IScriptEditor;
             CopyToolButton.Enabled = CopyMenuItem.Enabled = RedoMenuItem.Enabled = UndoMenuItem.Enabled = _currentControl != null;
             SaveLayoutMenuItem.Enabled = CutMenuItem.Enabled = CutToolButton.Enabled = _currentControl != null;
             PasteMenuItem.Enabled = PasteToolButton.Enabled = true;
-            ZoomInMenuItem.Enabled = ZoomOutMenuItem.Enabled = !(_currentControl is ScriptEditor);
+            ZoomInMenuItem.Enabled = ZoomOutMenuItem.Enabled = !(_currentControl is IScriptEditor);
         }
 
         private void SelectAllMenuItem_Click(object sender, EventArgs e)
@@ -701,82 +649,6 @@ namespace Sphere_Editor
         }
         #endregion
 
-        #region map menu items
-        private void MapPropertiesMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl == null) return;
-            if (!(_currentControl is MapEditor)) return;
-
-            MapEditor editor = (MapEditor)_currentControl;
-            using (MapPropertiesForm form = new MapPropertiesForm(editor.Map))
-            {
-                if (form.ShowDialog() == DialogResult.OK)
-                    editor.SetTileSize(editor.Map.Tileset.TileWidth, editor.Map.Tileset.TileHeight);
-            }
-        }
-
-        private void ExportTilesetItem_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog diag = new SaveFileDialog())
-            {
-                diag.InitialDirectory = Global.CurrentProject.RootPath;
-                diag.Filter = @"Image Files (.png)|*.png;";
-                diag.DefaultExt = "png";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                    ((MapEditor)_currentControl).SaveTileset(diag.FileName);
-            }
-        }
-
-        private void UpdateFromFileItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog diag = new OpenFileDialog())
-            {
-                diag.InitialDirectory = Global.CurrentProject.RootPath;
-                diag.Filter = @"Image Files (.png)|*.png";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                    ((MapEditor)_currentControl).UpdateTileset(diag.FileName);
-            }
-        }
-
-        private void recenterMapItem_Click(object sender, EventArgs e)
-        {
-            MapEditor editor = _currentControl as MapEditor;
-            if (editor != null) editor.MapControl.CenterMap();
-        }
-
-        #endregion
-
-        #region image menu items
-        private void ResizeMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl == null) return;
-            if (!(_currentControl is Drawer2)) return;
-            using (SizeForm form = new SizeForm())
-            {
-                form.WidthSize = ((Drawer2)_currentControl).ImageWidth;
-                form.HeightSize = ((Drawer2)_currentControl).ImageHeight;
-                form.UseScale = false;
-                if (form.ShowDialog() == DialogResult.OK)
-                    ((Drawer2)_currentControl).SetSize(form.WidthSize, form.HeightSize);
-            }
-        }
-
-        private void RescaleMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl == null) return;
-            if (!(_currentControl is Drawer2)) return;
-            using (SizeForm form = new SizeForm())
-            {
-                form.WidthSize = ((Drawer2)_currentControl).ImageWidth;
-                form.HeightSize = ((Drawer2)_currentControl).ImageHeight;
-                if (form.ShowDialog() == DialogResult.OK)
-                    ((Drawer2)_currentControl).SetScale(form.WidthSize, form.HeightSize, form.Mode);
-            }
-        }
-        #endregion
-
         #region view menu items
         private void StartPageMenuItem_Click(object sender, EventArgs e)
         {
@@ -806,11 +678,9 @@ namespace Sphere_Editor
             if (_currentControl != null) _currentControl.Deactivate();
 
             _currentControl = (value is EditorObject) ? (EditorObject)value : null;
-            MapMenu.Visible = ImageMenu.Visible = SpritesetMenu.Visible = false;
+            SpritesetMenu.Visible = false;
 
-            if (value is MapEditor) MapMenu.Visible = true;
-            else if (value is Drawer2) ImageMenu.Visible = true;
-            else if (value is SpritesetEditor) SpritesetMenu.Visible = true;
+            if (value is SpritesetEditor) SpritesetMenu.Visible = true;
 
             if (_currentControl != null) _currentControl.Activate();
         }

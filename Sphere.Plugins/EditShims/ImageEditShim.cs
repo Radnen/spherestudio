@@ -11,7 +11,7 @@ using Sphere.Core.Editor;
 
 namespace Sphere.Plugins.EditShims
 {
-    public partial class ImageEditShim : UserControl
+    public partial class ImageEditShim : EditorObject, IImageEditor
     {
         public ImageEditShim()
         {
@@ -44,10 +44,30 @@ namespace Sphere.Plugins.EditShims
             return editor.GetImages(tileWidth, tileHeight);
         }
 
+        public override void Redo()
+        {
+            _editor.Redo();
+        }
+        
         public void SetImage(Bitmap image)
         {
             if (_editor == null) return;
             (_editor as IImageEditor).SetImage(image);
+        }
+
+        public override void Undo()
+        {
+            _editor.Undo();
+        }
+
+        public override void ZoomIn()
+        {
+            _editor.ZoomIn();
+        }
+
+        public override void ZoomOut()
+        {
+            _editor.ZoomOut();
         }
 
         private EditorObject _editor;

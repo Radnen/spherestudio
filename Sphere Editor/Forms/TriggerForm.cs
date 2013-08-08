@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Plugins.EditShims;
 using Sphere_Editor.SubEditors;
 
 namespace Sphere_Editor.Forms
@@ -8,7 +9,7 @@ namespace Sphere_Editor.Forms
     public partial class TriggerForm : Form
     {
         public Entity Trigger { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
 
         public TriggerForm()
         {

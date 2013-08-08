@@ -373,9 +373,7 @@ namespace Sphere_Editor.SubEditors
             if (name.Contains("\\")) name = name.Substring(0, name.IndexOf('\\'));
 
             // built-in editors
-            if (name == "images") EditorForm.NewImage(null, EventArgs.Empty);
-            else if (name == "maps") EditorForm.NewMap(null, EventArgs.Empty);
-            else if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
+            if (name == "spritesets") EditorForm.NewSpriteset(null, EventArgs.Empty);
             else if (name == "windowstyles") EditorForm.NewWindowStyle(null, EventArgs.Empty);
 
             // no built-in support, have editor fish for plugins

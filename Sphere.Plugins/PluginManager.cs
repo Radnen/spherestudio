@@ -36,7 +36,7 @@ namespace Sphere.Plugins
         }
 
         /// <summary>
-        /// Unregisters a previously-registered script editor.
+        /// Unregisters a previously-registered editor plugin.
         /// </summary>
         /// <param name="editor">The plugin object to unregister.</param>
         public static void UnregisterEditor(IEditorPlugin editor)

@@ -22,6 +22,11 @@ namespace Sphere.Plugins
         ProjectSettings CurrentGame { get; }
 
         /// <summary>
+        /// Gets the EditorObject representing the active document.
+        /// </summary>
+        EditorObject CurrentDocument { get; }
+        
+        /// <summary>
         /// Add event handlers to do things when a project opens.
         /// </summary>
         event EventHandler LoadProject;

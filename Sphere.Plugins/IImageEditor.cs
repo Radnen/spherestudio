@@ -30,7 +30,7 @@ namespace Sphere.Plugins
         /// <param name="tileHeight">The height of the tiles.</param>
         /// <returns>A list of images representing the individual tiles.</returns>
         IList<Bitmap> GetImages(short tileWidth, short tileHeight);
-        
+
         /// <summary>
         /// Injects a new image wholesale into the editor.
         /// </summary>
