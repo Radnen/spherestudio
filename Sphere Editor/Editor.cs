@@ -92,11 +92,9 @@ namespace Sphere_Editor
             // raise a TryEditFile event first to see if any plugins take the bait
             EditFileEventArgs e = new EditFileEventArgs(filePath);
             if (TryEditFile != null) TryEditFile(null, e);
-            if (e.Handled)
-            {
-                // Someone took the bait, we don't have to do anything else
-                return;
-            }
+
+            // if someone took the bait, then we don't have to do anything else
+            if (e.Handled) return;
 
             // nothing huh? try fishing for plugins again, maybe we were using the
             // wrong lure... fish like stars right? (i.e. try wildcard extension "*")

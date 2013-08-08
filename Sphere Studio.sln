@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Editor", "Sphere Editor\Sphere Editor.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Editor\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
 	ProjectSection(ProjectDependencies) = postProject
