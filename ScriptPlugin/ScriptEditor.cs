@@ -11,7 +11,7 @@ using Sphere.Plugins;
 
 namespace ScriptPlugin
 {
-    public partial class ScriptEditor : EditorObject
+    public partial class ScriptEditor : EditorObject, IScriptEditor
     {
         Scintilla _codeBox = new Scintilla();
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");

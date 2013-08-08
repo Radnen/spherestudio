@@ -4,12 +4,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace ScriptPlugin
 {
-    public class ScriptPlugin : IPlugin
+    public class ScriptPlugin : IEditorPlugin
     {
         public string Name { get { return "Script Editor"; } }
         public string Author { get { return "Radnen"; } }
@@ -84,6 +85,49 @@ namespace ScriptPlugin
             _newScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
             _newScriptItem.Click += NewScriptItem_Click;
             #endregion
+        }
+
+        public void Initialize()
+        {
+            LoadFunctions();
+
+            // register this plugin as a script editor
+            PluginManager.RegisterEditor(EditorType.Script, this);
+            
+            // register event handlers
+            PluginManager.IDE.TryEditFile += host_TryEditFile;
+
+            // register Open dialog file types
+            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
+
+            // Show the root menu for this control; appearing before the 'View' menu.
+            PluginManager.IDE.AddMenuItem(_rootMenu, "View");
+            PluginManager.IDE.AddMenuItem("File.New", _newScriptItem);
+
+            _autoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
+            _codeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
+            _highlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
+            _highlightBracesItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hibraces", true);
+            _useTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
+
+            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
+            _twoUnitItem.Checked = spaces == 2;
+            _fourUnitItem.Checked = spaces == 4;
+            _eightUnitItem.Checked = spaces == 8;
+        }
+
+        public void Destroy()
+        {
+            PluginManager.UnregisterEditor(this);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            Functions.Clear();
+            PluginManager.IDE.RemoveMenuItem("ScriptPlugin");
+            PluginManager.IDE.TryEditFile -= host_TryEditFile;
+        }
+
+        public EditorObject CreateEditControl()
+        {
+            return new ScriptEditor();
         }
 
         private void host_TryEditFile(object sender, EditFileEventArgs e)
@@ -201,12 +245,10 @@ namespace ScriptPlugin
         public DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
-            ScriptEditor editor = new ScriptEditor();
+            ScriptEditor editor = new ScriptEditor() { Dock = DockStyle.Fill };
 
             editor.OnActivate += editor_OnActivate;
             editor.OnDeactivate += editor_OnDeactivate;
-
-            editor.Dock = DockStyle.Fill;
 
             // And creates + styles a dock panel:
             DockContent content = new DockContent() { Text = @"Untitled" };
@@ -227,40 +269,6 @@ namespace ScriptPlugin
         void editor_OnActivate(object sender, EventArgs e)
         {
             _rootMenu.Visible = true;
-        }
-
-        public void Initialize()
-        {
-            LoadFunctions();
-            
-            // register event handlers
-            PluginManager.IDE.TryEditFile += host_TryEditFile;
-
-            // register Open dialog file types
-            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
-
-            // Show the root menu for this control; appearing before the 'View' menu.
-            PluginManager.IDE.AddMenuItem(_rootMenu, "View");
-            PluginManager.IDE.AddMenuItem("File.New", _newScriptItem);
-
-            _autoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
-            _codeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
-            _highlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
-            _highlightBracesItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hibraces", true);
-            _useTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
-
-            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
-            _twoUnitItem.Checked = spaces == 2;
-            _fourUnitItem.Checked = spaces == 4;
-            _eightUnitItem.Checked = spaces == 8;
-        }
-
-        public void Destroy()
-        {
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            Functions.Clear();
-            PluginManager.IDE.RemoveMenuItem("ScriptPlugin");
-            PluginManager.IDE.TryEditFile -= host_TryEditFile;
         }
 
         private void UpdateScriptControls()

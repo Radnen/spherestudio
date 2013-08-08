@@ -63,7 +63,7 @@
             this.ShowNumButton = new System.Windows.Forms.ToolStripButton();
             this.EditorTabs = new System.Windows.Forms.TabControl();
             this.imageTab = new System.Windows.Forms.TabPage();
-            this.TileDrawer = new Sphere.Plugins.Shims.ImageEditShim();
+            this.TileDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
             this.tileTab = new System.Windows.Forms.TabPage();
             this.TileEditor = new MapEditPlugin.Components.TileEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -593,7 +593,7 @@
         public Components.TilesetControl2 TilesetControl;
         public Components.MapControl MapControl;
         private System.Windows.Forms.ToolStripButton ShowNumButton;
-        private Sphere.Plugins.Shims.ImageEditShim TileDrawer;
+        private Sphere.Plugins.EditShims.ImageEditShim TileDrawer;
 
     }
 }

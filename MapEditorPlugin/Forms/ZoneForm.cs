@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
+using Sphere.Plugins.EditShims;
 using MapEditPlugin.Components;
 
 namespace MapEditPlugin.Forms
@@ -10,7 +11,7 @@ namespace MapEditPlugin.Forms
     public partial class ZoneForm : Form
     {
         public Zone Zone { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
 
         public ZoneForm()
         {

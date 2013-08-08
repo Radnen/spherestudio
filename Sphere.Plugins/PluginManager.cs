@@ -7,6 +7,9 @@ using Sphere.Core.Editor;
 
 namespace Sphere.Plugins
 {
+    /// <summary>
+    /// Manages Sphere Studio plugins. This is a singleton.
+    /// </summary>
     public static class PluginManager
     {
         /// <summary>
@@ -22,11 +25,20 @@ namespace Sphere.Plugins
                 return null;
         }
 
+        /// <summary>
+        /// Registers a plugin as an editor for a specified type of data.
+        /// </summary>
+        /// <param name="type">The data type which is to be edited.</param>
+        /// <param name="editor">The plugin object which will handle editing. Must implement IEditorPlugin</param>
         public static void RegisterEditor(EditorType type, IEditorPlugin editor)
         {
             _editors[type] = editor;
         }
 
+        /// <summary>
+        /// Unregisters a previously-registered script editor.
+        /// </summary>
+        /// <param name="editor">The plugin object to unregister.</param>
         public static void UnregisterEditor(IEditorPlugin editor)
         {
             List<EditorType> toDelete = new List<EditorType>();
@@ -41,7 +53,7 @@ namespace Sphere.Plugins
         }
 
         /// <summary>
-        /// Gets or sets a reference to the Sphere Studio IDE.
+        /// Gets or sets the object representing the Sphere Studio IDE.
         /// </summary>
         public static IIDE IDE { get; set; }
         

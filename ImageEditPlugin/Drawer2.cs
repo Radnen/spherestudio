@@ -166,7 +166,7 @@ namespace ImageEditPlugin
         /// <param name="tileWidth">Width of sub-image.</param>
         /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public List<Bitmap> GetImages(short tileWidth,short tileHeight)
+        public IList<Bitmap> GetImages(short tileWidth,short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;

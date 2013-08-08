@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
+using Sphere.Plugins.EditShims;
 using MapEditPlugin.Components;
 
 namespace MapEditPlugin.Forms
@@ -13,7 +14,7 @@ namespace MapEditPlugin.Forms
     {
         public Entity Person { get; private set; }
         public List<Entity> EntityList { get; private set; }
-        readonly ScriptEditor _scriptBox = new ScriptEditor();
+        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
         private int _last;
 
         public PersonForm(List<Entity> entities)

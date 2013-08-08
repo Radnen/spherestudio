@@ -102,12 +102,6 @@
     <Compile Include="Components\MapControl.Designer.cs">
       <DependentUpon>MapControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\ScriptEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\ScriptEditor.Designer.cs">
-      <DependentUpon>ScriptEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Components\TileEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -180,9 +174,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MapControl.resx">
       <DependentUpon>MapControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\ScriptEditor.resx">
-      <DependentUpon>ScriptEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\TileEditor.resx">
       <DependentUpon>TileEditor.cs</DependentUpon>

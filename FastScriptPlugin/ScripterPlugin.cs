@@ -2,12 +2,13 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace FastScriptPlugin
 {
-    public class ScripterPlugin : IPlugin
+    public class ScripterPlugin : IEditorPlugin
     {
 
         public string Name { get { return "Fast Script Editor"; } }
@@ -77,6 +78,41 @@ namespace FastScriptPlugin
             NewScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
             NewScriptItem.Click += NewScriptItem_Click;
             #endregion
+        }
+
+        public void Initialize()
+        {
+            PluginManager.RegisterEditor(EditorType.Script, this);
+
+            PluginManager.IDE.TryEditFile += Host_TryEditFile;
+            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
+
+            PluginManager.IDE.AddMenuItem(RootMenu, "View");
+            PluginManager.IDE.AddMenuItem("File.New", NewScriptItem);
+
+            AutoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
+            CodeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
+            UseTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
+            HighlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
+
+            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
+            TwoUnitItem.Checked = spaces == 2;
+            FourUnitItem.Checked = spaces == 4;
+            EightUnitItem.Checked = spaces == 8;
+        }
+
+        public void Destroy()
+        {
+            PluginManager.UnregisterEditor(this);
+            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilters);
+            PluginManager.IDE.RemoveMenuItem("Script");
+            PluginManager.IDE.RemoveMenuItem(NewScriptItem);
+            PluginManager.IDE.TryEditFile -= Host_TryEditFile;
+        }
+
+        public EditorObject CreateEditControl()
+        {
+            return new Scripter();
         }
 
         private void AutoCompleteItem_Click(object sender, EventArgs e)
@@ -198,33 +234,6 @@ namespace FastScriptPlugin
                     e.Handled = true;
                 }
             }
-        }
-
-        public void Initialize()
-        {
-            PluginManager.IDE.TryEditFile += Host_TryEditFile;
-            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
-
-            PluginManager.IDE.AddMenuItem(RootMenu, "View");
-            PluginManager.IDE.AddMenuItem("File.New", NewScriptItem);
-
-            AutoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
-            CodeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
-            UseTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
-            HighlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
-
-            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
-            TwoUnitItem.Checked = spaces == 2;
-            FourUnitItem.Checked = spaces == 4;
-            EightUnitItem.Checked = spaces == 8;
-        }
-
-        public void Destroy()
-        {
-            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilters);
-            PluginManager.IDE.RemoveMenuItem("Script");
-            PluginManager.IDE.RemoveMenuItem(NewScriptItem);
-            PluginManager.IDE.TryEditFile -= Host_TryEditFile;
         }
 
         private void UpdateScriptControls()

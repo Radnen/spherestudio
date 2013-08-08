@@ -345,8 +345,8 @@ namespace MapEditPlugin.Components
         /// <summary>
         /// Sets the images of the selected tiles;
         /// </summary>
-        /// <param name="images"></param>
-        public void SetImages(List<Bitmap> images)
+        /// <param name="images">A list of images to use for the tiles.</param>
+        public void SetImages(IList<Bitmap> images)
         {
             for (int i = 0; i < images.Count; ++i)
             {

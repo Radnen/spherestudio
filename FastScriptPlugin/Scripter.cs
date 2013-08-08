@@ -10,7 +10,7 @@ using Sphere.Plugins;
 
 namespace FastScriptPlugin
 {
-    public partial class Scripter : EditorObject
+    public partial class Scripter : EditorObject, IScriptEditor
     {
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         private readonly FastColoredTextBox _textbox;
@@ -117,6 +117,16 @@ namespace FastScriptPlugin
         public override void Redo()
         {
             _textbox.Redo();
+        }
+
+        public override string Text
+        {
+            get { return _textbox.Text; }
+            set
+            {
+                _textbox.Text = value;
+                _textbox.ClearUndo();
+            }
         }
     }
 }

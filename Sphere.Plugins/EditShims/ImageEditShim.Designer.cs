@@ -1,4 +1,4 @@
-﻿namespace Sphere.Plugins.Shims
+﻿namespace Sphere.Plugins.EditShims
 {
     partial class ImageEditShim
     {
