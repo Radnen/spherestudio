@@ -11,14 +11,16 @@ using Sphere.Plugins;
 
 namespace ScriptEditPlugin
 {
-    public partial class ScriptEditor : EditorObject, IScriptEditor
+    internal partial class ScriptEditor : EditorObject, IScriptEditor
     {
-        Scintilla _codeBox = new Scintilla();
-        readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
+        private Scintilla _codeBox = new Scintilla();
+        private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         private bool _autocomplete;
 
         public ScriptEditor()
         {
+            CanDirty = false;
+            
             string configPath = Application.StartupPath + "\\SphereLexer.xml";
             if (File.Exists(configPath))
                 _codeBox.ConfigurationManager.CustomLocation = configPath;
@@ -55,6 +57,8 @@ namespace ScriptEditPlugin
             UpdateStyle();
         }
 
+        public bool CanDirty { get; set; }
+
         /// <summary>
         /// Styles the code box per the options specified in the editor settings.
         /// </summary>
@@ -80,7 +84,7 @@ namespace ScriptEditPlugin
 
         void code_box_TextChanged(object sender, EventArgs e)
         {
-            MakeDirty();
+            if (CanDirty) MakeDirty();
             SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
         }
 

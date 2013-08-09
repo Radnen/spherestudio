@@ -195,12 +195,9 @@ namespace FastScriptEditPlugin
 
         public DockContent OpenEditor(string filename = "")
         {
-            Scripter scriptEditor = new Scripter();
-            
+            Scripter scriptEditor = new Scripter() { CanDirty = true, Dock = DockStyle.Fill };
             scriptEditor.OnActivate += editor_OnActivate;
             scriptEditor.OnDeactivate += editor_OnDeactivate;
-
-            scriptEditor.Dock = DockStyle.Fill;
 
             DockContent content = new DockContent {Text = @"Untitled.js"};
             content.Controls.Add(scriptEditor);

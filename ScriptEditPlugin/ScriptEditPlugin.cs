@@ -245,7 +245,7 @@ namespace ScriptEditPlugin
         public DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
-            ScriptEditor editor = new ScriptEditor() { Dock = DockStyle.Fill };
+            ScriptEditor editor = new ScriptEditor() { CanDirty = true, Dock = DockStyle.Fill };
 
             editor.OnActivate += editor_OnActivate;
             editor.OnDeactivate += editor_OnDeactivate;

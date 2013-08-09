@@ -14,6 +14,7 @@ namespace ImageEditPlugin
     internal partial class Drawer2 : EditorObject, IImageEditor
     {
         public event EventHandler ImageEdited;
+        
         public bool CanDirty { get; set; }
 
         public bool FixedSize
@@ -35,6 +36,8 @@ namespace ImageEditPlugin
         {
             InitializeComponent();
             InitializeDocking();
+
+            CanDirty = false;
 
             for (int i = 0; i < 8; ++i)
             {

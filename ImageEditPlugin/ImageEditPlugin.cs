@@ -115,7 +115,7 @@ namespace ImageEditPlugin
         private DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
-            Drawer2 editor = new Drawer2() { Dock = DockStyle.Fill };
+            Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
 
             // if no filename provided, initialize a new image
             if (string.IsNullOrEmpty(filename)) editor.CreateNew();

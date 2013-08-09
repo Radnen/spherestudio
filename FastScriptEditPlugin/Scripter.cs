@@ -18,15 +18,18 @@ namespace FastScriptEditPlugin
         public Scripter()
         {
             InitializeComponent();
+            CanDirty = false;
             _textbox = new FastColoredTextBox {Dock = DockStyle.Fill};
             _textbox.TextChangedDelayed += _textbox_TextChangedDelayed;
             Controls.Add(_textbox);
             UpdateStyle();
         }
 
+        public bool CanDirty { get; set; }
+
         void _textbox_TextChangedDelayed(object sender, TextChangedEventArgs e)
         {
-            MakeDirty();
+            if (CanDirty) MakeDirty();
         }
 
         public void UpdateStyle()
