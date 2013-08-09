@@ -9,7 +9,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.SubEditors
 {
-    public partial class StartPage : UserControl
+    internal partial class StartPage : UserControl
     {
         private readonly ProjectSettings _proj = new ProjectSettings();
         private ListViewItem _currentItem;

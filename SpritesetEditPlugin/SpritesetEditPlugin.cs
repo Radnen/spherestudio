@@ -28,7 +28,7 @@ namespace SpritesetEditPlugin
         {
             // initialize the menu items
             _newSpritesetMenuItem = new ToolStripMenuItem("Spriteset", Properties.Resources.PaletteToolIcon, _newSpritesetMenuItem_Click);
-            _spritesetMenu = new ToolStripMenuItem("&Spriteset");
+            _spritesetMenu = new ToolStripMenuItem("&Spriteset") { Visible = false };
             _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, _resizeMenuItem_Click);
             _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, _rescaleMenuItem_Click);
             _importMenuItem = new ToolStripMenuItem("&Import...", null, _importMenuItem_Click);
@@ -44,7 +44,7 @@ namespace SpritesetEditPlugin
             // check everything in with the plugin manager
             PluginManager.IDE.TryEditFile += OnTryEditFile;
             PluginManager.IDE.AddMenuItem("File.New", _newSpritesetMenuItem);
-            PluginManager.IDE.AddMenuItem(_spritesetMenu, "Help");
+            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
             PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
         }
 
@@ -77,7 +77,17 @@ namespace SpritesetEditPlugin
                 e.Handled = true;
             }
         }
+        
+        private void document_Activate(object sender, EventArgs e)
+        {
+        	_spritesetMenu.Visible = true;
+        }
 
+        private void document_Deactivate(object sender, EventArgs e)
+        {
+        	_spritesetMenu.Visible = false;
+        }
+        
         #region menu item click handlers
         private void _newSpritesetMenuItem_Click(object sender, EventArgs e)
         {
@@ -111,6 +121,8 @@ namespace SpritesetEditPlugin
         {
             // Creates a new editor instance:
             SpritesetEditor editor = new SpritesetEditor() { Dock = DockStyle.Fill };
+            editor.OnActivate += document_Activate;
+            editor.OnDeactivate += document_Deactivate;
 
             // if no filename provided, initialize a new document
             if (string.IsNullOrEmpty(filename)) editor.CreateNew();

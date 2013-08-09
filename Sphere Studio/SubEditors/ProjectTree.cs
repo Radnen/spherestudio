@@ -14,7 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.SubEditors
 {
-    public partial class ProjectTree : UserControl
+    internal partial class ProjectTree : UserControl
     {
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();

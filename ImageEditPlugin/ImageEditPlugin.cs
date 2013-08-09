@@ -31,7 +31,7 @@ namespace ImageEditPlugin
         {
             // initialize the menu items
             _newImageMenuItem = new ToolStripMenuItem("Image", Properties.Resources.palette, _newImageMenuItem_Click);
-            _imageMenu = new ToolStripMenuItem("&Image");
+            _imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
             _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, _rescaleMenuItem_Click);
             _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, _resizeMenuItem_Click);
             _imageMenu.DropDownItems.AddRange(new ToolStripItem[] {
@@ -42,7 +42,7 @@ namespace ImageEditPlugin
             PluginManager.IDE.TryEditFile += OnTryEditFile;
             PluginManager.RegisterEditor(EditorType.Image, this);
             PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
-            PluginManager.IDE.AddMenuItem(_imageMenu, "Help");
+            PluginManager.IDE.AddMenuItem(_imageMenu, "View");
             PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 
@@ -80,6 +80,16 @@ namespace ImageEditPlugin
             }
         }
 
+        private void document_Activate(object sender, EventArgs e)
+        {
+        	_imageMenu.Visible = true;
+        }
+
+        private void document_Deactivate(object sender, EventArgs e)
+        {
+       		_imageMenu.Visible = false;
+        }
+        
         #region menu item click handlers
         private void _newImageMenuItem_Click(object sender, EventArgs e)
         {
@@ -116,6 +126,8 @@ namespace ImageEditPlugin
         {
             // Creates a new editor instance:
             Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
+            editor.OnActivate += document_Activate;
+            editor.OnDeactivate += document_Deactivate;
 
             // if no filename provided, initialize a new image
             if (string.IsNullOrEmpty(filename)) editor.CreateNew();

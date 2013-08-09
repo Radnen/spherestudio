@@ -23,13 +23,13 @@ namespace MapEditPlugin
         {
             Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
             _extensions.AddRange(new[] { ".rmp" });
-            _newMapMenuItem.Click += _newMapMenuItem_Click;
         }
 
         public void Initialize()
         {
             // initialize the menu items
-            _mapMenu = new ToolStripMenuItem("&Map");
+            _newMapMenuItem = new ToolStripMenuItem("&Map", Properties.Resources.MapIcon, _newMapMenuItem_Click);
+            _mapMenu = new ToolStripMenuItem("&Map") { Visible = false };
             _exportTilesetMenuItem = new ToolStripMenuItem("E&xport Tileset...", null, _exportTilesetItem_Click);
             _importTilesetMenuItem = new ToolStripMenuItem("&Import Tileset...", null, _mapPropertiesMenuItem_Click);
             _mapPropertiesMenuItem = new ToolStripMenuItem("Map &Properties...", null, _mapPropertiesMenuItem_Click);
@@ -45,7 +45,7 @@ namespace MapEditPlugin
             // check everything in with the plugin manager
             PluginManager.IDE.TryEditFile += OnTryEditFile;
             PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
-            PluginManager.IDE.AddMenuItem(_mapMenu, "Help");
+            PluginManager.IDE.AddMenuItem(_mapMenu, "View");
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _mapOpenFilters);
         }
 
@@ -61,7 +61,7 @@ namespace MapEditPlugin
         private const string _mapOpenFilters = "*.rmp";
 
         #region menu item declarations
-        private ToolStripMenuItem _newMapMenuItem = new ToolStripMenuItem("Map", Properties.Resources.MapIcon);
+        private ToolStripMenuItem _newMapMenuItem;
         private ToolStripMenuItem _mapMenu;
         private ToolStripMenuItem _exportTilesetMenuItem;
         private ToolStripMenuItem _mapPropertiesMenuItem;
@@ -78,6 +78,16 @@ namespace MapEditPlugin
             }
         }
 
+        private void document_Activate(object sender, EventArgs e)
+        {
+        	_mapMenu.Visible = true;
+        }
+
+        private void document_Deactivate(object sender, EventArgs e)
+        {
+        	_mapMenu.Visible = false;
+        }
+        
         #region menu item click handlers
         private void _exportTilesetItem_Click(object sender, EventArgs e)
         {
@@ -124,11 +134,14 @@ namespace MapEditPlugin
                     (PluginManager.IDE.CurrentDocument as MapEditor).UpdateTileset(diag.FileName);
             }
         }
-
+        #endregion
+		
         private DockContent OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
             MapEditor editor = new MapEditor() { Dock = DockStyle.Fill };
+            editor.OnActivate += document_Activate;
+            editor.OnDeactivate += document_Deactivate;
 
             // if no filename provided, initialize a new map
             if (string.IsNullOrEmpty(filename))
@@ -157,6 +170,5 @@ namespace MapEditPlugin
 
             return content;
         }
-        #endregion
     }
 }

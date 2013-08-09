@@ -15,7 +15,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio
 {
-    public partial class IDEForm : Form, IIDE
+    internal partial class IDEForm : Form, IIDE
     {
         // uninitialized data:
         private DockContent _treeContent;
@@ -39,7 +39,7 @@ namespace SphereStudio
 
             InitializeComponent();
 
-            _tree = new ProjectTree {Dock = DockStyle.Fill, EditorForm = this};
+            _tree = new ProjectTree() { Dock = DockStyle.Fill, EditorForm = this };
 
             _startPage = new StartPage(this) {Dock = DockStyle.Fill, HelpLabel = HelpLabel};
             _startPage.PopulateGameList();

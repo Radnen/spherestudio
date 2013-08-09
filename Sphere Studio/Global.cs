@@ -11,7 +11,7 @@ using SphereStudio.Forms;
 
 namespace SphereStudio
 {
-    public static class Global
+    internal static class Global
     {
         public static Dictionary<string, PluginWrapper> Plugins = new Dictionary<string, PluginWrapper>();
         public static List<string> Functions = new List<string>();
