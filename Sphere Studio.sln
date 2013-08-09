@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Editor\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Studio\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -15,17 +15,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlugin", "TaskPlugin\Ta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Core", "Sphere.Core\Sphere.Core.csproj", "{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptPlugin", "ScriptPlugin\ScriptPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEditPlugin", "ScriptEditPlugin\ScriptEditPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontPlugin", "FontPlugin\FontPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontEditPlugin", "FontEditPlugin\FontEditPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlugin", "MyPlugin\MyPlugin.csproj", "{B320DA5E-0E67-4CE7-97E7-96009014E6EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTestPlugin", "SoundTestPlugin\SoundTestPlugin.csproj", "{F1B89568-607D-4CEC-9C11-6C516D98E2EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScripterPlugin", "FastScriptPlugin\ScripterPlugin.csproj", "{6B3428FE-C5FC-4C04-A93D-9A1EE50FCA2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastScriptEditPlugin", "FastScriptEditPlugin\FastScriptEditPlugin.csproj", "{6B3428FE-C5FC-4C04-A93D-9A1EE50FCA2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditorPlugin", "MapEditorPlugin\MapEditorPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditPlugin", "MapEditPlugin\MapEditPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageEditPlugin", "ImageEditPlugin\ImageEditPlugin.csproj", "{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}"
 EndProject
