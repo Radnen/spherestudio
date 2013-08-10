@@ -14,6 +14,7 @@ namespace ImageEditPlugin
     internal partial class Drawer2 : EditorObject, IImageEditor
     {
         public event EventHandler ImageEdited;
+        
         public bool CanDirty { get; set; }
 
         public bool FixedSize
@@ -35,6 +36,8 @@ namespace ImageEditPlugin
         {
             InitializeComponent();
             InitializeDocking();
+
+            CanDirty = false;
 
             for (int i = 0; i < 8; ++i)
             {
@@ -107,8 +110,8 @@ namespace ImageEditPlugin
                     Filter = @"Image Files (.png, .gif, .bmp, .jpg)|*.png;*.gif;*.bmp;*.jpg"
                 };
 
-            if (PluginData.Host.CurrentGame.RootPath != null)
-                diag.InitialDirectory = PluginData.Host.CurrentGame.RootPath + "\\images";
+            if (PluginManager.IDE.CurrentGame.RootPath != null)
+                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\images";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {
@@ -166,7 +169,7 @@ namespace ImageEditPlugin
         /// <param name="tileWidth">Width of sub-image.</param>
         /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public List<Bitmap> GetImages(short tileWidth,short tileHeight)
+        public IList<Bitmap> GetImages(short tileWidth,short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;

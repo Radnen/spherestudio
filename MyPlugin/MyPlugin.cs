@@ -5,14 +5,14 @@ using Sphere.Plugins;
 
 namespace MyPlugin
 {
-    class MyPlugin : IPlugin
+    public class MyPlugin : IPlugin
     {
         public string Name { get { return "My Cool Plugin"; } }
         public string Author { get { return "Me"; } }
         public string Description { get { return "An awesome plugin, that's really cool!"; } }
         public string Version { get { return "1.5a"; } }
         public Icon Icon { get; set; }
-        public IPluginHost Host { get; set; }
+        public IIDE Host { get; set; }
 
         private readonly ToolStripMenuItem _myItem;
 
