@@ -25,17 +25,17 @@ namespace SoundTestPlugin
         private DockContent _content;
         private SoundPicker _soundPicker;
 
-        private void host_LoadProject(object sender, EventArgs e)
+        private void OnLoadProject(object sender, EventArgs e)
         {
             _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
-        private void host_UnloadProject(object sender, EventArgs e)
+        private void OnUnloadProject(object sender, EventArgs e)
         {
             _soundPicker.WatchProject(null);
         }
 
-        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        private void OnTryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
             foreach (string type in _fileTypes)
@@ -48,7 +48,7 @@ namespace SoundTestPlugin
             }
         }
 
-        private void host_TestGame(object sender, EventArgs e)
+        private void OnTestGame(object sender, EventArgs e)
         {
             _soundPicker.ForcePause();
         }
@@ -60,20 +60,18 @@ namespace SoundTestPlugin
 
         public void Initialize()
         {
-            _soundPicker = new SoundPicker() {Dock = DockStyle.Fill};
+            _soundPicker = new SoundPicker() { Dock = DockStyle.Fill };
             _soundPicker.Refresh();
-            _content = new DockContent();
+            _content = new DockContent() { Text = @"Sound Test", Icon = Icon };
             _content.Controls.Add(_soundPicker);
-            _content.Text = @"Sound Test";
             _content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
             _content.DockHandler.HideOnClose = true;
-            _content.Icon = Icon;
             PluginManager.IDE.DockControl(_content, DockState.DockLeft);
             PluginManager.IDE.RegisterOpenFileType("Audio", OpenFileFilter);
-            PluginManager.IDE.LoadProject += host_LoadProject;
-            PluginManager.IDE.UnloadProject += host_UnloadProject;
-            PluginManager.IDE.TestGame += host_TestGame;
-            PluginManager.IDE.TryEditFile += host_TryEditFile;
+            PluginManager.IDE.LoadProject += OnLoadProject;
+            PluginManager.IDE.UnloadProject += OnUnloadProject;
+            PluginManager.IDE.TestGame += OnTestGame;
+            PluginManager.IDE.TryEditFile += OnTryEditFile;
             _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
@@ -83,10 +81,10 @@ namespace SoundTestPlugin
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
             PluginManager.IDE.RemoveControl("Sound Test");
-            PluginManager.IDE.TryEditFile -= host_TryEditFile;
-            PluginManager.IDE.TestGame -= host_TestGame;
-            PluginManager.IDE.LoadProject -= host_LoadProject;
-            PluginManager.IDE.UnloadProject -= host_UnloadProject;
+            PluginManager.IDE.TryEditFile -= OnTryEditFile;
+            PluginManager.IDE.TestGame -= OnTestGame;
+            PluginManager.IDE.LoadProject -= OnLoadProject;
+            PluginManager.IDE.UnloadProject -= OnUnloadProject;
         }
     }
 }
