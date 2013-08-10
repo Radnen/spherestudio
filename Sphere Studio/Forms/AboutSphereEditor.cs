@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SphereStudio.Forms
 {
-    partial class AboutSphereEditor : Form
+    internal partial class AboutSphereEditor : Form
     {
         public AboutSphereEditor()
         {

@@ -6,7 +6,7 @@ using Sphere.Core;
 
 namespace SphereStudio.RadEditors
 {
-    public class RadControl
+    internal class RadControl
     {
         private int x, y, w, h;
         private bool outlined, can_resize = false;
@@ -111,7 +111,7 @@ namespace SphereStudio.RadEditors
         }
     }
 
-    public class RadPanel : RadControl
+    internal class RadPanel : RadControl
     {
         private bool use_window;
         private Windowstyle style = null;
@@ -180,7 +180,7 @@ namespace SphereStudio.RadEditors
         }
     }
 
-    /*public class RadLabel : RadControl
+    /*internal class RadLabel : RadControl
     {
         private string text;
         private Sphere_Editor.EditorComponents.FontSet font;
@@ -241,7 +241,7 @@ namespace SphereStudio.RadEditors
         }
     }*/
 
-    public class RadImage : RadControl
+    internal class RadImage : RadControl
     {
         private string filename = string.Empty;
         Bitmap image_preview = null;

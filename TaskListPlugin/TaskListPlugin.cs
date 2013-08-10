@@ -4,9 +4,9 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace TaskPlugin
+namespace TaskListPlugin
 {
-    public class TaskPlugin : IPlugin
+    public class TaskListPlugin : IPlugin
     {
         public string Name { get { return "Task List"; } }
         public string Author { get { return "Radnen"; } }
@@ -18,7 +18,7 @@ namespace TaskPlugin
         private DockContent _content;
         private ToolStripMenuItem _item;
 
-        public TaskPlugin()
+        public TaskListPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.lightbulb.GetHicon());
         }

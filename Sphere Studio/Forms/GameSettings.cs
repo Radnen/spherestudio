@@ -5,7 +5,7 @@ using Sphere.Core.Settings;
 
 namespace SphereStudio.Forms
 {
-    public partial class GameSettings : Form
+    internal partial class GameSettings : Form
     {
         public GameSettings(ProjectSettings someProject)
         {

@@ -1,9 +1,9 @@
-﻿namespace TaskPlugin
+﻿namespace TaskListPlugin
 {
     enum TaskPriority { Hi, Med, Lo, None };
     enum TaskType { Addition, Art, Bug, Feature, Gameplay, Other, UI };
 
-    class Task
+    internal class Task
     {
         public Task() : this("") { }
 

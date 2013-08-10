@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 
 namespace SphereStudio.Forms.ColorPicker
 {
-    public partial class ColorRectangle : UserControl
+    internal partial class ColorRectangle : UserControl
     {
         private Color color = Color.Blue;
         private Color selected_color = Color.White;

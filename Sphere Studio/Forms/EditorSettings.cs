@@ -8,7 +8,7 @@ using Sphere.Plugins;
 
 namespace SphereStudio.Forms
 {
-    public partial class EditorSettings : Form
+    internal partial class EditorSettings : Form
     {
         #region getters and setters
         public string SpherePath

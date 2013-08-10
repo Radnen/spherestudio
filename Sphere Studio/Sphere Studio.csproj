@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio</RootNamespace>
-    <AssemblyName>SphereStudio</AssemblyName>
+    <AssemblyName>Sphere Studio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Editor.ico</ApplicationIcon>
@@ -355,9 +355,9 @@
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
       <Name>SpritesetEditPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TaskPlugin\TaskPlugin.csproj">
+    <ProjectReference Include="..\TaskListPlugin\TaskListPlugin.csproj">
       <Project>{f7434dec-a94a-409c-a320-7585b4083a6a}</Project>
-      <Name>TaskPlugin</Name>
+      <Name>TaskListPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowstyleEditPlugin\WindowstyleEditPlugin.csproj">
       <Project>{65bcdeef-c718-492a-8c82-7886a3af8b7b}</Project>

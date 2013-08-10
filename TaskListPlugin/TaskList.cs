@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TaskPlugin
+namespace TaskListPlugin
 {
-    public partial class TaskList : UserControl
+    internal partial class TaskList : UserControl
     {
         private readonly ImageList _imagelist = new ImageList();
 

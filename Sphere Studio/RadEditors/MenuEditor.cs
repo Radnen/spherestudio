@@ -10,7 +10,7 @@ using SphereStudio.SubEditors;
 
 namespace SphereStudio.RadEditors
 {
-    public partial class StateEditor : EditorObject
+    internal partial class StateEditor : EditorObject
     {
         private readonly ScriptEditShim _codeBox = new ScriptEditShim();
         private readonly RadPanel _radBasePanel;

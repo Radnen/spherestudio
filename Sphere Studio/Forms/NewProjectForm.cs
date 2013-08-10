@@ -4,7 +4,7 @@ using Sphere.Core.Settings;
 
 namespace SphereStudio.Forms
 {
-    public partial class NewProjectForm : Form
+    internal partial class NewProjectForm : Form
     {
         public string RootFolder
         {

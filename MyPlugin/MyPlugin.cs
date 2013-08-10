@@ -5,7 +5,7 @@ using Sphere.Plugins;
 
 namespace MyPlugin
 {
-    class MyPlugin : IPlugin
+    public class MyPlugin : IPlugin
     {
         public string Name { get { return "My Cool Plugin"; } }
         public string Author { get { return "Me"; } }
