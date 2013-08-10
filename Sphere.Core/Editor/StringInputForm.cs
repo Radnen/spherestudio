@@ -3,16 +3,20 @@ using System.Windows.Forms;
 
 namespace Sphere.Core.Editor
 {
+    /// <summary>
+    /// Represents a form that allows the user to enter a line of text.
+    /// </summary>
     public partial class StringInputForm : Form
     {
         private bool _numOnly;
 
         /// <summary>
-        /// Used to 
+        /// Initializes the string input form.
         /// </summary>
         public StringInputForm()
         {
             InitializeComponent();
+            NumOnly = false;
         }
 
         /// <summary>

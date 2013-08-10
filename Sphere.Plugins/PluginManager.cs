@@ -7,6 +7,9 @@ using Sphere.Core.Editor;
 
 namespace Sphere.Plugins
 {
+    /// <summary>
+    /// Manages Sphere Studio plugins. This is a singleton.
+    /// </summary>
     public static class PluginManager
     {
         /// <summary>
@@ -22,16 +25,20 @@ namespace Sphere.Plugins
                 return null;
         }
 
+        /// <summary>
+        /// Registers a plugin as an editor for a specified type of data.
+        /// </summary>
+        /// <param name="type">The data type which is to be edited.</param>
+        /// <param name="editor">The plugin object which will handle editing. Must implement IEditorPlugin</param>
         public static void RegisterEditor(EditorType type, IEditorPlugin editor)
         {
             _editors[type] = editor;
         }
 
-        public static void RegisterOpenFileType(string typeName, string filters)
-        {
-            _openFileTypes[filters] = typeName;
-        }
-
+        /// <summary>
+        /// Unregisters a previously-registered editor plugin.
+        /// </summary>
+        /// <param name="editor">The plugin object to unregister.</param>
         public static void UnregisterEditor(IEditorPlugin editor)
         {
             List<EditorType> toDelete = new List<EditorType>();
@@ -45,21 +52,11 @@ namespace Sphere.Plugins
                 _editors.Remove(key);
         }
 
-        public static void UnregisterOpenFileType(string filters)
-        {
-            if (!_openFileTypes.ContainsKey(filters)) return;
-            _openFileTypes.Remove(filters);
-        }
-
-        public static IDictionary<string, string> OpenFileTypes
-        {
-            get
-            {
-                return _openFileTypes;
-            }
-        }
+        /// <summary>
+        /// Gets or sets the object representing the Sphere Studio IDE.
+        /// </summary>
+        public static IIDE IDE { get; set; }
         
         private static Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType, IEditorPlugin>();
-        private static Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
     }
 }

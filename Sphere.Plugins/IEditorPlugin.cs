@@ -25,7 +25,7 @@ namespace Sphere.Plugins
     public interface IEditorPlugin : IPlugin
     {
         /// <summary>
-        /// Creates a new editor control.
+        /// Creates a new image editor control.
         /// </summary>
         EditorObject CreateEditControl();
     }
