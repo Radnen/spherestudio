@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Plugins;
@@ -14,44 +15,15 @@ namespace SoundTestPlugin
         public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; set; }
 
-        private const string OpenFileFilter = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
-
-        private readonly string[] _fileTypes = new[] {
-            ".mp3", ".ogg", ".flac",  // compressed audio
+        private const string _openFileFilters = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
+        private readonly List<string> _extensionList = new List<string>(new[] {
+            ".mp3", ".ogg", ".flac",  // compressed audio formats
             ".mod", ".it", ".s3d",    // tracker formats
-            ".wav"                    // uncompressed/PCM
-        };
-
+            ".wav"                    // uncompressed/PCM formats
+        });
+        
         private DockContent _content;
         private SoundPicker _soundPicker;
-
-        private void OnLoadProject(object sender, EventArgs e)
-        {
-            _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
-        }
-
-        private void OnUnloadProject(object sender, EventArgs e)
-        {
-            _soundPicker.WatchProject(null);
-        }
-
-        private void OnTryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            foreach (string type in _fileTypes)
-            {
-                if (e.Extension == type)
-                {
-                    _soundPicker.PlayFile(e.Path);
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void OnTestGame(object sender, EventArgs e)
-        {
-            _soundPicker.ForcePause();
-        }
 
         public SoundTestPlugin()
         {
@@ -67,7 +39,7 @@ namespace SoundTestPlugin
             _content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
             _content.DockHandler.HideOnClose = true;
             PluginManager.IDE.DockControl(_content, DockState.DockLeft);
-            PluginManager.IDE.RegisterOpenFileType("Audio", OpenFileFilter);
+            PluginManager.IDE.RegisterOpenFileType("Audio", _openFileFilters);
             PluginManager.IDE.LoadProject += OnLoadProject;
             PluginManager.IDE.UnloadProject += OnUnloadProject;
             PluginManager.IDE.TestGame += OnTestGame;
@@ -77,7 +49,7 @@ namespace SoundTestPlugin
 
         public void Destroy()
         {
-            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilter);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
             PluginManager.IDE.RemoveControl("Sound Test");
@@ -85,6 +57,31 @@ namespace SoundTestPlugin
             PluginManager.IDE.TestGame -= OnTestGame;
             PluginManager.IDE.LoadProject -= OnLoadProject;
             PluginManager.IDE.UnloadProject -= OnUnloadProject;
+        }
+
+        private void OnLoadProject(object sender, EventArgs e)
+        {
+            _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
+        }
+
+        private void OnUnloadProject(object sender, EventArgs e)
+        {
+            _soundPicker.WatchProject(null);
+        }
+
+        private void OnTryEditFile(object sender, EditFileEventArgs e)
+        {
+            if (e.Handled) return;
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            {
+                _soundPicker.PlayFile(e.Path);
+                e.Handled = true;
+            }
+        }
+
+        private void OnTestGame(object sender, EventArgs e)
+        {
+            _soundPicker.ForcePause();
         }
     }
 }
