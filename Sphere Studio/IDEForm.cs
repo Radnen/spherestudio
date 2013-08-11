@@ -34,7 +34,6 @@ namespace SphereStudio
 
         public IDEForm()
         {
-            Global.LoadFunctions();
             _firsttime = !Global.CurrentEditor.LoadSettings();
 
             InitializeComponent();
@@ -163,9 +162,9 @@ namespace SphereStudio
             content.Show(DockTest, state);
         }
 
-        public DockContentCollection GetDocuments()
+        public DockContentCollection Documents
         {
-            return DockTest.Contents;
+            get { return DockTest.Contents; }
         }
 
         public void RemoveControl(string name)

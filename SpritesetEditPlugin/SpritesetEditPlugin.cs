@@ -21,7 +21,6 @@ namespace SpritesetEditPlugin
         public SpritesetEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.PaletteToolIcon.GetHicon());
-            _extensions.AddRange(new[] { ".rss" });
         }
 
         public void Initialize()
@@ -42,7 +41,7 @@ namespace SpritesetEditPlugin
             });
 
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += OnTryEditFile;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             PluginManager.IDE.AddMenuItem("File.New", _newSpritesetMenuItem);
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
             PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
@@ -51,12 +50,12 @@ namespace SpritesetEditPlugin
         public void Destroy()
         {
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_spritesetMenu);
+            PluginManager.IDE.RemoveMenuItem("Spriteset");
             PluginManager.IDE.RemoveMenuItem(_newSpritesetMenuItem);
-            PluginManager.IDE.TryEditFile -= OnTryEditFile;
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
         
-        private readonly List<string> _extensions = new List<string>();
+        private readonly List<string> _extensionList = new List<string>(new[] { ".rss" });
         private const string _openFileFilters = "*.rss";
 
         #region menu item declarations
@@ -68,10 +67,10 @@ namespace SpritesetEditPlugin
         private ToolStripMenuItem _resizeMenuItem;
         #endregion
 
-        private void OnTryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

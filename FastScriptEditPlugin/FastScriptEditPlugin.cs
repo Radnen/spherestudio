@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -16,8 +17,8 @@ namespace FastScriptEditPlugin
         public string Version { get { return "1.0b"; } }
         public Icon Icon { get; private set; }
 
-        private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" };
-        private const string OpenFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
+        private const string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
+        private readonly List<string> _extensionList = new List<string>(new[] { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" });
 
         private ToolStripMenuItem RootMenu, IndentMenu, NewScriptItem;
         private ToolStripMenuItem AutoCompleteItem, HighlightLineItem, CodeFoldItem;
@@ -83,8 +84,8 @@ namespace FastScriptEditPlugin
         {
             PluginManager.RegisterEditor(EditorType.Script, this);
 
-            PluginManager.IDE.TryEditFile += Host_TryEditFile;
-            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", OpenFileFilters);
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
 
             PluginManager.IDE.AddMenuItem(RootMenu, "View");
             PluginManager.IDE.AddMenuItem("File.New", NewScriptItem);
@@ -103,10 +104,10 @@ namespace FastScriptEditPlugin
         public void Destroy()
         {
             PluginManager.UnregisterEditor(this);
-            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilters);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem("Script");
             PluginManager.IDE.RemoveMenuItem(NewScriptItem);
-            PluginManager.IDE.TryEditFile -= Host_TryEditFile;
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
         public EditorObject CreateEditControl()
@@ -219,22 +220,19 @@ namespace FastScriptEditPlugin
             RootMenu.Visible = true;
         }
         
-        void Host_TryEditFile(object sender, EditFileEventArgs e)
+        void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            foreach (string type in _fileTypes)
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                if (e.Extension == type)
-                {
-                    PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
-                    e.Handled = true;
-                }
+                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                e.Handled = true;
             }
         }
 
         private void UpdateScriptControls()
         {
-            DockContentCollection docs = PluginManager.IDE.GetDocuments();
+            DockContentCollection docs = PluginManager.IDE.Documents;
             foreach (DockContent content in docs)
             {
                 Scripter scripter = content.Controls[0] as Scripter;

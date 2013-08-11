@@ -46,6 +46,7 @@ namespace Sphere.Plugins.EditShims
 
         public override void Redo()
         {
+            if (_editor == null) return;
             _editor.Redo();
         }
         
@@ -57,16 +58,19 @@ namespace Sphere.Plugins.EditShims
 
         public override void Undo()
         {
+            if (_editor == null) return;
             _editor.Undo();
         }
 
         public override void ZoomIn()
         {
+            if (_editor == null) return;
             _editor.ZoomIn();
         }
 
         public override void ZoomOut()
         {
+            if (_editor == null) return;
             _editor.ZoomOut();
         }
 

@@ -24,7 +24,6 @@ namespace ImageEditPlugin
         public ImageEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
-            _extensions.AddRange(new[] { ".bmp", ".gif", ".jpg", ".png" });
         }
 
         public void Initialize()
@@ -39,7 +38,7 @@ namespace ImageEditPlugin
                 _rescaleMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += OnTryEditFile;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             PluginManager.RegisterEditor(EditorType.Image, this);
             PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
             PluginManager.IDE.AddMenuItem(_imageMenu, "View");
@@ -50,18 +49,18 @@ namespace ImageEditPlugin
         {
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_newImageMenuItem);
-            PluginManager.IDE.RemoveMenuItem(_imageMenu);
+            PluginManager.IDE.RemoveMenuItem("Image");
             PluginManager.UnregisterEditor(this);
-            PluginManager.IDE.TryEditFile -= OnTryEditFile;
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
         public EditorObject CreateEditControl()
         {
             return new Drawer2();
         }
-        
-        private readonly List<string> _extensions = new List<string>();
+
         private const string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
+        private readonly List<string> _extensionList = new List<string>(new[] { ".bmp", ".gif", ".jpg", ".png" });
 
         #region menu item declarations
         private ToolStripMenuItem _newImageMenuItem;
@@ -70,10 +69,10 @@ namespace ImageEditPlugin
         private ToolStripMenuItem _resizeMenuItem;
         #endregion
 
-        private void OnTryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

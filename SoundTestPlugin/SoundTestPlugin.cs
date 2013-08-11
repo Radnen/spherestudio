@@ -22,7 +22,6 @@ namespace SoundTestPlugin
             ".wav"                    // uncompressed/PCM formats
         });
         
-        private DockContent _content;
         private SoundPicker _soundPicker;
 
         public SoundTestPlugin()
@@ -34,16 +33,16 @@ namespace SoundTestPlugin
         {
             _soundPicker = new SoundPicker() { Dock = DockStyle.Fill };
             _soundPicker.Refresh();
-            _content = new DockContent() { Text = @"Sound Test", Icon = Icon };
-            _content.Controls.Add(_soundPicker);
-            _content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
-            _content.DockHandler.HideOnClose = true;
-            PluginManager.IDE.DockControl(_content, DockState.DockLeft);
+            DockContent content = new DockContent() { Text = @"Sound Test", Icon = Icon };
+            content.Controls.Add(_soundPicker);
+            content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
+            content.DockHandler.HideOnClose = true;
+            PluginManager.IDE.DockControl(content, DockState.DockLeft);
             PluginManager.IDE.RegisterOpenFileType("Audio", _openFileFilters);
-            PluginManager.IDE.LoadProject += OnLoadProject;
-            PluginManager.IDE.UnloadProject += OnUnloadProject;
-            PluginManager.IDE.TestGame += OnTestGame;
-            PluginManager.IDE.TryEditFile += OnTryEditFile;
+            PluginManager.IDE.LoadProject += IDE_LoadProject;
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
+            PluginManager.IDE.TestGame += IDE_TestGame;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
@@ -53,23 +52,23 @@ namespace SoundTestPlugin
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
             PluginManager.IDE.RemoveControl("Sound Test");
-            PluginManager.IDE.TryEditFile -= OnTryEditFile;
-            PluginManager.IDE.TestGame -= OnTestGame;
-            PluginManager.IDE.LoadProject -= OnLoadProject;
-            PluginManager.IDE.UnloadProject -= OnUnloadProject;
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+            PluginManager.IDE.TestGame -= IDE_TestGame;
+            PluginManager.IDE.LoadProject -= IDE_LoadProject;
+            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
         }
 
-        private void OnLoadProject(object sender, EventArgs e)
+        private void IDE_LoadProject(object sender, EventArgs e)
         {
             _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
-        private void OnUnloadProject(object sender, EventArgs e)
+        private void IDE_UnloadProject(object sender, EventArgs e)
         {
             _soundPicker.WatchProject(null);
         }
 
-        private void OnTryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
             if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
@@ -79,7 +78,7 @@ namespace SoundTestPlugin
             }
         }
 
-        private void OnTestGame(object sender, EventArgs e)
+        private void IDE_TestGame(object sender, EventArgs e)
         {
             _soundPicker.ForcePause();
         }
