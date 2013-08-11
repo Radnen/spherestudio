@@ -40,7 +40,7 @@ namespace SphereStudio
 
             _tree = new ProjectTree() { Dock = DockStyle.Fill, EditorForm = this };
 
-            _startPage = new StartPage(this) {Dock = DockStyle.Fill, HelpLabel = HelpLabel};
+            _startPage = new StartPage(this) { Dock = DockStyle.Fill, HelpLabel = HelpLabel };
             _startPage.PopulateGameList();
 
             NewToolButton.DropDown = NewMenuItem.DropDown;
