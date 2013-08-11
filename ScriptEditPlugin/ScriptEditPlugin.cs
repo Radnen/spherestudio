@@ -18,7 +18,7 @@ namespace ScriptEditPlugin
         public string Version { get { return "1.1.6.0"; } }
         public Icon Icon { get; private set; }
 
-        private readonly string[] _fileTypes = { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" };
+        private readonly List<string> _extensionList = new List<string>(new[] { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" });
         private const string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
@@ -95,7 +95,7 @@ namespace ScriptEditPlugin
             PluginManager.RegisterEditor(EditorType.Script, this);
             
             // register event handlers
-            PluginManager.IDE.TryEditFile += host_TryEditFile;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
 
             // register Open dialog file types
             PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
@@ -121,8 +121,8 @@ namespace ScriptEditPlugin
             PluginManager.UnregisterEditor(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
-            PluginManager.IDE.RemoveMenuItem("ScriptPlugin");
-            PluginManager.IDE.TryEditFile -= host_TryEditFile;
+            PluginManager.IDE.RemoveMenuItem("Script");
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
         public EditorObject CreateEditControl()
@@ -130,16 +130,13 @@ namespace ScriptEditPlugin
             return new ScriptEditor();
         }
 
-        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            foreach (string type in _fileTypes)
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                if (e.Extension == type)
-                {
-                    PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
-                    e.Handled = true;
-                }
+                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                e.Handled = true;
             }
         }
 
@@ -247,8 +244,8 @@ namespace ScriptEditPlugin
             // Creates a new editor instance:
             ScriptEditor editor = new ScriptEditor() { CanDirty = true, Dock = DockStyle.Fill };
 
-            editor.OnActivate += editor_OnActivate;
-            editor.OnDeactivate += editor_OnDeactivate;
+            editor.OnActivate += document_Activate;
+            editor.OnDeactivate += document_Deactivate;
 
             // And creates + styles a dock panel:
             DockContent content = new DockContent() { Text = @"Untitled" };
@@ -261,19 +258,19 @@ namespace ScriptEditPlugin
             return content;
         }
 
-        void editor_OnDeactivate(object sender, EventArgs e)
-        {
-            _rootMenu.Visible = false;
-        }
-
-        void editor_OnActivate(object sender, EventArgs e)
+        void document_Activate(object sender, EventArgs e)
         {
             _rootMenu.Visible = true;
         }
 
+        void document_Deactivate(object sender, EventArgs e)
+        {
+            _rootMenu.Visible = false;
+        }
+
         private void UpdateScriptControls()
         {
-            DockContentCollection docs = PluginManager.IDE.GetDocuments();
+            DockContentCollection docs = PluginManager.IDE.Documents;
             foreach (DockContent content in docs)
             {
                 ScriptEditor editor = content.Controls[0] as ScriptEditor;

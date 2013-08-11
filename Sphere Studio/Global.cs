@@ -14,7 +14,6 @@ namespace SphereStudio
     internal static class Global
     {
         public static Dictionary<string, PluginWrapper> Plugins = new Dictionary<string, PluginWrapper>();
-        public static List<string> Functions = new List<string>();
 
         public static void EvalPlugins()
         {
@@ -44,18 +43,6 @@ namespace SphereStudio
             foreach (string s in pluginNames)
             {
                 if (Plugins.ContainsKey(s)) Plugins[s].Activate();
-            }
-        }
-
-        public static void LoadFunctions()
-        {
-            FileInfo file = new FileInfo(Application.StartupPath + "/docs/functions.txt");
-            if (!file.Exists) return;
-
-            using (StreamReader reader = file.OpenText())
-            {
-                while (!reader.EndOfStream)
-                    Functions.Add(reader.ReadLine());
             }
         }
 

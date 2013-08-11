@@ -22,7 +22,6 @@ namespace MapEditPlugin
         public MapEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
-            _extensions.AddRange(new[] { ".rmp" });
         }
 
         public void Initialize()
@@ -43,22 +42,22 @@ namespace MapEditPlugin
                 _mapPropertiesMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += OnTryEditFile;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
             PluginManager.IDE.AddMenuItem(_mapMenu, "View");
-            PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _mapOpenFilters);
+            PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
         }
 
         public void Destroy()
         {
-            PluginManager.IDE.UnregisterOpenFileType(_mapOpenFilters);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_newMapMenuItem);
-            PluginManager.IDE.RemoveMenuItem(_mapMenu);
-            PluginManager.IDE.TryEditFile -= OnTryEditFile;
+            PluginManager.IDE.RemoveMenuItem("Map");
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
-        private readonly List<string> _extensions = new List<string>();
-        private const string _mapOpenFilters = "*.rmp";
+        private const string _openFileFilters = "*.rmp";
+        private readonly List<string> _extensionList = new List<string>(new[] { ".rmp" });
 
         #region menu item declarations
         private ToolStripMenuItem _newMapMenuItem;
@@ -69,10 +68,11 @@ namespace MapEditPlugin
         private ToolStripMenuItem _importTilesetMenuItem;
         #endregion
 
-        private void OnTryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant())) {
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;
             }
