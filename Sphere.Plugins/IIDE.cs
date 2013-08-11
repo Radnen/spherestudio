@@ -104,7 +104,6 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets a list of the documents in the Sphere Studio's main dock panel.
         /// </summary>
-        /// <returns>A collection of DockContent objects.</returns>
-        DockContentCollection GetDocuments();
+        DockContentCollection Documents { get; }
     }
 }

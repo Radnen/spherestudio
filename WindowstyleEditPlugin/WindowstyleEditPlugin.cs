@@ -21,7 +21,6 @@ namespace WindowstyleEditPlugin
         public WindowstyleEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.PaletteToolIcon.GetHicon());
-            _extensions.AddRange(new[] { ".rws" });
         }
 
         public void Initialize()
@@ -30,7 +29,7 @@ namespace WindowstyleEditPlugin
             _newWindowstyleMenuItem = new ToolStripMenuItem("Windowstyle", Properties.Resources.PaletteToolIcon, _newWindowstyleMenuItem_Click);
 
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += OnTryEditFile;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             PluginManager.IDE.AddMenuItem("File.New", _newWindowstyleMenuItem);
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
         }
@@ -39,20 +38,20 @@ namespace WindowstyleEditPlugin
         {
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_newWindowstyleMenuItem);
-            PluginManager.IDE.TryEditFile -= OnTryEditFile;
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
         
-        private readonly List<string> _extensions = new List<string>();
+        private readonly List<string> _extensionList = new List<string>(new[] { ".rws" });
         private const string _openFileFilters = "*.rws";
 
         #region menu item declarations
         private ToolStripMenuItem _newWindowstyleMenuItem;
         #endregion
 
-        private void OnTryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

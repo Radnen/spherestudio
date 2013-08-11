@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Plugins;
@@ -15,7 +16,8 @@ namespace FontEditPlugin
 
         public Icon Icon { get; private set; }
 
-        private const string OpenFileFilters = "*.rfn";
+        private const string _openFileFilters = "*.rfn";
+        private readonly List<string> _extensionList = new List<string>(new[] { ".rfn" });
 
         private readonly ToolStripMenuItem _newFontItem;
 
@@ -27,18 +29,13 @@ namespace FontEditPlugin
             _newFontItem.Click += FontItem_Click;
         }
 
-        private void host_TryEditFile(object sender, EditFileEventArgs e)
+        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
-            string[] fileTypes = { ".rfn" };
-
             if (e.Handled) return;
-            foreach (string type in fileTypes)
+            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                if (e.Extension == type)
-                {
-                    PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
-                    e.Handled = true;
-                }
+                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                e.Handled = true;
             }
         }
 
@@ -65,16 +62,16 @@ namespace FontEditPlugin
 
         public void Initialize()
         {
-            PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", OpenFileFilters);
-            PluginManager.IDE.TryEditFile += host_TryEditFile;
+            PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
 
             PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
         }
 
         public void Destroy()
         {
-            PluginManager.IDE.UnregisterOpenFileType(OpenFileFilters);
-            PluginManager.IDE.TryEditFile -= host_TryEditFile;
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
     }
 }

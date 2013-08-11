@@ -24,13 +24,13 @@ namespace TaskListPlugin
         }
 
         /* Load the Task List */
-        void OnProjectLoad(object sender, EventArgs e)
+        void IDE_LoadProject(object sender, EventArgs e)
         {
             _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
 
         /* Close and empty the task List */
-        void OnProjectClose(object sender, EventArgs e)
+        void IDE_UnloadProject(object sender, EventArgs e)
         {
             _list.SaveList();
             _list.Clear();
@@ -62,8 +62,8 @@ namespace TaskListPlugin
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
             // so in this case we can use these to our advantage.
-            PluginManager.IDE.LoadProject += OnProjectLoad;
-            PluginManager.IDE.UnloadProject += OnProjectClose;
+            PluginManager.IDE.LoadProject += IDE_LoadProject;
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
 
             // Now, we can add a menu item like so.
             // 'View' will search the 'View' menu item.
@@ -85,8 +85,8 @@ namespace TaskListPlugin
 
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
-            PluginManager.IDE.LoadProject -= OnProjectLoad;
-            PluginManager.IDE.UnloadProject -= OnProjectClose;
+            PluginManager.IDE.LoadProject -= IDE_LoadProject;
+            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
 
             // And furthermore that menu item must be deleted as well!
             _item.Click -= ItemClick;
