@@ -74,13 +74,13 @@ namespace SphereStudio
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                string filterstring = "";
-                foreach (string filter in _openFileTypes.Keys)
+                string filterString = "";
+                foreach (string filterID in from key in _openFileTypes.Keys orderby _openFileTypes[key] select key)
                 {
-                    filterstring += String.Format("{0}|{1}|", _openFileTypes[filter], filter);
+                    filterString += String.Format("{0}|{1}|", _openFileTypes[filterID], filterID);
                 }
-                filterstring += @"All Files|*.*";
-                dialog.Filter = filterstring;
+                filterString += @"All Files|*.*";
+                dialog.Filter = filterString;
                 dialog.FilterIndex = 5 + _openFileTypes.Count;
                 dialog.InitialDirectory = Global.CurrentProject.RootPath;
                 dialog.Multiselect = multiselect;
