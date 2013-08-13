@@ -87,7 +87,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\Sphere Studio\Libs\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\Sphere Studio\lib\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

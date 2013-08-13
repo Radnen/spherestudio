@@ -161,9 +161,7 @@
     <Compile Include="Forms\AboutSphereEditor.Designer.cs">
       <DependentUpon>AboutSphereEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Global.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="RadEditors\MenuEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,16 +169,16 @@
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="RadEditors\RadObjects.cs" />
-    <Compile Include="SubEditors\ProjectTree.cs">
+    <Compile Include="Components\ProjectTree.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SubEditors\ProjectTree.Designer.cs">
+    <Compile Include="Components\ProjectTree.Designer.cs">
       <DependentUpon>ProjectTree.cs</DependentUpon>
     </Compile>
-    <Compile Include="SubEditors\StartPage.cs">
+    <Compile Include="Components\StartPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SubEditors\StartPage.Designer.cs">
+    <Compile Include="Components\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
     <Compile Include="IDEForm.cs">
@@ -227,11 +225,11 @@
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\ProjectTree.resx">
+    <EmbeddedResource Include="Components\ProjectTree.resx">
       <DependentUpon>ProjectTree.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SubEditors\StartPage.resx">
+    <EmbeddedResource Include="Components\StartPage.resx">
       <DependentUpon>StartPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -308,7 +306,7 @@
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Libs\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll" />
+    <None Include="lib\dockpanelsuite\WeifenLuo.WinFormsUI.Docking.dll" />
     <None Include="BarImage.png" />
     <Content Include="Docs\api.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
