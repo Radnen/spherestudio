@@ -165,6 +165,11 @@ namespace SphereStudio.Forms
             else Global.Plugins[(string)item.Tag].Deactivate();
         }
 
+        private void PresetListBox_DoubleClick(object sender, EventArgs e)
+        {
+            UsePresetButton.PerformClick();
+        }
+        
         private void PresetListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             RemovePresetButton.Enabled = true;

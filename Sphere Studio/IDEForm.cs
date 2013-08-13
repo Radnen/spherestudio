@@ -10,7 +10,7 @@ using Sphere.Core.Settings;
 using Sphere.Plugins;
 using Sphere.Plugins.EditShims;
 using SphereStudio.Forms;
-using SphereStudio.SubEditors;
+using SphereStudio.Components;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio
