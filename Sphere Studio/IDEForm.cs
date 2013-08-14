@@ -395,7 +395,12 @@ namespace SphereStudio
 
         public void CallNewProject(object sender, EventArgs e)
         {
-            NewProjectForm myProject = new NewProjectForm {RootFolder = Global.CurrentEditor.GetArray("games_path")[0]};
+            string[] paths = Global.CurrentEditor.GetArray("games_path");
+            string rootpath = "";
+            if (paths.Length > 0) rootpath = paths[0];
+            else
+                rootpath = Application.StartupPath;
+            NewProjectForm myProject = new NewProjectForm { RootFolder = rootpath };
 
             if (myProject.ShowDialog() == DialogResult.OK)
             {
