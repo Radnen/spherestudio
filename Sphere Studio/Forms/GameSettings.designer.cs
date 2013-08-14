@@ -44,139 +44,141 @@
             this.HeightTextBox = new System.Windows.Forms.TextBox();
             this.okayButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.NewProjectPic = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).BeginInit();
             this.SuspendLayout();
             // 
             // PathLabel
             // 
             this.PathLabel.AutoSize = true;
-            this.PathLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PathLabel.Location = new System.Drawing.Point(11, 49);
+            this.PathLabel.Location = new System.Drawing.Point(13, 50);
             this.PathLabel.Name = "PathLabel";
-            this.PathLabel.Size = new System.Drawing.Size(33, 13);
+            this.PathLabel.Size = new System.Drawing.Size(33, 16);
             this.PathLabel.TabIndex = 0;
             this.PathLabel.Text = "Path";
             // 
             // GameTitleLabel
             // 
             this.GameTitleLabel.AutoSize = true;
-            this.GameTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GameTitleLabel.Location = new System.Drawing.Point(11, 76);
+            this.GameTitleLabel.Location = new System.Drawing.Point(13, 81);
             this.GameTitleLabel.Name = "GameTitleLabel";
-            this.GameTitleLabel.Size = new System.Drawing.Size(68, 13);
+            this.GameTitleLabel.Size = new System.Drawing.Size(70, 16);
             this.GameTitleLabel.TabIndex = 1;
             this.GameTitleLabel.Text = "Game Title";
             // 
             // AuthorLabel
             // 
             this.AuthorLabel.AutoSize = true;
-            this.AuthorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AuthorLabel.Location = new System.Drawing.Point(11, 103);
+            this.AuthorLabel.Location = new System.Drawing.Point(14, 112);
             this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(44, 13);
+            this.AuthorLabel.Size = new System.Drawing.Size(46, 16);
             this.AuthorLabel.TabIndex = 2;
             this.AuthorLabel.Text = "Author";
             // 
             // PathTextBox
             // 
             this.PathTextBox.Enabled = false;
-            this.PathTextBox.Location = new System.Drawing.Point(96, 46);
+            this.PathTextBox.Location = new System.Drawing.Point(112, 47);
+            this.PathTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PathTextBox.Name = "PathTextBox";
-            this.PathTextBox.Size = new System.Drawing.Size(212, 20);
+            this.PathTextBox.Size = new System.Drawing.Size(236, 23);
             this.PathTextBox.TabIndex = 3;
             // 
             // NameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(96, 73);
+            this.NameTextBox.Location = new System.Drawing.Point(112, 78);
+            this.NameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(212, 20);
+            this.NameTextBox.Size = new System.Drawing.Size(236, 23);
             this.NameTextBox.TabIndex = 4;
             // 
             // AuthorTextBox
             // 
-            this.AuthorTextBox.Location = new System.Drawing.Point(96, 100);
+            this.AuthorTextBox.Location = new System.Drawing.Point(112, 109);
+            this.AuthorTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AuthorTextBox.Name = "AuthorTextBox";
-            this.AuthorTextBox.Size = new System.Drawing.Size(212, 20);
+            this.AuthorTextBox.Size = new System.Drawing.Size(236, 23);
             this.AuthorTextBox.TabIndex = 5;
             // 
             // DescLabel
             // 
             this.DescLabel.AutoSize = true;
-            this.DescLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescLabel.Location = new System.Drawing.Point(11, 139);
+            this.DescLabel.Location = new System.Drawing.Point(12, 143);
             this.DescLabel.Name = "DescLabel";
-            this.DescLabel.Size = new System.Drawing.Size(71, 13);
+            this.DescLabel.Size = new System.Drawing.Size(71, 16);
             this.DescLabel.TabIndex = 6;
             this.DescLabel.Text = "Description";
             // 
             // DescTextBox
             // 
-            this.DescTextBox.Location = new System.Drawing.Point(10, 155);
+            this.DescTextBox.Location = new System.Drawing.Point(12, 163);
+            this.DescTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DescTextBox.Multiline = true;
             this.DescTextBox.Name = "DescTextBox";
-            this.DescTextBox.Size = new System.Drawing.Size(298, 134);
+            this.DescTextBox.Size = new System.Drawing.Size(336, 192);
             this.DescTextBox.TabIndex = 7;
             // 
             // ScriptLabel
             // 
             this.ScriptLabel.AutoSize = true;
-            this.ScriptLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScriptLabel.Location = new System.Drawing.Point(11, 309);
+            this.ScriptLabel.Location = new System.Drawing.Point(12, 366);
             this.ScriptLabel.Name = "ScriptLabel";
-            this.ScriptLabel.Size = new System.Drawing.Size(71, 13);
+            this.ScriptLabel.Size = new System.Drawing.Size(73, 16);
             this.ScriptLabel.TabIndex = 8;
             this.ScriptLabel.Text = "Start Script";
             // 
             // ScreenSizeLabel
             // 
             this.ScreenSizeLabel.AutoSize = true;
-            this.ScreenSizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScreenSizeLabel.Location = new System.Drawing.Point(11, 343);
+            this.ScreenSizeLabel.Location = new System.Drawing.Point(12, 402);
             this.ScreenSizeLabel.Name = "ScreenSizeLabel";
-            this.ScreenSizeLabel.Size = new System.Drawing.Size(75, 13);
+            this.ScreenSizeLabel.Size = new System.Drawing.Size(76, 16);
             this.ScreenSizeLabel.TabIndex = 9;
             this.ScreenSizeLabel.Text = "Screen Size";
             // 
             // ScriptComboBox
             // 
             this.ScriptComboBox.FormattingEnabled = true;
-            this.ScriptComboBox.Location = new System.Drawing.Point(96, 306);
+            this.ScriptComboBox.Location = new System.Drawing.Point(112, 363);
+            this.ScriptComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ScriptComboBox.Name = "ScriptComboBox";
-            this.ScriptComboBox.Size = new System.Drawing.Size(212, 21);
+            this.ScriptComboBox.Size = new System.Drawing.Size(236, 24);
             this.ScriptComboBox.TabIndex = 10;
             // 
             // XLabel
             // 
             this.XLabel.AutoSize = true;
-            this.XLabel.Location = new System.Drawing.Point(191, 343);
+            this.XLabel.Location = new System.Drawing.Point(221, 402);
             this.XLabel.Name = "XLabel";
-            this.XLabel.Size = new System.Drawing.Size(12, 13);
+            this.XLabel.Size = new System.Drawing.Size(14, 16);
             this.XLabel.TabIndex = 11;
             this.XLabel.Text = "x";
             // 
             // WidthTextBox
             // 
-            this.WidthTextBox.Location = new System.Drawing.Point(96, 340);
+            this.WidthTextBox.Location = new System.Drawing.Point(110, 398);
+            this.WidthTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.WidthTextBox.Name = "WidthTextBox";
-            this.WidthTextBox.Size = new System.Drawing.Size(89, 20);
+            this.WidthTextBox.Size = new System.Drawing.Size(103, 23);
             this.WidthTextBox.TabIndex = 12;
             this.WidthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // HeightTextBox
             // 
-            this.HeightTextBox.Location = new System.Drawing.Point(209, 340);
+            this.HeightTextBox.Location = new System.Drawing.Point(244, 395);
+            this.HeightTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.HeightTextBox.Name = "HeightTextBox";
-            this.HeightTextBox.Size = new System.Drawing.Size(99, 20);
+            this.HeightTextBox.Size = new System.Drawing.Size(104, 23);
             this.HeightTextBox.TabIndex = 13;
             this.HeightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // okayButton
             // 
             this.okayButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okayButton.Location = new System.Drawing.Point(146, 366);
+            this.okayButton.Location = new System.Drawing.Point(183, 429);
+            this.okayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.okayButton.Name = "okayButton";
-            this.okayButton.Size = new System.Drawing.Size(75, 23);
+            this.okayButton.Size = new System.Drawing.Size(87, 28);
             this.okayButton.TabIndex = 14;
             this.okayButton.Text = "OK";
             this.okayButton.UseVisualStyleBackColor = true;
@@ -184,29 +186,31 @@
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(65, 366);
+            this.cancelButton.Location = new System.Drawing.Point(90, 429);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(87, 28);
             this.cancelButton.TabIndex = 15;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // NewProjectPic
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox1.Image = global::SphereStudio.Properties.Resources.SetGame;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(320, 40);
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
+            this.NewProjectPic.Dock = System.Windows.Forms.DockStyle.Top;
+            this.NewProjectPic.Image = global::SphereStudio.Properties.Resources.SetGame;
+            this.NewProjectPic.InitialImage = global::SphereStudio.Properties.Resources.NewGame;
+            this.NewProjectPic.Location = new System.Drawing.Point(0, 0);
+            this.NewProjectPic.Name = "NewProjectPic";
+            this.NewProjectPic.Size = new System.Drawing.Size(360, 40);
+            this.NewProjectPic.TabIndex = 16;
+            this.NewProjectPic.TabStop = false;
             // 
             // GameSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 396);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(360, 464);
+            this.Controls.Add(this.NewProjectPic);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okayButton);
             this.Controls.Add(this.HeightTextBox);
@@ -223,13 +227,15 @@
             this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.GameTitleLabel);
             this.Controls.Add(this.PathLabel);
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GameSettings";
             this.Text = "Game Settings";
             this.Load += new System.EventHandler(this.GameSettings_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -253,7 +259,7 @@
         private System.Windows.Forms.TextBox HeightTextBox;
         private System.Windows.Forms.Button okayButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox NewProjectPic;
 
     }
 }

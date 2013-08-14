@@ -208,5 +208,31 @@ namespace SphereStudio.Forms
             settings.LoadSettings(((string)PresetListBox.SelectedItem) + ".preset");
             SetValues(settings);
         }
+
+        private void DownButton_Click(object sender, EventArgs e)
+        {
+            var index = PathListBox.SelectedIndex;
+
+            if (index + 1 < PathListBox.Items.Count)
+            {
+                var item = PathListBox.Items[index];
+                PathListBox.Items.RemoveAt(index);
+                PathListBox.Items.Insert(index + 1, item);
+                PathListBox.SelectedIndex = index + 1;
+            }
+        }
+
+        private void UpButton_Click(object sender, EventArgs e)
+        {
+            var index = PathListBox.SelectedIndex;
+
+            if (index > 0)
+            {
+                var item = PathListBox.Items[index];
+                PathListBox.Items.RemoveAt(index);
+                PathListBox.Items.Insert(index - 1, item);
+                PathListBox.SelectedIndex = index - 1;
+            }
+        }
     }
 }

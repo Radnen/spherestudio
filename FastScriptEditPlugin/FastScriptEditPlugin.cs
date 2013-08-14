@@ -13,7 +13,7 @@ namespace FastScriptEditPlugin
     {
         public string Name { get { return "Fast Script Editor"; } }
         public string Author { get { return "Radnen"; } }
-        public string Description { get { return "A faster, neater code editor for the Sphere Studio."; } }
+        public string Description { get { return "An experimental script editor, not as fast as it's namesake."; } }
         public string Version { get { return "1.0b"; } }
         public Icon Icon { get; private set; }
 
