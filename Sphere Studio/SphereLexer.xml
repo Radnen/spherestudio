@@ -3,7 +3,7 @@
   
   <Language Name="Default">
     <Styles>
-      <Style Name="Default" FontName="Consolas" />
+      <Style Name="Default" FontName="Consolas" Size="11" />
     </Styles>
   </Language>
 
