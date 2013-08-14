@@ -65,6 +65,18 @@
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SsRescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SpriteTilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PropertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recenterMapItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportTilesetItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UpdateFromMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NewProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,18 +124,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SsRescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SpriteTilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportSsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PropertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recenterMapItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TilesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExportTilesetItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.UpdateFromMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -378,6 +378,66 @@
             this.HelpLabel.Name = "HelpLabel";
             this.HelpLabel.Size = new System.Drawing.Size(192, 17);
             this.HelpLabel.Text = "Welcome to the new Sphere Editor!";
+            // 
+            // SsResizeMenuItem
+            // 
+            this.SsResizeMenuItem.Name = "SsResizeMenuItem";
+            this.SsResizeMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // SsRescaleMenuItem
+            // 
+            this.SsRescaleMenuItem.Name = "SsRescaleMenuItem";
+            this.SsRescaleMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // SpriteTilesetMenuItem
+            // 
+            this.SpriteTilesetMenuItem.Name = "SpriteTilesetMenuItem";
+            this.SpriteTilesetMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // ExportSsMenuItem
+            // 
+            this.ExportSsMenuItem.Name = "ExportSsMenuItem";
+            this.ExportSsMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // ImportSsMenuItem
+            // 
+            this.ImportSsMenuItem.Name = "ImportSsMenuItem";
+            this.ImportSsMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // PropertiesMenuItem
+            // 
+            this.PropertiesMenuItem.Name = "PropertiesMenuItem";
+            this.PropertiesMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // recenterMapItem
+            // 
+            this.recenterMapItem.Name = "recenterMapItem";
+            this.recenterMapItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // TilesetMenuItem
+            // 
+            this.TilesetMenuItem.Name = "TilesetMenuItem";
+            this.TilesetMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // ExportTilesetItem
+            // 
+            this.ExportTilesetItem.Name = "ExportTilesetItem";
+            this.ExportTilesetItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // UpdateFromMenuItem
+            // 
+            this.UpdateFromMenuItem.Name = "UpdateFromMenuItem";
+            this.UpdateFromMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // ResizeMenuItem
+            // 
+            this.ResizeMenuItem.Name = "ResizeMenuItem";
+            this.ResizeMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // RescaleMenuItem
+            // 
+            this.RescaleMenuItem.Name = "RescaleMenuItem";
+            this.RescaleMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // EditorMenu
             // 
@@ -798,66 +858,6 @@
             this.WebsiteMenuItem.Size = new System.Drawing.Size(186, 22);
             this.WebsiteMenuItem.Text = "Visit Website!";
             this.WebsiteMenuItem.Visible = false;
-            // 
-            // SsResizeMenuItem
-            // 
-            this.SsResizeMenuItem.Name = "SsResizeMenuItem";
-            this.SsResizeMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // SsRescaleMenuItem
-            // 
-            this.SsRescaleMenuItem.Name = "SsRescaleMenuItem";
-            this.SsRescaleMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // SpriteTilesetMenuItem
-            // 
-            this.SpriteTilesetMenuItem.Name = "SpriteTilesetMenuItem";
-            this.SpriteTilesetMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // ExportSsMenuItem
-            // 
-            this.ExportSsMenuItem.Name = "ExportSsMenuItem";
-            this.ExportSsMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // ImportSsMenuItem
-            // 
-            this.ImportSsMenuItem.Name = "ImportSsMenuItem";
-            this.ImportSsMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // PropertiesMenuItem
-            // 
-            this.PropertiesMenuItem.Name = "PropertiesMenuItem";
-            this.PropertiesMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // recenterMapItem
-            // 
-            this.recenterMapItem.Name = "recenterMapItem";
-            this.recenterMapItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // TilesetMenuItem
-            // 
-            this.TilesetMenuItem.Name = "TilesetMenuItem";
-            this.TilesetMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // ExportTilesetItem
-            // 
-            this.ExportTilesetItem.Name = "ExportTilesetItem";
-            this.ExportTilesetItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // UpdateFromMenuItem
-            // 
-            this.UpdateFromMenuItem.Name = "UpdateFromMenuItem";
-            this.UpdateFromMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // ResizeMenuItem
-            // 
-            this.ResizeMenuItem.Name = "ResizeMenuItem";
-            this.ResizeMenuItem.Size = new System.Drawing.Size(32, 19);
-            // 
-            // RescaleMenuItem
-            // 
-            this.RescaleMenuItem.Name = "RescaleMenuItem";
-            this.RescaleMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // IDEForm
             // 
