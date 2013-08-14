@@ -184,7 +184,7 @@
     <Compile Include="IDEForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor.Designer.cs">
+    <Compile Include="IDEForm.Designer.cs">
       <DependentUpon>IDEForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditorSettings.cs">
@@ -233,7 +233,7 @@
       <DependentUpon>StartPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor.resx">
+    <EmbeddedResource Include="IDEForm.resx">
       <DependentUpon>IDEForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditorSettings.resx">

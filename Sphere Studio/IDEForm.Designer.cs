@@ -73,8 +73,6 @@
             this.OpenLastProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewSpritesetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -461,25 +459,10 @@
             // 
             // NewMenuItem
             // 
-            this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewSpritesetMenuItem,
-            this.toolStripSeparator2});
             this.NewMenuItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.NewMenuItem.Name = "NewMenuItem";
             this.NewMenuItem.Size = new System.Drawing.Size(215, 22);
             this.NewMenuItem.Text = "&New";
-            // 
-            // NewSpritesetMenuItem
-            // 
-            this.NewSpritesetMenuItem.Image = global::SphereStudio.Properties.Resources.palette;
-            this.NewSpritesetMenuItem.Name = "NewSpritesetMenuItem";
-            this.NewSpritesetMenuItem.Size = new System.Drawing.Size(119, 22);
-            this.NewSpritesetMenuItem.Text = "Spriteset";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(116, 6);
             // 
             // OpenMenuItem
             // 
@@ -876,7 +859,7 @@
             this.RescaleMenuItem.Name = "RescaleMenuItem";
             this.RescaleMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // EditorForm
+            // IDEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -891,7 +874,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.EditorMenu;
             this.MinimumSize = new System.Drawing.Size(480, 360);
-            this.Name = "EditorForm";
+            this.Name = "IDEForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -942,7 +925,6 @@
         private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
         private System.Windows.Forms.ToolStripSeparator Separator1;
         private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewSpritesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
         private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GameSettingsMenuItem;
@@ -991,7 +973,6 @@
         private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ApiDocsMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 
