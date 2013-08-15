@@ -497,8 +497,8 @@ namespace SphereStudio.Components
         {
             string fontstring = Global.CurrentEditor.GetString("tree-font");
             if (String.IsNullOrEmpty(fontstring)) return;
-
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof (Font));
+            
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
             Font f = converter.ConvertFromString(fontstring) as Font;
             if (f != null) ProjectTreeView.Font = f;
         }
