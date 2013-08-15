@@ -107,7 +107,7 @@ namespace SphereStudio.Components
                 ProjectSettings proj = new ProjectSettings();
                 proj.LoadSettings(Path.Combine(d.FullName, @"game.sgm"));
                 int img = CheckForIcon(d.FullName);
-                ListViewItem item = new ListViewItem(d.Name, img) { Tag = path };
+                ListViewItem item = new ListViewItem(proj.Name, img) { Tag = path };
                 item.SubItems.Add(proj.Author);
                 item.SubItems.Add(d.FullName);
                 GameFolders.Items.Add(item);
@@ -131,7 +131,7 @@ namespace SphereStudio.Components
                 int img = CheckForIcon(d.FullName);
                 ProjectSettings proj = new ProjectSettings();
                 proj.LoadSettings(Path.Combine(d.FullName, @"game.sgm"));
-                ListViewItem item = new ListViewItem(d.Name, img) { Tag = path };
+                ListViewItem item = new ListViewItem(proj.Name, img) { Tag = path };
                 item.SubItems.Add(proj.Author);
                 item.SubItems.Add(d.FullName);
                 GameFolders.Items.Add(item);

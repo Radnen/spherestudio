@@ -32,6 +32,7 @@
             this.GameFolders = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ItemContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PlayGameItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,7 +59,6 @@
             this.GamesPanel = new System.Windows.Forms.Panel();
             this.GameProjectLabel = new Sphere.Core.Editor.EditorLabel();
             this.MainSplitter = new System.Windows.Forms.SplitContainer();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ItemContextStrip.SuspendLayout();
             this.InfoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InfoSplitter)).BeginInit();
@@ -92,7 +92,7 @@
             this.GameFolders.MultiSelect = false;
             this.GameFolders.Name = "GameFolders";
             this.GameFolders.ShowItemToolTips = true;
-            this.GameFolders.Size = new System.Drawing.Size(484, 226);
+            this.GameFolders.Size = new System.Drawing.Size(484, 225);
             this.GameFolders.TabIndex = 0;
             this.GameFolders.UseCompatibleStateImageBehavior = false;
             this.GameFolders.View = System.Windows.Forms.View.Tile;
@@ -104,13 +104,18 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Directory name";
+            this.columnHeader1.Text = "Name";
             this.columnHeader1.Width = 300;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Author";
             this.columnHeader2.Width = 150;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Path";
+            this.columnHeader3.Width = 700;
             // 
             // ItemContextStrip
             // 
@@ -243,7 +248,7 @@
             this.InfoPanel.Location = new System.Drawing.Point(0, 0);
             this.InfoPanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(495, 129);
+            this.InfoPanel.Size = new System.Drawing.Size(495, 130);
             this.InfoPanel.TabIndex = 9;
             this.InfoPanel.MouseEnter += new System.EventHandler(this.InfoPanel_MouseEnter);
             this.InfoPanel.MouseLeave += new System.EventHandler(this.ClearTip);
@@ -266,7 +271,7 @@
             this.InfoSplitter.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.InfoSplitter.Panel2.Controls.Add(this.DescTextLabel);
             this.InfoSplitter.Panel2.Controls.Add(this.DescLabel);
-            this.InfoSplitter.Size = new System.Drawing.Size(495, 129);
+            this.InfoSplitter.Size = new System.Drawing.Size(495, 130);
             this.InfoSplitter.SplitterDistance = 120;
             this.InfoSplitter.SplitterWidth = 5;
             this.InfoSplitter.TabIndex = 14;
@@ -284,7 +289,7 @@
             this.GamePanel.Location = new System.Drawing.Point(3, 32);
             this.GamePanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(113, 95);
+            this.GamePanel.Size = new System.Drawing.Size(113, 96);
             this.GamePanel.TabIndex = 12;
             // 
             // NameLabel
@@ -343,7 +348,7 @@
             this.DescTextLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.DescTextLabel.Name = "DescTextLabel";
             this.DescTextLabel.Padding = new System.Windows.Forms.Padding(2);
-            this.DescTextLabel.Size = new System.Drawing.Size(360, 95);
+            this.DescTextLabel.Size = new System.Drawing.Size(359, 96);
             this.DescTextLabel.TabIndex = 4;
             // 
             // DescLabel
@@ -368,7 +373,7 @@
             this.GamesPanel.Location = new System.Drawing.Point(0, 0);
             this.GamesPanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.GamesPanel.Name = "GamesPanel";
-            this.GamesPanel.Size = new System.Drawing.Size(495, 265);
+            this.GamesPanel.Size = new System.Drawing.Size(495, 264);
             this.GamesPanel.TabIndex = 3;
             // 
             // GameProjectLabel
@@ -400,14 +405,9 @@
             // 
             this.MainSplitter.Panel2.Controls.Add(this.InfoPanel);
             this.MainSplitter.Size = new System.Drawing.Size(495, 399);
-            this.MainSplitter.SplitterDistance = 265;
+            this.MainSplitter.SplitterDistance = 264;
             this.MainSplitter.SplitterWidth = 5;
             this.MainSplitter.TabIndex = 10;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Path";
-            this.columnHeader3.Width = 700;
             // 
             // StartPage
             // 
