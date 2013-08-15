@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.GameFolders = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ItemContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PlayGameItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,6 +46,7 @@
             this.ListItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SmallIconItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LargeIconItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DetailsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.InfoPanel = new System.Windows.Forms.Panel();
             this.InfoSplitter = new System.Windows.Forms.SplitContainer();
             this.GamePanel = new System.Windows.Forms.Panel();
@@ -57,11 +61,13 @@
             this.MainSplitter = new System.Windows.Forms.SplitContainer();
             this.ItemContextStrip.SuspendLayout();
             this.InfoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.InfoSplitter)).BeginInit();
             this.InfoSplitter.Panel1.SuspendLayout();
             this.InfoSplitter.Panel2.SuspendLayout();
             this.InfoSplitter.SuspendLayout();
             this.GamePanel.SuspendLayout();
             this.GamesPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MainSplitter)).BeginInit();
             this.MainSplitter.Panel1.SuspendLayout();
             this.MainSplitter.Panel2.SuspendLayout();
             this.MainSplitter.SuspendLayout();
@@ -69,16 +75,24 @@
             // 
             // GameFolders
             // 
-            this.GameFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.GameFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GameFolders.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.GameFolders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
             this.GameFolders.ContextMenuStrip = this.ItemContextStrip;
+            this.GameFolders.FullRowSelect = true;
+            this.GameFolders.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.GameFolders.LabelEdit = true;
-            this.GameFolders.Location = new System.Drawing.Point(3, 26);
+            this.GameFolders.Location = new System.Drawing.Point(3, 32);
+            this.GameFolders.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.GameFolders.MultiSelect = false;
             this.GameFolders.Name = "GameFolders";
-            this.GameFolders.Size = new System.Drawing.Size(414, 160);
+            this.GameFolders.ShowItemToolTips = true;
+            this.GameFolders.Size = new System.Drawing.Size(484, 225);
             this.GameFolders.TabIndex = 0;
             this.GameFolders.UseCompatibleStateImageBehavior = false;
             this.GameFolders.View = System.Windows.Forms.View.Tile;
@@ -87,6 +101,21 @@
             this.GameFolders.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GameFolders_MouseClick);
             this.GameFolders.MouseEnter += new System.EventHandler(this.GameFolders_MouseEnter);
             this.GameFolders.MouseLeave += new System.EventHandler(this.ClearTip);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 300;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Author";
+            this.columnHeader2.Width = 150;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Path";
+            this.columnHeader3.Width = 700;
             // 
             // ItemContextStrip
             // 
@@ -164,7 +193,8 @@
             this.TilesItem,
             this.ListItem,
             this.SmallIconItem,
-            this.LargeIconItem});
+            this.LargeIconItem,
+            this.DetailsItem});
             this.ViewItem.Name = "ViewItem";
             this.ViewItem.Size = new System.Drawing.Size(193, 22);
             this.ViewItem.Text = "&View";
@@ -172,6 +202,7 @@
             // TilesItem
             // 
             this.TilesItem.Checked = true;
+            this.TilesItem.CheckOnClick = true;
             this.TilesItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.TilesItem.Name = "TilesItem";
             this.TilesItem.Size = new System.Drawing.Size(134, 22);
@@ -202,13 +233,22 @@
             this.LargeIconItem.Text = "&Large Icons";
             this.LargeIconItem.Click += new System.EventHandler(this.LargeIconItem_Click);
             // 
+            // DetailsItem
+            // 
+            this.DetailsItem.CheckOnClick = true;
+            this.DetailsItem.Name = "DetailsItem";
+            this.DetailsItem.Size = new System.Drawing.Size(134, 22);
+            this.DetailsItem.Text = "&Details";
+            this.DetailsItem.Click += new System.EventHandler(this.DetailsItem_Click);
+            // 
             // InfoPanel
             // 
             this.InfoPanel.Controls.Add(this.InfoSplitter);
             this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InfoPanel.Location = new System.Drawing.Point(0, 0);
+            this.InfoPanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(424, 127);
+            this.InfoPanel.Size = new System.Drawing.Size(495, 130);
             this.InfoPanel.TabIndex = 9;
             this.InfoPanel.MouseEnter += new System.EventHandler(this.InfoPanel_MouseEnter);
             this.InfoPanel.MouseLeave += new System.EventHandler(this.ClearTip);
@@ -217,6 +257,7 @@
             // 
             this.InfoSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InfoSplitter.Location = new System.Drawing.Point(0, 0);
+            this.InfoSplitter.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.InfoSplitter.Name = "InfoSplitter";
             // 
             // InfoSplitter.Panel1
@@ -230,33 +271,35 @@
             this.InfoSplitter.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.InfoSplitter.Panel2.Controls.Add(this.DescTextLabel);
             this.InfoSplitter.Panel2.Controls.Add(this.DescLabel);
-            this.InfoSplitter.Size = new System.Drawing.Size(424, 127);
-            this.InfoSplitter.SplitterDistance = 103;
+            this.InfoSplitter.Size = new System.Drawing.Size(495, 130);
+            this.InfoSplitter.SplitterDistance = 120;
+            this.InfoSplitter.SplitterWidth = 5;
             this.InfoSplitter.TabIndex = 14;
             // 
             // GamePanel
             // 
-            this.GamePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.GamePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GamePanel.BackColor = System.Drawing.SystemColors.Control;
             this.GamePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.GamePanel.Controls.Add(this.NameLabel);
             this.GamePanel.Controls.Add(this.AuthorLabel);
             this.GamePanel.Controls.Add(this.SizeLabel);
-            this.GamePanel.Location = new System.Drawing.Point(3, 26);
+            this.GamePanel.Location = new System.Drawing.Point(3, 32);
+            this.GamePanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(97, 98);
+            this.GamePanel.Size = new System.Drawing.Size(113, 96);
             this.GamePanel.TabIndex = 12;
             // 
             // NameLabel
             // 
             this.NameLabel.AutoSize = true;
             this.NameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.NameLabel.Location = new System.Drawing.Point(3, 6);
-            this.NameLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.NameLabel.Location = new System.Drawing.Point(3, 7);
+            this.NameLabel.Margin = new System.Windows.Forms.Padding(3, 7, 3, 7);
             this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(41, 13);
+            this.NameLabel.Size = new System.Drawing.Size(50, 16);
             this.NameLabel.TabIndex = 0;
             this.NameLabel.Text = "Name: ";
             // 
@@ -264,10 +307,10 @@
             // 
             this.AuthorLabel.AutoSize = true;
             this.AuthorLabel.BackColor = System.Drawing.Color.Transparent;
-            this.AuthorLabel.Location = new System.Drawing.Point(3, 31);
-            this.AuthorLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.AuthorLabel.Location = new System.Drawing.Point(3, 38);
+            this.AuthorLabel.Margin = new System.Windows.Forms.Padding(3, 7, 3, 7);
             this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(41, 13);
+            this.AuthorLabel.Size = new System.Drawing.Size(51, 16);
             this.AuthorLabel.TabIndex = 1;
             this.AuthorLabel.Text = "Author:";
             // 
@@ -275,47 +318,47 @@
             // 
             this.SizeLabel.AutoSize = true;
             this.SizeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.SizeLabel.Location = new System.Drawing.Point(3, 56);
-            this.SizeLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.SizeLabel.Location = new System.Drawing.Point(3, 69);
+            this.SizeLabel.Margin = new System.Windows.Forms.Padding(3, 7, 3, 7);
             this.SizeLabel.Name = "SizeLabel";
-            this.SizeLabel.Size = new System.Drawing.Size(63, 13);
+            this.SizeLabel.Size = new System.Drawing.Size(76, 16);
             this.SizeLabel.TabIndex = 2;
             this.SizeLabel.Text = "Resolution: ";
             // 
             // InfoLabel
             // 
             this.InfoLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.InfoLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
+            this.InfoLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoLabel.ForeColor = System.Drawing.Color.MidnightBlue;
             this.InfoLabel.Location = new System.Drawing.Point(0, 0);
             this.InfoLabel.Name = "InfoLabel";
-            this.InfoLabel.Size = new System.Drawing.Size(103, 23);
+            this.InfoLabel.Size = new System.Drawing.Size(120, 23);
             this.InfoLabel.TabIndex = 11;
             this.InfoLabel.Text = "Game Info";
             this.InfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DescTextLabel
             // 
-            this.DescTextLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.DescTextLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DescTextLabel.BackColor = System.Drawing.SystemColors.Control;
             this.DescTextLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DescTextLabel.Location = new System.Drawing.Point(3, 26);
-            this.DescTextLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.DescTextLabel.Location = new System.Drawing.Point(3, 32);
+            this.DescTextLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.DescTextLabel.Name = "DescTextLabel";
             this.DescTextLabel.Padding = new System.Windows.Forms.Padding(2);
-            this.DescTextLabel.Size = new System.Drawing.Size(311, 98);
+            this.DescTextLabel.Size = new System.Drawing.Size(359, 96);
             this.DescTextLabel.TabIndex = 4;
             // 
             // DescLabel
             // 
             this.DescLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DescLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
+            this.DescLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DescLabel.ForeColor = System.Drawing.Color.MidnightBlue;
             this.DescLabel.Location = new System.Drawing.Point(0, 0);
             this.DescLabel.Name = "DescLabel";
-            this.DescLabel.Size = new System.Drawing.Size(317, 23);
+            this.DescLabel.Size = new System.Drawing.Size(370, 23);
             this.DescLabel.TabIndex = 11;
             this.DescLabel.Text = "Description";
             this.DescLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -328,18 +371,19 @@
             this.GamesPanel.Controls.Add(this.GameProjectLabel);
             this.GamesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GamesPanel.Location = new System.Drawing.Point(0, 0);
+            this.GamesPanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.GamesPanel.Name = "GamesPanel";
-            this.GamesPanel.Size = new System.Drawing.Size(424, 193);
+            this.GamesPanel.Size = new System.Drawing.Size(495, 264);
             this.GamesPanel.TabIndex = 3;
             // 
             // GameProjectLabel
             // 
             this.GameProjectLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GameProjectLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
+            this.GameProjectLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GameProjectLabel.ForeColor = System.Drawing.Color.MidnightBlue;
             this.GameProjectLabel.Location = new System.Drawing.Point(0, 0);
             this.GameProjectLabel.Name = "GameProjectLabel";
-            this.GameProjectLabel.Size = new System.Drawing.Size(420, 23);
+            this.GameProjectLabel.Size = new System.Drawing.Size(491, 23);
             this.GameProjectLabel.TabIndex = 1;
             this.GameProjectLabel.Text = "Game Projects";
             this.GameProjectLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -349,6 +393,7 @@
             this.MainSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainSplitter.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.MainSplitter.Location = new System.Drawing.Point(0, 0);
+            this.MainSplitter.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.MainSplitter.Name = "MainSplitter";
             this.MainSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -359,28 +404,33 @@
             // MainSplitter.Panel2
             // 
             this.MainSplitter.Panel2.Controls.Add(this.InfoPanel);
-            this.MainSplitter.Size = new System.Drawing.Size(424, 324);
-            this.MainSplitter.SplitterDistance = 193;
+            this.MainSplitter.Size = new System.Drawing.Size(495, 399);
+            this.MainSplitter.SplitterDistance = 264;
+            this.MainSplitter.SplitterWidth = 5;
             this.MainSplitter.TabIndex = 10;
             // 
             // StartPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Controls.Add(this.MainSplitter);
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.Name = "StartPage";
-            this.Size = new System.Drawing.Size(424, 324);
+            this.Size = new System.Drawing.Size(495, 399);
             this.ItemContextStrip.ResumeLayout(false);
             this.InfoPanel.ResumeLayout(false);
             this.InfoSplitter.Panel1.ResumeLayout(false);
             this.InfoSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.InfoSplitter)).EndInit();
             this.InfoSplitter.ResumeLayout(false);
             this.GamePanel.ResumeLayout(false);
             this.GamePanel.PerformLayout();
             this.GamesPanel.ResumeLayout(false);
             this.MainSplitter.Panel1.ResumeLayout(false);
             this.MainSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MainSplitter)).EndInit();
             this.MainSplitter.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -414,6 +464,10 @@
         private System.Windows.Forms.ToolStripMenuItem OpenFolderItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem RefreshItem;
+        private System.Windows.Forms.ToolStripMenuItem DetailsItem;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
 
 
 

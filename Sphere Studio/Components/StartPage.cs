@@ -19,7 +19,8 @@ namespace SphereStudio.Components
         private readonly DockContent _infoContent = new DockContent();
         private readonly IDEForm _mainEditor;
 
-        private readonly ImageList _imageicons = new ImageList();
+        private readonly ImageList _listIcons = new ImageList();
+        private readonly ImageList _listIconsSmall = new ImageList();
 
         public StartPage(IDEForm mainEditor)
         {
@@ -28,10 +29,14 @@ namespace SphereStudio.Components
 
             _mainEditor = mainEditor;
 
-            _imageicons.ImageSize = new Size(32, 32);
-            _imageicons.ColorDepth = ColorDepth.Depth32Bit;
-            _imageicons.Images.Add(Properties.Resources.SphereEditor);
-            GameFolders.LargeImageList = _imageicons;
+            _listIcons.ImageSize = new Size(32, 32);
+            _listIcons.ColorDepth = ColorDepth.Depth32Bit;
+            _listIcons.Images.Add(Properties.Resources.SphereEditor);
+            _listIconsSmall.ImageSize = new Size(16, 16);
+            _listIconsSmall.ColorDepth = ColorDepth.Depth32Bit;
+            _listIconsSmall.Images.Add(Properties.Resources.SphereEditor);
+            GameFolders.LargeImageList = _listIcons;
+            GameFolders.SmallImageList = _listIconsSmall;
 
             InitializeView();
         }
@@ -64,6 +69,7 @@ namespace SphereStudio.Components
             TilesItem.Checked = false;
             switch (v)
             {
+                case View.Details: DetailsItem.Checked = true; break;
                 case View.Tile: TilesItem.Checked = true; break;
                 case View.List: ListItem.Checked = true; break;
                 case View.SmallIcon: SmallIconItem.Checked = true; break;
@@ -80,10 +86,10 @@ namespace SphereStudio.Components
         {
             GameFolders.Items.Clear();
             GameFolders.BeginUpdate();
-            if (_imageicons.Images.Count == 0) return;
-            Image holdOnToMe = _imageicons.Images[0]; // keep this sucker alive.
-            _imageicons.Images.Clear();
-            _imageicons.Images.Add(holdOnToMe);
+            if (_listIcons.Images.Count == 0) return;
+            Image holdOnToMe = _listIcons.Images[0]; // keep this sucker alive.
+            _listIcons.Images.Clear();
+            _listIcons.Images.Add(holdOnToMe);
 
             // Search through a list of supplied directories.
             string[] paths = Global.CurrentEditor.GetArray("games_path");
@@ -93,13 +99,17 @@ namespace SphereStudio.Components
                 if (!Directory.Exists(s)) continue;
                 DirectoryInfo d = new DirectoryInfo(s);
                 Populate(d);
-                string path = d.FullName + "/game.sgm";
 
                 // search this folder for game:
+                string path = d.FullName + "/game.sgm";
                 if (!File.Exists(path)) continue;
 
+                ProjectSettings proj = new ProjectSettings();
+                proj.LoadSettings(Path.Combine(d.FullName, @"game.sgm"));
                 int img = CheckForIcon(d.FullName);
-                ListViewItem item = new ListViewItem(d.Name, img) {Tag = path};
+                ListViewItem item = new ListViewItem(proj.Name, img) { Tag = path };
+                item.SubItems.Add(proj.Author);
+                item.SubItems.Add(d.FullName);
                 GameFolders.Items.Add(item);
             }
             GameFolders.EndUpdate();
@@ -107,7 +117,7 @@ namespace SphereStudio.Components
         }
 
         /// <summary>
-        /// Searches the subfolders of /base_dir/ for games
+        /// Recursively searches the subfolders of /base_dir/ for games
         /// to add to the games panel.
         /// </summary>
         /// <param name="baseDir">Directory to start looking from.</param>
@@ -119,7 +129,11 @@ namespace SphereStudio.Components
                 string path = d.FullName + "/game.sgm";
                 if (!File.Exists(path)) { Populate(d); continue; }
                 int img = CheckForIcon(d.FullName);
-                ListViewItem item = new ListViewItem(d.Name, img) {Tag = path};
+                ProjectSettings proj = new ProjectSettings();
+                proj.LoadSettings(Path.Combine(d.FullName, @"game.sgm"));
+                ListViewItem item = new ListViewItem(proj.Name, img) { Tag = path };
+                item.SubItems.Add(proj.Author);
+                item.SubItems.Add(d.FullName);
                 GameFolders.Items.Add(item);
             }
         }
@@ -131,13 +145,15 @@ namespace SphereStudio.Components
             {
                 if (s.EndsWith(".png"))
                 {
-                    _imageicons.Images.Add(Image.FromFile(s));
-                    return _imageicons.Images.Count - 1;
+                    _listIcons.Images.Add(Image.FromFile(s));
+                    _listIconsSmall.Images.Add(Image.FromFile(s));
+                    return _listIcons.Images.Count - 1;
                 }
                 if (s.EndsWith(".ico"))
                 {
-                    _imageicons.Images.Add(new Icon(s));
-                    return _imageicons.Images.Count - 1;
+                    _listIcons.Images.Add(new Icon(s));
+                    _listIconsSmall.Images.Add(new Icon(s));
+                    return _listIcons.Images.Count - 1;
                 }
             }
             return 0;
@@ -222,14 +238,14 @@ namespace SphereStudio.Components
 
                     if (_currentItem.ImageIndex == 0)
                     {
-                        _imageicons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
-                        _currentItem.ImageIndex = _imageicons.Images.Count - 1;
+                        _listIcons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
+                        _currentItem.ImageIndex = _listIcons.Images.Count - 1;
                     }
                     else
                     {
-                        _imageicons.Images.RemoveAt(_currentItem.ImageIndex);
-                        _imageicons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
-                        _currentItem.ImageIndex = _imageicons.Images.Count - 1;
+                        _listIcons.Images.RemoveAt(_currentItem.ImageIndex);
+                        _listIcons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
+                        _currentItem.ImageIndex = _listIcons.Images.Count - 1;
                     }
                     PopulateGameList();
                 }
@@ -238,26 +254,32 @@ namespace SphereStudio.Components
 
         private void TilesItem_Click(object sender, EventArgs e)
         {
-            ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
+            DetailsItem.Checked = ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
             Global.CurrentEditor.StartView = GameFolders.View = View.Tile;
         }
 
         private void ListItem_Click(object sender, EventArgs e)
         {
-            TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
+            DetailsItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
             Global.CurrentEditor.StartView = GameFolders.View = View.List;
         }
 
         private void SmallIconItem_Click(object sender, EventArgs e)
         {
-            TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
+            DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
             Global.CurrentEditor.StartView = GameFolders.View = View.SmallIcon;
         }
 
         private void LargeIconItem_Click(object sender, EventArgs e)
         {
-            TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
+            DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
             Global.CurrentEditor.StartView = GameFolders.View = View.LargeIcon;
+        }
+
+        private void DetailsItem_Click(object sender, EventArgs e)
+        {
+            ListItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
+            Global.CurrentEditor.StartView = GameFolders.View = View.Details;
         }
 
         private void ItemContextStrip_Opening(object sender, CancelEventArgs e)
@@ -316,6 +338,5 @@ namespace SphereStudio.Components
                 current_item = null;
             }*/
         }
-
     }
 }
