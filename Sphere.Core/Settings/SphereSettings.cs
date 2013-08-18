@@ -51,6 +51,15 @@ namespace Sphere.Core.Settings
         }
 
         /// <summary>
+        /// Gets or sets whether to open the Start Page on startup
+        /// </summary>
+        public bool UseStartPage
+        {
+            get { return GetBool("use_start_page", true); }
+            set { SetItem("use_start_page", value); }
+        }
+
+        /// <summary>
         /// Gets or sets the start page's view.
         /// </summary>
         public View StartView
