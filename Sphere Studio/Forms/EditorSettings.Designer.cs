@@ -215,7 +215,8 @@
             this.ItemCheckBox.FormattingEnabled = true;
             this.ItemCheckBox.Items.AddRange(new object[] {
             "Update Script Headers",
-            "Open Last Project"});
+            "Automatically Open Last Project",
+            "Automatically Open Start Page"});
             this.ItemCheckBox.Location = new System.Drawing.Point(6, 26);
             this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ItemCheckBox.Name = "ItemCheckBox";
