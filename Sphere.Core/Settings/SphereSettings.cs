@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Sphere.Core;
+using Sphere.Core.Editor;
 
 // This Contains the Settings Dialogue Info
 // As well as any other Sphere Editor related
@@ -91,6 +92,19 @@ namespace Sphere.Core.Settings
                 return k == string.Empty ? "Verdana" : k;
             }
             set { SetItem("label_font", value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the style used by editor components.
+        /// </summary>
+        public string Style
+        {
+            get
+            {
+                string k = GetString("style");
+                return k == string.Empty ? "Dark" : k;
+            }
+            set { SetItem("style", value); }
         }
 
         /// <summary>

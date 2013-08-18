@@ -37,10 +37,10 @@
             this.ConfigPathLabel = new System.Windows.Forms.Label();
             this.GamePathLabel = new System.Windows.Forms.Label();
             this.ConfigPathBox = new System.Windows.Forms.TextBox();
-            this.FontComboBox = new System.Windows.Forms.ComboBox();
-            this.FontLabel = new System.Windows.Forms.Label();
             this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.StyleLabel = new System.Windows.Forms.Label();
+            this.StyleComboBox = new System.Windows.Forms.ComboBox();
             this.PropLabel = new System.Windows.Forms.Label();
             this.ItemCheckBox = new System.Windows.Forms.CheckedListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -64,13 +64,13 @@
             this.PresetGroupBox = new System.Windows.Forms.GroupBox();
             this.PresetListBox = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.ButtonPanel = new System.Windows.Forms.Panel();
             this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.PresetGroupBox.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.ButtonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // cancelButton
@@ -145,31 +145,6 @@
             this.ConfigPathBox.Size = new System.Drawing.Size(331, 23);
             this.ConfigPathBox.TabIndex = 6;
             // 
-            // FontComboBox
-            // 
-            this.FontComboBox.FormattingEnabled = true;
-            this.FontComboBox.Items.AddRange(new object[] {
-            "Verdana",
-            "Tahoma",
-            "Arial",
-            "Comic Sans MS",
-            "Courier"});
-            this.FontComboBox.Location = new System.Drawing.Point(10, 162);
-            this.FontComboBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.FontComboBox.Name = "FontComboBox";
-            this.FontComboBox.Size = new System.Drawing.Size(175, 24);
-            this.FontComboBox.TabIndex = 15;
-            this.FontComboBox.Text = "Verdana";
-            // 
-            // FontLabel
-            // 
-            this.FontLabel.AutoSize = true;
-            this.FontLabel.Location = new System.Drawing.Point(7, 143);
-            this.FontLabel.Name = "FontLabel";
-            this.FontLabel.Size = new System.Drawing.Size(109, 16);
-            this.FontLabel.TabIndex = 14;
-            this.FontLabel.Text = "Editor Label Font:";
-            // 
             // SettingsTabs
             // 
             this.SettingsTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -187,10 +162,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.StyleLabel);
+            this.tabPage1.Controls.Add(this.StyleComboBox);
             this.tabPage1.Controls.Add(this.PropLabel);
             this.tabPage1.Controls.Add(this.ItemCheckBox);
-            this.tabPage1.Controls.Add(this.FontComboBox);
-            this.tabPage1.Controls.Add(this.FontLabel);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabPage1.Name = "tabPage1";
@@ -200,10 +175,34 @@
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // StyleLabel
+            // 
+            this.StyleLabel.AutoSize = true;
+            this.StyleLabel.Location = new System.Drawing.Point(6, 125);
+            this.StyleLabel.Name = "StyleLabel";
+            this.StyleLabel.Size = new System.Drawing.Size(41, 16);
+            this.StyleLabel.TabIndex = 21;
+            this.StyleLabel.Text = "Style:";
+            // 
+            // StyleComboBox
+            // 
+            this.StyleComboBox.FormattingEnabled = true;
+            this.StyleComboBox.Items.AddRange(new object[] {
+            "Dark",
+            "Light",
+            "Blue",
+            "Green",
+            "Orange"});
+            this.StyleComboBox.Location = new System.Drawing.Point(6, 144);
+            this.StyleComboBox.Name = "StyleComboBox";
+            this.StyleComboBox.Size = new System.Drawing.Size(175, 24);
+            this.StyleComboBox.TabIndex = 20;
+            this.StyleComboBox.Text = "Dark";
+            // 
             // PropLabel
             // 
             this.PropLabel.AutoSize = true;
-            this.PropLabel.Location = new System.Drawing.Point(7, 5);
+            this.PropLabel.Location = new System.Drawing.Point(6, 5);
             this.PropLabel.Name = "PropLabel";
             this.PropLabel.Size = new System.Drawing.Size(66, 16);
             this.PropLabel.TabIndex = 19;
@@ -217,10 +216,10 @@
             this.ItemCheckBox.Items.AddRange(new object[] {
             "Update Script Headers",
             "Open Last Project"});
-            this.ItemCheckBox.Location = new System.Drawing.Point(10, 23);
+            this.ItemCheckBox.Location = new System.Drawing.Point(6, 26);
             this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ItemCheckBox.Name = "ItemCheckBox";
-            this.ItemCheckBox.Size = new System.Drawing.Size(417, 94);
+            this.ItemCheckBox.Size = new System.Drawing.Size(421, 94);
             this.ItemCheckBox.TabIndex = 18;
             // 
             // tabPage2
@@ -236,11 +235,11 @@
             this.tabPage2.Controls.Add(this.SpherePathButton);
             this.tabPage2.Controls.Add(this.SpherePathBox);
             this.tabPage2.Controls.Add(this.GamePathLabel);
-            this.tabPage2.Location = new System.Drawing.Point(4, 23);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPage2.Size = new System.Drawing.Size(433, 355);
+            this.tabPage2.Size = new System.Drawing.Size(433, 353);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -328,11 +327,11 @@
             // 
             this.tabPage3.Controls.Add(this.PluginList);
             this.tabPage3.Controls.Add(this.label1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 23);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPage3.Size = new System.Drawing.Size(433, 355);
+            this.tabPage3.Size = new System.Drawing.Size(433, 353);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plugins";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -352,7 +351,7 @@
             this.PluginList.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PluginList.Name = "PluginList";
             this.PluginList.ShowItemToolTips = true;
-            this.PluginList.Size = new System.Drawing.Size(427, 311);
+            this.PluginList.Size = new System.Drawing.Size(427, 309);
             this.PluginList.TabIndex = 0;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
@@ -475,17 +474,17 @@
             this.label2.Text = "Presets allow you to target different Sphere versions, game paths and plugin list" +
     "s to suit your development needs.";
             // 
-            // panel1
+            // ButtonPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel1.Controls.Add(this.cancelButton);
-            this.panel1.Controls.Add(this.okButton);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 405);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(707, 37);
-            this.panel1.TabIndex = 15;
+            this.ButtonPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ButtonPanel.Controls.Add(this.cancelButton);
+            this.ButtonPanel.Controls.Add(this.okButton);
+            this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 405);
+            this.ButtonPanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.ButtonPanel.Name = "ButtonPanel";
+            this.ButtonPanel.Size = new System.Drawing.Size(707, 37);
+            this.ButtonPanel.TabIndex = 15;
             // 
             // EditorSettings
             // 
@@ -495,7 +494,7 @@
             this.ClientSize = new System.Drawing.Size(707, 442);
             this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.PresetGroupBox);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.ButtonPanel);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.MaximizeBox = false;
@@ -512,7 +511,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.PresetGroupBox.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
+            this.ButtonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -528,8 +527,6 @@
         private System.Windows.Forms.Label ConfigPathLabel;
         private System.Windows.Forms.Label GamePathLabel;
         private System.Windows.Forms.TextBox ConfigPathBox;
-        private System.Windows.Forms.Label FontLabel;
-        private System.Windows.Forms.ComboBox FontComboBox;
         private System.Windows.Forms.TabControl SettingsTabs;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.CheckedListBox ItemCheckBox;
@@ -554,6 +551,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DownButton;
         private System.Windows.Forms.Button UpButton;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel ButtonPanel;
+        private System.Windows.Forms.Label StyleLabel;
+        private System.Windows.Forms.ComboBox StyleComboBox;
     }
 }

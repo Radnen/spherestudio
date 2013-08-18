@@ -52,6 +52,11 @@ namespace SphereStudio
             Global.EvalPlugins();
             Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
 
+            SuspendLayout();
+            StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
+            Invalidate(true);
+            ResumeLayout();
+
             if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
 
@@ -569,6 +574,8 @@ namespace SphereStudio
             {
                 UpdateButtons();
                 _startPage.PopulateGameList();
+                Sphere.Core.Editor.StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
+                Invalidate(true);
             }
         }
 

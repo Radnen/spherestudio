@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 using Sphere.Core.Settings;
+using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
 {
-    internal partial class NewProjectForm : Form
+    internal partial class NewProjectForm : Form, IStyleable
     {
         public string RootFolder
         {
@@ -19,6 +20,7 @@ namespace SphereStudio.Forms
         public NewProjectForm()
         {
             InitializeComponent();
+            UpdateStyle();
         }
 
         private void FillDirectory(object sender, KeyEventArgs e)
@@ -107,6 +109,13 @@ namespace SphereStudio.Forms
                     StatusLabel.Text = @"Project Name Already Exists!";
                 }
             }
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(ButtonPanel);
+            StyleSettings.ApplyStyle(OKButton);
+            StyleSettings.ApplyStyle(cancelButton);
         }
     }
 }

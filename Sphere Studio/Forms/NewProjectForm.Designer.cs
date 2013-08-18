@@ -53,10 +53,12 @@
             this.NewProjectStatus = new System.Windows.Forms.StatusStrip();
             this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.NewProjectPic = new System.Windows.Forms.PictureBox();
+            this.ButtonPanel = new System.Windows.Forms.Panel();
             this.ProjectBox.SuspendLayout();
             this.PropertiesBox.SuspendLayout();
             this.NewProjectStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).BeginInit();
+            this.ButtonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProjectBox
@@ -155,7 +157,7 @@
             // 
             this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(87, 559);
+            this.cancelButton.Location = new System.Drawing.Point(87, 4);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(87, 28);
@@ -168,7 +170,7 @@
             this.OKButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKButton.Enabled = false;
-            this.OKButton.Location = new System.Drawing.Point(181, 559);
+            this.OKButton.Location = new System.Drawing.Point(180, 4);
             this.OKButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(87, 28);
@@ -338,17 +340,26 @@
             this.NewProjectPic.TabIndex = 0;
             this.NewProjectPic.TabStop = false;
             // 
+            // ButtonPanel
+            // 
+            this.ButtonPanel.Controls.Add(this.OKButton);
+            this.ButtonPanel.Controls.Add(this.cancelButton);
+            this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 559);
+            this.ButtonPanel.Name = "ButtonPanel";
+            this.ButtonPanel.Size = new System.Drawing.Size(355, 37);
+            this.ButtonPanel.TabIndex = 7;
+            // 
             // NewProjectForm
             // 
             this.AcceptButton = this.OKButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(355, 618);
+            this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectStatus);
             this.Controls.Add(this.RequiredLabel);
             this.Controls.Add(this.PropertiesBox);
-            this.Controls.Add(this.OKButton);
-            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.ProjectBox);
             this.Controls.Add(this.NewProjectPic);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -370,6 +381,7 @@
             this.NewProjectStatus.ResumeLayout(false);
             this.NewProjectStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).EndInit();
+            this.ButtonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -402,5 +414,6 @@
         private System.Windows.Forms.Label RequiredLabel;
         private System.Windows.Forms.StatusStrip NewProjectStatus;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
+        private System.Windows.Forms.Panel ButtonPanel;
     }
 }

@@ -8,7 +8,7 @@ using Sphere.Plugins;
 
 namespace SphereStudio.Forms
 {
-    internal partial class EditorSettings : Form
+    internal partial class EditorSettings : Form, IStyleable
     {
         #region getters and setters
         public string SpherePath
@@ -34,10 +34,10 @@ namespace SphereStudio.Forms
             set { PathListBox.Items.Clear(); PathListBox.Items.AddRange(value); }
         }
 
-        public string LabelFont
+        public string Style
         {
-            get { return FontComboBox.Text; }
-            set { FontComboBox.Text = value; }
+            get { return StyleComboBox.Text; }
+            set { StyleComboBox.Text = value; }
         }
 
         public bool UseScriptUpdate
@@ -68,7 +68,8 @@ namespace SphereStudio.Forms
             GamePaths = settings.GetArray("games_path");
             AutoStart = settings.AutoOpen;
             UseScriptUpdate = settings.UseScriptUpdate;
-            LabelFont = settings.LabelFont;
+            Style = settings.Style.ToString();
+            UpdateStyle();
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace SphereStudio.Forms
             settings.SpherePath = SpherePath;
             settings.ConfigPath = ConfigPath;
             settings.UseScriptUpdate = UseScriptUpdate;
-            settings.LabelFont = LabelFont;
+            settings.Style = Style;
             settings.StoreArray("games_path", GamePaths);
 
             List<string> activated = new List<string>();
@@ -233,6 +234,13 @@ namespace SphereStudio.Forms
                 PathListBox.Items.Insert(index - 1, item);
                 PathListBox.SelectedIndex = index - 1;
             }
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(ButtonPanel);
+            StyleSettings.ApplyStyle(okButton);
+            StyleSettings.ApplyStyle(cancelButton);
         }
     }
 }

@@ -110,12 +110,16 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Editor\HistoryManager.cs" />
+    <Compile Include="Editor\IStyleable.cs" />
+    <Compile Include="Editor\StyleSettings.cs" />
     <Compile Include="Editor\StringInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor\StringInputForm.Designer.cs">
       <DependentUpon>StringInputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\Style.cs" />
+    <Compile Include="Editor\StyleGroup.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Settings\GameProject.cs" />
     <Compile Include="Settings\GenSettings.cs" />
@@ -142,6 +146,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Editor\ColorBox.resx">
       <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\EditorLabel.resx">
+      <DependentUpon>EditorLabel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\StringInputForm.resx">
       <DependentUpon>StringInputForm.cs</DependentUpon>

@@ -45,7 +45,9 @@
             this.okayButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.NewProjectPic = new System.Windows.Forms.PictureBox();
+            this.ButtonPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).BeginInit();
+            this.ButtonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // PathLabel
@@ -115,13 +117,13 @@
             this.DescTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DescTextBox.Multiline = true;
             this.DescTextBox.Name = "DescTextBox";
-            this.DescTextBox.Size = new System.Drawing.Size(336, 192);
+            this.DescTextBox.Size = new System.Drawing.Size(336, 176);
             this.DescTextBox.TabIndex = 7;
             // 
             // ScriptLabel
             // 
             this.ScriptLabel.AutoSize = true;
-            this.ScriptLabel.Location = new System.Drawing.Point(12, 366);
+            this.ScriptLabel.Location = new System.Drawing.Point(12, 350);
             this.ScriptLabel.Name = "ScriptLabel";
             this.ScriptLabel.Size = new System.Drawing.Size(73, 16);
             this.ScriptLabel.TabIndex = 8;
@@ -130,7 +132,7 @@
             // ScreenSizeLabel
             // 
             this.ScreenSizeLabel.AutoSize = true;
-            this.ScreenSizeLabel.Location = new System.Drawing.Point(12, 402);
+            this.ScreenSizeLabel.Location = new System.Drawing.Point(12, 386);
             this.ScreenSizeLabel.Name = "ScreenSizeLabel";
             this.ScreenSizeLabel.Size = new System.Drawing.Size(76, 16);
             this.ScreenSizeLabel.TabIndex = 9;
@@ -139,7 +141,7 @@
             // ScriptComboBox
             // 
             this.ScriptComboBox.FormattingEnabled = true;
-            this.ScriptComboBox.Location = new System.Drawing.Point(112, 363);
+            this.ScriptComboBox.Location = new System.Drawing.Point(112, 347);
             this.ScriptComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ScriptComboBox.Name = "ScriptComboBox";
             this.ScriptComboBox.Size = new System.Drawing.Size(236, 24);
@@ -148,7 +150,7 @@
             // XLabel
             // 
             this.XLabel.AutoSize = true;
-            this.XLabel.Location = new System.Drawing.Point(221, 402);
+            this.XLabel.Location = new System.Drawing.Point(221, 386);
             this.XLabel.Name = "XLabel";
             this.XLabel.Size = new System.Drawing.Size(14, 16);
             this.XLabel.TabIndex = 11;
@@ -156,7 +158,7 @@
             // 
             // WidthTextBox
             // 
-            this.WidthTextBox.Location = new System.Drawing.Point(110, 398);
+            this.WidthTextBox.Location = new System.Drawing.Point(110, 382);
             this.WidthTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.WidthTextBox.Name = "WidthTextBox";
             this.WidthTextBox.Size = new System.Drawing.Size(103, 23);
@@ -165,7 +167,7 @@
             // 
             // HeightTextBox
             // 
-            this.HeightTextBox.Location = new System.Drawing.Point(244, 395);
+            this.HeightTextBox.Location = new System.Drawing.Point(244, 379);
             this.HeightTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.HeightTextBox.Name = "HeightTextBox";
             this.HeightTextBox.Size = new System.Drawing.Size(104, 23);
@@ -175,7 +177,7 @@
             // okayButton
             // 
             this.okayButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okayButton.Location = new System.Drawing.Point(183, 429);
+            this.okayButton.Location = new System.Drawing.Point(183, 4);
             this.okayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.okayButton.Name = "okayButton";
             this.okayButton.Size = new System.Drawing.Size(87, 28);
@@ -186,7 +188,7 @@
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(90, 429);
+            this.cancelButton.Location = new System.Drawing.Point(90, 4);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(87, 28);
@@ -205,14 +207,23 @@
             this.NewProjectPic.TabIndex = 16;
             this.NewProjectPic.TabStop = false;
             // 
+            // ButtonPanel
+            // 
+            this.ButtonPanel.Controls.Add(this.okayButton);
+            this.ButtonPanel.Controls.Add(this.cancelButton);
+            this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 427);
+            this.ButtonPanel.Name = "ButtonPanel";
+            this.ButtonPanel.Size = new System.Drawing.Size(360, 37);
+            this.ButtonPanel.TabIndex = 17;
+            // 
             // GameSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 464);
+            this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectPic);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.okayButton);
             this.Controls.Add(this.HeightTextBox);
             this.Controls.Add(this.WidthTextBox);
             this.Controls.Add(this.XLabel);
@@ -236,6 +247,7 @@
             this.Text = "Game Settings";
             this.Load += new System.EventHandler(this.GameSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).EndInit();
+            this.ButtonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,6 +272,7 @@
         private System.Windows.Forms.Button okayButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.PictureBox NewProjectPic;
+        private System.Windows.Forms.Panel ButtonPanel;
 
     }
 }

@@ -6,7 +6,7 @@ namespace Sphere.Core.Editor
     /// <summary>
     /// A label with a blue-themed background.
     /// </summary>
-    public class EditorLabel : Label
+    public class EditorLabel : Label, IStyleable
     {
         private static readonly Brush BgBrush = new TextureBrush(Properties.Resources.BarImage);
 
@@ -20,7 +20,7 @@ namespace Sphere.Core.Editor
             TextAlign = ContentAlignment.MiddleLeft;
             Height = 23;
             AutoSize = false;
-            ForeColor = Color.MidnightBlue;
+            UpdateStyle();
         }
 
         /// <summary>
@@ -29,8 +29,17 @@ namespace Sphere.Core.Editor
         /// <param name="pevent"></param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
+            UpdateStyle();
             base.OnPaintBackground(pevent);
-            pevent.Graphics.FillRectangle(BgBrush, ClientRectangle);
+            //pevent.Graphics.FillRectangle(BgBrush, ClientRectangle);
+        }
+
+        /// <summary>
+        /// Updates the style of this label to one of the built-in styles.
+        /// </summary>
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(this);
         }
     }
 }

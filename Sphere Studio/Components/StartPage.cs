@@ -6,10 +6,11 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using Sphere.Core.Settings;
 using WeifenLuo.WinFormsUI.Docking;
+using Sphere.Core.Editor;
 
 namespace SphereStudio.Components
 {
-    internal partial class StartPage : UserControl
+    internal partial class StartPage : UserControl, IStyleable
     {
         private readonly ProjectSettings _proj = new ProjectSettings();
         private ListViewItem _currentItem;
@@ -39,6 +40,12 @@ namespace SphereStudio.Components
             GameFolders.SmallImageList = _listIconsSmall;
 
             InitializeView();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            UpdateStyle();
+            base.OnPaint(e);
         }
 
         private void InitializeDocking()
@@ -331,12 +338,13 @@ namespace SphereStudio.Components
             _currentItem = GameFolders.SelectedItems[0];
             if (_currentItem == null) return;
             _mainEditor.OpenProject((string)_currentItem.Tag);
+        }
 
-            /*if (current_item != null && File.Exists((string)current_item.Tag))
-            {
-                GameFolders.Items.Remove(current_item);
-                current_item = null;
-            }*/
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(GamesPanel);
+            StyleSettings.ApplyStyle(InfoSplitter.Panel1);
+            StyleSettings.ApplyStyle(InfoSplitter.Panel2);
         }
     }
 }

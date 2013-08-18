@@ -2,10 +2,11 @@
 using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Settings;
+using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
 {
-    internal partial class GameSettings : Form
+    internal partial class GameSettings : Form, IStyleable
     {
         public GameSettings(ProjectSettings someProject)
         {
@@ -17,6 +18,7 @@ namespace SphereStudio.Forms
             WidthTextBox.Text = someProject.Width;
             HeightTextBox.Text = someProject.Height;
             ScriptComboBox.Text = someProject.Script;
+            UpdateStyle();
         }
 
         private void GameSettings_Load(object sender, EventArgs e)
@@ -46,6 +48,13 @@ namespace SphereStudio.Forms
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(ButtonPanel);
+            StyleSettings.ApplyStyle(okayButton);
+            StyleSettings.ApplyStyle(cancelButton);
         }
     }
 }
