@@ -144,8 +144,8 @@ namespace SphereStudio
                     Text = @"Start Page",
                     HideOnClose = true
                 };
-            _startContent.Show(DockTest, DockState.Document);
             _startContent.Controls.Add(_startPage);
+            if (EditorSettings.UseStartPage) _startContent.Show(DockTest, DockState.Document);
 
             _treeContent = new DockContent();
             _treeContent.Controls.Add(_tree);

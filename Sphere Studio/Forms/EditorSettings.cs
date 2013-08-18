@@ -52,6 +52,12 @@ namespace SphereStudio.Forms
             set { ItemCheckBox.SetItemChecked(1, value); }
         }
 
+        public bool UseStartPage
+        {
+            get { return ItemCheckBox.GetItemChecked(2); }
+            set { ItemCheckBox.SetItemChecked(2, value); }
+        }
+
         private bool _updatePlugins = false;
         #endregion
 
@@ -68,6 +74,7 @@ namespace SphereStudio.Forms
             GamePaths = settings.GetArray("games_path");
             AutoStart = settings.AutoOpen;
             UseScriptUpdate = settings.UseScriptUpdate;
+            UseStartPage = settings.UseStartPage;
             Style = settings.Style.ToString();
             UpdateStyle();
         }
@@ -83,6 +90,7 @@ namespace SphereStudio.Forms
             settings.SpherePath = SpherePath;
             settings.ConfigPath = ConfigPath;
             settings.UseScriptUpdate = UseScriptUpdate;
+            settings.UseStartPage = UseStartPage;
             settings.Style = Style;
             settings.StoreArray("games_path", GamePaths);
 
