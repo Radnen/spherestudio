@@ -22,42 +22,36 @@ namespace Sphere.Core.Editor
 
         static StyleSettings()
         {
-            Style style;
-
-            style = new Style();
-            style.ForeColor = Color.White;
-            style.BackColor = Color.FromArgb(64, 64, 64);
             var darkgroup = new StyleGroup();
-            darkgroup.Label = style;
+            darkgroup.Label = new Style(Color.FromArgb(64, 64, 64), Color.White, null);
             darkgroup.Panel = new Style(Color.FromArgb(127, 127, 127), null, null);
+            darkgroup.MenuBar = darkgroup.Label;
+            darkgroup.ToolBar = darkgroup.Panel;
 
-            style = new Style();
-            style.ForeColor = Color.Black;
-            style.BackColor = Color.White;
             var lightgroup = new StyleGroup();
-            lightgroup.Label = style;
-            lightgroup.Panel = style;
+            lightgroup.Label = new Style(Color.White, Color.Black, null);
+            lightgroup.Panel = lightgroup.Label;
+            lightgroup.StatusBar = lightgroup.Label;
+            lightgroup.MenuBar = lightgroup.Label;
+            lightgroup.ToolBar = lightgroup.Label;
 
-            style = new Style();
-            style.ForeColor = Color.DarkBlue;
-            style.BackColor = Color.FromArgb(100, 120, 200);
             var bluegroup = new StyleGroup();
-            bluegroup.Label = style;
-            bluegroup.Panel = new Style(Color.LightSkyBlue, null, null);
+            bluegroup.Label = new Style(Color.FromArgb(100, 120, 200), Color.DarkBlue, null);
+            bluegroup.Panel = new Style(Color.FromArgb(192, 192, 255), null, null);
+            bluegroup.MenuBar = bluegroup.Label;
+            bluegroup.ToolBar = bluegroup.Panel;
 
-            style = new Style();
-            style.ForeColor = Color.LightYellow;
-            style.BackColor = Color.FromArgb(0, 88, 38);
             var greengroup = new StyleGroup();
-            greengroup.Label = style;
+            greengroup.Label = new Style(Color.FromArgb(0, 88, 38), Color.LightYellow, null);
             greengroup.Panel = new Style(Color.LawnGreen, null, null);
+            greengroup.MenuBar = greengroup.Label;
+            greengroup.ToolBar = greengroup.Panel;
 
-            style = new Style();
-            style.ForeColor = Color.Black;
-            style.BackColor = Color.FromArgb(247, 148, 29);
             var orangegroup = new StyleGroup();
-            orangegroup.Label = style;
+            orangegroup.Label = new Style(Color.FromArgb(247, 148, 29), Color.Black, null);
             orangegroup.Panel = new Style(Color.LightGoldenrodYellow, null, null);
+            orangegroup.MenuBar = orangegroup.Label;
+            orangegroup.ToolBar = orangegroup.Panel;
 
             _styles["Dark"] = darkgroup;
             _styles["Light"] = lightgroup;

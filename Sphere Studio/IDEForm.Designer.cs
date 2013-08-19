@@ -77,7 +77,6 @@
             this.UpdateFromMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NewProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,6 +123,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -222,7 +222,6 @@
             // EditorTools
             // 
             this.EditorTools.AllowItemReorder = true;
-            this.EditorTools.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.EditorTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.EditorTools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewToolButton,
@@ -362,7 +361,6 @@
             // 
             // EditorStatus
             // 
-            this.EditorStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HelpLabel});
             this.EditorStatus.Location = new System.Drawing.Point(0, 338);
@@ -439,22 +437,6 @@
             this.RescaleMenuItem.Name = "RescaleMenuItem";
             this.RescaleMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // EditorMenu
-            // 
-            this.EditorMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(225)))));
-            this.EditorMenu.BackgroundImage = global::SphereStudio.Properties.Resources.BarImage;
-            this.EditorMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenu,
-            this.EditMenu,
-            this.ProjectMenu,
-            this.ViewMenu,
-            this.HelpMenu});
-            this.EditorMenu.Location = new System.Drawing.Point(0, 0);
-            this.EditorMenu.Name = "EditorMenu";
-            this.EditorMenu.Size = new System.Drawing.Size(480, 24);
-            this.EditorMenu.TabIndex = 0;
-            this.EditorMenu.Text = "Menu";
-            // 
             // FileMenu
             // 
             this.FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -474,6 +456,8 @@
             this.FileMenu.Name = "FileMenu";
             this.FileMenu.Size = new System.Drawing.Size(37, 20);
             this.FileMenu.Text = "&File";
+            this.FileMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
+            this.FileMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
             this.FileMenu.DropDownOpened += new System.EventHandler(this.FileMenu_DropDownOpened);
             // 
             // NewProjectMenuItem
@@ -598,6 +582,7 @@
             this.EditMenu.Name = "EditMenu";
             this.EditMenu.Size = new System.Drawing.Size(39, 20);
             this.EditMenu.Text = "&Edit";
+            this.EditMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
             this.EditMenu.DropDownOpening += new System.EventHandler(this.EditMenu_DropDownOpening);
             // 
             // UndoMenuItem
@@ -717,6 +702,8 @@
             this.ProjectMenu.Name = "ProjectMenu";
             this.ProjectMenu.Size = new System.Drawing.Size(56, 20);
             this.ProjectMenu.Text = "&Project";
+            this.ProjectMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
+            this.ProjectMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
             // 
             // ConfigureSphereMenuItem
             // 
@@ -830,6 +817,8 @@
             this.HelpMenu.Name = "HelpMenu";
             this.HelpMenu.Size = new System.Drawing.Size(44, 20);
             this.HelpMenu.Text = "&Help";
+            this.HelpMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
+            this.HelpMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
             // 
             // ApiDocsMenuItem
             // 
@@ -858,6 +847,20 @@
             this.WebsiteMenuItem.Size = new System.Drawing.Size(186, 22);
             this.WebsiteMenuItem.Text = "Visit Website!";
             this.WebsiteMenuItem.Visible = false;
+            // 
+            // EditorMenu
+            // 
+            this.EditorMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileMenu,
+            this.EditMenu,
+            this.ProjectMenu,
+            this.ViewMenu,
+            this.HelpMenu});
+            this.EditorMenu.Location = new System.Drawing.Point(0, 0);
+            this.EditorMenu.Name = "EditorMenu";
+            this.EditorMenu.Size = new System.Drawing.Size(480, 24);
+            this.EditorMenu.TabIndex = 0;
+            this.EditorMenu.Text = "Menu";
             // 
             // IDEForm
             // 
@@ -894,15 +897,50 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip EditorMenu;
         private System.Windows.Forms.StatusStrip EditorStatus;
         private System.Windows.Forms.ToolStrip EditorTools;
+        private System.Windows.Forms.ToolStripButton SaveToolButton;
+        private System.Windows.Forms.ToolStripSeparator ToolSeperator1;
+        private System.Windows.Forms.ToolStripButton RunToolButton;
+        private System.Windows.Forms.ToolStripButton OptionsToolButton;
+        private System.Windows.Forms.ToolStripSeparator ToolSeperator2;
+        private System.Windows.Forms.ToolStripButton CutToolButton;
+        private System.Windows.Forms.ToolStripButton CopyToolButton;
+        private System.Windows.Forms.ToolStripButton PasteToolButton;
+        private System.Windows.Forms.ToolStripButton GameToolButton;
+        private System.Windows.Forms.ContextMenuStrip EditorTabContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem CloseTabItem;
+        private System.Windows.Forms.ToolStripMenuItem CloseAllTabItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveTabItem;
+        private System.Windows.Forms.ToolStripMenuItem ResizeMenuItem;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel DockTest;
+        private System.Windows.Forms.ToolStripMenuItem PropertiesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RescaleMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TilesetMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ExportTilesetItem;
+        private System.Windows.Forms.ToolStripMenuItem UpdateFromMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel HelpLabel;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripMenuItem SsResizeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SsRescaleMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SpriteTilesetMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ExportSsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ImportSsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
+        private System.Windows.Forms.ToolStripDropDownButton NewToolButton;
+        private System.Windows.Forms.ToolStripDropDownButton OpenToolButton;
         private System.Windows.Forms.ToolStripMenuItem FileMenu;
         private System.Windows.Forms.ToolStripMenuItem NewProjectMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenProjectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenLastProjectMenuItem;
+        private System.Windows.Forms.ToolStripSeparator Separator1;
+        private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
         private System.Windows.Forms.ToolStripSeparator Seperator2;
         private System.Windows.Forms.ToolStripMenuItem SaveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveAsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveOpenedItem;
         private System.Windows.Forms.ToolStripSeparator Seperator3;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EditMenu;
@@ -914,65 +952,30 @@
         private System.Windows.Forms.ToolStripMenuItem PasteMenuItem;
         private System.Windows.Forms.ToolStripSeparator Seperator5;
         private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
-        private System.Windows.Forms.ToolStripButton SaveToolButton;
-        private System.Windows.Forms.ToolStripSeparator ToolSeperator1;
-        private System.Windows.Forms.ToolStripButton RunToolButton;
-        private System.Windows.Forms.ToolStripButton OptionsToolButton;
-        private System.Windows.Forms.ToolStripSeparator ToolSeperator2;
-        private System.Windows.Forms.ToolStripButton CutToolButton;
-        private System.Windows.Forms.ToolStripButton CopyToolButton;
-        private System.Windows.Forms.ToolStripButton PasteToolButton;
-        private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
-        private System.Windows.Forms.ToolStripSeparator Separator1;
-        private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
-        private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem GameSettingsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem TestGameMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem RefreshMenuItem;
-        private System.Windows.Forms.ToolStripButton GameToolButton;
-        private System.Windows.Forms.ToolStripMenuItem HelpMenu;
-        private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem EditorSettingsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenLastProjectMenuItem;
-        private System.Windows.Forms.ContextMenuStrip EditorTabContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem CloseTabItem;
-        private System.Windows.Forms.ToolStripMenuItem CloseAllTabItem;
-        private System.Windows.Forms.ToolStripMenuItem SaveTabItem;
-        private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ViewMenu;
-        private System.Windows.Forms.ToolStripMenuItem StartPageMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ResizeMenuItem;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel DockTest;
-        private System.Windows.Forms.ToolStripMenuItem ProjectExplorerMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenDirectoryMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem PropertiesMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem RescaleMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem TilesetMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ExportTilesetItem;
-        private System.Windows.Forms.ToolStripMenuItem UpdateFromMenuItem;
-        private System.Windows.Forms.ToolStripSeparator Separator7;
-        private System.Windows.Forms.ToolStripStatusLabel HelpLabel;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripSeparator Separator6;
         private System.Windows.Forms.ToolStripMenuItem ZoomInMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ZoomOutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SaveOpenedItem;
-        private System.Windows.Forms.ToolStripMenuItem SsResizeMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SsRescaleMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SpriteTilesetMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ExportSsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ImportSsMenuItem;
         private System.Windows.Forms.ToolStripSeparator Seperator8;
         private System.Windows.Forms.ToolStripMenuItem SaveLayoutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
+        private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
+        private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem GameSettingsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem EditorSettingsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenDirectoryMenuItem;
+        private System.Windows.Forms.ToolStripSeparator Separator7;
+        private System.Windows.Forms.ToolStripMenuItem TestGameMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RefreshMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ViewMenu;
         private System.Windows.Forms.ToolStripMenuItem ClosePaneItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripDropDownButton NewToolButton;
-        private System.Windows.Forms.ToolStripDropDownButton OpenToolButton;
-        private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem StartPageMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ProjectExplorerMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem HelpMenu;
         private System.Windows.Forms.ToolStripMenuItem ApiDocsMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
+        private System.Windows.Forms.MenuStrip EditorMenu;
     }
 }
 

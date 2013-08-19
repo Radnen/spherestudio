@@ -384,6 +384,15 @@ namespace SphereStudio.Components
                 case "scripts":
                     extension = ".js";
                     break;
+                case "maps":
+                    extension = ".rmp";
+                    break;
+                case "spritesets":
+                    extension = ".rss";
+                    break;
+                case "images":
+                    extension = ".png";
+                    break;
             }
             EditorForm.OpenDocument("?" + extension);
         }

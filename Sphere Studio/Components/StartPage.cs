@@ -51,7 +51,7 @@ namespace SphereStudio.Components
         private void InitializeDocking()
         {
             Controls.Remove(MainSplitter);
-            _startDock.DocumentStyle = DocumentStyle.DockingWindow;
+            _startDock.DocumentStyle = DocumentStyle.DockingSdi;
             _startDock.Dock = DockStyle.Fill;
             Controls.Add(_startDock);
 

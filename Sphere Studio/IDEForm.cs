@@ -15,7 +15,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio
 {
-    internal partial class IDEForm : Form, IIDE
+    internal partial class IDEForm : Form, IIDE, IStyleable
     {
         // uninitialized data:
         private DockContent _treeContent;
@@ -54,6 +54,7 @@ namespace SphereStudio
 
             SuspendLayout();
             StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
+            UpdateStyle();
             Invalidate(true);
             ResumeLayout();
 
@@ -193,6 +194,7 @@ namespace SphereStudio
             get { return Global.CurrentEditor; }
         }
 
+        // used for supplying an entirely new menu and it's children
         public void AddMenuItem(ToolStripMenuItem item, string before = "")
         {
             if (string.IsNullOrEmpty(before)) EditorMenu.Items.Add(item);
@@ -202,6 +204,7 @@ namespace SphereStudio
                 if (menuitem.Text.Replace("&", "") == before)
                     insertion = EditorMenu.Items.IndexOf(menuitem);
             }
+            CreateRootMenuItem(item);
             EditorMenu.Items.Insert(insertion, item);
         }
 
@@ -210,6 +213,7 @@ namespace SphereStudio
             return collection.OfType<ToolStripMenuItem>().FirstOrDefault(item => item.Text.Replace("&", "") == name);
         }
 
+        // used for adding children to existing menus
         public void AddMenuItem(string location, ToolStripItem newItem)
         {
             string[] items = location.Split('.');
@@ -217,6 +221,7 @@ namespace SphereStudio
             if (item == null)
             {
                 item = new ToolStripMenuItem(items[0]);
+                CreateRootMenuItem(item);
                 EditorMenu.Items.Add(item);
             }
 
@@ -518,6 +523,7 @@ namespace SphereStudio
             SaveLayoutMenuItem.Enabled = CutMenuItem.Enabled = CutToolButton.Enabled = _currentControl != null;
             PasteMenuItem.Enabled = PasteToolButton.Enabled = true;
             ZoomInMenuItem.Enabled = ZoomOutMenuItem.Enabled = !(_currentControl is IScriptEditor);
+            item_DropDownOpening(sender, e);
         }
 
         private void SelectAllMenuItem_Click(object sender, EventArgs e)
@@ -573,9 +579,13 @@ namespace SphereStudio
             if (Global.EditSettings())
             {
                 UpdateButtons();
+                SuspendLayout();
                 _startPage.PopulateGameList();
-                Sphere.Core.Editor.StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
+                StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
+                UpdateStyle();
+                UpdateMenuItems();
                 Invalidate(true);
+                ResumeLayout();
             }
         }
 
@@ -691,6 +701,7 @@ namespace SphereStudio
                 if (content.DockHandler.IsActivated) item.CheckState = CheckState.Checked;
                 ViewMenu.DropDownItems.Add(item);
             }
+            item_DropDownOpening(sender, e);
         }
 
         void ViewItem_Click(object sender, EventArgs e)
@@ -710,6 +721,7 @@ namespace SphereStudio
                     i--;
                 }
             }
+            item_DropDownClosed(sender, e);
         }
 
         private void ClosePaneItem_Click(object sender, EventArgs e)
@@ -734,6 +746,51 @@ namespace SphereStudio
         private void ApiDocsMenuItem_Click(object sender, EventArgs e)
         {
             OpenDocument(Path.Combine(Application.StartupPath,"Docs/api.txt"));
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(MainMenuStrip);
+            StyleSettings.ApplyStyle(EditorTools);
+            StyleSettings.ApplyStyle(EditorStatus);
+        }
+
+        // Needed to make sure menu items are visible on a variety of
+        // color themes. Eg, White text on a white theme = unreadable.
+        private void CreateRootMenuItem(ToolStripMenuItem item)
+        {
+            item.DropDownOpening += item_DropDownOpening;
+            item.DropDownClosed += item_DropDownClosed;
+        }
+
+        private void RemoveRootMenuItem(ToolStripMenuItem item)
+        {
+            item.DropDownOpening -= item_DropDownOpening;
+            item.DropDownClosed -= item_DropDownClosed;
+        }
+
+        private void UpdateMenuItems()
+        {
+            foreach (ToolStripMenuItem item in MainMenuStrip.Items)
+                item_DropDownClosed(item, null);
+        }
+
+        void item_DropDownClosed(object sender, EventArgs e)
+        {
+            Color c = MainMenuStrip.BackColor;
+            if (c.R + c.G + c.B > 380) // find contrast level.
+                ((ToolStripMenuItem)sender).ForeColor = Color.Black;
+            else
+                ((ToolStripMenuItem)sender).ForeColor = Color.White;
+        }
+
+        void item_DropDownOpening(object sender, EventArgs e)
+        {
+            Color c = ((ToolStripMenuItem)sender).DropDown.BackColor;
+            if (c.R + c.G + c.B > 380)
+                ((ToolStripMenuItem)sender).ForeColor = Color.Black;
+            else
+                ((ToolStripMenuItem)sender).ForeColor = Color.White;
         }
     }
 }
