@@ -179,31 +179,26 @@
             // StyleLabel
             // 
             this.StyleLabel.AutoSize = true;
-            this.StyleLabel.Location = new System.Drawing.Point(6, 125);
+            this.StyleLabel.Location = new System.Drawing.Point(3, 5);
             this.StyleLabel.Name = "StyleLabel";
-            this.StyleLabel.Size = new System.Drawing.Size(41, 16);
+            this.StyleLabel.Size = new System.Drawing.Size(57, 16);
             this.StyleLabel.TabIndex = 21;
-            this.StyleLabel.Text = "Style:";
+            this.StyleLabel.Text = "UI Style:";
             // 
             // StyleComboBox
             // 
+            this.StyleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StyleComboBox.FormattingEnabled = true;
-            this.StyleComboBox.Items.AddRange(new object[] {
-            "Dark",
-            "Light",
-            "Blue",
-            "Green",
-            "Orange"});
-            this.StyleComboBox.Location = new System.Drawing.Point(6, 144);
+            this.StyleComboBox.Location = new System.Drawing.Point(6, 28);
+            this.StyleComboBox.MaxDropDownItems = 10;
             this.StyleComboBox.Name = "StyleComboBox";
-            this.StyleComboBox.Size = new System.Drawing.Size(175, 24);
+            this.StyleComboBox.Size = new System.Drawing.Size(421, 24);
             this.StyleComboBox.TabIndex = 20;
-            this.StyleComboBox.Text = "Dark";
             // 
             // PropLabel
             // 
             this.PropLabel.AutoSize = true;
-            this.PropLabel.Location = new System.Drawing.Point(6, 5);
+            this.PropLabel.Location = new System.Drawing.Point(3, 55);
             this.PropLabel.Name = "PropLabel";
             this.PropLabel.Size = new System.Drawing.Size(66, 16);
             this.PropLabel.TabIndex = 19;
@@ -218,7 +213,7 @@
             "Update Script Headers",
             "Automatically Open Last Project",
             "Automatically Open Start Page"});
-            this.ItemCheckBox.Location = new System.Drawing.Point(6, 26);
+            this.ItemCheckBox.Location = new System.Drawing.Point(6, 76);
             this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ItemCheckBox.Name = "ItemCheckBox";
             this.ItemCheckBox.Size = new System.Drawing.Size(421, 94);

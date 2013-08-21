@@ -45,7 +45,7 @@ namespace Sphere.Core.Editor
         /// <param name="back">Back color.</param>
         /// <param name="front">Text color.</param>
         /// <param name="font">Font to use.</param>
-        public Style(Color? back, Color? front, Font font)
+        public Style(Color? back, Color? front, Font font = null)
         {
             if (back.HasValue)
                 BackColor = back.Value;
