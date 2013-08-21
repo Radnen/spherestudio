@@ -139,15 +139,6 @@ namespace SphereStudio
         #region interfaces
         private void InitializeDocking()
         {
-            _startContent = new DockContent
-                {
-                    Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
-                    Text = @"Start Page",
-                    HideOnClose = true
-                };
-            _startContent.Controls.Add(_startPage);
-            if (EditorSettings.UseStartPage) _startContent.Show(DockTest, DockState.Document);
-
             _treeContent = new DockContent();
             _treeContent.Controls.Add(_tree);
             _treeContent.Text = @"Project Explorer";
@@ -155,6 +146,15 @@ namespace SphereStudio
             _treeContent.HideOnClose = true;
             _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
             _treeContent.Show(DockTest, DockState.DockLeft);
+
+            _startContent = new DockContent
+            {
+                Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
+                Text = @"Start Page",
+                HideOnClose = true
+            };
+            _startContent.Controls.Add(_startPage);
+            if (EditorSettings.UseStartPage) _startContent.Show(DockTest, DockState.Document);
         }
 
         public void DockControl(DockContent content, DockState state)
