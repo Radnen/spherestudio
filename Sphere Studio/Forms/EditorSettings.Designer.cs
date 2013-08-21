@@ -82,7 +82,7 @@
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(87, 27);
-            this.cancelButton.TabIndex = 0;
+            this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
@@ -94,7 +94,7 @@
             this.okButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(87, 27);
-            this.okButton.TabIndex = 1;
+            this.okButton.TabIndex = 0;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             // 
@@ -105,7 +105,7 @@
             this.SpherePathLabel.Location = new System.Drawing.Point(7, 5);
             this.SpherePathLabel.Name = "SpherePathLabel";
             this.SpherePathLabel.Size = new System.Drawing.Size(120, 16);
-            this.SpherePathLabel.TabIndex = 2;
+            this.SpherePathLabel.TabIndex = 0;
             this.SpherePathLabel.Text = "Sphere Engine Path";
             // 
             // SpherePathBox
@@ -116,7 +116,7 @@
             this.SpherePathBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.SpherePathBox.Name = "SpherePathBox";
             this.SpherePathBox.Size = new System.Drawing.Size(288, 23);
-            this.SpherePathBox.TabIndex = 5;
+            this.SpherePathBox.TabIndex = 1;
             // 
             // ConfigPathLabel
             // 
@@ -133,7 +133,7 @@
             this.GamePathLabel.Location = new System.Drawing.Point(7, 101);
             this.GamePathLabel.Name = "GamePathLabel";
             this.GamePathLabel.Size = new System.Drawing.Size(76, 16);
-            this.GamePathLabel.TabIndex = 4;
+            this.GamePathLabel.TabIndex = 5;
             this.GamePathLabel.Text = "Game Paths";
             // 
             // ConfigPathBox
@@ -144,7 +144,7 @@
             this.ConfigPathBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ConfigPathBox.Name = "ConfigPathBox";
             this.ConfigPathBox.Size = new System.Drawing.Size(331, 23);
-            this.ConfigPathBox.TabIndex = 6;
+            this.ConfigPathBox.TabIndex = 4;
             // 
             // SettingsTabs
             // 
@@ -159,7 +159,7 @@
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
             this.SettingsTabs.Size = new System.Drawing.Size(441, 382);
-            this.SettingsTabs.TabIndex = 14;
+            this.SettingsTabs.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -182,7 +182,7 @@
             this.StyleLabel.Location = new System.Drawing.Point(3, 5);
             this.StyleLabel.Name = "StyleLabel";
             this.StyleLabel.Size = new System.Drawing.Size(57, 16);
-            this.StyleLabel.TabIndex = 21;
+            this.StyleLabel.TabIndex = 0;
             this.StyleLabel.Text = "UI Style:";
             // 
             // StyleComboBox
@@ -193,7 +193,7 @@
             this.StyleComboBox.MaxDropDownItems = 10;
             this.StyleComboBox.Name = "StyleComboBox";
             this.StyleComboBox.Size = new System.Drawing.Size(421, 24);
-            this.StyleComboBox.TabIndex = 20;
+            this.StyleComboBox.TabIndex = 1;
             // 
             // PropLabel
             // 
@@ -201,7 +201,7 @@
             this.PropLabel.Location = new System.Drawing.Point(3, 55);
             this.PropLabel.Name = "PropLabel";
             this.PropLabel.Size = new System.Drawing.Size(66, 16);
-            this.PropLabel.TabIndex = 19;
+            this.PropLabel.TabIndex = 2;
             this.PropLabel.Text = "Properties";
             // 
             // ItemCheckBox
@@ -217,7 +217,7 @@
             this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ItemCheckBox.Name = "ItemCheckBox";
             this.ItemCheckBox.Size = new System.Drawing.Size(421, 94);
-            this.ItemCheckBox.TabIndex = 18;
+            this.ItemCheckBox.TabIndex = 3;
             // 
             // tabPage2
             // 
@@ -273,7 +273,7 @@
             this.RemoveButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(75, 27);
-            this.RemoveButton.TabIndex = 11;
+            this.RemoveButton.TabIndex = 8;
             this.RemoveButton.Text = "Remove";
             this.Tip.SetToolTip(this.RemoveButton, "Remove Selected Gamepath");
             this.RemoveButton.UseVisualStyleBackColor = true;
@@ -286,7 +286,7 @@
             this.AddButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(75, 27);
-            this.AddButton.TabIndex = 10;
+            this.AddButton.TabIndex = 7;
             this.AddButton.Text = "Add...";
             this.Tip.SetToolTip(this.AddButton, "Add a Games Path");
             this.AddButton.UseVisualStyleBackColor = true;
@@ -304,7 +304,7 @@
             this.PathListBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PathListBox.Name = "PathListBox";
             this.PathListBox.Size = new System.Drawing.Size(331, 181);
-            this.PathListBox.TabIndex = 9;
+            this.PathListBox.TabIndex = 6;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
             // SpherePathButton
@@ -315,7 +315,7 @@
             this.SpherePathButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.SpherePathButton.Name = "SpherePathButton";
             this.SpherePathButton.Size = new System.Drawing.Size(36, 27);
-            this.SpherePathButton.TabIndex = 8;
+            this.SpherePathButton.TabIndex = 2;
             this.Tip.SetToolTip(this.SpherePathButton, "Choose Sphere Folder");
             this.SpherePathButton.UseVisualStyleBackColor = true;
             this.SpherePathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
@@ -349,7 +349,7 @@
             this.PluginList.Name = "PluginList";
             this.PluginList.ShowItemToolTips = true;
             this.PluginList.Size = new System.Drawing.Size(427, 309);
-            this.PluginList.TabIndex = 0;
+            this.PluginList.TabIndex = 1;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
             this.PluginList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.PluginList_ItemCheck);
@@ -393,7 +393,7 @@
             this.UsePresetButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.UsePresetButton.Name = "UsePresetButton";
             this.UsePresetButton.Size = new System.Drawing.Size(222, 27);
-            this.UsePresetButton.TabIndex = 18;
+            this.UsePresetButton.TabIndex = 2;
             this.UsePresetButton.Text = "Use";
             this.Tip.SetToolTip(this.UsePresetButton, "Use Preset Settings File");
             this.UsePresetButton.UseVisualStyleBackColor = true;
@@ -407,7 +407,7 @@
             this.RemovePresetButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.RemovePresetButton.Name = "RemovePresetButton";
             this.RemovePresetButton.Size = new System.Drawing.Size(75, 27);
-            this.RemovePresetButton.TabIndex = 17;
+            this.RemovePresetButton.TabIndex = 4;
             this.RemovePresetButton.Text = "Remove";
             this.Tip.SetToolTip(this.RemovePresetButton, "Remove the preset settings file.");
             this.RemovePresetButton.UseVisualStyleBackColor = true;
@@ -420,7 +420,7 @@
             this.SavePresetButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.SavePresetButton.Name = "SavePresetButton";
             this.SavePresetButton.Size = new System.Drawing.Size(75, 27);
-            this.SavePresetButton.TabIndex = 16;
+            this.SavePresetButton.TabIndex = 3;
             this.SavePresetButton.Text = "Add...";
             this.Tip.SetToolTip(this.SavePresetButton, "Save current settings to disk.");
             this.SavePresetButton.UseVisualStyleBackColor = true;
@@ -440,7 +440,7 @@
             this.PresetGroupBox.Name = "PresetGroupBox";
             this.PresetGroupBox.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PresetGroupBox.Size = new System.Drawing.Size(236, 382);
-            this.PresetGroupBox.TabIndex = 13;
+            this.PresetGroupBox.TabIndex = 1;
             this.PresetGroupBox.TabStop = false;
             this.PresetGroupBox.Text = "Presets";
             // 
@@ -456,7 +456,7 @@
             this.PresetListBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PresetListBox.Name = "PresetListBox";
             this.PresetListBox.Size = new System.Drawing.Size(221, 205);
-            this.PresetListBox.TabIndex = 19;
+            this.PresetListBox.TabIndex = 1;
             this.PresetListBox.SelectedIndexChanged += new System.EventHandler(this.PresetListBox_SelectedIndexChanged);
             this.PresetListBox.DoubleClick += new System.EventHandler(this.PresetListBox_DoubleClick);
             // 
@@ -467,7 +467,7 @@
             this.label2.Location = new System.Drawing.Point(8, 21);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(222, 73);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Presets allow you to target different Sphere versions, game paths and plugin list" +
     "s to suit your development needs.";
             // 
@@ -481,13 +481,14 @@
             this.ButtonPanel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(707, 37);
-            this.ButtonPanel.TabIndex = 15;
+            this.ButtonPanel.TabIndex = 2;
             // 
             // EditorSettings
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(707, 442);
             this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.PresetGroupBox);
