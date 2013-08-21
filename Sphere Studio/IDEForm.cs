@@ -576,17 +576,15 @@ namespace SphereStudio
 
         public void OpenEditorSettings(object sender, EventArgs e)
         {
-            if (Global.EditSettings())
-            {
-                UpdateButtons();
-                SuspendLayout();
-                _startPage.PopulateGameList();
-                StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
-                UpdateStyle();
-                UpdateMenuItems();
-                Invalidate(true);
-                ResumeLayout();
-            }
+            Global.EditSettings();
+            UpdateButtons();
+            SuspendLayout();
+            _startPage.PopulateGameList();
+            UpdateMenuItems();
+            StyleSettings.CurrentStyle = Global.CurrentEditor.Style;
+            UpdateStyle();
+            Invalidate(true);
+            ResumeLayout();
         }
 
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
@@ -753,6 +751,7 @@ namespace SphereStudio
             StyleSettings.ApplyStyle(MainMenuStrip);
             StyleSettings.ApplyStyle(EditorTools);
             StyleSettings.ApplyStyle(EditorStatus);
+            UpdateMenuItems();
         }
 
         // Needed to make sure menu items are visible on a variety of

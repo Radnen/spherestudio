@@ -14,7 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Components
 {
-    internal partial class ProjectTree : UserControl
+    internal partial class ProjectTree : UserControl, IStyleable
     {
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
@@ -43,6 +43,12 @@ namespace SphereStudio.Components
         }
 
         public IDEForm EditorForm { get; set; }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            UpdateStyle();
+            base.OnPaint(e);
+        }
 
         public string ProjectName
         {
@@ -549,6 +555,11 @@ namespace SphereStudio.Components
         private void SystemWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplySecondaryStyle(ProjectTreeView);
         }
     }
 }

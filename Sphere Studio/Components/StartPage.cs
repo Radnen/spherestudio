@@ -345,6 +345,9 @@ namespace SphereStudio.Components
             StyleSettings.ApplyStyle(GamesPanel);
             StyleSettings.ApplyStyle(InfoSplitter.Panel1);
             StyleSettings.ApplyStyle(InfoSplitter.Panel2);
+            StyleSettings.ApplySecondaryStyle(GamePanel);
+            StyleSettings.ApplySecondaryStyle(DescTextLabel);
+            StyleSettings.ApplySecondaryStyle(GameFolders);
         }
     }
 }

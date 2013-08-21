@@ -19,6 +19,12 @@ namespace Sphere.Core.Editor
         public Style PanelStyle { get; set; }
 
         /// <summary>
+        /// Used for any other control that needs a different style.
+        /// Usually reserved for sub-headings or sub-controls.
+        /// </summary>
+        public Style SecondaryStyle { get; set; }
+
+        /// <summary>
         /// Used for PictureBoxes.
         /// </summary>
         public Style Image { get; set; }
@@ -52,16 +58,26 @@ namespace Sphere.Core.Editor
         /// Applies a set style to the type of control.
         /// </summary>
         /// <param name="ctrl">The .NET control to style.</param>
-        public void Apply(Control ctrl)
+        public void ApplyPrimary(Control ctrl)
         {
             if (ctrl is Label && LabelStyle != null) LabelStyle.Apply(ctrl);
-            else if (ctrl is Panel || ctrl is TabPage && PanelStyle != null) PanelStyle.Apply(ctrl);
+            else if ((ctrl is Panel || ctrl is TabPage || ctrl is ListView) && PanelStyle != null) PanelStyle.Apply(ctrl);
             else if (ctrl is PictureBox && Image != null) Image.Apply(ctrl);
             else if (ctrl is Button && Button != null) Button.Apply(ctrl);
             else if (ctrl is MenuStrip && MenuBarStyle != null) MenuBarStyle.Apply(ctrl);
             else if (ctrl is StatusBar && StatusBar != null) StatusBar.Apply(ctrl);
             else if (ctrl is ToolStrip && ToolBarStyle != null) ToolBarStyle.Apply(ctrl);
             else if (ctrl is Form && Window != null) Window.Apply(ctrl);
+        }
+
+        /// <summary>
+        /// Applies a secondary style to a tertiary control or form.
+        /// </summary>
+        /// <param name="ctrl"></param>
+        public void ApplySecondary(Control ctrl)
+        {
+            if (SecondaryStyle != null)
+                SecondaryStyle.Apply(ctrl);
         }
     }
 }

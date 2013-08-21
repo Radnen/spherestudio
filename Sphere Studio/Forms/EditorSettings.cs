@@ -251,9 +251,19 @@ namespace SphereStudio.Forms
 
         public void UpdateStyle()
         {
+            StyleSettings.ApplySecondaryStyle(this);
             StyleSettings.ApplyStyle(ButtonPanel);
             StyleSettings.ApplyStyle(okButton);
             StyleSettings.ApplyStyle(cancelButton);
+            StyleSettings.ApplyStyle(PresetsPanel);
+        }
+
+        private void ApplyButton_Click(object sender, EventArgs e)
+        {
+            StyleSettings.CurrentStyle = Style;
+            UpdateStyle();
+            Invalidate(true);
+            Global.CurrentEditor.SetSettings(GetSettings());
         }
     }
 }
