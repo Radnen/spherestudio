@@ -35,7 +35,7 @@ namespace Sphere.Core.Editor
         {
             BackColor = SystemColors.Control;
             ForeColor = SystemColors.ControlText;
-            Font = SystemFonts.DialogFont;
+            Font = SystemFonts.DefaultFont;
             Image = null;
         }
 
