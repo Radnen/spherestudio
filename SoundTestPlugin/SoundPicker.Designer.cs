@@ -95,7 +95,8 @@
             this.trackList.FullRowSelect = true;
             this.trackList.GridLines = true;
             this.trackList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.trackList.Location = new System.Drawing.Point(0, 48);
+            this.trackList.Location = new System.Drawing.Point(0, 47);
+            this.trackList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.trackList.MultiSelect = false;
             this.trackList.Name = "trackList";
             this.trackList.ShowItemToolTips = true;
@@ -125,7 +126,7 @@
             this.trackNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
             this.trackNameLabel.Location = new System.Drawing.Point(0, 25);
             this.trackNameLabel.Name = "trackNameLabel";
-            this.trackNameLabel.Size = new System.Drawing.Size(351, 23);
+            this.trackNameLabel.Size = new System.Drawing.Size(351, 22);
             this.trackNameLabel.TabIndex = 2;
             this.trackNameLabel.Text = "Now Playing";
             this.trackNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -143,8 +144,9 @@
             this.Controls.Add(this.trackList);
             this.Controls.Add(this.trackNameLabel);
             this.Controls.Add(this.toolbar);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "SoundPicker";
-            this.Size = new System.Drawing.Size(351, 478);
+            this.Size = new System.Drawing.Size(351, 477);
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();
             this.ResumeLayout(false);

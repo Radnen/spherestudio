@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Core.Settings;
@@ -64,6 +65,10 @@ namespace SphereStudio.Forms
         public EditorSettings(SphereSettings settings)
         {
             InitializeComponent();
+            foreach (string name in from key in StyleSettings.Styles.Keys orderby key select key)
+            {
+                StyleComboBox.Items.Add(name);
+            }
             SetValues(settings);
         }
 
