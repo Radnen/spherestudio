@@ -23,41 +23,53 @@ namespace Sphere.Core.Editor
         static StyleSettings()
         {
             var darkgroup = new StyleGroup();
-            darkgroup.Label = new Style(Color.FromArgb(64, 64, 64), Color.White, null);
-            darkgroup.Panel = new Style(Color.FromArgb(127, 127, 127), null, null);
-            darkgroup.MenuBar = darkgroup.Label;
-            darkgroup.ToolBar = darkgroup.Panel;
+            darkgroup.LabelStyle = new Style(Color.FromArgb(64, 64, 64), Color.White, null);
+            darkgroup.PanelStyle = new Style(Color.FromArgb(127, 127, 127), null, null);
+            darkgroup.MenuBarStyle = darkgroup.LabelStyle;
+            darkgroup.ToolBarStyle = darkgroup.PanelStyle;
 
             var lightgroup = new StyleGroup();
-            lightgroup.Label = new Style(Color.White, Color.Black, null);
-            lightgroup.Panel = lightgroup.Label;
-            lightgroup.StatusBar = lightgroup.Label;
-            lightgroup.MenuBar = lightgroup.Label;
-            lightgroup.ToolBar = lightgroup.Label;
+            lightgroup.LabelStyle = new Style(Color.White, Color.Black, null);
+            lightgroup.PanelStyle = lightgroup.LabelStyle;
+            lightgroup.StatusBar = lightgroup.LabelStyle;
+            lightgroup.MenuBarStyle = lightgroup.LabelStyle;
+            lightgroup.ToolBarStyle = lightgroup.LabelStyle;
 
             var bluegroup = new StyleGroup();
-            bluegroup.Label = new Style(Color.FromArgb(100, 120, 200), Color.DarkBlue, null);
-            bluegroup.Panel = new Style(Color.FromArgb(192, 192, 255), null, null);
-            bluegroup.MenuBar = bluegroup.Label;
-            bluegroup.ToolBar = bluegroup.Panel;
+            bluegroup.LabelStyle = new Style(Color.FromArgb(100, 120, 200), Color.DarkBlue, null);
+            bluegroup.PanelStyle = new Style(Color.FromArgb(192, 192, 255), null, null);
+            bluegroup.MenuBarStyle = bluegroup.LabelStyle;
+            bluegroup.ToolBarStyle = bluegroup.PanelStyle;
 
             var greengroup = new StyleGroup();
-            greengroup.Label = new Style(Color.FromArgb(0, 88, 38), Color.LightYellow, null);
-            greengroup.Panel = new Style(Color.LawnGreen, null, null);
-            greengroup.MenuBar = greengroup.Label;
-            greengroup.ToolBar = greengroup.Panel;
+            greengroup.LabelStyle = new Style(Color.FromArgb(0, 88, 38), Color.LightYellow, null);
+            greengroup.PanelStyle = new Style(Color.LawnGreen, null, null);
+            greengroup.MenuBarStyle = greengroup.LabelStyle;
+            greengroup.ToolBarStyle = greengroup.PanelStyle;
 
             var orangegroup = new StyleGroup();
-            orangegroup.Label = new Style(Color.FromArgb(247, 148, 29), Color.Black, null);
-            orangegroup.Panel = new Style(Color.LightGoldenrodYellow, null, null);
-            orangegroup.MenuBar = orangegroup.Label;
-            orangegroup.ToolBar = orangegroup.Panel;
+            orangegroup.LabelStyle = new Style(Color.FromArgb(247, 148, 29), Color.Black, null);
+            orangegroup.PanelStyle = new Style(Color.LightGoldenrodYellow, null, null);
+            orangegroup.MenuBarStyle = orangegroup.LabelStyle;
+            orangegroup.ToolBarStyle = orangegroup.PanelStyle;
 
-            _styles["Dark"] = darkgroup;
-            _styles["Light"] = lightgroup;
-            _styles["Blue"] = bluegroup;
-            _styles["Green"] = greengroup;
-            _styles["Orange"] = orangegroup;
+            var lesgroup = new StyleGroup();
+            lesgroup.MenuBarStyle = new Style(Color.Green, Color.Black);
+            lesgroup.ToolBarStyle = new Style(Color.ForestGreen, Color.Black);
+            lesgroup.LabelStyle = new Style(Color.Goldenrod, Color.Black);
+            lesgroup.PanelStyle = new Style(Color.DarkGoldenrod, Color.Black);
+
+            AddStyle("Dark", darkgroup);
+            AddStyle("Light", lightgroup);
+            AddStyle("Blue", bluegroup);
+            AddStyle("Green", greengroup);
+            AddStyle("Orange", orangegroup);
+            AddStyle("Lord English Special", lesgroup);
+        }
+
+        public static IReadOnlyDictionary<string, StyleGroup> Styles
+        {
+            get { return _styles; }
         }
 
         /// <summary>

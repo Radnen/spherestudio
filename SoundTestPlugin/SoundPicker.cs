@@ -33,6 +33,7 @@ namespace SoundTestPlugin
         private readonly Brush _trackForeColor;
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
+        private readonly ImageList _listIcons = new ImageList();
         private readonly ISoundEngine _soundEngine = new ISoundEngine();
         private ISound _music;
         private string _musicName;
@@ -71,6 +72,7 @@ namespace SoundTestPlugin
             _playIcons.Images.Add("play", Properties.Resources.play_tool);
             _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
             _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
+            _listIcons.Images.Add(Properties.Resources.Icon);
 
             _fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
             _fileWatcher.Changed += fileWatcher_Changed;
@@ -78,6 +80,7 @@ namespace SoundTestPlugin
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(PluginManager.IDE.CurrentGame);
             StopMusic();
+            trackList.SmallImageList = _listIcons;
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
         }
@@ -195,7 +198,7 @@ namespace SoundTestPlugin
 
                 foreach (FileInfo f in from f in fileInfos orderby f.Name select f)
                 {
-                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(f.FullName));
+                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(f.FullName), 0);
                     listItem.Tag = (object)f.FullName;
                     listItem.Group = trackList.Groups[groupName];
                     listItem.SubItems.Add(f.FullName.Replace(gamePath + "\\", ""));
