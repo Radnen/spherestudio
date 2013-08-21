@@ -104,9 +104,10 @@ namespace SphereStudio
         }
 
         // returns true if settings were altered
-        public static bool EditSettings()
+        public static bool EditSettings(IDEForm parent)
         {
             EditorSettings settings = new EditorSettings(CurrentEditor);
+            settings.MainIDE = parent;
             if (settings.ShowDialog() == DialogResult.OK)
             {
                 CurrentEditor.SetSettings(settings.GetSettings());

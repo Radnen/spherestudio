@@ -80,7 +80,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(534, 5);
+            this.cancelButton.Location = new System.Drawing.Point(432, 5);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(87, 27);
@@ -92,12 +92,12 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(441, 5);
+            this.okButton.Location = new System.Drawing.Point(339, 5);
             this.okButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(87, 27);
             this.okButton.TabIndex = 0;
-            this.okButton.Text = "&OK";
+            this.okButton.Text = "&Save";
             this.okButton.UseVisualStyleBackColor = true;
             // 
             // SpherePathLabel
@@ -240,7 +240,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPage2.Size = new System.Drawing.Size(351, 355);
+            this.tabPage2.Size = new System.Drawing.Size(350, 355);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -332,7 +332,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.tabPage3.Size = new System.Drawing.Size(351, 355);
+            this.tabPage3.Size = new System.Drawing.Size(350, 355);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plugins";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -352,7 +352,7 @@
             this.PluginList.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PluginList.Name = "PluginList";
             this.PluginList.ShowItemToolTips = true;
-            this.PluginList.Size = new System.Drawing.Size(345, 311);
+            this.PluginList.Size = new System.Drawing.Size(344, 311);
             this.PluginList.TabIndex = 1;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
@@ -383,7 +383,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(3, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(345, 34);
+            this.label1.Size = new System.Drawing.Size(344, 34);
             this.label1.TabIndex = 0;
             this.label1.Text = "This is a list of plugins that are present in the /plugins directory. Click on th" +
     "e check boxes to add or remove features from the editor.";
@@ -473,7 +473,7 @@
             // ApplyButton
             // 
             this.ApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ApplyButton.Location = new System.Drawing.Point(348, 5);
+            this.ApplyButton.Location = new System.Drawing.Point(525, 5);
             this.ApplyButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.ApplyButton.Name = "ApplyButton";
             this.ApplyButton.Size = new System.Drawing.Size(87, 27);

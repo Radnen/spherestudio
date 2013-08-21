@@ -574,9 +574,19 @@ namespace SphereStudio
             }
         }
 
-        public void OpenEditorSettings(object sender, EventArgs e)
+        public void OpenEditorSettings()
         {
-            Global.EditSettings();
+            OpenEditorSettings(null, EventArgs.Empty);
+        }
+
+        private void OpenEditorSettings(object sender, EventArgs e)
+        {
+            if (Global.EditSettings(this))
+                ApplyRefresh();
+        }
+
+        public void ApplyRefresh()
+        {
             UpdateButtons();
             SuspendLayout();
             _startPage.PopulateGameList();

@@ -368,7 +368,7 @@ namespace SphereStudio.Components
 
         private void EngineSettingsItem_Click(object sender, EventArgs e)
         {
-            EditorForm.OpenEditorSettings(null, EventArgs.Empty);
+            EditorForm.OpenEditorSettings();
         }
 
         private void NewFileItem_Click(object sender, EventArgs e)

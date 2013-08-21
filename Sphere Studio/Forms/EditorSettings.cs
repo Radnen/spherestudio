@@ -18,6 +18,8 @@ namespace SphereStudio.Forms
             set { SpherePathBox.Text = value; }
         }
 
+        public IDEForm MainIDE { get; set; }
+
         public string ConfigPath
         {
             get { return ConfigPathBox.Text; }
@@ -262,8 +264,9 @@ namespace SphereStudio.Forms
         {
             StyleSettings.CurrentStyle = Style;
             UpdateStyle();
-            Invalidate(true);
             Global.CurrentEditor.SetSettings(GetSettings());
+            Invalidate(true);
+            if (MainIDE != null) MainIDE.ApplyRefresh();
         }
     }
 }
