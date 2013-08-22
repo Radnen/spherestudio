@@ -50,15 +50,15 @@ namespace Sphere.Core.Editor
             if (back.HasValue)
                 BackColor = back.Value;
             else
-                BackColor = SystemColors.Control;
+                BackColor = Default.BackColor;
             if (front.HasValue)
                 ForeColor = front.Value;
             else
-                ForeColor = SystemColors.ControlText;
+                ForeColor = Default.ForeColor;
             if (font != null)
                 Font = font;
             else
-                Font = SystemFonts.DefaultFont;
+                Font = Default.Font;
             Image = null;
         }
 
@@ -77,6 +77,7 @@ namespace Sphere.Core.Editor
         {
             ctrl.BackColor = BackColor;
             ctrl.ForeColor = ForeColor;
+            if (Font != null) ctrl.Font = Font;
         }
 
         /// <summary>

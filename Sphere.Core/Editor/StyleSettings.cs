@@ -32,7 +32,7 @@ namespace Sphere.Core.Editor
             var lightgroup = new StyleGroup();
             lightgroup.LabelStyle = new Style(Color.LightGray, Color.Black);
             lightgroup.PanelStyle = new Style(Color.White, null);
-            lightgroup.StatusBar = lightgroup.PanelStyle;
+            lightgroup.StatusBarStyle = lightgroup.PanelStyle;
             lightgroup.MenuBarStyle = lightgroup.LabelStyle;
             lightgroup.ToolBarStyle = lightgroup.PanelStyle;
             lightgroup.SecondaryStyle = lightgroup.PanelStyle;
@@ -60,9 +60,11 @@ namespace Sphere.Core.Editor
 
             var lesgroup = new StyleGroup();
             lesgroup.MenuBarStyle = new Style(Color.Green, Color.Black);
-            lesgroup.ToolBarStyle = new Style(Color.ForestGreen, Color.Black);
+            lesgroup.ToolBarStyle = new Style(Color.Green, Color.Black);
             lesgroup.LabelStyle = new Style(Color.Goldenrod, Color.Black);
             lesgroup.PanelStyle = new Style(Color.DarkGoldenrod, Color.Black);
+            lesgroup.WindowStyle = new Style(Color.DarkGreen, Color.White);
+            lesgroup.SecondaryStyle = new Style(Color.DarkGreen, Color.White, new Font("Segoe UI", 10));
 
             AddStyle("Dark", darkgroup);
             AddStyle("Light", lightgroup);
