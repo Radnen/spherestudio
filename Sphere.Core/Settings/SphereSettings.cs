@@ -67,7 +67,7 @@ namespace Sphere.Core.Settings
             get
             {
                 string val = GetString("start_view");
-                return val == string.Empty ? View.Details : (View) Enum.Parse(typeof(View), val);
+                return val == string.Empty ? View.Tile : (View) Enum.Parse(typeof(View), val);
             }
             set { SetItem("start_view", value); }
         }

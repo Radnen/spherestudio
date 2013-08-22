@@ -510,6 +510,8 @@ namespace SphereStudio.Components
 
         private void SetFont()
         {
+            return;  // TODO: delete this method, no longer needed with styles
+
             string fontstring = Global.CurrentEditor.GetString("tree-font");
             if (String.IsNullOrEmpty(fontstring)) return;
             

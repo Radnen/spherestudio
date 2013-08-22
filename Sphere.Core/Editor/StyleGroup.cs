@@ -27,22 +27,22 @@ namespace Sphere.Core.Editor
         /// <summary>
         /// Used for PictureBoxes.
         /// </summary>
-        public Style Image { get; set; }
+        public Style ImageStyle { get; set; }
 
         /// <summary>
         /// Used for Buttons.
         /// </summary>
-        public Style Button { get; set; }
+        public Style ButtonStyle { get; set; }
 
         /// <summary>
         /// Used for styling dialog window backgrounds.
         /// </summary>
-        public Style Window { get; set; }
+        public Style WindowStyle { get; set; }
 
         /// <summary>
         /// Used for styling the status bar.
         /// </summary>
-        public Style StatusBar { get; set; }
+        public Style StatusBarStyle { get; set; }
 
         /// <summary>
         /// Used for styling menubars.
@@ -62,12 +62,12 @@ namespace Sphere.Core.Editor
         {
             if (ctrl is Label && LabelStyle != null) LabelStyle.Apply(ctrl);
             else if ((ctrl is Panel || ctrl is TabPage || ctrl is ListView) && PanelStyle != null) PanelStyle.Apply(ctrl);
-            else if (ctrl is PictureBox && Image != null) Image.Apply(ctrl);
-            else if (ctrl is Button && Button != null) Button.Apply(ctrl);
+            else if (ctrl is PictureBox && ImageStyle != null) ImageStyle.Apply(ctrl);
+            else if (ctrl is Button && ButtonStyle != null) ButtonStyle.Apply(ctrl);
             else if (ctrl is MenuStrip && MenuBarStyle != null) MenuBarStyle.Apply(ctrl);
-            else if (ctrl is StatusBar && StatusBar != null) StatusBar.Apply(ctrl);
+            else if (ctrl is StatusBar && StatusBarStyle != null) StatusBarStyle.Apply(ctrl);
             else if (ctrl is ToolStrip && ToolBarStyle != null) ToolBarStyle.Apply(ctrl);
-            else if (ctrl is Form && Window != null) Window.Apply(ctrl);
+            else if (ctrl is Form && WindowStyle != null) WindowStyle.Apply(ctrl);
         }
 
         /// <summary>
