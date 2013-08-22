@@ -103,7 +103,6 @@
             // SpherePathLabel
             // 
             this.SpherePathLabel.AutoSize = true;
-            this.SpherePathLabel.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SpherePathLabel.Location = new System.Drawing.Point(7, 5);
             this.SpherePathLabel.Name = "SpherePathLabel";
             this.SpherePathLabel.Size = new System.Drawing.Size(120, 16);
@@ -273,7 +272,7 @@
             // 
             this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RemoveButton.Enabled = false;
-            this.RemoveButton.Location = new System.Drawing.Point(269, 316);
+            this.RemoveButton.Location = new System.Drawing.Point(269, 323);
             this.RemoveButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(75, 27);
@@ -286,7 +285,7 @@
             // AddButton
             // 
             this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddButton.Location = new System.Drawing.Point(188, 316);
+            this.AddButton.Location = new System.Drawing.Point(188, 323);
             this.AddButton.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(75, 27);
@@ -307,7 +306,7 @@
             this.PathListBox.Location = new System.Drawing.Point(10, 119);
             this.PathListBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PathListBox.Name = "PathListBox";
-            this.PathListBox.Size = new System.Drawing.Size(334, 187);
+            this.PathListBox.Size = new System.Drawing.Size(334, 194);
             this.PathListBox.TabIndex = 6;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
@@ -432,27 +431,23 @@
             // 
             // PresetListBox
             // 
-            this.PresetListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.PresetListBox.FormattingEnabled = true;
             this.PresetListBox.IntegralHeight = false;
             this.PresetListBox.ItemHeight = 16;
-            this.PresetListBox.Location = new System.Drawing.Point(3, 101);
+            this.PresetListBox.Location = new System.Drawing.Point(3, 100);
             this.PresetListBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.PresetListBox.Name = "PresetListBox";
-            this.PresetListBox.Size = new System.Drawing.Size(228, 207);
+            this.PresetListBox.Size = new System.Drawing.Size(228, 210);
             this.PresetListBox.TabIndex = 1;
             this.PresetListBox.SelectedIndexChanged += new System.EventHandler(this.PresetListBox_SelectedIndexChanged);
             this.PresetListBox.DoubleClick += new System.EventHandler(this.PresetListBox_DoubleClick);
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(3, 25);
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Location = new System.Drawing.Point(0, 23);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(228, 71);
+            this.label2.Size = new System.Drawing.Size(234, 72);
             this.label2.TabIndex = 0;
             this.label2.Text = "Presets allow you to target different Sphere versions, game paths and plugin list" +
     "s to suit your development needs.";
@@ -487,12 +482,12 @@
             this.PresetsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PresetsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PresetsPanel.Controls.Add(this.PresetLabel);
             this.PresetsPanel.Controls.Add(this.RemovePresetButton);
             this.PresetsPanel.Controls.Add(this.SavePresetButton);
             this.PresetsPanel.Controls.Add(this.UsePresetButton);
             this.PresetsPanel.Controls.Add(this.PresetListBox);
             this.PresetsPanel.Controls.Add(this.label2);
+            this.PresetsPanel.Controls.Add(this.PresetLabel);
             this.PresetsPanel.Location = new System.Drawing.Point(376, 13);
             this.PresetsPanel.Name = "PresetsPanel";
             this.PresetsPanel.Size = new System.Drawing.Size(236, 384);
