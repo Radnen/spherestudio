@@ -30,7 +30,7 @@ namespace SphereStudio.Components
 
             _mainEditor = mainEditor;
 
-            _listIcons.ImageSize = new Size(32, 32);
+            _listIcons.ImageSize = new Size(48, 48);
             _listIcons.ColorDepth = ColorDepth.Depth32Bit;
             _listIcons.Images.Add(Properties.Resources.SphereEditor);
             _listIconsSmall.ImageSize = new Size(16, 16);
