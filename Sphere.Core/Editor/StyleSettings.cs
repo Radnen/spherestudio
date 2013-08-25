@@ -22,49 +22,51 @@ namespace Sphere.Core.Editor
 
         static StyleSettings()
         {
+            Font mainUIFont = new Font("Segoe UI", 9);
+            
             var darkgroup = new StyleGroup();
-            darkgroup.LabelStyle = new Style(Color.FromArgb(64, 64, 64), Color.White);
-            darkgroup.PanelStyle = new Style(Color.FromArgb(127, 127, 127), null);
+            darkgroup.LabelStyle = new Style(Color.FromArgb(64, 64, 64), Color.White, mainUIFont);
+            darkgroup.PanelStyle = new Style(Color.FromArgb(127, 127, 127), null, mainUIFont);
             darkgroup.MenuBarStyle = darkgroup.LabelStyle;
             darkgroup.ToolBarStyle = darkgroup.PanelStyle;
-            darkgroup.SecondaryStyle = new Style(Color.LightGray, null);
+            darkgroup.SecondaryStyle = new Style(Color.LightGray, null, mainUIFont);
 
             var lightgroup = new StyleGroup();
-            lightgroup.LabelStyle = new Style(Color.LightGray, Color.Black);
-            lightgroup.PanelStyle = new Style(Color.White, null);
+            lightgroup.LabelStyle = new Style(Color.LightGray, Color.Black, mainUIFont);
+            lightgroup.PanelStyle = new Style(Color.White, null, mainUIFont);
             lightgroup.StatusBarStyle = lightgroup.PanelStyle;
             lightgroup.MenuBarStyle = lightgroup.LabelStyle;
             lightgroup.ToolBarStyle = lightgroup.PanelStyle;
             lightgroup.SecondaryStyle = lightgroup.PanelStyle;
 
             var bluegroup = new StyleGroup();
-            bluegroup.LabelStyle = new Style(Color.FromArgb(100, 120, 200), Color.DarkBlue);
-            bluegroup.PanelStyle = new Style(Color.FromArgb(192, 192, 255), null);
+            bluegroup.LabelStyle = new Style(Color.FromArgb(100, 120, 200), Color.DarkBlue, mainUIFont);
+            bluegroup.PanelStyle = new Style(Color.FromArgb(192, 192, 255), null, mainUIFont);
             bluegroup.MenuBarStyle = bluegroup.LabelStyle;
             bluegroup.ToolBarStyle = bluegroup.PanelStyle;
-            bluegroup.SecondaryStyle = new Style(Color.FromArgb(230, 230, 255), null);
+            bluegroup.SecondaryStyle = new Style(Color.FromArgb(230, 230, 255), null, mainUIFont);
 
             var greengroup = new StyleGroup();
-            greengroup.LabelStyle = new Style(Color.FromArgb(0, 88, 38), Color.LightYellow);
-            greengroup.PanelStyle = new Style(Color.FromArgb(135, 185, 80), null);
+            greengroup.LabelStyle = new Style(Color.FromArgb(0, 88, 38), Color.LightYellow, mainUIFont);
+            greengroup.PanelStyle = new Style(Color.FromArgb(135, 185, 80), null, mainUIFont);
             greengroup.MenuBarStyle = greengroup.LabelStyle;
             greengroup.ToolBarStyle = greengroup.PanelStyle;
-            greengroup.SecondaryStyle = new Style(Color.FromArgb(225, 237, 197), null);
+            greengroup.SecondaryStyle = new Style(Color.FromArgb(225, 237, 197), null, mainUIFont);
 
             var orangegroup = new StyleGroup();
-            orangegroup.LabelStyle = new Style(Color.FromArgb(255, 192, 104), Color.Black);
-            orangegroup.PanelStyle = new Style(Color.FromArgb(254, 230, 173), null);
+            orangegroup.LabelStyle = new Style(Color.FromArgb(255, 192, 104), Color.Black, mainUIFont);
+            orangegroup.PanelStyle = new Style(Color.FromArgb(254, 230, 173), null, mainUIFont);
             orangegroup.MenuBarStyle = orangegroup.LabelStyle;
             orangegroup.ToolBarStyle = orangegroup.PanelStyle;
-            orangegroup.SecondaryStyle = new Style(Color.LightYellow, null);
+            orangegroup.SecondaryStyle = new Style(Color.LightYellow, null, mainUIFont);
 
             var lesgroup = new StyleGroup();
-            lesgroup.MenuBarStyle = new Style(Color.Green, Color.Black);
-            lesgroup.ToolBarStyle = new Style(Color.Green, Color.Black);
-            lesgroup.LabelStyle = new Style(Color.Goldenrod, Color.Black);
-            lesgroup.PanelStyle = new Style(Color.DarkGoldenrod, Color.Black);
-            lesgroup.WindowStyle = new Style(Color.DarkGreen, Color.White);
-            lesgroup.SecondaryStyle = new Style(Color.DarkGreen, Color.White, new Font("Segoe UI", 10));
+            lesgroup.MenuBarStyle = new Style(Color.Green, Color.Black, mainUIFont);
+            lesgroup.ToolBarStyle = new Style(Color.Green, Color.Black, mainUIFont);
+            lesgroup.LabelStyle = new Style(Color.Goldenrod, Color.Black, mainUIFont);
+            lesgroup.PanelStyle = new Style(Color.DarkGoldenrod, Color.Black, mainUIFont);
+            lesgroup.WindowStyle = new Style(Color.DarkGreen, Color.White, mainUIFont);
+            lesgroup.SecondaryStyle = new Style(Color.DarkGreen, Color.White, mainUIFont);
 
             AddStyle("Dark", darkgroup);
             AddStyle("Light", lightgroup);
