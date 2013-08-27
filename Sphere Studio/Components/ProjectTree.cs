@@ -183,7 +183,7 @@ namespace SphereStudio.Components
         {
             base.Refresh();
 
-            if (Global.CurrentProject.RootPath.Length == 0) return;
+            if (string.IsNullOrEmpty(Global.CurrentProject.RootPath)) return;
 
             Cursor.Current = Cursors.WaitCursor;
 
@@ -448,6 +448,7 @@ namespace SphereStudio.Components
         {
             if (!string.IsNullOrEmpty(Global.CurrentProject.RootPath))
                 SystemWatcher.Path = Global.CurrentProject.RootPath;
+            else return;
 
             SystemWatcher.EnableRaisingEvents = true;
         }

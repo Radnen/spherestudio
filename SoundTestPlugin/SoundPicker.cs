@@ -92,7 +92,7 @@ namespace SoundTestPlugin
         /// <param name="game"></param>
         public void WatchProject(ProjectSettings game)
         {
-            if (game != null)
+            if (game != null && game.RootPath != null)
             {
                 _fileWatcher.Path = game.RootPath;
                 _fileWatcher.EnableRaisingEvents = true;
@@ -183,6 +183,7 @@ namespace SoundTestPlugin
         private void UpdateTrackList()
         {
             string gamePath = PluginManager.IDE.CurrentGame.RootPath;
+            if (string.IsNullOrEmpty(gamePath)) return;
 
             trackList.BeginUpdate();
             foreach (string filterInfo in _fileTypes)

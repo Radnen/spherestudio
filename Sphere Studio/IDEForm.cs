@@ -625,7 +625,8 @@ namespace SphereStudio
         {
             _tree.Open();
             _tree.Refresh();
-            Global.CurrentEditor.LastProjectPath = Global.CurrentProject.RootPath;
+            if (Global.CurrentProject.RootPath != null)
+                Global.CurrentEditor.LastProjectPath = Global.CurrentProject.RootPath;
             Global.CurrentEditor.SaveSettings();
             UpdateButtons();
             _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
