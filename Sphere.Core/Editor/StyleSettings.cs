@@ -14,7 +14,7 @@ namespace Sphere.Core.Editor
     public static class StyleSettings
     {
         /// <summary>
-        /// The current style being depolyed to all forms affected by styling.
+        /// The current style being deployed to all forms affected by styling.
         /// </summary>
         public static string CurrentStyle = "Dark";
 
@@ -60,13 +60,13 @@ namespace Sphere.Core.Editor
             orangegroup.ToolBarStyle = orangegroup.PanelStyle;
             orangegroup.SecondaryStyle = new Style(Color.LightYellow, null, mainUIFont);
 
-            var lesgroup = new StyleGroup();
-            lesgroup.MenuBarStyle = new Style(Color.Green, Color.Black, mainUIFont);
+            StyleGroup lesgroup = new StyleGroup();
+            lesgroup.MenuBarStyle = new Style(Color.DarkGreen, Color.Black, mainUIFont);
             lesgroup.ToolBarStyle = new Style(Color.Green, Color.Black, mainUIFont);
             lesgroup.LabelStyle = new Style(Color.Goldenrod, Color.Black, mainUIFont);
             lesgroup.PanelStyle = new Style(Color.DarkGoldenrod, Color.Black, mainUIFont);
             lesgroup.WindowStyle = new Style(Color.DarkGreen, Color.White, mainUIFont);
-            lesgroup.SecondaryStyle = new Style(Color.DarkGreen, Color.White, mainUIFont);
+            lesgroup.SecondaryStyle = new Style(Color.Purple, Color.White, mainUIFont);
 
             AddStyle("Dark", darkgroup);
             AddStyle("Light", lightgroup);

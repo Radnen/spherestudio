@@ -35,6 +35,11 @@ namespace Sphere.Core.Editor
         public Style ButtonStyle { get; set; }
 
         /// <summary>
+        /// Used to style text-entry controls.
+        /// </summary>
+        public Style TextBoxStyle { get; set; }
+        
+        /// <summary>
         /// Used for styling dialog window backgrounds.
         /// </summary>
         public Style WindowStyle { get; set; }
@@ -63,6 +68,7 @@ namespace Sphere.Core.Editor
             if (ctrl is Label && LabelStyle != null) LabelStyle.Apply(ctrl);
             else if ((ctrl is Panel || ctrl is TabPage || ctrl is ListView) && PanelStyle != null) PanelStyle.Apply(ctrl);
             else if (ctrl is PictureBox && ImageStyle != null) ImageStyle.Apply(ctrl);
+            else if (ctrl is TextBox && TextBoxStyle != null) TextBoxStyle.Apply(ctrl);
             else if (ctrl is Button && ButtonStyle != null) ButtonStyle.Apply(ctrl);
             else if (ctrl is MenuStrip && MenuBarStyle != null) MenuBarStyle.Apply(ctrl);
             else if (ctrl is StatusBar && StatusBarStyle != null) StatusBarStyle.Apply(ctrl);
