@@ -97,6 +97,7 @@ namespace WindowstyleEditPlugin
                 _style = new Windowstyle(reader);
             }
             _style.Grid = true;
+            Parent.Text = Path.GetFileName(filename);
             InitWindow();
         }
 
@@ -281,42 +282,50 @@ namespace WindowstyleEditPlugin
         #region tip texts
         private void ClearTip(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = "";
         }
 
         private void WindowPanel_MouseEnter(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = @"Selecting a side allows you to edit that portion.";
         }
 
         private void WindowPanel_MouseLeave(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = "";
             Cursor = Cursors.Default;
         }
 
         private void GridButton_MouseEnter(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = @"The grid can show you the window sections.";
         }
 
         private void WindowHolder_MouseEnter(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = @"Right-click to show the context menu.";
         }
 
         private void LeftButton_MouseEnter(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = @"Click to set last image.";
         }
 
         private void RightButton_MouseEnter(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = @"Click to set next image.";
         }
 
         private void EditBGItem_MouseEnter(object sender, EventArgs e)
         {
+            if (HelpLabel == null) return;
             HelpLabel.Text = @"Directly edit the window background.";
         }
 
