@@ -1,4 +1,4 @@
-﻿namespace SpritesetEditPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class SpritesetEditor
     {

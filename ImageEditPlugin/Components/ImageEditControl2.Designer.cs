@@ -1,4 +1,4 @@
-﻿namespace ImageEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class ImageEditControl2
     {

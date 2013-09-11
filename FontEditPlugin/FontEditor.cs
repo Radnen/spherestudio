@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 
-namespace FontEditPlugin
+namespace SphereStudio.Plugins
 {
     public partial class FontEditor : EditorObject
     {

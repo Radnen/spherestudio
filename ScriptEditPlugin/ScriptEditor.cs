@@ -9,7 +9,7 @@ using ScintillaNET;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 
-namespace ScriptEditPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class ScriptEditor : EditorObject, IScriptEditor
     {

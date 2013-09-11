@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Sphere.Plugins;
 
-namespace MapEditPlugin.Forms
+namespace SphereStudio.Plugins.Forms
 {
     public partial class NewMapDialogue : Form
     {

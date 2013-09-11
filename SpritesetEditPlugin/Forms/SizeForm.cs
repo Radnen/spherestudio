@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace SpritesetEditPlugin.Forms
+namespace SphereStudio.Plugins.Forms
 {
     internal partial class SizeForm : Form
     {

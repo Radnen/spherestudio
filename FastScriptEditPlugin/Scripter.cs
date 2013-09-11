@@ -8,7 +8,7 @@ using FastColoredTextBoxNS;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 
-namespace FastScriptEditPlugin
+namespace SphereStudio.Plugins
 {
     public partial class Scripter : EditorObject, IScriptEditor, IStyleable
     {

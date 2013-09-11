@@ -8,10 +8,10 @@ using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Core.Utility;
 using Sphere.Plugins;
-using MapEditPlugin.Forms;
-using MapEditPlugin.UndoRedo;
+using SphereStudio.Plugins.Forms;
+using SphereStudio.Plugins.UndoRedo;
 
-namespace MapEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     internal partial class MapControl : UserControl
     {

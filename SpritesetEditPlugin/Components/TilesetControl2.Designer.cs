@@ -1,4 +1,4 @@
-﻿namespace SpritesetEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class TilesetControl2
     {
@@ -59,7 +59,7 @@
             // 
             // addItem
             // 
-            this.addItem.Image = global::SpritesetEditPlugin.Properties.Resources.AddToolIcon;
+            this.addItem.Image = global::SphereStudio.Plugins.Properties.Resources.AddToolIcon;
             this.addItem.Name = "addItem";
             this.addItem.Size = new System.Drawing.Size(153, 22);
             this.addItem.Text = "&Add";
@@ -67,7 +67,7 @@
             // 
             // removeItem
             // 
-            this.removeItem.Image = global::SpritesetEditPlugin.Properties.Resources.RemoveToolIcon;
+            this.removeItem.Image = global::SphereStudio.Plugins.Properties.Resources.RemoveToolIcon;
             this.removeItem.Name = "removeItem";
             this.removeItem.Size = new System.Drawing.Size(153, 22);
             this.removeItem.Text = "&Remove";
@@ -101,7 +101,7 @@
             // 
             // zoomInItem
             // 
-            this.zoomInItem.Image = global::SpritesetEditPlugin.Properties.Resources.ZoomInToolIcon;
+            this.zoomInItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomInToolIcon;
             this.zoomInItem.Name = "zoomInItem";
             this.zoomInItem.Size = new System.Drawing.Size(153, 22);
             this.zoomInItem.Text = "Zoom In";
@@ -109,7 +109,7 @@
             // 
             // zoomOutItem
             // 
-            this.zoomOutItem.Image = global::SpritesetEditPlugin.Properties.Resources.ZoomOutToolIcon;
+            this.zoomOutItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomOutToolIcon;
             this.zoomOutItem.Name = "zoomOutItem";
             this.zoomOutItem.Size = new System.Drawing.Size(153, 22);
             this.zoomOutItem.Text = "Zoom Out";
@@ -119,7 +119,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SpritesetEditPlugin.Properties.Resources.EditAreaBG2;
+            this.BackgroundImage = global::SphereStudio.Plugins.Properties.Resources.EditAreaBG2;
             this.DoubleBuffered = true;
             this.Name = "TilesetControl2";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TilesetControl2_Paint);

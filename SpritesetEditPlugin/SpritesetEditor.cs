@@ -8,10 +8,10 @@ using Sphere.Plugins;
 using Sphere.Plugins.EditShims;
 using WeifenLuo.WinFormsUI.Docking;
 
-using SpritesetEditPlugin.Components;
-using SpritesetEditPlugin.Forms;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.Forms;
 
-namespace SpritesetEditPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class SpritesetEditor : EditorObject
     {

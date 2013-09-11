@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sphere.Core.Editor;
-using ImageEditPlugin.Components;
+using SphereStudio.Plugins.Components;
 
-namespace ImageEditPlugin.UndoRedo
+namespace SphereStudio.Plugins.UndoRedo
 {
     internal class ImageResizePage : HistoryPage
     {

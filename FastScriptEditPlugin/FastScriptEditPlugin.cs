@@ -7,7 +7,7 @@ using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace FastScriptEditPlugin
+namespace SphereStudio.Plugins
 {
     public class FastScriptEditPlugin : IEditorPlugin
     {

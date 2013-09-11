@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace FontEditPlugin
+namespace SphereStudio.Plugins
 {
     public class FontEditPlugin : IPlugin
     {

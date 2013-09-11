@@ -11,7 +11,7 @@ using Sphere.Plugins;
 
 using IrrKlang;
 
-namespace SoundTestPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class SoundPicker : UserControl, IStyleable
     {

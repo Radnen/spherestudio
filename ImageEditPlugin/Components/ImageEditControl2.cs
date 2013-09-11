@@ -6,9 +6,9 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Core.Utility;
-using ImageEditPlugin.UndoRedo;
+using SphereStudio.Plugins.UndoRedo;
 
-namespace ImageEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     internal partial class ImageEditControl2 : UserControl
     {
