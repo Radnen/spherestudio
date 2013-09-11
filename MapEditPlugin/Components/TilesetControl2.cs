@@ -126,7 +126,7 @@ namespace SphereStudio.Plugins.Components
                 Selected.Clear();
                 Selected.Add(tile);
             }
-
+            TileSelected(Selected);
             Invalidate();
         }
 
