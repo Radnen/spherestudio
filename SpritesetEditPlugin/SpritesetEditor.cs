@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
@@ -89,7 +90,7 @@ namespace SphereStudio.Plugins
             _baseContent.Controls.Add(BasePanel);
 
             _mainDockPanel = new DockPanel {DocumentStyle = DocumentStyle.DockingWindow, Dock = DockStyle.Fill};
-            if (System.IO.File.Exists("SpriteEditor.xml"))
+            if (File.Exists("SpriteEditor.xml"))
             {
                 DeserializeDockContent dc = GetContent;
                 _mainDockPanel.LoadFromXml("SpriteEditor.xml", dc);
@@ -189,6 +190,7 @@ namespace SphereStudio.Plugins
             if (_sprite.Load(filename))
             {
                 FileName = filename;
+                Parent.Text = Path.GetFileName(filename);
                 Init();
             }
             else
@@ -203,7 +205,7 @@ namespace SphereStudio.Plugins
             if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = System.IO.Path.GetFileName(FileName);
+                Parent.Text = Path.GetFileName(FileName);
                 _sprite.Save(FileName);
             }
         }

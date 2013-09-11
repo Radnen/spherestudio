@@ -103,6 +103,7 @@ namespace SphereStudio.Plugins
             base.LoadFile(filename);
             _fontLayout.LoadFromFile(filename);
             CompilePreview();
+            Parent.Text = Path.GetFileName(filename);
         }
 
         public override void ZoomIn()
