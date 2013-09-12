@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
-using MapEditPlugin.Forms;
+using SphereStudio.Plugins.Forms;
 
-namespace MapEditPlugin
+namespace SphereStudio.Plugins
 {
     public class MapEditPlugin : IPlugin
     {

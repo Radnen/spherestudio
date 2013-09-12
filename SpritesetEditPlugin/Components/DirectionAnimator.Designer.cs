@@ -1,4 +1,4 @@
-﻿namespace SpritesetEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class DirectionAnimator
     {
@@ -47,7 +47,7 @@
             // 
             this.PlayButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.PlayButton.Enabled = false;
-            this.PlayButton.Image = global::SpritesetEditPlugin.Properties.Resources.PlayToolIcon;
+            this.PlayButton.Image = global::SphereStudio.Plugins.Properties.Resources.PlayToolIcon;
             this.PlayButton.Location = new System.Drawing.Point(60, 143);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(56, 23);
@@ -61,7 +61,7 @@
             // 
             this.StopButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.StopButton.Enabled = false;
-            this.StopButton.Image = global::SpritesetEditPlugin.Properties.Resources.RemoveToolIcon;
+            this.StopButton.Image = global::SphereStudio.Plugins.Properties.Resources.RemoveToolIcon;
             this.StopButton.Location = new System.Drawing.Point(132, 143);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(56, 23);
@@ -137,7 +137,7 @@
             // 
             // AnimPanel
             // 
-            this.AnimPanel.BackgroundImage = global::SpritesetEditPlugin.Properties.Resources.EditAreaBG2;
+            this.AnimPanel.BackgroundImage = global::SphereStudio.Plugins.Properties.Resources.EditAreaBG2;
             this.AnimPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AnimPanel.Location = new System.Drawing.Point(16, 16);
             this.AnimPanel.Margin = new System.Windows.Forms.Padding(6);

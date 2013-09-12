@@ -1,4 +1,4 @@
-﻿namespace MapEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class LayerPanel
     {
@@ -101,7 +101,7 @@
             // 
             // AddLayerMenuItem
             // 
-            this.AddLayerMenuItem.Image = global::MapEditPlugin.Properties.Resources.add;
+            this.AddLayerMenuItem.Image = global::SphereStudio.Plugins.Properties.Resources.add;
             this.AddLayerMenuItem.Name = "AddLayerMenuItem";
             this.AddLayerMenuItem.Size = new System.Drawing.Size(157, 22);
             this.AddLayerMenuItem.Text = "&Add Layer";
@@ -109,7 +109,7 @@
             // 
             // RemoveLayerMenuItem
             // 
-            this.RemoveLayerMenuItem.Image = global::MapEditPlugin.Properties.Resources.delete;
+            this.RemoveLayerMenuItem.Image = global::SphereStudio.Plugins.Properties.Resources.delete;
             this.RemoveLayerMenuItem.Name = "RemoveLayerMenuItem";
             this.RemoveLayerMenuItem.Size = new System.Drawing.Size(157, 22);
             this.RemoveLayerMenuItem.Text = "&Remove Layer";
@@ -129,7 +129,7 @@
             // 
             // RenameLayerMenuItem
             // 
-            this.RenameLayerMenuItem.Image = global::MapEditPlugin.Properties.Resources.application_view_list;
+            this.RenameLayerMenuItem.Image = global::SphereStudio.Plugins.Properties.Resources.application_view_list;
             this.RenameLayerMenuItem.Name = "RenameLayerMenuItem";
             this.RenameLayerMenuItem.Size = new System.Drawing.Size(157, 22);
             this.RenameLayerMenuItem.Text = "Re&name Layer...";

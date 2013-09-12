@@ -7,7 +7,7 @@ using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace WindowstyleEditPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class WindowstyleEditor : EditorObject
     {

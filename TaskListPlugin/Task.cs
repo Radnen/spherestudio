@@ -1,4 +1,4 @@
-﻿namespace TaskListPlugin
+﻿namespace SphereStudio.Plugins
 {
     enum TaskPriority { Hi, Med, Lo, None };
     enum TaskType { Addition, Art, Bug, Feature, Gameplay, Other, UI };

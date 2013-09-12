@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace ImageEditPlugin.Forms
+namespace SphereStudio.Plugins.Forms
 {
     public partial class SizeForm : Form
     {

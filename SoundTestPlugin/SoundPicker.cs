@@ -11,9 +11,9 @@ using Sphere.Plugins;
 
 using IrrKlang;
 
-namespace SoundTestPlugin
+namespace SphereStudio.Plugins
 {
-    internal partial class SoundPicker : UserControl
+    internal partial class SoundPicker : UserControl, IStyleable
     {
         private readonly string[] _fileTypes = new[] 
         {
@@ -37,6 +37,28 @@ namespace SoundTestPlugin
         private readonly ISoundEngine _soundEngine = new ISoundEngine();
         private ISound _music;
         private string _musicName;
+
+        public SoundPicker()
+        {
+            InitializeComponent();
+
+            _playIcons.ColorDepth = ColorDepth.Depth32Bit;
+            _playIcons.Images.Add("play", Properties.Resources.play_tool);
+            _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
+            _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
+            _listIcons.ColorDepth = ColorDepth.Depth32Bit;
+            _listIcons.Images.Add(Properties.Resources.Icon);
+
+            _fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
+            _fileWatcher.Changed += fileWatcher_Changed;
+            _fileWatcher.IncludeSubdirectories = true;
+            _fileWatcher.EnableRaisingEvents = false;
+            WatchProject(PluginManager.IDE.CurrentGame);
+            StopMusic();
+            trackList.SmallImageList = _listIcons;
+            _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
+            _trackForeColor = new SolidBrush(_labelColor);
+        }
 
         private void fileWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
@@ -64,25 +86,22 @@ namespace SoundTestPlugin
             PlayFile(filePath);
         }
 
-        public SoundPicker()
+        protected override void OnLoad(EventArgs e)
         {
-            InitializeComponent();
+            base.OnLoad(e);
+            UpdateStyle();
+        }
 
-            _playIcons.ColorDepth = ColorDepth.Depth32Bit;
-            _playIcons.Images.Add("play", Properties.Resources.play_tool);
-            _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
-            _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
-            _listIcons.Images.Add(Properties.Resources.Icon);
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            UpdateStyle();
+        }
 
-            _fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
-            _fileWatcher.Changed += fileWatcher_Changed;
-            _fileWatcher.IncludeSubdirectories = true;
-            _fileWatcher.EnableRaisingEvents = false;
-            WatchProject(PluginManager.IDE.CurrentGame);
-            StopMusic();
-            trackList.SmallImageList = _listIcons;
-            _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
-            _trackForeColor = new SolidBrush(_labelColor);
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(toolbar);
+            StyleSettings.ApplySecondaryStyle(trackList);
         }
 
         /// <summary>

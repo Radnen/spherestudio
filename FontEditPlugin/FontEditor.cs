@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 
-namespace FontEditPlugin
+namespace SphereStudio.Plugins
 {
     public partial class FontEditor : EditorObject
     {
@@ -103,6 +103,7 @@ namespace FontEditPlugin
             base.LoadFile(filename);
             _fontLayout.LoadFromFile(filename);
             CompilePreview();
+            Parent.Text = Path.GetFileName(filename);
         }
 
         public override void ZoomIn()

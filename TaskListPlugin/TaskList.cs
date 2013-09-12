@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TaskListPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class TaskList : UserControl
     {

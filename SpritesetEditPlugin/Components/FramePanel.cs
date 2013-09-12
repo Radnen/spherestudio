@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Plugins;
 
-namespace SpritesetEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     internal class FramePanel : Panel
     {
