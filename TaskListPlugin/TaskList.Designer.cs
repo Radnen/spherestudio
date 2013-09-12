@@ -1,4 +1,4 @@
-﻿namespace TaskListPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class TaskList
     {
@@ -70,7 +70,7 @@
             // 
             // AddTaskItem
             // 
-            this.AddTaskItem.Image = global::TaskListPlugin.Properties.Resources.lightbulb_add;
+            this.AddTaskItem.Image = global::SphereStudio.Plugins.Properties.Resources.lightbulb_add;
             this.AddTaskItem.Name = "AddTaskItem";
             this.AddTaskItem.Size = new System.Drawing.Size(179, 22);
             this.AddTaskItem.Text = "&Add Task";
@@ -83,7 +83,7 @@
             // 
             // RemoveTaskItem
             // 
-            this.RemoveTaskItem.Image = global::TaskListPlugin.Properties.Resources.lightbulb_delete;
+            this.RemoveTaskItem.Image = global::SphereStudio.Plugins.Properties.Resources.lightbulb_delete;
             this.RemoveTaskItem.Name = "RemoveTaskItem";
             this.RemoveTaskItem.Size = new System.Drawing.Size(179, 22);
             this.RemoveTaskItem.Text = "&Remove Task";
@@ -91,7 +91,7 @@
             // 
             // RemoveCompletedItem
             // 
-            this.RemoveCompletedItem.Image = global::TaskListPlugin.Properties.Resources.cross;
+            this.RemoveCompletedItem.Image = global::SphereStudio.Plugins.Properties.Resources.cross;
             this.RemoveCompletedItem.Name = "RemoveCompletedItem";
             this.RemoveCompletedItem.Size = new System.Drawing.Size(179, 22);
             this.RemoveCompletedItem.Text = "Remove &Completed";
@@ -111,14 +111,14 @@
             // 
             // SetTypeItem
             // 
-            this.SetTypeItem.Image = global::TaskListPlugin.Properties.Resources.information;
+            this.SetTypeItem.Image = global::SphereStudio.Plugins.Properties.Resources.information;
             this.SetTypeItem.Name = "SetTypeItem";
             this.SetTypeItem.Size = new System.Drawing.Size(179, 22);
             this.SetTypeItem.Text = "Set &Type";
             // 
             // SetPriorityItem
             // 
-            this.SetPriorityItem.Image = global::TaskListPlugin.Properties.Resources.resultset_none;
+            this.SetPriorityItem.Image = global::SphereStudio.Plugins.Properties.Resources.resultset_none;
             this.SetPriorityItem.Name = "SetPriorityItem";
             this.SetPriorityItem.Size = new System.Drawing.Size(179, 22);
             this.SetPriorityItem.Text = "Set &Priority";
@@ -148,7 +148,7 @@
             // priorityUpButton
             // 
             this.priorityUpButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.priorityUpButton.Image = global::TaskListPlugin.Properties.Resources.resultset_up;
+            this.priorityUpButton.Image = global::SphereStudio.Plugins.Properties.Resources.resultset_up;
             this.priorityUpButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.priorityUpButton.Name = "priorityUpButton";
             this.priorityUpButton.Size = new System.Drawing.Size(23, 20);
@@ -158,7 +158,7 @@
             // priorityDownButton
             // 
             this.priorityDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.priorityDownButton.Image = global::TaskListPlugin.Properties.Resources.resultset_down;
+            this.priorityDownButton.Image = global::SphereStudio.Plugins.Properties.Resources.resultset_down;
             this.priorityDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.priorityDownButton.Name = "priorityDownButton";
             this.priorityDownButton.Size = new System.Drawing.Size(23, 20);
@@ -173,7 +173,7 @@
             // AddItem
             // 
             this.AddItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddItem.Image = global::TaskListPlugin.Properties.Resources.lightbulb_add;
+            this.AddItem.Image = global::SphereStudio.Plugins.Properties.Resources.lightbulb_add;
             this.AddItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddItem.Name = "AddItem";
             this.AddItem.Size = new System.Drawing.Size(23, 20);
@@ -183,7 +183,7 @@
             // DeleteItem
             // 
             this.DeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.DeleteItem.Image = global::TaskListPlugin.Properties.Resources.lightbulb_delete;
+            this.DeleteItem.Image = global::SphereStudio.Plugins.Properties.Resources.lightbulb_delete;
             this.DeleteItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DeleteItem.Name = "DeleteItem";
             this.DeleteItem.Size = new System.Drawing.Size(23, 20);

@@ -1,4 +1,4 @@
-﻿namespace ImageEditPlugin.Forms
+﻿namespace SphereStudio.Plugins.Forms
 {
     partial class SizeForm
     {

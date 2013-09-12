@@ -1,4 +1,4 @@
-﻿namespace ImageEditPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class Drawer2
     {

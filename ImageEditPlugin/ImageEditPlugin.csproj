@@ -7,7 +7,7 @@
     <ProjectGuid>{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImageEditPlugin</RootNamespace>
+    <RootNamespace>SphereStudio.Plugins</RootNamespace>
     <AssemblyName>ImageEditPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

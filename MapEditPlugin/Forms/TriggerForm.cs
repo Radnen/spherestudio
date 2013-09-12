@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Plugins.EditShims;
-using MapEditPlugin.Components;
+using SphereStudio.Plugins.Components;
 
-namespace MapEditPlugin.Forms
+namespace SphereStudio.Plugins.Forms
 {
     public partial class TriggerForm : Form
     {

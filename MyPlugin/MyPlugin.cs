@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Plugins;
 
-namespace MyPlugin
+namespace SphereStudio.Plugins
 {
     public class MyPlugin : IPlugin
     {

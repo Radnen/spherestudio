@@ -8,7 +8,7 @@ using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace ScriptEditPlugin
+namespace SphereStudio.Plugins
 {
     public class ScriptEditPlugin : IEditorPlugin
     {

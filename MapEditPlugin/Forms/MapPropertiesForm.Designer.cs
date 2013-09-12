@@ -1,4 +1,4 @@
-﻿namespace MapEditPlugin.Forms
+﻿namespace SphereStudio.Plugins.Forms
 {
     partial class MapPropertiesForm
     {

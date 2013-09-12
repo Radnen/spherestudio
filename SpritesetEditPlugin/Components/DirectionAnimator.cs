@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Core;
 
-namespace SpritesetEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     internal partial class DirectionAnimator : UserControl
     {

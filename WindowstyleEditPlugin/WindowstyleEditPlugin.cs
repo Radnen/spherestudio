@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
 
-namespace WindowstyleEditPlugin
+namespace SphereStudio.Plugins
 {
     public class WindowstyleEditPlugin : IPlugin
     {

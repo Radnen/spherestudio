@@ -9,9 +9,9 @@ using Sphere.Core;
 using Sphere.Core.Editor;
 using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
-using ImageEditPlugin.Forms;
+using SphereStudio.Plugins.Forms;
 
-namespace ImageEditPlugin
+namespace SphereStudio.Plugins
 {
     public class ImageEditPlugin : IEditorPlugin
     {

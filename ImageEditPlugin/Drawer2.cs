@@ -7,9 +7,9 @@ using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
-using ImageEditPlugin.Components;
+using SphereStudio.Plugins.Components;
 
-namespace ImageEditPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class Drawer2 : EditorObject, IImageEditor
     {

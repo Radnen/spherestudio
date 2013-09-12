@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Plugins.EditShims;
 
-namespace MapEditPlugin.Forms
+namespace SphereStudio.Plugins.Forms
 {
     public partial class MapPropertiesForm : Form
     {

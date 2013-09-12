@@ -1,4 +1,4 @@
-﻿namespace ScriptEditPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class ScriptEditor
     {

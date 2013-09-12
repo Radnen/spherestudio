@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Sphere.Core;
 using Sphere.Core.Editor;
-using MapEditPlugin.Components;
+using SphereStudio.Plugins.Components;
 
 
-namespace MapEditPlugin.UndoRedo
+namespace SphereStudio.Plugins.UndoRedo
 {
     internal struct HistoryTile
     {

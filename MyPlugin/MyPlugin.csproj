@@ -8,7 +8,7 @@
     <ProjectGuid>{B320DA5E-0E67-4CE7-97E7-96009014E6EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MyPlugin</RootNamespace>
+    <RootNamespace>SphereStudio.Plugins</RootNamespace>
     <AssemblyName>MyPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

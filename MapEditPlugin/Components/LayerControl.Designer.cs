@@ -1,4 +1,4 @@
-﻿namespace MapEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class LayerControl
     {
