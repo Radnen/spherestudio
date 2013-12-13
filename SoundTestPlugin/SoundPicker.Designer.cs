@@ -131,6 +131,7 @@
             this.trackNameLabel.Text = "Now Playing";
             this.trackNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.trackNameLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.trackNameLabel_Paint);
+            this.trackNameLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trackNameLabel_MouseClick);
             // 
             // playTimer
             // 

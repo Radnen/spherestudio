@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using Sphere.Plugins;
 using MapEditPlugin.Forms;
+using Sphere.Plugins;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace MapEditPlugin
 {
@@ -57,7 +54,7 @@ namespace MapEditPlugin
         }
 
         private const string _openFileFilters = "*.rmp";
-        private readonly List<string> _extensionList = new List<string>(new[] { ".rmp" });
+        private readonly string[] _extensions = new[] { ".rmp" };
 
         #region menu item declarations
         private ToolStripMenuItem _newMapMenuItem;
@@ -71,7 +68,7 @@ namespace MapEditPlugin
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

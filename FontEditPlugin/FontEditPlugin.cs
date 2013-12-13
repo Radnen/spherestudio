@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
@@ -17,7 +17,7 @@ namespace FontEditPlugin
         public Icon Icon { get; private set; }
 
         private const string _openFileFilters = "*.rfn";
-        private readonly List<string> _extensionList = new List<string>(new[] { ".rfn" });
+        private readonly string[] _extensions = new[] { ".rfn" };
 
         private readonly ToolStripMenuItem _newFontItem;
 
@@ -32,7 +32,7 @@ namespace FontEditPlugin
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

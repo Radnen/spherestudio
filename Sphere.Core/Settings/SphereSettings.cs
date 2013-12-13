@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
 
 // This Contains the Settings Dialogue Info
 // As well as any other Sphere Editor related

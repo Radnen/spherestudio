@@ -56,6 +56,12 @@ namespace Sphere.Plugins.EditShims
             (_editor as IImageEditor).SetImage(image);
         }
 
+        public void SetImage(Bitmap image, bool clear_hist)
+        {
+            if (_editor == null) return;
+            (_editor as IImageEditor).SetImage(image, clear_hist);
+        }
+
         public override void Undo()
         {
             if (_editor == null) return;

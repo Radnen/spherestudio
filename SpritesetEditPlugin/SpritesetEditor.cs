@@ -161,7 +161,7 @@ namespace SpritesetEditPlugin
         {
             _selectedFrame.Index = tiles[0];
             DirectionHolder.Invalidate(true);
-            SpriteDrawer.SetImage(_tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic);
+            SpriteDrawer.SetImage(_tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic, true);
             MakeDirty();
         }
 
@@ -189,6 +189,7 @@ namespace SpritesetEditPlugin
             if (_sprite.Load(filename))
             {
                 FileName = filename;
+                Parent.Text = System.IO.Path.GetFileName(filename);
                 Init();
             }
             else
@@ -339,7 +340,7 @@ namespace SpritesetEditPlugin
             Bitmap img = SpriteDrawer.GetImage();
             _sprite.Images[_selectedFrame.Index] = img;
             _tilesetCtrl.Tileset.Tiles[_selectedFrame.Index].Graphic = img;
-            Modified(null, EventArgs.Empty);
+            Modified(sender, e);
             Invalidate(true);
         }
 

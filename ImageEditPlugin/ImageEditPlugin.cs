@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using WeifenLuo.WinFormsUI.Docking;
-using Sphere.Plugins;
 using ImageEditPlugin.Forms;
+using Sphere.Core.Editor;
+using Sphere.Plugins;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace ImageEditPlugin
 {
@@ -60,7 +56,7 @@ namespace ImageEditPlugin
         }
 
         private const string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
-        private readonly List<string> _extensionList = new List<string>(new[] { ".bmp", ".gif", ".jpg", ".png" });
+        private readonly string[] _extensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
 
         #region menu item declarations
         private ToolStripMenuItem _newImageMenuItem;
@@ -72,7 +68,7 @@ namespace ImageEditPlugin
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

@@ -361,7 +361,7 @@ namespace MapEditPlugin
             MapControl.SelWidth = TilesetControl.Selection.Width;
             MapControl.CurrentTile = tiles[0];
             Bitmap img = TilesetControl.GetCompiledImage();
-            TileDrawer.SetImage(img);
+            TileDrawer.SetImage(img, true);
             img.Dispose();
             TileEditor.Tile = Map.Tileset.Tiles[tiles[0]];
         }

@@ -34,6 +34,7 @@
             this.NewFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddSubfolderItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenFolderItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteFolderItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,9 +81,10 @@
             this.CopyPathItem,
             this.ExecuteScriptItem,
             this.GameSettingsItem,
-            this.EngineSettingsItem});
+            this.EngineSettingsItem,
+            this.OpenFolderItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 246);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 268);
             // 
             // NewFileItem
             // 
@@ -107,6 +109,14 @@
             this.AddSubfolderItem.Size = new System.Drawing.Size(184, 22);
             this.AddSubfolderItem.Text = "&Add Subfolder...";
             this.AddSubfolderItem.Click += new System.EventHandler(this.AddFolderItem_Click);
+            // 
+            // OpenFolderItem
+            // 
+            this.OpenFolderItem.Image = global::SphereStudio.Properties.Resources.open;
+            this.OpenFolderItem.Name = "OpenFolderItem";
+            this.OpenFolderItem.Size = new System.Drawing.Size(184, 22);
+            this.OpenFolderItem.Text = "Open in Explorer";
+            this.OpenFolderItem.Click += new System.EventHandler(this.OpenFolderItem_Click);
             // 
             // OpenFileItem
             // 
@@ -178,7 +188,7 @@
             // 
             this.ProjectNameLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ProjectNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ProjectNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ProjectNameLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ProjectNameLabel.ForeColor = System.Drawing.Color.White;
             this.ProjectNameLabel.Location = new System.Drawing.Point(0, 0);
             this.ProjectNameLabel.Name = "ProjectNameLabel";
@@ -228,5 +238,6 @@
         private Sphere.Core.Editor.EditorLabel ProjectNameLabel;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private Sphere.Core.Editor.DeferredFileSystemWatcher SystemWatcher;
+        private System.Windows.Forms.ToolStripMenuItem OpenFolderItem;
     }
 }

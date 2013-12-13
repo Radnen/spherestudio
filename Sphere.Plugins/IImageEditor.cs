@@ -36,5 +36,11 @@ namespace Sphere.Plugins
         /// </summary>
         /// <param name="image"></param>
         void SetImage(Bitmap image);
+
+        /// <summary>
+        /// Injects a new image wholesale into the editor and clears the edit history.
+        /// </summary>
+        /// <param name="image"></param>
+        void SetImage(Bitmap image, bool clear_hist);
     }
 }

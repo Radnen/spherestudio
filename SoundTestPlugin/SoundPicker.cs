@@ -239,26 +239,36 @@ namespace SoundTestPlugin
             stopTool.Enabled = false;
         }
 
+        private void playTimer_Tick(object sender, EventArgs e)
+        {
+            trackNameLabel.Invalidate();
+        }
+
+        private void trackNameLabel_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (_music == null) return;
+            double delta = (double)e.X / trackNameLabel.Width;
+            _music.PlayPosition = (uint)(delta * _music.PlayLength);
+        }
+
         private void trackNameLabel_Paint(object sender, PaintEventArgs e)
         {
             if (_music == null) return;
-            int width = trackNameLabel.Width, height = trackNameLabel.Height;
-            double delta = _music.PlayPosition / (double) _music.PlayLength;
+
+            int width = trackNameLabel.Width;
+            int height = trackNameLabel.Height;
+            double delta = _music.PlayPosition / (double)_music.PlayLength;
+
             e.Graphics.Clear(Color.Black);
             e.Graphics.FillRectangle(_trackBackColor, 0, 0, (int)(delta * width), height);
             e.Graphics.FillRectangle(_trackForeColor, (int)(delta * width), 0, 2, height);
 
             SizeF textsize = e.Graphics.MeasureString(trackNameLabel.Text, trackNameLabel.Font);
-            int x = width/2 - (int) textsize.Width / 2;
-            int y = trackNameLabel.Height/2 - (int) textsize.Height/2;
+            int x = width / 2 - (int)textsize.Width / 2;
+            int y = trackNameLabel.Height / 2 - (int)textsize.Height / 2;
 
-            e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, Brushes.Black, x+1, y+1);
+            e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, Brushes.Black, x + 1, y + 1);
             e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, _trackForeColor, x, y);
-        }
-
-        private void playTimer_Tick(object sender, EventArgs e)
-        {
-            trackNameLabel.Invalidate();
         }
     }
 }

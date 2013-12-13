@@ -106,8 +106,10 @@ namespace Sphere.Core.Utility
         private void ToGray(int x, int y)
         {
             PixelData* pixel = (PixelData*)(_pBase + y * _width + x * sizeof(PixelData));
-            pixel->r = pixel->g;
-            pixel->b = pixel->g;
+            byte value = (byte)((int)(pixel->r + pixel->g + pixel->b) / 3);
+            pixel->r = value;
+            pixel->g = value;
+            pixel->b = value;
         }
 
         /// <summary>
@@ -283,12 +285,15 @@ namespace Sphere.Core.Utility
         {
             FastBitmap fastSource = new FastBitmap(img);
             fastSource.LockImage();
-            for (int yy = 0; yy < _image.Height; ++yy)
-                for (int xx = 0; xx < _image.Width; ++xx)
+            for (int y0 = y; y0 < _image.Height; ++y0)
+            {
+                if (y0 == Height) continue;
+                for (int x0 = x; x0 < _image.Width; ++x0)
                 {
-                    if (x + xx >= Width || y + yy >= Height) break;
-                    SetPixel(x + xx, y + yy, fastSource.GetPixel(xx, yy));
+                    if (x0 == Width) continue;
+                    SetPixel(x0, y0, fastSource.GetPixel(x0 - x, y0 - y));
                 }
+            }
             fastSource.UnlockImage();
         }
     }

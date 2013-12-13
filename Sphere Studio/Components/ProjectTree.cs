@@ -564,5 +564,21 @@ namespace SphereStudio.Components
         {
             StyleSettings.ApplySecondaryStyle(ProjectTreeView);
         }
+
+        private void OpenFolderItem_Click(object sender, EventArgs e)
+        {
+            if (ProjectTreeView.SelectedNode == null) return;
+            string pathtop = ProjectTreeView.SelectedNode.FullPath;
+
+            int idx = pathtop.IndexOf('\\');
+            
+            // special case for root:
+            if (idx < 0) pathtop = "";
+            else pathtop = pathtop.Substring(idx);
+
+            string path = Global.CurrentProject.RootPath + pathtop;
+
+            System.Diagnostics.Process.Start("explorer.exe", path);
+        }
     }
 }

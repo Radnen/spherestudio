@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace SpritesetEditPlugin
 {
     public class SpritesetEditPlugin : IPlugin
     {
+        private readonly string[] _extensions = new[] { ".rss" };
+        private const string _openFileFilters = "*.rss";
+
         public string Name { get { return "Spriteset Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default spriteset editor"; } }
@@ -55,9 +55,6 @@ namespace SpritesetEditPlugin
             PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
         
-        private readonly List<string> _extensionList = new List<string>(new[] { ".rss" });
-        private const string _openFileFilters = "*.rss";
-
         #region menu item declarations
         private ToolStripMenuItem _newSpritesetMenuItem;
         private ToolStripMenuItem _spritesetMenu;
@@ -70,7 +67,7 @@ namespace SpritesetEditPlugin
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
                 e.Handled = true;

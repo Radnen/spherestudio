@@ -14,7 +14,10 @@ namespace ScriptEditPlugin
     internal partial class ScriptEditor : EditorObject, IScriptEditor
     {
         private Scintilla _codeBox = new Scintilla();
+
+        // This is the encoding used by Sphere, so we have to use it for the editor as well.
         private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
+        
         private bool _autocomplete;
 
         public ScriptEditor()
