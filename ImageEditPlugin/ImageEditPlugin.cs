@@ -2,12 +2,12 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ImageEditPlugin.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
+using SphereStudio.Plugins.Forms;
 
-namespace ImageEditPlugin
+namespace SphereStudio.Plugins
 {
     public class ImageEditPlugin : IEditorPlugin
     {

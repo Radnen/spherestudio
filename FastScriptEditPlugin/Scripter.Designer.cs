@@ -1,4 +1,4 @@
-﻿namespace FastScriptEditPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class Scripter
     {

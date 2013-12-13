@@ -8,11 +8,11 @@ using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
-using MapEditPlugin.Components;
-using MapEditPlugin.Forms;
-using MapEditPlugin.UndoRedo;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.Forms;
+using SphereStudio.Plugins.UndoRedo;
 
-namespace MapEditPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class MapEditor : EditorObject
     {

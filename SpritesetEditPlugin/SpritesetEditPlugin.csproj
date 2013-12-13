@@ -7,7 +7,7 @@
     <ProjectGuid>{9FEA4A11-754F-4F4B-8A85-B0E780F15159}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpritesetEditPlugin</RootNamespace>
+    <RootNamespace>SphereStudio.Plugins</RootNamespace>
     <AssemblyName>SpritesetEditPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

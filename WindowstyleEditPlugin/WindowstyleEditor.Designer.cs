@@ -1,4 +1,4 @@
-﻿namespace WindowstyleEditPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class WindowstyleEditor
     {
@@ -57,6 +57,7 @@
             this.StyleToolStrip.SuspendLayout();
             this.StyleStatusStrip.SuspendLayout();
             this.EditorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MainSplitter)).BeginInit();
             this.MainSplitter.Panel1.SuspendLayout();
             this.MainSplitter.Panel2.SuspendLayout();
             this.MainSplitter.SuspendLayout();
@@ -74,7 +75,7 @@
             // 
             // GridItem
             // 
-            this.GridItem.Image = global::WindowstyleEditPlugin.Properties.Resources.GridToolIcon;
+            this.GridItem.Image = global::SphereStudio.Plugins.Properties.Resources.GridToolIcon;
             this.GridItem.Name = "GridItem";
             this.GridItem.Size = new System.Drawing.Size(136, 22);
             this.GridItem.Text = "Toggle &Grid";
@@ -84,7 +85,7 @@
             // 
             // ZoomInItem
             // 
-            this.ZoomInItem.Image = global::WindowstyleEditPlugin.Properties.Resources.ZoomInToolIcon;
+            this.ZoomInItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomInToolIcon;
             this.ZoomInItem.Name = "ZoomInItem";
             this.ZoomInItem.Size = new System.Drawing.Size(136, 22);
             this.ZoomInItem.Text = "Zoom &In";
@@ -93,7 +94,7 @@
             // ZoomOutItem
             // 
             this.ZoomOutItem.Enabled = false;
-            this.ZoomOutItem.Image = global::WindowstyleEditPlugin.Properties.Resources.ZoomOutToolIcon;
+            this.ZoomOutItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomOutToolIcon;
             this.ZoomOutItem.Name = "ZoomOutItem";
             this.ZoomOutItem.Size = new System.Drawing.Size(136, 22);
             this.ZoomOutItem.Text = "Zoom &Out";
@@ -101,7 +102,7 @@
             // 
             // EditBGItem
             // 
-            this.EditBGItem.Image = global::WindowstyleEditPlugin.Properties.Resources.PaletteToolIcon;
+            this.EditBGItem.Image = global::SphereStudio.Plugins.Properties.Resources.PaletteToolIcon;
             this.EditBGItem.Name = "EditBGItem";
             this.EditBGItem.Size = new System.Drawing.Size(136, 22);
             this.EditBGItem.Text = "&Edit BG";
@@ -125,7 +126,7 @@
             // WindowPanel
             // 
             this.WindowPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.WindowPanel.BackgroundImage = global::WindowstyleEditPlugin.Properties.Resources.EditAreaBG2;
+            this.WindowPanel.BackgroundImage = global::SphereStudio.Plugins.Properties.Resources.EditAreaBG2;
             this.WindowPanel.ContextMenuStrip = this.StyleContextStrip;
             this.WindowPanel.Location = new System.Drawing.Point(141, 16);
             this.WindowPanel.Name = "WindowPanel";
@@ -162,7 +163,7 @@
             // GridButton
             // 
             this.GridButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.GridButton.Image = global::WindowstyleEditPlugin.Properties.Resources.GridToolIcon;
+            this.GridButton.Image = global::SphereStudio.Plugins.Properties.Resources.GridToolIcon;
             this.GridButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GridButton.Name = "GridButton";
             this.GridButton.Size = new System.Drawing.Size(23, 22);
@@ -179,7 +180,7 @@
             // ZoomInButton
             // 
             this.ZoomInButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ZoomInButton.Image = global::WindowstyleEditPlugin.Properties.Resources.ZoomInToolIcon;
+            this.ZoomInButton.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomInToolIcon;
             this.ZoomInButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomInButton.Name = "ZoomInButton";
             this.ZoomInButton.Size = new System.Drawing.Size(23, 22);
@@ -190,7 +191,7 @@
             // 
             this.ZoomOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ZoomOutButton.Enabled = false;
-            this.ZoomOutButton.Image = global::WindowstyleEditPlugin.Properties.Resources.ZoomOutToolIcon;
+            this.ZoomOutButton.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomOutToolIcon;
             this.ZoomOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomOutButton.Name = "ZoomOutButton";
             this.ZoomOutButton.Size = new System.Drawing.Size(23, 22);
@@ -206,7 +207,7 @@
             // 
             this.LeftButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.LeftButton.Enabled = false;
-            this.LeftButton.Image = global::WindowstyleEditPlugin.Properties.Resources.BackToolIcon;
+            this.LeftButton.Image = global::SphereStudio.Plugins.Properties.Resources.BackToolIcon;
             this.LeftButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LeftButton.Name = "LeftButton";
             this.LeftButton.Size = new System.Drawing.Size(23, 22);
@@ -224,7 +225,7 @@
             // RightButton
             // 
             this.RightButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.RightButton.Image = global::WindowstyleEditPlugin.Properties.Resources.NextToolIcon;
+            this.RightButton.Image = global::SphereStudio.Plugins.Properties.Resources.NextToolIcon;
             this.RightButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RightButton.Name = "RightButton";
             this.RightButton.Size = new System.Drawing.Size(23, 22);
@@ -256,9 +257,9 @@
             // 
             // EditorPanel
             // 
-            this.EditorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.EditorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.EditorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.EditorPanel.Controls.Add(this.WindowHolder);
             this.EditorPanel.Controls.Add(this.StyleToolStrip);
@@ -291,19 +292,20 @@
             // StyleDrawer
             // 
             this.StyleDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.StyleDrawer.HelpLabel = null;
             this.StyleDrawer.Location = new System.Drawing.Point(0, 0);
             this.StyleDrawer.Name = "StyleDrawer";
             this.StyleDrawer.Size = new System.Drawing.Size(520, 157);
             this.StyleDrawer.TabIndex = 0;
             this.StyleDrawer.ImageEdited += new System.EventHandler(this.StyleDrawer_ImageEdited);
             // 
-            // WindowStyleEditor
+            // WindowstyleEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.MainSplitter);
             this.DoubleBuffered = true;
-            this.Name = "WindowStyleEditor";
+            this.Name = "WindowstyleEditor";
             this.Size = new System.Drawing.Size(520, 383);
             this.Resize += new System.EventHandler(this.WindowStyleEditor_Resize);
             this.StyleContextStrip.ResumeLayout(false);
@@ -316,6 +318,7 @@
             this.EditorPanel.PerformLayout();
             this.MainSplitter.Panel1.ResumeLayout(false);
             this.MainSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MainSplitter)).EndInit();
             this.MainSplitter.ResumeLayout(false);
             this.ResumeLayout(false);
 

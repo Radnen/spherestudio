@@ -5,7 +5,7 @@ using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 
-namespace SpritesetEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     internal partial class DirectionLayout : UserControl
     {

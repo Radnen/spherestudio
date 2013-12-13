@@ -1,4 +1,4 @@
-﻿namespace SpritesetEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class DirectionLayout
     {
@@ -129,7 +129,7 @@
             this.AddFrameButton.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.AddFrameButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.AddFrameButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddFrameButton.Image = global::SpritesetEditPlugin.Properties.Resources.NextToolIcon;
+            this.AddFrameButton.Image = global::SphereStudio.Plugins.Properties.Resources.NextToolIcon;
             this.AddFrameButton.Location = new System.Drawing.Point(47, 23);
             this.AddFrameButton.Name = "AddFrameButton";
             this.AddFrameButton.Size = new System.Drawing.Size(32, 32);
@@ -143,7 +143,7 @@
             this.RemoveFrameButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.RemoveFrameButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.RemoveFrameButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RemoveFrameButton.Image = global::SpritesetEditPlugin.Properties.Resources.BackToolIcon;
+            this.RemoveFrameButton.Image = global::SphereStudio.Plugins.Properties.Resources.BackToolIcon;
             this.RemoveFrameButton.Location = new System.Drawing.Point(9, 23);
             this.RemoveFrameButton.Name = "RemoveFrameButton";
             this.RemoveFrameButton.Size = new System.Drawing.Size(32, 32);
@@ -172,7 +172,7 @@
             // 
             // AddItem
             // 
-            this.AddItem.Image = global::SpritesetEditPlugin.Properties.Resources.AddToolIcon;
+            this.AddItem.Image = global::SphereStudio.Plugins.Properties.Resources.AddToolIcon;
             this.AddItem.Name = "AddItem";
             this.AddItem.Size = new System.Drawing.Size(175, 22);
             this.AddItem.Text = "&Add Frame";
@@ -180,7 +180,7 @@
             // 
             // RemoveItem
             // 
-            this.RemoveItem.Image = global::SpritesetEditPlugin.Properties.Resources.DeleteToolIcon;
+            this.RemoveItem.Image = global::SphereStudio.Plugins.Properties.Resources.DeleteToolIcon;
             this.RemoveItem.Name = "RemoveItem";
             this.RemoveItem.Size = new System.Drawing.Size(175, 22);
             this.RemoveItem.Text = "&Remove Frame";
@@ -193,7 +193,7 @@
             // 
             // AddDirectionItem
             // 
-            this.AddDirectionItem.Image = global::SpritesetEditPlugin.Properties.Resources.AddToolIcon;
+            this.AddDirectionItem.Image = global::SphereStudio.Plugins.Properties.Resources.AddToolIcon;
             this.AddDirectionItem.Name = "AddDirectionItem";
             this.AddDirectionItem.Size = new System.Drawing.Size(175, 22);
             this.AddDirectionItem.Text = "Add &Direction";
@@ -201,7 +201,7 @@
             // 
             // RemoveDirectionItem
             // 
-            this.RemoveDirectionItem.Image = global::SpritesetEditPlugin.Properties.Resources.DeleteToolIcon;
+            this.RemoveDirectionItem.Image = global::SphereStudio.Plugins.Properties.Resources.DeleteToolIcon;
             this.RemoveDirectionItem.Name = "RemoveDirectionItem";
             this.RemoveDirectionItem.Size = new System.Drawing.Size(175, 22);
             this.RemoveDirectionItem.Text = "R&emove Direction";
@@ -214,7 +214,7 @@
             // 
             // ZoomInItem
             // 
-            this.ZoomInItem.Image = global::SpritesetEditPlugin.Properties.Resources.ZoomInToolIcon;
+            this.ZoomInItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomInToolIcon;
             this.ZoomInItem.Name = "ZoomInItem";
             this.ZoomInItem.Size = new System.Drawing.Size(175, 22);
             this.ZoomInItem.Text = "Zoom &In";
@@ -222,7 +222,7 @@
             // 
             // ZoomOutItem
             // 
-            this.ZoomOutItem.Image = global::SpritesetEditPlugin.Properties.Resources.ZoomOutToolIcon;
+            this.ZoomOutItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomOutToolIcon;
             this.ZoomOutItem.Name = "ZoomOutItem";
             this.ZoomOutItem.Size = new System.Drawing.Size(175, 22);
             this.ZoomOutItem.Text = "Zoom &Out";
@@ -242,7 +242,7 @@
             // 
             // SetDelayItem
             // 
-            this.SetDelayItem.Image = global::SpritesetEditPlugin.Properties.Resources.page_white_edit;
+            this.SetDelayItem.Image = global::SphereStudio.Plugins.Properties.Resources.page_white_edit;
             this.SetDelayItem.Name = "SetDelayItem";
             this.SetDelayItem.Size = new System.Drawing.Size(175, 22);
             this.SetDelayItem.Text = "&Set Delay...";

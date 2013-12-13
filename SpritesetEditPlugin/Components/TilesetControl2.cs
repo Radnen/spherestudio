@@ -8,7 +8,7 @@ using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Core.Utility;
 
-namespace SpritesetEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     internal partial class TilesetControl2 : UserControl
     {

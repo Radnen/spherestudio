@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using MapEditPlugin.Forms;
 using Sphere.Plugins;
+using SphereStudio.Plugins.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace MapEditPlugin
+namespace SphereStudio.Plugins
 {
     public class MapEditPlugin : IPlugin
     {

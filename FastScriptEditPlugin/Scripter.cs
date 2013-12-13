@@ -8,9 +8,9 @@ using FastColoredTextBoxNS;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 
-namespace FastScriptEditPlugin
+namespace SphereStudio.Plugins
 {
-    public partial class Scripter : EditorObject, IScriptEditor
+    public partial class Scripter : EditorObject, IScriptEditor, IStyleable
     {
         readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
         private readonly FastColoredTextBox _textbox;

@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
-using MapEditPlugin.Forms;
+using SphereStudio.Plugins.Forms;
 
-namespace MapEditPlugin.Components
+namespace SphereStudio.Plugins.Components
 {
     public partial class LayerPanel : UserControl
     {

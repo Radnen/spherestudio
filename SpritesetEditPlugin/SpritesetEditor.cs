@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using Sphere.Plugins.EditShims;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-using SpritesetEditPlugin.Components;
-using SpritesetEditPlugin.Forms;
-
-namespace SpritesetEditPlugin
+namespace SphereStudio.Plugins
 {
     internal partial class SpritesetEditor : EditorObject
     {
@@ -89,7 +88,7 @@ namespace SpritesetEditPlugin
             _baseContent.Controls.Add(BasePanel);
 
             _mainDockPanel = new DockPanel {DocumentStyle = DocumentStyle.DockingWindow, Dock = DockStyle.Fill};
-            if (System.IO.File.Exists("SpriteEditor.xml"))
+            if (File.Exists("SpriteEditor.xml"))
             {
                 DeserializeDockContent dc = GetContent;
                 _mainDockPanel.LoadFromXml("SpriteEditor.xml", dc);
@@ -189,7 +188,7 @@ namespace SpritesetEditPlugin
             if (_sprite.Load(filename))
             {
                 FileName = filename;
-                Parent.Text = System.IO.Path.GetFileName(filename);
+                Parent.Text = Path.GetFileName(filename);
                 Init();
             }
             else
@@ -204,7 +203,7 @@ namespace SpritesetEditPlugin
             if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = System.IO.Path.GetFileName(FileName);
+                Parent.Text = Path.GetFileName(FileName);
                 _sprite.Save(FileName);
             }
         }

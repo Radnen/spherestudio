@@ -1,4 +1,4 @@
-﻿namespace FontEditPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class FontEditor
     {

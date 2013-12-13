@@ -7,7 +7,7 @@
     <ProjectGuid>{65BCDEEF-C718-492A-8C82-7886A3AF8B7B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowstyleEditPlugin</RootNamespace>
+    <RootNamespace>SphereStudio.Plugins</RootNamespace>
     <AssemblyName>WindowstyleEditPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

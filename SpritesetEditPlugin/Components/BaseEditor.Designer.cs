@@ -1,4 +1,4 @@
-﻿namespace SpritesetEditPlugin.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class BaseEditor
     {
@@ -40,7 +40,7 @@
             // 
             // FrameImage
             // 
-            this.FrameImage.BackgroundImage = global::SpritesetEditPlugin.Properties.Resources.EditAreaBG2;
+            this.FrameImage.BackgroundImage = global::SphereStudio.Plugins.Properties.Resources.EditAreaBG2;
             this.FrameImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.FrameImage.Location = new System.Drawing.Point(64, 30);
             this.FrameImage.Name = "FrameImage";

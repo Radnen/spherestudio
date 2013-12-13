@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using Sphere.Core;
 
-namespace MapEditPlugin
+namespace SphereStudio.Plugins
 {
     internal static class PluginData
     {

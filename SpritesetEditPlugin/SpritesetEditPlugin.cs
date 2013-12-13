@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace SpritesetEditPlugin
+namespace SphereStudio.Plugins
 {
     public class SpritesetEditPlugin : IPlugin
     {

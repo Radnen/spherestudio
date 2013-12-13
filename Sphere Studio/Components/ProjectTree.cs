@@ -39,15 +39,14 @@ namespace SphereStudio.Components
             _iconlist.Images.Add(Resources.question_mark);
 
             ProjectTreeView.ImageList = _iconlist;
-            SetFont();
         }
 
         public IDEForm EditorForm { get; set; }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            UpdateStyle();
             base.OnPaint(e);
+            UpdateStyle();
         }
 
         public string ProjectName
@@ -485,40 +484,6 @@ namespace SphereStudio.Components
         private void ProjectTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             OpenItem(ProjectTreeView.SelectedNode);
-        }
-
-        private void FontItem_Click(object sender, EventArgs e)
-        {
-            using (var diag = new FontDialog())
-            {
-                diag.Font = ProjectTreeView.Font;
-                try
-                {
-                    if (diag.ShowDialog() != DialogResult.OK) return;
-                    
-                    TypeConverter converter = TypeDescriptor.GetConverter(typeof (Font));
-                    string fontstring = converter.ConvertToString(diag.Font);
-                    Global.CurrentEditor.SaveObject("tree-font", fontstring);
-                    SetFont();
-                }
-                catch (ArgumentException)
-                {
-                    MessageBox.Show(@"GDI+ only uses TrueType fonts.", @"Type Error", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void SetFont()
-        {
-            return;  // TODO: delete this method, no longer needed with styles
-
-            string fontstring = Global.CurrentEditor.GetString("tree-font");
-            if (String.IsNullOrEmpty(fontstring)) return;
-            
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-            Font f = converter.ConvertFromString(fontstring) as Font;
-            if (f != null) ProjectTreeView.Font = f;
         }
 
         private void ProjectTreeView_KeyDown(object sender, KeyEventArgs e)

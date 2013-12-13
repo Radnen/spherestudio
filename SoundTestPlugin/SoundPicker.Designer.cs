@@ -1,4 +1,4 @@
-﻿namespace SoundTestPlugin
+﻿namespace SphereStudio.Plugins
 {
     partial class SoundPicker
     {
