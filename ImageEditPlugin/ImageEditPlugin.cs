@@ -4,8 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
 using SphereStudio.Plugins.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Plugins
 {
