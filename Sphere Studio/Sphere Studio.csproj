@@ -317,10 +317,6 @@
     <Content Include="Editor.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FastScriptEditPlugin\FastScriptEditPlugin.csproj">
-      <Project>{6b3428fe-c5fc-4c04-a93d-9a1ee50fca2b}</Project>
-      <Name>FastScriptEditPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontEditPlugin</Name>
