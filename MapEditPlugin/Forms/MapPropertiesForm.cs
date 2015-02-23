@@ -22,6 +22,7 @@ namespace SphereStudio.Plugins.Forms
             ScriptPanel.Controls.Add(ScriptBox);
             TilesetTextbox.Text = this.scripts[0];
             //BgMusicTextbox.Text = this.scripts[1];
+            RepeatMapCheckBox.Checked = map.WrapAround;
             ScriptBox.Text = this.scripts[3];
             TileWidthBox.Text = "" + map.Tileset.TileWidth;
             TileHeightBox.Text = "" + map.Tileset.TileHeight;
@@ -88,6 +89,8 @@ namespace SphereStudio.Plugins.Forms
 
         private void OkayButton_Click(object sender, EventArgs e)
         {
+            Map.WrapAround = RepeatMapCheckBox.Checked;
+            
             short tw = 0, th = 0;
             short lw = 0, lh = 0;
             if (TileWidthBox.Text != String.Empty) tw = short.Parse(TileWidthBox.Text);

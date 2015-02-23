@@ -14,6 +14,11 @@ namespace Sphere.Core
         private short _version = 1;
 
         /// <summary>
+        /// Gets or sets whether the map wraps around at the edges (i.e. is a toric map)
+        /// </summary>
+        public bool WrapAround { get; set; }
+        
+        /// <summary>
         /// Gets or sets the starting x position.
         /// </summary>
         public short StartX { get; set; }
@@ -139,7 +144,8 @@ namespace Sphere.Core
                 reader.ReadByte();
                 int numStrings = reader.ReadInt16();
                 int numZones = reader.ReadInt16();
-                reader.ReadBytes(235);
+                WrapAround = reader.ReadBoolean();
+                reader.ReadBytes(234);
 
                 // read scripts:
                 while (numStrings-- > 0)
@@ -204,7 +210,8 @@ namespace Sphere.Core
                 writer.Write(byte.MinValue);
                 writer.Write((short)Scripts.Count);
                 writer.Write((short)Zones.Count);
-                writer.Write(new byte[235]);
+                writer.Write(WrapAround);
+                writer.Write(new byte[234]);
 
                 // write scripts:
                 foreach (string s in Scripts)
