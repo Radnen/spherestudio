@@ -15,8 +15,11 @@ namespace SphereStudio.Plugins
     {
         private Scintilla _codeBox = new Scintilla();
 
-        // This is the encoding used by Sphere, so we have to use it for the editor as well.
-        private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
+        // We should technically be using ISO-8859-1 encoding for compatibility with the old editor.
+        // However, UTF-8 works fine in Sphere and some newer JS engines (e.g. Duktape) won't accept
+        // ISO-8859-1 scripts if they contain extended ASCII characters, so we'll use UTF-8 and compromise
+        // by not including a byte order mark.
+        private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
         
         private bool _autocomplete;
 
@@ -28,6 +31,7 @@ namespace SphereStudio.Plugins
             if (File.Exists(configPath))
                 _codeBox.ConfigurationManager.CustomLocation = configPath;
 
+            _codeBox.Encoding = Encoding.UTF8;
             _codeBox.ConfigurationManager.Language = "js";
             _codeBox.AutoComplete.SingleLineAccept = false;
             _codeBox.AutoComplete.FillUpCharacters = "";
@@ -113,7 +117,7 @@ namespace SphereStudio.Plugins
             FileName = filename;
             try
             {
-                using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), ISO_8859_1))
+                using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), true))
                 {
                     _codeBox.UndoRedo.IsUndoEnabled = false;
                     _codeBox.Text = fileReader.ReadToEnd();
@@ -138,7 +142,7 @@ namespace SphereStudio.Plugins
             if (!IsSaved()) SaveAs();
             else
             {
-                using (StreamWriter writer = new StreamWriter(FileName, false, ISO_8859_1))
+                using (StreamWriter writer = new StreamWriter(FileName, false, UTF_8_NOBOM))
                 {
                     if (PluginManager.IDE.EditorSettings.UseScriptUpdate)
                     {
