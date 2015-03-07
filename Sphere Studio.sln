@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Studio\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
@@ -18,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEditPlugin", "ScriptEditPlugin\ScriptEditPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontEditPlugin", "FontEditPlugin\FontEditPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPlugin", "MyPlugin\MyPlugin.csproj", "{B320DA5E-0E67-4CE7-97E7-96009014E6EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTestPlugin", "SoundTestPlugin\SoundTestPlugin.csproj", "{F1B89568-607D-4CEC-9C11-6C516D98E2EC}"
 EndProject
@@ -114,12 +114,6 @@ Global
 		{DD4965DE-8289-4E3F-839E-B008A06B3A97}.Release|x86.ActiveCfg = Release|x86
 		{DD4965DE-8289-4E3F-839E-B008A06B3A97}.Release|x86.Build.0 = Release|x86
 		{DD4965DE-8289-4E3F-839E-B008A06B3A97}.Release|x86.Deploy.0 = Release|x86
-		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Debug|x64.ActiveCfg = Debug|x64
-		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Debug|x86.ActiveCfg = Debug|x86
-		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|x64.ActiveCfg = Release|x64
-		{B320DA5E-0E67-4CE7-97E7-96009014E6EE}.Release|x86.ActiveCfg = Release|x86
 		{F1B89568-607D-4CEC-9C11-6C516D98E2EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1B89568-607D-4CEC-9C11-6C516D98E2EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1B89568-607D-4CEC-9C11-6C516D98E2EC}.Debug|x64.ActiveCfg = Debug|x64

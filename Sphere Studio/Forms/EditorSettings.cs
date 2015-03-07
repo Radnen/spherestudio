@@ -194,7 +194,7 @@ namespace SphereStudio.Forms
 
         private void RemovePresetButton_Click(object sender, EventArgs e)
         {
-            string path = (string)PresetListBox.SelectedItem;
+            string path = Path.Combine(Application.StartupPath, (string)PresetListBox.SelectedItem + ".preset");
             if (File.Exists(path)) File.Delete(path);
             PresetListBox.Items.RemoveAt(PresetListBox.SelectedIndex);
             RemovePresetButton.Enabled = PresetListBox.Items.Count > 0 && PresetListBox.SelectedIndex > 0;
@@ -210,7 +210,7 @@ namespace SphereStudio.Forms
                     Global.CurrentEditor.SetSettings(GetSettings());
 
                     string file = form.Input + ".preset";
-                    Global.CurrentEditor.SaveSettings(file);
+                    Global.CurrentEditor.SaveSettings(Path.Combine(Application.StartupPath, file));
                     Global.CurrentEditor.SetSettings(old);
 
                     PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(file));
@@ -221,7 +221,8 @@ namespace SphereStudio.Forms
         private void UsePresetButton_Click(object sender, EventArgs e)
         {
             SphereSettings settings = new SphereSettings();
-            settings.LoadSettings(((string)PresetListBox.SelectedItem) + ".preset");
+            string path = Path.Combine(Application.StartupPath, (string)PresetListBox.SelectedItem + ".preset");
+            settings.LoadSettings(path);
             SetValues(settings);
         }
 
