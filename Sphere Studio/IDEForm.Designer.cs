@@ -63,6 +63,9 @@
             this.CutToolButton = new System.Windows.Forms.ToolStripButton();
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,7 +171,7 @@
             this.DockTest.Location = new System.Drawing.Point(0, 49);
             this.DockTest.Name = "DockTest";
             this.DockTest.ShowDocumentIcon = true;
-            this.DockTest.Size = new System.Drawing.Size(480, 289);
+            this.DockTest.Size = new System.Drawing.Size(665, 362);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -235,12 +238,15 @@
             this.ToolSeperator2,
             this.CutToolButton,
             this.CopyToolButton,
-            this.PasteToolButton});
+            this.PasteToolButton,
+            this.toolStripSeparator2,
+            this.toolStripLabel1,
+            this.ConfigSelectTool});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
             this.EditorTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.EditorTools.Size = new System.Drawing.Size(480, 25);
+            this.EditorTools.Size = new System.Drawing.Size(665, 25);
             this.EditorTools.TabIndex = 4;
             this.EditorTools.Text = "Tool Strip";
             // 
@@ -359,13 +365,32 @@
             this.PasteToolButton.Text = "&Paste";
             this.PasteToolButton.Click += new System.EventHandler(this.PasteMenuItem_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(81, 22);
+            this.toolStripLabel1.Text = "Configuration";
+            // 
+            // ConfigSelectTool
+            // 
+            this.ConfigSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ConfigSelectTool.Name = "ConfigSelectTool";
+            this.ConfigSelectTool.Size = new System.Drawing.Size(128, 25);
+            this.ConfigSelectTool.ToolTipText = "Select configuration preset";
+            this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
+            // 
             // EditorStatus
             // 
             this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HelpLabel});
-            this.EditorStatus.Location = new System.Drawing.Point(0, 338);
+            this.EditorStatus.Location = new System.Drawing.Point(0, 411);
             this.EditorStatus.Name = "EditorStatus";
-            this.EditorStatus.Size = new System.Drawing.Size(480, 22);
+            this.EditorStatus.Size = new System.Drawing.Size(665, 22);
             this.EditorStatus.TabIndex = 1;
             this.EditorStatus.Text = "Status";
             // 
@@ -858,7 +883,7 @@
             this.HelpMenu});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
             this.EditorMenu.Name = "EditorMenu";
-            this.EditorMenu.Size = new System.Drawing.Size(480, 24);
+            this.EditorMenu.Size = new System.Drawing.Size(665, 24);
             this.EditorMenu.TabIndex = 0;
             this.EditorMenu.Text = "Menu";
             // 
@@ -867,7 +892,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(480, 360);
+            this.ClientSize = new System.Drawing.Size(665, 433);
             this.Controls.Add(this.DockTest);
             this.Controls.Add(this.EditorTools);
             this.Controls.Add(this.EditorStatus);
@@ -976,6 +1001,9 @@
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
         private System.Windows.Forms.MenuStrip EditorMenu;
+        private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }
 

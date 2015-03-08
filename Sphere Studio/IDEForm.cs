@@ -783,6 +783,21 @@ namespace SphereStudio
         {
             foreach (ToolStripMenuItem item in MainMenuStrip.Items)
                 item_DropDownClosed(item, null);
+            
+            // populate config preset selector dropdown
+            // HACK: Setting selection manually fires a selection change event, which will put us into
+            //       infinite recursion. To fix it, we can temporarily unsubscribe from the event.
+            ConfigSelectTool.SelectedIndexChanged -= ConfigSelectTool_SelectedIndexChanged;
+            ConfigSelectTool.Items.Clear();
+            ConfigSelectTool.Items.Add("[Select a preset]");
+            ConfigSelectTool.SelectedIndex = 0;
+            string[] presetFiles = Directory.GetFiles(Application.StartupPath, "*.preset");
+            foreach (string s in presetFiles)
+            {
+                ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
+            }
+            ConfigSelectTool.SelectedItem = Global.CurrentEditor.LastPreset;
+            ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
         }
 
         void item_DropDownClosed(object sender, EventArgs e)
@@ -801,6 +816,17 @@ namespace SphereStudio
                 ((ToolStripMenuItem)sender).ForeColor = Color.Black;
             else
                 ((ToolStripMenuItem)sender).ForeColor = Color.White;
+        }
+
+        private void ConfigSelectTool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ConfigSelectTool.SelectedIndex <= 0)
+                return;
+            string path = Path.Combine(Application.StartupPath, (string)ConfigSelectTool.SelectedItem + ".preset");
+            Global.CurrentEditor.LoadSettings(path);
+            Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
+            Global.CurrentEditor.SaveSettings();
+            ApplyRefresh();
         }
     }
 }
