@@ -825,7 +825,6 @@ namespace SphereStudio
             string path = Path.Combine(Application.StartupPath, (string)ConfigSelectTool.SelectedItem + ".preset");
             Global.CurrentEditor.LoadSettings(path);
             Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
-            Global.CurrentEditor.SaveSettings();
             ApplyRefresh();
         }
     }

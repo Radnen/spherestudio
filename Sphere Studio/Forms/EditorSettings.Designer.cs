@@ -99,6 +99,7 @@
             this.okButton.TabIndex = 0;
             this.okButton.Text = "&Save";
             this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // SpherePathLabel
             // 
@@ -168,11 +169,11 @@
             this.tabPage1.Controls.Add(this.StyleComboBox);
             this.tabPage1.Controls.Add(this.PropLabel);
             this.tabPage1.Controls.Add(this.ItemCheckBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage1.Size = new System.Drawing.Size(299, 283);
+            this.tabPage1.Size = new System.Drawing.Size(299, 286);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -236,11 +237,11 @@
             this.tabPage2.Controls.Add(this.SpherePathButton);
             this.tabPage2.Controls.Add(this.SpherePathBox);
             this.tabPage2.Controls.Add(this.GamePathLabel);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage2.Size = new System.Drawing.Size(299, 283);
+            this.tabPage2.Size = new System.Drawing.Size(299, 286);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -444,7 +445,7 @@
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 19);
+            this.label2.Location = new System.Drawing.Point(0, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(201, 58);
             this.label2.TabIndex = 0;
@@ -497,11 +498,11 @@
             // 
             this.PresetLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.PresetLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PresetLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PresetLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.PresetLabel.ForeColor = System.Drawing.Color.White;
             this.PresetLabel.Location = new System.Drawing.Point(0, 0);
             this.PresetLabel.Name = "PresetLabel";
-            this.PresetLabel.Size = new System.Drawing.Size(201, 19);
+            this.PresetLabel.Size = new System.Drawing.Size(201, 23);
             this.PresetLabel.TabIndex = 4;
             this.PresetLabel.Text = "Presets";
             this.PresetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
