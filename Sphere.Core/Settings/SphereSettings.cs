@@ -29,6 +29,12 @@ namespace Sphere.Core.Settings
             set { SetItem("config_path", value); }
         }
 
+        public string LastPreset
+        {
+            get { return GetString("last_preset");  }
+            set { SetItem("last_preset", value);  }
+        }
+        
         /// <summary>
         /// Gets or sets the path of the last loaded project.
         /// </summary>

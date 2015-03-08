@@ -266,8 +266,15 @@ namespace SphereStudio.Forms
             StyleSettings.CurrentStyle = Style;
             UpdateStyle();
             Global.CurrentEditor.SetSettings(GetSettings());
+            Global.CurrentEditor.LastPreset = "";
             Invalidate(true);
             if (MainIDE != null) MainIDE.ApplyRefresh();
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            ApplyButton.PerformClick();
+            this.Close();
         }
     }
 }
