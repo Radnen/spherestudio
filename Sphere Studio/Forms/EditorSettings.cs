@@ -96,6 +96,7 @@ namespace SphereStudio.Forms
             settings.AutoOpen = AutoStart;
             settings.SpherePath = SpherePath;
             settings.ConfigPath = ConfigPath;
+            settings.LastPreset = "";
             settings.UseScriptUpdate = UseScriptUpdate;
             settings.UseStartPage = UseStartPage;
             settings.Style = Style;
@@ -171,6 +172,7 @@ namespace SphereStudio.Forms
             {
                 PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(s));
             }
+            PresetListBox.SelectedItem = null;
         }
 
         private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -206,14 +208,31 @@ namespace SphereStudio.Forms
             {
                 if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    GenSettings old = Global.CurrentEditor.Clone();
-                    Global.CurrentEditor.SetSettings(GetSettings());
-
-                    string file = form.Input + ".preset";
-                    Global.CurrentEditor.SaveSettings(Path.Combine(Application.StartupPath, file));
-                    Global.CurrentEditor.SetSettings(old);
-
-                    PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(file));
+                    string presetName = form.Input;
+                    string filePath = Path.Combine(Application.StartupPath, presetName + ".preset");
+                    bool continueSave = true;
+                    if (File.Exists(filePath))
+                    {
+                        var result = MessageBox.Show(
+                            String.Format("Configuration preset \"{0}\" already exists. Do you want to overwrite it?", presetName),
+                            "Preset Already Exists", MessageBoxButtons.YesNo);
+                        continueSave = (result == DialogResult.Yes);
+                    }
+                    if (continueSave)
+                    {
+                        GenSettings old = Global.CurrentEditor.Clone();
+                        Global.CurrentEditor.SetSettings(GetSettings());
+                        Global.CurrentEditor.LastPreset = presetName;
+                        Global.CurrentEditor.SaveSettings(filePath);
+                        Global.CurrentEditor.SetSettings(old);
+                        PresetListBox.Items.Clear();
+                        string[] files = Directory.GetFiles(Application.StartupPath, "*.preset");
+                        foreach (string s in files)
+                        {
+                            PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(s));
+                        }
+                    }
+                    PresetListBox.SelectedItem = null;
                 }
             }
         }
@@ -225,6 +244,7 @@ namespace SphereStudio.Forms
             settings.LoadSettings(path);
             settings.LastPreset = (string)PresetListBox.SelectedItem;
             SetValues(settings);
+            PresetListBox.SelectedItem = null;
         }
 
         private void DownButton_Click(object sender, EventArgs e)

@@ -381,7 +381,6 @@
             this.ConfigSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ConfigSelectTool.Name = "ConfigSelectTool";
             this.ConfigSelectTool.Size = new System.Drawing.Size(128, 25);
-            this.ConfigSelectTool.ToolTipText = "Select configuration preset";
             this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
             // 
             // EditorStatus

@@ -398,7 +398,7 @@
             this.UsePresetButton.Name = "UsePresetButton";
             this.UsePresetButton.Size = new System.Drawing.Size(195, 22);
             this.UsePresetButton.TabIndex = 2;
-            this.UsePresetButton.Text = "Use";
+            this.UsePresetButton.Text = "&Use";
             this.Tip.SetToolTip(this.UsePresetButton, "Use Preset Settings File");
             this.UsePresetButton.UseVisualStyleBackColor = true;
             this.UsePresetButton.Click += new System.EventHandler(this.UsePresetButton_Click);
@@ -412,7 +412,7 @@
             this.RemovePresetButton.Name = "RemovePresetButton";
             this.RemovePresetButton.Size = new System.Drawing.Size(64, 22);
             this.RemovePresetButton.TabIndex = 4;
-            this.RemovePresetButton.Text = "Remove";
+            this.RemovePresetButton.Text = "&Remove";
             this.Tip.SetToolTip(this.RemovePresetButton, "Remove the preset settings file.");
             this.RemovePresetButton.UseVisualStyleBackColor = true;
             this.RemovePresetButton.Click += new System.EventHandler(this.RemovePresetButton_Click);
@@ -425,13 +425,16 @@
             this.SavePresetButton.Name = "SavePresetButton";
             this.SavePresetButton.Size = new System.Drawing.Size(64, 22);
             this.SavePresetButton.TabIndex = 3;
-            this.SavePresetButton.Text = "Add...";
+            this.SavePresetButton.Text = "A&dd...";
             this.Tip.SetToolTip(this.SavePresetButton, "Save current settings to disk.");
             this.SavePresetButton.UseVisualStyleBackColor = true;
             this.SavePresetButton.Click += new System.EventHandler(this.SavePresetButton_Click);
             // 
             // PresetListBox
             // 
+            this.PresetListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PresetListBox.FormattingEnabled = true;
             this.PresetListBox.IntegralHeight = false;
             this.PresetListBox.Location = new System.Drawing.Point(3, 81);
