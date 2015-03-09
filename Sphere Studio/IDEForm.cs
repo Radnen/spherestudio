@@ -825,6 +825,16 @@ namespace SphereStudio
             string path = Path.Combine(Application.StartupPath, (string)ConfigSelectTool.SelectedItem + ".preset");
             Global.CurrentEditor.LoadSettings(path);
             Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
+            Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
+            var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
+            foreach (var plugin in Global.Plugins)
+            {
+                if (plugins.Contains(plugin.Key))
+                    plugin.Value.Activate();
+                else
+                    plugin.Value.Deactivate();
+            }
+            Global.CurrentEditor.SaveSettings();
             ApplyRefresh();
         }
     }

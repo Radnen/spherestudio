@@ -223,6 +223,7 @@ namespace SphereStudio.Forms
             SphereSettings settings = new SphereSettings();
             string path = Path.Combine(Application.StartupPath, (string)PresetListBox.SelectedItem + ".preset");
             settings.LoadSettings(path);
+            settings.LastPreset = (string)PresetListBox.SelectedItem;
             SetValues(settings);
         }
 
