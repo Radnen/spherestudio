@@ -45,6 +45,7 @@ namespace SphereStudio.Plugins.Forms
             scrollYSlide.Value = (int)Math.Round(layer.ScrollY * 10.0f);
             visibleCheck.Checked = layer.Visible;
             reflectCheck.Checked = layer.Reflective;
+            parallaxCheck.Checked = parallaxGroup.Enabled = layer.Parallax;
             updateLabels();
         }
 
@@ -70,7 +71,7 @@ namespace SphereStudio.Plugins.Forms
 
         private void parallaxCheck_CheckedChanged(object sender, EventArgs e)
         {
-            groupBox1.Enabled = parallaxCheck.Checked;
+            parallaxGroup.Enabled = parallaxCheck.Checked;
         }
 
         private void okButton_Click(object sender, EventArgs e)
