@@ -5,9 +5,9 @@ A .NET based editor for your Sphere RPG games.
 
 Download
 ========
-You can download the latest version: [Here][]
+*Latest*: v1.1.7.0
 
-[Here]: http://radnen.tengudev.com/SphereStudioLatest.zip
+You can download the latest version: [Here](http://radnen.tengudev.com/SphereStudioLatest.zip)
 
 Features
 ========
@@ -24,8 +24,8 @@ Features
 
 Authors
 =======
- - Radnen - Project Lead
- - Powercommand - Tester, bug exterminator
+ - Andrew "Radnen" Helenius - Creator & Developer
+ - Bruce "Fatcerberus" Pascoe - Developer
 
 Credits
 =======
