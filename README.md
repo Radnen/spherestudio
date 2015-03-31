@@ -7,7 +7,7 @@ Download
 ========
 *Latest*: v1.1.7.0
 
-You can download the latest version: [Here](http://radnen.tengudev.com/SphereStudioLatest.zip)
+You can download the latest version: [Here](https://www.dropbox.com/s/sl8af7flknll4mp/SphereStudio1.1.7.0.zip?dl=0)
 
 Features
 ========
