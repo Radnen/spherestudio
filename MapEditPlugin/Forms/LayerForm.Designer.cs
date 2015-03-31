@@ -344,6 +344,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LayerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Layer Properties";
             this.Load += new System.EventHandler(this.LayerForm_Load);
             this.parallaxGroup.ResumeLayout(false);
