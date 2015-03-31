@@ -127,36 +127,36 @@
             this.scrollYLabel.AutoSize = true;
             this.scrollYLabel.Location = new System.Drawing.Point(318, 108);
             this.scrollYLabel.Name = "scrollYLabel";
-            this.scrollYLabel.Size = new System.Drawing.Size(35, 13);
+            this.scrollYLabel.Size = new System.Drawing.Size(26, 13);
             this.scrollYLabel.TabIndex = 9;
-            this.scrollYLabel.Text = "label4";
+            this.scrollYLabel.Text = "Y: 0";
             // 
             // plxYLabel
             // 
             this.plxYLabel.AutoSize = true;
             this.plxYLabel.Location = new System.Drawing.Point(318, 46);
             this.plxYLabel.Name = "plxYLabel";
-            this.plxYLabel.Size = new System.Drawing.Size(35, 13);
+            this.plxYLabel.Size = new System.Drawing.Size(26, 13);
             this.plxYLabel.TabIndex = 9;
-            this.plxYLabel.Text = "label4";
+            this.plxYLabel.Text = "Y: 0";
             // 
             // scrollXLabel
             // 
             this.scrollXLabel.AutoSize = true;
             this.scrollXLabel.Location = new System.Drawing.Point(143, 108);
             this.scrollXLabel.Name = "scrollXLabel";
-            this.scrollXLabel.Size = new System.Drawing.Size(35, 13);
+            this.scrollXLabel.Size = new System.Drawing.Size(26, 13);
             this.scrollXLabel.TabIndex = 9;
-            this.scrollXLabel.Text = "label4";
+            this.scrollXLabel.Text = "X: 0";
             // 
             // plxXLabel
             // 
             this.plxXLabel.AutoSize = true;
             this.plxXLabel.Location = new System.Drawing.Point(143, 46);
             this.plxXLabel.Name = "plxXLabel";
-            this.plxXLabel.Size = new System.Drawing.Size(35, 13);
+            this.plxXLabel.Size = new System.Drawing.Size(26, 13);
             this.plxXLabel.TabIndex = 9;
-            this.plxXLabel.Text = "label4";
+            this.plxXLabel.Text = "X: 0";
             // 
             // scrollYSlide
             // 
@@ -222,9 +222,9 @@
             this.parallaxCheck.AutoSize = true;
             this.parallaxCheck.Location = new System.Drawing.Point(21, 154);
             this.parallaxCheck.Name = "parallaxCheck";
-            this.parallaxCheck.Size = new System.Drawing.Size(115, 17);
+            this.parallaxCheck.Size = new System.Drawing.Size(92, 17);
             this.parallaxCheck.TabIndex = 0;
-            this.parallaxCheck.Text = "Parallax && Scrolling";
+            this.parallaxCheck.Text = "Parallax Layer";
             this.parallaxCheck.UseVisualStyleBackColor = true;
             this.parallaxCheck.CheckedChanged += new System.EventHandler(this.parallaxCheck_CheckedChanged);
             // 
