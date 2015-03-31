@@ -116,7 +116,7 @@
             this.parallaxGroup.Controls.Add(this.plxXSlide);
             this.parallaxGroup.Controls.Add(this.label3);
             this.parallaxGroup.Controls.Add(this.label2);
-            this.parallaxGroup.Location = new System.Drawing.Point(12, 190);
+            this.parallaxGroup.Location = new System.Drawing.Point(12, 154);
             this.parallaxGroup.Name = "parallaxGroup";
             this.parallaxGroup.Size = new System.Drawing.Size(367, 146);
             this.parallaxGroup.TabIndex = 4;
@@ -220,7 +220,7 @@
             // 
             this.parallaxCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.parallaxCheck.AutoSize = true;
-            this.parallaxCheck.Location = new System.Drawing.Point(21, 190);
+            this.parallaxCheck.Location = new System.Drawing.Point(21, 154);
             this.parallaxCheck.Name = "parallaxCheck";
             this.parallaxCheck.Size = new System.Drawing.Size(115, 17);
             this.parallaxCheck.TabIndex = 0;
@@ -242,7 +242,7 @@
             // reflectCheck
             // 
             this.reflectCheck.AutoSize = true;
-            this.reflectCheck.Location = new System.Drawing.Point(110, 19);
+            this.reflectCheck.Location = new System.Drawing.Point(184, 19);
             this.reflectCheck.Name = "reflectCheck";
             this.reflectCheck.Size = new System.Drawing.Size(74, 17);
             this.reflectCheck.TabIndex = 1;
@@ -252,7 +252,7 @@
             // visibleCheck
             // 
             this.visibleCheck.AutoSize = true;
-            this.visibleCheck.Location = new System.Drawing.Point(9, 19);
+            this.visibleCheck.Location = new System.Drawing.Point(83, 19);
             this.visibleCheck.Name = "visibleCheck";
             this.visibleCheck.Size = new System.Drawing.Size(95, 17);
             this.visibleCheck.TabIndex = 0;
@@ -328,7 +328,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(490, 348);
+            this.ClientSize = new System.Drawing.Size(490, 312);
             this.Controls.Add(this.ySizeBox);
             this.Controls.Add(this.xSizeBox);
             this.Controls.Add(this.label5);

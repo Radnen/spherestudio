@@ -73,6 +73,7 @@ namespace SphereStudio.Plugins.Components
         private void layerPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new LayerForm(layers.SelectedItem.Layer).ShowDialog();
+            Refresh();
         }
     }
 }

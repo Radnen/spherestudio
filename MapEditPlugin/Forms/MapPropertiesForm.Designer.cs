@@ -72,32 +72,32 @@
             // 
             // FilenameTextBox
             // 
-            this.FilenameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.FilenameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.FilenameTextBox.Location = new System.Drawing.Point(131, 12);
             this.FilenameTextBox.Name = "FilenameTextBox";
             this.FilenameTextBox.ReadOnly = true;
-            this.FilenameTextBox.Size = new System.Drawing.Size(256, 20);
+            this.FilenameTextBox.Size = new System.Drawing.Size(396, 20);
             this.FilenameTextBox.TabIndex = 0;
             // 
             // BgMusicTextbox
             // 
-            this.BgMusicTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.BgMusicTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.BgMusicTextbox.Location = new System.Drawing.Point(131, 38);
             this.BgMusicTextbox.Name = "BgMusicTextbox";
-            this.BgMusicTextbox.Size = new System.Drawing.Size(224, 20);
+            this.BgMusicTextbox.Size = new System.Drawing.Size(364, 20);
             this.BgMusicTextbox.TabIndex = 1;
             this.BgMusicTextbox.Text = "<phasing feature out>";
             // 
             // TilesetTextbox
             // 
-            this.TilesetTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.TilesetTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TilesetTextbox.Location = new System.Drawing.Point(131, 64);
             this.TilesetTextbox.Name = "TilesetTextbox";
             this.TilesetTextbox.ReadOnly = true;
-            this.TilesetTextbox.Size = new System.Drawing.Size(224, 20);
+            this.TilesetTextbox.Size = new System.Drawing.Size(364, 20);
             this.TilesetTextbox.TabIndex = 3;
             // 
             // RepeatMapCheckBox
@@ -144,7 +144,7 @@
             // 
             this.OkayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.OkayButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OkayButton.Location = new System.Drawing.Point(393, 12);
+            this.OkayButton.Location = new System.Drawing.Point(533, 12);
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(75, 23);
             this.OkayButton.TabIndex = 11;
@@ -156,7 +156,7 @@
             // 
             this.TheCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TheCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.TheCancelButton.Location = new System.Drawing.Point(393, 41);
+            this.TheCancelButton.Location = new System.Drawing.Point(533, 41);
             this.TheCancelButton.Name = "TheCancelButton";
             this.TheCancelButton.Size = new System.Drawing.Size(75, 23);
             this.TheCancelButton.TabIndex = 12;
@@ -165,8 +165,8 @@
             // 
             // ScriptTabControl
             // 
-            this.ScriptTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScriptTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ScriptTabControl.Controls.Add(this.EnterTab);
             this.ScriptTabControl.Controls.Add(this.LeaveTab);
             this.ScriptTabControl.Controls.Add(this.LeaveNorth);
@@ -176,7 +176,7 @@
             this.ScriptTabControl.Location = new System.Drawing.Point(12, 126);
             this.ScriptTabControl.Name = "ScriptTabControl";
             this.ScriptTabControl.SelectedIndex = 0;
-            this.ScriptTabControl.Size = new System.Drawing.Size(458, 21);
+            this.ScriptTabControl.Size = new System.Drawing.Size(598, 21);
             this.ScriptTabControl.TabIndex = 9;
             this.ScriptTabControl.SelectedIndexChanged += new System.EventHandler(this.ScriptTabControl_SelectedIndexChanged);
             // 
@@ -185,7 +185,7 @@
             this.EnterTab.Location = new System.Drawing.Point(4, 22);
             this.EnterTab.Name = "EnterTab";
             this.EnterTab.Padding = new System.Windows.Forms.Padding(3);
-            this.EnterTab.Size = new System.Drawing.Size(450, 0);
+            this.EnterTab.Size = new System.Drawing.Size(590, 0);
             this.EnterTab.TabIndex = 0;
             this.EnterTab.Text = "On Enter Map";
             this.EnterTab.UseVisualStyleBackColor = true;
@@ -238,20 +238,20 @@
             // 
             // ScriptPanel
             // 
-            this.ScriptPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScriptPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ScriptPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ScriptPanel.Location = new System.Drawing.Point(12, 146);
             this.ScriptPanel.Name = "ScriptPanel";
-            this.ScriptPanel.Size = new System.Drawing.Size(456, 188);
+            this.ScriptPanel.Size = new System.Drawing.Size(596, 246);
             this.ScriptPanel.TabIndex = 10;
             // 
             // BgMusicButton
             // 
             this.BgMusicButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BgMusicButton.Enabled = false;
-            this.BgMusicButton.Location = new System.Drawing.Point(361, 36);
+            this.BgMusicButton.Location = new System.Drawing.Point(501, 36);
             this.BgMusicButton.Name = "BgMusicButton";
             this.BgMusicButton.Size = new System.Drawing.Size(26, 23);
             this.BgMusicButton.TabIndex = 2;
@@ -262,7 +262,7 @@
             // 
             this.TilesetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TilesetButton.Enabled = false;
-            this.TilesetButton.Location = new System.Drawing.Point(361, 62);
+            this.TilesetButton.Location = new System.Drawing.Point(501, 62);
             this.TilesetButton.Name = "TilesetButton";
             this.TilesetButton.Size = new System.Drawing.Size(26, 23);
             this.TilesetButton.TabIndex = 4;
@@ -281,8 +281,8 @@
             // 
             // TilePropPanel
             // 
-            this.TilePropPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.TilePropPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TilePropPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.TilePropPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.TilePropPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -293,9 +293,9 @@
             this.TilePropPanel.Controls.Add(this.TileWidthBox);
             this.TilePropPanel.Controls.Add(this.TileSizeLabel);
             this.TilePropPanel.Controls.Add(this.TilePropLabel);
-            this.TilePropPanel.Location = new System.Drawing.Point(11, 340);
+            this.TilePropPanel.Location = new System.Drawing.Point(11, 398);
             this.TilePropPanel.Name = "TilePropPanel";
-            this.TilePropPanel.Size = new System.Drawing.Size(220, 90);
+            this.TilePropPanel.Size = new System.Drawing.Size(360, 90);
             this.TilePropPanel.TabIndex = 14;
             // 
             // RescaleCheckBox
@@ -367,12 +367,13 @@
             // 
             // TilePropLabel
             // 
+            this.TilePropLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TilePropLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TilePropLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
-            this.TilePropLabel.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.TilePropLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.TilePropLabel.ForeColor = System.Drawing.Color.White;
             this.TilePropLabel.Location = new System.Drawing.Point(0, 0);
             this.TilePropLabel.Name = "TilePropLabel";
-            this.TilePropLabel.Size = new System.Drawing.Size(218, 23);
+            this.TilePropLabel.Size = new System.Drawing.Size(358, 23);
             this.TilePropLabel.TabIndex = 0;
             this.TilePropLabel.Text = "Tile Size";
             this.TilePropLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -428,7 +429,7 @@
             this.LayerPropPanel.Controls.Add(this.LayerPropLabel);
             this.LayerPropPanel.Controls.Add(this.LayerHeightBox);
             this.LayerPropPanel.Controls.Add(this.LayerSizeLabel);
-            this.LayerPropPanel.Location = new System.Drawing.Point(249, 341);
+            this.LayerPropPanel.Location = new System.Drawing.Point(389, 399);
             this.LayerPropPanel.Margin = new System.Windows.Forms.Padding(6);
             this.LayerPropPanel.Name = "LayerPropPanel";
             this.LayerPropPanel.Size = new System.Drawing.Size(220, 90);
@@ -436,9 +437,10 @@
             // 
             // LayerPropLabel
             // 
+            this.LayerPropLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.LayerPropLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LayerPropLabel.Font = new System.Drawing.Font("Verdana", 10.5F);
-            this.LayerPropLabel.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.LayerPropLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LayerPropLabel.ForeColor = System.Drawing.Color.White;
             this.LayerPropLabel.Location = new System.Drawing.Point(0, 0);
             this.LayerPropLabel.Name = "LayerPropLabel";
             this.LayerPropLabel.Size = new System.Drawing.Size(218, 23);
@@ -478,7 +480,7 @@
             this.AcceptButton = this.OkayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 442);
+            this.ClientSize = new System.Drawing.Size(620, 500);
             this.Controls.Add(this.ZoneNumLabel);
             this.Controls.Add(this.EntityNumLabel);
             this.Controls.Add(this.LayerNumLabel);
