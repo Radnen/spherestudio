@@ -265,7 +265,7 @@ namespace SphereStudio.Plugins
             SelectImage(_style.Selected);
             ImgLabel.Text = @"Image: " + _style.Selected;
             LeftButton.Enabled = _style.Selected > 0;
-            if (!LeftButton.Enabled) HelpLabel.Text = "";
+            if (!LeftButton.Enabled && HelpLabel != null) HelpLabel.Text = "";
             RightButton.Enabled = true;
         }
 
@@ -275,7 +275,7 @@ namespace SphereStudio.Plugins
             SelectImage(_style.Selected);
             ImgLabel.Text = @"Image: " + _style.Selected;
             RightButton.Enabled = _style.Selected < 8;
-            if (!RightButton.Enabled) HelpLabel.Text = "";
+            if (!RightButton.Enabled && HelpLabel != null) HelpLabel.Text = "";
             LeftButton.Enabled = true;
         }
 

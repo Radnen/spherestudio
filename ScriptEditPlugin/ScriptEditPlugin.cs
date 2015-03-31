@@ -15,10 +15,10 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Script Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default script editor"; } }
-        public string Version { get { return "1.1.6.0"; } }
+        public string Version { get { return "1.1.7.0"; } }
         public Icon Icon { get; private set; }
 
-        private readonly List<string> _extensionList = new List<string>(new[] { ".js", ".txt", ".log", ".md", ".sgm", ".gitignore", ".ini", ".sav" });
+        private readonly List<string> _extensionList = new List<string>(new[] { ".js", "*" });
         private const string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;

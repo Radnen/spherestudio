@@ -6,11 +6,21 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("The Sphere Studio")]
-[assembly: AssemblyDescription("A modern Sphere development environment made for Windows with the .NET Framework 4.5 or higher. Special thanks to kyuu, DaVince, and anyone else helping with testing and feature requests, and to Flik for making Sphere a reality. Also a shoutout to my loyal testers Eggbert, and Lord English. Don't forget to visit us at www.spheredev.org!")]
+
+[assembly: AssemblyDescription("A modern Sphere development environment made for Windows with the .NET Framework 4.5 or higher.\r\n\r\n"+
+    "Special Thanks:\r\n\r\n"+
+    "Developers:\r\n"+
+    "Andrew 'Radnen' Helenius\r\n"+
+    "Bruce 'Lord English' Pascoe\r\n\r\n"+
+    "Testers:\r\n" +
+    "DaVince\r\n" +
+    "Eggbert\r\n" +
+    "Flying Jester\r\n\r\n" +
+    "Don't forget to visit us at www.spheredev.org!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("Copyright ©  2012 - Spherical")]
+[assembly: AssemblyCopyright("Copyright © 2015 - Spherical")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +42,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.6.0")]
-[assembly: AssemblyFileVersion("1.1.6.0")]
+[assembly: AssemblyVersion("1.1.7.0")]
+[assembly: AssemblyFileVersion("1.1.7.0")]

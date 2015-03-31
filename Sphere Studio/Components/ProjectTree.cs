@@ -57,34 +57,24 @@ namespace SphereStudio.Components
 
         private void ImportFileItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = ProjectTreeView.SelectedNode;
-            string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Global.CurrentProject.RootPath + pathtop;
+            string path = ResolvePath(ProjectTreeView.SelectedNode);
             string[] filesToAdd = EditorForm.GetFilesToOpen(true);
             
-            if (filesToAdd == null) return;
+            if (filesToAdd == null || filesToAdd.Length == 0) return;
 
             foreach (string filePath in filesToAdd)
             {
                 string newpath = path + "\\" + Path.GetFileName(filePath);
+                var copy = true;
+
                 if (File.Exists(newpath))
                 {
                     var text = string.Format(@"File: {0} seems to exist. Overwrite destination?", newpath);
-                    if (MessageBox.Show(text, @"Overwrite", MessageBoxButtons.YesNo,
-                                        MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-                    {
-                        File.Copy(filePath, newpath, true);
-                    }
+                    copy = MessageBox.Show(text, @"Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
                 }
-                else
-                {
-                    File.Copy(filePath, newpath, true);
-                    TreeNode newNode = new TreeNode(Path.GetFileName(filePath));
-                    UpdateImage(newNode);
-                }
-            }
 
-            Refresh();
+                if (copy) File.Copy(filePath, newpath, true);
+            }
         }
 
         private void ProjectTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -137,14 +127,7 @@ namespace SphereStudio.Components
             {
                 FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
             }
-            catch (OperationCanceledException)
-            {
-                return;
-            }
-            finally
-            {
-                Refresh();
-            }
+            catch (OperationCanceledException) { return; }
         }
 
         /// <summary>
@@ -306,36 +289,52 @@ namespace SphereStudio.Components
             }
         }
 
+        /// <summary>
+        /// Gets the full length real path of the tree node item.
+        /// </summary>
+        /// <param name="node">The node to resolve path from.</param>
+        /// <returns>The full filepath the node corresponds to.</returns>
+        private static string ResolvePath(TreeNode node)
+        {
+            var root = Global.CurrentProject.RootPath;
+            var path = node.FullPath;
+            var idx = path.IndexOf("\\");
+            path = path.Substring(idx, path.Length - idx);
+            return root + path;
+        }
+
         private void ProjectTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            var pathtop = (e.Node.Parent.Index == 0) ? "" : e.Node.Parent.Text + '\\';
-            var oldpath = Global.CurrentProject.RootPath + '\\' + pathtop + e.Node.Text;
-            var newpath = Global.CurrentProject.RootPath + '\\' + pathtop + e.Label;
+            if (e.Label == null || e.Label == e.Node.Text) return;
 
-            var ow = File.Exists(newpath) && !oldpath.Equals(newpath);
-            var do_ow = false;
+            var oldpath = ResolvePath(e.Node);
+            var oldroot = Path.GetDirectoryName(oldpath);
+            var newpath = oldroot + "\\" + e.Label;
 
-            if (ow) {
-                do_ow = MessageBox.Show("Overwrite existing file?\n\n" + oldpath + "\n\nto:\n\n" + newpath, "File Replacement",
-                                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
-                                        MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+            var exists = File.Exists(newpath);
+            var overwrite = false;
+
+            if (exists)
+            {
+                overwrite = MessageBox.Show("Overwrite existing file?\n\n" + oldpath + "\n\nto:\n\n" + newpath, "File Replacement", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+                if (!overwrite)
+                {
+                    e.CancelEdit = true;
+                    return;
+                }
             }
-
-            if ((ow && !do_ow) || e.Label == null) { e.CancelEdit = true; return; }
 
             try
             {
-                if (do_ow) File.Delete(newpath);
+                Pause();
+                if (overwrite) File.Delete(newpath);
                 File.Move(oldpath, newpath);
+                Resume();
+                
             }
             catch (Exception exc)
             {
-                MessageBox.Show("Error in renaming file:\n" + exc.Message,
-                                "Rename Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (do_ow) e.Node.Remove();
+                MessageBox.Show("Error in renaming file:\n" + exc.Message, "Rename Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -398,6 +397,9 @@ namespace SphereStudio.Components
                 case "images":
                     extension = ".png";
                     break;
+                case "windowstyles":
+                    extension = ".rws";
+                    break;
             }
             EditorForm.OpenDocument("?" + extension);
         }
@@ -423,18 +425,12 @@ namespace SphereStudio.Components
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
             string path = Global.CurrentProject.RootPath + pathtop;
 
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path)) return;
+            try
             {
-                try
-                {
-                    FileSystem.DeleteDirectory(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-                node.Remove();
+                FileSystem.DeleteDirectory(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
             }
+            catch (OperationCanceledException) { return; }
         }
 
         public void Close()
@@ -533,15 +529,13 @@ namespace SphereStudio.Components
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
             if (ProjectTreeView.SelectedNode == null) return;
-            string pathtop = ProjectTreeView.SelectedNode.FullPath;
+            string path = "";
+            var node = ProjectTreeView.SelectedNode;
 
-            int idx = pathtop.IndexOf('\\');
-            
-            // special case for root:
-            if (idx < 0) pathtop = "";
-            else pathtop = pathtop.Substring(idx);
-
-            string path = Global.CurrentProject.RootPath + pathtop;
+            if (node.Level == 0 && node.Index == 0)
+                path = Global.CurrentProject.RootPath;
+            else
+                path = ResolvePath(node);
 
             System.Diagnostics.Process.Start("explorer.exe", path);
         }

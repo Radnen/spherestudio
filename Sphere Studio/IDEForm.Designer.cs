@@ -49,7 +49,7 @@
             this.CloseTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseAllTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveTabItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DockTest = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.MainDock = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.EditorTools = new System.Windows.Forms.ToolStrip();
             this.NewToolButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.OpenToolButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -162,16 +162,16 @@
             this.SaveTabItem.Size = new System.Drawing.Size(166, 22);
             this.SaveTabItem.Text = "Save Tab";
             // 
-            // DockTest
+            // MainDock
             // 
-            this.DockTest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DockTest.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(75)))));
-            this.DockTest.DockLeftPortion = 0.2D;
-            this.DockTest.DockRightPortion = 0.2D;
-            this.DockTest.Location = new System.Drawing.Point(0, 49);
-            this.DockTest.Name = "DockTest";
-            this.DockTest.ShowDocumentIcon = true;
-            this.DockTest.Size = new System.Drawing.Size(665, 362);
+            this.MainDock.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainDock.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(75)))));
+            this.MainDock.DockLeftPortion = 0.2D;
+            this.MainDock.DockRightPortion = 0.2D;
+            this.MainDock.Location = new System.Drawing.Point(0, 54);
+            this.MainDock.Name = "MainDock";
+            this.MainDock.ShowDocumentIcon = true;
+            this.MainDock.Size = new System.Drawing.Size(665, 357);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -217,14 +217,15 @@
             dockPaneStripToolWindowGradient1.InactiveTabGradient = tabGradient7;
             dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
-            this.DockTest.Skin = dockPanelSkin1;
-            this.DockTest.SupportDeeplyNestedContent = true;
-            this.DockTest.TabIndex = 6;
-            this.DockTest.ActiveDocumentChanged += new System.EventHandler(this.DockTest_ActiveDocumentChanged);
+            this.MainDock.Skin = dockPanelSkin1;
+            this.MainDock.SupportDeeplyNestedContent = true;
+            this.MainDock.TabIndex = 6;
+            this.MainDock.ActiveDocumentChanged += new System.EventHandler(this.DockTest_ActiveDocumentChanged);
             // 
             // EditorTools
             // 
             this.EditorTools.AllowItemReorder = true;
+            this.EditorTools.AutoSize = false;
             this.EditorTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.EditorTools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewToolButton,
@@ -245,8 +246,8 @@
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
-            this.EditorTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.EditorTools.Size = new System.Drawing.Size(665, 25);
+            this.EditorTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.EditorTools.Size = new System.Drawing.Size(665, 30);
             this.EditorTools.TabIndex = 4;
             this.EditorTools.Text = "Tool Strip";
             // 
@@ -256,7 +257,7 @@
             this.NewToolButton.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.NewToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.NewToolButton.Name = "NewToolButton";
-            this.NewToolButton.Size = new System.Drawing.Size(29, 22);
+            this.NewToolButton.Size = new System.Drawing.Size(29, 27);
             this.NewToolButton.Text = "&New";
             // 
             // OpenToolButton
@@ -265,7 +266,7 @@
             this.OpenToolButton.Image = global::SphereStudio.Properties.Resources.open;
             this.OpenToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenToolButton.Name = "OpenToolButton";
-            this.OpenToolButton.Size = new System.Drawing.Size(29, 22);
+            this.OpenToolButton.Size = new System.Drawing.Size(29, 27);
             this.OpenToolButton.Text = "&Open";
             // 
             // SaveToolButton
@@ -275,7 +276,7 @@
             this.SaveToolButton.Image = global::SphereStudio.Properties.Resources.disk;
             this.SaveToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveToolButton.Name = "SaveToolButton";
-            this.SaveToolButton.Size = new System.Drawing.Size(23, 22);
+            this.SaveToolButton.Size = new System.Drawing.Size(23, 27);
             this.SaveToolButton.Text = "&Save";
             this.SaveToolButton.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
@@ -283,7 +284,7 @@
             // 
             this.ToolSeperator1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ToolSeperator1.Name = "ToolSeperator1";
-            this.ToolSeperator1.Size = new System.Drawing.Size(6, 25);
+            this.ToolSeperator1.Size = new System.Drawing.Size(6, 30);
             // 
             // RunToolButton
             // 
@@ -292,7 +293,7 @@
             this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
             this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RunToolButton.Name = "RunToolButton";
-            this.RunToolButton.Size = new System.Drawing.Size(23, 22);
+            this.RunToolButton.Size = new System.Drawing.Size(23, 27);
             this.RunToolButton.Text = "Test Game";
             this.RunToolButton.Click += new System.EventHandler(this.RunToolButton_Click);
             // 
@@ -303,7 +304,7 @@
             this.GameToolButton.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.GameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GameToolButton.Name = "GameToolButton";
-            this.GameToolButton.Size = new System.Drawing.Size(23, 22);
+            this.GameToolButton.Size = new System.Drawing.Size(23, 27);
             this.GameToolButton.Text = "Game Settings";
             this.GameToolButton.Click += new System.EventHandler(this.ViewGameSettings);
             // 
@@ -314,7 +315,7 @@
             this.OptionsToolButton.Image = global::SphereStudio.Properties.Resources.cog;
             this.OptionsToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OptionsToolButton.Name = "OptionsToolButton";
-            this.OptionsToolButton.Size = new System.Drawing.Size(23, 22);
+            this.OptionsToolButton.Size = new System.Drawing.Size(23, 27);
             this.OptionsToolButton.Text = "Configure Sphere";
             this.OptionsToolButton.Click += new System.EventHandler(this.OptionsToolButton_Click);
             // 
@@ -324,14 +325,14 @@
             this.toolStripButton1.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 27);
             this.toolStripButton1.Text = "Editor Settings";
             this.toolStripButton1.Click += new System.EventHandler(this.OpenEditorSettings);
             // 
             // ToolSeperator2
             // 
             this.ToolSeperator2.Name = "ToolSeperator2";
-            this.ToolSeperator2.Size = new System.Drawing.Size(6, 25);
+            this.ToolSeperator2.Size = new System.Drawing.Size(6, 30);
             // 
             // CutToolButton
             // 
@@ -340,7 +341,7 @@
             this.CutToolButton.Image = global::SphereStudio.Properties.Resources.cut;
             this.CutToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CutToolButton.Name = "CutToolButton";
-            this.CutToolButton.Size = new System.Drawing.Size(23, 22);
+            this.CutToolButton.Size = new System.Drawing.Size(23, 27);
             this.CutToolButton.Text = "C&ut";
             this.CutToolButton.Click += new System.EventHandler(this.CutMenuItem_Click);
             // 
@@ -351,7 +352,7 @@
             this.CopyToolButton.Image = global::SphereStudio.Properties.Resources.page_copy;
             this.CopyToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CopyToolButton.Name = "CopyToolButton";
-            this.CopyToolButton.Size = new System.Drawing.Size(23, 22);
+            this.CopyToolButton.Size = new System.Drawing.Size(23, 27);
             this.CopyToolButton.Text = "&Copy";
             this.CopyToolButton.Click += new System.EventHandler(this.CopyMenuItem_Click);
             // 
@@ -361,26 +362,27 @@
             this.PasteToolButton.Image = global::SphereStudio.Properties.Resources.paste_plain;
             this.PasteToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PasteToolButton.Name = "PasteToolButton";
-            this.PasteToolButton.Size = new System.Drawing.Size(23, 22);
+            this.PasteToolButton.Size = new System.Drawing.Size(23, 27);
             this.PasteToolButton.Text = "&Paste";
             this.PasteToolButton.Click += new System.EventHandler(this.PasteMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 30);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(81, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(81, 27);
             this.toolStripLabel1.Text = "Configuration";
             // 
             // ConfigSelectTool
             // 
             this.ConfigSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ConfigSelectTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
             this.ConfigSelectTool.Name = "ConfigSelectTool";
-            this.ConfigSelectTool.Size = new System.Drawing.Size(128, 25);
+            this.ConfigSelectTool.Size = new System.Drawing.Size(128, 30);
             this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
             // 
             // EditorStatus
@@ -892,10 +894,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(665, 433);
-            this.Controls.Add(this.DockTest);
+            this.Controls.Add(this.MainDock);
             this.Controls.Add(this.EditorTools);
             this.Controls.Add(this.EditorStatus);
             this.Controls.Add(this.EditorMenu);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.KeyPreview = true;
@@ -937,7 +940,7 @@
         private System.Windows.Forms.ToolStripMenuItem CloseAllTabItem;
         private System.Windows.Forms.ToolStripMenuItem SaveTabItem;
         private System.Windows.Forms.ToolStripMenuItem ResizeMenuItem;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel DockTest;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
         private System.Windows.Forms.ToolStripMenuItem PropertiesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RescaleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem TilesetMenuItem;

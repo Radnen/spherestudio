@@ -26,6 +26,7 @@ namespace SphereStudio
         private bool _firsttime;
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string,string>();
         private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType,IEditorPlugin>();
+        private string _default_active;
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
@@ -66,6 +67,17 @@ namespace SphereStudio
 
             Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
                 (IntPtr.Size == 4) ? "x86" : "x64", Application.ProductVersion);
+
+            TryEditFile += IDEForm_TryEditFile;
+        }
+
+        void IDEForm_TryEditFile(object sender, EditFileEventArgs e)
+        {
+            if (e.Extension == ".sgm")
+            {
+                OpenProject(e.Path);
+                e.Handled = true;
+            }
         }
 
         public override sealed string Text
@@ -145,7 +157,7 @@ namespace SphereStudio
             _treeContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
             _treeContent.HideOnClose = true;
             _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
-            _treeContent.Show(DockTest, DockState.DockLeft);
+            _treeContent.Show(MainDock, DockState.DockLeft);
 
             _startContent = new DockContent
             {
@@ -154,7 +166,7 @@ namespace SphereStudio
                 HideOnClose = true
             };
             _startContent.Controls.Add(_startPage);
-            if (EditorSettings.UseStartPage) _startContent.Show(DockTest, DockState.Document);
+            if (EditorSettings.UseStartPage) _startContent.Show(MainDock, DockState.Document);
         }
 
         public void DockControl(DockContent content, DockState state)
@@ -165,12 +177,12 @@ namespace SphereStudio
             if (content.Controls.Count > 0 && content.Controls[0] is EditorObject)
                 content.FormClosing += Content_FormClosing;
 
-            content.Show(DockTest, state);
+            content.Show(MainDock, state);
         }
 
         public DockContentCollection Documents
         {
-            get { return DockTest.Contents; }
+            get { return MainDock.Contents; }
         }
 
         public void RemoveControl(string name)
@@ -273,6 +285,12 @@ namespace SphereStudio
                 OpenEditorSettings(this, null);
                 _firsttime = false;
             }
+
+            if (!String.IsNullOrWhiteSpace(_default_active))
+            {
+                var doc = GetDocument(_default_active);
+                if (doc != null) doc.DockHandler.Activate();
+            }
         }
 
         /// <summary>
@@ -313,8 +331,8 @@ namespace SphereStudio
             control.Dock = DockStyle.Fill;
             content = new DockContent();
             content.Controls.Add(control);
-            if (DockTest.DocumentsCount == 0) content.Show(DockTest, DockState.Document);
-            else content.Show(DockTest.Panes[0], null);
+            if (MainDock.DocumentsCount == 0) content.Show(MainDock, DockState.Document);
+            else content.Show(MainDock.Panes[0], null);
             content.DockState = DockState.Document;
             content.DockAreas = DockAreas.Document;
             content.Text = text;
@@ -358,7 +376,7 @@ namespace SphereStudio
         /// <returns>null if none found, or the IDockContent.</returns>
         public IDockContent GetDocument(string filepath)
         {
-            foreach (IDockContent content in DockTest.Contents)
+            foreach (IDockContent content in MainDock.Contents)
             {
                 Form form = content.DockHandler.Form;
                 if (form.Controls.Count <= 0 || !(form.Controls[0] is EditorObject)) continue;
@@ -369,7 +387,7 @@ namespace SphereStudio
 
         private DockContent FindDocument(string name)
         {
-            return DockTest.Contents.Cast<DockContent>().FirstOrDefault(content => content.DockHandler.TabText == name);
+            return MainDock.Contents.Cast<DockContent>().FirstOrDefault(content => content.DockHandler.TabText == name);
         }
 
         /// <summary>
@@ -379,14 +397,24 @@ namespace SphereStudio
         /// <param name="name">The content's tab text to look for.</param>
         public void SelectDocument(string name)
         {
-            foreach (IDockContent content in DockTest.Contents)
+            foreach (IDockContent content in MainDock.Contents)
                 if (content.DockHandler.TabText == name)
                     content.DockHandler.Activate();
         }
 
+        /// <summary>
+        /// Sets the default active document when the editor first starts up.
+        /// Used internally when dragging a file onto the executable.
+        /// </summary>
+        /// <param name="name">File path of the document to set.</param>
+        public void SetDefaultActive(string name)
+        {
+            _default_active = name;
+        }
+
         private void SaveAllDocuments()
         {
-            foreach (IDockContent content in DockTest.Contents)
+            foreach (IDockContent content in MainDock.Contents)
             {
                 Form f = content.DockHandler.Form;
                 if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
@@ -641,13 +669,13 @@ namespace SphereStudio
         #region view menu items
         private void StartPageMenuItem_Click(object sender, EventArgs e)
         {
-            if (_startContent.IsHidden) _startContent.Show(DockTest);
+            if (_startContent.IsHidden) _startContent.Show(MainDock);
             else _startContent.Hide();
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, EventArgs e)
         {
-            if (_treeContent.IsHidden) _treeContent.Show(DockTest, DockState.DockLeft);
+            if (_treeContent.IsHidden) _treeContent.Show(MainDock, DockState.DockLeft);
             else _treeContent.Hide();
         }
         #endregion
@@ -673,8 +701,8 @@ namespace SphereStudio
 
         private void DockTest_ActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (DockTest.ActiveDocument == null) return;
-            Form form = DockTest.ActiveDocument.DockHandler.Form;
+            if (MainDock.ActiveDocument == null) return;
+            Form form = MainDock.ActiveDocument.DockHandler.Form;
             if (form.Controls.Count == 0) return;
             SetCurrentControl(form.Controls[0]);
             UpdateButtons();
@@ -693,10 +721,10 @@ namespace SphereStudio
 
         private void ViewMenu_DropDownOpening(object sender, EventArgs e)
         {
-            if (DockTest.Contents.Count == 0) return;
+            if (MainDock.Contents.Count == 0) return;
             ToolStripSeparator ts = new ToolStripSeparator {Name = "zz_v"};
             ViewMenu.DropDownItems.Add(ts);
-            foreach (IDockContent content in DockTest.Contents)
+            foreach (IDockContent content in MainDock.Contents)
             {
                 Form f = content.DockHandler.Form;
                 ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText) {Name = "zz_v"};
@@ -735,14 +763,14 @@ namespace SphereStudio
 
         private void ClosePaneItem_Click(object sender, EventArgs e)
         {
-            if (DockTest.ActiveDocument == null) return;
+            if (MainDock.ActiveDocument == null) return;
 
-            if (DockTest.ActiveDocument is DockContent &&
-                ((DockContent)DockTest.ActiveDocument).Controls[0] is StartPage)
+            if (MainDock.ActiveDocument is DockContent &&
+                ((DockContent)MainDock.ActiveDocument).Controls[0] is StartPage)
             {
                 StartPageMenuItem_Click(null, EventArgs.Empty);
             }
-            else DockTest.ActiveDocument.DockHandler.Close();
+            else MainDock.ActiveDocument.DockHandler.Close();
         }
         
         private void OpenMenuItem_Click(object sender, EventArgs e)

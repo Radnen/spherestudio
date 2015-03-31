@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SphereStudio
@@ -9,11 +10,23 @@ namespace SphereStudio
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new IDEForm());
+
+            var form = new IDEForm();
+
+            // check for and open files dragged onto it.
+            foreach (string s in args)
+            {
+                if (File.Exists(s)) form.OpenDocument(s);
+            }
+
+            if (args.Length > 0 && File.Exists(args[args.Length - 1]))
+                form.SetDefaultActive(args[args.Length - 1]);
+
+            Application.Run(form);
         }
     }
 }
