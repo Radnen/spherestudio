@@ -487,20 +487,5 @@ namespace SphereStudio.Plugins
             MapControl.ShowTileNums = ShowNumButton.Checked;
             MapControl.Invalidate();
         }
-
-        private void TilesetControl_TileSelected()
-        {
-
-        }
-
-        private void TilesetControl_TileRemoved(short startindex)
-        {
-
-        }
-
-        private void TilesetControl_TileAdded(short startindex)
-        {
-
-        }
     }
 }

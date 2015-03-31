@@ -42,7 +42,7 @@
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.mapSplitter = new System.Windows.Forms.SplitContainer();
             this.MapToolContainer = new System.Windows.Forms.ToolStripContainer();
-            this.MapControl = new global::SphereStudio.Plugins.Components.MapControl();
+            this.MapControl = new SphereStudio.Plugins.Components.MapControl();
             this.mapstatus = new System.Windows.Forms.StatusStrip();
             this.map_pos_label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -65,11 +65,11 @@
             this.imageTab = new System.Windows.Forms.TabPage();
             this.TileDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
             this.tileTab = new System.Windows.Forms.TabPage();
-            this.TileEditor = new global::SphereStudio.Plugins.Components.TileEditor();
+            this.TileEditor = new SphereStudio.Plugins.Components.TileEditor();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.LayerEditor = new global::SphereStudio.Plugins.Components.LayerPanel();
+            this.LayerEditor = new SphereStudio.Plugins.Components.LayerPanel();
             this.TilesetPanel = new Sphere.Core.Editor.EditorPanel();
-            this.TilesetControl = new global::SphereStudio.Plugins.Components.TilesetControl2();
+            this.TilesetControl = new SphereStudio.Plugins.Components.TilesetControl2();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
@@ -214,7 +214,7 @@
             this.MapControl.Size = new System.Drawing.Size(457, 158);
             this.MapControl.TabIndex = 1;
             this.MapControl.Tiles = null;
-            this.MapControl.Tool = global::SphereStudio.Plugins.Components.MapControl.MapTool.Pen;
+            this.MapControl.Tool = SphereStudio.Plugins.Components.MapControl.MapTool.Pen;
             this.MapControl.PropChanged += new System.EventHandler(this.MapControl_PropChanged);
             this.MapControl.Edited += new System.EventHandler(this.MapControl_Edited);
             this.MapControl.Paint += new System.Windows.Forms.PaintEventHandler(this.MapControl_Paint);
@@ -430,6 +430,7 @@
             // TileDrawer
             // 
             this.TileDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TileDrawer.HelpLabel = null;
             this.TileDrawer.Location = new System.Drawing.Point(3, 3);
             this.TileDrawer.Name = "TileDrawer";
             this.TileDrawer.Size = new System.Drawing.Size(443, 210);
@@ -461,6 +462,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -473,7 +475,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.TilesetPanel);
             this.splitContainer1.Size = new System.Drawing.Size(220, 453);
-            this.splitContainer1.SplitterDistance = 158;
+            this.splitContainer1.SplitterDistance = 221;
             this.splitContainer1.TabIndex = 1;
             // 
             // LayerEditor
@@ -483,7 +485,7 @@
             this.LayerEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LayerEditor.Location = new System.Drawing.Point(0, 0);
             this.LayerEditor.Name = "LayerEditor";
-            this.LayerEditor.Size = new System.Drawing.Size(220, 158);
+            this.LayerEditor.Size = new System.Drawing.Size(220, 221);
             this.LayerEditor.TabIndex = 0;
             this.LayerEditor.LayerAdded += new System.EventHandler(this.Layers_LayerAdded);
             this.LayerEditor.LayerRemoved += new System.EventHandler(this.Layers_LayerRemoved);
@@ -495,7 +497,7 @@
             this.TilesetPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TilesetPanel.Location = new System.Drawing.Point(0, 0);
             this.TilesetPanel.Name = "TilesetPanel";
-            this.TilesetPanel.Size = new System.Drawing.Size(220, 291);
+            this.TilesetPanel.Size = new System.Drawing.Size(220, 228);
             this.TilesetPanel.TabIndex = 1;
             this.TilesetPanel.XSnap = 0;
             this.TilesetPanel.YSnap = 0;
@@ -514,9 +516,9 @@
             this.TilesetControl.Size = new System.Drawing.Size(0, 298);
             this.TilesetControl.TabIndex = 0;
             this.TilesetControl.Tileset = null;
-            this.TilesetControl.TileSelected += new global::SphereStudio.Plugins.Components.TilesetControl2.SelectedHandler(this.TilesetControl_TileSelected);
-            this.TilesetControl.TileRemoved += new global::SphereStudio.Plugins.Components.TilesetControl2.TileHandler(this.TilesetControl_TileRemoved);
-            this.TilesetControl.TileAdded += new global::SphereStudio.Plugins.Components.TilesetControl2.TileHandler(this.TilesetControl_TileAdded);
+            this.TilesetControl.TileSelected += new SphereStudio.Plugins.Components.TilesetControl2.SelectedHandler(this.TilesetControl_TileSelected);
+            this.TilesetControl.TileRemoved += new SphereStudio.Plugins.Components.TilesetControl2.TileHandler(this.TilesetControl_TileRemoved);
+            this.TilesetControl.TileAdded += new SphereStudio.Plugins.Components.TilesetControl2.TileHandler(this.TilesetControl_TileAdded);
             // 
             // MapEditor
             // 

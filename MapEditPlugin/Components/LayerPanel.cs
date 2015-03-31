@@ -69,5 +69,10 @@ namespace SphereStudio.Plugins.Components
         {
             Layers.Width = LayersPanel.Width;
         }
+
+        private void layerPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new LayerForm(layers.SelectedItem.Layer).ShowDialog();
+        }
     }
 }

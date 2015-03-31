@@ -111,6 +111,12 @@
     <Compile Include="Components\TilesetControl2.Designer.cs">
       <DependentUpon>TilesetControl2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LayerForm.Designer.cs">
+      <DependentUpon>LayerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MapPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\TilesetControl2.resx">
       <DependentUpon>TilesetControl2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LayerForm.resx">
+      <DependentUpon>LayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MapPropertiesForm.resx">
       <DependentUpon>MapPropertiesForm.cs</DependentUpon>
