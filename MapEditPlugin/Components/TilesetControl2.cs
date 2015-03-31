@@ -119,8 +119,8 @@ namespace SphereStudio.Plugins.Components
             else
             {
                 _selected_index = tile;
-                int x = (tile % (Width / _tile_w_zoom));
-                int y = (tile / (Height / _tile_h_zoom));
+                int x = (tile % Math.Max(Width / _tile_w_zoom, 1));
+                int y = (tile / Math.Max(Height / _tile_h_zoom, 1));
                 _selection.Start = new Point(x, y);
                 _selection.End = _selection.Start;
                 Selected.Clear();
