@@ -49,6 +49,7 @@
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.LayerControl_DragOver);
             this.DragLeave += new System.EventHandler(this.LayerControl_DragLeave);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.LayerControl_Paint);
+            this.DoubleClick += new System.EventHandler(this.LayerControl_DoubleClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LayerControl_MouseDown);
             this.MouseLeave += new System.EventHandler(this.LayerControl_MouseLeave);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LayerControl_MouseMove);

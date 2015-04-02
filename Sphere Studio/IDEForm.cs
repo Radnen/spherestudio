@@ -35,9 +35,9 @@ namespace SphereStudio
 
         public IDEForm()
         {
-            _firsttime = !Global.CurrentEditor.LoadSettings();
-
             InitializeComponent();
+
+            _firsttime = !Global.CurrentEditor.LoadSettings();
 
             _tree = new ProjectTree() { Dock = DockStyle.Fill, EditorForm = this };
 
@@ -75,7 +75,7 @@ namespace SphereStudio
         {
             if (e.Extension == ".sgm")
             {
-                OpenProject(e.Path);
+                OpenGameSettings();
                 e.Handled = true;
             }
         }
@@ -590,27 +590,14 @@ namespace SphereStudio
             Directory.SetCurrentDirectory(Application.StartupPath);
         }
 
-        private void ViewGameSettings(object sender, EventArgs e)
-        {
-            using (GameSettings settings = new GameSettings(Global.CurrentProject))
-            {
-                if (settings.ShowDialog() == DialogResult.OK)
-                {
-                    Global.CurrentProject.SetSettings(settings.GetSettings());
-                    Global.CurrentProject.SaveSettings();
-                }
-            }
-        }
-
-        public void OpenEditorSettings()
-        {
-            OpenEditorSettings(null, EventArgs.Empty);
-        }
-
         private void OpenEditorSettings(object sender, EventArgs e)
         {
-            if (Global.EditSettings(this))
-                ApplyRefresh();
+            OpenEditorSettings();
+        }
+
+        private void ViewGameSettings(object sender, EventArgs e)
+        {
+            OpenGameSettings();
         }
 
         public void ApplyRefresh()
@@ -623,6 +610,24 @@ namespace SphereStudio
             UpdateStyle();
             Invalidate(true);
             ResumeLayout();
+        }
+
+        public void OpenEditorSettings()
+        {
+            if (Global.EditSettings(this))
+                ApplyRefresh();
+        }
+
+        private void OpenGameSettings()
+        {
+            using (GameSettings settings = new GameSettings(Global.CurrentProject))
+            {
+                if (settings.ShowDialog() == DialogResult.OK)
+                {
+                    Global.CurrentProject.SetSettings(settings.GetSettings());
+                    Global.CurrentProject.SaveSettings();
+                }
+            }
         }
 
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)

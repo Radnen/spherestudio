@@ -156,6 +156,8 @@ namespace Sphere.Core
         {
             Width = width;
             Height = height;
+            ParallaxX = 1.0f;
+            ParallaxY = 1.0f;
             Name = "Untitled";
 
             _tiles = new short[width, height];

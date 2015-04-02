@@ -39,6 +39,8 @@
             this.MoveUpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MoveDownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenameLayerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.layerPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LayersPanel = new Sphere.Core.Editor.EditorPanel();
             this.LayerContextStrip.SuspendLayout();
             this.SuspendLayout();
@@ -65,8 +67,8 @@
             // 
             // RemoveLayerButton
             // 
-            this.RemoveLayerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.RemoveLayerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RemoveLayerButton.Location = new System.Drawing.Point(3, 250);
             this.RemoveLayerButton.Name = "RemoveLayerButton";
             this.RemoveLayerButton.Size = new System.Drawing.Size(146, 23);
@@ -77,8 +79,8 @@
             // 
             // AddLayerButton
             // 
-            this.AddLayerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddLayerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AddLayerButton.Location = new System.Drawing.Point(3, 3);
             this.AddLayerButton.Name = "AddLayerButton";
             this.AddLayerButton.Size = new System.Drawing.Size(146, 23);
@@ -94,16 +96,18 @@
             this.RemoveLayerMenuItem,
             this.MoveUpMenuItem,
             this.MoveDownMenuItem,
-            this.RenameLayerMenuItem});
+            this.RenameLayerMenuItem,
+            this.toolStripSeparator1,
+            this.layerPropertiesToolStripMenuItem});
             this.LayerContextStrip.Name = "LayerContextStrip";
-            this.LayerContextStrip.Size = new System.Drawing.Size(158, 114);
+            this.LayerContextStrip.Size = new System.Drawing.Size(168, 142);
             this.LayerContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.LayerContextStrip_Opening);
             // 
             // AddLayerMenuItem
             // 
             this.AddLayerMenuItem.Image = global::SphereStudio.Plugins.Properties.Resources.add;
             this.AddLayerMenuItem.Name = "AddLayerMenuItem";
-            this.AddLayerMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.AddLayerMenuItem.Size = new System.Drawing.Size(167, 22);
             this.AddLayerMenuItem.Text = "&Add Layer";
             this.AddLayerMenuItem.Click += new System.EventHandler(this.AddLayerButton_Click);
             // 
@@ -111,35 +115,47 @@
             // 
             this.RemoveLayerMenuItem.Image = global::SphereStudio.Plugins.Properties.Resources.delete;
             this.RemoveLayerMenuItem.Name = "RemoveLayerMenuItem";
-            this.RemoveLayerMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.RemoveLayerMenuItem.Size = new System.Drawing.Size(167, 22);
             this.RemoveLayerMenuItem.Text = "&Remove Layer";
             this.RemoveLayerMenuItem.Click += new System.EventHandler(this.RemoveLayerButton_Click);
             // 
             // MoveUpMenuItem
             // 
             this.MoveUpMenuItem.Name = "MoveUpMenuItem";
-            this.MoveUpMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.MoveUpMenuItem.Size = new System.Drawing.Size(167, 22);
             this.MoveUpMenuItem.Text = "Move &Up";
             // 
             // MoveDownMenuItem
             // 
             this.MoveDownMenuItem.Name = "MoveDownMenuItem";
-            this.MoveDownMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.MoveDownMenuItem.Size = new System.Drawing.Size(167, 22);
             this.MoveDownMenuItem.Text = "Move &Down";
             // 
             // RenameLayerMenuItem
             // 
             this.RenameLayerMenuItem.Image = global::SphereStudio.Plugins.Properties.Resources.application_view_list;
             this.RenameLayerMenuItem.Name = "RenameLayerMenuItem";
-            this.RenameLayerMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.RenameLayerMenuItem.Size = new System.Drawing.Size(167, 22);
             this.RenameLayerMenuItem.Text = "Re&name Layer...";
             this.RenameLayerMenuItem.Click += new System.EventHandler(this.RenameLayerMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(164, 6);
+            // 
+            // layerPropertiesToolStripMenuItem
+            // 
+            this.layerPropertiesToolStripMenuItem.Name = "layerPropertiesToolStripMenuItem";
+            this.layerPropertiesToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.layerPropertiesToolStripMenuItem.Text = "Layer &Properties...";
+            this.layerPropertiesToolStripMenuItem.Click += new System.EventHandler(this.layerPropertiesToolStripMenuItem_Click);
+            // 
             // LayersPanel
             // 
-            this.LayersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.LayersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LayersPanel.AutoScroll = true;
             this.LayersPanel.BackColor = System.Drawing.SystemColors.Control;
             this.LayersPanel.Location = new System.Drawing.Point(3, 32);
@@ -181,5 +197,7 @@
         private System.Windows.Forms.ToolStripMenuItem MoveDownMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RenameLayerMenuItem;
         private Sphere.Core.Editor.EditorPanel LayersPanel;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem layerPropertiesToolStripMenuItem;
     }
 }

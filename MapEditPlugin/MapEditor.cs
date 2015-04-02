@@ -39,7 +39,7 @@ namespace SphereStudio.Plugins
         {
             Controls.Remove(mapSplitter);
             Controls.Remove(SplitContainer);
-            Controls.Remove(splitContainer1);
+            Controls.Remove(layerTileSplit);
             Controls.Remove(EditorTabs);
 
             _mapContent = new DockContent();
@@ -89,7 +89,7 @@ namespace SphereStudio.Plugins
                 _tileContent.Show(_mapContent.Pane, DockAlignment.Bottom, 0.40);
                 _drawContent.Show(_tileContent.PanelPane, _tileContent);
                 _layerContent.Show(_mainPanel, DockState.DockRight);
-                _tilesetContent.Show(_layerContent.Pane, DockAlignment.Bottom, 0.80);
+                _tilesetContent.Show(_layerContent.Pane, DockAlignment.Bottom, 0.66);
             }
 
             Controls.Add(_mainPanel);
@@ -486,21 +486,6 @@ namespace SphereStudio.Plugins
         {
             MapControl.ShowTileNums = ShowNumButton.Checked;
             MapControl.Invalidate();
-        }
-
-        private void TilesetControl_TileSelected()
-        {
-
-        }
-
-        private void TilesetControl_TileRemoved(short startindex)
-        {
-
-        }
-
-        private void TilesetControl_TileAdded(short startindex)
-        {
-
         }
     }
 }

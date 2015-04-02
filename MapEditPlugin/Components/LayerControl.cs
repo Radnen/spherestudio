@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere.Core;
+using SphereStudio.Plugins.Forms;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -243,6 +244,13 @@ namespace SphereStudio.Plugins.Components
         {
             draw_drag = true;
             Invalidate();
+        }
+
+        private void LayerControl_DoubleClick(object sender, EventArgs e)
+        {
+            if (this.SelectedItem != null)
+                new LayerForm(this.SelectedItem.Layer).ShowDialog();
+            Refresh();
         }
     }
 
