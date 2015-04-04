@@ -177,18 +177,18 @@
             // okayButton
             // 
             this.okayButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okayButton.Location = new System.Drawing.Point(183, 4);
+            this.okayButton.Location = new System.Drawing.Point(168, 4);
             this.okayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.okayButton.Name = "okayButton";
             this.okayButton.Size = new System.Drawing.Size(87, 28);
             this.okayButton.TabIndex = 14;
-            this.okayButton.Text = "OK";
+            this.okayButton.Text = "&Save";
             this.okayButton.UseVisualStyleBackColor = true;
             // 
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(90, 4);
+            this.cancelButton.Location = new System.Drawing.Point(261, 4);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(87, 28);
@@ -219,8 +219,10 @@
             // 
             // GameSettings
             // 
+            this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(360, 464);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectPic);
