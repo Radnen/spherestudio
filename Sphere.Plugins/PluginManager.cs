@@ -41,15 +41,10 @@ namespace Sphere.Plugins
         /// <param name="editor">The plugin object to unregister.</param>
         public static void UnregisterEditor(IEditorPlugin editor)
         {
-            List<EditorType> toDelete = new List<EditorType>();
-            
-            foreach (EditorType key in from key in _editors.Keys where _editors[key] == editor select key)
-                toDelete.Add(key);
-            
-            // this is roundabout, but is unfortunately necessary to prevent "collection modified
-            // while enumerating" exceptions
-            foreach (EditorType key in toDelete)
-                _editors.Remove(key);
+            while (_editors.ContainsValue(editor)) {
+                var key = _editors.Keys.FirstOrDefault(n => _editors[n] == editor);
+                if (key != default(EditorType)) _editors.Remove(key);
+            }
         }
 
         /// <summary>

@@ -40,17 +40,25 @@
             this.ConfigPathBox = new System.Windows.Forms.TextBox();
             this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.StyleLabel = new System.Windows.Forms.Label();
-            this.StyleComboBox = new System.Windows.Forms.ComboBox();
-            this.PropLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.ItemCheckBox = new System.Windows.Forms.CheckedListBox();
+            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.ScriptHeaderBox = new System.Windows.Forms.RichTextBox();
+            this.PropLabel = new Sphere.Core.Editor.EditorLabel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.StyleComboBox = new System.Windows.Forms.ComboBox();
+            this.editorLabel2 = new Sphere.Core.Editor.EditorLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.DownButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
             this.AddButton = new System.Windows.Forms.Button();
             this.PathListBox = new System.Windows.Forms.ListBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Sphere64PathButton = new System.Windows.Forms.Button();
             this.SpherePathButton = new System.Windows.Forms.Button();
+            this.Sphere64PathBox = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.PluginList = new System.Windows.Forms.ListView();
             this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -67,12 +75,12 @@
             this.ButtonPanel = new System.Windows.Forms.Panel();
             this.ApplyButton = new System.Windows.Forms.Button();
             this.PresetsPanel = new System.Windows.Forms.Panel();
-            this.Sphere64PathBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.Sphere64PathButton = new System.Windows.Forms.Button();
             this.PresetLabel = new Sphere.Core.Editor.EditorLabel();
             this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
@@ -168,10 +176,12 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.StyleLabel);
-            this.tabPage1.Controls.Add(this.StyleComboBox);
+            this.tabPage1.Controls.Add(this.panel1);
+            this.tabPage1.Controls.Add(this.editorLabel1);
+            this.tabPage1.Controls.Add(this.panel3);
             this.tabPage1.Controls.Add(this.PropLabel);
-            this.tabPage1.Controls.Add(this.ItemCheckBox);
+            this.tabPage1.Controls.Add(this.panel2);
+            this.tabPage1.Controls.Add(this.editorLabel2);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage1.Name = "tabPage1";
@@ -181,14 +191,90 @@
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // StyleLabel
+            // panel1
             // 
-            this.StyleLabel.AutoSize = true;
-            this.StyleLabel.Location = new System.Drawing.Point(3, 4);
-            this.StyleLabel.Name = "StyleLabel";
-            this.StyleLabel.Size = new System.Drawing.Size(47, 13);
-            this.StyleLabel.TabIndex = 0;
-            this.StyleLabel.Text = "UI Style:";
+            this.panel1.Controls.Add(this.ItemCheckBox);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 83);
+            this.panel1.Margin = new System.Windows.Forms.Padding(5);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(372, 149);
+            this.panel1.TabIndex = 9;
+            // 
+            // ItemCheckBox
+            // 
+            this.ItemCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ItemCheckBox.FormattingEnabled = true;
+            this.ItemCheckBox.Items.AddRange(new object[] {
+            "Use Automatic Script Headers",
+            "Automatically Open Last Project",
+            "Automatically Open Start Page"});
+            this.ItemCheckBox.Location = new System.Drawing.Point(5, 5);
+            this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ItemCheckBox.Name = "ItemCheckBox";
+            this.ItemCheckBox.Size = new System.Drawing.Size(362, 124);
+            this.ItemCheckBox.TabIndex = 3;
+            // 
+            // editorLabel1
+            // 
+            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel1.ForeColor = System.Drawing.Color.White;
+            this.editorLabel1.Location = new System.Drawing.Point(3, 232);
+            this.editorLabel1.Name = "editorLabel1";
+            this.editorLabel1.Size = new System.Drawing.Size(372, 23);
+            this.editorLabel1.TabIndex = 5;
+            this.editorLabel1.Text = "Script Header";
+            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.ScriptHeaderBox);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel3.Location = new System.Drawing.Point(3, 255);
+            this.panel3.Margin = new System.Windows.Forms.Padding(5);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(372, 100);
+            this.panel3.TabIndex = 10;
+            // 
+            // ScriptHeaderBox
+            // 
+            this.ScriptHeaderBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScriptHeaderBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ScriptHeaderBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScriptHeaderBox.Location = new System.Drawing.Point(5, 5);
+            this.ScriptHeaderBox.Name = "ScriptHeaderBox";
+            this.ScriptHeaderBox.Size = new System.Drawing.Size(362, 92);
+            this.ScriptHeaderBox.TabIndex = 6;
+            this.ScriptHeaderBox.Text = "/**\n * File: [filename]\n * Author: [author]\n * Date: [MM/dd/yy]\n**/";
+            // 
+            // PropLabel
+            // 
+            this.PropLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.PropLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.PropLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.PropLabel.ForeColor = System.Drawing.Color.White;
+            this.PropLabel.Location = new System.Drawing.Point(3, 60);
+            this.PropLabel.Name = "PropLabel";
+            this.PropLabel.Size = new System.Drawing.Size(372, 23);
+            this.PropLabel.TabIndex = 7;
+            this.PropLabel.Text = "Properties";
+            this.PropLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.StyleComboBox);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(3, 27);
+            this.panel2.Margin = new System.Windows.Forms.Padding(5);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(372, 33);
+            this.panel2.TabIndex = 4;
             // 
             // StyleComboBox
             // 
@@ -196,36 +282,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StyleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StyleComboBox.FormattingEnabled = true;
-            this.StyleComboBox.Location = new System.Drawing.Point(5, 23);
-            this.StyleComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.StyleComboBox.Location = new System.Drawing.Point(5, 5);
+            this.StyleComboBox.Margin = new System.Windows.Forms.Padding(5);
             this.StyleComboBox.MaxDropDownItems = 10;
             this.StyleComboBox.Name = "StyleComboBox";
-            this.StyleComboBox.Size = new System.Drawing.Size(369, 21);
+            this.StyleComboBox.Size = new System.Drawing.Size(362, 21);
             this.StyleComboBox.TabIndex = 1;
             // 
-            // PropLabel
+            // editorLabel2
             // 
-            this.PropLabel.AutoSize = true;
-            this.PropLabel.Location = new System.Drawing.Point(3, 45);
-            this.PropLabel.Name = "PropLabel";
-            this.PropLabel.Size = new System.Drawing.Size(54, 13);
-            this.PropLabel.TabIndex = 2;
-            this.PropLabel.Text = "Properties";
-            // 
-            // ItemCheckBox
-            // 
-            this.ItemCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ItemCheckBox.FormattingEnabled = true;
-            this.ItemCheckBox.Items.AddRange(new object[] {
-            "Update Script Headers",
-            "Automatically Open Last Project",
-            "Automatically Open Start Page"});
-            this.ItemCheckBox.Location = new System.Drawing.Point(5, 62);
-            this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ItemCheckBox.Name = "ItemCheckBox";
-            this.ItemCheckBox.Size = new System.Drawing.Size(369, 64);
-            this.ItemCheckBox.TabIndex = 3;
+            this.editorLabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.editorLabel2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel2.ForeColor = System.Drawing.Color.White;
+            this.editorLabel2.Location = new System.Drawing.Point(3, 4);
+            this.editorLabel2.Name = "editorLabel2";
+            this.editorLabel2.Size = new System.Drawing.Size(372, 23);
+            this.editorLabel2.TabIndex = 8;
+            this.editorLabel2.Text = "UI Style";
+            this.editorLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabPage2
             // 
@@ -319,6 +394,27 @@
             this.PathListBox.TabIndex = 6;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 43);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(131, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Sphere 64-bit Engine Path";
+            // 
+            // Sphere64PathButton
+            // 
+            this.Sphere64PathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Sphere64PathButton.Image = global::SphereStudio.Properties.Resources.folder;
+            this.Sphere64PathButton.Location = new System.Drawing.Point(341, 58);
+            this.Sphere64PathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Sphere64PathButton.Name = "Sphere64PathButton";
+            this.Sphere64PathButton.Size = new System.Drawing.Size(31, 22);
+            this.Sphere64PathButton.TabIndex = 2;
+            this.Sphere64PathButton.UseVisualStyleBackColor = true;
+            this.Sphere64PathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
+            // 
             // SpherePathButton
             // 
             this.SpherePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -331,6 +427,16 @@
             this.Tip.SetToolTip(this.SpherePathButton, "Choose Sphere Folder");
             this.SpherePathButton.UseVisualStyleBackColor = true;
             this.SpherePathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
+            // 
+            // Sphere64PathBox
+            // 
+            this.Sphere64PathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Sphere64PathBox.Location = new System.Drawing.Point(6, 58);
+            this.Sphere64PathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Sphere64PathBox.Name = "Sphere64PathBox";
+            this.Sphere64PathBox.Size = new System.Drawing.Size(329, 20);
+            this.Sphere64PathBox.TabIndex = 1;
             // 
             // tabPage3
             // 
@@ -505,37 +611,6 @@
             this.PresetsPanel.Size = new System.Drawing.Size(203, 385);
             this.PresetsPanel.TabIndex = 3;
             // 
-            // Sphere64PathBox
-            // 
-            this.Sphere64PathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Sphere64PathBox.Location = new System.Drawing.Point(6, 58);
-            this.Sphere64PathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Sphere64PathBox.Name = "Sphere64PathBox";
-            this.Sphere64PathBox.Size = new System.Drawing.Size(329, 20);
-            this.Sphere64PathBox.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 43);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(131, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Sphere 64-bit Engine Path";
-            // 
-            // Sphere64PathButton
-            // 
-            this.Sphere64PathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Sphere64PathButton.Image = global::SphereStudio.Properties.Resources.folder;
-            this.Sphere64PathButton.Location = new System.Drawing.Point(341, 58);
-            this.Sphere64PathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Sphere64PathButton.Name = "Sphere64PathButton";
-            this.Sphere64PathButton.Size = new System.Drawing.Size(31, 22);
-            this.Sphere64PathButton.TabIndex = 2;
-            this.Sphere64PathButton.UseVisualStyleBackColor = true;
-            this.Sphere64PathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
-            // 
             // PresetLabel
             // 
             this.PresetLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -570,7 +645,9 @@
             this.Load += new System.EventHandler(this.EditorSettings_Load);
             this.SettingsTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
@@ -596,7 +673,6 @@
         private System.Windows.Forms.CheckedListBox ItemCheckBox;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListBox PathListBox;
-        private System.Windows.Forms.Label PropLabel;
         private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.ToolTip Tip;
@@ -615,7 +691,6 @@
         private System.Windows.Forms.Button DownButton;
         private System.Windows.Forms.Button UpButton;
         private System.Windows.Forms.Panel ButtonPanel;
-        private System.Windows.Forms.Label StyleLabel;
         private System.Windows.Forms.ComboBox StyleComboBox;
         private System.Windows.Forms.Panel PresetsPanel;
         private Sphere.Core.Editor.EditorLabel PresetLabel;
@@ -623,5 +698,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Sphere64PathButton;
         private System.Windows.Forms.TextBox Sphere64PathBox;
+        private Sphere.Core.Editor.EditorLabel PropLabel;
+        private Sphere.Core.Editor.EditorLabel editorLabel1;
+        private System.Windows.Forms.RichTextBox ScriptHeaderBox;
+        private Sphere.Core.Editor.EditorLabel editorLabel2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
     }
 }

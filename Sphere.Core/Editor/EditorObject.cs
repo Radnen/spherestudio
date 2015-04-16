@@ -9,6 +9,20 @@ namespace Sphere.Core.Editor
     public class EditorObject : UserControl
     {
         /// <summary>
+        /// Event handler used to attach a custom restyling callback.
+        /// </summary>
+        public event EventHandler OnRestyle;
+
+        /// <summary>
+        /// Invoke the restyle callback.
+        /// </summary>
+        public void Restyle()
+        {
+            if (OnRestyle != null)
+                OnRestyle(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Gets the FileName associated with this control.
         /// </summary>
         public string FileName { get; protected set; }
@@ -26,6 +40,11 @@ namespace Sphere.Core.Editor
         public event EventHandler OnDeactivate;
 
         /// <summary>
+        /// Event handler; triggers when tab text changes.
+        /// </summary>
+        public event EventHandler<string> OnTabTextChange;
+
+        /// <summary>
         /// Occurs when entering the control on the main dock panel.
         /// </summary>
         public void Activate()
@@ -39,6 +58,15 @@ namespace Sphere.Core.Editor
         public void Deactivate()
         {
             if (OnDeactivate != null) OnDeactivate(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Sets the tab text on the main dock panel.
+        /// </summary>
+        /// <param name="text">The title of this editor.</param>
+        public void SetTabText(string text)
+        {
+            if (OnTabTextChange != null) OnTabTextChange(this, text);
         }
 
         // file maintanence:

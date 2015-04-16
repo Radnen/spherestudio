@@ -23,7 +23,6 @@ namespace SphereStudio.Plugins
         private void InitializeFontLayout()
         {
             _fontLayout.Dock = DockStyle.Left;
-            //FontLayout.Anchor = (AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom);
             _fontLayout.CharSelected += FontLayout_CharSelected;
             _fontLayout.LayoutZoomed += FontLayout_LayoutZoomed;
             _fontLayout.Selection = 65;
@@ -78,7 +77,7 @@ namespace SphereStudio.Plugins
             if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = Path.GetFileName(FileName);
+                SetTabText(Path.GetFileName(FileName));
                 _fontLayout.SaveToFile(FileName);
             }
         }
@@ -103,7 +102,7 @@ namespace SphereStudio.Plugins
             base.LoadFile(filename);
             _fontLayout.LoadFromFile(filename);
             CompilePreview();
-            Parent.Text = Path.GetFileName(filename);
+            SetTabText(Path.GetFileName(filename));
         }
 
         public override void ZoomIn()

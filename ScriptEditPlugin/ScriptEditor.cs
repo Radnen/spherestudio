@@ -1,13 +1,13 @@
-﻿using System;
+﻿using ScintillaNET;
+using Sphere.Core.Editor;
+using Sphere.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using ScintillaNET;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
 
 namespace SphereStudio.Plugins
 {
@@ -61,6 +61,12 @@ namespace SphereStudio.Plugins
 
             Controls.Add(_codeBox);
 
+            UpdateStyle();
+            OnRestyle += ScriptEditor_OnRestyle;
+        }
+
+        void ScriptEditor_OnRestyle(object sender, EventArgs e)
+        {
             UpdateStyle();
         }
 
@@ -126,7 +132,7 @@ namespace SphereStudio.Plugins
                     if (Path.GetExtension(filename) != ".js")
                         CodeBox.ConfigurationManager.Language = "default";
                     
-                    Parent.Text = Path.GetFileName(filename);
+                    SetTabText(Path.GetFileName(filename));
                     SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
                 }
             }
@@ -158,7 +164,7 @@ namespace SphereStudio.Plugins
 
                     writer.Write(_codeBox.Text);
                 }
-                Parent.Text = Path.GetFileName(FileName);
+                SetTabText(Path.GetFileName(FileName));
             }
         }
 

@@ -188,7 +188,7 @@ namespace SphereStudio.Plugins
             if (_sprite.Load(filename))
             {
                 FileName = filename;
-                Parent.Text = Path.GetFileName(filename);
+                SetTabText(Path.GetFileName(filename));
                 Init();
             }
             else
@@ -203,7 +203,7 @@ namespace SphereStudio.Plugins
             if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = Path.GetFileName(FileName);
+                SetTabText(Path.GetFileName(FileName));
                 _sprite.Save(FileName);
             }
         }

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
+using System.IO;
 
 namespace SphereStudio.Plugins
 {
@@ -12,7 +12,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Convert TTF fonts to .rfn for use with Sphere."; } }
-        public string Version { get { return "1.1.6.0"; } }
+        public string Version { get { return "1.2.0"; } }
 
         public Icon Icon { get; private set; }
 
@@ -34,37 +34,40 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                PluginManager.IDE.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
 
         void FontItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor());
         }
 
-        public DockContent OpenEditor(string filename = "")
+        public DockDescription OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
             FontEditor editor = new FontEditor() { Dock = DockStyle.Fill };
 
             // And creates + styles a dock panel:
-            DockContent content = new DockContent {Text = @"Font Importer"};
-            content.Controls.Add(editor);
-            content.DockAreas = DockAreas.Document;
-            content.Icon = Icon;
+            DockDescription description = new DockDescription();
+            description.TabText =  @"Font Importer";
+            description.Control = editor;
+            description.Icon = Icon;
 
-            if (!string.IsNullOrEmpty(filename)) editor.LoadFile(filename);
+            if (!string.IsNullOrEmpty(filename))
+            {
+                editor.LoadFile(filename);
+                description.TabText = Path.GetFileName(filename);
+            }
 
-            return content;
+            return description;
         }
 
         public void Initialize()
         {
             PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
             PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-
             PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
         }
 

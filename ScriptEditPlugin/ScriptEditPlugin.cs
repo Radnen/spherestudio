@@ -6,7 +6,6 @@ using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Plugins
 {
@@ -15,7 +14,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Script Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default script editor"; } }
-        public string Version { get { return "1.1.7.0"; } }
+        public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
         private readonly List<string> _extensionList = new List<string>(new[] { ".js", "*" });
@@ -135,14 +134,14 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                PluginManager.IDE.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
 
         void NewScriptItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor());
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)
@@ -239,7 +238,7 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public DockContent OpenEditor(string filename = "")
+        public DockDescription OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
             ScriptEditor editor = new ScriptEditor() { CanDirty = true, Dock = DockStyle.Fill };
@@ -248,14 +247,18 @@ namespace SphereStudio.Plugins
             editor.OnDeactivate += document_Deactivate;
 
             // And creates + styles a dock panel:
-            DockContent content = new DockContent() { Text = @"Untitled" };
-            content.Controls.Add(editor);
-            content.DockAreas = DockAreas.Document;
-            content.Icon = Icon;
+            DockDescription description = new DockDescription();
+            description.TabText = @"Untitled";
+            description.Control = editor;
+            description.Icon = Icon;
 
-            if (!string.IsNullOrEmpty(filename)) editor.LoadFile(filename);
+            if (!string.IsNullOrEmpty(filename))
+            {
+                editor.LoadFile(filename);
+                description.TabText = Path.GetFileName(filename);
+            }
 
-            return content;
+            return description;
         }
 
         void document_Activate(object sender, EventArgs e)
@@ -270,12 +273,8 @@ namespace SphereStudio.Plugins
 
         private void UpdateScriptControls()
         {
-            DockContentCollection docs = PluginManager.IDE.Documents;
-            foreach (DockContent content in docs)
-            {
-                ScriptEditor editor = content.Controls[0] as ScriptEditor;
-                if (editor != null) editor.UpdateStyle();
-            }
+            // restyle all script controls that changed.
+            PluginManager.IDE.RestyleEditors();
         }
     }
 }

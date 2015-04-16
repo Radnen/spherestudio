@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Sphere.Core.Editor;
+using Sphere.Core.Settings;
+using Sphere.Plugins;
+using SphereStudio.Components;
+using SphereStudio.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -6,12 +11,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Sphere.Core.Editor;
-using Sphere.Core.Settings;
-using Sphere.Plugins;
-using Sphere.Plugins.EditShims;
-using SphereStudio.Forms;
-using SphereStudio.Components;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio
@@ -25,8 +24,8 @@ namespace SphereStudio
         private EditorObject _currentControl;
         private readonly ProjectTree _tree;
         private bool _firsttime;
-        private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string,string>();
-        private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType,IEditorPlugin>();
+        private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
+        private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType, IEditorPlugin>();
         private string _default_active;
 
         public event EventHandler LoadProject;
@@ -70,6 +69,26 @@ namespace SphereStudio
                 (IntPtr.Size == 4) ? "x86" : "x64", Application.ProductVersion);
 
             TryEditFile += IDEForm_TryEditFile;
+            ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
+            UpdatePresetList();
+        }
+
+        private void UpdatePresetList()
+        {
+            ConfigSelectTool.Items.Clear();
+            ConfigSelectTool.Items.Add("[Select a preset]");
+            ConfigSelectTool.SelectedIndex = 0;
+
+            string path = Path.Combine(Application.StartupPath, "Presets");
+            if (Directory.Exists(path))
+            {
+                string[] presetFiles = Directory.GetFiles(path, "*.preset");
+                foreach (string s in presetFiles)
+                {
+                    ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
+                }
+                ConfigSelectTool.SelectedItem = Global.CurrentEditor.LastPreset;
+            }
         }
 
         void IDEForm_TryEditFile(object sender, EditFileEventArgs e)
@@ -106,7 +125,7 @@ namespace SphereStudio
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
         }
-        
+
         internal void OpenDocument(string filePath)
         {
             // raise a TryEditFile event first to see if any plugins take the bait
@@ -170,20 +189,71 @@ namespace SphereStudio
             if (EditorSettings.UseStartPage) _startContent.Show(MainDock, DockState.Document);
         }
 
-        public void DockControl(DockContent content, DockState state)
+        public void DockControl(DockDescription description)
         {
-            if (content == null) return;
-            
-            // adds an event to find 'dirtied' forms.
-            if (content.Controls.Count > 0 && content.Controls[0] is EditorObject)
-                content.FormClosing += Content_FormClosing;
+            if (description.Control == null) return;
 
-            content.Show(MainDock, state);
+            DockContent ctrl = new DockContent() { Text = description.TabText, Icon = description.Icon };
+            ctrl.Controls.Add(description.Control);
+
+            DockAreas areas = DockAreas.Document;
+
+            if (description.DockAreas == DockDescAreas.Sides)
+            {
+                areas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
+            }
+            else if (description.DockAreas == (DockDescAreas.Document | DockDescAreas.Sides))
+            {
+                areas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
+            }
+
+            ctrl.DockAreas = areas;
+
+            if (description.Control is EditorObject)
+            {
+                // adds an event to find dirtied forms and notifies the user.
+                ctrl.FormClosing += Content_FormClosing;
+
+                ((EditorObject)description.Control).OnTabTextChange += new EventHandler<string>(delegate(object o, string e)
+                {
+                    ctrl.Text = e;
+                });
+            }
+
+            description.OnShow += new EventHandler(delegate(object o, EventArgs e)
+            {
+                ctrl.Show();
+            });
+
+            description.OnHide += new EventHandler(delegate(object o, EventArgs e)
+            {
+                ctrl.Hide();
+            });
+
+            description.OnToggle += new EventHandler(delegate(object o, EventArgs e)
+            {
+                if (ctrl.IsHidden) ctrl.Show();
+                else ctrl.Hide();
+            });
+
+            DockState state = DockState.Document;
+            if (description.DockState == DockDescStyle.Side && areas.HasFlag(DockAreas.DockLeft))
+                state = DockState.DockLeft;
+
+            ctrl.Show(MainDock, state);
         }
 
-        public DockContentCollection Documents
+        public string[] Documents
         {
-            get { return MainDock.Contents; }
+            get
+            {
+                List<string> strings = new List<string>();
+                foreach (DockContent dc in MainDock.Contents)
+                {
+                    strings.Add(dc.TabText);
+                }
+                return strings.ToArray();
+            }
         }
 
         public void RemoveControl(string name)
@@ -196,7 +266,7 @@ namespace SphereStudio
         {
             get { return _currentControl; }
         }
-        
+
         public ProjectSettings CurrentGame
         {
             get { return Global.CurrentProject; }
@@ -268,7 +338,7 @@ namespace SphereStudio
             ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
             if (item != null) item.Dispose();
         }
-        
+
         public void UnregisterOpenFileType(string filters)
         {
             if (!_openFileTypes.ContainsKey(filters)) return;
@@ -404,6 +474,16 @@ namespace SphereStudio
         }
 
         /// <summary>
+        /// Calls the restyle method on all loaded editors.
+        /// </summary>
+        public void RestyleEditors()
+        {
+            foreach (DockContent dc in MainDock.Contents)
+                if (dc.Controls.Count > 0 && dc.Controls[0] is EditorObject)
+                    ((EditorObject)dc.Controls[0]).Restyle();
+        }
+
+        /// <summary>
         /// Sets the default active document when the editor first starts up.
         /// Used internally when dragging a file onto the executable.
         /// </summary>
@@ -524,7 +604,7 @@ namespace SphereStudio
             Close();
         }
         #endregion
-        
+
         #region open sub-menu items
 
         #endregion
@@ -601,8 +681,11 @@ namespace SphereStudio
             OpenGameSettings();
         }
 
-        public void ApplyRefresh()
+        public void ApplyRefresh(bool ignorePresets = false)
         {
+            if (!ignorePresets)
+                UpdatePresetList();
+
             UpdateButtons();
             SuspendLayout();
             _startPage.PopulateGameList();
@@ -634,9 +717,8 @@ namespace SphereStudio
         private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
         {
             string path = Global.CurrentProject.RootPath;
-            using (Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path)))
-            {
-            }
+            var proc = Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
+            proc.Dispose();
         }
 
         private void RunToolButton_Click(object sender, EventArgs e)
@@ -741,12 +823,12 @@ namespace SphereStudio
         private void ViewMenu_DropDownOpening(object sender, EventArgs e)
         {
             if (MainDock.Contents.Count == 0) return;
-            ToolStripSeparator ts = new ToolStripSeparator {Name = "zz_v"};
+            ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
             ViewMenu.DropDownItems.Add(ts);
             foreach (IDockContent content in MainDock.Contents)
             {
                 Form f = content.DockHandler.Form;
-                ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText) {Name = "zz_v"};
+                ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText) { Name = "zz_v" };
                 item.Click += ViewItem_Click;
 
                 if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
@@ -791,7 +873,7 @@ namespace SphereStudio
             }
             else MainDock.ActiveDocument.DockHandler.Close();
         }
-        
+
         private void OpenMenuItem_Click(object sender, EventArgs e)
         {
             string[] fileNames = GetFilesToOpen(false);
@@ -801,7 +883,7 @@ namespace SphereStudio
 
         private void ApiDocsMenuItem_Click(object sender, EventArgs e)
         {
-            OpenDocument(Path.Combine(Application.StartupPath,"Docs/api.txt"));
+            OpenDocument(Path.Combine(Application.StartupPath, "Docs/api.txt"));
         }
 
         public void UpdateStyle()
@@ -830,21 +912,6 @@ namespace SphereStudio
         {
             foreach (ToolStripMenuItem item in MainMenuStrip.Items)
                 item_DropDownClosed(item, null);
-            
-            // populate config preset selector dropdown
-            // HACK: Setting selection manually fires a selection change event, which will put us into
-            //       infinite recursion. To fix it, we can temporarily unsubscribe from the event.
-            ConfigSelectTool.SelectedIndexChanged -= ConfigSelectTool_SelectedIndexChanged;
-            ConfigSelectTool.Items.Clear();
-            ConfigSelectTool.Items.Add("[Select a preset]");
-            ConfigSelectTool.SelectedIndex = 0;
-            string[] presetFiles = Directory.GetFiles(Application.StartupPath, "*.preset");
-            foreach (string s in presetFiles)
-            {
-                ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
-            }
-            ConfigSelectTool.SelectedItem = Global.CurrentEditor.LastPreset;
-            ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
         }
 
         void item_DropDownClosed(object sender, EventArgs e)
@@ -869,10 +936,12 @@ namespace SphereStudio
         {
             if (ConfigSelectTool.SelectedIndex <= 0)
                 return;
-            string path = Path.Combine(Application.StartupPath, (string)ConfigSelectTool.SelectedItem + ".preset");
+
+            string path = Path.Combine(Application.StartupPath, "Presets", (string)ConfigSelectTool.SelectedItem + ".preset");
             Global.CurrentEditor.LoadSettings(path);
             Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
             Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
+
             var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
             foreach (var plugin in Global.Plugins)
             {
@@ -881,8 +950,9 @@ namespace SphereStudio
                 else
                     plugin.Value.Deactivate();
             }
+
             Global.CurrentEditor.SaveSettings();
-            ApplyRefresh();
+            ApplyRefresh(true);
         }
     }
 }

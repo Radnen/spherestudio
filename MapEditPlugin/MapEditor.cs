@@ -152,7 +152,7 @@ namespace SphereStudio.Plugins
             TilesetControl.ZoomIn();
             InitLayers();
             MapControl.UpdateView();
-            Parent.Text = Path.GetFileName(filename);
+            SetTabText(Path.GetFileName(filename));
 
             Invalidate(true);
         }
@@ -172,14 +172,14 @@ namespace SphereStudio.Plugins
                             diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
                             if (diag.ShowDialog() == DialogResult.OK)
                             {
-                                Map.Scripts[0] = System.IO.Path.GetFileName(diag.FileName);
+                                Map.Scripts[0] = Path.GetFileName(diag.FileName);
                                 Map.Save(FileName);
-                                Parent.Text = System.IO.Path.GetFileName(FileName);
+                                SetTabText(Path.GetFileName(FileName));
                             }
                         }
                     }
                 }
-                else Parent.Text = Path.GetFileName(FileName);
+                else SetTabText(Path.GetFileName(FileName));
             }
         }
 

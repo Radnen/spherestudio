@@ -99,7 +99,7 @@ namespace SphereStudio.Plugins
                 {
                     img.Save(FileName);
                 }
-                Parent.Text = System.IO.Path.GetFileName(FileName);
+                SetTabText(System.IO.Path.GetFileName(FileName));
             }
         }
 
@@ -127,7 +127,7 @@ namespace SphereStudio.Plugins
             {
                 ImageEditor.SetImage(img);
             }
-            Parent.Text = Path.GetFileName(filename);
+            SetTabText(Path.GetFileName(filename));
         }
 
         public override void Undo()

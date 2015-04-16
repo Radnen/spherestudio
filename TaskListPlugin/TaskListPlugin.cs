@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Plugins
 {
@@ -11,11 +10,11 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Task List"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Keep track of game development tasks."; } }
-        public string Version { get { return "1.1.6.0"; } }
+        public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
+        private DockDescription _desc;
         private TaskList _list;
-        private DockContent _content;
         private ToolStripMenuItem _item;
 
         public TaskListPlugin()
@@ -38,26 +37,27 @@ namespace SphereStudio.Plugins
 
         void ItemClick(object sender, EventArgs e)
         {
-            if (_content.IsHidden) _content.Show();
-            else _content.Hide();
+            _desc.Toggle();
         }
 
         public void Initialize()
         {
             // Create a new instance of your custom widget, like so:
-            _list = new TaskList {Dock = DockStyle.Fill};
+            _list = new TaskList { Dock = DockStyle.Fill };
 
             // Add it to a dock content like so, and style your dock content
             // however you want to!
-            DockContent content = new DockContent {Text = @"Task List"};
-            content.Controls.Add(_list);
-            content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
-            content.DockHandler.HideOnClose = true;
-            content.Icon = Icon;
-            _content = content;
+            DockDescription description = new DockDescription();
+            description.TabText = @"Task List";
+            description.Control = _list;
+            description.DockAreas = DockDescAreas.Document | DockDescAreas.Sides;
+            description.DockState = DockDescStyle.Side;
+            description.HideOnClose = true;
+            description.Icon = Icon;
+            _desc = description;
 
             // Add the widget to the main editor at the dock state:
-            PluginManager.IDE.DockControl(content, DockState.DockLeft);
+            PluginManager.IDE.DockControl(description);
 
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
@@ -73,7 +73,7 @@ namespace SphereStudio.Plugins
             _item = new ToolStripMenuItem("Task List", Properties.Resources.lightbulb);
             _item.Click += ItemClick;
             PluginManager.IDE.AddMenuItem("View", _item);
-            
+
             // Here I ake sure the list is loaded when the plugin has been activated.
             if (PluginManager.IDE.CurrentGame != null) _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
@@ -94,7 +94,6 @@ namespace SphereStudio.Plugins
 
             // And we can optionally null things out just to be safe:
             _list.Dispose(); _list = null;
-            _content.Dispose(); _content = null;
             _item.Dispose(); _item = null;
         }
     }
