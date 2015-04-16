@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Core.Settings;
-using WeifenLuo.WinFormsUI.Docking;
+using System.Drawing;
 
 namespace Sphere.Plugins
 {
@@ -49,9 +49,8 @@ namespace Sphere.Plugins
         /// <summary>
         /// Adds a control to the main dock panel, at the associated state.
         /// </summary>
-        /// <param name="content">The DockContent to add.</param>
-        /// <param name="state">The state to put it in.</param>
-        void DockControl(DockContent content, DockState state);
+        /// <param name="description">Data used to tell the editor how to dock this plugin's editor.</param>
+        void DockControl(DockDescription description);
 
         /// <summary>
         /// Removes the control with name 'name' from the main dock panel.
@@ -104,6 +103,12 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets a list of the documents in the Sphere Studio's main dock panel.
         /// </summary>
-        DockContentCollection Documents { get; }
+        string[] Documents { get; }
+
+        /// <summary>
+        /// Used to send an invalidate to all editors if styling has changed,
+        /// usually due to changing a style option through a plugin.
+        /// </summary>
+        void RestyleEditors();
     }
 }

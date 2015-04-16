@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Sphere.Core.Settings;
+using Sphere.Plugins;
+using SphereStudio.Forms;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using Sphere.Core.Settings;
-using Sphere.Plugins;
-using SphereStudio.Forms;
 
 namespace SphereStudio
 {
@@ -17,7 +15,7 @@ namespace SphereStudio
 
         public static void EvalPlugins()
         {
-            string path = Application.StartupPath + "/Plugins";
+            string path = Application.StartupPath + "/plugins";
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             DirectoryInfo dir = new DirectoryInfo(path);
             foreach (FileInfo file in dir.GetFiles("*.dll"))
@@ -27,9 +25,7 @@ namespace SphereStudio
                 {
                     if (type.GetInterface("IPlugin") != null)
                     {
-                        IPlugin b = type.InvokeMember(null,
-                                                   BindingFlags.CreateInstance,
-                                                   null, null, null) as IPlugin;
+                        IPlugin b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPlugin;
                         if (b == null) continue;
                         string name = Path.GetFileNameWithoutExtension(file.Name);
                         if (name != null) Plugins[name] = new PluginWrapper(b, name);
@@ -73,27 +69,27 @@ namespace SphereStudio
 
         public static bool IsSpriteset(ref string name)
         {
-            return name.ToLower().Contains(".rss");
+            return name.ToLower().EndsWith(".rss");
         }
 
         public static bool IsWindowStyle(ref string name)
         {
-            return name.ToLower().Contains(".rws");
+            return name.ToLower().EndsWith(".rws");
         }
 
         public static bool IsFont(ref string name)
         {
-            return name.Contains(".rfn");
+            return name.EndsWith(".rfn");
         }
 
         public static bool IsMap(ref string name)
         {
-            return name.Contains(".rmp");
+            return name.EndsWith(".rmp");
         }
 
         public static bool IsTileset(ref string name)
         {
-            return name.Contains(".rts");
+            return name.EndsWith(".rts");
         }
 
         public static bool IsText(ref string name)

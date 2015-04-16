@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
+using System.IO;
 
 namespace SphereStudio.Plugins
 {
@@ -15,7 +15,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Windowstyle Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default windowstyle editor"; } }
-        public string Version { get { return "1.1.6.0"; } }
+        public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
 
         public WindowstyleEditPlugin()
@@ -53,7 +53,7 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                PluginManager.IDE.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
@@ -61,11 +61,11 @@ namespace SphereStudio.Plugins
         #region menu item click handlers
         private void _newWindowstyleMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor());
         }
         #endregion
         
-        private DockContent OpenEditor(string filename = "")
+        private  DockDescription OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
             WindowstyleEditor editor = new WindowstyleEditor() { Dock = DockStyle.Fill };
@@ -74,14 +74,18 @@ namespace SphereStudio.Plugins
             if (string.IsNullOrEmpty(filename)) editor.CreateNew();
 
             // And creates + styles a dock panel:
-            DockContent content = new DockContent { Text = @"Untitled" };
-            content.Controls.Add(editor);
-            content.DockAreas = DockAreas.Document;
-            content.Icon = Icon;
+            DockDescription description = new DockDescription();
+            description.TabText = @"Untitled";
+            description.Control = editor;
+            description.Icon = Icon;
 
-            if (!string.IsNullOrEmpty(filename)) editor.LoadFile(filename);
+            if (!string.IsNullOrEmpty(filename))
+            {
+                editor.LoadFile(filename);
+                description.TabText = Path.GetFileName(filename);
+            }
 
-            return content;
+            return description;
         }
    }
 }

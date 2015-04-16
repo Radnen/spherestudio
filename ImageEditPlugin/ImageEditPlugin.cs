@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 using SphereStudio.Plugins.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using System.IO;
 
 namespace SphereStudio.Plugins
 {
@@ -14,7 +14,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Image Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default image editor"; } }
-        public string Version { get { return "1.1.6.0"; } }
+        public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
         
         public ImageEditPlugin()
@@ -70,7 +70,7 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path), DockState.Document);
+                PluginManager.IDE.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
@@ -88,7 +88,7 @@ namespace SphereStudio.Plugins
         #region menu item click handlers
         private void _newImageMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor(), DockState.Document);
+            PluginManager.IDE.DockControl(OpenEditor());
         }
 
         private void _rescaleMenuItem_Click(object sender, EventArgs e)
@@ -117,7 +117,7 @@ namespace SphereStudio.Plugins
         }
         #endregion
 
-        private DockContent OpenEditor(string filename = "")
+        private DockDescription OpenEditor(string filename = "")
         {
             // Creates a new editor instance:
             Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
@@ -128,14 +128,18 @@ namespace SphereStudio.Plugins
             if (string.IsNullOrEmpty(filename)) editor.CreateNew();
 
             // And creates + styles a dock panel:
-            DockContent content = new DockContent { Text = @"Untitled" };
-            content.Controls.Add(editor);
-            content.DockAreas = DockAreas.Document;
-            content.Icon = Icon;
+            DockDescription description = new DockDescription();
+            description.TabText = @"Untitled";
+            description.Control = editor;
+            description.Icon = Icon;
 
-            if (!string.IsNullOrEmpty(filename)) editor.LoadFile(filename);
+            if (!string.IsNullOrEmpty(filename))
+            {
+                editor.LoadFile(filename);
+                description.TabText = Path.GetFileName(filename);
+            }
 
-            return content;
+            return description;
         }
     }
 }

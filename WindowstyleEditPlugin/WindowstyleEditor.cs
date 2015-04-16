@@ -97,7 +97,7 @@ namespace SphereStudio.Plugins
                 _style = new Windowstyle(reader);
             }
             _style.Grid = true;
-            Parent.Text = Path.GetFileName(filename);
+            SetTabText(Path.GetFileName(filename));
             InitWindow();
         }
 
@@ -135,7 +135,7 @@ namespace SphereStudio.Plugins
             if (!IsSaved()) SaveAs();
             else
             {
-                Parent.Text = Path.GetFileName(FileName);
+                SetTabText(Path.GetFileName(FileName));
                 _style.Save(FileName);
             }
         }

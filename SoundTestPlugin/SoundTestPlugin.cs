@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Plugins
 {
@@ -12,7 +11,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Lord English"; } }
         public string Description { get { return "Listen to sounds from your game while you work! :o)"; } }
-        public string Version { get { return "1.1.6.0"; } }
+        public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
 
         private const string _openFileFilters = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
@@ -33,11 +32,16 @@ namespace SphereStudio.Plugins
         {
             _soundPicker = new SoundPicker() { Dock = DockStyle.Fill };
             _soundPicker.Refresh();
-            DockContent content = new DockContent() { Text = @"Sound Test", Icon = Icon };
-            content.Controls.Add(_soundPicker);
-            content.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Document;
-            content.DockHandler.HideOnClose = true;
-            PluginManager.IDE.DockControl(content, DockState.DockLeft);
+
+            DockDescription description = new DockDescription();
+            description.TabText = @"Sound Test";
+            description.Icon = Icon;
+            description.Control = _soundPicker;
+            description.DockAreas = DockDescAreas.Document | DockDescAreas.Sides;
+            description.HideOnClose = true;
+            description.DockState = DockDescStyle.Side;
+
+            PluginManager.IDE.DockControl(description);
             PluginManager.IDE.RegisterOpenFileType("Audio", _openFileFilters);
             PluginManager.IDE.LoadProject += IDE_LoadProject;
             PluginManager.IDE.UnloadProject += IDE_UnloadProject;

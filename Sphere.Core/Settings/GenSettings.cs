@@ -56,7 +56,7 @@ namespace Sphere.Core.Settings
         /// <typeparam name="T">The type to store.</typeparam>
         /// <param name="key">The key to store object at.</param>
         /// <param name="item">The object to store.</param>
-        protected void SetItem<T>(string key, T item)
+        protected void SetItem(string key, object item)
         {
             _items[key] = item.ToString();
         }
@@ -68,10 +68,7 @@ namespace Sphere.Core.Settings
         /// <param name="items">The string array to store.</param>
         public void StoreArray(string key, IEnumerable<string> items)
         {
-            var builder = new System.Text.StringBuilder();
-            foreach (string s in items) builder.Append(s).Append(',');
-            if (builder.Length > 0) builder.Remove(builder.Length - 1, 1);
-            SetItem(key, builder.ToString());
+            SetItem(key, string.Join(",", items));
         }
 
         /// <summary>
@@ -82,7 +79,7 @@ namespace Sphere.Core.Settings
         public string[] GetArray(string key)
         {
             var s = GetString(key);
-            return !string.IsNullOrEmpty(s) ? s.Split(',') : new string[0];
+            return !string.IsNullOrWhiteSpace(s) ? s.Split(',') : new string[0];
         }
 
         /// <summary>
@@ -143,8 +140,8 @@ namespace Sphere.Core.Settings
         /// <returns>True if successful.</returns>
         public bool LoadSettings(string path)
         {
+            if (!File.Exists(path)) return false;
             var editorIni = new FileInfo(path);
-            if (!editorIni.Exists) return false;
             using (var settings = editorIni.OpenText())
             {
                 RootPath = Path.GetDirectoryName(path);
