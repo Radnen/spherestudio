@@ -18,6 +18,12 @@ namespace SphereStudio.Forms
             set { SpherePathBox.Text = value; }
         }
 
+        public string Sphere64Path
+        {
+            get { return Sphere64PathBox.Text; }
+            set { Sphere64PathBox.Text = value; }
+        }
+
         public IDEForm MainIDE { get; set; }
 
         public string ConfigPath
@@ -77,6 +83,7 @@ namespace SphereStudio.Forms
         private void SetValues(SphereSettings settings)
         {
             SpherePath = settings.SpherePath;
+            Sphere64Path = settings.Sphere64Path;
             ConfigPath = settings.ConfigPath;
             GamePaths = settings.GetArray("games_path");
             AutoStart = settings.AutoOpen;
@@ -95,6 +102,7 @@ namespace SphereStudio.Forms
             SphereSettings settings = new SphereSettings();
             settings.AutoOpen = AutoStart;
             settings.SpherePath = SpherePath;
+            settings.Sphere64Path = Sphere64Path;
             settings.ConfigPath = ConfigPath;
             settings.LastPreset = "";
             settings.UseScriptUpdate = UseScriptUpdate;
@@ -122,9 +130,11 @@ namespace SphereStudio.Forms
                     string path = Path.GetDirectoryName(diag.FileName);
                     if (File.Exists(path + "\\engine.exe"))
                         SpherePathBox.Text = path + "\\engine.exe";
+                    if (File.Exists(path + "\\engine64.exe"))
+                        Sphere64PathBox.Text = path + "\\engine64.exe";
                     if (File.Exists(path + "\\config.exe"))
                         ConfigPathBox.Text = path + "\\config.exe";
-                    if (Directory.Exists(path + "\\games"))
+                    if (Directory.Exists(path + "\\games") && !PathListBox.Items.Contains(path + "\\games"))
                         PathListBox.Items.Add(path + "\\games");
                 }
             }

@@ -21,6 +21,15 @@ namespace Sphere.Core.Settings
         }
 
         /// <summary>
+        /// Gets or sets the Sphere engine64.exe filepath (64-bit engine).
+        /// </summary>
+        public string Sphere64Path
+        {
+            get { return GetString("sphere64_path"); }
+            set { SetItem("sphere64_path", value); }
+        }
+
+        /// <summary>
         /// Gets or sets the Sphere config.exe path.
         /// </summary>
         public string ConfigPath

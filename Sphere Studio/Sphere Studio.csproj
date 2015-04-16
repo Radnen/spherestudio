@@ -363,6 +363,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist ".\Plugins" mkdir ".\Plugins"
+if not exist ".\Presets" mkdir ".\Presets"
 move "*Plugin.dll" ".\Plugins"
 </PostBuildEvent>
   </PropertyGroup>

@@ -147,6 +147,11 @@ namespace Sphere.Core
                 WrapAround = reader.ReadBoolean();
                 reader.ReadBytes(234);
 
+                // sanitize starting layer
+                // note that this is being too nice, Sphere itself would crash outright
+                if (StartLayer < 0 || StartLayer >= numLayers)
+                    StartLayer = 0;
+
                 // read scripts:
                 while (numStrings-- > 0)
                 {
@@ -160,11 +165,21 @@ namespace Sphere.Core
 
                 // read entities:
                 while (numEntities-- > 0)
-                    Entities.Add(new Entity(reader));
+                {
+                    var entity = new Entity(reader);
+                    if (entity.Layer < 0 || entity.Layer > numLayers)
+                        entity.Layer = 0;
+                    Entities.Add(entity);
+                }
 
                 // read zones:
                 while (numZones-- > 0)
-                    Zones.Add(Zone.FromBinary(reader));
+                {
+                    var zone = Zone.FromBinary(reader);
+                    if (zone.Layer < 0 || zone.Layer > numLayers)
+                        zone.Layer = 0;
+                    Zones.Add(zone);
+                }
 
                 // read tileset:
                 if (Scripts[0].Length == 0)
