@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -640,18 +641,31 @@ namespace SphereStudio
 
         private void RunToolButton_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Global.CurrentEditor.SpherePath)) return;
+            if (!File.Exists(Global.CurrentEditor.SpherePath)
+                && !File.Exists(Global.CurrentEditor.Sphere64Path))
+            {
+                return;
+            }
 
             if (TestGame != null) TestGame(null, EventArgs.Empty);
 
+            string args = "";
             if (IsProjectOpen)
             {
                 Global.CurrentProject.SaveSettings();
-                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
+                args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
+            }
+                
+            // 64-bit engine is preferred, if it exists
+            try
+            {
+                Process.Start(Global.CurrentEditor.Sphere64Path, args);
+            }
+            catch (Exception)
+            {
+                // failed to start 64-bit process, fallback on 32-bit engine
                 Process.Start(Global.CurrentEditor.SpherePath, args);
             }
-            else
-                Process.Start(Global.CurrentEditor.SpherePath);
         }
 
         public void RefreshProject()
