@@ -260,9 +260,8 @@ namespace SphereStudio.Components
                 node.SelectedImageIndex = node.ImageIndex = 6;
             else if (Global.IsSound(ref s))
                 node.SelectedImageIndex = node.ImageIndex = 7;
-            else if (Global.IsText(ref s))
+            else // wildcard can handle these
                 node.SelectedImageIndex = node.ImageIndex = 3;
-            else node.SelectedImageIndex = node.ImageIndex = 9;
         }
 
         private void AddFolderItem_Click(object sender, EventArgs e)

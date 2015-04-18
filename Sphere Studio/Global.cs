@@ -6,13 +6,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace SphereStudio
 {
     internal static class Global
     {
+        /// <summary>
+        /// Gets a list of all plugins found by the editor.
+        /// </summary>
         public static Dictionary<string, PluginWrapper> Plugins = new Dictionary<string, PluginWrapper>();
 
+        /// <summary>
+        /// Refreshes the plugin list by observing the /plugins sub-directory.
+        /// </summary>
         public static void EvalPlugins()
         {
             string path = Application.StartupPath + "/plugins";
@@ -34,24 +41,38 @@ namespace SphereStudio
             }
         }
 
-        public static void ActivatePlugins(string[] pluginNames)
+        /// <summary>
+        /// Activates plugins mentioned in the array.
+        /// </summary>
+        /// <param name="plugins">An array of plugin names to activate.</param>
+        public static void ActivatePlugins(string[] plugins)
         {
-            foreach (string s in pluginNames)
-            {
-                if (Plugins.ContainsKey(s)) Plugins[s].Activate();
-            }
+            PluginWrapper wrapper;
+
+            foreach (string s in plugins)
+                if (Plugins.TryGetValue(s, out wrapper))
+                    wrapper.Activate();
         }
 
         public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
         public static Sphere.Core.Entity CopiedEnt { get; set; }
 
-        // Extention checking functions. Globally useable. :)
+        /// <summary>
+        /// Checks to see if filename is a script.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a script file.</returns>
         public static bool IsScript(ref string name)
         {
             return name.ToLower().EndsWith(".js");
         }
 
+        /// <summary>
+        /// Checks to see if filename is a sound.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a sound file.</returns>
         public static bool IsSound(ref string name)
         {
             string test = Path.GetExtension(name).ToLower();
@@ -60,6 +81,11 @@ namespace SphereStudio
                     test == ".s3m");
         }
 
+        /// <summary>
+        /// Checks to see if filename is an image.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if an image file.</returns>
         public static bool IsImage(ref string name)
         {
             string test = Path.GetExtension(name).ToLower();
@@ -67,43 +93,63 @@ namespace SphereStudio
                     test == ".jpg" || test == ".bmp");
         }
 
+        /// <summary>
+        /// Checks to see if filename is a spriteset.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a spriteset file.</returns>
         public static bool IsSpriteset(ref string name)
         {
             return name.ToLower().EndsWith(".rss");
         }
 
+        /// <summary>
+        /// Checks to see if filename is a windowstyle.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a windowstyle file.</returns>
         public static bool IsWindowStyle(ref string name)
         {
             return name.ToLower().EndsWith(".rws");
         }
 
+        /// <summary>
+        /// Checks to see if filename is a font.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a font file.</returns>
         public static bool IsFont(ref string name)
         {
             return name.EndsWith(".rfn");
         }
 
+        /// <summary>
+        /// Checks to see if filename is a map.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a map file.</returns>
         public static bool IsMap(ref string name)
         {
             return name.EndsWith(".rmp");
         }
 
+        /// <summary>
+        /// Checks to see if filename is a tileset.
+        /// </summary>
+        /// <param name="name">Name of the file</param>
+        /// <returns>True if a tileset file.</returns>
         public static bool IsTileset(ref string name)
         {
             return name.EndsWith(".rts");
         }
 
-        public static bool IsText(ref string name)
-        {
-            string test = Path.GetExtension(name).ToLower();
-            return (test == ".txt" || test == ".sav" || test == ".sgm" ||
-                    test == ".rtf" || test == ".dat" || test == ".ini");
-        }
-
-        // returns true if settings were altered
-        public static bool EditSettings(IDEForm parent)
+        /// <summary>
+        /// Opens the editor settings dialog.
+        /// </summary>
+        /// <returns>Returns true if there were changes.</returns>
+        public static bool EditSettings()
         {
             EditorSettings settings = new EditorSettings(CurrentEditor);
-            settings.MainIDE = parent;
             if (settings.ShowDialog() == DialogResult.OK)
             {
                 CurrentEditor.SetSettings(settings.GetSettings());

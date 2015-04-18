@@ -64,8 +64,9 @@ namespace SphereStudio
             // make sure this is active only when we use it.
             if (_treeContent != null) _treeContent.Activate();
 
+            var Is64 = System.Environment.Is64BitProcess;
             Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
-                (IntPtr.Size == 4) ? "x86" : "x64", Application.ProductVersion);
+                (Is64) ? "x86" : "x64", Application.ProductVersion);
 
             TryEditFile += IDEForm_TryEditFile;
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
@@ -680,9 +681,9 @@ namespace SphereStudio
             OpenGameSettings();
         }
 
-        public void ApplyRefresh(bool ignorePresets = false)
+        public void ApplyRefresh(bool ignore_presets = true)
         {
-            if (!ignorePresets)
+            if (!ignore_presets)
                 UpdatePresetList();
 
             UpdateButtons();
@@ -697,8 +698,7 @@ namespace SphereStudio
 
         public void OpenEditorSettings()
         {
-            if (Global.EditSettings(this))
-                ApplyRefresh();
+            if (Global.EditSettings()) ApplyRefresh();
         }
 
         private void OpenGameSettings()
@@ -923,7 +923,7 @@ namespace SphereStudio
             if (ConfigSelectTool.SelectedIndex <= 0)
                 return;
 
-            string path = Path.Combine(Application.StartupPath, (string)ConfigSelectTool.SelectedItem + ".preset");
+            string path = Path.Combine(Application.StartupPath, "presets", (string)ConfigSelectTool.SelectedItem + ".preset");
             Global.CurrentEditor.LoadSettings(path);
             Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
             Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
