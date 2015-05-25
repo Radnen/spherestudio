@@ -65,7 +65,7 @@
             this.GameTitleLabel.Location = new System.Drawing.Point(13, 81);
             this.GameTitleLabel.Name = "GameTitleLabel";
             this.GameTitleLabel.Size = new System.Drawing.Size(70, 16);
-            this.GameTitleLabel.TabIndex = 1;
+            this.GameTitleLabel.TabIndex = 2;
             this.GameTitleLabel.Text = "Game Title";
             // 
             // AuthorLabel
@@ -74,7 +74,7 @@
             this.AuthorLabel.Location = new System.Drawing.Point(14, 112);
             this.AuthorLabel.Name = "AuthorLabel";
             this.AuthorLabel.Size = new System.Drawing.Size(46, 16);
-            this.AuthorLabel.TabIndex = 2;
+            this.AuthorLabel.TabIndex = 4;
             this.AuthorLabel.Text = "Author";
             // 
             // PathTextBox
@@ -84,7 +84,7 @@
             this.PathTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PathTextBox.Name = "PathTextBox";
             this.PathTextBox.Size = new System.Drawing.Size(236, 23);
-            this.PathTextBox.TabIndex = 3;
+            this.PathTextBox.TabIndex = 1;
             // 
             // NameTextBox
             // 
@@ -92,7 +92,7 @@
             this.NameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.NameTextBox.Name = "NameTextBox";
             this.NameTextBox.Size = new System.Drawing.Size(236, 23);
-            this.NameTextBox.TabIndex = 4;
+            this.NameTextBox.TabIndex = 3;
             // 
             // AuthorTextBox
             // 
@@ -135,7 +135,7 @@
             this.ScreenSizeLabel.Location = new System.Drawing.Point(12, 386);
             this.ScreenSizeLabel.Name = "ScreenSizeLabel";
             this.ScreenSizeLabel.Size = new System.Drawing.Size(76, 16);
-            this.ScreenSizeLabel.TabIndex = 9;
+            this.ScreenSizeLabel.TabIndex = 10;
             this.ScreenSizeLabel.Text = "Screen Size";
             // 
             // ScriptComboBox
@@ -145,7 +145,7 @@
             this.ScriptComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ScriptComboBox.Name = "ScriptComboBox";
             this.ScriptComboBox.Size = new System.Drawing.Size(236, 24);
-            this.ScriptComboBox.TabIndex = 10;
+            this.ScriptComboBox.TabIndex = 9;
             // 
             // XLabel
             // 
@@ -153,7 +153,7 @@
             this.XLabel.Location = new System.Drawing.Point(221, 386);
             this.XLabel.Name = "XLabel";
             this.XLabel.Size = new System.Drawing.Size(14, 16);
-            this.XLabel.TabIndex = 11;
+            this.XLabel.TabIndex = 12;
             this.XLabel.Text = "x";
             // 
             // WidthTextBox
@@ -162,7 +162,7 @@
             this.WidthTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.WidthTextBox.Name = "WidthTextBox";
             this.WidthTextBox.Size = new System.Drawing.Size(103, 23);
-            this.WidthTextBox.TabIndex = 12;
+            this.WidthTextBox.TabIndex = 11;
             this.WidthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // HeightTextBox
@@ -177,22 +177,22 @@
             // okayButton
             // 
             this.okayButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okayButton.Location = new System.Drawing.Point(183, 4);
+            this.okayButton.Location = new System.Drawing.Point(94, 5);
             this.okayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.okayButton.Name = "okayButton";
             this.okayButton.Size = new System.Drawing.Size(87, 28);
-            this.okayButton.TabIndex = 14;
-            this.okayButton.Text = "OK";
+            this.okayButton.TabIndex = 0;
+            this.okayButton.Text = "Save";
             this.okayButton.UseVisualStyleBackColor = true;
             // 
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(90, 4);
+            this.cancelButton.Location = new System.Drawing.Point(187, 5);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(87, 28);
-            this.cancelButton.TabIndex = 15;
+            this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
@@ -215,12 +215,14 @@
             this.ButtonPanel.Location = new System.Drawing.Point(0, 427);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(360, 37);
-            this.ButtonPanel.TabIndex = 17;
+            this.ButtonPanel.TabIndex = 14;
             // 
             // GameSettings
             // 
+            this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(360, 464);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectPic);

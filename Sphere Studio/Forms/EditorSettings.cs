@@ -18,6 +18,12 @@ namespace SphereStudio.Forms
             set { SpherePathBox.Text = value; }
         }
 
+        public string Sphere64Path
+        {
+            get { return Sphere64PathBox.Text; }
+            set { Sphere64PathBox.Text = value; }
+        }
+
         public string ConfigPath
         {
             get { return ConfigPathBox.Text; }
@@ -75,6 +81,7 @@ namespace SphereStudio.Forms
         private void SetValues(SphereSettings settings)
         {
             SpherePath = settings.SpherePath;
+            Sphere64Path = settings.Sphere64Path;
             ConfigPath = settings.ConfigPath;
             GamePaths = settings.GetArray("games_path");
             AutoStart = settings.AutoOpen;
@@ -93,6 +100,7 @@ namespace SphereStudio.Forms
             SphereSettings settings = new SphereSettings();
             settings.AutoOpen = AutoStart;
             settings.SpherePath = SpherePath;
+            settings.Sphere64Path = Sphere64Path;
             settings.ConfigPath = ConfigPath;
             settings.LastPreset = "";
             settings.UseScriptUpdate = UseScriptUpdate;
@@ -118,12 +126,24 @@ namespace SphereStudio.Forms
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
                     string path = Path.GetDirectoryName(diag.FileName);
-                    if (File.Exists(path + "\\engine.exe"))
-                        SpherePathBox.Text = path + "\\engine.exe";
-                    if (File.Exists(path + "\\config.exe"))
-                        ConfigPathBox.Text = path + "\\config.exe";
-                    if (Directory.Exists(path + "\\games"))
-                        PathListBox.Items.Add(path + "\\games");
+                    if (File.Exists(path + "\\engine.exe") || File.Exists(path + "\\engine64.exe"))
+                    {
+                        SpherePathBox.Clear();
+                        Sphere64PathBox.Clear();
+                        ConfigPathBox.Clear();
+                        if (File.Exists(path + "\\engine.exe"))
+                            SpherePathBox.Text = path + "\\engine.exe";
+                        if (File.Exists(path + "\\engine64.exe"))
+                            Sphere64PathBox.Text = path + "\\engine64.exe";
+                        if (File.Exists(path + "\\config.exe"))
+                            ConfigPathBox.Text = path + "\\config.exe";
+                        if (Directory.Exists(path + "\\games"))
+                            PathListBox.Items.Add(path + "\\games");
+                    }
+                    else
+                    {
+                        MessageBox.Show(String.Format("{0}\n\nThis directory doesn't appear to contain a Sphere engine. Make sure the directory you choose contains either or both engine.exe or engine64.exe.", path));
+                    }
                 }
             }
         }
