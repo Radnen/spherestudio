@@ -140,7 +140,8 @@ namespace Sphere.Core
                 int numEntities = reader.ReadInt16();
                 StartX = reader.ReadInt16();
                 StartY = reader.ReadInt16();
-                StartLayer = reader.ReadByte();
+                if ((StartLayer = reader.ReadByte()) >= numLayers)
+                    StartLayer = 0;  // fix up out-of-range layer
                 reader.ReadByte();
                 int numStrings = reader.ReadInt16();
                 int numZones = reader.ReadInt16();
@@ -160,11 +161,21 @@ namespace Sphere.Core
 
                 // read entities:
                 while (numEntities-- > 0)
-                    Entities.Add(new Entity(reader));
+                {
+                    Entity entity = new Entity(reader);
+                    if (entity.Layer >= numLayers)
+                        entity.Layer = 0;  // fix up out-of-range layer
+                    Entities.Add(entity);
+                }
 
                 // read zones:
                 while (numZones-- > 0)
-                    Zones.Add(Zone.FromBinary(reader));
+                {
+                    var zone = Zone.FromBinary(reader);
+                    if (zone.Layer >= numLayers)
+                        zone.Layer = 0;  // fix up out-of-range layer
+                    Zones.Add(zone);
+                }
 
                 // read tileset:
                 if (Scripts[0].Length == 0)
