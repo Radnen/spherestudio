@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Sphere.Core
 {
@@ -10,11 +11,13 @@ namespace Sphere.Core
     /// </summary>
     public class Map : IDisposable
     {
+        private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
+            
         #region Attributes
         private short _version = 1;
 
         /// <summary>
-        /// Gets or sets whether the map wraps around at the edges (i.e. is a toric map)
+        /// Gets or sets whether the map wraps around at the edges (i.e. a repeating map)
         /// </summary>
         public bool WrapAround { get; set; }
         
@@ -129,7 +132,7 @@ namespace Sphere.Core
         {
             if (!File.Exists(filename)) return false;
 
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(filename), ISO_8859_1))
             {
                 // read header:
                 reader.ReadChars(4);
@@ -206,7 +209,7 @@ namespace Sphere.Core
         public bool Save(string filename)
         {
             if (Scripts.Count == 0 || Scripts[0].Length == 0) return false;
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename)))
+            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename), ISO_8859_1))
             {
                 // write header:
                 writer.Write(".rmp".ToCharArray());

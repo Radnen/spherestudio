@@ -15,12 +15,13 @@ namespace SphereStudio.Plugins
     {
         private Scintilla _codeBox = new Scintilla();
 
-        // We should technically be using ISO-8859-1 encoding for compatibility with the old editor.
-        // However, UTF-8 works fine in Sphere and some newer JS engines (e.g. Duktape) won't accept
-        // ISO-8859-1 scripts if they contain extended ASCII characters, so we'll use UTF-8 and compromise
+        // We should technically be using ISO-8859-1 or Windows-1252 for compatibility with the old editor.
+        // However, UTF-8 works fine in Sphere and some JS engines (e.g. Duktape) won't accept
+        // 8-bit encodings if they contain extended characters, so we'll use UTF-8 and compromise
         // by not including a byte order mark.
         private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
-        
+        private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
+
         private bool _autocomplete;
 
         public ScriptEditor()
