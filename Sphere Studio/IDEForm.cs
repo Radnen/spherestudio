@@ -66,7 +66,7 @@ namespace SphereStudio
 
             var Is64 = System.Environment.Is64BitProcess;
             Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
-                (Is64) ? "x86" : "x64", Application.ProductVersion);
+                (Is64) ? "x64" : "x86", Application.ProductVersion);
 
             TryEditFile += IDEForm_TryEditFile;
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
@@ -153,8 +153,9 @@ namespace SphereStudio
             bool config = File.Exists(Global.CurrentEditor.ConfigPath);
             OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
 
-            bool sphere = File.Exists(Global.CurrentEditor.SpherePath);
-            RunToolButton.Enabled = TestGameMenuItem.Enabled = sphere;
+            bool sphereFound = File.Exists(Global.CurrentEditor.SpherePath)
+                || File.Exists(Global.CurrentEditor.Sphere64Path);
+            RunToolButton.Enabled = TestGameMenuItem.Enabled = sphereFound;
 
             bool last = !string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath);
             OpenLastProjectMenuItem.Enabled = last;
@@ -722,7 +723,11 @@ namespace SphereStudio
 
         private void RunToolButton_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Global.CurrentEditor.SpherePath)) return;
+            if (!File.Exists(Global.CurrentEditor.SpherePath)
+                && !File.Exists(Global.CurrentEditor.Sphere64Path))
+            {
+                return;
+            }
 
             if (TestGame != null) TestGame(null, EventArgs.Empty);
 
@@ -730,7 +735,10 @@ namespace SphereStudio
             {
                 Global.CurrentProject.SaveSettings();
                 string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                Process.Start(Global.CurrentEditor.SpherePath, args);
+                string enginePath = File.Exists(Global.CurrentEditor.Sphere64Path) && System.Environment.Is64BitOperatingSystem
+                    ? Global.CurrentEditor.Sphere64Path
+                    : Global.CurrentEditor.SpherePath;
+                Process.Start(enginePath, args);
             }
             else
                 Process.Start(Global.CurrentEditor.SpherePath);

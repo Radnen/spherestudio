@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Sphere.Core
 {
@@ -10,11 +11,13 @@ namespace Sphere.Core
     /// </summary>
     public class Map : IDisposable
     {
+        private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
+            
         #region Attributes
         private short _version = 1;
 
         /// <summary>
-        /// Gets or sets whether the map wraps around at the edges (i.e. is a toric map)
+        /// Gets or sets whether the map wraps around at the edges (i.e. a repeating map)
         /// </summary>
         public bool WrapAround { get; set; }
         
@@ -129,7 +132,7 @@ namespace Sphere.Core
         {
             if (!File.Exists(filename)) return false;
 
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(filename), ISO_8859_1))
             {
                 // read header:
                 reader.ReadChars(4);
@@ -140,7 +143,8 @@ namespace Sphere.Core
                 int numEntities = reader.ReadInt16();
                 StartX = reader.ReadInt16();
                 StartY = reader.ReadInt16();
-                StartLayer = reader.ReadByte();
+                if ((StartLayer = reader.ReadByte()) >= numLayers)
+                    StartLayer = 0;  // fix up out-of-range layer
                 reader.ReadByte();
                 int numStrings = reader.ReadInt16();
                 int numZones = reader.ReadInt16();
@@ -160,11 +164,21 @@ namespace Sphere.Core
 
                 // read entities:
                 while (numEntities-- > 0)
-                    Entities.Add(new Entity(reader));
+                {
+                    Entity entity = new Entity(reader);
+                    if (entity.Layer >= numLayers)
+                        entity.Layer = 0;  // fix up out-of-range layer
+                    Entities.Add(entity);
+                }
 
                 // read zones:
                 while (numZones-- > 0)
-                    Zones.Add(Zone.FromBinary(reader));
+                {
+                    var zone = Zone.FromBinary(reader);
+                    if (zone.Layer >= numLayers)
+                        zone.Layer = 0;  // fix up out-of-range layer
+                    Zones.Add(zone);
+                }
 
                 // read tileset:
                 if (Scripts[0].Length == 0)
@@ -195,7 +209,7 @@ namespace Sphere.Core
         public bool Save(string filename)
         {
             if (Scripts.Count == 0 || Scripts[0].Length == 0) return false;
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename)))
+            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename), ISO_8859_1))
             {
                 // write header:
                 writer.Write(".rmp".ToCharArray());
