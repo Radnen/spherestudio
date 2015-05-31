@@ -94,6 +94,7 @@ namespace SphereStudio.Components
             {
                 case "project-node":
                     GameSettingsItem.Visible = EngineSettingsItem.Visible = true;
+                    AddSubfolderItem.Visible = true;
                     break;
                 case "file-node":
                     OpenFileItem.Visible = DeleteFileItem.Visible = true;
@@ -271,9 +272,19 @@ namespace SphereStudio.Components
                 form.Input = "Untitled Folder";
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    string toppath = ProjectTreeView.SelectedNode.FullPath;
-                    toppath = toppath.Substring(toppath.IndexOf('\\'));
-                    string path = Global.CurrentProject.RootPath + toppath + "\\" + form.Input;
+                    string path = "";
+                    if (ProjectTreeView.SelectedNode.Index == 0)
+                    {
+                        path = Path.Combine(Global.CurrentProject.RootPath, form.Input);
+                    }
+                    else
+                    {
+                        string toppath = ProjectTreeView.SelectedNode.FullPath;
+                        toppath = toppath.Substring(toppath.IndexOf('\\'));
+                        string rootpath = Global.CurrentProject.RootPath + toppath;
+                        path = Path.Combine(rootpath, form.Input);
+                    }
+
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
