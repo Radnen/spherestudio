@@ -136,7 +136,7 @@
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(408, 16);
             this.statusLabel.TabIndex = 6;
-            this.statusLabel.Text = "Status Label";
+            this.statusLabel.Text = "Select files and then click \'Make Package!\'";
             // 
             // percentLabel
             // 
@@ -171,6 +171,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MakePackageForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Package Game";
             this.Load += new System.EventHandler(this.MakePackageForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.deflateLevel)).EndInit();

@@ -42,7 +42,6 @@ namespace Sphere.Plugins
         private void MakePackageForm_Load(object sender, EventArgs e)
         {
             deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
-            statusLabel.Text = "Select files and then click 'Make Package!'.";
             percentLabel.Text = "";
 
             var mainDir = new DirectoryInfo(projectPath);
