@@ -57,6 +57,7 @@ namespace Sphere.Plugins
                     string relativePath = file.FullName.Substring(projectPath.Length + 1).Replace('\\', '/');
                     ListViewItem item = fileList.Items.Add(relativePath);
                     item.ImageIndex = 0;
+                    item.SubItems.Add(String.Format("{0} kB", Math.Ceiling((double)file.Length / 1024)));
                     if (extensions.Contains(Path.GetExtension(file.FullName)))
                         item.Checked = true;
                 }
