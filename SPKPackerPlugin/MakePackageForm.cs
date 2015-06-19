@@ -25,7 +25,7 @@ namespace Sphere.Plugins
     public partial class MakePackageForm : Form
     {
         private readonly string[] extensions = {
-            ".sgm", ".rmp", ".rss", ".rts", ".rfn", ".js",
+            ".sgm", ".rmp", ".rss", ".rts", ".rfn", ".rws", ".js",
             ".png", ".jpg", ".bmp", ".pcx",
             ".mp3", ".ogg", ".mid", ".wav", ".flac"
         };
