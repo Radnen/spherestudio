@@ -42,7 +42,8 @@ namespace Sphere.Plugins
         private void MakePackageForm_Load(object sender, EventArgs e)
         {
             deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
-            statusLabel.Text = "";
+            statusLabel.Text = "Select files and then click 'Make Package!'.";
+            percentLabel.Text = "";
 
             var mainDir = new DirectoryInfo(projectPath);
             var dirQueue = new Queue<DirectoryInfo>();
@@ -56,6 +57,7 @@ namespace Sphere.Plugins
                         continue;  // skip hidden files
                     string relativePath = file.FullName.Substring(projectPath.Length + 1).Replace('\\', '/');
                     ListViewItem item = fileList.Items.Add(relativePath);
+                    item.ImageIndex = 0;
                     if (extensions.Contains(Path.GetExtension(file.FullName)))
                         item.Checked = true;
                 }
@@ -75,7 +77,7 @@ namespace Sphere.Plugins
 
         private void makePackageButton_Click(object sender, EventArgs e)
         {
-            const int bufferSize = 65536;
+            const int bufferSize = 1048576;
 
             BinaryWriter spkWriter = null;
             using (var dialog = new SaveFileDialog())
@@ -106,6 +108,7 @@ namespace Sphere.Plugins
             var filesToPack = from ListViewItem item in fileList.Items
                               where item.Checked == true
                               select item.Text;
+            byte[] packBuffer = new byte[bufferSize];
             foreach (string filename in filesToPack)
             {
                 statusLabel.Text = String.Format("Deflating '{0}'...", filename);
@@ -113,7 +116,6 @@ namespace Sphere.Plugins
                 using (FileStream file = File.OpenRead(filePath))
                 {
                     byte[] unpacked = new byte[file.Length];
-                    byte[] packBuffer = new byte[bufferSize];
                     var indexEntry = new SPKIndexEntry();
                     indexEntry.Offset = (uint)spkWriter.BaseStream.Position;
                     indexEntry.Filename = filename;

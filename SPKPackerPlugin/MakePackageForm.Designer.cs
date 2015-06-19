@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MakePackageForm));
             this.fileList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -38,6 +40,7 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
             this.percentLabel = new System.Windows.Forms.Label();
+            this.listImages = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.deflateLevel)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,6 +59,7 @@
             this.fileList.MultiSelect = false;
             this.fileList.Name = "fileList";
             this.fileList.Size = new System.Drawing.Size(444, 397);
+            this.fileList.SmallImageList = this.listImages;
             this.fileList.TabIndex = 0;
             this.fileList.UseCompatibleStateImageBehavior = false;
             this.fileList.View = System.Windows.Forms.View.Details;
@@ -144,6 +148,12 @@
             this.percentLabel.Text = "100%";
             this.percentLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // listImages
+            // 
+            this.listImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("listImages.ImageStream")));
+            this.listImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.listImages.Images.SetKeyName(0, "new_item.png");
+            // 
             // MakePackageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,5 +191,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Label percentLabel;
+        private System.Windows.Forms.ImageList listImages;
     }
 }

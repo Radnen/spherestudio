@@ -17,6 +17,7 @@ namespace Sphere.Plugins
         public string Author { get { return "Lord English"; } }
         public string Description { get { return "Sphere Studio default game packager"; } }
         public string Version { get { return "1.2.0"; } }
+
         public Icon Icon { get; set; }
 
         private ToolStripMenuItem rootMenu;
@@ -36,7 +37,7 @@ namespace Sphere.Plugins
 
         public SPKPackerPlugin()
         {
-            packageMenuItem = new ToolStripMenuItem("&Package Game...", null, packageGame_Click);
+            packageMenuItem = new ToolStripMenuItem("&Package Game...", Properties.Resources.Checkmark, packageGame_Click);
             
             // build menu structure
             rootMenu = new ToolStripMenuItem("&Package");
