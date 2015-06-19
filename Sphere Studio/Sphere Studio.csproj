@@ -346,6 +346,10 @@
       <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
       <Name>Sphere.Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPKPackerPlugin\SPKPackerPlugin.csproj">
+      <Project>{4c86712c-f591-432e-8185-f077903254d9}</Project>
+      <Name>SPKPackerPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditPlugin.csproj">
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
       <Name>SpritesetEditPlugin</Name>

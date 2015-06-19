@@ -53,7 +53,6 @@ namespace Sphere.Core.Settings
         /// <summary>
         /// Adds the value to the settings object.
         /// </summary>
-        /// <typeparam name="T">The type to store.</typeparam>
         /// <param name="key">The key to store object at.</param>
         /// <param name="item">The object to store.</param>
         protected void SetItem(string key, object item)
