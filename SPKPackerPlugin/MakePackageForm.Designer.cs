@@ -33,6 +33,7 @@
             this.fileList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listImages = new System.Windows.Forms.ImageList(this.components);
             this.makePackageButton = new System.Windows.Forms.Button();
             this.packProgress = new System.Windows.Forms.ProgressBar();
             this.deflateLevel = new System.Windows.Forms.TrackBar();
@@ -40,7 +41,6 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
             this.percentLabel = new System.Windows.Forms.Label();
-            this.listImages = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.deflateLevel)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,6 +74,12 @@
             this.columnHeader2.Text = "File Size";
             this.columnHeader2.Width = 100;
             // 
+            // listImages
+            // 
+            this.listImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("listImages.ImageStream")));
+            this.listImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.listImages.Images.SetKeyName(0, "new_item.png");
+            // 
             // makePackageButton
             // 
             this.makePackageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -81,7 +87,7 @@
             this.makePackageButton.Name = "makePackageButton";
             this.makePackageButton.Size = new System.Drawing.Size(106, 43);
             this.makePackageButton.TabIndex = 1;
-            this.makePackageButton.Text = "Make &Package!";
+            this.makePackageButton.Text = "&Package!";
             this.makePackageButton.UseVisualStyleBackColor = true;
             this.makePackageButton.Click += new System.EventHandler(this.makePackageButton_Click);
             // 
@@ -136,7 +142,7 @@
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(408, 16);
             this.statusLabel.TabIndex = 6;
-            this.statusLabel.Text = "Select files and then click \'Make Package!\'";
+            this.statusLabel.Text = "Select files and then click \'Package!\'";
             // 
             // percentLabel
             // 
@@ -147,12 +153,6 @@
             this.percentLabel.TabIndex = 7;
             this.percentLabel.Text = "100%";
             this.percentLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // listImages
-            // 
-            this.listImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("listImages.ImageStream")));
-            this.listImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.listImages.Images.SetKeyName(0, "new_item.png");
             // 
             // MakePackageForm
             // 

@@ -682,7 +682,7 @@ namespace SphereStudio
             OpenGameSettings();
         }
 
-        public void ApplyRefresh(bool ignore_presets = true)
+        public void ApplyRefresh(bool ignore_presets = false)
         {
             if (!ignore_presets)
                 UpdatePresetList();

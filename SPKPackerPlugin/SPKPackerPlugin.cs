@@ -20,15 +20,15 @@ namespace Sphere.Plugins
 
         public Icon Icon { get; set; }
 
-        private ToolStripMenuItem rootMenu;
-        private ToolStripMenuItem packageMenuItem;
+        private ToolStripMenuItem  packageMenuItem;
+        private ToolStripSeparator menuSeparator1;
 
         private void packageGame_Click(object sender, EventArgs e)
         {
             ProjectSettings project;
 
             if ((project = PluginManager.IDE.CurrentGame) == null)
-                MessageBox.Show("No game loaded!", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You must load a project into the editor first.", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 new MakePackageForm(project.RootPath).ShowDialog();
@@ -37,21 +37,37 @@ namespace Sphere.Plugins
 
         public SPKPackerPlugin()
         {
-            packageMenuItem = new ToolStripMenuItem("&Package Game...", Properties.Resources.Checkmark, packageGame_Click);
-            
-            // build menu structure
-            rootMenu = new ToolStripMenuItem("&Package");
-            rootMenu.DropDownItems.Add(packageMenuItem);
-            PluginManager.IDE.AddMenuItem(rootMenu, "View");
+            packageMenuItem = new ToolStripMenuItem("&Package Game...", null, packageGame_Click);
+            packageMenuItem.Enabled = false;
+            menuSeparator1 = new ToolStripSeparator();
         }
 
         public void Initialize()
         {
+            PluginManager.IDE.AddMenuItem("Project", menuSeparator1);
+            PluginManager.IDE.AddMenuItem("Project", packageMenuItem);
+
+            PluginManager.IDE.LoadProject += IDE_LoadProject;
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
         }
 
         public void Destroy()
         {
+            PluginManager.IDE.RemoveMenuItem(packageMenuItem);
+            PluginManager.IDE.RemoveMenuItem(menuSeparator1);
 
+            PluginManager.IDE.LoadProject -= IDE_LoadProject;
+            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
+        }
+
+        private void IDE_LoadProject(object sender, EventArgs e)
+        {
+            packageMenuItem.Enabled = true;
+        }
+
+        private void IDE_UnloadProject(object sender, EventArgs e)
+        {
+            packageMenuItem.Enabled = false;
         }
     }
 }
