@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -35,7 +36,7 @@ namespace Sphere.Core.Settings
         public bool GetBool(string key, bool fail = false)
         {
             string val = GetString(key);
-            return val == string.Empty ? fail : bool.Parse(val);
+            return string.IsNullOrWhiteSpace(val) ? fail : bool.Parse(val);
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Sphere.Core.Settings
         public int GetInt(string key, int fail = 0)
         {
             string val = GetString(key);
-            return val == string.Empty ? 0 : int.Parse(val);
+            return string.IsNullOrWhiteSpace(val) ? fail : int.Parse(val);
         }
 
         /// <summary>

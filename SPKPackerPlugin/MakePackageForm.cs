@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,7 +42,9 @@ namespace Sphere.Plugins
 
         private void MakePackageForm_Load(object sender, EventArgs e)
         {
-            deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
+            headerLabel.Text += string.Format(" for \"{0}\"", PluginManager.IDE.CurrentGame.Name);
+
+            deflateLvLabel.Text = string.Format("Compression Lv. {0}", deflateLevel.Value);
             percentLabel.Text = "";
 
             var mainDir = new DirectoryInfo(projectPath);
@@ -74,6 +77,10 @@ namespace Sphere.Plugins
                     dirStack.Push(dir);
                 }
             }
+
+            var deflate = PluginManager.IDE.EditorSettings.GetInt("spk-deflate-lv", 6);
+            deflateLevel.Value = deflate < 0 ? 0 : deflate > 9 ? 9 : deflate;
+            deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
         }
 
         private void deflateLevel_Scroll(object sender, EventArgs e)
@@ -96,90 +103,120 @@ namespace Sphere.Plugins
                 dialog.OverwritePrompt = true;
                 dialog.AutoUpgradeEnabled = true;
                 if (dialog.ShowDialog(this) == DialogResult.OK)
+                {
                     spkWriter = new BinaryWriter(File.Create(dialog.FileName), Encoding.GetEncoding(1252));
+                    testButton.Tag = dialog.FileName;
+                }
             }
             if (spkWriter == null)
                 return;
+            testButton.Visible = false;
             makePackageButton.Enabled = false;
             cancelButton.Enabled = false;
             deflateLevel.Enabled = false;
+            fileList.Enabled = false;
             makePackageButton.Text = "Packaging...";
             packProgress.Minimum = 0;
             packProgress.Maximum = fileList.Items.Count;
             packProgress.Value = 0;
             percentLabel.Text = "0%";
             int counter = 0;
-            spkWriter.Write(new byte[16]);  // reserve 16 bytes for SPK header
-            var index = new List<SPKIndexEntry>();
-            var filesToPack = from ListViewItem item in fileList.Items
-                              where item.Checked == true
-                              select item.Text;
-            byte[] packBuffer = new byte[bufferSize];
-            foreach (string filename in filesToPack)
+            using (spkWriter)
             {
-                statusLabel.Text = String.Format("Deflating '{0}'...", filename);
-                var filePath = Path.Combine(projectPath, filename);
-                using (FileStream file = File.OpenRead(filePath))
+                // reserve 16 bytes for SPK header
+                spkWriter.Write(new byte[16]);
+
+                // compress files using zlib and write them to package file
+                var index = new List<SPKIndexEntry>();
+                var filesToPack = from ListViewItem item in fileList.Items
+                                    where item.Checked == true
+                                    select item.Text;
+                byte[] packBuffer = new byte[bufferSize];
+                foreach (string filename in filesToPack)
                 {
-                    byte[] unpacked = new byte[file.Length];
-                    var indexEntry = new SPKIndexEntry();
-                    indexEntry.Offset = (uint)spkWriter.BaseStream.Position;
-                    indexEntry.Filename = filename;
-                    indexEntry.FileSize = (uint)file.Length;
-                    indexEntry.PackSize = 0;
-                    file.Read(unpacked, 0, (int)file.Length);
-                    var z = new ZStream();
-                    z.deflateInit(deflateLevel.Value);
-                    z.next_in = unpacked;
-                    z.next_in_index = 0;
-                    z.avail_in = (int)file.Length;
-                    int result;
-                    int flushMode = zlibConst.Z_NO_FLUSH;
-                    do
+                    statusLabel.Text = String.Format("Deflating '{0}'...", filename);
+                    var filePath = Path.Combine(projectPath, filename);
+                    using (FileStream file = File.OpenRead(filePath))
                     {
-                        z.next_out = packBuffer;
-                        z.next_out_index = 0;
-                        z.avail_out = bufferSize;
-                        result = z.deflate(flushMode);
-                        if (z.avail_out > 0)
-                            flushMode = zlibConst.Z_FINISH;
-                        indexEntry.PackSize += bufferSize - (uint)z.avail_out;
-                        spkWriter.Write(packBuffer, 0, bufferSize - z.avail_out);
-                        Application.DoEvents();
-                    } while (result != zlibConst.Z_STREAM_END);
-                    z.deflateEnd();
-                    index.Add(indexEntry);
+                        byte[] unpacked = new byte[file.Length];
+                        var indexEntry = new SPKIndexEntry();
+                        indexEntry.Offset = (uint)spkWriter.BaseStream.Position;
+                        indexEntry.Filename = filename;
+                        indexEntry.FileSize = (uint)file.Length;
+                        indexEntry.PackSize = 0;
+                        file.Read(unpacked, 0, (int)file.Length);
+                        var z = new ZStream();
+                        z.deflateInit(deflateLevel.Value);
+                        z.next_in = unpacked;
+                        z.next_in_index = 0;
+                        z.avail_in = (int)file.Length;
+                        int result;
+                        int flushMode = zlibConst.Z_NO_FLUSH;
+                        do
+                        {
+                            z.next_out = packBuffer;
+                            z.next_out_index = 0;
+                            z.avail_out = bufferSize;
+                            result = z.deflate(flushMode);
+                            if (z.avail_out > 0)
+                                flushMode = zlibConst.Z_FINISH;
+                            indexEntry.PackSize += bufferSize - (uint)z.avail_out;
+                            spkWriter.Write(packBuffer, 0, bufferSize - z.avail_out);
+                            Application.DoEvents();
+                        } while (result != zlibConst.Z_STREAM_END);
+                        z.deflateEnd();
+                        index.Add(indexEntry);
+                    }
+                    ++counter;
+                    packProgress.Value = counter;
+                    percentLabel.Text = String.Format("{0}%", 100 * packProgress.Value / packProgress.Maximum);
                 }
-                ++counter;
-                packProgress.Value = counter;
-                percentLabel.Text = String.Format("{0}%", 100 * packProgress.Value / packProgress.Maximum);
-            }
-            statusLabel.Text = "Writing SPK index...";
-            uint indexOffset = (uint)spkWriter.BaseStream.Position;
-            foreach (SPKIndexEntry entry in index)
-            {
+
+                // write package index
+                statusLabel.Text = "Writing SPK index...";
+                uint indexOffset = (uint)spkWriter.BaseStream.Position;
+                foreach (SPKIndexEntry entry in index)
+                {
+                    spkWriter.Write((ushort)(1));  // SPK version 1
+                    spkWriter.Write((ushort)entry.Filename.Length);
+                    spkWriter.Write(entry.Offset);
+                    spkWriter.Write(entry.FileSize);
+                    spkWriter.Write(entry.PackSize);
+                    spkWriter.Write(entry.Filename.ToCharArray());
+                }
+
+                // write SPK header
+                spkWriter.BaseStream.Seek(0, SeekOrigin.Begin);
+                spkWriter.Write(".spk".ToCharArray());
                 spkWriter.Write((ushort)(1));  // SPK version 1
-                spkWriter.Write((ushort)entry.Filename.Length);
-                spkWriter.Write(entry.Offset);
-                spkWriter.Write(entry.FileSize);
-                spkWriter.Write(entry.PackSize);
-                spkWriter.Write(entry.Filename.ToCharArray());
+                spkWriter.Write(filesToPack.Count());
+                spkWriter.Write(indexOffset);
+                spkWriter.Write(new byte[2]);
             }
-            spkWriter.BaseStream.Seek(0, SeekOrigin.Begin);
-            spkWriter.Write(".spk".ToCharArray());
-            spkWriter.Write((ushort)(1));  // SPK version 1
-            spkWriter.Write(filesToPack.Count());
-            spkWriter.Write(indexOffset);
-            spkWriter.Write(new byte[2]);
-            spkWriter.Dispose();
             packProgress.Value = packProgress.Maximum;
             percentLabel.Text = "100%";
             statusLabel.Text = "Finished!";
-            makePackageButton.Text = "Make &Package";
             makePackageButton.Enabled = true;
             cancelButton.Enabled = true;
+            fileList.Enabled = true;
             deflateLevel.Enabled = true;
+            testButton.Visible = true;
+            makePackageButton.Text = "Make &Package!";
             cancelButton.Text = "&Close";
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            PluginManager.IDE.EditorSettings.SaveObject("spk-deflate-lv", deflateLevel.Value);
+        }
+
+        private void testButton_Click(object sender, EventArgs e)
+        {
+            string enginePath = System.Environment.Is64BitOperatingSystem
+                ? PluginManager.IDE.EditorSettings.Sphere64Path
+                : PluginManager.IDE.EditorSettings.SpherePath;
+            string args = string.Format("-package \"{0}\"", testButton.Tag);
+            Process.Start(enginePath, args);
         }
     }
 }
