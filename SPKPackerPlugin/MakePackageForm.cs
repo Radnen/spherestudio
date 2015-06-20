@@ -27,7 +27,7 @@ namespace Sphere.Plugins
         private readonly string[] extensions = {
             ".sgm", ".rmp", ".rss", ".rts", ".rfn", ".rws", ".js",
             ".png", ".jpg", ".bmp", ".pcx",
-            ".mp3", ".ogg", ".mid", ".wav", ".flac"
+            ".mp3", ".ogg", ".mid", ".wav", ".flac", ".it", ".s3m", ".mod",
         };
 
         private string projectPath;
