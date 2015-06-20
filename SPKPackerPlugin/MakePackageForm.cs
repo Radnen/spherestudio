@@ -78,7 +78,7 @@ namespace Sphere.Plugins
                 }
             }
 
-            var deflate = PluginManager.IDE.EditorSettings.GetInt("spk-deflate-lv", 6);
+            var deflate = PluginManager.IDE.EditorSettings.GetInt("spk-deflate-lv", 5);
             deflateLevel.Value = deflate < 0 ? 0 : deflate > 9 ? 9 : deflate;
             deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
         }

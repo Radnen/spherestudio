@@ -113,7 +113,7 @@
             this.deflateLevel.Size = new System.Drawing.Size(101, 45);
             this.deflateLevel.TabIndex = 17;
             this.deflateLevel.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.deflateLevel.Value = 6;
+            this.deflateLevel.Value = 5;
             this.deflateLevel.Scroll += new System.EventHandler(this.deflateLevel_Scroll);
             // 
             // cancelButton
@@ -145,7 +145,7 @@
             this.deflateLvLabel.Name = "deflateLvLabel";
             this.deflateLvLabel.Size = new System.Drawing.Size(101, 21);
             this.deflateLvLabel.TabIndex = 16;
-            this.deflateLvLabel.Text = "Compression Lv. 6";
+            this.deflateLvLabel.Text = "Compression Lv. 5";
             this.deflateLvLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // percentLabel
