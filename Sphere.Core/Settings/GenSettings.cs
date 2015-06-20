@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -35,7 +36,7 @@ namespace Sphere.Core.Settings
         public bool GetBool(string key, bool fail = false)
         {
             string val = GetString(key);
-            return val == string.Empty ? fail : bool.Parse(val);
+            return string.IsNullOrWhiteSpace(val) ? fail : bool.Parse(val);
         }
 
         /// <summary>
@@ -47,13 +48,12 @@ namespace Sphere.Core.Settings
         public int GetInt(string key, int fail = 0)
         {
             string val = GetString(key);
-            return val == string.Empty ? 0 : int.Parse(val);
+            return string.IsNullOrWhiteSpace(val) ? fail : int.Parse(val);
         }
 
         /// <summary>
         /// Adds the value to the settings object.
         /// </summary>
-        /// <typeparam name="T">The type to store.</typeparam>
         /// <param name="key">The key to store object at.</param>
         /// <param name="item">The object to store.</param>
         protected void SetItem(string key, object item)

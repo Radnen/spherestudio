@@ -209,7 +209,7 @@ namespace Sphere.Core
         public bool Save(string filename)
         {
             if (Scripts.Count == 0 || Scripts[0].Length == 0) return false;
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filename), ISO_8859_1))
+            using (BinaryWriter writer = new BinaryWriter(File.Create(filename), ISO_8859_1))
             {
                 // write header:
                 writer.Write(".rmp".ToCharArray());

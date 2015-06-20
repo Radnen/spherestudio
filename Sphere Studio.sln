@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Studio\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4C86712C-F591-432E-8185-F077903254D9} = {4C86712C-F591-432E-8185-F077903254D9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -30,6 +33,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditPlugin", "WindowstyleEditPlugin\WindowstyleEditPlugin.csproj", "{65BCDEEF-C718-492A-8C82-7886A3AF8B7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "SpritesetEditPlugin\SpritesetEditPlugin.csproj", "{9FEA4A11-754F-4F4B-8A85-B0E780F15159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPKPackerPlugin", "SPKPackerPlugin\SPKPackerPlugin.csproj", "{4C86712C-F591-432E-8185-F077903254D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +179,18 @@ Global
 		{9FEA4A11-754F-4F4B-8A85-B0E780F15159}.Release|x64.Build.0 = Release|x64
 		{9FEA4A11-754F-4F4B-8A85-B0E780F15159}.Release|x86.ActiveCfg = Release|x86
 		{9FEA4A11-754F-4F4B-8A85-B0E780F15159}.Release|x86.Build.0 = Release|x86
+		{4C86712C-F591-432E-8185-F077903254D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C86712C-F591-432E-8185-F077903254D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C86712C-F591-432E-8185-F077903254D9}.Debug|x64.ActiveCfg = Debug|x64
+		{4C86712C-F591-432E-8185-F077903254D9}.Debug|x64.Build.0 = Debug|x64
+		{4C86712C-F591-432E-8185-F077903254D9}.Debug|x86.ActiveCfg = Debug|x86
+		{4C86712C-F591-432E-8185-F077903254D9}.Debug|x86.Build.0 = Debug|x86
+		{4C86712C-F591-432E-8185-F077903254D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C86712C-F591-432E-8185-F077903254D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C86712C-F591-432E-8185-F077903254D9}.Release|x64.ActiveCfg = Release|x64
+		{4C86712C-F591-432E-8185-F077903254D9}.Release|x64.Build.0 = Release|x64
+		{4C86712C-F591-432E-8185-F077903254D9}.Release|x86.ActiveCfg = Release|x86
+		{4C86712C-F591-432E-8185-F077903254D9}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

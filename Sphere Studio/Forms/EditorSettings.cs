@@ -235,6 +235,7 @@ namespace SphereStudio.Forms
                 if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string presetName = form.Input;
+                    Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Presets"));
                     string filePath = Path.Combine(Application.StartupPath, "Presets", presetName + ".preset");
                     bool continueSave = true;
                     if (File.Exists(filePath))
@@ -315,6 +316,13 @@ namespace SphereStudio.Forms
         private void okButton_Click(object sender, EventArgs e)
         {
             ApplyButton.PerformClick();
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
     }
