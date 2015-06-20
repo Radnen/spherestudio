@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MakePackageForm));
             this.listImages = new System.Windows.Forms.ImageList(this.components);
-            this.headerLabel = new Sphere.Core.Editor.EditorLabel();
             this.fileList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -44,6 +43,7 @@
             this.percentLabel = new System.Windows.Forms.Label();
             this.testButton = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.headerLabel = new Sphere.Core.Editor.EditorLabel();
             ((System.ComponentModel.ISupportInitialize)(this.deflateLevel)).BeginInit();
             this.mainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -53,19 +53,6 @@
             this.listImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("listImages.ImageStream")));
             this.listImages.TransparentColor = System.Drawing.Color.Transparent;
             this.listImages.Images.SetKeyName(0, "new_item.png");
-            // 
-            // headerLabel
-            // 
-            this.headerLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.headerLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.headerLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.headerLabel.ForeColor = System.Drawing.Color.White;
-            this.headerLabel.Location = new System.Drawing.Point(0, 0);
-            this.headerLabel.Name = "headerLabel";
-            this.headerLabel.Size = new System.Drawing.Size(621, 23);
-            this.headerLabel.TabIndex = 9;
-            this.headerLabel.Text = "Create Sphere Game Package (.spk)";
-            this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileList
             // 
@@ -80,7 +67,7 @@
             this.fileList.Location = new System.Drawing.Point(13, 14);
             this.fileList.MultiSelect = false;
             this.fileList.Name = "fileList";
-            this.fileList.Size = new System.Drawing.Size(487, 478);
+            this.fileList.Size = new System.Drawing.Size(487, 417);
             this.fileList.SmallImageList = this.listImages;
             this.fileList.TabIndex = 9;
             this.fileList.UseCompatibleStateImageBehavior = false;
@@ -101,7 +88,7 @@
             this.makePackageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.makePackageButton.Location = new System.Drawing.Point(509, 14);
             this.makePackageButton.Name = "makePackageButton";
-            this.makePackageButton.Size = new System.Drawing.Size(101, 43);
+            this.makePackageButton.Size = new System.Drawing.Size(101, 64);
             this.makePackageButton.TabIndex = 12;
             this.makePackageButton.Text = "Make &Package";
             this.makePackageButton.UseVisualStyleBackColor = true;
@@ -111,7 +98,7 @@
             // 
             this.packProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.packProgress.Location = new System.Drawing.Point(13, 524);
+            this.packProgress.Location = new System.Drawing.Point(13, 463);
             this.packProgress.Name = "packProgress";
             this.packProgress.Size = new System.Drawing.Size(489, 13);
             this.packProgress.TabIndex = 24;
@@ -120,10 +107,10 @@
             // 
             this.deflateLevel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.deflateLevel.LargeChange = 3;
-            this.deflateLevel.Location = new System.Drawing.Point(511, 123);
+            this.deflateLevel.Location = new System.Drawing.Point(509, 146);
             this.deflateLevel.Maximum = 9;
             this.deflateLevel.Name = "deflateLevel";
-            this.deflateLevel.Size = new System.Drawing.Size(99, 45);
+            this.deflateLevel.Size = new System.Drawing.Size(101, 45);
             this.deflateLevel.TabIndex = 17;
             this.deflateLevel.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.deflateLevel.Value = 6;
@@ -133,7 +120,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(509, 63);
+            this.cancelButton.Location = new System.Drawing.Point(509, 84);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(101, 24);
             this.cancelButton.TabIndex = 13;
@@ -145,7 +132,7 @@
             // 
             this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.statusLabel.Location = new System.Drawing.Point(10, 505);
+            this.statusLabel.Location = new System.Drawing.Point(10, 444);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(451, 16);
             this.statusLabel.TabIndex = 19;
@@ -154,7 +141,7 @@
             // deflateLvLabel
             // 
             this.deflateLvLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deflateLvLabel.Location = new System.Drawing.Point(509, 99);
+            this.deflateLvLabel.Location = new System.Drawing.Point(509, 122);
             this.deflateLvLabel.Name = "deflateLvLabel";
             this.deflateLvLabel.Size = new System.Drawing.Size(101, 21);
             this.deflateLvLabel.TabIndex = 16;
@@ -164,7 +151,7 @@
             // percentLabel
             // 
             this.percentLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.percentLabel.Location = new System.Drawing.Point(467, 505);
+            this.percentLabel.Location = new System.Drawing.Point(467, 444);
             this.percentLabel.Name = "percentLabel";
             this.percentLabel.Size = new System.Drawing.Size(35, 16);
             this.percentLabel.TabIndex = 21;
@@ -174,13 +161,13 @@
             // testButton
             // 
             this.testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.testButton.Location = new System.Drawing.Point(509, 473);
+            this.testButton.Enabled = false;
+            this.testButton.Location = new System.Drawing.Point(509, 412);
             this.testButton.Name = "testButton";
             this.testButton.Size = new System.Drawing.Size(101, 64);
             this.testButton.TabIndex = 25;
             this.testButton.Text = "Test Package!";
             this.testButton.UseVisualStyleBackColor = true;
-            this.testButton.Visible = false;
             this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
             // mainPanel
@@ -197,14 +184,27 @@
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.Location = new System.Drawing.Point(0, 23);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(621, 550);
+            this.mainPanel.Size = new System.Drawing.Size(621, 489);
             this.mainPanel.TabIndex = 10;
+            // 
+            // headerLabel
+            // 
+            this.headerLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.headerLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.headerLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.headerLabel.ForeColor = System.Drawing.Color.White;
+            this.headerLabel.Location = new System.Drawing.Point(0, 0);
+            this.headerLabel.Name = "headerLabel";
+            this.headerLabel.Size = new System.Drawing.Size(621, 23);
+            this.headerLabel.TabIndex = 9;
+            this.headerLabel.Text = "Create Sphere Game Package (.spk)";
+            this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MakePackageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(621, 573);
+            this.ClientSize = new System.Drawing.Size(621, 512);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.headerLabel);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

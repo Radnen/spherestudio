@@ -110,7 +110,7 @@ namespace Sphere.Plugins
             }
             if (spkWriter == null)
                 return;
-            testButton.Visible = false;
+            testButton.Enabled = false;
             makePackageButton.Enabled = false;
             cancelButton.Enabled = false;
             deflateLevel.Enabled = false;
@@ -200,7 +200,7 @@ namespace Sphere.Plugins
             cancelButton.Enabled = true;
             fileList.Enabled = true;
             deflateLevel.Enabled = true;
-            testButton.Visible = true;
+            testButton.Enabled = true;
             makePackageButton.Text = "Make &Package!";
             cancelButton.Text = "&Close";
         }
