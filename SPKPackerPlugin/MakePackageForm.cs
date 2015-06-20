@@ -158,8 +158,8 @@ namespace Sphere.Plugins
             uint indexOffset = (uint)spkWriter.BaseStream.Position;
             foreach (SPKIndexEntry entry in index)
             {
-                spkWriter.Write((short)(1));
-                spkWriter.Write((short)entry.Filename.Length);
+                spkWriter.Write((ushort)(1));  // SPK version 1
+                spkWriter.Write((ushort)entry.Filename.Length);
                 spkWriter.Write(entry.Offset);
                 spkWriter.Write(entry.FileSize);
                 spkWriter.Write(entry.PackSize);
@@ -167,7 +167,7 @@ namespace Sphere.Plugins
             }
             spkWriter.BaseStream.Seek(0, SeekOrigin.Begin);
             spkWriter.Write(".spk".ToCharArray());
-            spkWriter.Write((short)(1));  // SPK version 1
+            spkWriter.Write((ushort)(1));  // SPK version 1
             spkWriter.Write(filesToPack.Count());
             spkWriter.Write(indexOffset);
             spkWriter.Write(new byte[2]);
