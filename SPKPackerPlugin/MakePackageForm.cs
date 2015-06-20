@@ -45,12 +45,15 @@ namespace Sphere.Plugins
             percentLabel.Text = "";
 
             var mainDir = new DirectoryInfo(projectPath);
-            var dirQueue = new Queue<DirectoryInfo>();
-            dirQueue.Enqueue(mainDir);
-            while (dirQueue.Count > 0)
+            var dirStack = new Stack<DirectoryInfo>();
+            dirStack.Push(mainDir);
+            while (dirStack.Count > 0)
             {
-                var thisDir = dirQueue.Dequeue();
-                foreach (FileInfo file in thisDir.GetFiles())
+                var thisDir = dirStack.Pop();
+                var fileInfos = from FileInfo file in thisDir.GetFiles()
+                                orderby file.Name
+                                select file;
+                foreach (FileInfo file in fileInfos)
                 {
                     if (file.Attributes.HasFlag(FileAttributes.Hidden))
                         continue;  // skip hidden files
@@ -61,11 +64,14 @@ namespace Sphere.Plugins
                     if (extensions.Contains(Path.GetExtension(file.FullName)))
                         item.Checked = true;
                 }
-                foreach (DirectoryInfo dir in thisDir.GetDirectories())
+                var dirInfos = from DirectoryInfo dir in thisDir.GetDirectories()
+                               orderby dir.Name descending
+                               select dir;
+                foreach (var dir in dirInfos)
                 {
                     if (dir.Attributes.HasFlag(FileAttributes.Hidden))
                         continue;  // skip hidden directories
-                    dirQueue.Enqueue(dir);
+                    dirStack.Push(dir);
                 }
             }
         }

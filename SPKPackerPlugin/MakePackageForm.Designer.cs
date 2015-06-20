@@ -53,7 +53,6 @@
             this.fileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.fileList.FullRowSelect = true;
             this.fileList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.fileList.Location = new System.Drawing.Point(12, 12);
             this.fileList.MultiSelect = false;
@@ -87,7 +86,7 @@
             this.makePackageButton.Name = "makePackageButton";
             this.makePackageButton.Size = new System.Drawing.Size(106, 43);
             this.makePackageButton.TabIndex = 1;
-            this.makePackageButton.Text = "&Package!";
+            this.makePackageButton.Text = "Make &Package";
             this.makePackageButton.UseVisualStyleBackColor = true;
             this.makePackageButton.Click += new System.EventHandler(this.makePackageButton_Click);
             // 
@@ -98,7 +97,7 @@
             this.packProgress.Location = new System.Drawing.Point(12, 441);
             this.packProgress.Name = "packProgress";
             this.packProgress.Size = new System.Drawing.Size(446, 13);
-            this.packProgress.TabIndex = 2;
+            this.packProgress.TabIndex = 7;
             // 
             // deflateLevel
             // 
@@ -108,7 +107,7 @@
             this.deflateLevel.Maximum = 9;
             this.deflateLevel.Name = "deflateLevel";
             this.deflateLevel.Size = new System.Drawing.Size(104, 45);
-            this.deflateLevel.TabIndex = 3;
+            this.deflateLevel.TabIndex = 4;
             this.deflateLevel.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.deflateLevel.Value = 6;
             this.deflateLevel.Scroll += new System.EventHandler(this.deflateLevel_Scroll);
@@ -119,7 +118,7 @@
             this.deflateLvLabel.Location = new System.Drawing.Point(462, 98);
             this.deflateLvLabel.Name = "deflateLvLabel";
             this.deflateLvLabel.Size = new System.Drawing.Size(106, 21);
-            this.deflateLvLabel.TabIndex = 4;
+            this.deflateLvLabel.TabIndex = 3;
             this.deflateLvLabel.Text = "Compression Lv. 6";
             this.deflateLvLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
@@ -130,7 +129,7 @@
             this.cancelButton.Location = new System.Drawing.Point(462, 62);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(106, 24);
-            this.cancelButton.TabIndex = 5;
+            this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
@@ -141,16 +140,16 @@
             this.statusLabel.Location = new System.Drawing.Point(9, 422);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(408, 16);
-            this.statusLabel.TabIndex = 6;
-            this.statusLabel.Text = "Select files and then click \'Package!\'";
+            this.statusLabel.TabIndex = 5;
+            this.statusLabel.Text = "Select files and then click \'Make Package\'.";
             // 
             // percentLabel
             // 
             this.percentLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.percentLabel.Location = new System.Drawing.Point(425, 422);
+            this.percentLabel.Location = new System.Drawing.Point(423, 422);
             this.percentLabel.Name = "percentLabel";
-            this.percentLabel.Size = new System.Drawing.Size(33, 16);
-            this.percentLabel.TabIndex = 7;
+            this.percentLabel.Size = new System.Drawing.Size(35, 16);
+            this.percentLabel.TabIndex = 6;
             this.percentLabel.Text = "100%";
             this.percentLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -168,6 +167,7 @@
             this.Controls.Add(this.packProgress);
             this.Controls.Add(this.makePackageButton);
             this.Controls.Add(this.fileList);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MakePackageForm";
