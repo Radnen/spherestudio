@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Sphere.Core;
+using Sphere.Core.Settings;
 using zlib;
 
 namespace Sphere.Plugins
@@ -212,9 +214,9 @@ namespace Sphere.Plugins
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            string enginePath = System.Environment.Is64BitOperatingSystem
-                ? PluginManager.IDE.EditorSettings.Sphere64Path
-                : PluginManager.IDE.EditorSettings.SpherePath;
+            SphereSettings settings = PluginManager.IDE.EditorSettings;
+            string enginePath = System.Environment.Is64BitOperatingSystem && !string.IsNullOrWhiteSpace(settings.Sphere64Path)
+                ? settings.Sphere64Path : settings.SpherePath;
             string args = string.Format("-package \"{0}\"", testButton.Tag);
             Process.Start(enginePath, args);
         }
