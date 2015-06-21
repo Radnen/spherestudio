@@ -173,7 +173,8 @@ namespace SphereStudio.Plugins
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = @"Sphere Script Files (.js)|*.js";
+                diag.Filter = @"Sphere Script Files (.js, .coffee)|*.js;*.coffee";
+                diag.DefaultExt = "js";
 
                 if (PluginManager.IDE.CurrentGame != null)
                     diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\scripts";
