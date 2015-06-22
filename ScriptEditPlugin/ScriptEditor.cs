@@ -173,7 +173,7 @@ namespace SphereStudio.Plugins
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.Filter = @"Sphere Script Files (.js, .coffee)|*.js;*.coffee";
+                diag.Filter = @"JavaScript (.js)|*.js|CoffeeScript (.coffee)|*.coffee";
                 diag.DefaultExt = "js";
 
                 if (PluginManager.IDE.CurrentGame != null)

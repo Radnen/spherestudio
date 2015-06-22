@@ -3,6 +3,8 @@ using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Settings;
 using Sphere.Core.Editor;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SphereStudio.Forms
 {
@@ -25,10 +27,14 @@ namespace SphereStudio.Forms
         {
             // I'll need to populate the script combo box.
             DirectoryInfo dir = new DirectoryInfo(PathTextBox.Text + "\\scripts");
-            FileInfo[] scriptList = dir.GetFiles("*.js");
-            for (int i = 0; i < scriptList.Length; ++i)
+
+            var scriptList = from FileInfo file in dir.EnumerateFiles("*")
+                             where file.Extension == ".js" || file.Extension == ".coffee"
+                             orderby file.Name ascending
+                             select file.Name;
+            foreach (string filename in scriptList)
             {
-                ScriptComboBox.Items.Add(scriptList[i].Name);
+                ScriptComboBox.Items.Add(filename);
             }
         }
 
