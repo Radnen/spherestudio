@@ -10,21 +10,25 @@ namespace SphereStudio.Forms
 {
     internal partial class GameSettings : Form, IStyleable
     {
+        private ProjectSettings _project;
+        
         public GameSettings(ProjectSettings someProject)
         {
             InitializeComponent();
-            PathTextBox.Text = someProject.RootPath;
-            NameTextBox.Text = someProject.Name;
-            AuthorTextBox.Text = someProject.Author;
-            DescTextBox.Text = someProject.Description;
-            WidthTextBox.Text = someProject.Width;
-            HeightTextBox.Text = someProject.Height;
-            ScriptComboBox.Text = someProject.Script;
             UpdateStyle();
+
+            _project = someProject;
         }
 
         private void GameSettings_Load(object sender, EventArgs e)
         {
+            PathTextBox.Text = _project.RootPath;
+            NameTextBox.Text = _project.Name;
+            AuthorTextBox.Text = _project.Author;
+            DescTextBox.Text = _project.Description;
+            WidthTextBox.Text = _project.Width;
+            HeightTextBox.Text = _project.Height;
+            
             // I'll need to populate the script combo box.
             DirectoryInfo dir = new DirectoryInfo(PathTextBox.Text + "\\scripts");
 
@@ -36,6 +40,7 @@ namespace SphereStudio.Forms
             {
                 ScriptComboBox.Items.Add(filename);
             }
+            ScriptComboBox.Text = _project.Script;
         }
 
         public ProjectSettings GetSettings()
