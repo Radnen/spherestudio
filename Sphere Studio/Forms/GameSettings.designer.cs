@@ -140,6 +140,7 @@
             // 
             // ScriptComboBox
             // 
+            this.ScriptComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ScriptComboBox.FormattingEnabled = true;
             this.ScriptComboBox.Location = new System.Drawing.Point(112, 347);
             this.ScriptComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -246,6 +247,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GameSettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Game Settings";
             this.Load += new System.EventHandler(this.GameSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).EndInit();
