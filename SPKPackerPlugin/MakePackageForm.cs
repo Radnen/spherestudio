@@ -95,6 +95,8 @@ namespace Sphere.Plugins
         {
             const int bufferSize = 1048576;
 
+            var packageDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Packages");
+            Directory.CreateDirectory(packageDir);
             BinaryWriter spkWriter = null;
             using (var dialog = new SaveFileDialog())
             {
@@ -102,7 +104,7 @@ namespace Sphere.Plugins
                 dialog.Filter = "Sphere Package (.spk)|*.spk";
                 dialog.AddExtension = true;
                 dialog.DefaultExt = "spk";
-                dialog.InitialDirectory = projectPath;
+                dialog.InitialDirectory = packageDir;
                 dialog.OverwritePrompt = true;
                 dialog.AutoUpgradeEnabled = true;
                 if (dialog.ShowDialog(this) == DialogResult.OK)
