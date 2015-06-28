@@ -22,20 +22,30 @@ namespace SphereStudio
         /// </summary>
         public static void EvalPlugins()
         {
-            string path = Application.StartupPath + "/plugins";
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            DirectoryInfo dir = new DirectoryInfo(path);
-            foreach (FileInfo file in dir.GetFiles("*.dll"))
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            
+            // don't rearrange, we want to load user plugins first
+            string[] paths = { Path.Combine(sphereDir, "Plugins"), Path.Combine(Application.StartupPath, "Plugins") };
+
+            foreach (string path in
+                from path in paths
+                where Directory.Exists(path)
+                select path)
             {
-                Assembly assembly = Assembly.LoadFrom(file.FullName);
-                foreach (Type type in assembly.GetTypes())
+                DirectoryInfo dir = new DirectoryInfo(path);
+                foreach (FileInfo file in dir.GetFiles("*.dll"))
                 {
-                    if (type.GetInterface("IPlugin") != null)
+                    Assembly assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (Type type in assembly.GetTypes())
                     {
-                        IPlugin b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPlugin;
-                        if (b == null) continue;
-                        string name = Path.GetFileNameWithoutExtension(file.Name);
-                        if (name != null) Plugins[name] = new PluginWrapper(b, name);
+                        if (type.GetInterface("IPlugin") != null)
+                        {
+                            IPlugin b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPlugin;
+                            if (b == null) continue;
+                            string name = Path.GetFileNameWithoutExtension(file.Name);
+                            if (name != null && !Plugins.Keys.Contains(name))  // only the first by that name is used
+                                Plugins[name] = new PluginWrapper(b, name);
+                        }
                     }
                 }
             }

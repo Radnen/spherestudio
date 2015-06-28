@@ -330,7 +330,7 @@
             this.editorLabel4.Name = "editorLabel4";
             this.editorLabel4.Size = new System.Drawing.Size(400, 23);
             this.editorLabel4.TabIndex = 8;
-            this.editorLabel4.Text = "Game Paths";
+            this.editorLabel4.Text = "Additional Project Paths";
             this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Sphere64PathLabel

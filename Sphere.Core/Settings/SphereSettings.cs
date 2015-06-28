@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 // This Contains the Settings Dialogue Info
@@ -133,7 +134,9 @@ namespace Sphere.Core.Settings
         /// </summary>
         public void SaveSettings()
         {
-            SaveSettings(Application.StartupPath + "\\editor.ini");
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            Directory.CreateDirectory(Path.Combine(sphereDir, "Settings"));
+            SaveSettings(Path.Combine(sphereDir, @"Settings\editor.ini"));
         }
 
         /// <summary>
@@ -141,7 +144,8 @@ namespace Sphere.Core.Settings
         /// </summary>
         public bool LoadSettings()
         {
-            return LoadSettings(Application.StartupPath + "\\editor.ini");
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            return LoadSettings(Path.Combine(sphereDir, @"Settings\editor.ini"));
         }
 
         /// <summary>

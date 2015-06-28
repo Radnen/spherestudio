@@ -191,7 +191,8 @@ namespace SphereStudio.Forms
         {
             PresetListBox.Items.Clear();
 
-            string path = Path.Combine(Application.StartupPath, "Presets");
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string path = Path.Combine(sphereDir, @"Presets");
             if (!Directory.Exists(path)) return;
 
             string[] files = Directory.GetFiles(path, "*.preset");
@@ -222,7 +223,8 @@ namespace SphereStudio.Forms
 
         private void RemovePresetButton_Click(object sender, EventArgs e)
         {
-            string path = Path.Combine(Application.StartupPath, "Presets", (string)PresetListBox.SelectedItem + ".preset");
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string path = Path.Combine(sphereDir, @"Presets", (string)PresetListBox.SelectedItem + ".preset");
             if (File.Exists(path)) File.Delete(path);
             PresetListBox.Items.RemoveAt(PresetListBox.SelectedIndex);
             RemovePresetButton.Enabled = PresetListBox.Items.Count > 0 && PresetListBox.SelectedIndex > 0;
@@ -234,9 +236,10 @@ namespace SphereStudio.Forms
             {
                 if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+                    Directory.CreateDirectory(Path.Combine(sphereDir, @"Presets"));
                     string presetName = form.Input;
-                    Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Presets"));
-                    string filePath = Path.Combine(Application.StartupPath, "Presets", presetName + ".preset");
+                    string filePath = Path.Combine(sphereDir, @"Presets", presetName + ".preset");
                     bool continueSave = true;
                     if (File.Exists(filePath))
                     {
@@ -262,7 +265,8 @@ namespace SphereStudio.Forms
         private void UsePresetButton_Click(object sender, EventArgs e)
         {
             SphereSettings settings = new SphereSettings();
-            string path = Path.Combine(Application.StartupPath, "Presets", (string)PresetListBox.SelectedItem + ".preset");
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string path = Path.Combine(sphereDir, @"Presets", (string)PresetListBox.SelectedItem + ".preset");
             settings.LoadSettings(path);
             settings.LastPreset = (string)PresetListBox.SelectedItem;
             SetValues(settings);
