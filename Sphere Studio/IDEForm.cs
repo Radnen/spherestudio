@@ -72,6 +72,7 @@ namespace SphereStudio
             TryEditFile += IDEForm_TryEditFile;
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
             UpdatePresetList();
+            LoadConfigPreset(Global.CurrentEditor.LastPreset);
         }
 
         private void UpdatePresetList()
@@ -684,6 +685,29 @@ namespace SphereStudio
             OpenEditorSettings();
         }
 
+        private void LoadConfigPreset(string presetName)
+        {
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string path = Path.Combine(sphereDir, @"Presets", presetName + ".preset");
+            if (!File.Exists(path))
+                return;
+            Global.CurrentEditor.LoadSettings(path);
+            Global.CurrentEditor.LastPreset = presetName;
+            Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
+
+            var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
+            foreach (var plugin in Global.Plugins)
+            {
+                if (plugins.Contains(plugin.Key))
+                    plugin.Value.Activate();
+                else
+                    plugin.Value.Deactivate();
+            }
+
+            Global.CurrentEditor.SaveSettings();
+            ApplyRefresh(true);
+        }
+
         private void ViewGameSettings(object sender, EventArgs e)
         {
             OpenGameSettings();
@@ -946,23 +970,7 @@ namespace SphereStudio
                 return;
             }
 
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string path = Path.Combine(sphereDir, @"Presets", (string)ConfigSelectTool.SelectedItem + ".preset");
-            Global.CurrentEditor.LoadSettings(path);
-            Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
-            Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
-
-            var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
-            foreach (var plugin in Global.Plugins)
-            {
-                if (plugins.Contains(plugin.Key))
-                    plugin.Value.Activate();
-                else
-                    plugin.Value.Deactivate();
-            }
-
-            Global.CurrentEditor.SaveSettings();
-            ApplyRefresh(true);
+            LoadConfigPreset((string)ConfigSelectTool.Text);
 
             _loadingPresets = false;
         }
