@@ -26,6 +26,7 @@ namespace SphereStudio
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
         private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType, IEditorPlugin>();
         private string _default_active;
+        private bool _loadingPresets = false;
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
@@ -75,8 +76,11 @@ namespace SphereStudio
 
         private void UpdatePresetList()
         {
+            bool wasLoadingPresets = _loadingPresets;
+            _loadingPresets = true;
+            
             ConfigSelectTool.Items.Clear();
-            ConfigSelectTool.Items.Add("[Select a preset]");
+            ConfigSelectTool.Items.Add("[Select a Preset]");
             ConfigSelectTool.SelectedIndex = 0;
 
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
@@ -90,6 +94,9 @@ namespace SphereStudio
                 }
                 ConfigSelectTool.SelectedItem = Global.CurrentEditor.LastPreset;
             }
+            ConfigSelectTool.Items.Add("Settings Manager...");
+
+            _loadingPresets = wasLoadingPresets;
         }
 
         void IDEForm_TryEditFile(object sender, EditFileEventArgs e)
@@ -928,8 +935,16 @@ namespace SphereStudio
 
         private void ConfigSelectTool_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ConfigSelectTool.SelectedIndex <= 0)
+            if (_loadingPresets) return;
+            
+            // open settings if Settings Manager selected, ignore cue banner item
+            if (ConfigSelectTool.SelectedIndex == 0 || ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
+            {
+                if (ConfigSelectTool.SelectedIndex != 0)
+                    OpenEditorSettings();
+                UpdatePresetList();
                 return;
+            }
 
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string path = Path.Combine(sphereDir, @"Presets", (string)ConfigSelectTool.SelectedItem + ".preset");
@@ -948,6 +963,8 @@ namespace SphereStudio
 
             Global.CurrentEditor.SaveSettings();
             ApplyRefresh(true);
+
+            _loadingPresets = false;
         }
     }
 }

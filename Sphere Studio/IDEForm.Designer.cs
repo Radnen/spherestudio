@@ -369,11 +369,13 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 30);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripLabel1.Size = new System.Drawing.Size(81, 27);
             this.toolStripLabel1.Text = "Configuration";
             // 
@@ -382,6 +384,7 @@
             this.ConfigSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ConfigSelectTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
             this.ConfigSelectTool.Name = "ConfigSelectTool";
+            this.ConfigSelectTool.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.ConfigSelectTool.Size = new System.Drawing.Size(128, 30);
             this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
             // 
