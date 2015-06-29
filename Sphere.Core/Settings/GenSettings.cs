@@ -114,6 +114,7 @@ namespace Sphere.Core.Settings
         {
             using (var settings = new StreamWriter(path))
             {
+                settings.WriteLine("[Sphere Studio]");
                 for (int i = 0; i < _items.Count; ++i)
                 {
                     string key = _items.Keys[i];
@@ -148,7 +149,8 @@ namespace Sphere.Core.Settings
                 while (!settings.EndOfStream)
                 {
                     var readLine = settings.ReadLine();
-                    if (readLine == null) continue;
+                    if (readLine == null || readLine == "[Sphere Studio]")
+                        continue;
                     var lines = readLine.Split(new[] { '=' }, 2);
                     if (lines.Length > 1) _items[lines[0]] = lines[1];
                 }
