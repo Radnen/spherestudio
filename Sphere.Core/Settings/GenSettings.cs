@@ -110,10 +110,12 @@ namespace Sphere.Core.Settings
         /// Saves these settings to file.
         /// </summary>
         /// <param name="path">Filepath to store the settings.</param>
-        public virtual void SaveSettings(string path)
+        public virtual void SaveSettings(string path, bool wantHeader)
         {
             using (var settings = new StreamWriter(path))
             {
+                if (wantHeader)
+                    settings.WriteLine("[Sphere Studio]");
                 for (int i = 0; i < _items.Count; ++i)
                 {
                     string key = _items.Keys[i];
@@ -148,7 +150,8 @@ namespace Sphere.Core.Settings
                 while (!settings.EndOfStream)
                 {
                     var readLine = settings.ReadLine();
-                    if (readLine == null) continue;
+                    if (readLine == null || readLine == "[Sphere Studio]")
+                        continue;
                     var lines = readLine.Split(new[] { '=' }, 2);
                     if (lines.Length > 1) _items[lines[0]] = lines[1];
                 }

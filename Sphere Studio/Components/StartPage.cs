@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -99,7 +100,9 @@ namespace SphereStudio.Components
             _listIcons.Images.Add(holdOnToMe);
 
             // Search through a list of supplied directories.
-            string[] paths = Global.CurrentEditor.GetArray("games_path");
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            var paths = new List<string>(Global.CurrentEditor.GetArray("games_path"));
+            paths.Insert(0, Path.Combine(sphereDir, @"Projects"));
             foreach (string s in paths)
             {
                 if (string.IsNullOrEmpty(s)) continue;

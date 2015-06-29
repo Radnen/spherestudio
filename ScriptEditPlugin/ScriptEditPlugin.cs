@@ -18,7 +18,7 @@ namespace SphereStudio.Plugins
         public Icon Icon { get; private set; }
 
         private readonly List<string> _extensionList = new List<string>(new[] { ".js", "*" });
-        private const string _openFileFilters = "*.js;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
+        private const string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
         readonly ToolStripMenuItem _autoCompleteItem, _codeFoldItem;

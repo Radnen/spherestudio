@@ -3,33 +3,44 @@ using System.IO;
 using System.Windows.Forms;
 using Sphere.Core.Settings;
 using Sphere.Core.Editor;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SphereStudio.Forms
 {
     internal partial class GameSettings : Form, IStyleable
     {
+        private ProjectSettings _project;
+        
         public GameSettings(ProjectSettings someProject)
         {
             InitializeComponent();
-            PathTextBox.Text = someProject.RootPath;
-            NameTextBox.Text = someProject.Name;
-            AuthorTextBox.Text = someProject.Author;
-            DescTextBox.Text = someProject.Description;
-            WidthTextBox.Text = someProject.Width;
-            HeightTextBox.Text = someProject.Height;
-            ScriptComboBox.Text = someProject.Script;
             UpdateStyle();
+
+            _project = someProject;
         }
 
         private void GameSettings_Load(object sender, EventArgs e)
         {
+            PathTextBox.Text = _project.RootPath;
+            NameTextBox.Text = _project.Name;
+            AuthorTextBox.Text = _project.Author;
+            DescTextBox.Text = _project.Description;
+            WidthTextBox.Text = _project.Width;
+            HeightTextBox.Text = _project.Height;
+            
             // I'll need to populate the script combo box.
             DirectoryInfo dir = new DirectoryInfo(PathTextBox.Text + "\\scripts");
-            FileInfo[] scriptList = dir.GetFiles("*.js");
-            for (int i = 0; i < scriptList.Length; ++i)
+
+            var scriptList = from FileInfo file in dir.EnumerateFiles("*")
+                             where file.Extension == ".js" || file.Extension == ".coffee"
+                             orderby file.Name ascending
+                             select file.Name;
+            foreach (string filename in scriptList)
             {
-                ScriptComboBox.Items.Add(scriptList[i].Name);
+                ScriptComboBox.Items.Add(filename);
             }
+            ScriptComboBox.Text = _project.Script;
         }
 
         public ProjectSettings GetSettings()

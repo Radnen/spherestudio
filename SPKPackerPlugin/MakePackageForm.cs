@@ -28,7 +28,8 @@ namespace Sphere.Plugins
     public partial class MakePackageForm : Form
     {
         private readonly string[] extensions = {
-            ".sgm", ".rmp", ".rss", ".rts", ".rfn", ".rws", ".js",
+            ".sgm", ".rmp", ".rss", ".rts", ".rfn", ".rws",
+            ".js", ".coffee", ".glsl",
             ".png", ".jpg", ".bmp", ".pcx",
             ".mp3", ".ogg", ".mid", ".wav", ".flac", ".it", ".s3m", ".mod",
         };
@@ -94,6 +95,8 @@ namespace Sphere.Plugins
         {
             const int bufferSize = 1048576;
 
+            var packageDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Packages");
+            Directory.CreateDirectory(packageDir);
             BinaryWriter spkWriter = null;
             using (var dialog = new SaveFileDialog())
             {
@@ -101,9 +104,10 @@ namespace Sphere.Plugins
                 dialog.Filter = "Sphere Package (.spk)|*.spk";
                 dialog.AddExtension = true;
                 dialog.DefaultExt = "spk";
-                dialog.InitialDirectory = projectPath;
+                dialog.InitialDirectory = packageDir;
                 dialog.OverwritePrompt = true;
                 dialog.AutoUpgradeEnabled = true;
+                dialog.FileName = Path.GetFileName(projectPath);
                 if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
                     spkWriter = new BinaryWriter(File.Create(dialog.FileName), Encoding.GetEncoding(1252));
