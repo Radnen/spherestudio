@@ -95,7 +95,7 @@ namespace SphereStudio
                 }
                 ConfigSelectTool.SelectedItem = Global.CurrentEditor.LastPreset;
             }
-            ConfigSelectTool.Items.Add("Settings Manager...");
+            ConfigSelectTool.Items.Add("Configuration Manager...");
 
             _loadingPresets = wasLoadingPresets;
         }

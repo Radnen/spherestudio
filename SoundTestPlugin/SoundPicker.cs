@@ -9,7 +9,9 @@ using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
 
-using IrrKlang;
+using NAudio;
+using NAudio.Wave;
+using NAudio.Vorbis;
 
 namespace SphereStudio.Plugins
 {
@@ -34,8 +36,8 @@ namespace SphereStudio.Plugins
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
         private readonly ImageList _listIcons = new ImageList();
-        private readonly ISoundEngine _soundEngine = new ISoundEngine();
-        private ISound _music;
+        private IWavePlayer _music;
+        private WaveStream _musicReader;
         private string _musicName;
 
         public SoundPicker()
@@ -129,7 +131,7 @@ namespace SphereStudio.Plugins
         public void ForcePause()
         {
             if (_music == null) return;
-            _music.Paused = true;
+            _music.Pause();
             pauseTool.CheckState = CheckState.Checked;
             playTool.Image = _playIcons.Images["pause"];
             playTool.Text = @"Paused";
@@ -142,12 +144,18 @@ namespace SphereStudio.Plugins
         public void PlayFile(string path)
         {
             bool isMusic = Path.GetExtension(path) != ".wav";
-            ISound sound = _soundEngine.Play2D(path, isMusic);
+            IWavePlayer waveOut = new WaveOut();
+            WaveStream sound;
+            try { sound = new AudioFileReader(path); }
+            catch (Exception) { sound = new VorbisWaveReader(path); }
+            waveOut.Init(sound);
+            waveOut.Play();
             if (isMusic)
             {
                 StopMusic();
                 _musicName = Path.GetFileNameWithoutExtension(path);
-                _music = sound;
+                _music = waveOut;
+                _musicReader = sound;
                 trackNameLabel.Text = @"Now Playing: " + _musicName;
                 playTool.Text = @"Playing";
                 playTool.Image = _playIcons.Images["play"];
@@ -163,10 +171,11 @@ namespace SphereStudio.Plugins
         public void PlayOrPauseMusic()
         {
             if (_music == null) return;
-            _music.Paused = !_music.Paused;
-            pauseTool.CheckState = _music.Paused ? CheckState.Checked : CheckState.Unchecked;
-            playTool.Image = _music.Paused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
-            playTool.Text = _music.Paused ? "Paused" : "Playing";
+            bool wasPaused = _music.PlaybackState == PlaybackState.Paused;
+            if (!wasPaused) _music.Pause(); else _music.Play();
+            pauseTool.CheckState = !wasPaused ? CheckState.Checked : CheckState.Unchecked;
+            playTool.Image = !wasPaused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
+            playTool.Text = !wasPaused ? "Paused" : "Playing";
         }
 
         /// <summary>
@@ -233,7 +242,6 @@ namespace SphereStudio.Plugins
         public void Reset()
         {
             StopMusic();
-            _soundEngine.StopAllSounds();
             trackList.Items.Clear();
             trackList.Groups.Clear();
         }
@@ -246,8 +254,10 @@ namespace SphereStudio.Plugins
             if (_music != null)
             {
                 _music.Stop();
+                _musicReader.Dispose();
                 _music.Dispose();
                 _music = null;
+                _musicReader = null;
             }
 
             trackNameLabel.Text = @"-";
@@ -267,7 +277,7 @@ namespace SphereStudio.Plugins
         {
             if (_music == null) return;
             double delta = (double)e.X / trackNameLabel.Width;
-            _music.PlayPosition = (uint)(delta * _music.PlayLength);
+            _musicReader.Position = (long)(delta * _musicReader.Length);
         }
 
         private void trackNameLabel_Paint(object sender, PaintEventArgs e)
@@ -276,7 +286,7 @@ namespace SphereStudio.Plugins
 
             int width = trackNameLabel.Width;
             int height = trackNameLabel.Height;
-            double delta = _music.PlayPosition / (double)_music.PlayLength;
+            double delta = _musicReader.Position / (double)_musicReader.Length;
 
             e.Graphics.Clear(Color.Black);
             e.Graphics.FillRectangle(_trackBackColor, 0, 0, (int)(delta * width), height);

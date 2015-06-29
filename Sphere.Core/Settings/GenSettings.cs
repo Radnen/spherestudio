@@ -110,6 +110,7 @@ namespace Sphere.Core.Settings
         /// Saves these settings to file.
         /// </summary>
         /// <param name="path">Filepath to store the settings.</param>
+        /// <param name="wantHeader">Whether to add an INI header (don't use if saving .sgm).</param>
         public virtual void SaveSettings(string path, bool wantHeader)
         {
             using (var settings = new StreamWriter(path))

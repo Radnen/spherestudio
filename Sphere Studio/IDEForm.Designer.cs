@@ -168,10 +168,11 @@
             this.MainDock.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(75)))));
             this.MainDock.DockLeftPortion = 0.2D;
             this.MainDock.DockRightPortion = 0.2D;
-            this.MainDock.Location = new System.Drawing.Point(0, 54);
+            this.MainDock.Location = new System.Drawing.Point(0, 52);
+            this.MainDock.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MainDock.Name = "MainDock";
             this.MainDock.ShowDocumentIcon = true;
-            this.MainDock.Size = new System.Drawing.Size(665, 357);
+            this.MainDock.Size = new System.Drawing.Size(776, 492);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -226,6 +227,7 @@
             // 
             this.EditorTools.AllowItemReorder = true;
             this.EditorTools.AutoSize = false;
+            this.EditorTools.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EditorTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.EditorTools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewToolButton,
@@ -243,11 +245,11 @@
             this.toolStripSeparator2,
             this.toolStripLabel1,
             this.ConfigSelectTool});
-            this.EditorTools.Location = new System.Drawing.Point(0, 24);
+            this.EditorTools.Location = new System.Drawing.Point(0, 25);
             this.EditorTools.Name = "EditorTools";
-            this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
+            this.EditorTools.Padding = new System.Windows.Forms.Padding(6, 0, 1, 0);
             this.EditorTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.EditorTools.Size = new System.Drawing.Size(665, 30);
+            this.EditorTools.Size = new System.Drawing.Size(776, 27);
             this.EditorTools.TabIndex = 4;
             this.EditorTools.Text = "Tool Strip";
             // 
@@ -257,7 +259,7 @@
             this.NewToolButton.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.NewToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.NewToolButton.Name = "NewToolButton";
-            this.NewToolButton.Size = new System.Drawing.Size(29, 27);
+            this.NewToolButton.Size = new System.Drawing.Size(29, 24);
             this.NewToolButton.Text = "&New";
             // 
             // OpenToolButton
@@ -266,7 +268,7 @@
             this.OpenToolButton.Image = global::SphereStudio.Properties.Resources.open;
             this.OpenToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenToolButton.Name = "OpenToolButton";
-            this.OpenToolButton.Size = new System.Drawing.Size(29, 27);
+            this.OpenToolButton.Size = new System.Drawing.Size(29, 24);
             this.OpenToolButton.Text = "&Open";
             // 
             // SaveToolButton
@@ -276,7 +278,7 @@
             this.SaveToolButton.Image = global::SphereStudio.Properties.Resources.disk;
             this.SaveToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveToolButton.Name = "SaveToolButton";
-            this.SaveToolButton.Size = new System.Drawing.Size(23, 27);
+            this.SaveToolButton.Size = new System.Drawing.Size(23, 24);
             this.SaveToolButton.Text = "&Save";
             this.SaveToolButton.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
@@ -284,7 +286,7 @@
             // 
             this.ToolSeperator1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ToolSeperator1.Name = "ToolSeperator1";
-            this.ToolSeperator1.Size = new System.Drawing.Size(6, 30);
+            this.ToolSeperator1.Size = new System.Drawing.Size(6, 27);
             // 
             // RunToolButton
             // 
@@ -293,7 +295,7 @@
             this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
             this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RunToolButton.Name = "RunToolButton";
-            this.RunToolButton.Size = new System.Drawing.Size(23, 27);
+            this.RunToolButton.Size = new System.Drawing.Size(23, 24);
             this.RunToolButton.Text = "Test Game";
             this.RunToolButton.Click += new System.EventHandler(this.RunToolButton_Click);
             // 
@@ -304,7 +306,7 @@
             this.GameToolButton.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.GameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GameToolButton.Name = "GameToolButton";
-            this.GameToolButton.Size = new System.Drawing.Size(23, 27);
+            this.GameToolButton.Size = new System.Drawing.Size(23, 24);
             this.GameToolButton.Text = "Game Settings";
             this.GameToolButton.Click += new System.EventHandler(this.ViewGameSettings);
             // 
@@ -315,7 +317,7 @@
             this.OptionsToolButton.Image = global::SphereStudio.Properties.Resources.cog;
             this.OptionsToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OptionsToolButton.Name = "OptionsToolButton";
-            this.OptionsToolButton.Size = new System.Drawing.Size(23, 27);
+            this.OptionsToolButton.Size = new System.Drawing.Size(23, 24);
             this.OptionsToolButton.Text = "Configure Sphere";
             this.OptionsToolButton.Click += new System.EventHandler(this.OptionsToolButton_Click);
             // 
@@ -325,14 +327,14 @@
             this.toolStripButton1.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 27);
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 24);
             this.toolStripButton1.Text = "Editor Settings";
             this.toolStripButton1.Click += new System.EventHandler(this.OpenEditorSettings);
             // 
             // ToolSeperator2
             // 
             this.ToolSeperator2.Name = "ToolSeperator2";
-            this.ToolSeperator2.Size = new System.Drawing.Size(6, 30);
+            this.ToolSeperator2.Size = new System.Drawing.Size(6, 27);
             // 
             // CutToolButton
             // 
@@ -341,7 +343,7 @@
             this.CutToolButton.Image = global::SphereStudio.Properties.Resources.cut;
             this.CutToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CutToolButton.Name = "CutToolButton";
-            this.CutToolButton.Size = new System.Drawing.Size(23, 27);
+            this.CutToolButton.Size = new System.Drawing.Size(23, 24);
             this.CutToolButton.Text = "C&ut";
             this.CutToolButton.Click += new System.EventHandler(this.CutMenuItem_Click);
             // 
@@ -352,7 +354,7 @@
             this.CopyToolButton.Image = global::SphereStudio.Properties.Resources.page_copy;
             this.CopyToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CopyToolButton.Name = "CopyToolButton";
-            this.CopyToolButton.Size = new System.Drawing.Size(23, 27);
+            this.CopyToolButton.Size = new System.Drawing.Size(23, 24);
             this.CopyToolButton.Text = "&Copy";
             this.CopyToolButton.Click += new System.EventHandler(this.CopyMenuItem_Click);
             // 
@@ -362,7 +364,7 @@
             this.PasteToolButton.Image = global::SphereStudio.Properties.Resources.paste_plain;
             this.PasteToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PasteToolButton.Name = "PasteToolButton";
-            this.PasteToolButton.Size = new System.Drawing.Size(23, 27);
+            this.PasteToolButton.Size = new System.Drawing.Size(23, 24);
             this.PasteToolButton.Text = "&Paste";
             this.PasteToolButton.Click += new System.EventHandler(this.PasteMenuItem_Click);
             // 
@@ -370,13 +372,13 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 30);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolStripLabel1.Size = new System.Drawing.Size(81, 27);
+            this.toolStripLabel1.Size = new System.Drawing.Size(81, 24);
             this.toolStripLabel1.Text = "Configuration";
             // 
             // ConfigSelectTool
@@ -385,16 +387,17 @@
             this.ConfigSelectTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
             this.ConfigSelectTool.Name = "ConfigSelectTool";
             this.ConfigSelectTool.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.ConfigSelectTool.Size = new System.Drawing.Size(128, 30);
+            this.ConfigSelectTool.Size = new System.Drawing.Size(156, 27);
             this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
             // 
             // EditorStatus
             // 
             this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HelpLabel});
-            this.EditorStatus.Location = new System.Drawing.Point(0, 411);
+            this.EditorStatus.Location = new System.Drawing.Point(0, 544);
             this.EditorStatus.Name = "EditorStatus";
-            this.EditorStatus.Size = new System.Drawing.Size(665, 22);
+            this.EditorStatus.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.EditorStatus.Size = new System.Drawing.Size(776, 22);
             this.EditorStatus.TabIndex = 1;
             this.EditorStatus.Text = "Status";
             // 
@@ -483,7 +486,7 @@
             this.Seperator3,
             this.ExitMenuItem});
             this.FileMenu.Name = "FileMenu";
-            this.FileMenu.Size = new System.Drawing.Size(37, 20);
+            this.FileMenu.Size = new System.Drawing.Size(37, 19);
             this.FileMenu.Text = "&File";
             this.FileMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
             this.FileMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
@@ -609,7 +612,7 @@
             this.Seperator8,
             this.SaveLayoutMenuItem});
             this.EditMenu.Name = "EditMenu";
-            this.EditMenu.Size = new System.Drawing.Size(39, 20);
+            this.EditMenu.Size = new System.Drawing.Size(39, 19);
             this.EditMenu.Text = "&Edit";
             this.EditMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
             this.EditMenu.DropDownOpening += new System.EventHandler(this.EditMenu_DropDownOpening);
@@ -729,7 +732,7 @@
             this.TestGameMenuItem,
             this.RefreshMenuItem});
             this.ProjectMenu.Name = "ProjectMenu";
-            this.ProjectMenu.Size = new System.Drawing.Size(56, 20);
+            this.ProjectMenu.Size = new System.Drawing.Size(56, 19);
             this.ProjectMenu.Text = "&Project";
             this.ProjectMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
             this.ProjectMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
@@ -802,7 +805,7 @@
             this.StartPageMenuItem,
             this.ProjectExplorerMenuItem});
             this.ViewMenu.Name = "ViewMenu";
-            this.ViewMenu.Size = new System.Drawing.Size(44, 20);
+            this.ViewMenu.Size = new System.Drawing.Size(44, 19);
             this.ViewMenu.Text = "&View";
             this.ViewMenu.DropDownClosed += new System.EventHandler(this.ViewMenu_DropDownClosed);
             this.ViewMenu.DropDownOpening += new System.EventHandler(this.ViewMenu_DropDownOpening);
@@ -844,7 +847,7 @@
             this.AboutMenuItem,
             this.WebsiteMenuItem});
             this.HelpMenu.Name = "HelpMenu";
-            this.HelpMenu.Size = new System.Drawing.Size(44, 20);
+            this.HelpMenu.Size = new System.Drawing.Size(44, 19);
             this.HelpMenu.Text = "&Help";
             this.HelpMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
             this.HelpMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
@@ -887,26 +890,29 @@
             this.HelpMenu});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
             this.EditorMenu.Name = "EditorMenu";
-            this.EditorMenu.Size = new System.Drawing.Size(665, 24);
+            this.EditorMenu.Padding = new System.Windows.Forms.Padding(7, 3, 0, 3);
+            this.EditorMenu.Size = new System.Drawing.Size(776, 25);
             this.EditorMenu.TabIndex = 0;
             this.EditorMenu.Text = "Menu";
             // 
             // IDEForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(665, 433);
+            this.ClientSize = new System.Drawing.Size(776, 566);
             this.Controls.Add(this.MainDock);
             this.Controls.Add(this.EditorTools);
             this.Controls.Add(this.EditorStatus);
             this.Controls.Add(this.EditorMenu);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.EditorMenu;
-            this.MinimumSize = new System.Drawing.Size(480, 360);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MinimumSize = new System.Drawing.Size(557, 459);
             this.Name = "IDEForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";

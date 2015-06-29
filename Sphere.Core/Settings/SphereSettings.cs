@@ -39,6 +39,10 @@ namespace Sphere.Core.Settings
             set { SetItem("config_path", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the last preset used. An empty string
+        /// means no preset selected.
+        /// </summary>
         public string LastPreset
         {
             get { return GetString("last_preset");  }
