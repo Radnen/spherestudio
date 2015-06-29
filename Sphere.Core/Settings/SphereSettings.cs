@@ -136,7 +136,7 @@ namespace Sphere.Core.Settings
         {
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             Directory.CreateDirectory(Path.Combine(sphereDir, "Settings"));
-            SaveSettings(Path.Combine(sphereDir, @"Settings\editor.ini"));
+            SaveSettings(Path.Combine(sphereDir, @"Settings\editor.ini"), true);
         }
 
         /// <summary>

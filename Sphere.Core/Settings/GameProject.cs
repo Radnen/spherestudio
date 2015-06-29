@@ -67,7 +67,7 @@ namespace Sphere.Core.Settings
         /// </summary>
         public void SaveSettings()
         {
-            SaveSettings(string.Format("{0}\\game.sgm", RootPath));
+            SaveSettings(string.Format("{0}\\game.sgm", RootPath), false);
         }
 
         /// <summary>
