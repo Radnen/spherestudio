@@ -107,6 +107,7 @@ namespace Sphere.Plugins
                 dialog.InitialDirectory = packageDir;
                 dialog.OverwritePrompt = true;
                 dialog.AutoUpgradeEnabled = true;
+                dialog.FileName = Path.GetFileName(projectPath);
                 if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
                     spkWriter = new BinaryWriter(File.Create(dialog.FileName), Encoding.GetEncoding(1252));
