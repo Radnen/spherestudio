@@ -48,7 +48,16 @@ namespace Sphere.Core.Settings
             get { return GetString("last_preset");  }
             set { SetItem("last_preset", value);  }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the last engine platform (x86 or x64) used.
+        /// </summary>
+        public string LastPlatform
+        {
+            get { return GetString("last_platform"); }
+            set { SetItem("last_platform", value); }
+        }
+
         /// <summary>
         /// Gets or sets the path of the last loaded project.
         /// </summary>

@@ -253,6 +253,7 @@ namespace SphereStudio.Forms
                         GenSettings old = Global.CurrentEditor.Clone();
                         Global.CurrentEditor.SetSettings(GetSettings());
                         Global.CurrentEditor.LastPreset = presetName;
+                        Global.CurrentEditor.LastPlatform = "";
                         Global.CurrentEditor.SaveSettings(filePath, true);
                         Global.CurrentEditor.SetSettings(old);
                         UpdatePresetBox();

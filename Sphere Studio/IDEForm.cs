@@ -79,6 +79,18 @@ namespace SphereStudio
         {
             bool wasLoadingPresets = _loadingPresets;
             _loadingPresets = true;
+
+            BitSelectTool.Items.Clear();
+            if (File.Exists(Global.CurrentEditor.SpherePath))
+                BitSelectTool.Items.Add("x86");
+            if (Environment.Is64BitOperatingSystem && File.Exists(Global.CurrentEditor.Sphere64Path))
+                BitSelectTool.Items.Add("x64");
+            if (BitSelectTool.Items.Count == 0)
+                BitSelectTool.Items.Add("(no engine)");
+            if (BitSelectTool.Items.Contains(Global.CurrentEditor.LastPlatform))
+                BitSelectTool.SelectedItem = Global.CurrentEditor.LastPlatform;
+            else
+                BitSelectTool.SelectedIndex = BitSelectTool.Items.Count - 1;
             
             ConfigSelectTool.Items.Clear();
             ConfigSelectTool.Items.Add("[Select a Preset]");
@@ -162,8 +174,7 @@ namespace SphereStudio
             bool config = File.Exists(Global.CurrentEditor.ConfigPath);
             OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
 
-            bool sphereFound = File.Exists(Global.CurrentEditor.SpherePath)
-                || File.Exists(Global.CurrentEditor.Sphere64Path);
+            bool sphereFound = BitSelectTool.Text != "(no engine)";
             RunToolButton.Enabled = TestGameMenuItem.Enabled = sphereFound;
 
             bool last = !string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath);
@@ -754,19 +765,13 @@ namespace SphereStudio
 
         private void RunToolButton_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Global.CurrentEditor.SpherePath)
-                && !File.Exists(Global.CurrentEditor.Sphere64Path))
-            {
-                return;
-            }
-
             if (TestGame != null) TestGame(null, EventArgs.Empty);
 
             if (IsProjectOpen)
             {
                 Global.CurrentProject.SaveSettings();
                 string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string enginePath = File.Exists(Global.CurrentEditor.Sphere64Path) && System.Environment.Is64BitOperatingSystem
+                string enginePath = BitSelectTool.Text.Contains("x64")
                     ? Global.CurrentEditor.Sphere64Path
                     : Global.CurrentEditor.SpherePath;
                 Process.Start(enginePath, args);
@@ -961,7 +966,7 @@ namespace SphereStudio
         {
             if (_loadingPresets) return;
             
-            // open settings if Settings Manager selected, ignore cue banner item
+            // open settings if config manager selected, ignore cue banner item
             if (ConfigSelectTool.SelectedIndex == 0 || ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
                 if (ConfigSelectTool.SelectedIndex != 0)
@@ -970,9 +975,16 @@ namespace SphereStudio
                 return;
             }
 
-            LoadConfigPreset((string)ConfigSelectTool.Text);
+            LoadConfigPreset(ConfigSelectTool.Text);
+            UpdatePresetList();
+        }
 
-            _loadingPresets = false;
+        private void BitSelectTool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_loadingPresets) return;
+
+            Global.CurrentEditor.LastPlatform = BitSelectTool.Text;
+            Global.CurrentEditor.SaveSettings();
         }
     }
 }

@@ -36,8 +36,8 @@ namespace SphereStudio.Plugins
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
         private readonly ImageList _listIcons = new ImageList();
-        private IWavePlayer _music;
-        private WaveStream _musicReader;
+        private IWavePlayer _player;
+        private WaveStream _musicFile;
         private string _musicName;
 
         public SoundPicker()
@@ -130,8 +130,8 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void ForcePause()
         {
-            if (_music == null) return;
-            _music.Pause();
+            if (_player == null) return;
+            _player.Pause();
             pauseTool.CheckState = CheckState.Checked;
             playTool.Image = _playIcons.Images["pause"];
             playTool.Text = @"Paused";
@@ -154,14 +154,22 @@ namespace SphereStudio.Plugins
             {
                 StopMusic();
                 _musicName = Path.GetFileNameWithoutExtension(path);
-                _music = waveOut;
-                _musicReader = sound;
+                _player = waveOut;
+                _musicFile = sound;
                 trackNameLabel.Text = @"Now Playing: " + _musicName;
                 playTool.Text = @"Playing";
                 playTool.Image = _playIcons.Images["play"];
                 pauseTool.Enabled = true;
                 pauseTool.CheckState = CheckState.Unchecked;
                 stopTool.Enabled = true;
+            }
+            else
+            {
+                waveOut.PlaybackStopped += (object sender, StoppedEventArgs e) =>
+                {
+                    waveOut.Dispose();
+                    sound.Dispose();
+                };
             }
         }
 
@@ -170,9 +178,9 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void PlayOrPauseMusic()
         {
-            if (_music == null) return;
-            bool wasPaused = _music.PlaybackState == PlaybackState.Paused;
-            if (!wasPaused) _music.Pause(); else _music.Play();
+            if (_player == null) return;
+            bool wasPaused = _player.PlaybackState == PlaybackState.Paused;
+            if (!wasPaused) _player.Pause(); else _player.Play();
             pauseTool.CheckState = !wasPaused ? CheckState.Checked : CheckState.Unchecked;
             playTool.Image = !wasPaused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
             playTool.Text = !wasPaused ? "Paused" : "Playing";
@@ -251,13 +259,13 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void StopMusic()
         {
-            if (_music != null)
+            if (_player != null)
             {
-                _music.Stop();
-                _musicReader.Dispose();
-                _music.Dispose();
-                _music = null;
-                _musicReader = null;
+                _player.Stop();
+                _musicFile.Dispose();
+                _player.Dispose();
+                _player = null;
+                _musicFile = null;
             }
 
             trackNameLabel.Text = @"-";
@@ -275,18 +283,18 @@ namespace SphereStudio.Plugins
 
         private void trackNameLabel_MouseClick(object sender, MouseEventArgs e)
         {
-            if (_music == null) return;
+            if (_player == null) return;
             double delta = (double)e.X / trackNameLabel.Width;
-            _musicReader.Position = (long)(delta * _musicReader.Length);
+            _musicFile.Position = (long)(delta * _musicFile.Length);
         }
 
         private void trackNameLabel_Paint(object sender, PaintEventArgs e)
         {
-            if (_music == null) return;
+            if (_player == null) return;
 
             int width = trackNameLabel.Width;
             int height = trackNameLabel.Height;
-            double delta = _musicReader.Position / (double)_musicReader.Length;
+            double delta = _musicFile.Position / (double)_musicFile.Length;
 
             e.Graphics.Clear(Color.Black);
             e.Graphics.FillRectangle(_trackBackColor, 0, 0, (int)(delta * width), height);
