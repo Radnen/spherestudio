@@ -55,6 +55,7 @@
             this.OpenToolButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.RunToolButton = new System.Windows.Forms.ToolStripButton();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
             this.OptionsToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -63,7 +64,6 @@
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.RunToolButton = new System.Windows.Forms.ToolStripButton();
             this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
             this.BitSelectTool = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
@@ -87,6 +87,8 @@
             this.OpenLastProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sphereProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -285,6 +287,16 @@
             this.ToolSeperator1.Name = "ToolSeperator1";
             this.ToolSeperator1.Size = new System.Drawing.Size(6, 28);
             // 
+            // RunToolButton
+            // 
+            this.RunToolButton.Enabled = false;
+            this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RunToolButton.Name = "RunToolButton";
+            this.RunToolButton.Size = new System.Drawing.Size(83, 25);
+            this.RunToolButton.Text = "Test Game";
+            this.RunToolButton.Click += new System.EventHandler(this.RunToolButton_Click);
+            // 
             // GameToolButton
             // 
             this.GameToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -359,16 +371,6 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
-            // 
-            // RunToolButton
-            // 
-            this.RunToolButton.Enabled = false;
-            this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.RunToolButton.Name = "RunToolButton";
-            this.RunToolButton.Size = new System.Drawing.Size(83, 25);
-            this.RunToolButton.Text = "Test Game";
-            this.RunToolButton.Click += new System.EventHandler(this.RunToolButton_Click);
             // 
             // ConfigSelectTool
             // 
@@ -531,10 +533,26 @@
             // 
             // NewMenuItem
             // 
+            this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sphereProjectToolStripMenuItem,
+            this.toolStripSeparator4});
             this.NewMenuItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.NewMenuItem.Name = "NewMenuItem";
             this.NewMenuItem.Size = new System.Drawing.Size(215, 22);
             this.NewMenuItem.Text = "&New";
+            // 
+            // sphereProjectToolStripMenuItem
+            // 
+            this.sphereProjectToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
+            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sphereProjectToolStripMenuItem.Text = "Sphere &Project";
+            this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.CallNewProject);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // OpenMenuItem
             // 
@@ -1008,6 +1026,8 @@
         private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripComboBox BitSelectTool;
+        private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 
