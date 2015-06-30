@@ -132,10 +132,10 @@
             this.headerLabel.Text = "Information about the Sphere Studio IDE";
             this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // linkLabel1
+            // websiteUrlLink
             // 
             this.websiteUrlLink.Location = new System.Drawing.Point(176, 110);
-            this.websiteUrlLink.Name = "linkLabel1";
+            this.websiteUrlLink.Name = "websiteUrlLink";
             this.websiteUrlLink.Size = new System.Drawing.Size(318, 18);
             this.websiteUrlLink.TabIndex = 25;
             this.websiteUrlLink.TabStop = true;
@@ -147,6 +147,7 @@
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.okButton;
             this.ClientSize = new System.Drawing.Size(599, 367);
             this.Controls.Add(this.websiteUrlLink);
             this.Controls.Add(this.labelCompanyName);
