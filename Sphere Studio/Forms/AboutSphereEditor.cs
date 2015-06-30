@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -40,7 +41,7 @@ namespace SphereStudio.Forms
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return Application.ProductVersion;
             }
         }
 
@@ -96,5 +97,10 @@ namespace SphereStudio.Forms
             }
         }
         #endregion
+
+        private void websiteUrlLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(websiteUrlLink.Text);
+        }
     }
 }
