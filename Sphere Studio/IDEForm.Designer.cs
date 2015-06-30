@@ -234,7 +234,6 @@
             this.OpenToolButton,
             this.SaveToolButton,
             this.ToolSeperator1,
-            this.RunToolButton,
             this.GameToolButton,
             this.OptionsToolButton,
             this.toolStripButton1,
@@ -243,6 +242,7 @@
             this.CopyToolButton,
             this.PasteToolButton,
             this.toolStripSeparator2,
+            this.RunToolButton,
             this.ConfigSelectTool,
             this.BitSelectTool});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
@@ -545,14 +545,14 @@
             // 
             this.sphereProjectToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
-            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.sphereProjectToolStripMenuItem.Text = "Sphere &Project";
             this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.CallNewProject);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
             // 
             // OpenMenuItem
             // 
