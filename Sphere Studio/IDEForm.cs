@@ -62,17 +62,18 @@ namespace SphereStudio
             if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
 
+            LoadConfigPreset(Global.CurrentEditor.LastPreset);
+            UpdatePresetList();
+
             // make sure this is active only when we use it.
             if (_treeContent != null) _treeContent.Activate();
 
             var Is64 = System.Environment.Is64BitProcess;
-            Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
+            Text = string.Format("{0} {1} v{2}", Application.ProductName,
                 (Is64) ? "x64" : "x86", Application.ProductVersion);
 
             TryEditFile += IDEForm_TryEditFile;
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
-            LoadConfigPreset(Global.CurrentEditor.LastPreset);
-            UpdatePresetList();
         }
 
         private void UpdatePresetList()
@@ -80,17 +81,36 @@ namespace SphereStudio
             bool wasLoadingPresets = _loadingPresets;
             _loadingPresets = true;
 
-            BitSelectTool.Items.Clear();
-            if (File.Exists(Global.CurrentEditor.SpherePath))
-                BitSelectTool.Items.Add("x86");
+            RunToolButton.DropDown.Items.Clear();
+            PlatformTool.Items.Clear();
             if (Environment.Is64BitOperatingSystem && File.Exists(Global.CurrentEditor.Sphere64Path))
-                BitSelectTool.Items.Add("x64");
-            if (BitSelectTool.Items.Count == 0)
-                BitSelectTool.Items.Add("(none)");
-            if (BitSelectTool.Items.Contains(Global.CurrentEditor.LastPlatform))
-                BitSelectTool.SelectedItem = Global.CurrentEditor.LastPlatform;
-            else
-                BitSelectTool.SelectedIndex = BitSelectTool.Items.Count - 1;
+            {
+                string engineName = String.Format("x64 {0}", Path.GetFileName(Global.CurrentEditor.Sphere64Path));
+                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
+                item.Click += RunToolButton_MenuClick;
+                item.Checked = Global.CurrentEditor.LastPlatform == "x64";
+                item.Tag = Global.CurrentEditor.Sphere64Path;
+                RunToolButton.DropDown.Items.Add(item);
+                PlatformTool.Items.Add("x64");
+            }
+            if (File.Exists(Global.CurrentEditor.SpherePath))
+            {
+                string engineName = String.Format("x86 {0}", Path.GetFileName(Global.CurrentEditor.SpherePath));
+                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
+                item.Click += RunToolButton_MenuClick;
+                item.Checked = Global.CurrentEditor.LastPlatform == "x86";
+                item.Tag = Global.CurrentEditor.SpherePath;
+                RunToolButton.DropDown.Items.Add(item);
+                PlatformTool.Items.Add("x86");
+            }
+            PlatformTool.Enabled = PlatformTool.Items.Count > 0;
+            if (PlatformTool.Items.Contains(Global.CurrentEditor.LastPlatform))
+                PlatformTool.Text = Global.CurrentEditor.LastPlatform;
+            else if (PlatformTool.Enabled)
+            {
+                PlatformTool.SelectedIndex = 0;
+                Global.CurrentEditor.LastPlatform = PlatformTool.Text;
+            }
             
             ConfigSelectTool.Items.Clear();
             ConfigSelectTool.Items.Add("[Select a Preset]");
@@ -174,7 +194,8 @@ namespace SphereStudio
             bool config = File.Exists(Global.CurrentEditor.ConfigPath);
             OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
 
-            bool sphereFound = BitSelectTool.Text != "(none)";
+            bool sphereFound = File.Exists(Global.CurrentEditor.SpherePath)
+                || (File.Exists(Global.CurrentEditor.Sphere64Path) && Environment.Is64BitOperatingSystem);
             RunToolButton.Enabled = TestGameMenuItem.Enabled = sphereFound;
 
             bool last = !string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath);
@@ -763,7 +784,7 @@ namespace SphereStudio
             proc.Dispose();
         }
 
-        private void RunToolButton_Click(object sender, EventArgs e)
+        private void RunToolButton_ButtonClick(object sender, EventArgs e)
         {
             if (TestGame != null) TestGame(null, EventArgs.Empty);
 
@@ -771,9 +792,25 @@ namespace SphereStudio
             {
                 Global.CurrentProject.SaveSettings();
                 string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string enginePath = BitSelectTool.Text.Contains("x64")
+                string enginePath = Global.CurrentEditor.LastPlatform == "x64"
                     ? Global.CurrentEditor.Sphere64Path
                     : Global.CurrentEditor.SpherePath;
+                Process.Start(enginePath, args);
+            }
+            else
+                Process.Start(Global.CurrentEditor.SpherePath);
+        }
+        
+        private void RunToolButton_MenuClick(object sender, EventArgs e)
+        {
+            if (TestGame != null) TestGame(null, EventArgs.Empty);
+
+            if (IsProjectOpen)
+            {
+                Global.CurrentProject.SaveSettings();
+                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
+                string engineType = ((ToolStripMenuItem)sender).Text;
+                string enginePath = (string)((ToolStripMenuItem)sender).Tag;
                 Process.Start(enginePath, args);
             }
             else
@@ -979,12 +1016,13 @@ namespace SphereStudio
             UpdatePresetList();
         }
 
-        private void BitSelectTool_SelectedIndexChanged(object sender, EventArgs e)
+        private void PlatformTool_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_loadingPresets) return;
-
-            Global.CurrentEditor.LastPlatform = BitSelectTool.Text;
+            
+            Global.CurrentEditor.LastPlatform = PlatformTool.Text;
             Global.CurrentEditor.SaveSettings();
+            UpdatePresetList();
         }
     }
 }

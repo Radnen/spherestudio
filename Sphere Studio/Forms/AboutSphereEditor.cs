@@ -15,6 +15,7 @@ namespace SphereStudio.Forms
             this.labelVersion.Text = String.Format("Version: {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = "By: " + AssemblyCompany;
+            this.labelBits.Text = Environment.Is64BitProcess ? "64-bit" : "32-bit";
             this.textBoxDescription.Text = AssemblyDescription;
         }
 

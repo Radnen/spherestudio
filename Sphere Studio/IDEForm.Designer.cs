@@ -55,7 +55,6 @@
             this.OpenToolButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.RunToolButton = new System.Windows.Forms.ToolStripButton();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
             this.OptionsToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -64,8 +63,9 @@
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.RunToolButton = new System.Windows.Forms.ToolStripSplitButton();
             this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
-            this.BitSelectTool = new System.Windows.Forms.ToolStripComboBox();
+            this.PlatformTool = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -173,7 +173,7 @@
             this.MainDock.Location = new System.Drawing.Point(0, 52);
             this.MainDock.Name = "MainDock";
             this.MainDock.ShowDocumentIcon = true;
-            this.MainDock.Size = new System.Drawing.Size(665, 359);
+            this.MainDock.Size = new System.Drawing.Size(787, 479);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -244,12 +244,12 @@
             this.toolStripSeparator2,
             this.RunToolButton,
             this.ConfigSelectTool,
-            this.BitSelectTool});
+            this.PlatformTool});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
             this.EditorTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.EditorTools.Size = new System.Drawing.Size(665, 28);
+            this.EditorTools.Size = new System.Drawing.Size(787, 28);
             this.EditorTools.TabIndex = 4;
             this.EditorTools.Text = "Tool Strip";
             // 
@@ -286,16 +286,6 @@
             this.ToolSeperator1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ToolSeperator1.Name = "ToolSeperator1";
             this.ToolSeperator1.Size = new System.Drawing.Size(6, 28);
-            // 
-            // RunToolButton
-            // 
-            this.RunToolButton.Enabled = false;
-            this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.RunToolButton.Name = "RunToolButton";
-            this.RunToolButton.Size = new System.Drawing.Size(83, 25);
-            this.RunToolButton.Text = "Test Game";
-            this.RunToolButton.Click += new System.EventHandler(this.RunToolButton_Click);
             // 
             // GameToolButton
             // 
@@ -372,6 +362,16 @@
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
             // 
+            // RunToolButton
+            // 
+            this.RunToolButton.Enabled = false;
+            this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RunToolButton.Name = "RunToolButton";
+            this.RunToolButton.Size = new System.Drawing.Size(95, 25);
+            this.RunToolButton.Text = "Test Game";
+            this.RunToolButton.ButtonClick += new System.EventHandler(this.RunToolButton_ButtonClick);
+            // 
             // ConfigSelectTool
             // 
             this.ConfigSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -381,21 +381,21 @@
             this.ConfigSelectTool.Size = new System.Drawing.Size(155, 28);
             this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
             // 
-            // BitSelectTool
+            // PlatformTool
             // 
-            this.BitSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.BitSelectTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.BitSelectTool.Name = "BitSelectTool";
-            this.BitSelectTool.Size = new System.Drawing.Size(75, 28);
-            this.BitSelectTool.SelectedIndexChanged += new System.EventHandler(this.BitSelectTool_SelectedIndexChanged);
+            this.PlatformTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PlatformTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.PlatformTool.Name = "PlatformTool";
+            this.PlatformTool.Size = new System.Drawing.Size(75, 28);
+            this.PlatformTool.SelectedIndexChanged += new System.EventHandler(this.PlatformTool_SelectedIndexChanged);
             // 
             // EditorStatus
             // 
             this.EditorStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HelpLabel});
-            this.EditorStatus.Location = new System.Drawing.Point(0, 411);
+            this.EditorStatus.Location = new System.Drawing.Point(0, 531);
             this.EditorStatus.Name = "EditorStatus";
-            this.EditorStatus.Size = new System.Drawing.Size(665, 22);
+            this.EditorStatus.Size = new System.Drawing.Size(787, 22);
             this.EditorStatus.TabIndex = 1;
             this.EditorStatus.Text = "Status";
             // 
@@ -799,7 +799,7 @@
             this.TestGameMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
             this.TestGameMenuItem.Size = new System.Drawing.Size(188, 22);
             this.TestGameMenuItem.Text = "&Test Game";
-            this.TestGameMenuItem.Click += new System.EventHandler(this.RunToolButton_Click);
+            this.TestGameMenuItem.Click += new System.EventHandler(this.RunToolButton_ButtonClick);
             // 
             // RefreshMenuItem
             // 
@@ -904,7 +904,7 @@
             this.HelpMenu});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
             this.EditorMenu.Name = "EditorMenu";
-            this.EditorMenu.Size = new System.Drawing.Size(665, 24);
+            this.EditorMenu.Size = new System.Drawing.Size(787, 24);
             this.EditorMenu.TabIndex = 0;
             this.EditorMenu.Text = "Menu";
             // 
@@ -913,7 +913,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(665, 433);
+            this.ClientSize = new System.Drawing.Size(787, 553);
             this.Controls.Add(this.MainDock);
             this.Controls.Add(this.EditorTools);
             this.Controls.Add(this.EditorStatus);
@@ -948,7 +948,6 @@
         private System.Windows.Forms.ToolStrip EditorTools;
         private System.Windows.Forms.ToolStripButton SaveToolButton;
         private System.Windows.Forms.ToolStripSeparator ToolSeperator1;
-        private System.Windows.Forms.ToolStripButton RunToolButton;
         private System.Windows.Forms.ToolStripButton OptionsToolButton;
         private System.Windows.Forms.ToolStripSeparator ToolSeperator2;
         private System.Windows.Forms.ToolStripButton CutToolButton;
@@ -1025,9 +1024,10 @@
         private System.Windows.Forms.MenuStrip EditorMenu;
         private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripComboBox BitSelectTool;
         private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSplitButton RunToolButton;
+        private System.Windows.Forms.ToolStripComboBox PlatformTool;
     }
 }
 
