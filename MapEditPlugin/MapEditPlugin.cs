@@ -27,7 +27,7 @@ namespace SphereStudio.Plugins
             _newMapMenuItem = new ToolStripMenuItem("&Map", Properties.Resources.MapIcon, _newMapMenuItem_Click);
             _mapMenu = new ToolStripMenuItem("&Map") { Visible = false };
             _exportTilesetMenuItem = new ToolStripMenuItem("E&xport Tileset...", null, _exportTilesetItem_Click);
-            _importTilesetMenuItem = new ToolStripMenuItem("&Import Tileset...", null, _mapPropertiesMenuItem_Click);
+            _importTilesetMenuItem = new ToolStripMenuItem("&Import Tileset...", null, _importTilesetMenuItem_Click);
             _mapPropertiesMenuItem = new ToolStripMenuItem("Map &Properties...", null, _mapPropertiesMenuItem_Click);
             _recenterMenuItem = new ToolStripMenuItem("Re&center Map", Properties.Resources.arrow_inout, _mapPropertiesMenuItem_Click);
             _mapMenu.DropDownItems.AddRange(new ToolStripItem[] {
@@ -43,6 +43,11 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
             PluginManager.IDE.AddMenuItem(_mapMenu, "View");
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
+        }
+
+        private void _importTilesetMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public void Destroy()

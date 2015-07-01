@@ -47,7 +47,7 @@ namespace SphereStudio.Plugins
 
         public void PlayOrPause()
         {
-            stream.Paused = true;
+            stream.Paused = !stream.Paused;
         }
         
         public void Pause()
