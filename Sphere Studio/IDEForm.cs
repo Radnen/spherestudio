@@ -88,7 +88,6 @@ namespace SphereStudio
                 string engineName = String.Format("x64 {0}", Path.GetFileName(Global.CurrentEditor.Sphere64Path));
                 ToolStripMenuItem item = new ToolStripMenuItem(engineName);
                 item.Click += RunToolButton_MenuClick;
-                item.Checked = Global.CurrentEditor.LastPlatform == "x64";
                 item.Tag = Global.CurrentEditor.Sphere64Path;
                 RunToolButton.DropDown.Items.Add(item);
                 PlatformTool.Items.Add("x64");
@@ -98,7 +97,6 @@ namespace SphereStudio
                 string engineName = String.Format("x86 {0}", Path.GetFileName(Global.CurrentEditor.SpherePath));
                 ToolStripMenuItem item = new ToolStripMenuItem(engineName);
                 item.Click += RunToolButton_MenuClick;
-                item.Checked = Global.CurrentEditor.LastPlatform == "x86";
                 item.Tag = Global.CurrentEditor.SpherePath;
                 RunToolButton.DropDown.Items.Add(item);
                 PlatformTool.Items.Add("x86");
@@ -107,10 +105,7 @@ namespace SphereStudio
             if (PlatformTool.Items.Contains(Global.CurrentEditor.LastPlatform))
                 PlatformTool.Text = Global.CurrentEditor.LastPlatform;
             else if (PlatformTool.Enabled)
-            {
                 PlatformTool.SelectedIndex = 0;
-                Global.CurrentEditor.LastPlatform = PlatformTool.Text;
-            }
             
             ConfigSelectTool.Items.Clear();
             ConfigSelectTool.Items.Add("[Select a Preset]");
@@ -723,9 +718,11 @@ namespace SphereStudio
             string path = Path.Combine(sphereDir, @"Presets", presetName + ".preset");
             if (!File.Exists(path))
                 return;
+            SphereSettings oldSettings = Global.CurrentEditor.Clone();
             Global.CurrentEditor.LoadSettings(path);
             Global.CurrentEditor.LastPreset = presetName;
             Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
+            Global.CurrentEditor.LastPlatform = oldSettings.LastPlatform;
 
             var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
             foreach (var plugin in Global.Plugins)
@@ -792,7 +789,7 @@ namespace SphereStudio
             {
                 Global.CurrentProject.SaveSettings();
                 string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string enginePath = Global.CurrentEditor.LastPlatform == "x64"
+                string enginePath = PlatformTool.Text == "x64"
                     ? Global.CurrentEditor.Sphere64Path
                     : Global.CurrentEditor.SpherePath;
                 Process.Start(enginePath, args);

@@ -368,6 +368,7 @@
             this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
             this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RunToolButton.Name = "RunToolButton";
+            this.RunToolButton.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.RunToolButton.Size = new System.Drawing.Size(95, 25);
             this.RunToolButton.Text = "Test Game";
             this.RunToolButton.ButtonClick += new System.EventHandler(this.RunToolButton_ButtonClick);
