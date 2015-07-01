@@ -141,8 +141,8 @@ namespace SphereStudio.Plugins
             IPlayer music;
             try
             {
-                try { music = new NAudioPlayer(path, isMusic); }
-                catch (Exception) { music = new IrrPlayer(path, isMusic); }
+                try { music = new IrrPlayer(path, isMusic); }
+                catch (Exception) { music = new NAudioPlayer(path, isMusic); }
             }
             catch (Exception)
             {
