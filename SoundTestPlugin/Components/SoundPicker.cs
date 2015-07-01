@@ -9,10 +9,6 @@ using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
 
-using NAudio;
-using NAudio.Wave;
-using NAudio.Vorbis;
-
 namespace SphereStudio.Plugins
 {
     internal partial class SoundPicker : UserControl, IStyleable
@@ -36,8 +32,7 @@ namespace SphereStudio.Plugins
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
         private readonly ImageList _listIcons = new ImageList();
-        private IWavePlayer _player;
-        private WaveStream _musicFile;
+        private IPlayer _music;
         private string _musicName;
 
         public SoundPicker()
@@ -56,7 +51,6 @@ namespace SphereStudio.Plugins
             _fileWatcher.IncludeSubdirectories = true;
             _fileWatcher.EnableRaisingEvents = false;
             WatchProject(PluginManager.IDE.CurrentGame);
-            StopMusic();
             trackList.SmallImageList = _listIcons;
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
@@ -130,8 +124,8 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void ForcePause()
         {
-            if (_player == null) return;
-            _player.Pause();
+            if (_music == null) return;
+            _music.Pause();
             pauseTool.CheckState = CheckState.Checked;
             playTool.Image = _playIcons.Images["pause"];
             playTool.Text = @"Paused";
@@ -144,32 +138,30 @@ namespace SphereStudio.Plugins
         public void PlayFile(string path)
         {
             bool isMusic = Path.GetExtension(path) != ".wav";
-            IWavePlayer waveOut = new WaveOut();
-            WaveStream sound;
-            try { sound = new AudioFileReader(path); }
-            catch (Exception) { sound = new VorbisWaveReader(path); }
-            waveOut.Init(sound);
-            waveOut.Play();
+            IPlayer music;
+            try
+            {
+                try { music = new NAudioPlayer(path, isMusic); }
+                catch (Exception) { music = new IrrPlayer(path, isMusic); }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Sound Test was unable to play the track you selected. The format may not be supported on your system.",
+                    "Audio Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            music.Play();
             if (isMusic)
             {
                 StopMusic();
                 _musicName = Path.GetFileNameWithoutExtension(path);
-                _player = waveOut;
-                _musicFile = sound;
+                _music = music;
                 trackNameLabel.Text = @"Now Playing: " + _musicName;
                 playTool.Text = @"Playing";
                 playTool.Image = _playIcons.Images["play"];
                 pauseTool.Enabled = true;
                 pauseTool.CheckState = CheckState.Unchecked;
                 stopTool.Enabled = true;
-            }
-            else
-            {
-                waveOut.PlaybackStopped += (object sender, StoppedEventArgs e) =>
-                {
-                    waveOut.Dispose();
-                    sound.Dispose();
-                };
             }
         }
 
@@ -178,12 +170,11 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void PlayOrPauseMusic()
         {
-            if (_player == null) return;
-            bool wasPaused = _player.PlaybackState == PlaybackState.Paused;
-            if (!wasPaused) _player.Pause(); else _player.Play();
-            pauseTool.CheckState = !wasPaused ? CheckState.Checked : CheckState.Unchecked;
-            playTool.Image = !wasPaused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
-            playTool.Text = !wasPaused ? "Paused" : "Playing";
+            if (_music == null) return;
+            _music.PlayOrPause();
+            pauseTool.CheckState = _music.IsPaused ? CheckState.Checked : CheckState.Unchecked;
+            playTool.Image = _music.IsPaused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
+            playTool.Text = _music.IsPaused ? "Paused" : "Playing";
         }
 
         /// <summary>
@@ -245,7 +236,7 @@ namespace SphereStudio.Plugins
         }
 
         /// <summary>
-        /// Resets the IrrKlang Sound Engine.
+        /// Resets the sound engine and clears the playlist.
         /// </summary>
         public void Reset()
         {
@@ -259,14 +250,7 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void StopMusic()
         {
-            if (_player != null)
-            {
-                _player.Stop();
-                _musicFile.Dispose();
-                _player.Dispose();
-                _player = null;
-                _musicFile = null;
-            }
+            if (_music != null) _music.Dispose();
 
             trackNameLabel.Text = @"-";
             playTool.Image = _playIcons.Images["stop"];
@@ -283,18 +267,18 @@ namespace SphereStudio.Plugins
 
         private void trackNameLabel_MouseClick(object sender, MouseEventArgs e)
         {
-            if (_player == null) return;
+            if (_music == null) return;
             double delta = (double)e.X / trackNameLabel.Width;
-            _musicFile.Position = (long)(delta * _musicFile.Length);
+            _music.Position = (uint)(delta * _music.Length);
         }
 
         private void trackNameLabel_Paint(object sender, PaintEventArgs e)
         {
-            if (_player == null) return;
+            if (_music == null) return;
 
             int width = trackNameLabel.Width;
             int height = trackNameLabel.Height;
-            double delta = _musicFile.Position / (double)_musicFile.Length;
+            double delta = _music.Position / (double)_music.Length;
 
             e.Graphics.Clear(Color.Black);
             e.Graphics.FillRectangle(_trackBackColor, 0, 0, (int)(delta * width), height);

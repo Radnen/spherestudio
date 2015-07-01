@@ -34,6 +34,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="irrKlang.NET4, Version=1.0.5235.21387, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\x64\irrKlang.NET4.dll</HintPath>
+    </Reference>
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
@@ -53,15 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MusicPlayers\IPlayer.cs" />
+    <Compile Include="MusicPlayers\IrrPlayer.cs" />
+    <Compile Include="MusicPlayers\NAudioPlayer.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SoundPicker.cs">
+    <Compile Include="Components\SoundPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SoundPicker.Designer.cs">
+    <Compile Include="Components\SoundPicker.Designer.cs">
       <DependentUpon>SoundPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="SoundTestPlugin.cs" />
@@ -83,7 +90,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SoundPicker.resx">
+    <EmbeddedResource Include="Components\SoundPicker.resx">
       <DependentUpon>SoundPicker.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -101,6 +108,17 @@
     <None Include="Resources\stop-tool.png" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="ikpFlac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ikpMP3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="irrKlang.NET4.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
