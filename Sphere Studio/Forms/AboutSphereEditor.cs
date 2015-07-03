@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -14,6 +15,7 @@ namespace SphereStudio.Forms
             this.labelVersion.Text = String.Format("Version: {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = "By: " + AssemblyCompany;
+            this.labelBits.Text = Environment.Is64BitProcess ? "64-bit" : "32-bit";
             this.textBoxDescription.Text = AssemblyDescription;
         }
 
@@ -40,7 +42,7 @@ namespace SphereStudio.Forms
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return Application.ProductVersion;
             }
         }
 
@@ -96,5 +98,10 @@ namespace SphereStudio.Forms
             }
         }
         #endregion
+
+        private void websiteUrlLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(websiteUrlLink.Text);
+        }
     }
 }

@@ -39,12 +39,25 @@ namespace Sphere.Core.Settings
             set { SetItem("config_path", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the last preset used. An empty string
+        /// means no preset selected.
+        /// </summary>
         public string LastPreset
         {
             get { return GetString("last_preset");  }
             set { SetItem("last_preset", value);  }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the last engine platform (x86 or x64) used.
+        /// </summary>
+        public string LastPlatform
+        {
+            get { return GetString("last_platform"); }
+            set { SetItem("last_platform", value); }
+        }
+
         /// <summary>
         /// Gets or sets the path of the last loaded project.
         /// </summary>

@@ -62,22 +62,50 @@ namespace SphereStudio
             if (Global.CurrentEditor.AutoOpen)
                 OpenLastProject(null, EventArgs.Empty);
 
+            LoadConfigPreset(Global.CurrentEditor.LastPreset);
+            UpdatePresetList();
+
             // make sure this is active only when we use it.
             if (_treeContent != null) _treeContent.Activate();
 
             var Is64 = System.Environment.Is64BitProcess;
-            Text = string.Format("{0} ({1}) - v{2}", Application.ProductName,
+            Text = string.Format("{0} {1} v{2}", Application.ProductName,
                 (Is64) ? "x64" : "x86", Application.ProductVersion);
 
             TryEditFile += IDEForm_TryEditFile;
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
-            UpdatePresetList();
         }
 
         private void UpdatePresetList()
         {
             bool wasLoadingPresets = _loadingPresets;
             _loadingPresets = true;
+
+            RunToolButton.DropDown.Items.Clear();
+            PlatformTool.Items.Clear();
+            if (Environment.Is64BitOperatingSystem && File.Exists(Global.CurrentEditor.Sphere64Path))
+            {
+                string engineName = String.Format("x64 {0}", Path.GetFileName(Global.CurrentEditor.Sphere64Path));
+                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
+                item.Click += RunToolButton_MenuClick;
+                item.Tag = Global.CurrentEditor.Sphere64Path;
+                RunToolButton.DropDown.Items.Add(item);
+                PlatformTool.Items.Add("x64");
+            }
+            if (File.Exists(Global.CurrentEditor.SpherePath))
+            {
+                string engineName = String.Format("x86 {0}", Path.GetFileName(Global.CurrentEditor.SpherePath));
+                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
+                item.Click += RunToolButton_MenuClick;
+                item.Tag = Global.CurrentEditor.SpherePath;
+                RunToolButton.DropDown.Items.Add(item);
+                PlatformTool.Items.Add("x86");
+            }
+            PlatformTool.Enabled = PlatformTool.Items.Count > 0;
+            if (PlatformTool.Items.Contains(Global.CurrentEditor.LastPlatform))
+                PlatformTool.Text = Global.CurrentEditor.LastPlatform;
+            else if (PlatformTool.Enabled)
+                PlatformTool.SelectedIndex = 0;
             
             ConfigSelectTool.Items.Clear();
             ConfigSelectTool.Items.Add("[Select a Preset]");
@@ -94,7 +122,7 @@ namespace SphereStudio
                 }
                 ConfigSelectTool.SelectedItem = Global.CurrentEditor.LastPreset;
             }
-            ConfigSelectTool.Items.Add("Settings Manager...");
+            ConfigSelectTool.Items.Add("Configuration Manager...");
 
             _loadingPresets = wasLoadingPresets;
         }
@@ -162,7 +190,7 @@ namespace SphereStudio
             OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
 
             bool sphereFound = File.Exists(Global.CurrentEditor.SpherePath)
-                || File.Exists(Global.CurrentEditor.Sphere64Path);
+                || (File.Exists(Global.CurrentEditor.Sphere64Path) && Environment.Is64BitOperatingSystem);
             RunToolButton.Enabled = TestGameMenuItem.Enabled = sphereFound;
 
             bool last = !string.IsNullOrEmpty(Global.CurrentEditor.LastProjectPath);
@@ -684,6 +712,31 @@ namespace SphereStudio
             OpenEditorSettings();
         }
 
+        private void LoadConfigPreset(string presetName)
+        {
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string path = Path.Combine(sphereDir, @"Presets", presetName + ".preset");
+            if (!File.Exists(path))
+                return;
+            SphereSettings oldSettings = Global.CurrentEditor.Clone();
+            Global.CurrentEditor.LoadSettings(path);
+            Global.CurrentEditor.LastPreset = presetName;
+            Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
+            Global.CurrentEditor.LastPlatform = oldSettings.LastPlatform;
+
+            var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
+            foreach (var plugin in Global.Plugins)
+            {
+                if (plugins.Contains(plugin.Key))
+                    plugin.Value.Activate();
+                else
+                    plugin.Value.Deactivate();
+            }
+
+            Global.CurrentEditor.SaveSettings();
+            ApplyRefresh(true);
+        }
+
         private void ViewGameSettings(object sender, EventArgs e)
         {
             OpenGameSettings();
@@ -728,23 +781,33 @@ namespace SphereStudio
             proc.Dispose();
         }
 
-        private void RunToolButton_Click(object sender, EventArgs e)
+        private void RunToolButton_ButtonClick(object sender, EventArgs e)
         {
-            if (!File.Exists(Global.CurrentEditor.SpherePath)
-                && !File.Exists(Global.CurrentEditor.Sphere64Path))
-            {
-                return;
-            }
-
             if (TestGame != null) TestGame(null, EventArgs.Empty);
 
             if (IsProjectOpen)
             {
                 Global.CurrentProject.SaveSettings();
                 string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string enginePath = File.Exists(Global.CurrentEditor.Sphere64Path) && System.Environment.Is64BitOperatingSystem
+                string enginePath = PlatformTool.Text == "x64"
                     ? Global.CurrentEditor.Sphere64Path
                     : Global.CurrentEditor.SpherePath;
+                Process.Start(enginePath, args);
+            }
+            else
+                Process.Start(Global.CurrentEditor.SpherePath);
+        }
+        
+        private void RunToolButton_MenuClick(object sender, EventArgs e)
+        {
+            if (TestGame != null) TestGame(null, EventArgs.Empty);
+
+            if (IsProjectOpen)
+            {
+                Global.CurrentProject.SaveSettings();
+                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
+                string engineType = ((ToolStripMenuItem)sender).Text;
+                string enginePath = (string)((ToolStripMenuItem)sender).Tag;
                 Process.Start(enginePath, args);
             }
             else
@@ -937,7 +1000,7 @@ namespace SphereStudio
         {
             if (_loadingPresets) return;
             
-            // open settings if Settings Manager selected, ignore cue banner item
+            // open settings if config manager selected, ignore cue banner item
             if (ConfigSelectTool.SelectedIndex == 0 || ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
                 if (ConfigSelectTool.SelectedIndex != 0)
@@ -946,25 +1009,17 @@ namespace SphereStudio
                 return;
             }
 
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string path = Path.Combine(sphereDir, @"Presets", (string)ConfigSelectTool.SelectedItem + ".preset");
-            Global.CurrentEditor.LoadSettings(path);
-            Global.CurrentEditor.LastPreset = ConfigSelectTool.Text;
-            Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
+            LoadConfigPreset(ConfigSelectTool.Text);
+            UpdatePresetList();
+        }
 
-            var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
-            foreach (var plugin in Global.Plugins)
-            {
-                if (plugins.Contains(plugin.Key))
-                    plugin.Value.Activate();
-                else
-                    plugin.Value.Deactivate();
-            }
-
+        private void PlatformTool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_loadingPresets) return;
+            
+            Global.CurrentEditor.LastPlatform = PlatformTool.Text;
             Global.CurrentEditor.SaveSettings();
-            ApplyRefresh(true);
-
-            _loadingPresets = false;
+            UpdatePresetList();
         }
     }
 }

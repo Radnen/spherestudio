@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("The Sphere Studio")]
+[assembly: AssemblyTitle("Sphere Studio")]
 
 [assembly: AssemblyDescription("A modern Sphere development environment made for Windows with the .NET Framework 4.5 or higher.\r\n\r\n"+
     "Special Thanks:\r\n\r\n"+
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("Copyright © 2015 - Spherical")]
+[assembly: AssemblyCopyright("© 2015 Spherical")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -42,5 +42,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.7.0")]
-[assembly: AssemblyFileVersion("1.1.7.0")]
+[assembly: AssemblyVersion("1.2.0")]
+[assembly: AssemblyFileVersion("1.2.0")]
