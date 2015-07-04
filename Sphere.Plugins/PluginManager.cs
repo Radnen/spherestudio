@@ -12,6 +12,15 @@ namespace Sphere.Plugins
     /// </summary>
     public static class PluginManager
     {
+        static Dictionary<EditorType, IEditorPlugin> _editors;
+        static HashSet<IEditorPlugin> _wildcards;
+        
+        static PluginManager()
+        {
+            _editors = new Dictionary<EditorType, IEditorPlugin>();
+            _wildcards = new HashSet<IEditorPlugin>();
+        }
+
         /// <summary>
         /// Creates an edit control for the specified type of object.
         /// </summary>
@@ -47,11 +56,24 @@ namespace Sphere.Plugins
             }
         }
 
+        public static IEditorPlugin[] GetWildcards()
+        {
+            return _wildcards.ToArray();
+        }
+        
+        public static void RegisterWildcard(IEditorPlugin editor)
+        {
+            _wildcards.Add(editor);
+        }
+
+        public static void UnregisterWildcard(IEditorPlugin editor)
+        {
+            _wildcards.Remove(editor);
+        }
+
         /// <summary>
         /// Gets or sets the object representing the Sphere Studio IDE.
         /// </summary>
         public static IIDE IDE { get; set; }
-        
-        private static Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType, IEditorPlugin>();
     }
 }

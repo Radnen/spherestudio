@@ -17,8 +17,8 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
-        private readonly List<string> _extensionList = new List<string>(new[] { ".js", "*" });
-        private const string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.sgm;*.ini;*.sav";
+        private readonly List<string> _extensionList = new List<string>(new[] { ".js", ".coffee" });
+        private const string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
         readonly ToolStripMenuItem _autoCompleteItem, _codeFoldItem;
@@ -92,17 +92,17 @@ namespace SphereStudio.Plugins
 
             // register this plugin as a script editor
             PluginManager.RegisterEditor(EditorType.Script, this);
+            PluginManager.RegisterWildcard(this);
             
-            // register event handlers
+            // wire up the plugin to IDE
+            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
             PluginManager.IDE.TryEditFile += IDE_TryEditFile;
 
-            // register Open dialog file types
-            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
-
-            // Show the root menu for this control; appearing before the 'View' menu.
+            // show the root menu for this control; appearing before the 'View' menu.
             PluginManager.IDE.AddMenuItem(_rootMenu, "View");
             PluginManager.IDE.AddMenuItem("File.New", _newScriptItem);
 
+            // check off the active settings in the menus
             _autoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
             _codeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
             _highlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
@@ -118,6 +118,7 @@ namespace SphereStudio.Plugins
         public void Destroy()
         {
             PluginManager.UnregisterEditor(this);
+            PluginManager.UnregisterWildcard(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
             PluginManager.IDE.RemoveMenuItem("Script");

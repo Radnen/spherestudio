@@ -28,5 +28,10 @@ namespace Sphere.Plugins
         /// Creates a new image editor control.
         /// </summary>
         EditorObject CreateEditControl();
+        
+        /// <summary>
+        /// Creates a new image editor control.
+        /// </summary>
+        DockDescription OpenFile(string filename);
     }
 }

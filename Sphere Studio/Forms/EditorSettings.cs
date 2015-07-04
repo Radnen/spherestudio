@@ -205,9 +205,19 @@ namespace SphereStudio.Forms
         private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (!_updatePlugins) return;
+            
             ListViewItem item = PluginList.Items[e.Index];
-            if (e.NewValue == CheckState.Checked) Global.Plugins[(string)item.Tag].Activate();
-            else Global.Plugins[(string)item.Tag].Deactivate();
+            if (e.NewValue == CheckState.Checked)
+                Global.Plugins[(string)item.Tag].Activate();
+            else
+                Global.Plugins[(string)item.Tag].Deactivate();
+            
+            defEditorCombo.Items.Clear();
+            defEditorCombo.Items.Add("(none selected)");
+            defEditorCombo.SelectedIndex = 0;
+            var wildcards = PluginManager.GetWildcards();
+            foreach (var plugin in wildcards)
+                defEditorCombo.Items.Add(plugin.Name);
         }
 
         private void PresetListBox_DoubleClick(object sender, EventArgs e)

@@ -65,7 +65,10 @@
             this.AuthorCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VersionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DescriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label1 = new System.Windows.Forms.Label();
+            this.editorLabel6 = new Sphere.Core.Editor.EditorLabel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.defEditorCombo = new System.Windows.Forms.ComboBox();
+            this.pluginHeader = new Sphere.Core.Editor.EditorLabel();
             this.Tip = new System.Windows.Forms.ToolTip(this.components);
             this.UsePresetButton = new System.Windows.Forms.Button();
             this.RemovePresetButton = new System.Windows.Forms.Button();
@@ -76,6 +79,7 @@
             this.ApplyButton = new System.Windows.Forms.Button();
             this.PresetsPanel = new System.Windows.Forms.Panel();
             this.PresetLabel = new Sphere.Core.Editor.EditorLabel();
+            this.editorLabel5 = new Sphere.Core.Editor.EditorLabel();
             this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -83,6 +87,7 @@
             this.panel2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
             this.PresetsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -91,7 +96,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(501, 4);
+            this.cancelButton.Location = new System.Drawing.Point(534, 4);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 22);
@@ -104,7 +109,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(422, 4);
+            this.okButton.Location = new System.Drawing.Point(455, 4);
             this.okButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
@@ -129,7 +134,7 @@
             this.SpherePathBox.Location = new System.Drawing.Point(9, 53);
             this.SpherePathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SpherePathBox.Name = "SpherePathBox";
-            this.SpherePathBox.Size = new System.Drawing.Size(360, 20);
+            this.SpherePathBox.Size = new System.Drawing.Size(418, 20);
             this.SpherePathBox.TabIndex = 2;
             // 
             // ConfigPathLabel
@@ -148,22 +153,20 @@
             this.ConfigPathBox.Location = new System.Drawing.Point(9, 135);
             this.ConfigPathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ConfigPathBox.Name = "ConfigPathBox";
-            this.ConfigPathBox.Size = new System.Drawing.Size(400, 20);
+            this.ConfigPathBox.Size = new System.Drawing.Size(458, 20);
             this.ConfigPathBox.TabIndex = 7;
             // 
             // SettingsTabs
             // 
-            this.SettingsTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.SettingsTabs.Controls.Add(this.tabPage1);
             this.SettingsTabs.Controls.Add(this.tabPage2);
             this.SettingsTabs.Controls.Add(this.tabPage3);
-            this.SettingsTabs.Location = new System.Drawing.Point(10, 11);
+            this.SettingsTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsTabs.Location = new System.Drawing.Point(0, 23);
             this.SettingsTabs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
-            this.SettingsTabs.Size = new System.Drawing.Size(438, 427);
+            this.SettingsTabs.Size = new System.Drawing.Size(496, 444);
             this.SettingsTabs.TabIndex = 0;
             // 
             // tabPage1
@@ -178,7 +181,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage1.Size = new System.Drawing.Size(430, 401);
+            this.tabPage1.Size = new System.Drawing.Size(488, 418);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -190,7 +193,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 83);
             this.panel1.Margin = new System.Windows.Forms.Padding(5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(424, 191);
+            this.panel1.Size = new System.Drawing.Size(482, 208);
             this.panel1.TabIndex = 9;
             // 
             // ItemCheckBox
@@ -206,7 +209,7 @@
             this.ItemCheckBox.Location = new System.Drawing.Point(5, 5);
             this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ItemCheckBox.Name = "ItemCheckBox";
-            this.ItemCheckBox.Size = new System.Drawing.Size(414, 154);
+            this.ItemCheckBox.Size = new System.Drawing.Size(472, 169);
             this.ItemCheckBox.TabIndex = 3;
             // 
             // editorLabel1
@@ -215,9 +218,9 @@
             this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.editorLabel1.ForeColor = System.Drawing.Color.White;
-            this.editorLabel1.Location = new System.Drawing.Point(3, 274);
+            this.editorLabel1.Location = new System.Drawing.Point(3, 291);
             this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(424, 23);
+            this.editorLabel1.Size = new System.Drawing.Size(482, 23);
             this.editorLabel1.TabIndex = 2;
             this.editorLabel1.Text = "Script Header";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -226,10 +229,10 @@
             // 
             this.panel3.Controls.Add(this.ScriptHeaderBox);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(3, 297);
+            this.panel3.Location = new System.Drawing.Point(3, 314);
             this.panel3.Margin = new System.Windows.Forms.Padding(5);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(424, 100);
+            this.panel3.Size = new System.Drawing.Size(482, 100);
             this.panel3.TabIndex = 10;
             // 
             // ScriptHeaderBox
@@ -241,7 +244,7 @@
             this.ScriptHeaderBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ScriptHeaderBox.Location = new System.Drawing.Point(5, 5);
             this.ScriptHeaderBox.Name = "ScriptHeaderBox";
-            this.ScriptHeaderBox.Size = new System.Drawing.Size(414, 92);
+            this.ScriptHeaderBox.Size = new System.Drawing.Size(472, 92);
             this.ScriptHeaderBox.TabIndex = 6;
             this.ScriptHeaderBox.Text = "/**\n * File: [filename]\n * Author: [author]\n * Date: [MM/dd/yy]\n**/";
             // 
@@ -253,7 +256,7 @@
             this.PropLabel.ForeColor = System.Drawing.Color.White;
             this.PropLabel.Location = new System.Drawing.Point(3, 60);
             this.PropLabel.Name = "PropLabel";
-            this.PropLabel.Size = new System.Drawing.Size(424, 23);
+            this.PropLabel.Size = new System.Drawing.Size(482, 23);
             this.PropLabel.TabIndex = 1;
             this.PropLabel.Text = "Properties";
             this.PropLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -265,7 +268,7 @@
             this.panel2.Location = new System.Drawing.Point(3, 27);
             this.panel2.Margin = new System.Windows.Forms.Padding(5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(424, 33);
+            this.panel2.Size = new System.Drawing.Size(482, 33);
             this.panel2.TabIndex = 4;
             // 
             // StyleComboBox
@@ -278,7 +281,7 @@
             this.StyleComboBox.Margin = new System.Windows.Forms.Padding(5);
             this.StyleComboBox.MaxDropDownItems = 10;
             this.StyleComboBox.Name = "StyleComboBox";
-            this.StyleComboBox.Size = new System.Drawing.Size(414, 21);
+            this.StyleComboBox.Size = new System.Drawing.Size(472, 21);
             this.StyleComboBox.TabIndex = 0;
             // 
             // editorLabel2
@@ -289,7 +292,7 @@
             this.editorLabel2.ForeColor = System.Drawing.Color.White;
             this.editorLabel2.Location = new System.Drawing.Point(3, 4);
             this.editorLabel2.Name = "editorLabel2";
-            this.editorLabel2.Size = new System.Drawing.Size(424, 23);
+            this.editorLabel2.Size = new System.Drawing.Size(482, 23);
             this.editorLabel2.TabIndex = 0;
             this.editorLabel2.Text = "UI Style";
             this.editorLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -314,7 +317,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage2.Size = new System.Drawing.Size(430, 401);
+            this.tabPage2.Size = new System.Drawing.Size(488, 418);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -328,7 +331,7 @@
             this.editorLabel4.ForeColor = System.Drawing.Color.White;
             this.editorLabel4.Location = new System.Drawing.Point(6, 168);
             this.editorLabel4.Name = "editorLabel4";
-            this.editorLabel4.Size = new System.Drawing.Size(400, 23);
+            this.editorLabel4.Size = new System.Drawing.Size(458, 23);
             this.editorLabel4.TabIndex = 8;
             this.editorLabel4.Text = "Additional Project Paths";
             this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -349,19 +352,18 @@
             this.Sphere64PathBox.Location = new System.Drawing.Point(9, 94);
             this.Sphere64PathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Sphere64PathBox.Name = "Sphere64PathBox";
-            this.Sphere64PathBox.Size = new System.Drawing.Size(400, 20);
+            this.Sphere64PathBox.Size = new System.Drawing.Size(458, 20);
             this.Sphere64PathBox.TabIndex = 5;
             // 
             // editorLabel3
             // 
-            this.editorLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.editorLabel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.editorLabel3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.editorLabel3.ForeColor = System.Drawing.Color.White;
-            this.editorLabel3.Location = new System.Drawing.Point(6, 4);
+            this.editorLabel3.Location = new System.Drawing.Point(3, 4);
             this.editorLabel3.Name = "editorLabel3";
-            this.editorLabel3.Size = new System.Drawing.Size(400, 23);
+            this.editorLabel3.Size = new System.Drawing.Size(482, 23);
             this.editorLabel3.TabIndex = 0;
             this.editorLabel3.Text = "Sphere Paths";
             this.editorLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -370,7 +372,7 @@
             // 
             this.DownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.DownButton.Image = global::SphereStudio.Properties.Resources.resultset_down;
-            this.DownButton.Location = new System.Drawing.Point(37, 375);
+            this.DownButton.Location = new System.Drawing.Point(37, 392);
             this.DownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(23, 22);
@@ -383,7 +385,7 @@
             // 
             this.UpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.UpButton.Image = global::SphereStudio.Properties.Resources.resultset_up;
-            this.UpButton.Location = new System.Drawing.Point(9, 375);
+            this.UpButton.Location = new System.Drawing.Point(9, 392);
             this.UpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UpButton.Name = "UpButton";
             this.UpButton.Size = new System.Drawing.Size(23, 22);
@@ -396,7 +398,7 @@
             // 
             this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RemoveButton.Enabled = false;
-            this.RemoveButton.Location = new System.Drawing.Point(342, 375);
+            this.RemoveButton.Location = new System.Drawing.Point(400, 392);
             this.RemoveButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(64, 22);
@@ -409,7 +411,7 @@
             // AddButton
             // 
             this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddButton.Location = new System.Drawing.Point(272, 375);
+            this.AddButton.Location = new System.Drawing.Point(330, 392);
             this.AddButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(64, 22);
@@ -429,7 +431,7 @@
             this.PathListBox.Location = new System.Drawing.Point(6, 195);
             this.PathListBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PathListBox.Name = "PathListBox";
-            this.PathListBox.Size = new System.Drawing.Size(400, 172);
+            this.PathListBox.Size = new System.Drawing.Size(458, 189);
             this.PathListBox.TabIndex = 9;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
@@ -437,7 +439,7 @@
             // 
             this.SpherePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SpherePathButton.Image = global::SphereStudio.Properties.Resources.folder;
-            this.SpherePathButton.Location = new System.Drawing.Point(375, 53);
+            this.SpherePathButton.Location = new System.Drawing.Point(433, 53);
             this.SpherePathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SpherePathButton.Name = "SpherePathButton";
             this.SpherePathButton.Size = new System.Drawing.Size(31, 22);
@@ -449,12 +451,14 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.PluginList);
-            this.tabPage3.Controls.Add(this.label1);
+            this.tabPage3.Controls.Add(this.pluginHeader);
+            this.tabPage3.Controls.Add(this.panel4);
+            this.tabPage3.Controls.Add(this.editorLabel6);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage3.Size = new System.Drawing.Size(430, 401);
+            this.tabPage3.Size = new System.Drawing.Size(488, 418);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plugins";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -470,11 +474,11 @@
             this.PluginList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PluginList.GridLines = true;
             this.PluginList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.PluginList.Location = new System.Drawing.Point(3, 32);
+            this.PluginList.Location = new System.Drawing.Point(3, 78);
             this.PluginList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PluginList.Name = "PluginList";
             this.PluginList.ShowItemToolTips = true;
-            this.PluginList.Size = new System.Drawing.Size(424, 365);
+            this.PluginList.Size = new System.Drawing.Size(482, 336);
             this.PluginList.TabIndex = 1;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
@@ -500,22 +504,56 @@
             this.DescriptionCol.Text = "Description";
             this.DescriptionCol.Width = 300;
             // 
-            // label1
+            // editorLabel6
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(3, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(424, 28);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "This is a list of plugins that are present in the /plugins directory. Click on th" +
-    "e check boxes to add or remove features from the editor.";
+            this.editorLabel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.editorLabel6.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel6.ForeColor = System.Drawing.Color.White;
+            this.editorLabel6.Location = new System.Drawing.Point(3, 4);
+            this.editorLabel6.Name = "editorLabel6";
+            this.editorLabel6.Size = new System.Drawing.Size(482, 23);
+            this.editorLabel6.TabIndex = 3;
+            this.editorLabel6.Text = "Default editor for unrecognized file types";
+            this.editorLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.defEditorCombo);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(3, 27);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(482, 28);
+            this.panel4.TabIndex = 4;
+            // 
+            // defEditorCombo
+            // 
+            this.defEditorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defEditorCombo.FormattingEnabled = true;
+            this.defEditorCombo.Location = new System.Drawing.Point(5, 3);
+            this.defEditorCombo.Name = "defEditorCombo";
+            this.defEditorCombo.Size = new System.Drawing.Size(474, 21);
+            this.defEditorCombo.TabIndex = 4;
+            // 
+            // pluginHeader
+            // 
+            this.pluginHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pluginHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pluginHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.pluginHeader.ForeColor = System.Drawing.Color.White;
+            this.pluginHeader.Location = new System.Drawing.Point(3, 55);
+            this.pluginHeader.Name = "pluginHeader";
+            this.pluginHeader.Size = new System.Drawing.Size(482, 23);
+            this.pluginHeader.TabIndex = 2;
+            this.pluginHeader.Text = "Activate or deactivate plugins";
+            this.pluginHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // UsePresetButton
             // 
             this.UsePresetButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UsePresetButton.Enabled = false;
-            this.UsePresetButton.Location = new System.Drawing.Point(3, 375);
+            this.UsePresetButton.Location = new System.Drawing.Point(3, 392);
             this.UsePresetButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UsePresetButton.Name = "UsePresetButton";
             this.UsePresetButton.Size = new System.Drawing.Size(195, 22);
@@ -529,7 +567,7 @@
             // 
             this.RemovePresetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RemovePresetButton.Enabled = false;
-            this.RemovePresetButton.Location = new System.Drawing.Point(134, 399);
+            this.RemovePresetButton.Location = new System.Drawing.Point(134, 416);
             this.RemovePresetButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.RemovePresetButton.Name = "RemovePresetButton";
             this.RemovePresetButton.Size = new System.Drawing.Size(64, 22);
@@ -542,7 +580,7 @@
             // SavePresetButton
             // 
             this.SavePresetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SavePresetButton.Location = new System.Drawing.Point(64, 399);
+            this.SavePresetButton.Location = new System.Drawing.Point(64, 416);
             this.SavePresetButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SavePresetButton.Name = "SavePresetButton";
             this.SavePresetButton.Size = new System.Drawing.Size(64, 22);
@@ -562,7 +600,7 @@
             this.PresetListBox.Location = new System.Drawing.Point(3, 81);
             this.PresetListBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PresetListBox.Name = "PresetListBox";
-            this.PresetListBox.Size = new System.Drawing.Size(196, 286);
+            this.PresetListBox.Size = new System.Drawing.Size(196, 303);
             this.PresetListBox.TabIndex = 2;
             this.PresetListBox.SelectedIndexChanged += new System.EventHandler(this.PresetListBox_SelectedIndexChanged);
             this.PresetListBox.DoubleClick += new System.EventHandler(this.PresetListBox_DoubleClick);
@@ -584,16 +622,16 @@
             this.ButtonPanel.Controls.Add(this.cancelButton);
             this.ButtonPanel.Controls.Add(this.okButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 444);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 467);
             this.ButtonPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(666, 30);
+            this.ButtonPanel.Size = new System.Drawing.Size(699, 30);
             this.ButtonPanel.TabIndex = 2;
             // 
             // ApplyButton
             // 
             this.ApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ApplyButton.Location = new System.Drawing.Point(581, 4);
+            this.ApplyButton.Location = new System.Drawing.Point(614, 4);
             this.ApplyButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ApplyButton.Name = "ApplyButton";
             this.ApplyButton.Size = new System.Drawing.Size(75, 22);
@@ -604,8 +642,6 @@
             // 
             // PresetsPanel
             // 
-            this.PresetsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.PresetsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PresetsPanel.Controls.Add(this.RemovePresetButton);
             this.PresetsPanel.Controls.Add(this.SavePresetButton);
@@ -613,10 +649,11 @@
             this.PresetsPanel.Controls.Add(this.PresetListBox);
             this.PresetsPanel.Controls.Add(this.label2);
             this.PresetsPanel.Controls.Add(this.PresetLabel);
-            this.PresetsPanel.Location = new System.Drawing.Point(453, 11);
+            this.PresetsPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.PresetsPanel.Location = new System.Drawing.Point(496, 23);
             this.PresetsPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PresetsPanel.Name = "PresetsPanel";
-            this.PresetsPanel.Size = new System.Drawing.Size(203, 427);
+            this.PresetsPanel.Size = new System.Drawing.Size(203, 444);
             this.PresetsPanel.TabIndex = 1;
             // 
             // PresetLabel
@@ -632,16 +669,30 @@
             this.PresetLabel.Text = "Presets";
             this.PresetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // editorLabel5
+            // 
+            this.editorLabel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.editorLabel5.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel5.ForeColor = System.Drawing.Color.White;
+            this.editorLabel5.Location = new System.Drawing.Point(0, 0);
+            this.editorLabel5.Name = "editorLabel5";
+            this.editorLabel5.Size = new System.Drawing.Size(699, 23);
+            this.editorLabel5.TabIndex = 3;
+            this.editorLabel5.Text = "Customize your Sphere Studio environment";
+            this.editorLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // EditorSettings
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(666, 474);
-            this.Controls.Add(this.PresetsPanel);
+            this.ClientSize = new System.Drawing.Size(699, 497);
             this.Controls.Add(this.SettingsTabs);
+            this.Controls.Add(this.PresetsPanel);
             this.Controls.Add(this.ButtonPanel);
+            this.Controls.Add(this.editorLabel5);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
@@ -659,6 +710,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.ButtonPanel.ResumeLayout(false);
             this.PresetsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -685,7 +737,6 @@
         private System.Windows.Forms.ToolTip Tip;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ListView PluginList;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ColumnHeader NameCol;
         private System.Windows.Forms.ColumnHeader AuthorCol;
         private System.Windows.Forms.ColumnHeader VersionCol;
@@ -713,5 +764,10 @@
         private System.Windows.Forms.TextBox Sphere64PathBox;
         private Sphere.Core.Editor.EditorLabel editorLabel3;
         private Sphere.Core.Editor.EditorLabel editorLabel4;
+        private Sphere.Core.Editor.EditorLabel pluginHeader;
+        private Sphere.Core.Editor.EditorLabel editorLabel5;
+        private Sphere.Core.Editor.EditorLabel editorLabel6;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.ComboBox defEditorCombo;
     }
 }
