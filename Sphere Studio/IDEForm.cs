@@ -131,7 +131,7 @@ namespace SphereStudio
         {
             if (e.Extension == ".sgm")
             {
-                OpenGameSettings();
+                OpenProject(e.Path);
                 e.Handled = true;
             }
         }
