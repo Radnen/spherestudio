@@ -32,6 +32,6 @@ namespace Sphere.Plugins
         /// <summary>
         /// Creates a new image editor control.
         /// </summary>
-        DockDescription OpenFile(string filename);
+        DockDescription OpenDocument(string filename);
     }
 }

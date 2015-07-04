@@ -50,6 +50,31 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
+        public DockDescription OpenDocument(string filename = "")
+        {
+            // Creates a new editor instance:
+            Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
+            editor.OnActivate += document_Activate;
+            editor.OnDeactivate += document_Deactivate;
+
+            // if no filename provided, initialize a new image
+            if (string.IsNullOrEmpty(filename)) editor.CreateNew();
+
+            // And creates + styles a dock panel:
+            DockDescription dockDesc = new DockDescription();
+            dockDesc.TabText = @"Untitled";
+            dockDesc.Control = editor;
+            dockDesc.Icon = Icon;
+
+            if (!string.IsNullOrEmpty(filename))
+            {
+                editor.LoadFile(filename);
+                dockDesc.TabText = Path.GetFileName(filename);
+            }
+
+            return dockDesc;
+        }
+
         public EditorObject CreateEditControl()
         {
             return new Drawer2();
@@ -70,7 +95,7 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
+                PluginManager.IDE.DockControl(OpenDocument(e.Path));
                 e.Handled = true;
             }
         }
@@ -88,7 +113,7 @@ namespace SphereStudio.Plugins
         #region menu item click handlers
         private void _newImageMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor());
+            PluginManager.IDE.DockControl(OpenDocument());
         }
 
         private void _rescaleMenuItem_Click(object sender, EventArgs e)
@@ -116,30 +141,5 @@ namespace SphereStudio.Plugins
             }
         }
         #endregion
-
-        private DockDescription OpenEditor(string filename = "")
-        {
-            // Creates a new editor instance:
-            Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
-
-            // if no filename provided, initialize a new image
-            if (string.IsNullOrEmpty(filename)) editor.CreateNew();
-
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText = @"Untitled";
-            description.Control = editor;
-            description.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
-
-            return description;
-        }
     }
 }

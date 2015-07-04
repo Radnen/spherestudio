@@ -17,8 +17,8 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
-        private readonly List<string> _extensionList = new List<string>(new[] { ".js", ".coffee" });
-        private const string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
+        readonly List<string> _extensionList = new List<string>(new[] { ".js", ".coffee" });
+        const string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
         readonly ToolStripMenuItem _autoCompleteItem, _codeFoldItem;
@@ -125,6 +125,29 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
+        public DockDescription OpenDocument(string filename = "")
+        {
+            // create a new editor instance
+            ScriptEditor editor = new ScriptEditor() { CanDirty = true, Dock = DockStyle.Fill };
+
+            editor.OnActivate += document_Activate;
+            editor.OnDeactivate += document_Deactivate;
+
+            // specify docking behavior
+            DockDescription dockDesc = new DockDescription();
+            dockDesc.TabText = @"Untitled";
+            dockDesc.Control = editor;
+            dockDesc.Icon = Icon;
+
+            if (!string.IsNullOrEmpty(filename))
+            {
+                editor.LoadFile(filename);
+                dockDesc.TabText = Path.GetFileName(filename);
+            }
+
+            return dockDesc;
+        }
+
         public EditorObject CreateEditControl()
         {
             return new ScriptEditor();
@@ -135,14 +158,14 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
+                PluginManager.IDE.DockControl(OpenDocument(e.Path));
                 e.Handled = true;
             }
         }
 
         void NewScriptItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor());
+            PluginManager.IDE.DockControl(OpenDocument());
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)
@@ -237,29 +260,6 @@ namespace SphereStudio.Plugins
                 while (!reader.EndOfStream)
                     Functions.Add(reader.ReadLine());
             }
-        }
-
-        public DockDescription OpenEditor(string filename = "")
-        {
-            // Creates a new editor instance:
-            ScriptEditor editor = new ScriptEditor() { CanDirty = true, Dock = DockStyle.Fill };
-
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
-
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText = @"Untitled";
-            description.Control = editor;
-            description.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
-
-            return description;
         }
 
         void document_Activate(object sender, EventArgs e)

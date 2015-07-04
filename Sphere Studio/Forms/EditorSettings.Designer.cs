@@ -65,10 +65,10 @@
             this.AuthorCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VersionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DescriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.editorLabel6 = new Sphere.Core.Editor.EditorLabel();
+            this.pluginHeader = new Sphere.Core.Editor.EditorLabel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.defEditorCombo = new System.Windows.Forms.ComboBox();
-            this.pluginHeader = new Sphere.Core.Editor.EditorLabel();
+            this.editorLabel6 = new Sphere.Core.Editor.EditorLabel();
             this.Tip = new System.Windows.Forms.ToolTip(this.components);
             this.UsePresetButton = new System.Windows.Forms.Button();
             this.RemovePresetButton = new System.Windows.Forms.Button();
@@ -474,11 +474,11 @@
             this.PluginList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PluginList.GridLines = true;
             this.PluginList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.PluginList.Location = new System.Drawing.Point(3, 78);
+            this.PluginList.Location = new System.Drawing.Point(3, 84);
             this.PluginList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PluginList.Name = "PluginList";
             this.PluginList.ShowItemToolTips = true;
-            this.PluginList.Size = new System.Drawing.Size(482, 336);
+            this.PluginList.Size = new System.Drawing.Size(482, 330);
             this.PluginList.TabIndex = 1;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
@@ -504,6 +504,38 @@
             this.DescriptionCol.Text = "Description";
             this.DescriptionCol.Width = 300;
             // 
+            // pluginHeader
+            // 
+            this.pluginHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pluginHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pluginHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.pluginHeader.ForeColor = System.Drawing.Color.White;
+            this.pluginHeader.Location = new System.Drawing.Point(3, 61);
+            this.pluginHeader.Name = "pluginHeader";
+            this.pluginHeader.Size = new System.Drawing.Size(482, 23);
+            this.pluginHeader.TabIndex = 2;
+            this.pluginHeader.Text = "Activate or deactivate plugins";
+            this.pluginHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.defEditorCombo);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(3, 27);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(482, 34);
+            this.panel4.TabIndex = 4;
+            // 
+            // defEditorCombo
+            // 
+            this.defEditorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defEditorCombo.FormattingEnabled = true;
+            this.defEditorCombo.Location = new System.Drawing.Point(5, 6);
+            this.defEditorCombo.Name = "defEditorCombo";
+            this.defEditorCombo.Size = new System.Drawing.Size(474, 21);
+            this.defEditorCombo.Sorted = true;
+            this.defEditorCombo.TabIndex = 4;
+            // 
             // editorLabel6
             // 
             this.editorLabel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -516,37 +548,6 @@
             this.editorLabel6.TabIndex = 3;
             this.editorLabel6.Text = "Default editor for unrecognized file types";
             this.editorLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.defEditorCombo);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(3, 27);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(482, 28);
-            this.panel4.TabIndex = 4;
-            // 
-            // defEditorCombo
-            // 
-            this.defEditorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.defEditorCombo.FormattingEnabled = true;
-            this.defEditorCombo.Location = new System.Drawing.Point(5, 3);
-            this.defEditorCombo.Name = "defEditorCombo";
-            this.defEditorCombo.Size = new System.Drawing.Size(474, 21);
-            this.defEditorCombo.TabIndex = 4;
-            // 
-            // pluginHeader
-            // 
-            this.pluginHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pluginHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pluginHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.pluginHeader.ForeColor = System.Drawing.Color.White;
-            this.pluginHeader.Location = new System.Drawing.Point(3, 55);
-            this.pluginHeader.Name = "pluginHeader";
-            this.pluginHeader.Size = new System.Drawing.Size(482, 23);
-            this.pluginHeader.TabIndex = 2;
-            this.pluginHeader.Text = "Activate or deactivate plugins";
-            this.pluginHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // UsePresetButton
             // 

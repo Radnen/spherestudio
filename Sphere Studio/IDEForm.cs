@@ -167,19 +167,21 @@ namespace SphereStudio
             // raise a TryEditFile event first to see if any plugins take the bait
             EditFileEventArgs e = new EditFileEventArgs(filePath);
             if (TryEditFile != null) TryEditFile(null, e);
-
-            // if someone took the bait, then we don't have to do anything else
             if (e.Handled) return;
 
-            // nothing huh? try fishing for plugins again, maybe we were using the
-            // wrong lure... fish like stars right? (i.e. try wildcard extension "*")
-            e = new EditFileEventArgs(filePath, true);
-            if (TryEditFile != null) TryEditFile(null, e);
-            if (!e.Handled)
+            // no bite, see if there's a wildcard plugin and use that
+            string wildcard = Global.CurrentEditor.GetString("def_editor");
+            var q = from plugin in PluginManager.GetWildcards()
+                    where wildcard == plugin.Name
+                    select plugin;
+            IEditorPlugin wcPlugin = q.FirstOrDefault();
+            if (wcPlugin != null)
+                DockControl(wcPlugin.OpenDocument(filePath));
+            else
             {
                 string extension = Path.GetExtension(filePath);
                 if (extension == null) return;
-                MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file.\n\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToUpper(), filePath),
+                MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
                                 @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

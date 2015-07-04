@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Sphere.Core.Editor;
 
 namespace Sphere.Plugins
@@ -56,16 +57,29 @@ namespace Sphere.Plugins
             }
         }
 
+        /// <summary>
+        /// Gets an array of active wildcard plugins.
+        /// </summary>
+        /// <returns></returns>
         public static IEditorPlugin[] GetWildcards()
         {
             return _wildcards.ToArray();
         }
         
+        /// <summary>
+        /// Registers an editor plugin as a wildcard. Wildcards are used to open files
+        /// when no other plugin claims the file type.
+        /// </summary>
+        /// <param name="editor">An editor plugin to register as a wildcard.</param>
         public static void RegisterWildcard(IEditorPlugin editor)
         {
             _wildcards.Add(editor);
         }
 
+        /// <summary>
+        /// Unregisters a wildcard plugin registered with RegisterWildcard().
+        /// </summary>
+        /// <param name="editor">The plugin to unregister.</param>
         public static void UnregisterWildcard(IEditorPlugin editor)
         {
             _wildcards.Remove(editor);

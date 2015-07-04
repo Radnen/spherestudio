@@ -24,6 +24,12 @@ namespace SphereStudio.Forms
             set { Sphere64PathBox.Text = value; }
         }
 
+        public string DefaultEditor
+        {
+            get { return defEditorCombo.Text != "(none selected)" ? defEditorCombo.Text : ""; }
+            set { defEditorCombo.Text = value; }
+        }
+
         public string ConfigPath
         {
             get { return ConfigPathBox.Text; }
@@ -74,10 +80,23 @@ namespace SphereStudio.Forms
 
             foreach (var item in StyleSettings.Styles)
                 StyleComboBox.Items.Add(item.Key);
+            RefreshPlugins();
             
             SetValues(settings);
         }
 
+        private void RefreshPlugins()
+        {
+            string lastWildcard = DefaultEditor;
+            defEditorCombo.Items.Clear();
+            defEditorCombo.Items.Add("(none selected)");
+            defEditorCombo.SelectedIndex = 0;
+            var wildcards = PluginManager.GetWildcards();
+            foreach (var plugin in wildcards)
+                defEditorCombo.Items.Add(plugin.Name);
+            defEditorCombo.Text = lastWildcard;
+        }
+        
         private void SetValues(SphereSettings settings)
         {
             SpherePath = settings.SpherePath;
@@ -88,6 +107,7 @@ namespace SphereStudio.Forms
             UseScriptUpdate = settings.UseScriptUpdate;
             UseStartPage = settings.UseStartPage;
             Style = settings.Style.ToString();
+            DefaultEditor = settings.GetString("def_editor");
             UpdateStyle();
         }
 
@@ -106,6 +126,7 @@ namespace SphereStudio.Forms
             settings.UseScriptUpdate = UseScriptUpdate;
             settings.UseStartPage = UseStartPage;
             settings.Style = Style;
+            settings.SaveObject("def_editor", DefaultEditor);
             settings.StoreArray("games_path", GamePaths);
 
             List<string> activated = new List<string>();
@@ -211,13 +232,7 @@ namespace SphereStudio.Forms
                 Global.Plugins[(string)item.Tag].Activate();
             else
                 Global.Plugins[(string)item.Tag].Deactivate();
-            
-            defEditorCombo.Items.Clear();
-            defEditorCombo.Items.Add("(none selected)");
-            defEditorCombo.SelectedIndex = 0;
-            var wildcards = PluginManager.GetWildcards();
-            foreach (var plugin in wildcards)
-                defEditorCombo.Items.Add(plugin.Name);
+            RefreshPlugins();
         }
 
         private void PresetListBox_DoubleClick(object sender, EventArgs e)
