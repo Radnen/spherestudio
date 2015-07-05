@@ -10,20 +10,19 @@ namespace Sphere.Plugins
     public class EditFileEventArgs : HandledEventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the EditFileEventArgs class, which provides data for Sphere Studio 'edit file' events.
+        /// Initializes a new instance of EditFileEventArgs, which provides data for Sphere Studio 'edit file' events.
         /// </summary>
         /// <param name="path">The full path of the file to be edited.</param>
         /// <param name="useWildcard">If true, reports a wildcard ('*') in place of the file's actual extension.</param>
-        public EditFileEventArgs(string path, bool useWildcard = false)
+        public EditFileEventArgs(string path)
         {
             Path = (path != null && path[0] == '?') ? null : path;
-            string fileExtension = System.IO.Path.GetExtension(path);
-            if (fileExtension != null)
-                Extension = useWildcard ? "*" : fileExtension.ToLower();
+            Extension = System.IO.Path.GetExtension(path);
         }
 
         /// <summary>
-        /// The file extension of the file to be edited, including the dot ('.').
+        /// The file extension of the file to be edited, including the dot ('.'),
+        /// or an empty string if the file has no extension.
         /// </summary>
         public string Extension { get; private set; }
         

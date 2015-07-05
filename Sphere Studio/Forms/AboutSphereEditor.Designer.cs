@@ -149,7 +149,7 @@
             this.labelBits.Name = "labelBits";
             this.labelBits.Size = new System.Drawing.Size(94, 19);
             this.labelBits.TabIndex = 26;
-            this.labelBits.Text = "64-bit";
+            this.labelBits.Text = "Platform";
             this.labelBits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // AboutSphereEditor
