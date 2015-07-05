@@ -53,12 +53,9 @@
             this.Sphere64PathLabel = new System.Windows.Forms.Label();
             this.Sphere64PathBox = new System.Windows.Forms.TextBox();
             this.editorLabel3 = new Sphere.Core.Editor.EditorLabel();
-            this.DownButton = new System.Windows.Forms.Button();
-            this.UpButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
             this.AddButton = new System.Windows.Forms.Button();
             this.PathListBox = new System.Windows.Forms.ListBox();
-            this.SpherePathButton = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.PluginList = new System.Windows.Forms.ListView();
             this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -80,6 +77,11 @@
             this.PresetsPanel = new System.Windows.Forms.Panel();
             this.PresetLabel = new Sphere.Core.Editor.EditorLabel();
             this.editorLabel5 = new Sphere.Core.Editor.EditorLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.DownButton = new System.Windows.Forms.Button();
+            this.UpButton = new System.Windows.Forms.Button();
+            this.SpherePathButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SettingsTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -90,6 +92,7 @@
             this.panel4.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
             this.PresetsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelButton
@@ -121,7 +124,7 @@
             // SpherePathLabel
             // 
             this.SpherePathLabel.AutoSize = true;
-            this.SpherePathLabel.Location = new System.Drawing.Point(6, 36);
+            this.SpherePathLabel.Location = new System.Drawing.Point(63, 36);
             this.SpherePathLabel.Name = "SpherePathLabel";
             this.SpherePathLabel.Size = new System.Drawing.Size(102, 13);
             this.SpherePathLabel.TabIndex = 1;
@@ -131,16 +134,16 @@
             // 
             this.SpherePathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpherePathBox.Location = new System.Drawing.Point(9, 53);
+            this.SpherePathBox.Location = new System.Drawing.Point(66, 53);
             this.SpherePathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SpherePathBox.Name = "SpherePathBox";
-            this.SpherePathBox.Size = new System.Drawing.Size(418, 20);
+            this.SpherePathBox.Size = new System.Drawing.Size(361, 20);
             this.SpherePathBox.TabIndex = 2;
             // 
             // ConfigPathLabel
             // 
             this.ConfigPathLabel.AutoSize = true;
-            this.ConfigPathLabel.Location = new System.Drawing.Point(6, 118);
+            this.ConfigPathLabel.Location = new System.Drawing.Point(63, 118);
             this.ConfigPathLabel.Name = "ConfigPathLabel";
             this.ConfigPathLabel.Size = new System.Drawing.Size(99, 13);
             this.ConfigPathLabel.TabIndex = 6;
@@ -150,10 +153,10 @@
             // 
             this.ConfigPathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConfigPathBox.Location = new System.Drawing.Point(9, 135);
+            this.ConfigPathBox.Location = new System.Drawing.Point(66, 135);
             this.ConfigPathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ConfigPathBox.Name = "ConfigPathBox";
-            this.ConfigPathBox.Size = new System.Drawing.Size(458, 20);
+            this.ConfigPathBox.Size = new System.Drawing.Size(401, 20);
             this.ConfigPathBox.TabIndex = 7;
             // 
             // SettingsTabs
@@ -299,20 +302,22 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.editorLabel4);
             this.tabPage2.Controls.Add(this.Sphere64PathLabel);
             this.tabPage2.Controls.Add(this.Sphere64PathBox);
             this.tabPage2.Controls.Add(this.editorLabel3);
-            this.tabPage2.Controls.Add(this.DownButton);
-            this.tabPage2.Controls.Add(this.UpButton);
             this.tabPage2.Controls.Add(this.RemoveButton);
             this.tabPage2.Controls.Add(this.AddButton);
+            this.tabPage2.Controls.Add(this.DownButton);
+            this.tabPage2.Controls.Add(this.UpButton);
             this.tabPage2.Controls.Add(this.PathListBox);
             this.tabPage2.Controls.Add(this.SpherePathLabel);
             this.tabPage2.Controls.Add(this.ConfigPathLabel);
             this.tabPage2.Controls.Add(this.ConfigPathBox);
-            this.tabPage2.Controls.Add(this.SpherePathButton);
             this.tabPage2.Controls.Add(this.SpherePathBox);
+            this.tabPage2.Controls.Add(this.SpherePathButton);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage2.Name = "tabPage2";
@@ -333,13 +338,13 @@
             this.editorLabel4.Name = "editorLabel4";
             this.editorLabel4.Size = new System.Drawing.Size(458, 23);
             this.editorLabel4.TabIndex = 8;
-            this.editorLabel4.Text = "Additional Project Paths";
+            this.editorLabel4.Text = "Additional project search paths";
             this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Sphere64PathLabel
             // 
             this.Sphere64PathLabel.AutoSize = true;
-            this.Sphere64PathLabel.Location = new System.Drawing.Point(6, 77);
+            this.Sphere64PathLabel.Location = new System.Drawing.Point(63, 77);
             this.Sphere64PathLabel.Name = "Sphere64PathLabel";
             this.Sphere64PathLabel.Size = new System.Drawing.Size(131, 13);
             this.Sphere64PathLabel.TabIndex = 4;
@@ -349,10 +354,10 @@
             // 
             this.Sphere64PathBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Sphere64PathBox.Location = new System.Drawing.Point(9, 94);
+            this.Sphere64PathBox.Location = new System.Drawing.Point(66, 94);
             this.Sphere64PathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Sphere64PathBox.Name = "Sphere64PathBox";
-            this.Sphere64PathBox.Size = new System.Drawing.Size(458, 20);
+            this.Sphere64PathBox.Size = new System.Drawing.Size(401, 20);
             this.Sphere64PathBox.TabIndex = 5;
             // 
             // editorLabel3
@@ -365,34 +370,8 @@
             this.editorLabel3.Name = "editorLabel3";
             this.editorLabel3.Size = new System.Drawing.Size(482, 23);
             this.editorLabel3.TabIndex = 0;
-            this.editorLabel3.Text = "Sphere Paths";
+            this.editorLabel3.Text = "Where is the engine?";
             this.editorLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // DownButton
-            // 
-            this.DownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.DownButton.Image = global::SphereStudio.Properties.Resources.resultset_down;
-            this.DownButton.Location = new System.Drawing.Point(37, 392);
-            this.DownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.DownButton.Name = "DownButton";
-            this.DownButton.Size = new System.Drawing.Size(23, 22);
-            this.DownButton.TabIndex = 11;
-            this.Tip.SetToolTip(this.DownButton, "Move path down.");
-            this.DownButton.UseVisualStyleBackColor = true;
-            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
-            // 
-            // UpButton
-            // 
-            this.UpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UpButton.Image = global::SphereStudio.Properties.Resources.resultset_up;
-            this.UpButton.Location = new System.Drawing.Point(9, 392);
-            this.UpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.UpButton.Name = "UpButton";
-            this.UpButton.Size = new System.Drawing.Size(23, 22);
-            this.UpButton.TabIndex = 10;
-            this.Tip.SetToolTip(this.UpButton, "Move path up.");
-            this.UpButton.UseVisualStyleBackColor = true;
-            this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
             // 
             // RemoveButton
             // 
@@ -434,19 +413,6 @@
             this.PathListBox.Size = new System.Drawing.Size(458, 189);
             this.PathListBox.TabIndex = 9;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
-            // 
-            // SpherePathButton
-            // 
-            this.SpherePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpherePathButton.Image = global::SphereStudio.Properties.Resources.folder;
-            this.SpherePathButton.Location = new System.Drawing.Point(433, 53);
-            this.SpherePathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.SpherePathButton.Name = "SpherePathButton";
-            this.SpherePathButton.Size = new System.Drawing.Size(31, 22);
-            this.SpherePathButton.TabIndex = 3;
-            this.Tip.SetToolTip(this.SpherePathButton, "Choose Sphere Folder");
-            this.SpherePathButton.UseVisualStyleBackColor = true;
-            this.SpherePathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
             // 
             // tabPage3
             // 
@@ -683,6 +649,65 @@
             this.editorLabel5.Text = "Customize your Sphere Studio environment";
             this.editorLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SphereStudio.Properties.Resources.SphereIcon;
+            this.pictureBox1.Location = new System.Drawing.Point(9, 36);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
+            // 
+            // DownButton
+            // 
+            this.DownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.DownButton.Image = global::SphereStudio.Properties.Resources.resultset_down;
+            this.DownButton.Location = new System.Drawing.Point(37, 392);
+            this.DownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.DownButton.Name = "DownButton";
+            this.DownButton.Size = new System.Drawing.Size(23, 22);
+            this.DownButton.TabIndex = 11;
+            this.Tip.SetToolTip(this.DownButton, "Move path down.");
+            this.DownButton.UseVisualStyleBackColor = true;
+            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
+            // 
+            // UpButton
+            // 
+            this.UpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UpButton.Image = global::SphereStudio.Properties.Resources.resultset_up;
+            this.UpButton.Location = new System.Drawing.Point(9, 392);
+            this.UpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.UpButton.Name = "UpButton";
+            this.UpButton.Size = new System.Drawing.Size(23, 22);
+            this.UpButton.TabIndex = 10;
+            this.Tip.SetToolTip(this.UpButton, "Move path up.");
+            this.UpButton.UseVisualStyleBackColor = true;
+            this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
+            // 
+            // SpherePathButton
+            // 
+            this.SpherePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpherePathButton.Image = global::SphereStudio.Properties.Resources.folder;
+            this.SpherePathButton.Location = new System.Drawing.Point(433, 53);
+            this.SpherePathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.SpherePathButton.Name = "SpherePathButton";
+            this.SpherePathButton.Size = new System.Drawing.Size(31, 22);
+            this.SpherePathButton.TabIndex = 3;
+            this.Tip.SetToolTip(this.SpherePathButton, "Choose Sphere Folder");
+            this.SpherePathButton.UseVisualStyleBackColor = true;
+            this.SpherePathButton.Click += new System.EventHandler(this.SpherePathButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(9, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(48, 18);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Sphere";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // EditorSettings
             // 
             this.AcceptButton = this.okButton;
@@ -714,6 +739,7 @@
             this.panel4.ResumeLayout(false);
             this.ButtonPanel.ResumeLayout(false);
             this.PresetsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -770,5 +796,7 @@
         private Sphere.Core.Editor.EditorLabel editorLabel6;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ComboBox defEditorCombo;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label1;
     }
 }

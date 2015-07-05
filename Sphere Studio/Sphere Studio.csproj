@@ -247,6 +247,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
+    <None Include="Resources\minisphere.ico" />
+    <None Include="Resources\minisphere.png" />
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
