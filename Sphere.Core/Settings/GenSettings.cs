@@ -141,7 +141,7 @@ namespace Sphere.Core.Settings
         /// </summary>
         /// <param name="path">The path to read from.</param>
         /// <returns>True if successful.</returns>
-        public bool LoadSettings(string path)
+        public virtual bool LoadSettings(string path)
         {
             if (!File.Exists(path)) return false;
             var editorIni = new FileInfo(path);

@@ -166,7 +166,7 @@ namespace SphereStudio.Components
         {
             base.Refresh();
 
-            if (string.IsNullOrEmpty(Global.CurrentProject.RootPath)) return;
+            if (Global.CurrentProject == null || string.IsNullOrEmpty(Global.CurrentProject.RootPath)) return;
 
             Cursor.Current = Cursors.WaitCursor;
 

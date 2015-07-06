@@ -106,7 +106,7 @@ namespace SphereStudio
                 PlatformTool.Text = Global.CurrentEditor.LastPlatform;
             else if (PlatformTool.Enabled)
                 PlatformTool.SelectedIndex = 0;
-            
+
             ConfigSelectTool.Items.Clear();
             ConfigSelectTool.Items.Add("[Select a Preset]");
             ConfigSelectTool.SelectedIndex = 0;
@@ -167,7 +167,7 @@ namespace SphereStudio
             // raise a TryEditFile event first to see if any plugins take the bait
             EditFileEventArgs e = new EditFileEventArgs(filePath);
             if (TryEditFile != null) TryEditFile(null, e);
-            if (e.Handled) return;
+            if (e.Handled) { return; }
 
             // no bite, see if there's a wildcard plugin and use that
             string wildcard = Global.CurrentEditor.GetString("def_editor");
@@ -176,7 +176,9 @@ namespace SphereStudio
                     select plugin;
             IEditorPlugin wcPlugin = q.FirstOrDefault();
             if (wcPlugin != null)
+            {
                 DockControl(wcPlugin.OpenDocument(filePath));
+            }
             else
             {
                 string extension = Path.GetExtension(filePath);
@@ -225,7 +227,7 @@ namespace SphereStudio
                 HideOnClose = true
             };
             _startContent.Controls.Add(_startPage);
-            if (EditorSettings.UseStartPage) _startContent.Show(MainDock, DockState.Document);
+            _startContent.Show(MainDock);
         }
 
         public void DockControl(DockDescription description)
@@ -287,10 +289,14 @@ namespace SphereStudio
             get
             {
                 List<string> strings = new List<string>();
-                foreach (DockContent dc in MainDock.Contents)
+
+                foreach (IDockContent content in MainDock.Contents)
                 {
-                    strings.Add(dc.TabText);
+                    Form f = content.DockHandler.Form;
+                    if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
+                        strings.Add(((EditorObject)content.DockHandler.Form.Controls[0]).FileName);
                 }
+
                 return strings.ToArray();
             }
         }
@@ -410,13 +416,41 @@ namespace SphereStudio
         public void OpenProject(string filename)
         {
             if (string.IsNullOrEmpty(filename)) return;
-            CloseProject(null, EventArgs.Empty);
+            if (!CloseCurrentProject()) return;
+
             Global.CurrentProject = new ProjectSettings();
             Global.CurrentProject.LoadSettings(filename);
+
             RefreshProject();
+
             if (LoadProject != null) LoadProject(null, EventArgs.Empty);
             if (_treeContent != null) _treeContent.Activate();
+
             HelpLabel.Text = @"Game project loaded successfully!";
+
+            Global.CurrentUser = new UserSettings();
+            Global.CurrentUser.LoadSettings(Path.GetDirectoryName(filename));
+
+            if (Global.CurrentUser.StartHidden)
+            {
+                _startContent.Hide();
+            }
+            else
+            {
+                _startContent.Show();
+            }
+
+            string[] docs = Global.CurrentUser.Documents;
+            foreach (string s in docs)
+            {
+                if (String.IsNullOrWhiteSpace(s)) continue;
+                OpenDocument(s);
+            }
+
+            var doc = GetDocument(Global.CurrentUser.CurrentDocument);
+            if (doc != null) doc.DockHandler.Activate();
+            else _startContent.Show();
+
             UpdateButtons();
         }
 
@@ -475,8 +509,6 @@ namespace SphereStudio
                         break;
                 }
             }
-
-            if (!e.Cancel) obj.Dispose();
         }
 
         /// <summary>
@@ -532,6 +564,43 @@ namespace SphereStudio
             _default_active = name;
         }
 
+        /// <summary>
+        /// Closes all opened documents; optionally saving them as well.
+        /// </summary>
+        /// <param name="save">Set to true to invoke save routines.</param>
+        private bool CloseAllDocuments()
+        {
+            List<DockContentHandler> handles = new List<DockContentHandler>();
+            foreach (IDockContent content in MainDock.Contents)
+            {
+                Form f = content.DockHandler.Form;
+                if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
+                {
+                    if (f.Text.EndsWith("*"))
+                    {
+                        switch (MessageBox.Show(@"File has been modified, save?", f.Text,
+                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
+                        {
+                            case DialogResult.Yes:
+                                ((EditorObject)content.DockHandler.Form.Controls[0]).Save();
+                                break;
+                            case DialogResult.Cancel:
+                                return false;
+                        }
+                    }
+
+                    handles.Add(content.DockHandler);
+                }
+            }
+
+            foreach (DockContentHandler handle in handles) handle.Close();
+            _startContent.Hide();
+            return true;
+        }
+
+        /// <summary>
+        /// Saves all currently opened documents.
+        /// </summary>
         private void SaveAllDocuments()
         {
             foreach (IDockContent content in MainDock.Contents)
@@ -556,12 +625,13 @@ namespace SphereStudio
             string[] paths = Global.CurrentEditor.GetArray("games_path");
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string rootPath = Path.Combine(sphereDir, "Projects");
-            Directory.CreateDirectory(rootPath);
             NewProjectForm myProject = new NewProjectForm { RootFolder = rootPath };
+
+            if (!CloseCurrentProject()) return;
 
             if (myProject.ShowDialog() == DialogResult.OK)
             {
-                CloseProject(null, EventArgs.Empty);
+                Directory.CreateDirectory(rootPath);
 
                 if (Global.CurrentProject == null)
                     Global.CurrentProject = new ProjectSettings();
@@ -601,15 +671,62 @@ namespace SphereStudio
             }
         }
 
-        // remember to clear opened tabs!
+        /// <summary>
+        /// Saves and closes all project related files.
+        /// </summary>
+        /// <param name="save_docs">Optional, because sometimes you want to do this before the final closure.</param>
+        private void SaveAndCloseProject(bool save_docs = true)
+        {
+            if (Global.CurrentProject != null)
+            {
+                if (Global.CurrentProject != null && Global.CurrentUser != null)
+                {
+                    if (save_docs)
+                    {
+                        Global.CurrentUser.Documents = Documents;
+                    }
+                    Global.CurrentUser.StartHidden = !_startContent.Visible;
+                    Global.CurrentUser.ProjectName = Global.CurrentProject.Name;
+                    Global.CurrentUser.Author = Global.CurrentProject.Author;
+                    Global.CurrentUser.SaveSettings(Global.CurrentProject.RootPath);
+                    Global.CurrentUser = null;
+                }
+
+                Global.CurrentProject.SaveSettings();
+                Global.CurrentProject = null;
+            }
+        }
+
+        private bool CloseCurrentProject()
+        {
+            if (Global.CurrentUser != null)
+            {
+                if (_currentControl != null)
+                {
+                    Global.CurrentUser.CurrentDocument = _currentControl.FileName;
+                }
+                Global.CurrentUser.Documents = Documents;
+            }
+
+            bool success = CloseAllDocuments();
+            if (!success) return false;
+
+            if (UnloadProject != null) UnloadProject(null, EventArgs.Empty);
+            SaveAndCloseProject(false);
+            return true;
+        }
+
         private void CloseProject(object sender, EventArgs e)
         {
-            if (UnloadProject != null) UnloadProject(null, EventArgs.Empty);
-            _tree.Close();
-            Global.CurrentProject = null;
-            _tree.ProjectName = "Project Name";
-            OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
-            UpdateButtons();
+            bool success = CloseCurrentProject();
+            if (success)
+            {
+                _tree.Close();
+                _tree.ProjectName = "Project Name";
+
+                OpenLastProjectMenuItem.Enabled = (Global.CurrentEditor.LastProjectPath.Length > 0);
+                UpdateButtons();
+            }
         }
 
         private void OpenLastProject(object sender, EventArgs e)
@@ -639,6 +756,7 @@ namespace SphereStudio
 
         private void ExitMenuItem_Click(object sender, EventArgs e)
         {
+            SaveAndCloseProject();
             Close();
         }
         #endregion
@@ -799,7 +917,7 @@ namespace SphereStudio
             else
                 Process.Start(Global.CurrentEditor.SpherePath);
         }
-        
+
         private void RunToolButton_MenuClick(object sender, EventArgs e)
         {
             if (TestGame != null) TestGame(null, EventArgs.Empty);
@@ -836,7 +954,7 @@ namespace SphereStudio
         #region view menu items
         private void StartPageMenuItem_Click(object sender, EventArgs e)
         {
-            if (_startContent.IsHidden) _startContent.Show(MainDock);
+            if (_startContent.IsHidden) _startContent.Show();
             else _startContent.Hide();
         }
 
@@ -863,7 +981,10 @@ namespace SphereStudio
 
             _currentControl = (value is EditorObject) ? (EditorObject)value : null;
 
-            if (_currentControl != null) _currentControl.Activate();
+            if (_currentControl != null)
+            {
+                _currentControl.Activate();
+            }
         }
 
         private void DockTest_ActiveDocumentChanged(object sender, EventArgs e)
@@ -877,8 +998,7 @@ namespace SphereStudio
 
         private void EditorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Global.CurrentEditor.SaveSettings();
-            CloseProject(null, EventArgs.Empty);
+            SaveAndCloseProject();
         }
 
         private void SaveLayoutMenuItem_Click(object sender, EventArgs e)
@@ -1001,7 +1121,7 @@ namespace SphereStudio
         private void ConfigSelectTool_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_loadingPresets) return;
-            
+
             // open settings if config manager selected, ignore cue banner item
             if (ConfigSelectTool.SelectedIndex == 0 || ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
@@ -1018,7 +1138,7 @@ namespace SphereStudio
         private void PlatformTool_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_loadingPresets) return;
-            
+
             Global.CurrentEditor.LastPlatform = PlatformTool.Text;
             Global.CurrentEditor.SaveSettings();
             UpdatePresetList();

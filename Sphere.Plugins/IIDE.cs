@@ -102,7 +102,7 @@ namespace Sphere.Plugins
         void RemoveMenuItem(string name);
 
         /// <summary>
-        /// Gets a list of the documents in the Sphere Studio's main dock panel.
+        /// Gets a list of the loaded document's filepaths in the Sphere Studio's main dock panel.
         /// </summary>
         string[] Documents { get; }
 
