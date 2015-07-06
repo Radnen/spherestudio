@@ -22,7 +22,7 @@ namespace Sphere.Plugins
 
         private ToolStripMenuItem  packageMenuItem;
         private ToolStripSeparator menuSeparator1;
-
+        
         private void packageGame_Click(object sender, EventArgs e)
         {
             ProjectSettings project;

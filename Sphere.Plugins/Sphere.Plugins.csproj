@@ -35,6 +35,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ini.Net, Version=1.0.5531.18665, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ini.net.1.1.0\lib\net20\Ini.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -47,8 +51,10 @@
     <Compile Include="IEditorPlugin.cs" />
     <Compile Include="IImageEditor.cs" />
     <Compile Include="IIDE.cs" />
+    <Compile Include="INISettings.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IScriptEditor.cs" />
+    <Compile Include="ISettings.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,7 +77,6 @@
       <Name>Sphere.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="EditShims\ImageEditShim.resx">
       <DependentUpon>ImageEditShim.cs</DependentUpon>
@@ -79,6 +84,9 @@
     <EmbeddedResource Include="EditShims\ScriptEditShim.resx">
       <DependentUpon>ScriptEditShim.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
