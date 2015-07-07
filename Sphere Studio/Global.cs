@@ -67,6 +67,7 @@ namespace SphereStudio
         public static ProjectSettings CurrentProject = null;
         public static SphereSettings CurrentEditor = new SphereSettings();
         public static UserSettings CurrentUser = null;
+        public static INI Settings = new INI("Sphere Studio.ini");
         public static Sphere.Core.Entity CopiedEnt { get; set; }
 
         /// <summary>

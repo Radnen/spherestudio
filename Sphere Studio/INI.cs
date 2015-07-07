@@ -5,16 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Sphere.Plugins;
+
 using Ini.Net;
 
-namespace Sphere.Plugins
+namespace SphereStudio
 {
-    public class INISettings : ISettings
+    public class INI : ISettings
     {
-        private IniFile _ini;
         private string _filename;
+        private IniFile _ini;
 
-        public INISettings(string filename)
+        public INI(string filename)
         {
             _filename = filename;
             string pathstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Settings", filename);

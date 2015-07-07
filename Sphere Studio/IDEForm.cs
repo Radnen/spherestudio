@@ -76,6 +76,11 @@ namespace SphereStudio
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
         }
 
+        public ISettings Settings
+        {
+            get { return Global.Settings; }
+        }
+
         private void UpdatePresetList()
         {
             bool wasLoadingPresets = _loadingPresets;

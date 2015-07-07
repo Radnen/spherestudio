@@ -34,7 +34,6 @@ namespace Sphere.Plugins
             ".mp3", ".ogg", ".mid", ".wav", ".flac", ".it", ".s3m", ".mod",
         };
 
-        private ISettings _conf = new INISettings("SPK.ini");
         private string _projectPath;
 
         public MakePackageForm(string path)
@@ -82,7 +81,7 @@ namespace Sphere.Plugins
                 }
             }
 
-            var deflate = _conf.GetInteger("deflateLevel", 5);
+            var deflate = PluginManager.IDE.Settings.GetInteger("spk_deflateLevel", 5);
             deflateLevel.Value = deflate < 0 ? 0 : deflate > 9 ? 9 : deflate;
             deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
         }
@@ -214,7 +213,7 @@ namespace Sphere.Plugins
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            _conf.SetValue("deflateLevel", deflateLevel.Value);
+            PluginManager.IDE.Settings.SetValue("spk_deflateLevel", deflateLevel.Value);
         }
 
         private void testButton_Click(object sender, EventArgs e)
