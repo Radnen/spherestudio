@@ -12,7 +12,7 @@
     <AssemblyName>Sphere Studio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>Editor.ico</ApplicationIcon>
+    <ApplicationIcon>Sphere Studio.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -253,6 +253,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="license.txt" />
+    <Content Include="Sphere Studio.ico" />
     <None Include="Resources\minisphere.ico" />
     <None Include="Resources\minisphere.png" />
     <Content Include="SphereLexer.xml">
@@ -265,7 +266,6 @@
     <Content Include="Docs\functions.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Editor.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
