@@ -37,7 +37,7 @@
         public void Activate()
         {
             if (Enabled) return;
-            ISettings conf = PluginManager.Core.OpenSettings(Name);
+            ISettings conf = PluginManager.IDE.OpenSettings(Name);
             Plugin.Initialize(conf);
             Enabled = true;
         }

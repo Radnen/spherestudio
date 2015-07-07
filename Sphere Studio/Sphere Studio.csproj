@@ -101,14 +101,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\AboutSphereEditor.cs">
+    <Compile Include="Forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutSphereEditor.Designer.cs">
-      <DependentUpon>AboutSphereEditor.cs</DependentUpon>
+    <Compile Include="Forms\AboutBoxForm.Designer.cs">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
-    <Compile Include="INISettings.cs" />
+    <Compile Include="Settings\INISettings.cs" />
     <Compile Include="RadEditors\MenuEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,8 +166,9 @@
       <DependentUpon>NewProjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\AboutSphereEditor.resx">
-      <DependentUpon>AboutSphereEditor.cs</DependentUpon>
+    <Compile Include="Settings\CoreSettings.cs" />
+    <EmbeddedResource Include="Forms\AboutBoxForm.resx">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>

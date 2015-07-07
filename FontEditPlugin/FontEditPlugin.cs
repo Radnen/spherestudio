@@ -34,14 +34,14 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.Core.DockControl(OpenEditor(e.Path));
+                PluginManager.IDE.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
 
         void FontItem_Click(object sender, EventArgs e)
         {
-            PluginManager.Core.DockControl(OpenEditor());
+            PluginManager.IDE.DockControl(OpenEditor());
         }
 
         public DockDescription OpenEditor(string filename = "")
@@ -66,15 +66,15 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.Core.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
-            PluginManager.Core.TryEditFile += IDE_TryEditFile;
-            PluginManager.Core.AddMenuItem("File.New", _newFontItem);
+            PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
         }
 
         public void Destroy()
         {
-            PluginManager.Core.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.Core.TryEditFile -= IDE_TryEditFile;
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Sphere.Plugins
 
         private void MakePackageForm_Load(object sender, EventArgs e)
         {
-            headerLabel.Text += string.Format(" for \"{0}\"", PluginManager.Core.CurrentGame.Name);
+            headerLabel.Text += string.Format(" for \"{0}\"", PluginManager.IDE.CurrentGame.Name);
 
             deflateLvLabel.Text = string.Format("Compression Lv. {0}", deflateLevel.Value);
             percentLabel.Text = "";
@@ -220,11 +220,13 @@ namespace Sphere.Plugins
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            SphereSettings settings = PluginManager.Core.EditorSettings;
-            string enginePath = System.Environment.Is64BitOperatingSystem && !string.IsNullOrWhiteSpace(settings.Sphere64Path)
-                ? settings.Sphere64Path : settings.SpherePath;
+            ISettings settings = PluginManager.IDE.Settings;
+            string enginePath = settings.GetString("enginePath", "");
+            string enginePath64 = settings.GetString("enginePath64", "");
+            string filename = System.Environment.Is64BitOperatingSystem && !string.IsNullOrWhiteSpace(enginePath64)
+                ? enginePath64 : enginePath;
             string args = string.Format("-package \"{0}\"", testButton.Tag);
-            Process.Start(enginePath, args);
+            Process.Start(filename, args);
         }
     }
 }

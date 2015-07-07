@@ -424,9 +424,10 @@ namespace SphereStudio.Components
             Global.CurrentProject.Script = ProjectTreeView.SelectedNode.Text;
             Global.CurrentProject.SaveSettings();
             // And then execute the engine:
-            Process.Start(Global.CurrentEditor.SpherePath, "-game \"" +
-                                                           Global.CurrentProject.RootPath + "\"");
+            Process.Start(Global.Settings.EnginePath, "-game \"" +
+                Global.CurrentProject.RootPath + "\"");
             Global.CurrentProject.Script = oldScript;
+            Global.CurrentProject.SaveSettings();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)

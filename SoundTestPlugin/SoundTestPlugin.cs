@@ -41,30 +41,30 @@ namespace SphereStudio.Plugins
             description.HideOnClose = true;
             description.DockState = DockDescStyle.Side;
 
-            PluginManager.Core.DockControl(description);
-            PluginManager.Core.RegisterOpenFileType("Audio", _openFileFilters);
-            PluginManager.Core.LoadProject += IDE_LoadProject;
-            PluginManager.Core.UnloadProject += IDE_UnloadProject;
-            PluginManager.Core.TestGame += IDE_TestGame;
-            PluginManager.Core.TryEditFile += IDE_TryEditFile;
-            _soundPicker.WatchProject(PluginManager.Core.CurrentGame);
+            PluginManager.IDE.DockControl(description);
+            PluginManager.IDE.RegisterOpenFileType("Audio", _openFileFilters);
+            PluginManager.IDE.LoadProject += IDE_LoadProject;
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
+            PluginManager.IDE.TestGame += IDE_TestGame;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
         public void Destroy()
         {
-            PluginManager.Core.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
-            PluginManager.Core.RemoveControl("Sound Test");
-            PluginManager.Core.TryEditFile -= IDE_TryEditFile;
-            PluginManager.Core.TestGame -= IDE_TestGame;
-            PluginManager.Core.LoadProject -= IDE_LoadProject;
-            PluginManager.Core.UnloadProject -= IDE_UnloadProject;
+            PluginManager.IDE.RemoveControl("Sound Test");
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+            PluginManager.IDE.TestGame -= IDE_TestGame;
+            PluginManager.IDE.LoadProject -= IDE_LoadProject;
+            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
         }
 
         private void IDE_LoadProject(object sender, EventArgs e)
         {
-            _soundPicker.WatchProject(PluginManager.Core.CurrentGame);
+            _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
         private void IDE_UnloadProject(object sender, EventArgs e)

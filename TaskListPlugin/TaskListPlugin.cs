@@ -25,7 +25,7 @@ namespace SphereStudio.Plugins
         /* Load the Task List */
         void IDE_LoadProject(object sender, EventArgs e)
         {
-            _list.LoadList(PluginManager.Core.CurrentGame.RootPath);
+            _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
 
         /* Close and empty the task List */
@@ -57,13 +57,13 @@ namespace SphereStudio.Plugins
             _desc = description;
 
             // Add the widget to the main editor at the dock state:
-            PluginManager.Core.DockControl(description);
+            PluginManager.IDE.DockControl(description);
 
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
             // so in this case we can use these to our advantage.
-            PluginManager.Core.LoadProject += IDE_LoadProject;
-            PluginManager.Core.UnloadProject += IDE_UnloadProject;
+            PluginManager.IDE.LoadProject += IDE_LoadProject;
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
 
             // Now, we can add a menu item like so.
             // 'View' will search the 'View' menu item.
@@ -72,25 +72,25 @@ namespace SphereStudio.Plugins
             // And it'll generate the neccessary stubs before adding the item.
             _item = new ToolStripMenuItem("Task List", Properties.Resources.lightbulb);
             _item.Click += ItemClick;
-            PluginManager.Core.AddMenuItem("View", _item);
+            PluginManager.IDE.AddMenuItem("View", _item);
 
             // Here I ake sure the list is loaded when the plugin has been activated.
-            if (PluginManager.Core.CurrentGame != null) _list.LoadList(PluginManager.Core.CurrentGame.RootPath);
+            if (PluginManager.IDE.CurrentGame != null) _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
 
         public void Destroy()
         {
             // Now we need to remove anything we add to the editor
-            PluginManager.Core.RemoveControl("Task List");
+            PluginManager.IDE.RemoveControl("Task List");
 
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
-            PluginManager.Core.LoadProject -= IDE_LoadProject;
-            PluginManager.Core.UnloadProject -= IDE_UnloadProject;
+            PluginManager.IDE.LoadProject -= IDE_LoadProject;
+            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
 
             // And furthermore that menu item must be deleted as well!
             _item.Click -= ItemClick;
-            PluginManager.Core.RemoveMenuItem(_item);
+            PluginManager.IDE.RemoveMenuItem(_item);
 
             // And we can optionally null things out just to be safe:
             _list.Dispose(); _list = null;

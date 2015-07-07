@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
 
+using SphereStudio.Settings;
+
 namespace SphereStudio
 {
     internal static class Global
@@ -65,9 +67,8 @@ namespace SphereStudio
         }
 
         public static ProjectSettings CurrentProject = null;
-        public static SphereSettings CurrentEditor = new SphereSettings();
         public static UserSettings CurrentUser = null;
-        public static INISettings Settings = new INISettings("Sphere Studio.ini");
+        public static CoreSettings Settings = new CoreSettings();
         public static Sphere.Core.Entity CopiedEnt { get; set; }
 
         /// <summary>
@@ -161,13 +162,8 @@ namespace SphereStudio
         /// <returns>Returns true if there were changes.</returns>
         public static bool EditSettings()
         {
-            EditorSettings settings = new EditorSettings(CurrentEditor);
-            if (settings.ShowDialog() == DialogResult.OK)
-            {
-                CurrentEditor.SetSettings(settings.GetSettings());
-                return true;
-            }
-            return false;
+            EditorSettings settings = new EditorSettings(Settings);
+            return settings.ShowDialog() == DialogResult.OK;
         }
     }
 }

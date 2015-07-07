@@ -28,7 +28,7 @@ namespace Sphere.Plugins
         {
             ProjectSettings project;
 
-            if ((project = PluginManager.Core.CurrentGame) == null)
+            if ((project = PluginManager.IDE.CurrentGame) == null)
                 MessageBox.Show("You must load a project into the editor first.", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
@@ -47,19 +47,19 @@ namespace Sphere.Plugins
         {
             _conf = conf;
             
-            PluginManager.Core.AddMenuItem("Project", menuSeparator1);
-            PluginManager.Core.AddMenuItem("Project", packageMenuItem);
-            PluginManager.Core.LoadProject += IDE_LoadProject;
-            PluginManager.Core.UnloadProject += IDE_UnloadProject;
+            PluginManager.IDE.AddMenuItem("Project", menuSeparator1);
+            PluginManager.IDE.AddMenuItem("Project", packageMenuItem);
+            PluginManager.IDE.LoadProject += IDE_LoadProject;
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
         }
 
         public void Destroy()
         {
-            PluginManager.Core.RemoveMenuItem(packageMenuItem);
-            PluginManager.Core.RemoveMenuItem(menuSeparator1);
+            PluginManager.IDE.RemoveMenuItem(packageMenuItem);
+            PluginManager.IDE.RemoveMenuItem(menuSeparator1);
 
-            PluginManager.Core.LoadProject -= IDE_LoadProject;
-            PluginManager.Core.UnloadProject -= IDE_UnloadProject;
+            PluginManager.IDE.LoadProject -= IDE_LoadProject;
+            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
         }
 
         private void IDE_LoadProject(object sender, EventArgs e)

@@ -34,20 +34,20 @@ namespace SphereStudio.Plugins
                 _rescaleMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.Core.TryEditFile += IDE_TryEditFile;
+            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             PluginManager.RegisterEditor(EditorType.Image, this);
-            PluginManager.Core.AddMenuItem("File.New", _newImageMenuItem);
-            PluginManager.Core.AddMenuItem(_imageMenu, "View");
-            PluginManager.Core.RegisterOpenFileType("Images", _openFileFilters);
+            PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
+            PluginManager.IDE.AddMenuItem(_imageMenu, "View");
+            PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 
         public void Destroy()
         {
-            PluginManager.Core.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.Core.RemoveMenuItem(_newImageMenuItem);
-            PluginManager.Core.RemoveMenuItem("Image");
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.IDE.RemoveMenuItem(_newImageMenuItem);
+            PluginManager.IDE.RemoveMenuItem("Image");
             PluginManager.UnregisterEditor(this);
-            PluginManager.Core.TryEditFile -= IDE_TryEditFile;
+            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
         public DockDescription OpenDocument(string filename = "")
@@ -95,7 +95,7 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.Core.DockControl(OpenDocument(e.Path));
+                PluginManager.IDE.DockControl(OpenDocument(e.Path));
                 e.Handled = true;
             }
         }
@@ -113,14 +113,14 @@ namespace SphereStudio.Plugins
         #region menu item click handlers
         private void _newImageMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.Core.DockControl(OpenDocument());
+            PluginManager.IDE.DockControl(OpenDocument());
         }
 
         private void _rescaleMenuItem_Click(object sender, EventArgs e)
         {
             using (SizeForm form = new SizeForm())
             {
-                Drawer2 editor = PluginManager.Core.CurrentDocument as Drawer2;
+                Drawer2 editor = PluginManager.IDE.CurrentDocument as Drawer2;
                 form.WidthSize = editor.ImageWidth;
                 form.HeightSize = editor.ImageHeight;
                 if (form.ShowDialog() == DialogResult.OK)
@@ -132,7 +132,7 @@ namespace SphereStudio.Plugins
         {
             using (SizeForm form = new SizeForm())
             {
-                Drawer2 editor = PluginManager.Core.CurrentDocument as Drawer2;
+                Drawer2 editor = PluginManager.IDE.CurrentDocument as Drawer2;
                 form.WidthSize = editor.ImageWidth;
                 form.HeightSize = editor.ImageHeight;
                 form.UseScale = false;

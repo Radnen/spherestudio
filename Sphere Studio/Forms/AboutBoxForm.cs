@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace SphereStudio.Forms
 {
-    internal partial class AboutSphereEditor : Form
+    internal partial class AboutBoxForm : Form
     {
-        public AboutSphereEditor()
+        public AboutBoxForm()
         {
             InitializeComponent();
             this.Text = String.Format("About {0}", AssemblyTitle);

@@ -9,7 +9,7 @@ using Sphere.Plugins;
 
 using Ini.Net;
 
-namespace SphereStudio
+namespace SphereStudio.Settings
 {
     public class INISettings : ISettings
     {
@@ -18,11 +18,10 @@ namespace SphereStudio
 
         public INISettings(string filename, string section = "INI")
         {
-            _section = section;
-
             string pathstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Settings");
             Directory.CreateDirectory(pathstr);
             _ini = new IniFile(Path.Combine(pathstr, filename));
+            _section = section;
         }
 
         public void SetValue(string key, object value)

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using Sphere.Core.Editor;
 using Sphere.Core.Settings;
 using Sphere.Plugins;
+using SphereStudio.Settings;
 
 namespace SphereStudio.Forms
 {
@@ -74,7 +76,7 @@ namespace SphereStudio.Forms
         private bool _updatePlugins = false;
         #endregion
 
-        public EditorSettings(SphereSettings settings)
+        public EditorSettings(CoreSettings settings)
         {
             InitializeComponent();
 
@@ -82,7 +84,7 @@ namespace SphereStudio.Forms
                 StyleComboBox.Items.Add(item.Key);
             RefreshPlugins();
             
-            SetValues(settings);
+            FillValues(settings);
         }
 
         private void RefreshPlugins()
@@ -97,46 +99,18 @@ namespace SphereStudio.Forms
             defEditorCombo.Text = lastWildcard;
         }
         
-        private void SetValues(SphereSettings settings)
+        private void FillValues(CoreSettings settings)
         {
-            SpherePath = settings.SpherePath;
-            Sphere64Path = settings.Sphere64Path;
-            ConfigPath = settings.ConfigPath;
-            GamePaths = settings.GetArray("games_path");
-            AutoStart = settings.AutoOpen;
-            UseScriptUpdate = settings.UseScriptUpdate;
-            UseStartPage = settings.UseStartPage;
-            Style = settings.Style.ToString();
-            DefaultEditor = settings.GetString("def_editor");
+            SpherePath = settings.EnginePath;
+            Sphere64Path = settings.EnginePath64;
+            ConfigPath = settings.EngineConfigPath;
+            GamePaths = settings.GetStringArray("gamePaths");
+            AutoStart = settings.AutoOpenProject;
+            UseScriptUpdate = settings.AutoScriptHeader;
+            UseStartPage = settings.AutoStartPage;
+            Style = settings.UIStyle;
+            DefaultEditor = settings.DefaultEditor;
             UpdateStyle();
-        }
-
-        /// <summary>
-        /// Gets a copy of the data put into this form.
-        /// </summary>
-        /// <returns>A GenSettings object representing the editor.</returns>
-        public SphereSettings GetSettings()
-        {
-            SphereSettings settings = new SphereSettings();
-            settings.AutoOpen = AutoStart;
-            settings.SpherePath = SpherePath;
-            settings.Sphere64Path = Sphere64Path;
-            settings.ConfigPath = ConfigPath;
-            settings.LastPreset = "";
-            settings.UseScriptUpdate = UseScriptUpdate;
-            settings.UseStartPage = UseStartPage;
-            settings.Style = Style;
-            settings.SaveObject("def_editor", DefaultEditor);
-            settings.StoreArray("games_path", GamePaths);
-
-            List<string> activated = new List<string>();
-            foreach (var item in Global.Plugins)
-            {
-                if (item.Value.Enabled) activated.Add(item.Key);
-            }
-
-            settings.StoreArray("plugins", activated);
-            return settings;
         }
 
         private void SpherePathButton_Click(object sender, EventArgs e)
@@ -192,6 +166,12 @@ namespace SphereStudio.Forms
 
         private void EditorSettings_Load(object sender, EventArgs e)
         {
+            UpdatePluginList();
+            UpdatePresetBox();
+        }
+
+        private void UpdatePluginList()
+        {
             _updatePlugins = false;
             foreach (KeyValuePair<string, PluginWrapper> pair in Global.Plugins)
             {
@@ -205,9 +185,8 @@ namespace SphereStudio.Forms
                 PluginList.Items.Add(item);
             }
             _updatePlugins = true;
-            UpdatePresetBox();
         }
-
+        
         private void UpdatePresetBox()
         {
             PresetListBox.Items.Clear();
@@ -275,11 +254,10 @@ namespace SphereStudio.Forms
                     }
                     if (continueSave)
                     {
-                        SphereSettings settings = GetSettings();
                         INISettings preset = new INISettings(filePath, "Preset");
+                        preset.SetValue("engineConfigPath", ConfigPath);
                         preset.SetValue("enginePath", SpherePath);
                         preset.SetValue("enginePath64", Sphere64Path);
-                        preset.SetValue("plugins", settings.GetArray("plugins"));
                         preset.SetValue("defaultEditor", DefaultEditor);
                         UpdatePresetBox();
                     }
@@ -290,12 +268,13 @@ namespace SphereStudio.Forms
 
         private void UsePresetButton_Click(object sender, EventArgs e)
         {
-            SphereSettings settings = new SphereSettings();
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string path = Path.Combine(sphereDir, @"Presets", (string)PresetListBox.SelectedItem + ".preset");
-            settings.LoadSettings(path);
-            settings.LastPreset = (string)PresetListBox.SelectedItem;
-            SetValues(settings);
+            INISettings preset = new INISettings(path, "Preset");
+            SpherePath = preset.GetString("enginePath", "");
+            Sphere64Path = preset.GetString("enginePath64", "");
+            ConfigPath = preset.GetString("engineConfigPath", "");
+            DefaultEditor = preset.GetString("defaultEditor", "");
             PresetListBox.SelectedItem = null;
         }
 
@@ -338,8 +317,14 @@ namespace SphereStudio.Forms
         {
             StyleSettings.CurrentStyle = Style;
             UpdateStyle();
-            Global.CurrentEditor.SetSettings(GetSettings());
-            Global.CurrentEditor.LastPreset = "";
+            Global.Settings.UIStyle = Style;
+            Global.Settings.AutoOpenProject = AutoStart;
+            Global.Settings.AutoStartPage = UseStartPage;
+            Global.Settings.AutoScriptHeader = UseScriptUpdate;
+            Global.Settings.EngineConfigPath = ConfigPath;
+            Global.Settings.EnginePath = SpherePath;
+            Global.Settings.EnginePath64 = Sphere64Path;
+            Global.Settings.DefaultEditor = DefaultEditor;
             Invalidate(true);
         }
 

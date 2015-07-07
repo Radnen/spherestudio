@@ -72,7 +72,7 @@ namespace SphereStudio.Components
 
         private void InitializeView()
         {
-            View v = Global.CurrentEditor.StartView;
+            View v = Global.Settings.StartPageView;
             GameFolders.View = v;
             TilesItem.Checked = false;
             switch (v)
@@ -101,7 +101,7 @@ namespace SphereStudio.Components
 
             // Search through a list of supplied directories.
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            var paths = new List<string>(Global.CurrentEditor.GetArray("games_path"));
+            var paths = new List<string>(Global.Settings.GetStringArray("gamePaths"));
             paths.Insert(0, Path.Combine(sphereDir, @"Projects"));
             foreach (string s in paths)
             {
@@ -187,9 +187,9 @@ namespace SphereStudio.Components
 
         private void PlayMenuItem_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(Global.CurrentEditor.SpherePath)) return;
+            if (!File.Exists(Global.Settings.EnginePath)) return;
             string args = string.Format("-game\"{0}\"", _proj.RootPath);
-            Process.Start(Global.CurrentEditor.SpherePath, args);
+            Process.Start(Global.Settings.EnginePath, args);
         }
 
         private void LoadMenuItem_Click(object sender, EventArgs e)
@@ -265,31 +265,31 @@ namespace SphereStudio.Components
         private void TilesItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Global.CurrentEditor.StartView = GameFolders.View = View.Tile;
+            Global.Settings.StartPageView = GameFolders.View = View.Tile;
         }
 
         private void ListItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Global.CurrentEditor.StartView = GameFolders.View = View.List;
+            Global.Settings.StartPageView = GameFolders.View = View.List;
         }
 
         private void SmallIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
-            Global.CurrentEditor.StartView = GameFolders.View = View.SmallIcon;
+            Global.Settings.StartPageView = GameFolders.View = View.SmallIcon;
         }
 
         private void LargeIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
-            Global.CurrentEditor.StartView = GameFolders.View = View.LargeIcon;
+            Global.Settings.StartPageView = GameFolders.View = View.LargeIcon;
         }
 
         private void DetailsItem_Click(object sender, EventArgs e)
         {
             ListItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Global.CurrentEditor.StartView = GameFolders.View = View.Details;
+            Global.Settings.StartPageView = GameFolders.View = View.Details;
         }
 
         private void ItemContextStrip_Opening(object sender, CancelEventArgs e)
@@ -299,7 +299,7 @@ namespace SphereStudio.Components
             PlayGameItem.Visible = LoadMenuItem.Visible =
                 RenameProjectItem.Visible = SetIconItem.Visible =
                     OpenFolderItem.Visible = (_currentItem != null);
-            PlayGameItem.Visible = !string.IsNullOrEmpty(Global.CurrentEditor.SpherePath);
+            PlayGameItem.Visible = !string.IsNullOrEmpty(Global.Settings.EnginePath);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)

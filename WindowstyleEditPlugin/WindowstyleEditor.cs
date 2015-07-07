@@ -146,8 +146,8 @@ namespace SphereStudio.Plugins
             {
                 diag.Filter = @"WindowStyle Files (.rws)|*.rws";
 
-                if (PluginManager.Core.CurrentGame != null)
-                    diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\windowstyles";
+                if (PluginManager.IDE.CurrentGame != null)
+                    diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\windowstyles";
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

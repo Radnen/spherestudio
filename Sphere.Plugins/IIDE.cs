@@ -10,7 +10,7 @@ namespace Sphere.Plugins
     /// <summary>
     /// Provides the interface to the Sphere Studio core.
     /// </summary>
-    public interface ICore
+    public interface IIDE
     {
         ISettings OpenSettings(string settingsID);
         
@@ -19,11 +19,6 @@ namespace Sphere.Plugins
         /// </summary>
         ISettings Settings { get; }
         
-        /// <summary>
-        /// Gets the .ini settings of the editor.
-        /// </summary>
-        SphereSettings EditorSettings { get; }
-
         /// <summary>
         /// Gets the .sgm settings of the currently loaded game, or null.
         /// </summary>
