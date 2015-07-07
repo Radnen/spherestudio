@@ -54,10 +54,9 @@ namespace SphereStudio
 
             PluginManager.IDE = this;
             Global.EvalPlugins();
-            Global.ActivatePlugins(Global.Settings.Plugins);
+            Global.Settings.Apply();
 
             SuspendLayout();
-            StyleSettings.CurrentStyle = Global.Settings.UIStyle;
             UpdateStyle();
             Invalidate(true);
             ResumeLayout();
@@ -120,21 +119,29 @@ namespace SphereStudio
                 PlatformTool.SelectedIndex = 0;
 
             ConfigSelectTool.Items.Clear();
-            ConfigSelectTool.Items.Add("[Select a Preset]");
-            ConfigSelectTool.SelectedIndex = 0;
-
+            
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string path = Path.Combine(sphereDir, @"Presets");
             if (Directory.Exists(path))
             {
-                string[] presetFiles = Directory.GetFiles(path, "*.preset");
+                var presetFiles = from filename in Directory.GetFiles(path, "*.preset")
+                                  orderby filename ascending
+                                  select filename;
                 foreach (string s in presetFiles)
                 {
                     ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
                 }
-                ConfigSelectTool.SelectedItem = Global.Settings.Preset;
+                if (Global.Settings.Preset != null)
+                    ConfigSelectTool.SelectedItem = Global.Settings.Preset;
             }
             ConfigSelectTool.Items.Add("Configuration Manager...");
+            
+            // if no active preset selected, settings were edited manually
+            if (ConfigSelectTool.SelectedIndex == -1)
+            {
+                ConfigSelectTool.Items.Insert(0, "Custom Settings");
+                ConfigSelectTool.SelectedIndex = 0;
+            }
 
             _loadingPresets = wasLoadingPresets;
         }
@@ -853,7 +860,6 @@ namespace SphereStudio
             SuspendLayout();
             _startPage.PopulateGameList();
             UpdateMenuItems();
-            StyleSettings.CurrentStyle = Global.Settings.UIStyle;
             UpdateStyle();
             Invalidate(true);
             ResumeLayout();
@@ -1103,11 +1109,13 @@ namespace SphereStudio
         {
             if (_loadingPresets) return;
 
-            // open settings if config manager selected, ignore cue banner item
-            if (ConfigSelectTool.SelectedIndex == 0 || ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
+            if (ConfigSelectTool.SelectedIndex == 0 && Global.Settings.Preset == null)
+                return;
+
+            // user selected Configuration Manager (always at bottom)
+            if (ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
-                if (ConfigSelectTool.SelectedIndex != 0)
-                    OpenEditorSettings();
+                OpenEditorSettings();
                 UpdatePresetList();
                 return;
             }

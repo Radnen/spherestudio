@@ -163,7 +163,10 @@ namespace SphereStudio
         public static bool EditSettings()
         {
             EditorSettings settings = new EditorSettings(Settings);
-            return settings.ShowDialog() == DialogResult.OK;
+            if (settings.ShowDialog() != DialogResult.OK)
+                return false;
+            Settings.Apply();
+            return true;
         }
     }
 }

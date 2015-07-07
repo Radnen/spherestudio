@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Settings
 {
     class CoreSettings : INISettings
@@ -66,22 +68,8 @@ namespace SphereStudio.Settings
 
         public string[] Plugins
         {
-            get
-            {
-                return GetStringArray("plugins");
-            }
-            set
-            {
-                Preset = "";
-                SetValue("plugins", value);
-                foreach (var plugin in Global.Plugins)
-                {
-                    if (Plugins.Contains(plugin.Key))
-                        plugin.Value.Activate();
-                    else
-                        plugin.Value.Deactivate();
-                }
-            }
+            get { return GetStringArray("plugins"); }
+            set { Preset = ""; SetValue("plugins", value); }
         }
 
         public string Preset
@@ -93,12 +81,10 @@ namespace SphereStudio.Settings
             }
             set
             {
-                if (!string.IsNullOrWhiteSpace(value))
+                string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio");
+                string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
+                if (!string.IsNullOrWhiteSpace(value) && File.Exists(path))
                 {
-                    string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio");
-                    string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
-                    if (!File.Exists(path))
-                        throw new FileNotFoundException(string.Format("No preset exists named \"{0}\"."), path);
                     INISettings preset = new INISettings(path, "Preset");
                     EngineConfigPath = preset.GetString("engineConfigPath", "");
                     EnginePath = preset.GetString("enginePath", "");
@@ -137,6 +123,18 @@ namespace SphereStudio.Settings
         {
             get { return GetString("uiStyle", "Dark"); }
             set { SetValue("uiStyle", value); }
+        }
+
+        public void Apply()
+        {
+            StyleSettings.CurrentStyle = UIStyle;
+            foreach (var plugin in Global.Plugins)
+            {
+                if (Plugins.Contains(plugin.Key))
+                    plugin.Value.Activate();
+                else
+                    plugin.Value.Deactivate();
+            }
         }
     }
 }
