@@ -8,10 +8,17 @@ using Sphere.Core.Settings;
 namespace Sphere.Plugins
 {
     /// <summary>
-    /// Specifies the interface for the Sphere Studio IDE.
+    /// Provides the interface to the Sphere Studio core.
     /// </summary>
-    public interface IIDE
+    public interface ICore
     {
+        ISettings OpenSettings(string settingsID);
+        
+        /// <summary>
+        /// Provides access to the Sphere Studio global configuration.
+        /// </summary>
+        ISettings Settings { get; }
+        
         /// <summary>
         /// Gets the .ini settings of the editor.
         /// </summary>

@@ -169,7 +169,7 @@ namespace SphereStudio.Plugins
                         using (SaveFileDialog diag = new SaveFileDialog())
                         {
                             diag.Filter = @"Tileset Files (.rts)|*.rts";
-                            diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
+                            diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\maps";
                             if (diag.ShowDialog() == DialogResult.OK)
                             {
                                 Map.Scripts[0] = Path.GetFileName(diag.FileName);
@@ -188,7 +188,7 @@ namespace SphereStudio.Plugins
             using (SaveFileDialog diag = new SaveFileDialog())
             {
                 diag.Filter = @"Map Files (.rmp)|*.rmp";
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
+                diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\maps";
                 diag.DefaultExt = "rmp";
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

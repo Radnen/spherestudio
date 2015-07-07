@@ -212,8 +212,8 @@ namespace SphereStudio.Plugins
         {
             SaveFileDialog diag = new SaveFileDialog {Filter = @"Spriteset Files (.rss)|*.rss"};
 
-            if (PluginManager.IDE.CurrentGame != null)
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\spritesets";
+            if (PluginManager.Core.CurrentGame != null)
+                diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\spritesets";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

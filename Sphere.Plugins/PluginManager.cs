@@ -88,6 +88,6 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets or sets the object representing the Sphere Studio IDE.
         /// </summary>
-        public static IIDE IDE { get; set; }
+        public static ICore Core { get; set; }
     }
 }

@@ -20,18 +20,19 @@ namespace Sphere.Plugins
 
         public Icon Icon { get; set; }
 
+        private ISettings _conf;
         private ToolStripMenuItem  packageMenuItem;
         private ToolStripSeparator menuSeparator1;
-
+        
         private void packageGame_Click(object sender, EventArgs e)
         {
             ProjectSettings project;
 
-            if ((project = PluginManager.IDE.CurrentGame) == null)
+            if ((project = PluginManager.Core.CurrentGame) == null)
                 MessageBox.Show("You must load a project into the editor first.", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                new MakePackageForm(project.RootPath).ShowDialog();
+                new MakePackageForm(project.RootPath, _conf).ShowDialog();
             }
         }
 
@@ -42,22 +43,23 @@ namespace Sphere.Plugins
             menuSeparator1 = new ToolStripSeparator();
         }
 
-        public void Initialize()
+        public void Initialize(ISettings conf)
         {
-            PluginManager.IDE.AddMenuItem("Project", menuSeparator1);
-            PluginManager.IDE.AddMenuItem("Project", packageMenuItem);
-
-            PluginManager.IDE.LoadProject += IDE_LoadProject;
-            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
+            _conf = conf;
+            
+            PluginManager.Core.AddMenuItem("Project", menuSeparator1);
+            PluginManager.Core.AddMenuItem("Project", packageMenuItem);
+            PluginManager.Core.LoadProject += IDE_LoadProject;
+            PluginManager.Core.UnloadProject += IDE_UnloadProject;
         }
 
         public void Destroy()
         {
-            PluginManager.IDE.RemoveMenuItem(packageMenuItem);
-            PluginManager.IDE.RemoveMenuItem(menuSeparator1);
+            PluginManager.Core.RemoveMenuItem(packageMenuItem);
+            PluginManager.Core.RemoveMenuItem(menuSeparator1);
 
-            PluginManager.IDE.LoadProject -= IDE_LoadProject;
-            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
+            PluginManager.Core.LoadProject -= IDE_LoadProject;
+            PluginManager.Core.UnloadProject -= IDE_UnloadProject;
         }
 
         private void IDE_LoadProject(object sender, EventArgs e)

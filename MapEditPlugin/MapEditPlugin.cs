@@ -21,7 +21,7 @@ namespace SphereStudio.Plugins
             Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
         }
 
-        public void Initialize()
+        public void Initialize(ISettings conf)
         {
             // initialize the menu items
             _newMapMenuItem = new ToolStripMenuItem("&Map", Properties.Resources.MapIcon, _newMapMenuItem_Click);
@@ -39,10 +39,10 @@ namespace SphereStudio.Plugins
                 _mapPropertiesMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
-            PluginManager.IDE.AddMenuItem(_mapMenu, "View");
-            PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
+            PluginManager.Core.TryEditFile += IDE_TryEditFile;
+            PluginManager.Core.AddMenuItem("File.New", _newMapMenuItem);
+            PluginManager.Core.AddMenuItem(_mapMenu, "View");
+            PluginManager.Core.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
         }
 
         private void _importTilesetMenuItem_Click(object sender, EventArgs e)
@@ -52,10 +52,10 @@ namespace SphereStudio.Plugins
 
         public void Destroy()
         {
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_newMapMenuItem);
-            PluginManager.IDE.RemoveMenuItem("Map");
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+            PluginManager.Core.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.Core.RemoveMenuItem(_newMapMenuItem);
+            PluginManager.Core.RemoveMenuItem("Map");
+            PluginManager.Core.TryEditFile -= IDE_TryEditFile;
         }
 
         private const string _openFileFilters = "*.rmp";
@@ -75,7 +75,7 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
+                PluginManager.Core.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
@@ -95,18 +95,18 @@ namespace SphereStudio.Plugins
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath;
+                diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath;
                 diag.Filter = @"Image Files (.png)|*.png;";
                 diag.DefaultExt = "png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.IDE.CurrentDocument as MapEditor).SaveTileset(diag.FileName);
+                    (PluginManager.Core.CurrentDocument as MapEditor).SaveTileset(diag.FileName);
             }
         }
 
         private void _mapPropertiesMenuItem_Click(object sender, EventArgs e)
         {
-            MapEditor editor = PluginManager.IDE.CurrentDocument as MapEditor;
+            MapEditor editor = PluginManager.Core.CurrentDocument as MapEditor;
             using (MapPropertiesForm form = new MapPropertiesForm(editor.Map))
             {
                 if (form.ShowDialog() == DialogResult.OK)
@@ -116,12 +116,12 @@ namespace SphereStudio.Plugins
 
         private void _newMapMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor());
+            PluginManager.Core.DockControl(OpenEditor());
         }
 
         private void _recenterMapItem_Click(object sender, EventArgs e)
         {
-            MapEditor editor = PluginManager.IDE.CurrentDocument as MapEditor;
+            MapEditor editor = PluginManager.Core.CurrentDocument as MapEditor;
             if (editor != null) editor.MapControl.CenterMap();
         }
 
@@ -129,11 +129,11 @@ namespace SphereStudio.Plugins
         {
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath;
+                diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath;
                 diag.Filter = @"Image Files (.png)|*.png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.IDE.CurrentDocument as MapEditor).UpdateTileset(diag.FileName);
+                    (PluginManager.Core.CurrentDocument as MapEditor).UpdateTileset(diag.FileName);
             }
         }
         #endregion

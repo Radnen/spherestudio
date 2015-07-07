@@ -1,5 +1,4 @@
-﻿
-namespace Sphere.Plugins
+﻿namespace Sphere.Plugins
 {
     /// <summary>
     /// A simple wrapper of a plugin object, used to activate and deactivate them.
@@ -38,7 +37,8 @@ namespace Sphere.Plugins
         public void Activate()
         {
             if (Enabled) return;
-            Plugin.Initialize();
+            ISettings conf = PluginManager.Core.OpenSettings(Name);
+            Plugin.Initialize(conf);
             Enabled = true;
         }
 

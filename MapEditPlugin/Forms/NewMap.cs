@@ -46,7 +46,7 @@ namespace SphereStudio.Plugins.Forms
             using (OpenFileDialog diag = new OpenFileDialog())
             {
                 diag.Filter = "Tileset Files (.rts)|*.rts";
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
+                diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\maps";
                 if (diag.ShowDialog() == DialogResult.OK) Tileset = diag.FileName;
             }
         }

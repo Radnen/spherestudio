@@ -23,7 +23,7 @@ namespace SphereStudio.Plugins
             Icon = Icon.FromHandle(Properties.Resources.PaletteToolIcon.GetHicon());
         }
 
-        public void Initialize()
+        public void Initialize(ISettings conf)
         {
             // initialize the menu items
             _newSpritesetMenuItem = new ToolStripMenuItem("Spriteset", Properties.Resources.PaletteToolIcon, _newSpritesetMenuItem_Click);
@@ -41,18 +41,18 @@ namespace SphereStudio.Plugins
             });
 
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newSpritesetMenuItem);
-            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
-            PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
+            PluginManager.Core.TryEditFile += IDE_TryEditFile;
+            PluginManager.Core.AddMenuItem("File.New", _newSpritesetMenuItem);
+            PluginManager.Core.AddMenuItem(_spritesetMenu, "View");
+            PluginManager.Core.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
         }
 
         public void Destroy()
         {
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem("Spriteset");
-            PluginManager.IDE.RemoveMenuItem(_newSpritesetMenuItem);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+            PluginManager.Core.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.Core.RemoveMenuItem("Spriteset");
+            PluginManager.Core.RemoveMenuItem(_newSpritesetMenuItem);
+            PluginManager.Core.TryEditFile -= IDE_TryEditFile;
         }
         
         #region menu item declarations
@@ -69,7 +69,7 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
+                PluginManager.Core.DockControl(OpenEditor(e.Path));
                 e.Handled = true;
             }
         }
@@ -87,7 +87,7 @@ namespace SphereStudio.Plugins
         #region menu item click handlers
         private void _newSpritesetMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenEditor());
+            PluginManager.Core.DockControl(OpenEditor());
         }
         
         private void _exportMenuItem_Click(object sender, EventArgs e)
@@ -104,12 +104,12 @@ namespace SphereStudio.Plugins
 
         private void _rescaleMenuItem_Click(object sender, EventArgs e)
         {
-            (PluginManager.IDE.CurrentDocument as SpritesetEditor).RescaleAll();
+            (PluginManager.Core.CurrentDocument as SpritesetEditor).RescaleAll();
         }
 
         private void _resizeMenuItem_Click(object sender, EventArgs e)
         {
-            (PluginManager.IDE.CurrentDocument as SpritesetEditor).ResizeAll();
+            (PluginManager.Core.CurrentDocument as SpritesetEditor).ResizeAll();
         }
         #endregion
         
