@@ -34,18 +34,20 @@ namespace Sphere.Plugins
             ".mp3", ".ogg", ".mid", ".wav", ".flac", ".it", ".s3m", ".mod",
         };
 
+        private ISettings _conf;
         private string _projectPath;
 
-        public MakePackageForm(string path)
+        public MakePackageForm(string path, ISettings conf)
         {
             InitializeComponent();
 
             _projectPath = Path.GetFullPath(path);
+            _conf = conf;
         }
 
         private void MakePackageForm_Load(object sender, EventArgs e)
         {
-            headerLabel.Text += string.Format(" for \"{0}\"", PluginManager.IDE.CurrentGame.Name);
+            headerLabel.Text += string.Format(" for \"{0}\"", PluginManager.Core.CurrentGame.Name);
 
             deflateLvLabel.Text = string.Format("Compression Lv. {0}", deflateLevel.Value);
             percentLabel.Text = "";
@@ -81,9 +83,9 @@ namespace Sphere.Plugins
                 }
             }
 
-            var deflate = PluginManager.IDE.Settings.GetInteger("spk_deflateLevel", 5);
+            var deflate = _conf.GetInteger("deflateLevel", 5);
             deflateLevel.Value = deflate < 0 ? 0 : deflate > 9 ? 9 : deflate;
-            deflateLvLabel.Text = String.Format("Compression Lv. {0}", deflateLevel.Value);
+            deflateLvLabel.Text = string.Format("Compression Lv. {0}", deflateLevel.Value);
         }
 
         private void deflateLevel_Scroll(object sender, EventArgs e)
@@ -213,12 +215,12 @@ namespace Sphere.Plugins
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.Settings.SetValue("spk_deflateLevel", deflateLevel.Value);
+            _conf.SetValue("deflateLevel", deflateLevel.Value);
         }
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            SphereSettings settings = PluginManager.IDE.EditorSettings;
+            SphereSettings settings = PluginManager.Core.EditorSettings;
             string enginePath = System.Environment.Is64BitOperatingSystem && !string.IsNullOrWhiteSpace(settings.Sphere64Path)
                 ? settings.Sphere64Path : settings.SpherePath;
             string args = string.Format("-package \"{0}\"", testButton.Tag);

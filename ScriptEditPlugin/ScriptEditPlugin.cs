@@ -86,7 +86,7 @@ namespace SphereStudio.Plugins
             #endregion
         }
 
-        public void Initialize()
+        public void Initialize(ISettings conf)
         {
             LoadFunctions();
 
@@ -95,21 +95,21 @@ namespace SphereStudio.Plugins
             PluginManager.RegisterWildcard(this);
             
             // wire up the plugin to IDE
-            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.Core.RegisterOpenFileType("Script/Text Files", _openFileFilters);
+            PluginManager.Core.TryEditFile += IDE_TryEditFile;
 
             // show the root menu for this control; appearing before the 'View' menu.
-            PluginManager.IDE.AddMenuItem(_rootMenu, "View");
-            PluginManager.IDE.AddMenuItem("File.New", _newScriptItem);
+            PluginManager.Core.AddMenuItem(_rootMenu, "View");
+            PluginManager.Core.AddMenuItem("File.New", _newScriptItem);
 
             // check off the active settings in the menus
-            _autoCompleteItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
-            _codeFoldItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
-            _highlightLineItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
-            _highlightBracesItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-hibraces", true);
-            _useTabsItem.Checked = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
+            _autoCompleteItem.Checked = PluginManager.Core.EditorSettings.GetBool("script-autocomplete", true);
+            _codeFoldItem.Checked = PluginManager.Core.EditorSettings.GetBool("script-fold", true);
+            _highlightLineItem.Checked = PluginManager.Core.EditorSettings.GetBool("script-hiline", true);
+            _highlightBracesItem.Checked = PluginManager.Core.EditorSettings.GetBool("script-hibraces", true);
+            _useTabsItem.Checked = PluginManager.Core.EditorSettings.GetBool("script-tabs", true);
 
-            int spaces = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
+            int spaces = PluginManager.Core.EditorSettings.GetInt("script-spaces", 2);
             _twoUnitItem.Checked = spaces == 2;
             _fourUnitItem.Checked = spaces == 4;
             _eightUnitItem.Checked = spaces == 8;
@@ -119,10 +119,10 @@ namespace SphereStudio.Plugins
         {
             PluginManager.UnregisterEditor(this);
             PluginManager.UnregisterWildcard(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.Core.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
-            PluginManager.IDE.RemoveMenuItem("Script");
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+            PluginManager.Core.RemoveMenuItem("Script");
+            PluginManager.Core.TryEditFile -= IDE_TryEditFile;
         }
 
         public DockDescription OpenDocument(string filename = "")
@@ -158,21 +158,21 @@ namespace SphereStudio.Plugins
             if (e.Handled) return;
             if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
             {
-                PluginManager.IDE.DockControl(OpenDocument(e.Path));
+                PluginManager.Core.DockControl(OpenDocument(e.Path));
                 e.Handled = true;
             }
         }
 
         void NewScriptItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenDocument());
+            PluginManager.Core.DockControl(OpenDocument());
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)
         {
             _eightUnitItem.Checked = true;
             _twoUnitItem.Checked = _fourUnitItem.Checked = false;
-            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 8);
+            PluginManager.Core.EditorSettings.SaveObject("script-spaces", 8);
             UpdateScriptControls();
         }
 
@@ -180,7 +180,7 @@ namespace SphereStudio.Plugins
         {
             _fourUnitItem.Checked = true;
             _twoUnitItem.Checked = _eightUnitItem.Checked = false;
-            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 4);
+            PluginManager.Core.EditorSettings.SaveObject("script-spaces", 4);
             UpdateScriptControls();
         }
 
@@ -188,7 +188,7 @@ namespace SphereStudio.Plugins
         {
             _twoUnitItem.Checked = true;
             _fourUnitItem.Checked = _eightUnitItem.Checked = false;
-            PluginManager.IDE.EditorSettings.SaveObject("script-spaces", 2);
+            PluginManager.Core.EditorSettings.SaveObject("script-spaces", 2);
             UpdateScriptControls();
         }
 
@@ -197,7 +197,7 @@ namespace SphereStudio.Plugins
             using (FontDialog diag = new FontDialog())
             {
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
+                string fontstring = PluginManager.Core.EditorSettings.GetString("script-font");
 
                 if (!String.IsNullOrEmpty(fontstring))
                     diag.Font = (Font)converter.ConvertFromString(fontstring);
@@ -207,7 +207,7 @@ namespace SphereStudio.Plugins
                     if (diag.ShowDialog() == DialogResult.OK)
                     {
                         fontstring = converter.ConvertToString(diag.Font);
-                        PluginManager.IDE.EditorSettings.SaveObject("script-font", fontstring);
+                        PluginManager.Core.EditorSettings.SaveObject("script-font", fontstring);
                         UpdateScriptControls();
                     }
                 }
@@ -220,31 +220,31 @@ namespace SphereStudio.Plugins
 
         void UseTabsItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.EditorSettings.SaveObject("script-tabs", _useTabsItem.Checked);
+            PluginManager.Core.EditorSettings.SaveObject("script-tabs", _useTabsItem.Checked);
             UpdateScriptControls();
         }
 
         void HighlightBracesItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.EditorSettings.SaveObject("script-hibraces", _highlightBracesItem.Checked);
+            PluginManager.Core.EditorSettings.SaveObject("script-hibraces", _highlightBracesItem.Checked);
             UpdateScriptControls();
         }
 
         void HighlightLineItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.EditorSettings.SaveObject("script-hiline", _highlightLineItem.Checked);
+            PluginManager.Core.EditorSettings.SaveObject("script-hiline", _highlightLineItem.Checked);
             UpdateScriptControls();
         }
 
         void CodeFoldItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.EditorSettings.SaveObject("script-fold", _codeFoldItem.Checked);
+            PluginManager.Core.EditorSettings.SaveObject("script-fold", _codeFoldItem.Checked);
             UpdateScriptControls();
         }
 
         void AutoCompleteItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.EditorSettings.SaveObject("script-autocomplete", _autoCompleteItem.Checked);
+            PluginManager.Core.EditorSettings.SaveObject("script-autocomplete", _autoCompleteItem.Checked);
             UpdateScriptControls();
         }
 
@@ -275,7 +275,7 @@ namespace SphereStudio.Plugins
         private void UpdateScriptControls()
         {
             // restyle all script controls that changed.
-            PluginManager.IDE.RestyleEditors();
+            PluginManager.Core.RestyleEditors();
         }
     }
 }

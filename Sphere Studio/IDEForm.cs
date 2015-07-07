@@ -14,7 +14,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio
 {
-    internal partial class IDEForm : Form, IIDE, IStyleable
+    internal partial class IDEForm : Form, ICore, IStyleable
     {
         // uninitialized data:
         private DockContent _treeContent;
@@ -49,7 +49,7 @@ namespace SphereStudio
 
             InitializeDocking();
 
-            PluginManager.IDE = this;
+            PluginManager.Core = this;
             Global.EvalPlugins();
             Global.ActivatePlugins(Global.CurrentEditor.GetArray("plugins"));
 
@@ -76,6 +76,11 @@ namespace SphereStudio
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
         }
 
+        public ISettings OpenSettings(string settingsID)
+        {
+            return new INISettings(settingsID + ".ini");
+        }
+        
         public ISettings Settings
         {
             get { return Global.Settings; }

@@ -32,7 +32,7 @@ namespace SphereStudio.Plugins.Components
             _sprite = sprite;
             _direction = direction;
             _parent_editor = parent;
-            _showDelay = PluginManager.IDE.EditorSettings.GetBool("spriteset-showdelay", false);
+            _showDelay = PluginManager.Core.EditorSettings.GetBool("spriteset-showdelay", false);
 
             foreach (Frame f in direction.Frames) { AddImage(f); }
         }
@@ -178,7 +178,7 @@ namespace SphereStudio.Plugins.Components
         private void ToggleItem_Click(object sender, EventArgs e)
         {
             _showDelay = !_showDelay;
-            PluginManager.IDE.EditorSettings.SaveObject("spriteset-showdelay", _showDelay);
+            PluginManager.Core.EditorSettings.SaveObject("spriteset-showdelay", _showDelay);
             Parent.Invalidate(true);
         }
 

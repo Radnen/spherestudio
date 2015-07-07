@@ -78,14 +78,14 @@ namespace SphereStudio.Plugins
         /// </summary>
         public void UpdateStyle()
         {
-            _codeBox.Indentation.TabWidth = PluginManager.IDE.EditorSettings.GetInt("script-spaces", 2);
-            _codeBox.Indentation.UseTabs = PluginManager.IDE.EditorSettings.GetBool("script-tabs", true);
-            _codeBox.Caret.HighlightCurrentLine = PluginManager.IDE.EditorSettings.GetBool("script-hiline", true);
-            _codeBox.IsBraceMatching = PluginManager.IDE.EditorSettings.GetBool("script-hibraces", true);
+            _codeBox.Indentation.TabWidth = PluginManager.Core.EditorSettings.GetInt("script-spaces", 2);
+            _codeBox.Indentation.UseTabs = PluginManager.Core.EditorSettings.GetBool("script-tabs", true);
+            _codeBox.Caret.HighlightCurrentLine = PluginManager.Core.EditorSettings.GetBool("script-hiline", true);
+            _codeBox.IsBraceMatching = PluginManager.Core.EditorSettings.GetBool("script-hibraces", true);
 
-            _autocomplete = PluginManager.IDE.EditorSettings.GetBool("script-autocomplete", true);
+            _autocomplete = PluginManager.Core.EditorSettings.GetBool("script-autocomplete", true);
 
-            bool fold = PluginManager.IDE.EditorSettings.GetBool("script-fold", true);
+            bool fold = PluginManager.Core.EditorSettings.GetBool("script-fold", true);
             _codeBox.Margins.Margin1.Width = fold ? 16 : 0;
 
             /*string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
@@ -104,9 +104,9 @@ namespace SphereStudio.Plugins
 
         public override void CreateNew()
         {
-            if (PluginManager.IDE.EditorSettings.GetBool("use_script_update"))
+            if (PluginManager.Core.EditorSettings.GetBool("use_script_update"))
             {
-                string author = (PluginManager.IDE.CurrentGame != null) ? PluginManager.IDE.CurrentGame.Author : "Unnamed";
+                string author = (PluginManager.Core.CurrentGame != null) ? PluginManager.Core.CurrentGame.Author : "Unnamed";
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
                 _codeBox.UndoRedo.EmptyUndoBuffer();
@@ -151,13 +151,13 @@ namespace SphereStudio.Plugins
             {
                 using (StreamWriter writer = new StreamWriter(FileName, false, UTF_8_NOBOM))
                 {
-                    if (PluginManager.IDE.EditorSettings.UseScriptUpdate)
+                    if (PluginManager.Core.EditorSettings.UseScriptUpdate)
                     {
                         _codeBox.UndoRedo.IsUndoEnabled = false;
                         if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
                             _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(FileName);
                         if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
-                            _codeBox.Lines[2].Text = "* Written by: " + PluginManager.IDE.CurrentGame.Author;
+                            _codeBox.Lines[2].Text = "* Written by: " + PluginManager.Core.CurrentGame.Author;
                         if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
                             _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
                         _codeBox.UndoRedo.IsUndoEnabled = true;
@@ -176,8 +176,8 @@ namespace SphereStudio.Plugins
                 diag.Filter = @"JavaScript (.js)|*.js|CoffeeScript (.coffee)|*.coffee";
                 diag.DefaultExt = "js";
 
-                if (PluginManager.IDE.CurrentGame != null)
-                    diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\scripts";
+                if (PluginManager.Core.CurrentGame != null)
+                    diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\scripts";
 
                 if (diag.ShowDialog() == DialogResult.OK)
                 {

@@ -14,7 +14,15 @@ namespace Sphere.Plugins
 
         Icon Icon { get; }
 
-        void Initialize();
+        /// <summary>
+        /// Called by the plugin manager when the plugin is loaded.
+        /// </summary>
+        /// <param name="conf">Allows access to the plugin's unique INI file.</param>
+        void Initialize(ISettings conf);
+        
+        /// <summary>
+        /// Called by the plugin manager when the plugin is unloaded.
+        /// </summary>
         void Destroy();
     }
 }

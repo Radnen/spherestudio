@@ -11,12 +11,12 @@ using Ini.Net;
 
 namespace SphereStudio
 {
-    public class INI : ISettings
+    public class INISettings : ISettings
     {
         private string _filename;
         private IniFile _ini;
 
-        public INI(string filename)
+        public INISettings(string filename)
         {
             _filename = filename;
             string pathstr = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Settings", filename);

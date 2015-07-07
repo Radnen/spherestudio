@@ -50,7 +50,7 @@ namespace SphereStudio.Plugins
             _fileWatcher.Changed += fileWatcher_Changed;
             _fileWatcher.IncludeSubdirectories = true;
             _fileWatcher.EnableRaisingEvents = false;
-            WatchProject(PluginManager.IDE.CurrentGame);
+            WatchProject(PluginManager.Core.CurrentGame);
             trackList.SmallImageList = _listIcons;
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
@@ -184,7 +184,7 @@ namespace SphereStudio.Plugins
         public override void Refresh()
         {
             base.Refresh();
-            if (PluginManager.IDE.CurrentGame == null) { Reset(); return; }
+            if (PluginManager.Core.CurrentGame == null) { Reset(); return; }
 
             string currentItemName = null;
             
@@ -209,7 +209,7 @@ namespace SphereStudio.Plugins
         /// </summary>
         private void UpdateTrackList()
         {
-            string gamePath = PluginManager.IDE.CurrentGame.RootPath;
+            string gamePath = PluginManager.Core.CurrentGame.RootPath;
             if (string.IsNullOrEmpty(gamePath)) return;
 
             trackList.BeginUpdate();

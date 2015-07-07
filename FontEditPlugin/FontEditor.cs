@@ -86,8 +86,8 @@ namespace SphereStudio.Plugins
         {
             SaveFileDialog diag = new SaveFileDialog {Filter = @"Font Files (.rfn)|*.rfn"};
 
-            if (PluginManager.IDE.CurrentGame != null)
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\fonts";
+            if (PluginManager.Core.CurrentGame != null)
+                diag.InitialDirectory = PluginManager.Core.CurrentGame.RootPath + "\\fonts";
 
             if (diag.ShowDialog() == DialogResult.OK)
             {

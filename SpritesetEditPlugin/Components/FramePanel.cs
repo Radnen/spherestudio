@@ -22,7 +22,7 @@ namespace SphereStudio.Plugins.Components
             DoubleBuffered = true;
             BackgroundImage = Properties.Resources.EditAreaBG2;
             Dock = DockStyle.Left;
-            _showDelay = PluginManager.IDE.EditorSettings.GetBool("spriteset-showdelay", false);
+            _showDelay = PluginManager.Core.EditorSettings.GetBool("spriteset-showdelay", false);
             Margin = new Padding(3);
         }
 

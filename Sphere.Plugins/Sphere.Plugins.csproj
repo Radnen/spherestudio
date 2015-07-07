@@ -46,7 +46,7 @@
     <Compile Include="EditFileEventArgs.cs" />
     <Compile Include="IEditorPlugin.cs" />
     <Compile Include="IImageEditor.cs" />
-    <Compile Include="IIDE.cs" />
+    <Compile Include="ICore.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IScriptEditor.cs" />
     <Compile Include="ISettings.cs" />

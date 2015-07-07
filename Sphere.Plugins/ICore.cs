@@ -10,8 +10,10 @@ namespace Sphere.Plugins
     /// <summary>
     /// Provides the interface to the Sphere Studio core.
     /// </summary>
-    public interface IIDE
+    public interface ICore
     {
+        ISettings OpenSettings(string settingsID);
+        
         /// <summary>
         /// Provides access to the Sphere Studio global configuration.
         /// </summary>
