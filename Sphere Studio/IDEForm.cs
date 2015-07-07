@@ -848,13 +848,14 @@ namespace SphereStudio
             string path = Path.Combine(sphereDir, @"Presets", presetName + ".preset");
             if (!File.Exists(path))
                 return;
-            SphereSettings oldSettings = Global.CurrentEditor.Clone();
-            Global.CurrentEditor.LoadSettings(path);
+            INISettings preset = new INISettings(path, "Preset");
+            Global.CurrentEditor.SpherePath = preset.GetString("enginePath", "");
+            Global.CurrentEditor.Sphere64Path = preset.GetString("enginePath64", "");
+            Global.CurrentEditor.SaveObject("def_editor", preset.GetString("defaultEditor", ""));
+            Global.CurrentEditor.StoreArray("plugins", preset.GetStringArray("plugins"));
             Global.CurrentEditor.LastPreset = presetName;
-            Global.CurrentEditor.LastProjectPath = Global.CurrentProject != null ? Global.CurrentProject.RootPath : "";
-            Global.CurrentEditor.LastPlatform = oldSettings.LastPlatform;
 
-            var plugins = new List<string>(Global.CurrentEditor.GetArray("plugins"));
+            string[] plugins = Global.CurrentEditor.GetArray("plugins");
             foreach (var plugin in Global.Plugins)
             {
                 if (plugins.Contains(plugin.Key))

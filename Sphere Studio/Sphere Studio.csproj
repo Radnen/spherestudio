@@ -108,7 +108,7 @@
       <DependentUpon>AboutSphereEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
-    <Compile Include="INI.cs" />
+    <Compile Include="INISettings.cs" />
     <Compile Include="RadEditors\MenuEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

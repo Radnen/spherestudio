@@ -44,6 +44,12 @@ namespace Sphere.Plugins
         string GetString(string key, string defValue);
 
         /// <summary>
+        /// Reads a list of comma-separated strings from the settings.
+        /// </summary>
+        /// <param name="key">The name of the setting.</param>
+        string[] GetStringArray(string key);
+
+        /// <summary>
         /// Writes a value to the settings.
         /// </summary>
         /// <param name="key">The name of the setting.</param>

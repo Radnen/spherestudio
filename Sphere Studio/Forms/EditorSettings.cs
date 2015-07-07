@@ -275,12 +275,12 @@ namespace SphereStudio.Forms
                     }
                     if (continueSave)
                     {
-                        GenSettings old = Global.CurrentEditor.Clone();
-                        Global.CurrentEditor.SetSettings(GetSettings());
-                        Global.CurrentEditor.LastPreset = presetName;
-                        Global.CurrentEditor.LastPlatform = "";
-                        Global.CurrentEditor.SaveSettings(filePath, true);
-                        Global.CurrentEditor.SetSettings(old);
+                        SphereSettings settings = GetSettings();
+                        INISettings preset = new INISettings(filePath, "Preset");
+                        preset.SetValue("enginePath", SpherePath);
+                        preset.SetValue("enginePath64", Sphere64Path);
+                        preset.SetValue("plugins", settings.GetArray("plugins"));
+                        preset.SetValue("defaultEditor", DefaultEditor);
                         UpdatePresetBox();
                     }
                     PresetListBox.SelectedItem = null;
