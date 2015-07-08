@@ -16,14 +16,14 @@ namespace SphereStudio.Forms
         #region getters and setters
         public string SpherePath
         {
-            get { return SpherePathBox.Text; }
-            set { SpherePathBox.Text = value; }
+            get { return enginePathBox.Text; }
+            set { enginePathBox.Text = value; }
         }
 
         public string Sphere64Path
         {
-            get { return Sphere64PathBox.Text; }
-            set { Sphere64PathBox.Text = value; }
+            get { return enginePath64Box.Text; }
+            set { enginePath64Box.Text = value; }
         }
 
         public string DefaultEditor
@@ -34,8 +34,8 @@ namespace SphereStudio.Forms
 
         public string ConfigPath
         {
-            get { return ConfigPathBox.Text; }
-            set { ConfigPathBox.Text = value; }
+            get { return configPathBox.Text; }
+            set { configPathBox.Text = value; }
         }
 
         public string[] GamePaths
@@ -123,15 +123,15 @@ namespace SphereStudio.Forms
                     string path = Path.GetDirectoryName(diag.FileName);
                     if (File.Exists(path + "\\engine.exe") || File.Exists(path + "\\engine64.exe"))
                     {
-                        SpherePathBox.Clear();
-                        Sphere64PathBox.Clear();
-                        ConfigPathBox.Clear();
+                        enginePathBox.Clear();
+                        enginePath64Box.Clear();
+                        configPathBox.Clear();
                         if (File.Exists(path + "\\engine.exe"))
-                            SpherePathBox.Text = path + "\\engine.exe";
+                            enginePathBox.Text = path + "\\engine.exe";
                         if (File.Exists(path + "\\engine64.exe"))
-                            Sphere64PathBox.Text = path + "\\engine64.exe";
+                            enginePath64Box.Text = path + "\\engine64.exe";
                         if (File.Exists(path + "\\config.exe"))
-                            ConfigPathBox.Text = path + "\\config.exe";
+                            configPathBox.Text = path + "\\config.exe";
                         if (Directory.Exists(path + "\\games"))
                             PathListBox.Items.Add(path + "\\games");
                     }
@@ -167,7 +167,6 @@ namespace SphereStudio.Forms
         private void EditorSettings_Load(object sender, EventArgs e)
         {
             UpdatePluginList();
-            UpdatePresetBox();
         }
 
         private void UpdatePluginList()
@@ -187,21 +186,6 @@ namespace SphereStudio.Forms
             _updatePlugins = true;
         }
         
-        private void UpdatePresetBox()
-        {
-            PresetListBox.Items.Clear();
-
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string path = Path.Combine(sphereDir, @"Presets");
-            if (!Directory.Exists(path)) return;
-
-            string[] files = Directory.GetFiles(path, "*.preset");
-            foreach (string s in files)
-                PresetListBox.Items.Add(Path.GetFileNameWithoutExtension(s));
-
-            PresetListBox.SelectedItem = null;
-        }
-
         private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (!_updatePlugins) return;
@@ -212,70 +196,6 @@ namespace SphereStudio.Forms
             else
                 Global.Plugins[(string)item.Tag].Deactivate();
             RefreshPlugins();
-        }
-
-        private void PresetListBox_DoubleClick(object sender, EventArgs e)
-        {
-            UsePresetButton.PerformClick();
-        }
-        
-        private void PresetListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RemovePresetButton.Enabled = true;
-            UsePresetButton.Enabled = true;
-        }
-
-        private void RemovePresetButton_Click(object sender, EventArgs e)
-        {
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string path = Path.Combine(sphereDir, @"Presets", (string)PresetListBox.SelectedItem + ".preset");
-            if (File.Exists(path)) File.Delete(path);
-            PresetListBox.Items.RemoveAt(PresetListBox.SelectedIndex);
-            RemovePresetButton.Enabled = PresetListBox.Items.Count > 0 && PresetListBox.SelectedIndex > 0;
-        }
-
-        private void SavePresetButton_Click(object sender, EventArgs e)
-        {
-            using (StringInputForm form = new StringInputForm())
-            {
-                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-                    Directory.CreateDirectory(Path.Combine(sphereDir, @"Presets"));
-                    string presetName = form.Input;
-                    string filePath = Path.Combine(sphereDir, @"Presets", presetName + ".preset");
-                    bool continueSave = true;
-                    if (File.Exists(filePath))
-                    {
-                        var result = MessageBox.Show(
-                            String.Format("Configuration preset \"{0}\" already exists. Do you want to overwrite it?", presetName),
-                            "Preset Already Exists", MessageBoxButtons.YesNo);
-                        continueSave = (result == DialogResult.Yes);
-                    }
-                    if (continueSave)
-                    {
-                        INISettings preset = new INISettings(filePath, "Preset");
-                        preset.SetValue("engineConfigPath", ConfigPath);
-                        preset.SetValue("enginePath", SpherePath);
-                        preset.SetValue("enginePath64", Sphere64Path);
-                        preset.SetValue("defaultEditor", DefaultEditor);
-                        UpdatePresetBox();
-                    }
-                    PresetListBox.SelectedItem = null;
-                }
-            }
-        }
-
-        private void UsePresetButton_Click(object sender, EventArgs e)
-        {
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string path = Path.Combine(sphereDir, @"Presets", (string)PresetListBox.SelectedItem + ".preset");
-            INISettings preset = new INISettings(path, "Preset");
-            SpherePath = preset.GetString("enginePath", "");
-            Sphere64Path = preset.GetString("enginePath64", "");
-            ConfigPath = preset.GetString("engineConfigPath", "");
-            DefaultEditor = preset.GetString("defaultEditor", "");
-            PresetListBox.SelectedItem = null;
         }
 
         private void DownButton_Click(object sender, EventArgs e)
@@ -310,7 +230,6 @@ namespace SphereStudio.Forms
             StyleSettings.ApplyStyle(ButtonPanel);
             StyleSettings.ApplyStyle(okButton);
             StyleSettings.ApplyStyle(cancelButton);
-            StyleSettings.ApplyStyle(PresetsPanel);
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)

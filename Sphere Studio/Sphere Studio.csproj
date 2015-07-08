@@ -107,6 +107,12 @@
     <Compile Include="Forms\AboutBoxForm.Designer.cs">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ConfigManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigManagerForm.Designer.cs">
+      <DependentUpon>ConfigManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Settings\INISettings.cs" />
     <Compile Include="RadEditors\MenuEditor.cs">
@@ -169,6 +175,9 @@
     <Compile Include="Settings\CoreSettings.cs" />
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfigManagerForm.resx">
+      <DependentUpon>ConfigManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>

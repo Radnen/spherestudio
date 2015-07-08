@@ -1115,7 +1115,7 @@ namespace SphereStudio
             // user selected Configuration Manager (always at bottom)
             if (ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
-                OpenEditorSettings();
+                new ConfigManagerForm().ShowDialog(this);
                 UpdatePresetList();
                 return;
             }
