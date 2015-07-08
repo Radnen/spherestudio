@@ -30,7 +30,6 @@
         {
             this.presetBox = new System.Windows.Forms.ComboBox();
             this.saveButton = new System.Windows.Forms.Button();
-            this.header = new Sphere.Core.Editor.EditorLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -42,19 +41,20 @@
             this.enginePathBox = new System.Windows.Forms.TextBox();
             this.enginePath64Box = new System.Windows.Forms.TextBox();
             this.findEngineButton = new System.Windows.Forms.Button();
-            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pluginList = new System.Windows.Forms.ListView();
             this.NameCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.AuthorCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VersionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DescriptionCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pluginHeader = new Sphere.Core.Editor.EditorLabel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.defEditorCombo = new System.Windows.Forms.ComboBox();
-            this.editorLabel6 = new Sphere.Core.Editor.EditorLabel();
             this.okButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.pluginHeader = new Sphere.Core.Editor.EditorLabel();
+            this.editorLabel6 = new Sphere.Core.Editor.EditorLabel();
+            this.header = new Sphere.Core.Editor.EditorLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -65,40 +65,24 @@
             // 
             // presetBox
             // 
-            this.presetBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.presetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.presetBox.FormattingEnabled = true;
-            this.presetBox.Location = new System.Drawing.Point(12, 33);
+            this.presetBox.Location = new System.Drawing.Point(12, 36);
             this.presetBox.Name = "presetBox";
-            this.presetBox.Size = new System.Drawing.Size(438, 21);
+            this.presetBox.Size = new System.Drawing.Size(254, 21);
             this.presetBox.TabIndex = 1;
             this.presetBox.SelectedIndexChanged += new System.EventHandler(this.presetBox_SelectedIndexChanged);
             // 
             // saveButton
             // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.Image = global::SphereStudio.Properties.Resources.disk;
-            this.saveButton.Location = new System.Drawing.Point(502, 32);
+            this.saveButton.Location = new System.Drawing.Point(314, 35);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(36, 26);
             this.saveButton.TabIndex = 3;
             this.saveButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
-            // header
-            // 
-            this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.header.Dock = System.Windows.Forms.DockStyle.Top;
-            this.header.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.header.ForeColor = System.Drawing.Color.White;
-            this.header.Location = new System.Drawing.Point(0, 0);
-            this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(637, 23);
-            this.header.TabIndex = 0;
-            this.header.Text = "Manage Sphere development presets";
-            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabControl1
             // 
@@ -107,10 +91,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(12, 64);
+            this.tabControl1.Location = new System.Drawing.Point(12, 67);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(526, 380);
+            this.tabControl1.Size = new System.Drawing.Size(621, 362);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -120,7 +104,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(518, 354);
+            this.tabPage1.Size = new System.Drawing.Size(613, 336);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Sphere Engine";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -138,7 +122,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 26);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(512, 124);
+            this.panel1.Size = new System.Drawing.Size(607, 124);
             this.panel1.TabIndex = 1;
             // 
             // label2
@@ -162,8 +146,8 @@
             // sphereIcon
             // 
             this.sphereIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.sphereIcon.Image = global::SphereStudio.Properties.Resources.SphereIcon;
-            this.sphereIcon.Location = new System.Drawing.Point(453, 10);
+            this.sphereIcon.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
+            this.sphereIcon.Location = new System.Drawing.Point(548, 10);
             this.sphereIcon.Name = "sphereIcon";
             this.sphereIcon.Size = new System.Drawing.Size(48, 48);
             this.sphereIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -186,7 +170,7 @@
             this.configPathBox.Location = new System.Drawing.Point(12, 90);
             this.configPathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.configPathBox.Name = "configPathBox";
-            this.configPathBox.Size = new System.Drawing.Size(371, 20);
+            this.configPathBox.Size = new System.Drawing.Size(466, 20);
             this.configPathBox.TabIndex = 6;
             this.configPathBox.Validated += new System.EventHandler(this.configPathBox_Validated);
             // 
@@ -197,7 +181,7 @@
             this.enginePathBox.Location = new System.Drawing.Point(39, 10);
             this.enginePathBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.enginePathBox.Name = "enginePathBox";
-            this.enginePathBox.Size = new System.Drawing.Size(344, 20);
+            this.enginePathBox.Size = new System.Drawing.Size(439, 20);
             this.enginePathBox.TabIndex = 1;
             this.enginePathBox.Validated += new System.EventHandler(this.enginePathBox_Validated);
             // 
@@ -208,7 +192,7 @@
             this.enginePath64Box.Location = new System.Drawing.Point(39, 38);
             this.enginePath64Box.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.enginePath64Box.Name = "enginePath64Box";
-            this.enginePath64Box.Size = new System.Drawing.Size(344, 20);
+            this.enginePath64Box.Size = new System.Drawing.Size(439, 20);
             this.enginePath64Box.TabIndex = 3;
             this.enginePath64Box.Validated += new System.EventHandler(this.enginePath64Box_Validated);
             // 
@@ -216,7 +200,7 @@
             // 
             this.findEngineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findEngineButton.Image = global::SphereStudio.Properties.Resources.folder;
-            this.findEngineButton.Location = new System.Drawing.Point(389, 10);
+            this.findEngineButton.Location = new System.Drawing.Point(484, 10);
             this.findEngineButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.findEngineButton.Name = "findEngineButton";
             this.findEngineButton.Size = new System.Drawing.Size(48, 48);
@@ -226,29 +210,16 @@
             this.findEngineButton.UseVisualStyleBackColor = true;
             this.findEngineButton.Click += new System.EventHandler(this.findEngineButton_Click);
             // 
-            // editorLabel1
-            // 
-            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.editorLabel1.ForeColor = System.Drawing.Color.White;
-            this.editorLabel1.Location = new System.Drawing.Point(3, 3);
-            this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(512, 23);
-            this.editorLabel1.TabIndex = 0;
-            this.editorLabel1.Text = "Where is the Sphere engine?";
-            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.pluginList);
             this.tabPage2.Controls.Add(this.pluginHeader);
+            this.tabPage2.Controls.Add(this.pluginList);
             this.tabPage2.Controls.Add(this.panel4);
             this.tabPage2.Controls.Add(this.editorLabel6);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(518, 354);
+            this.tabPage2.Size = new System.Drawing.Size(613, 336);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Plugins";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -264,11 +235,11 @@
             this.pluginList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pluginList.GridLines = true;
             this.pluginList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.pluginList.Location = new System.Drawing.Point(3, 83);
+            this.pluginList.Location = new System.Drawing.Point(3, 60);
             this.pluginList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pluginList.Name = "pluginList";
             this.pluginList.ShowItemToolTips = true;
-            this.pluginList.Size = new System.Drawing.Size(512, 268);
+            this.pluginList.Size = new System.Drawing.Size(607, 273);
             this.pluginList.TabIndex = 3;
             this.pluginList.UseCompatibleStateImageBehavior = false;
             this.pluginList.View = System.Windows.Forms.View.Details;
@@ -294,26 +265,13 @@
             this.DescriptionCol.Text = "Description";
             this.DescriptionCol.Width = 300;
             // 
-            // pluginHeader
-            // 
-            this.pluginHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pluginHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pluginHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.pluginHeader.ForeColor = System.Drawing.Color.White;
-            this.pluginHeader.Location = new System.Drawing.Point(3, 60);
-            this.pluginHeader.Name = "pluginHeader";
-            this.pluginHeader.Size = new System.Drawing.Size(512, 23);
-            this.pluginHeader.TabIndex = 2;
-            this.pluginHeader.Text = "Activate or deactivate plugins";
-            this.pluginHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // panel4
             // 
             this.panel4.Controls.Add(this.defEditorCombo);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(3, 26);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(512, 34);
+            this.panel4.Size = new System.Drawing.Size(607, 34);
             this.panel4.TabIndex = 1;
             // 
             // defEditorCombo
@@ -324,10 +282,58 @@
             this.defEditorCombo.FormattingEnabled = true;
             this.defEditorCombo.Location = new System.Drawing.Point(5, 6);
             this.defEditorCombo.Name = "defEditorCombo";
-            this.defEditorCombo.Size = new System.Drawing.Size(504, 21);
+            this.defEditorCombo.Size = new System.Drawing.Size(599, 21);
             this.defEditorCombo.Sorted = true;
             this.defEditorCombo.TabIndex = 0;
             this.defEditorCombo.SelectedIndexChanged += new System.EventHandler(this.defEditorCombo_SelectedIndexChanged);
+            // 
+            // okButton
+            // 
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okButton.Location = new System.Drawing.Point(553, 435);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(80, 25);
+            this.okButton.TabIndex = 5;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Image = global::SphereStudio.Properties.Resources.cross;
+            this.deleteButton.Location = new System.Drawing.Point(272, 35);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(36, 26);
+            this.deleteButton.TabIndex = 2;
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
+            // editorLabel1
+            // 
+            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel1.ForeColor = System.Drawing.Color.White;
+            this.editorLabel1.Location = new System.Drawing.Point(3, 3);
+            this.editorLabel1.Name = "editorLabel1";
+            this.editorLabel1.Size = new System.Drawing.Size(607, 23);
+            this.editorLabel1.TabIndex = 0;
+            this.editorLabel1.Text = "Where is the Sphere engine?";
+            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pluginHeader
+            // 
+            this.pluginHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pluginHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pluginHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.pluginHeader.ForeColor = System.Drawing.Color.White;
+            this.pluginHeader.Location = new System.Drawing.Point(3, 60);
+            this.pluginHeader.Name = "pluginHeader";
+            this.pluginHeader.Size = new System.Drawing.Size(607, 23);
+            this.pluginHeader.TabIndex = 2;
+            this.pluginHeader.Text = "Activate or deactivate plugins";
+            this.pluginHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // editorLabel6
             // 
@@ -337,40 +343,30 @@
             this.editorLabel6.ForeColor = System.Drawing.Color.White;
             this.editorLabel6.Location = new System.Drawing.Point(3, 3);
             this.editorLabel6.Name = "editorLabel6";
-            this.editorLabel6.Size = new System.Drawing.Size(512, 23);
+            this.editorLabel6.Size = new System.Drawing.Size(607, 23);
             this.editorLabel6.TabIndex = 0;
             this.editorLabel6.Text = "Default editor for unrecognized file types";
             this.editorLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // okButton
+            // header
             // 
-            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(545, 33);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(80, 30);
-            this.okButton.TabIndex = 5;
-            this.okButton.Text = "Close";
-            this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
-            // 
-            // deleteButton
-            // 
-            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteButton.Image = global::SphereStudio.Properties.Resources.cross;
-            this.deleteButton.Location = new System.Drawing.Point(460, 32);
-            this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(36, 26);
-            this.deleteButton.TabIndex = 2;
-            this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.header.ForeColor = System.Drawing.Color.White;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(645, 23);
+            this.header.TabIndex = 0;
+            this.header.Text = "Manage Sphere development presets";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ConfigManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.okButton;
-            this.ClientSize = new System.Drawing.Size(637, 456);
+            this.ClientSize = new System.Drawing.Size(645, 469);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.tabControl1);

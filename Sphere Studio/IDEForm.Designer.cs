@@ -111,9 +111,7 @@
             this.Seperator8 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveLayoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ProjectMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ConfigureSphereMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EditorSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenDirectoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
             this.TestGameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,6 +127,11 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
+            this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ConfigureSphereMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.configurationManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -221,7 +224,7 @@
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.MainDock.Skin = dockPanelSkin1;
             this.MainDock.SupportDeeplyNestedContent = true;
-            this.MainDock.TabIndex = 6;
+            this.MainDock.TabIndex = 0;
             this.MainDock.ActiveDocumentChanged += new System.EventHandler(this.DockTest_ActiveDocumentChanged);
             // 
             // EditorTools
@@ -250,7 +253,7 @@
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
             this.EditorTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.EditorTools.Size = new System.Drawing.Size(787, 28);
-            this.EditorTools.TabIndex = 4;
+            this.EditorTools.TabIndex = 2;
             this.EditorTools.Text = "Tool Strip";
             // 
             // NewToolButton
@@ -397,7 +400,7 @@
             this.EditorStatus.Location = new System.Drawing.Point(0, 531);
             this.EditorStatus.Name = "EditorStatus";
             this.EditorStatus.Size = new System.Drawing.Size(787, 22);
-            this.EditorStatus.TabIndex = 1;
+            this.EditorStatus.TabIndex = 3;
             this.EditorStatus.Text = "Status";
             // 
             // HelpLabel
@@ -739,9 +742,7 @@
             // ProjectMenu
             // 
             this.ProjectMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ConfigureSphereMenuItem,
             this.GameSettingsMenuItem,
-            this.EditorSettingsMenuItem,
             this.OpenDirectoryMenuItem,
             this.Separator7,
             this.TestGameMenuItem,
@@ -752,15 +753,6 @@
             this.ProjectMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
             this.ProjectMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
             // 
-            // ConfigureSphereMenuItem
-            // 
-            this.ConfigureSphereMenuItem.Enabled = false;
-            this.ConfigureSphereMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
-            this.ConfigureSphereMenuItem.Name = "ConfigureSphereMenuItem";
-            this.ConfigureSphereMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.ConfigureSphereMenuItem.Text = "&Configure Sphere...";
-            this.ConfigureSphereMenuItem.Click += new System.EventHandler(this.OptionsToolButton_Click);
-            // 
             // GameSettingsMenuItem
             // 
             this.GameSettingsMenuItem.Enabled = false;
@@ -769,14 +761,6 @@
             this.GameSettingsMenuItem.Size = new System.Drawing.Size(188, 22);
             this.GameSettingsMenuItem.Text = "&Game Settings...";
             this.GameSettingsMenuItem.Click += new System.EventHandler(this.ViewGameSettings);
-            // 
-            // EditorSettingsMenuItem
-            // 
-            this.EditorSettingsMenuItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
-            this.EditorSettingsMenuItem.Name = "EditorSettingsMenuItem";
-            this.EditorSettingsMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.EditorSettingsMenuItem.Text = "&Editor Settings...";
-            this.EditorSettingsMenuItem.Click += new System.EventHandler(this.OpenEditorSettings);
             // 
             // OpenDirectoryMenuItem
             // 
@@ -900,14 +884,58 @@
             this.EditorMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
             this.EditMenu,
-            this.ProjectMenu,
             this.ViewMenu,
+            this.ProjectMenu,
+            this.ToolsMenu,
             this.HelpMenu});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
             this.EditorMenu.Name = "EditorMenu";
             this.EditorMenu.Size = new System.Drawing.Size(787, 24);
-            this.EditorMenu.TabIndex = 0;
+            this.EditorMenu.TabIndex = 1;
             this.EditorMenu.Text = "Menu";
+            // 
+            // ToolsMenu
+            // 
+            this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ConfigureSphereMenuItem,
+            this.toolStripSeparator5,
+            this.configurationManagerToolStripMenuItem,
+            this.toolStripMenuItem1});
+            this.ToolsMenu.Name = "ToolsMenu";
+            this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
+            this.ToolsMenu.Text = "&Tools";
+            this.ToolsMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
+            this.ToolsMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
+            // 
+            // ConfigureSphereMenuItem
+            // 
+            this.ConfigureSphereMenuItem.Enabled = false;
+            this.ConfigureSphereMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
+            this.ConfigureSphereMenuItem.Name = "ConfigureSphereMenuItem";
+            this.ConfigureSphereMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.ConfigureSphereMenuItem.Text = "&Configure Sphere...";
+            this.ConfigureSphereMenuItem.Click += new System.EventHandler(this.OptionsToolButton_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(195, 6);
+            // 
+            // configurationManagerToolStripMenuItem
+            // 
+            this.configurationManagerToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
+            this.configurationManagerToolStripMenuItem.Name = "configurationManagerToolStripMenuItem";
+            this.configurationManagerToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.configurationManagerToolStripMenuItem.Text = "&Configuration Manager";
+            this.configurationManagerToolStripMenuItem.Click += new System.EventHandler(this.OpenConfigManager);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Image = global::SphereStudio.Properties.Resources.application_view_list;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
+            this.toolStripMenuItem1.Text = "&Editor Settings...";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.OpenEditorSettings);
             // 
             // IDEForm
             // 
@@ -1005,9 +1033,7 @@
         private System.Windows.Forms.ToolStripSeparator Seperator8;
         private System.Windows.Forms.ToolStripMenuItem SaveLayoutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
-        private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GameSettingsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem EditorSettingsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenDirectoryMenuItem;
         private System.Windows.Forms.ToolStripSeparator Separator7;
         private System.Windows.Forms.ToolStripMenuItem TestGameMenuItem;
@@ -1029,6 +1055,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSplitButton RunToolButton;
         private System.Windows.Forms.ToolStripComboBox PlatformTool;
+        private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
+        private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem configurationManagerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

@@ -846,6 +846,12 @@ namespace SphereStudio
             OpenEditorSettings();
         }
 
+        private void OpenConfigManager(object sender, EventArgs e)
+        {
+            new ConfigManagerForm().ShowDialog(this);
+            UpdatePresetList();
+        }
+        
         private void ViewGameSettings(object sender, EventArgs e)
         {
             OpenGameSettings();
@@ -1115,8 +1121,7 @@ namespace SphereStudio
             // user selected Configuration Manager (always at bottom)
             if (ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
-                new ConfigManagerForm().ShowDialog(this);
-                UpdatePresetList();
+                OpenConfigManager(null, EventArgs.Empty);
                 return;
             }
 

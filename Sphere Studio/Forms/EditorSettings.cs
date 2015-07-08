@@ -14,30 +14,6 @@ namespace SphereStudio.Forms
     internal partial class EditorSettings : Form, IStyleable
     {
         #region getters and setters
-        public string SpherePath
-        {
-            get { return enginePathBox.Text; }
-            set { enginePathBox.Text = value; }
-        }
-
-        public string Sphere64Path
-        {
-            get { return enginePath64Box.Text; }
-            set { enginePath64Box.Text = value; }
-        }
-
-        public string DefaultEditor
-        {
-            get { return defEditorCombo.Text != "(none selected)" ? defEditorCombo.Text : ""; }
-            set { defEditorCombo.Text = value; }
-        }
-
-        public string ConfigPath
-        {
-            get { return configPathBox.Text; }
-            set { configPathBox.Text = value; }
-        }
-
         public string[] GamePaths
         {
             get
@@ -73,7 +49,6 @@ namespace SphereStudio.Forms
             set { ItemCheckBox.SetItemChecked(2, value); }
         }
 
-        private bool _updatePlugins = false;
         #endregion
 
         public EditorSettings(CoreSettings settings)
@@ -82,66 +57,17 @@ namespace SphereStudio.Forms
 
             foreach (var item in StyleSettings.Styles)
                 StyleComboBox.Items.Add(item.Key);
-            RefreshPlugins();
-            
             FillValues(settings);
         }
 
-        private void RefreshPlugins()
-        {
-            string lastWildcard = DefaultEditor;
-            defEditorCombo.Items.Clear();
-            defEditorCombo.Items.Add("(none selected)");
-            defEditorCombo.SelectedIndex = 0;
-            var wildcards = PluginManager.GetWildcards();
-            foreach (var plugin in wildcards)
-                defEditorCombo.Items.Add(plugin.Name);
-            defEditorCombo.Text = lastWildcard;
-        }
-        
         private void FillValues(CoreSettings settings)
         {
-            SpherePath = settings.EnginePath;
-            Sphere64Path = settings.EnginePath64;
-            ConfigPath = settings.EngineConfigPath;
             GamePaths = settings.GetStringArray("gamePaths");
             AutoStart = settings.AutoOpenProject;
             UseScriptUpdate = settings.AutoScriptHeader;
             UseStartPage = settings.AutoStartPage;
             Style = settings.UIStyle;
-            DefaultEditor = settings.DefaultEditor;
             UpdateStyle();
-        }
-
-        private void SpherePathButton_Click(object sender, EventArgs e)
-        {
-            using (FileDialog diag = new OpenFileDialog())
-            {
-                diag.Filter = "Executable Files|*.exe";
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    string path = Path.GetDirectoryName(diag.FileName) + @"\";
-                    string exeName = Path.GetFileNameWithoutExtension(diag.FileName);
-                    if (exeName.Substring(exeName.Length - 2) == "64")
-                        exeName = exeName.Substring(0, exeName.Length - 2);
-                    string exeName64 = path + exeName + "64.exe";
-                    exeName = path + exeName + ".exe";
-                    if (File.Exists(exeName) || File.Exists(exeName64))
-                    {
-                        enginePathBox.Clear();
-                        enginePath64Box.Clear();
-                        configPathBox.Clear();
-                        if (File.Exists(exeName)) enginePathBox.Text = exeName;
-                        if (File.Exists(exeName64)) enginePath64Box.Text = exeName64;
-                        if (File.Exists(path + "config.exe"))
-                            configPathBox.Text = path + "config.exe";
-                    }
-                    else
-                    {
-                        MessageBox.Show(String.Format("{0}\n\nThis directory doesn't seem to contain a Sphere engine. Make sure the directory you choose contains either or both engine.exe or engine64.exe.", path));
-                    }
-                }
-            }
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -163,40 +89,6 @@ namespace SphereStudio.Forms
         private void PathListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             RemoveButton.Enabled = true;
-        }
-
-        private void EditorSettings_Load(object sender, EventArgs e)
-        {
-            UpdatePluginList();
-        }
-
-        private void UpdatePluginList()
-        {
-            _updatePlugins = false;
-            foreach (KeyValuePair<string, PluginWrapper> pair in Global.Plugins)
-            {
-                ListViewItem item = new ListViewItem();
-                item.Text = pair.Value.Plugin.Name;
-                item.SubItems.Add(pair.Value.Plugin.Author);
-                item.SubItems.Add(pair.Value.Plugin.Version);
-                item.SubItems.Add(pair.Value.Plugin.Description);
-                item.Tag = pair.Key;
-                item.Checked = pair.Value.Enabled;
-                PluginList.Items.Add(item);
-            }
-            _updatePlugins = true;
-        }
-        
-        private void PluginList_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (!_updatePlugins) return;
-            
-            ListViewItem item = PluginList.Items[e.Index];
-            if (e.NewValue == CheckState.Checked)
-                Global.Plugins[(string)item.Tag].Activate();
-            else
-                Global.Plugins[(string)item.Tag].Deactivate();
-            RefreshPlugins();
         }
 
         private void DownButton_Click(object sender, EventArgs e)
@@ -241,10 +133,6 @@ namespace SphereStudio.Forms
             Global.Settings.AutoOpenProject = AutoStart;
             Global.Settings.AutoStartPage = UseStartPage;
             Global.Settings.AutoScriptHeader = UseScriptUpdate;
-            Global.Settings.EngineConfigPath = ConfigPath;
-            Global.Settings.EnginePath = SpherePath;
-            Global.Settings.EnginePath64 = Sphere64Path;
-            Global.Settings.DefaultEditor = DefaultEditor;
             Invalidate(true);
         }
 
