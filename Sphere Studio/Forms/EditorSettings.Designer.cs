@@ -51,6 +51,7 @@
             this.DownButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
             this.PathListBox = new System.Windows.Forms.ListBox();
+            this.editorLabel4 = new Sphere.Core.Editor.EditorLabel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.enginePathBox = new System.Windows.Forms.TextBox();
             this.enginePath64Box = new System.Windows.Forms.TextBox();
             this.findEngineButton = new System.Windows.Forms.Button();
-            this.editorLabel4 = new Sphere.Core.Editor.EditorLabel();
             this.editorLabel3 = new Sphere.Core.Editor.EditorLabel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.PluginList = new System.Windows.Forms.ListView();
@@ -297,6 +297,7 @@
             this.RemoveButton.Text = "Remove";
             this.Tip.SetToolTip(this.RemoveButton, "Remove Selected Gamepath");
             this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
             // AddButton
             // 
@@ -309,6 +310,7 @@
             this.AddButton.Text = "Add...";
             this.Tip.SetToolTip(this.AddButton, "Add a Games Path");
             this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // DownButton
             // 
@@ -321,6 +323,7 @@
             this.DownButton.TabIndex = 17;
             this.Tip.SetToolTip(this.DownButton, "Move path down.");
             this.DownButton.UseVisualStyleBackColor = true;
+            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
             // UpButton
             // 
@@ -333,6 +336,7 @@
             this.UpButton.TabIndex = 16;
             this.Tip.SetToolTip(this.UpButton, "Move path up.");
             this.UpButton.UseVisualStyleBackColor = true;
+            this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
             // 
             // PathListBox
             // 
@@ -346,6 +350,20 @@
             this.PathListBox.Name = "PathListBox";
             this.PathListBox.Size = new System.Drawing.Size(599, 136);
             this.PathListBox.TabIndex = 15;
+            this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
+            // 
+            // editorLabel4
+            // 
+            this.editorLabel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.editorLabel4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel4.ForeColor = System.Drawing.Color.White;
+            this.editorLabel4.Location = new System.Drawing.Point(3, 151);
+            this.editorLabel4.Name = "editorLabel4";
+            this.editorLabel4.Size = new System.Drawing.Size(613, 23);
+            this.editorLabel4.TabIndex = 18;
+            this.editorLabel4.Text = "Additional Project Directories";
+            this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel5
             // 
@@ -443,19 +461,7 @@
             this.findEngineButton.Text = "...";
             this.findEngineButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.findEngineButton.UseVisualStyleBackColor = true;
-            // 
-            // editorLabel4
-            // 
-            this.editorLabel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editorLabel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.editorLabel4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.editorLabel4.ForeColor = System.Drawing.Color.White;
-            this.editorLabel4.Location = new System.Drawing.Point(3, 151);
-            this.editorLabel4.Name = "editorLabel4";
-            this.editorLabel4.Size = new System.Drawing.Size(613, 23);
-            this.editorLabel4.TabIndex = 18;
-            this.editorLabel4.Text = "Additional Project Directories";
-            this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.findEngineButton.Click += new System.EventHandler(this.SpherePathButton_Click);
             // 
             // editorLabel3
             // 
@@ -480,7 +486,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage3.Size = new System.Drawing.Size(619, 439);
+            this.tabPage3.Size = new System.Drawing.Size(619, 362);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Plugins";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -500,7 +506,7 @@
             this.PluginList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PluginList.Name = "PluginList";
             this.PluginList.ShowItemToolTips = true;
-            this.PluginList.Size = new System.Drawing.Size(613, 351);
+            this.PluginList.Size = new System.Drawing.Size(613, 274);
             this.PluginList.TabIndex = 1;
             this.PluginList.UseCompatibleStateImageBehavior = false;
             this.PluginList.View = System.Windows.Forms.View.Details;
