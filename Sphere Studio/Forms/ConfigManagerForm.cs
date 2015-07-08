@@ -6,11 +6,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using SphereStudio.Settings;
 using Sphere.Plugins;
+using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
 {
@@ -19,19 +21,23 @@ namespace SphereStudio.Forms
         public ConfigManagerForm()
         {
             InitializeComponent();
+            
             UpdatePresetBox();
             UpdatePluginsList();
             UpdateEditorsList();
             
-            presetBox.Text = Global.Settings.Preset;
             presetBox_SelectedIndexChanged(null, EventArgs.Empty);
         }
 
+        private bool _updatingEditors = false;
+        private bool _updatingPresets = false;
         private bool _updatingPlugins = false;
 
         private void UpdateEditorsList()
         {
-            string lastSelection = defEditorCombo.Text;
+            if (_updatingEditors) return;
+            _updatingEditors = true;
+            
             defEditorCombo.Items.Clear();
             defEditorCombo.Items.Add("(none selected)");
             defEditorCombo.SelectedIndex = 0;
@@ -40,15 +46,18 @@ namespace SphereStudio.Forms
                             select plugin;
             foreach (IEditorPlugin plugin in wildcards)
                 defEditorCombo.Items.Add(plugin.Name);
-            defEditorCombo.Text = lastSelection;
+            if (Global.Settings.DefaultEditor != null)
+                defEditorCombo.Text = Global.Settings.DefaultEditor;
+
+            _updatingEditors = false;
         }
         
         private void UpdatePluginsList()
         {
-            if (_updatingPlugins)
-                return;
+            if (_updatingPlugins) return;
             _updatingPlugins = true;
 
+            pluginList.CreateGraphics();  // workaround for early ItemCheck event
             pluginList.Items.Clear();
             foreach (KeyValuePair<string, PluginWrapper> pair in Global.Plugins)
             {
@@ -67,7 +76,10 @@ namespace SphereStudio.Forms
         
         private void UpdatePresetBox()
         {
-            var lastItem = presetBox.Text;
+            if (_updatingPresets) return;
+            _updatingPresets = true;
+            
+            string lastItem = Global.Settings.Preset;
             
             presetBox.Items.Clear();
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
@@ -79,7 +91,19 @@ namespace SphereStudio.Forms
             foreach (string filename in files)
                 presetBox.Items.Add(Path.GetFileNameWithoutExtension(filename));
 
-            presetBox.Text = lastItem;
+            if (presetBox.Items.Contains(Global.Settings.Preset ?? ""))
+            {
+                presetBox.Text = Global.Settings.Preset;
+                deleteButton.Enabled = true;
+            }
+            else
+            {
+                presetBox.Items.Insert(0, "Custom Settings");
+                presetBox.SelectedIndex = 0;
+                deleteButton.Enabled = false;
+            }
+
+            _updatingPresets = false;
         }
 
         private void findEngineButton_Click(object sender, EventArgs e)
@@ -104,6 +128,10 @@ namespace SphereStudio.Forms
                         if (File.Exists(exeName64)) enginePath64Box.Text = exeName64;
                         if (File.Exists(path + "config.exe"))
                             configPathBox.Text = path + "config.exe";
+                        Global.Settings.EnginePath = enginePathBox.Text;
+                        Global.Settings.EnginePath64 = enginePath64Box.Text;
+                        Global.Settings.EngineConfigPath = configPathBox.Text;
+                        UpdatePresetBox();
                     }
                     else
                     {
@@ -125,19 +153,27 @@ namespace SphereStudio.Forms
             enginePathBox.Text = Global.Settings.EnginePath;
             enginePath64Box.Text = Global.Settings.EnginePath64;
             configPathBox.Text = Global.Settings.EngineConfigPath;
-            defEditorCombo.Text = Global.Settings.DefaultEditor;
             UpdatePluginsList();
-            deleteButton.Enabled = true;
-        }
-
-        private void presetBox_TextUpdate(object sender, EventArgs e)
-        {
-            deleteButton.Enabled = false;
+            UpdateEditorsList();
+            UpdatePresetBox();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string filename = string.Format("{0}.preset", presetBox.Text);
+            string filename;
+            using (var diag = new StringInputForm())
+            {
+                if (diag.ShowDialog() != DialogResult.OK)
+                    return;
+                filename = diag.Input + ".preset";
+                Regex regex = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+                if (regex.IsMatch(filename))
+                {
+                    MessageBox.Show(string.Format("{0}.preset\n\nFilename contains invalid characters."), "Invalid Filename", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 @"Sphere Studio\Presets", filename);
@@ -157,6 +193,10 @@ namespace SphereStudio.Forms
                 preset.SetValue("enginePath64", enginePath64Box.Text);
                 preset.SetValue("engineConfigPath", configPathBox.Text);
                 preset.SetValue("defaultEditor", defEditorCombo.SelectedIndex > 0 ? defEditorCombo.Text : "");
+                preset.SetValue("plugins", Global.Settings.Plugins);
+                Global.Settings.Preset = Path.GetFileNameWithoutExtension(filename);
+                Global.Settings.Apply();
+                UpdatePresetBox();
             }
         }
 
@@ -172,18 +212,47 @@ namespace SphereStudio.Forms
             if (result == DialogResult.Yes)
             {
                 File.Delete(path);
+                UpdatePresetBox();
             }
         }
 
-        private void pluginList_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void enginePathBox_Validated(object sender, EventArgs e)
+        {
+            Global.Settings.EnginePath = enginePathBox.Text;
+            UpdatePresetBox();
+        }
+
+        private void enginePath64Box_Validated(object sender, EventArgs e)
+        {
+            Global.Settings.EnginePath64 = enginePath64Box.Text;
+            UpdatePresetBox();
+        }
+
+        private void configPathBox_Validated(object sender, EventArgs e)
+        {
+            Global.Settings.EngineConfigPath = configPathBox.Text;
+            UpdatePresetBox();
+        }
+
+        private void pluginList_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             if (_updatingPlugins) return;
 
-            ListViewItem item = pluginList.Items[e.Index];
-            if (e.NewValue == CheckState.Checked)
-                Global.Plugins[(string)item.Tag].Activate();
-            else
-                Global.Plugins[(string)item.Tag].Deactivate();
+            Global.Settings.Plugins = (from ListViewItem item in pluginList.Items
+                                       where item.Checked
+                                       select item.Tag as string).ToArray();
+            Global.Settings.Apply();
+            UpdateEditorsList();
+            UpdatePresetBox();
+        }
+
+        private void defEditorCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_updatingEditors) return;
+            
+            Global.Settings.DefaultEditor = defEditorCombo.SelectedIndex > 0 ? defEditorCombo.Text : null;
+            Global.Settings.Apply();
+            UpdatePresetBox();
             UpdateEditorsList();
         }
     }

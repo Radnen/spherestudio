@@ -120,24 +120,25 @@ namespace SphereStudio.Forms
                 diag.Filter = "Executable Files|*.exe";
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
-                    string path = Path.GetDirectoryName(diag.FileName);
-                    if (File.Exists(path + "\\engine.exe") || File.Exists(path + "\\engine64.exe"))
+                    string path = Path.GetDirectoryName(diag.FileName) + @"\";
+                    string exeName = Path.GetFileNameWithoutExtension(diag.FileName);
+                    if (exeName.Substring(exeName.Length - 2) == "64")
+                        exeName = exeName.Substring(0, exeName.Length - 2);
+                    string exeName64 = path + exeName + "64.exe";
+                    exeName = path + exeName + ".exe";
+                    if (File.Exists(exeName) || File.Exists(exeName64))
                     {
                         enginePathBox.Clear();
                         enginePath64Box.Clear();
                         configPathBox.Clear();
-                        if (File.Exists(path + "\\engine.exe"))
-                            enginePathBox.Text = path + "\\engine.exe";
-                        if (File.Exists(path + "\\engine64.exe"))
-                            enginePath64Box.Text = path + "\\engine64.exe";
-                        if (File.Exists(path + "\\config.exe"))
-                            configPathBox.Text = path + "\\config.exe";
-                        if (Directory.Exists(path + "\\games"))
-                            PathListBox.Items.Add(path + "\\games");
+                        if (File.Exists(exeName)) enginePathBox.Text = exeName;
+                        if (File.Exists(exeName64)) enginePath64Box.Text = exeName64;
+                        if (File.Exists(path + "config.exe"))
+                            configPathBox.Text = path + "config.exe";
                     }
                     else
                     {
-                        MessageBox.Show(String.Format("{0}\n\nThis directory doesn't appear to contain a Sphere engine. Make sure the directory you choose contains either or both engine.exe or engine64.exe.", path));
+                        MessageBox.Show(String.Format("{0}\n\nThis directory doesn't seem to contain a Sphere engine. Make sure the directory you choose contains either or both engine.exe or engine64.exe.", path));
                     }
                 }
             }

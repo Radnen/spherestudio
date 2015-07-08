@@ -67,13 +67,13 @@
             // 
             this.presetBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.presetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.presetBox.FormattingEnabled = true;
             this.presetBox.Location = new System.Drawing.Point(12, 33);
             this.presetBox.Name = "presetBox";
             this.presetBox.Size = new System.Drawing.Size(438, 21);
             this.presetBox.TabIndex = 1;
             this.presetBox.SelectedIndexChanged += new System.EventHandler(this.presetBox_SelectedIndexChanged);
-            this.presetBox.TextUpdate += new System.EventHandler(this.presetBox_TextUpdate);
             // 
             // saveButton
             // 
@@ -97,7 +97,7 @@
             this.header.Name = "header";
             this.header.Size = new System.Drawing.Size(637, 23);
             this.header.TabIndex = 0;
-            this.header.Text = "Manage your Sphere development configurations";
+            this.header.Text = "Manage Sphere development presets";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabControl1
@@ -188,6 +188,7 @@
             this.configPathBox.Name = "configPathBox";
             this.configPathBox.Size = new System.Drawing.Size(371, 20);
             this.configPathBox.TabIndex = 6;
+            this.configPathBox.Validated += new System.EventHandler(this.configPathBox_Validated);
             // 
             // enginePathBox
             // 
@@ -198,6 +199,7 @@
             this.enginePathBox.Name = "enginePathBox";
             this.enginePathBox.Size = new System.Drawing.Size(344, 20);
             this.enginePathBox.TabIndex = 1;
+            this.enginePathBox.Validated += new System.EventHandler(this.enginePathBox_Validated);
             // 
             // enginePath64Box
             // 
@@ -208,6 +210,7 @@
             this.enginePath64Box.Name = "enginePath64Box";
             this.enginePath64Box.Size = new System.Drawing.Size(344, 20);
             this.enginePath64Box.TabIndex = 3;
+            this.enginePath64Box.Validated += new System.EventHandler(this.enginePath64Box_Validated);
             // 
             // findEngineButton
             // 
@@ -269,7 +272,7 @@
             this.pluginList.TabIndex = 3;
             this.pluginList.UseCompatibleStateImageBehavior = false;
             this.pluginList.View = System.Windows.Forms.View.Details;
-            this.pluginList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.pluginList_ItemCheck);
+            this.pluginList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.pluginList_ItemChecked);
             // 
             // NameCol
             // 
@@ -324,6 +327,7 @@
             this.defEditorCombo.Size = new System.Drawing.Size(504, 21);
             this.defEditorCombo.Sorted = true;
             this.defEditorCombo.TabIndex = 0;
+            this.defEditorCombo.SelectedIndexChanged += new System.EventHandler(this.defEditorCombo_SelectedIndexChanged);
             // 
             // editorLabel6
             // 

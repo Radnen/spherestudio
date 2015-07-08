@@ -38,26 +38,33 @@ namespace SphereStudio.Settings
 
         public string DefaultEditor
         {
-            get { return GetString("defaultEditor", ""); }
-            set { Preset = ""; SetValue("defaultEditor", value); }
+            get {
+                string value = GetString("defaultEditor", "");
+                return string.IsNullOrWhiteSpace(value) ? null : value;
+            }
+            set
+            {
+                Preset = null;
+                SetValue("defaultEditor", value ?? "");
+            }
         }
 
         public string EngineConfigPath
         {
             get { return GetString("engineConfigPath", ""); }
-            set { Preset = ""; SetValue("engineConfigPath", value); }
+            set { Preset = null; SetValue("engineConfigPath", value); }
         }
         
         public string EnginePath
         {
             get { return GetString("enginePath", ""); }
-            set { Preset = ""; SetValue("enginePath", value); }
+            set { Preset = null; SetValue("enginePath", value); }
         }
         
         public string EnginePath64
         {
             get { return GetString("enginePath64", ""); }
-            set { Preset = ""; SetValue("enginePath64", value); }
+            set { Preset = null; SetValue("enginePath64", value); }
         }
 
         public string LastProject
@@ -77,7 +84,7 @@ namespace SphereStudio.Settings
             get
             {
                 string value = GetString("preset", "");
-                return value != "" ? value : null;
+                return string.IsNullOrWhiteSpace(value) ? null : value;
             }
             set
             {
