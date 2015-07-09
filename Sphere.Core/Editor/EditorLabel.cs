@@ -20,6 +20,7 @@ namespace Sphere.Core.Editor
             TextAlign = ContentAlignment.MiddleLeft;
             Height = 23;
             AutoSize = false;
+            Dock = DockStyle.Top;
             UpdateStyle();
         }
 

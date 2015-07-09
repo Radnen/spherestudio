@@ -113,6 +113,12 @@
     <Compile Include="Forms\ConfigManagerForm.Designer.cs">
       <DependentUpon>ConfigManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SavePresetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SavePresetForm.Designer.cs">
+      <DependentUpon>SavePresetForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -183,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConfigManagerForm.resx">
       <DependentUpon>ConfigManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SavePresetForm.resx">
+      <DependentUpon>SavePresetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>

@@ -413,7 +413,7 @@ namespace SphereStudio
                                 @"set a few things up!", @"Welcome First Timer", MessageBoxButtons.OK,
                                 MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 Global.Settings.SetValue("setupComplete", true);
-                OpenEditorSettings(this, null);
+                OpenConfigManager(null, EventArgs.Empty);
                 _firsttime = false;
             }
 

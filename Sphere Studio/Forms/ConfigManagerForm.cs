@@ -85,11 +85,11 @@ namespace SphereStudio.Forms
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
             if (!Directory.Exists(path))
                 return;
-            var files = from filename in Directory.GetFiles(path, "*.preset")
+            var presets = from filename in Directory.GetFiles(path, "*.preset")
                         orderby filename ascending
-                        select filename;
-            foreach (string filename in files)
-                presetBox.Items.Add(Path.GetFileNameWithoutExtension(filename));
+                        select Path.GetFileNameWithoutExtension(filename);
+            foreach (string name in presets)
+                presetBox.Items.Add(name);
 
             if (presetBox.Items.Contains(Global.Settings.Preset ?? ""))
             {
@@ -160,33 +160,14 @@ namespace SphereStudio.Forms
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string filename;
-            using (var diag = new StringInputForm())
+            using (var diag = new SavePresetForm())
             {
                 if (diag.ShowDialog() != DialogResult.OK)
                     return;
-                filename = diag.Input + ".preset";
-                Regex regex = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-                if (regex.IsMatch(filename))
-                {
-                    MessageBox.Show(string.Format("{0}.preset\n\nFilename contains invalid characters."), "Invalid Filename", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            
-            string path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                @"Sphere Studio\Presets", filename);
-            bool isSaveAllowed = true;
-            if (File.Exists(path))
-            {
-                DialogResult result = MessageBox.Show(
-                    String.Format("A preset file named \"{0}\" already exists. Do you want to overwrite it?", filename),
-                    "Preset Already Exists", MessageBoxButtons.YesNo);
-                isSaveAllowed = result == DialogResult.Yes;
-            }
-            if (isSaveAllowed)
-            {
+                string filename = diag.PresetName + ".preset";
+                string path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    @"Sphere Studio\Presets", filename);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 INISettings preset = new INISettings(path, "Preset");
                 preset.SetValue("enginePath", enginePathBox.Text);
