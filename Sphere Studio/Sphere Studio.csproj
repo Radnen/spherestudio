@@ -272,9 +272,7 @@
   <ItemGroup>
     <Content Include="license.txt" />
     <None Include="SphericalLogo.png" />
-    <None Include="Resources\Spherical.png" />
     <Content Include="Sphere Studio.ico" />
-    <None Include="Resources\SphericalIcon.png" />
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

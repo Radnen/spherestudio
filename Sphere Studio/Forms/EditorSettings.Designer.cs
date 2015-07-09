@@ -43,26 +43,26 @@
             this.editorLabel5 = new Sphere.Core.Editor.EditorLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.PathListBox = new System.Windows.Forms.ListBox();
             this.editorLabel4 = new Sphere.Core.Editor.EditorLabel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.ItemCheckBox = new System.Windows.Forms.CheckedListBox();
-            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.ScriptHeaderBox = new System.Windows.Forms.RichTextBox();
+            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ItemCheckBox = new System.Windows.Forms.CheckedListBox();
             this.PropLabel = new Sphere.Core.Editor.EditorLabel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.StyleComboBox = new System.Windows.Forms.ComboBox();
             this.editorLabel2 = new Sphere.Core.Editor.EditorLabel();
             this.SettingsTabs = new System.Windows.Forms.TabControl();
-            this.label1 = new System.Windows.Forms.Label();
             this.ButtonPanel.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel6.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SettingsTabs.SuspendLayout();
             this.SuspendLayout();
@@ -97,7 +97,7 @@
             // 
             this.UpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.UpButton.Image = global::SphereStudio.Properties.Resources.resultset_up;
-            this.UpButton.Location = new System.Drawing.Point(9, 302);
+            this.UpButton.Location = new System.Drawing.Point(9, 384);
             this.UpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UpButton.Name = "UpButton";
             this.UpButton.Size = new System.Drawing.Size(23, 22);
@@ -110,7 +110,7 @@
             // 
             this.DownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.DownButton.Image = global::SphereStudio.Properties.Resources.resultset_down;
-            this.DownButton.Location = new System.Drawing.Point(37, 302);
+            this.DownButton.Location = new System.Drawing.Point(37, 384);
             this.DownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(23, 22);
@@ -122,7 +122,7 @@
             // AddButton
             // 
             this.AddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddButton.Location = new System.Drawing.Point(474, 302);
+            this.AddButton.Location = new System.Drawing.Point(474, 384);
             this.AddButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(64, 22);
@@ -136,7 +136,7 @@
             // 
             this.RemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RemoveButton.Enabled = false;
-            this.RemoveButton.Location = new System.Drawing.Point(544, 302);
+            this.RemoveButton.Location = new System.Drawing.Point(544, 384);
             this.RemoveButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(64, 22);
@@ -153,7 +153,7 @@
             this.ButtonPanel.Controls.Add(this.cancelButton);
             this.ButtonPanel.Controls.Add(this.okButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 411);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 493);
             this.ButtonPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(627, 30);
@@ -192,7 +192,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage2.Size = new System.Drawing.Size(619, 362);
+            this.tabPage2.Size = new System.Drawing.Size(619, 444);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Project Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -208,8 +208,17 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 27);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(613, 331);
+            this.panel6.Size = new System.Drawing.Size(613, 413);
             this.panel6.TabIndex = 17;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(9, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(599, 27);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "\'My Documents\\Sphere Studio\\Projects\' is always searched by default.  You can spe" +
+    "cify additional directories to search for Sphere projects here.";
             // 
             // PathListBox
             // 
@@ -221,7 +230,7 @@
             this.PathListBox.Location = new System.Drawing.Point(9, 40);
             this.PathListBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PathListBox.Name = "PathListBox";
-            this.PathListBox.Size = new System.Drawing.Size(599, 254);
+            this.PathListBox.Size = new System.Drawing.Size(599, 336);
             this.PathListBox.TabIndex = 15;
             this.PathListBox.SelectedIndexChanged += new System.EventHandler(this.PathListBox_SelectedIndexChanged);
             // 
@@ -240,9 +249,9 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Controls.Add(this.editorLabel1);
             this.tabPage1.Controls.Add(this.panel3);
+            this.tabPage1.Controls.Add(this.editorLabel1);
+            this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.PropLabel);
             this.tabPage1.Controls.Add(this.panel2);
             this.tabPage1.Controls.Add(this.editorLabel2);
@@ -250,15 +259,51 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage1.Size = new System.Drawing.Size(619, 362);
+            this.tabPage1.Size = new System.Drawing.Size(619, 444);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Options";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.ScriptHeaderBox);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(3, 258);
+            this.panel3.Margin = new System.Windows.Forms.Padding(5);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(613, 182);
+            this.panel3.TabIndex = 10;
+            // 
+            // ScriptHeaderBox
+            // 
+            this.ScriptHeaderBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScriptHeaderBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ScriptHeaderBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScriptHeaderBox.Location = new System.Drawing.Point(5, 5);
+            this.ScriptHeaderBox.Name = "ScriptHeaderBox";
+            this.ScriptHeaderBox.Size = new System.Drawing.Size(603, 174);
+            this.ScriptHeaderBox.TabIndex = 6;
+            this.ScriptHeaderBox.Text = "/**\n * File: [filename]\n * Author: [author]\n * Date: [MM/dd/yy]\n**/";
+            // 
+            // editorLabel1
+            // 
+            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.editorLabel1.ForeColor = System.Drawing.Color.White;
+            this.editorLabel1.Location = new System.Drawing.Point(3, 235);
+            this.editorLabel1.Name = "editorLabel1";
+            this.editorLabel1.Size = new System.Drawing.Size(613, 23);
+            this.editorLabel1.TabIndex = 2;
+            this.editorLabel1.Text = "Script Header";
+            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.ItemCheckBox);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 83);
             this.panel1.Margin = new System.Windows.Forms.Padding(5);
             this.panel1.Name = "panel1";
@@ -278,44 +323,8 @@
             this.ItemCheckBox.Location = new System.Drawing.Point(5, 5);
             this.ItemCheckBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ItemCheckBox.Name = "ItemCheckBox";
-            this.ItemCheckBox.Size = new System.Drawing.Size(603, 94);
+            this.ItemCheckBox.Size = new System.Drawing.Size(603, 139);
             this.ItemCheckBox.TabIndex = 3;
-            // 
-            // editorLabel1
-            // 
-            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.editorLabel1.ForeColor = System.Drawing.Color.White;
-            this.editorLabel1.Location = new System.Drawing.Point(3, 235);
-            this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(613, 23);
-            this.editorLabel1.TabIndex = 2;
-            this.editorLabel1.Text = "Script Header";
-            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.ScriptHeaderBox);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(3, 258);
-            this.panel3.Margin = new System.Windows.Forms.Padding(5);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(613, 100);
-            this.panel3.TabIndex = 10;
-            // 
-            // ScriptHeaderBox
-            // 
-            this.ScriptHeaderBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScriptHeaderBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ScriptHeaderBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScriptHeaderBox.Location = new System.Drawing.Point(5, 5);
-            this.ScriptHeaderBox.Name = "ScriptHeaderBox";
-            this.ScriptHeaderBox.Size = new System.Drawing.Size(603, 92);
-            this.ScriptHeaderBox.TabIndex = 6;
-            this.ScriptHeaderBox.Text = "/**\n * File: [filename]\n * Author: [author]\n * Date: [MM/dd/yy]\n**/";
             // 
             // PropLabel
             // 
@@ -375,17 +384,8 @@
             this.SettingsTabs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
-            this.SettingsTabs.Size = new System.Drawing.Size(627, 388);
+            this.SettingsTabs.Size = new System.Drawing.Size(627, 470);
             this.SettingsTabs.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(9, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(599, 27);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "\'My Documents\\Sphere Studio\\Projects\' is always searched by default.  You can spe" +
-    "cify additional directories to search for Sphere projects here.";
             // 
             // EditorSettings
             // 
@@ -393,7 +393,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(627, 441);
+            this.ClientSize = new System.Drawing.Size(627, 523);
             this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.editorLabel5);
@@ -409,8 +409,8 @@
             this.tabPage2.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.SettingsTabs.ResumeLayout(false);
             this.ResumeLayout(false);
