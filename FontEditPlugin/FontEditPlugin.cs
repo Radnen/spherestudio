@@ -29,7 +29,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler("Font", this);
+            PluginManager.IDE.RegisterNewHandler(this, "Font");
             PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
         }
 

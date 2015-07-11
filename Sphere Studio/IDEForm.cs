@@ -726,9 +726,9 @@ namespace SphereStudio
             return new INISettings("Sphere Studio.ini", section);
         }
 
-        public void RegisterNewHandler(string typeName, IEditorPlugin plugin)
+        public void RegisterNewHandler(IEditorPlugin plugin, string name)
         {
-            _newHandlers[plugin] = typeName;
+            _newHandlers[plugin] = name;
         }
 
         public void RegisterOpenFileType(string typeName, string filters)

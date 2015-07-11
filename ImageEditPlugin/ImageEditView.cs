@@ -300,7 +300,7 @@ namespace SphereStudio.Plugins
             ImageEditor.DrawColor = _selectedBox.SelectedColor;
         }
 
-        // sure there might be a better way, but this is more elegamt due to it's simplicity.
+        // sure there might be a better way, but this is more elegant due to it's simplicity.
         private void UnselectButtons()
         {
             RectangleButton.Checked = false;

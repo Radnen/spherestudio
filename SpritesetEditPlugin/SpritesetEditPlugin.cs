@@ -43,7 +43,7 @@ namespace SphereStudio.Plugins
 
             // check everything in with the plugin manager
             PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler("Spriteset", this);
+            PluginManager.IDE.RegisterNewHandler(this, "Spriteset");
             PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
         }

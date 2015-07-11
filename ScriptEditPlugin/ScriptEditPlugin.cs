@@ -93,7 +93,7 @@ namespace SphereStudio.Plugins
             PluginManager.RegisterWildcard(this);
             
             // wire up the plugin to IDE
-            PluginManager.IDE.RegisterNewHandler("Script", this);
+            PluginManager.IDE.RegisterNewHandler(this, "Script");
             PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
             PluginManager.RegisterExtensions(this, _extensions);
 

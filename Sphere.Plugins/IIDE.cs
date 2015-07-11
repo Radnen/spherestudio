@@ -70,8 +70,18 @@ namespace Sphere.Plugins
         /// <param name="newItem">The ToolStripMenuItem to add.</param>
         void AddMenuItem(string location, ToolStripItem newItem);
 
-        void RegisterNewHandler(string typeName, IEditorPlugin plugin);
+        /// <summary>
+        /// Registers an editor plugin as a File:New handler. This adds an
+        /// entry to the File:New menu in the IDE.
+        /// </summary>
+        /// <param name="plugin">The editor plugin to register.</param>
+        /// <param name="name">The friendly name of the document being created, e.g. "Script" or "Image".</param>
+        void RegisterNewHandler(IEditorPlugin plugin, string name);
         
+        /// <summary>
+        /// Unregisters a previously registered File:New handler.
+        /// </summary>
+        /// <param name="plugin">The editor plugin to unregister.</param>
         void UnregisterNewHandler(IEditorPlugin plugin);
         
         /// <summary>

@@ -44,8 +44,9 @@ namespace SphereStudio.Plugins
             
             // check everything in with the plugin manager
             PluginManager.IDE.AddMenuItem(_mapMenu, "View");
-            PluginManager.IDE.RegisterNewHandler("Map", this);
+            PluginManager.IDE.RegisterNewHandler(this, "Map");
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
+            PluginManager.RegisterExtensions(this, _extensions);
         }
 
         public void Destroy()
@@ -68,7 +69,7 @@ namespace SphereStudio.Plugins
         {
             IDocumentView view = new MapEditView();
             view.Load(filepath);
-            return view ;
+            return view;
         }
 
         #region menu item declarations

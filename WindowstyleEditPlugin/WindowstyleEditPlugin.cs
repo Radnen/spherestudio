@@ -31,7 +31,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler("Windowstyle", this);
+            PluginManager.IDE.RegisterNewHandler(this, "Windowstyle");
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
         }
 
