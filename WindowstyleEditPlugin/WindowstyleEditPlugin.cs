@@ -8,15 +8,20 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class WindowstyleEditPlugin : IPlugin
+    public class WindowstyleEditPlugin : IEditorPlugin
     {
         public string Name { get { return "Windowstyle Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default windowstyle editor"; } }
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
+
+        private readonly string[] _extensions = new[] { "rws" };
+        private const string _openFileFilters = "*.rws";
 
         public WindowstyleEditPlugin()
         {
@@ -29,20 +34,25 @@ namespace SphereStudio.Plugins
             _newWindowstyleMenuItem = new ToolStripMenuItem("Windowstyle", Properties.Resources.PaletteToolIcon, _newWindowstyleMenuItem_Click);
 
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newWindowstyleMenuItem);
+            PluginManager.RegisterExtensions(this, _extensions);
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
+            PluginManager.IDE.AddMenuItem("File.New", _newWindowstyleMenuItem);
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions(_extensions);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_newWindowstyleMenuItem);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
-        
-        private readonly List<string> _extensionList = new List<string>(new[] { ".rws" });
-        private const string _openFileFilters = "*.rws";
+
+        public IDocumentView CreateEditView() { return null; }
+
+        public bool OpenDocument(string filename, out IDocumentView view)
+        {
+            view = null;
+            return false;
+        }
 
         #region menu item declarations
         private ToolStripMenuItem _newWindowstyleMenuItem;
@@ -51,7 +61,7 @@ namespace SphereStudio.Plugins
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
+            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
             {
                 PluginManager.IDE.DockControl(OpenEditor(e.Path));
                 e.Handled = true;

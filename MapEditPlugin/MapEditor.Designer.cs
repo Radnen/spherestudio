@@ -430,12 +430,11 @@
             // TileDrawer
             // 
             this.TileDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TileDrawer.HelpLabel = null;
             this.TileDrawer.Location = new System.Drawing.Point(3, 3);
             this.TileDrawer.Name = "TileDrawer";
             this.TileDrawer.Size = new System.Drawing.Size(443, 210);
             this.TileDrawer.TabIndex = 0;
-            this.TileDrawer.ImageEdited += new System.EventHandler(this.TileDrawer_ImageEdited);
+            this.TileDrawer.ImageChanged += new System.EventHandler(this.TileDrawer_ImageEdited);
             // 
             // tileTab
             // 

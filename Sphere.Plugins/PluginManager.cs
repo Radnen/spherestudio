@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using Sphere.Core.Editor;
 
@@ -13,12 +15,14 @@ namespace Sphere.Plugins
     /// </summary>
     public static class PluginManager
     {
-        static Dictionary<EditorType, IEditorPlugin> _editors;
+        static Dictionary<EditorType, IEditorPlugin> _embedders;
+        static Dictionary<string, IEditorPlugin> _handlers;
         static HashSet<IEditorPlugin> _wildcards;
         
         static PluginManager()
         {
-            _editors = new Dictionary<EditorType, IEditorPlugin>();
+            _embedders = new Dictionary<EditorType, IEditorPlugin>();
+            _handlers = new Dictionary<string, IEditorPlugin>();
             _wildcards = new HashSet<IEditorPlugin>();
         }
 
@@ -27,12 +31,55 @@ namespace Sphere.Plugins
         /// </summary>
         /// <param name="type">The type of object to be edited.</param>
         /// <returns>The new edit control, or null if no suitable plugin is available.</returns>
-        public static EditorObject CreateEditControl(EditorType type)
+        public static IDocumentView CreateEditView(EditorType type)
         {
-            if (_editors.Keys.Contains(type))
-                return _editors[type].CreateEditControl();
+            if (_embedders.Keys.Contains(type))
+                return _embedders[type].CreateEditView();
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Opens a specified file as an IDocumentView.
+        /// </summary>
+        /// <param name="filename">The fully qualified path to the file to open.</param>
+        /// <returns>
+        /// An IDocumentView of the opened document, or null if the file couldn't
+        /// be opened with any active plugin.
+        /// </returns>
+        public static bool OpenDocument(string filename, out IDocumentView view)
+        {
+            view = null;
+            
+            string extension = Path.GetExtension(filename);
+            if (extension != "") extension = extension.Substring(1);
+            if (_handlers.Keys.Contains(extension))
+            {
+                IEditorPlugin plugin = _handlers[extension];
+                return plugin.OpenDocument(filename, out view);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Registers a file extension with a specified editor plugin.
+        /// </summary>
+        /// <param name="editor">The IEditorPlugin which will handle editing.</param>
+        /// <param name="extensions">A list of file extensions to register, sans dot.</param>
+        public static void RegisterExtensions(IEditorPlugin editor, params string[] extensions)
+        {
+            foreach (string ext in extensions)
+            {
+                _handlers[ext] = editor;
+            }
+        }
+
+        public static void UnregisterExtensions(params string[] extensions)
+        {
+            foreach (string ext in extensions)
+            {
+                _handlers.Remove(ext);
+            }
         }
 
         /// <summary>
@@ -42,7 +89,7 @@ namespace Sphere.Plugins
         /// <param name="editor">The plugin object which will handle editing. Must implement IEditorPlugin</param>
         public static void RegisterEditor(EditorType type, IEditorPlugin editor)
         {
-            _editors[type] = editor;
+            _embedders[type] = editor;
         }
 
         /// <summary>
@@ -51,9 +98,9 @@ namespace Sphere.Plugins
         /// <param name="editor">The plugin object to unregister.</param>
         public static void UnregisterEditor(IEditorPlugin editor)
         {
-            while (_editors.ContainsValue(editor)) {
-                var key = _editors.Keys.FirstOrDefault(n => _editors[n] == editor);
-                if (key != default(EditorType)) _editors.Remove(key);
+            while (_embedders.ContainsValue(editor)) {
+                var key = _embedders.Keys.FirstOrDefault(n => _embedders[n] == editor);
+                if (key != default(EditorType)) _embedders.Remove(key);
             }
         }
 

@@ -73,7 +73,7 @@
             this.SpriteDrawer.Name = "SpriteDrawer";
             this.SpriteDrawer.Size = new System.Drawing.Size(528, 174);
             this.SpriteDrawer.TabIndex = 0;
-            this.SpriteDrawer.ImageEdited += new System.EventHandler(this.SpriteDrawer_ImageEdited);
+            this.SpriteDrawer.ImageChanged += new System.EventHandler(this.SpriteDrawer_ImageChanged);
             // 
             // DirectionSplitter
             // 

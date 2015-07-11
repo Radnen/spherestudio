@@ -45,11 +45,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Drawer2.cs">
+    <Compile Include="ImageEditView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Drawer2.Designer.cs">
-      <DependentUpon>Drawer2.cs</DependentUpon>
+    <Compile Include="ImageEditView.Designer.cs">
+      <DependentUpon>ImageEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\ImageEditControl2.cs">
       <SubType>UserControl</SubType>
@@ -83,8 +83,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Drawer2.resx">
-      <DependentUpon>Drawer2.cs</DependentUpon>
+    <EmbeddedResource Include="ImageEditView.resx">
+      <DependentUpon>ImageEditView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\ImageEditControl2.resx">

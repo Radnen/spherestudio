@@ -10,18 +10,17 @@ namespace Sphere.Plugins
     /// <summary>
     /// Specifies the interface for an image editing component.
     /// </summary>
-    public interface IImageEditor
+    public interface IImageView : IDocumentView
     {
         /// <summary>
         /// Raised when the image data has been modified.
         /// </summary>
-        event EventHandler ImageEdited;
+        event EventHandler ImageChanged;
 
         /// <summary>
-        /// Gets the image being edited in its present state.
+        /// Gets or sets the image as it is shown in the document.
         /// </summary>
-        /// <returns></returns>
-        Bitmap GetImage();
+        Bitmap Content { get; set; }
 
         /// <summary>
         /// Splits the image being edited into tiles and returns the images for each of those tiles.
@@ -30,17 +29,5 @@ namespace Sphere.Plugins
         /// <param name="tileHeight">The height of the tiles.</param>
         /// <returns>A list of images representing the individual tiles.</returns>
         IList<Bitmap> GetImages(short tileWidth, short tileHeight);
-
-        /// <summary>
-        /// Injects a new image wholesale into the editor.
-        /// </summary>
-        /// <param name="image"></param>
-        void SetImage(Bitmap image);
-
-        /// <summary>
-        /// Injects a new image wholesale into the editor and clears the edit history.
-        /// </summary>
-        /// <param name="image"></param>
-        void SetImage(Bitmap image, bool clear_hist);
     }
 }

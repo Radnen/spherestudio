@@ -5,9 +5,11 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class FontEditPlugin : IPlugin
+    public class FontEditPlugin : IEditorPlugin
     {
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Radnen"; } }
@@ -17,7 +19,7 @@ namespace SphereStudio.Plugins
         public Icon Icon { get; private set; }
 
         private const string _openFileFilters = "*.rfn";
-        private readonly string[] _extensions = new[] { ".rfn" };
+        private readonly string[] _extensions = new[] { "rfn" };
 
         private readonly ToolStripMenuItem _newFontItem;
 
@@ -29,6 +31,28 @@ namespace SphereStudio.Plugins
             _newFontItem.Click += FontItem_Click;
         }
 
+        public void Initialize(ISettings conf)
+        {
+            PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
+            PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
+        }
+
+        public void Destroy()
+        {
+            PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+        }
+
+        public IDocumentView CreateEditView() { return null; }
+
+        public bool OpenDocument(string filename, out IDocumentView view)
+        {
+            // TODO: update FontEditPlugin for IDocumentView
+            view = null;
+            return false;
+        }
+        
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
             if (e.Handled) return;
@@ -62,19 +86,6 @@ namespace SphereStudio.Plugins
             }
 
             return description;
-        }
-
-        public void Initialize(ISettings conf)
-        {
-            PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
-        }
-
-        public void Destroy()
-        {
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
     }
 }

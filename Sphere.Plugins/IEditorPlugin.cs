@@ -25,13 +25,13 @@ namespace Sphere.Plugins
     public interface IEditorPlugin : IPlugin
     {
         /// <summary>
-        /// Creates a new image editor control.
+        /// Creates a new editor view.
         /// </summary>
-        EditorObject CreateEditControl();
+        IDocumentView CreateEditView();
         
         /// <summary>
-        /// Creates a new image editor control.
+        /// Opens the specified file as an IDocumentView.
         /// </summary>
-        DockDescription OpenDocument(string filename);
+        bool OpenDocument(string filename, out IDocumentView view);
     }
 }

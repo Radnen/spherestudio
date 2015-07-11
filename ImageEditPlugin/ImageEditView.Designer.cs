@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins
 {
-    partial class Drawer2
+    partial class ImageEditView
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Drawer2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageEditView));
             this.EditorToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DrawerPanel = new System.Windows.Forms.Panel();
             this.ImagePanel = new Sphere.Core.Editor.EditorPanel();

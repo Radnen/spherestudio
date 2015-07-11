@@ -6,15 +6,20 @@ using Sphere.Plugins;
 using SphereStudio.Plugins.Forms;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class MapEditPlugin : IPlugin
+    public class MapEditPlugin : IEditorPlugin
     {
         public string Name { get { return "Map Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default map editor"; } }
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
+
+        private const string _openFileFilters = "*.rmp";
+        private readonly string[] _extensions = new[] { "rmp" };
 
         public MapEditPlugin()
         {
@@ -39,28 +44,27 @@ namespace SphereStudio.Plugins
                 _mapPropertiesMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
             PluginManager.IDE.AddMenuItem(_mapMenu, "View");
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
         }
 
-        private void _importTilesetMenuItem_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions(_extensions);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_newMapMenuItem);
             PluginManager.IDE.RemoveMenuItem("Map");
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
-        private const string _openFileFilters = "*.rmp";
-        private readonly string[] _extensions = new[] { ".rmp" };
+        public IDocumentView CreateEditView() { return null; }
 
+        public bool OpenDocument(string filename, out IDocumentView view)
+        {
+            view = null;
+            return false;
+        }
+        
         #region menu item declarations
         private ToolStripMenuItem _newMapMenuItem;
         private ToolStripMenuItem _mapMenu;
@@ -91,6 +95,11 @@ namespace SphereStudio.Plugins
         }
         
         #region menu item click handlers
+        private void _importTilesetMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void _exportTilesetItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog diag = new SaveFileDialog())

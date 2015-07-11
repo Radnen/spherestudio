@@ -11,75 +11,50 @@ using Sphere.Core.Editor;
 
 namespace Sphere.Plugins.EditShims
 {
-    public partial class ImageEditShim : EditorObject, IImageEditor
+    public partial class ImageEditShim : UserControl
     {
+        private IImageView _view;
+
         public ImageEditShim()
         {
             InitializeComponent();
-            _editor = PluginManager.CreateEditControl(EditorType.Image);
-            if (_editor != null)
+            _view = PluginManager.CreateEditView(EditorType.Image) as IImageView;
+            if (_view != null)
             {
-                IImageEditor editor = _editor as IImageEditor;
-                editor.ImageEdited += (sender, e) => ImageEdited(this, e);
-                _editor.Dock = DockStyle.Fill;
-                Controls.Add(_editor);
+                _view.ImageChanged += (sender, e) => ImageChanged(this, e);
+                _view.Control.Dock = DockStyle.Fill;
+                Controls.Add(_view.Control);
                 statusLabel.Hide();
             }
             else
+            {
                 statusLabel.Text = "No suitable plugin was found to edit this image.";
+            }
         }
 
-        public event EventHandler ImageEdited;
+        public event EventHandler DirtyChanged;
+        public event EventHandler ImageChanged;
 
-        public Bitmap GetImage()
+        public Bitmap Content
         {
-            if (_editor == null) return null;
-            return (_editor as IImageEditor).GetImage();
+            get { return _view != null ? _view.Content : null; }
+            set { if (_view != null) _view.Content = value; }
         }
-        
+
         public IList<Bitmap> GetImages(short tileWidth, short tileHeight)
         {
-            if (_editor == null) return null;
-            IImageEditor editor = _editor as IImageEditor;
-            return editor.GetImages(tileWidth, tileHeight);
+            if (_view == null) return null;
+            return _view.GetImages(tileWidth, tileHeight);
         }
 
-        public override void Redo()
+        public void ZoomIn()
         {
-            if (_editor == null) return;
-            _editor.Redo();
+            if (_view != null) _view.ZoomIn();
         }
         
-        public void SetImage(Bitmap image)
+        public void ZoomOut()
         {
-            if (_editor == null) return;
-            (_editor as IImageEditor).SetImage(image);
+            if (_view != null) _view.ZoomOut();
         }
-
-        public void SetImage(Bitmap image, bool clear_hist)
-        {
-            if (_editor == null) return;
-            (_editor as IImageEditor).SetImage(image, clear_hist);
-        }
-
-        public override void Undo()
-        {
-            if (_editor == null) return;
-            _editor.Undo();
-        }
-
-        public override void ZoomIn()
-        {
-            if (_editor == null) return;
-            _editor.ZoomIn();
-        }
-
-        public override void ZoomOut()
-        {
-            if (_editor == null) return;
-            _editor.ZoomOut();
-        }
-
-        private EditorObject _editor;
     }
 }

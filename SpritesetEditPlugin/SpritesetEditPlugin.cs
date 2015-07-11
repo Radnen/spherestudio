@@ -5,18 +5,20 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class SpritesetEditPlugin : IPlugin
+    public class SpritesetEditPlugin : IEditorPlugin
     {
-        private readonly string[] _extensions = new[] { ".rss" };
-        private const string _openFileFilters = "*.rss";
-
         public string Name { get { return "Spriteset Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default spriteset editor"; } }
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
+
+        private readonly string[] _extensions = new[] { "rss" };
+        private const string _openFileFilters = "*.rss";
 
         public SpritesetEditPlugin()
         {
@@ -41,20 +43,28 @@ namespace SphereStudio.Plugins
             });
 
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
             PluginManager.IDE.AddMenuItem("File.New", _newSpritesetMenuItem);
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
-            PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions(_extensions);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem("Spriteset");
             PluginManager.IDE.RemoveMenuItem(_newSpritesetMenuItem);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
-        
+
+        public IDocumentView CreateEditView() { return null; }
+
+        public bool OpenDocument(string filename, out IDocumentView view)
+        {
+            view = null;
+            return false;
+        }
+
         #region menu item declarations
         private ToolStripMenuItem _newSpritesetMenuItem;
         private ToolStripMenuItem _spritesetMenu;

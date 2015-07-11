@@ -13,6 +13,7 @@ using Sphere.Core.Settings;
 using Sphere.Plugins;
 using SphereStudio.Components;
 using SphereStudio.Forms;
+using SphereStudio.IDE;
 using SphereStudio.Settings;
 
 namespace SphereStudio
@@ -23,7 +24,6 @@ namespace SphereStudio
         private DockContent _treeContent;
         private DockContent _startContent;
         private readonly StartPage _startPage;
-        private EditorObject _currentControl;
         private readonly ProjectTree _tree;
         private bool _firsttime;
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
@@ -31,9 +31,11 @@ namespace SphereStudio
         private string _default_active;
         private bool _loadingPresets = false;
 
+        private DocumentTab _activeTab;
+        private List<DocumentTab> _documentTabs = new List<DocumentTab>();
+
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
-        public event EditFileEventHandler TryEditFile;
         public event EventHandler UnloadProject;
 
         public IDEForm()
@@ -47,8 +49,8 @@ namespace SphereStudio
             _startPage = new StartPage(this) { Dock = DockStyle.Fill, HelpLabel = HelpLabel };
             _startPage.PopulateGameList();
 
-            NewToolButton.DropDown = NewMenuItem.DropDown;
-            OpenToolButton.DropDown = OpenMenuItem.DropDown;
+            NewToolButton.DropDown = menuNew.DropDown;
+            OpenToolButton.DropDown = menuOpen.DropDown;
 
             InitializeDocking();
 
@@ -62,7 +64,7 @@ namespace SphereStudio
             ResumeLayout();
 
             if (Global.Settings.AutoOpenProject)
-                OpenLastProject(null, EventArgs.Empty);
+                menuOpenLastProject_Click(null, EventArgs.Empty);
 
             UpdatePresetList();
 
@@ -73,262 +75,404 @@ namespace SphereStudio
             Text = string.Format("{0} {1} v{2}", Application.ProductName,
                 (Is64) ? "x64" : "x86", Application.ProductVersion);
 
-            TryEditFile += IDEForm_TryEditFile;
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
         }
 
-        public ISettings OpenSettings(string section)
+        #region Main IDE form event handlers
+        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            return new INISettings("Sphere Studio.ini", section);
-        }
-        
-        public ISettings Settings
-        {
-            get { return Global.Settings; }
-        }
-
-        private void UpdatePresetList()
-        {
-            bool wasLoadingPresets = _loadingPresets;
-            _loadingPresets = true;
-
-            RunToolButton.DropDown.Items.Clear();
-            PlatformTool.Items.Clear();
-            if (Environment.Is64BitOperatingSystem && File.Exists(Global.Settings.EnginePath64))
+            if (!e.Cancel)
             {
-                string engineName = String.Format("x64 {0}", Path.GetFileName(Global.Settings.EnginePath64));
-                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
-                item.Click += RunToolButton_MenuClick;
-                item.Tag = Global.Settings.EnginePath64;
-                RunToolButton.DropDown.Items.Add(item);
-                PlatformTool.Items.Add("x64");
+                SaveAndCloseProject();
             }
-            if (File.Exists(Global.Settings.EnginePath))
-            {
-                string engineName = String.Format("x86 {0}", Path.GetFileName(Global.Settings.EnginePath));
-                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
-                item.Click += RunToolButton_MenuClick;
-                item.Tag = Global.Settings.EnginePath;
-                RunToolButton.DropDown.Items.Add(item);
-                PlatformTool.Items.Add("x86");
-            }
-            PlatformTool.Enabled = PlatformTool.Items.Count > 0;
-            if (PlatformTool.Items.Contains(Global.Settings.TestPlatform))
-                PlatformTool.Text = Global.Settings.TestPlatform;
-            else if (PlatformTool.Enabled)
-                PlatformTool.SelectedIndex = 0;
+        }
 
-            ConfigSelectTool.Items.Clear();
-            
+        private void IDEForm_Shown(object sender, EventArgs e)
+        {
+            if (_firsttime)
+            {
+                MessageBox.Show(@"Hello! It's your first time here! I would love to help you " +
+                                @"set a few things up!", @"Welcome First Timer", MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                Global.Settings.SetValue("setupComplete", true);
+                menuConfigManager_Click(null, EventArgs.Empty);
+                _firsttime = false;
+            }
+
+            if (!String.IsNullOrWhiteSpace(_default_active))
+            {
+                DocumentTab tab = GetDocument(_default_active);
+                if (tab != null) tab.Activate();
+            }
+        }
+
+        void menu_DropDownOpening(object sender, EventArgs e)
+        {
+            Color c = ((ToolStripMenuItem)sender).DropDown.BackColor;
+            if (c.R + c.G + c.B > 380)
+                ((ToolStripMenuItem)sender).ForeColor = Color.Black;
+            else
+                ((ToolStripMenuItem)sender).ForeColor = Color.White;
+        }
+
+        void menu_DropDownClosed(object sender, EventArgs e)
+        {
+            Color c = MainMenuStrip.BackColor;
+            if (c.R + c.G + c.B > 380) // find contrast level.
+                ((ToolStripMenuItem)sender).ForeColor = Color.Black;
+            else
+                ((ToolStripMenuItem)sender).ForeColor = Color.White;
+        }
+
+        private void MainDock_ActiveDocumentChanged(object sender, EventArgs e)
+        {
+            if (MainDock.ActiveDocument == null) return;
+            DockContent content = MainDock.ActiveDocument as DockContent;
+            if (content.DockHandler.Form.Controls.Count == 0)
+                return;  // okay...
+            if (content.Tag is DocumentTab)
+            {
+                if (_activeTab != null) _activeTab.Deactivate();
+                _activeTab = content.Tag as DocumentTab;
+                _activeTab.Activate();
+            }
+            UpdateButtons();
+        }
+        #endregion
+
+        #region File menu Click handlers
+        private void menuFile_DropDownOpened(object sender, EventArgs e)
+        {
+            menuSaveAs.Enabled = menuSave.Enabled = (_activeTab != null);
+            menuCloseProject.Enabled = IsProjectOpen;
+            menuOpenLastProject.Enabled = (!IsProjectOpen ||
+                Global.Settings.LastProject != Global.CurrentProject.RootPath);
+        }
+
+        private void menuExit_Click(object sender, EventArgs e)
+        {
+            SaveAndCloseProject();
+            Close();
+        }
+
+        private void menuCloseProject_Click(object sender, EventArgs e)
+        {
+            bool success = CloseCurrentProject();
+            if (success)
+            {
+                _tree.Close();
+                _tree.ProjectName = "Project Name";
+
+                menuOpenLastProject.Enabled = (Global.Settings.LastProject.Length > 0);
+                UpdateButtons();
+            }
+        }
+
+        private void menuNewProject_Click(object sender, EventArgs e)
+        {
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string path = Path.Combine(sphereDir, @"Presets");
-            if (Directory.Exists(path))
+            string rootPath = Path.Combine(sphereDir, "Projects");
+            NewProjectForm myProject = new NewProjectForm { RootFolder = rootPath };
+
+            if (!CloseCurrentProject()) return;
+
+            if (myProject.ShowDialog() == DialogResult.OK)
             {
-                var presetFiles = from filename in Directory.GetFiles(path, "*.preset")
-                                  orderby filename ascending
-                                  select filename;
-                foreach (string s in presetFiles)
+                Directory.CreateDirectory(rootPath);
+
+                if (Global.CurrentProject == null)
+                    Global.CurrentProject = new ProjectSettings();
+
+                Global.CurrentProject.SetSettings(myProject.GetSettings());
+                Global.CurrentProject.Create();
+                Global.CurrentProject.Script = "main.js";
+                Global.CurrentProject.SaveSettings();
+
+                // automatically create the starting script //
+                using (StreamWriter startscript = new StreamWriter(File.Open(Global.CurrentProject.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
                 {
-                    ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
+                    const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
+                    startscript.Write(string.Format(header, Global.CurrentProject.Author, DateTime.Today.ToShortDateString()));
+                    startscript.Flush();
                 }
-                if (Global.Settings.Preset != null)
-                    ConfigSelectTool.SelectedItem = Global.Settings.Preset;
-            }
-            ConfigSelectTool.Items.Add("Configuration Manager...");
-            
-            // if no active preset selected, settings were edited manually
-            if (ConfigSelectTool.SelectedIndex == -1)
-            {
-                ConfigSelectTool.Items.Insert(0, "Custom Settings");
-                ConfigSelectTool.SelectedIndex = 0;
-            }
 
-            _loadingPresets = wasLoadingPresets;
-        }
-
-        void IDEForm_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Extension == ".sgm")
-            {
-                OpenProject(e.Path);
-                e.Handled = true;
+                menuRefreshProject_Click(null, EventArgs.Empty);
+                _startPage.PopulateGameList();
+                OpenDocument(Global.CurrentProject.RootPath + "\\scripts\\main.js");
             }
         }
 
-        public override sealed string Text
+        private void menuOpen_Click(object sender, EventArgs e)
         {
-            get { return base.Text; }
-            set { base.Text = value; }
+            string[] fileNames = GetFilesToOpen(false);
+            if (fileNames == null) return;
+            OpenDocument(fileNames[0]);
         }
 
-        bool IsProjectOpen { get { return Global.CurrentProject != null; } }
-
-        internal string[] GetFilesToOpen(bool multiselect)
+        private void menuOpenProject_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dialog = new OpenFileDialog())
+            using (OpenFileDialog projDiag = new OpenFileDialog())
             {
-                string filterString = "";
-                foreach (string filterID in from key in _openFileTypes.Keys orderby _openFileTypes[key] select key)
+                projDiag.Title = @"Open Project";
+                projDiag.Filter = @"Game Files|*.sgm|All Files|*.*";
+
+                string[] paths = Global.Settings.GetStringArray("gamePaths");
+                if (paths.Length > 0)
+                    projDiag.InitialDirectory = paths[0];
+
+                if (projDiag.ShowDialog() == DialogResult.OK)
+                    OpenProject(projDiag.FileName);
+            }
+        }
+
+        private void menuOpenLastProject_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Global.Settings.LastProject) &&
+                Directory.Exists(Global.Settings.LastProject))
+            {
+                OpenProject(Global.Settings.LastProject + "\\game.sgm");
+            }
+            else UpdateButtons();
+        }
+
+        private void menuSave_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.Save();
+        }
+
+        private void menuSaveAs_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.SaveAs();
+        }
+
+        private void menuSaveAll_Click(object sender, EventArgs e)
+        {
+            SaveAllDocuments();
+        }
+        #endregion
+
+        #region Edit menu Click handlers
+        private void menuEdit_DropDownOpening(object sender, EventArgs e)
+        {
+            menuCut.Enabled = menuSelectAll.Enabled = _activeTab != null;
+            CopyToolButton.Enabled = menuCopy.Enabled = menuRedo.Enabled = menuUndo.Enabled = _activeTab != null;
+            menuPaste.Enabled = PasteToolButton.Enabled = true;
+            menuZoomIn.Enabled = menuZoomOut.Enabled = _activeTab != null;
+            menu_DropDownOpening(sender, e);
+        }
+
+        private void menuCopy_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.Copy();
+        }
+
+        private void menuCut_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.Cut();
+        }
+
+        private void menuPaste_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.Paste();
+        }
+
+        private void menuRedo_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.Redo();
+        }
+
+        private void menuSelectAll_Click(object sender, EventArgs e)
+        {
+            //if (_activeTab != null) _activeTab.SelectAll();
+        }
+
+        private void menuUndo_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.Undo();
+        }
+
+        private void menuZoomIn_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.ZoomIn();
+        }
+
+        private void menuZoomOut_Click(object sender, EventArgs e)
+        {
+            if (_activeTab != null) _activeTab.ZoomOut();
+        }
+        #endregion
+
+        #region View menu Click handlers
+        private void menuView_DropDownOpening(object sender, EventArgs e)
+        {
+            if (_documentTabs.Count > 0)
+            {
+                ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
+                menuView.DropDownItems.Add(ts);
+            }
+            foreach (DocumentTab tab in _documentTabs)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(tab.Title) { Name = "zz_v" };
+                item.Click += menuDocumentItem_Click;
+                item.Image = tab.View.Icon.ToBitmap();
+                item.Tag = tab.FileName;
+                item.Checked = tab == _activeTab;
+                menuView.DropDownItems.Add(item);
+            }
+            menu_DropDownOpening(sender, e);
+        }
+
+        private void menuView_DropDownClosed(object sender, EventArgs e)
+        {
+            for (int i = 0; i < menuView.DropDownItems.Count; ++i)
+            {
+                if (menuView.DropDownItems[i].Name == "zz_v")
                 {
-                    filterString += String.Format("{0}|{1}|", _openFileTypes[filterID], filterID);
+                    menuView.DropDownItems.RemoveAt(i);
+                    i--;
                 }
-                filterString += @"All Files|*.*";
-                dialog.Filter = filterString;
-                dialog.FilterIndex = 5 + _openFileTypes.Count;
-                dialog.InitialDirectory = Global.CurrentProject.RootPath;
-                dialog.Multiselect = multiselect;
-                return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
+            menu_DropDownClosed(sender, e);
         }
 
-        internal void OpenDocument(string filePath)
+        void menuDocumentItem_Click(object sender, EventArgs e)
         {
-            // raise a TryEditFile event first to see if any plugins take the bait
-            EditFileEventArgs e = new EditFileEventArgs(filePath);
-            if (TryEditFile != null) TryEditFile(null, e);
-            if (e.Handled) { return; }
+            DocumentTab tab = GetDocument(((ToolStripItem)sender).Tag as string);
+            if (tab != null) 
+                tab.Activate();
+            else
+                SelectDocument((string)((ToolStripMenuItem)sender).Tag);
+        }
 
-            // no bite, see if there's a wildcard plugin and use that
-            string wildcard = Global.Settings.DefaultEditor;
-            var q = from plugin in PluginManager.GetWildcards()
-                    where wildcard == plugin.Name
-                    select plugin;
-            IEditorPlugin wcPlugin = q.FirstOrDefault();
-            if (wcPlugin != null)
+        private void menuClosePane_Click(object sender, EventArgs e)
+        {
+            if (MainDock.ActiveDocument == null) return;
+
+            if (MainDock.ActiveDocument is DockContent &&
+                ((DockContent)MainDock.ActiveDocument).Controls[0] is StartPage)
             {
-                DockControl(wcPlugin.OpenDocument(filePath));
+                menuStartPage_Click(null, EventArgs.Empty);
+            }
+            else MainDock.ActiveDocument.DockHandler.Close();
+        }
+
+        private void menuProjectTree_Click(object sender, EventArgs e)
+        {
+            if (_treeContent.IsHidden) _treeContent.Show(MainDock, DockState.DockLeft);
+            else _treeContent.Hide();
+        }
+
+        private void menuStartPage_Click(object sender, EventArgs e)
+        {
+            if (_startContent.IsHidden) _startContent.Show();
+            else _startContent.Hide();
+        }
+        #endregion
+
+        #region Project menu Click handlers
+        private void menuGameSettings_Click(object sender, EventArgs e)
+        {
+            OpenGameSettings();
+        }
+
+        private void menuOpenGameDir_Click(object sender, EventArgs e)
+        {
+            string path = Global.CurrentProject.RootPath;
+            var proc = Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
+            proc.Dispose();
+        }
+
+        private void menuTestGame_Click(object sender, EventArgs e)
+        {
+            if (TestGame != null) TestGame(null, EventArgs.Empty);
+
+            if (IsProjectOpen)
+            {
+                Global.CurrentProject.SaveSettings();
+                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
+                string enginePath = PlatformTool.Text == "x64"
+                    ? Global.Settings.EnginePath64
+                    : Global.Settings.EnginePath;
+                Process.Start(enginePath, args);
             }
             else
+                Process.Start(Global.Settings.EnginePath);
+        }
+
+        private void menuRefreshProject_Click(object sender, EventArgs e)
+        {
+            RefreshProject();
+        }
+        #endregion
+
+        #region Tools menu Click handlers
+        private void menuConfigEngine_Click(object sender, EventArgs e)
+        {
+            string path = Path.GetDirectoryName(Global.Settings.EngineConfigPath);
+            if (path != null) Directory.SetCurrentDirectory(path);
+            if (File.Exists(Global.Settings.EngineConfigPath))
+                Process.Start(Global.Settings.EngineConfigPath);
+            Directory.SetCurrentDirectory(Application.StartupPath);
+        }
+
+        private void menuConfigManager_Click(object sender, EventArgs e)
+        {
+            new ConfigManagerForm().ShowDialog(this);
+            UpdatePresetList();
+        }
+
+        private void menuEditorSettings_Click(object sender, EventArgs e)
+        {
+            OpenEditorSettings();
+        }
+        #endregion
+
+        #region Help menu Click handlers
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+            using (AboutBoxForm about = new AboutBoxForm())
             {
-                string extension = Path.GetExtension(filePath);
-                if (extension == null) return;
-                MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
-                                @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                about.ShowDialog();
             }
         }
 
-        private void UpdateButtons()
+        private void menuAPI_Click(object sender, EventArgs e)
         {
-            bool config = File.Exists(Global.Settings.EngineConfigPath);
-            OptionsToolButton.Enabled = ConfigureSphereMenuItem.Enabled = config;
-
-            bool sphereFound = File.Exists(Global.Settings.EnginePath)
-                || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
-            RunToolButton.Enabled = TestGameMenuItem.Enabled = sphereFound;
-
-            bool last = !string.IsNullOrEmpty(Global.Settings.LastProject);
-            OpenLastProjectMenuItem.Enabled = last;
-
-            GameSettingsMenuItem.Enabled = GameToolButton.Enabled = IsProjectOpen;
-            OpenDirectoryMenuItem.Enabled = RefreshMenuItem.Enabled = IsProjectOpen;
-
-            SaveToolButton.Enabled = _currentControl != null;
-            CutToolButton.Enabled = _currentControl != null;
-            CopyToolButton.Enabled = _currentControl != null;
-
+            OpenDocument(Path.Combine(Application.StartupPath, "Docs/api.txt"));
         }
+        #endregion
 
-        #region interfaces
-        private void InitializeDocking()
+        #region Configuration Selector handlers
+        private void ConfigSelectTool_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _treeContent = new DockContent();
-            _treeContent.Controls.Add(_tree);
-            _treeContent.Text = @"Project Explorer";
-            _treeContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
-            _treeContent.HideOnClose = true;
-            _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
-            _treeContent.Show(MainDock, DockState.DockLeft);
+            if (_loadingPresets) return;
 
-            _startContent = new DockContent
+            if (ConfigSelectTool.SelectedIndex == 0 && Global.Settings.Preset == null)
+                return;
+
+            // user selected Configuration Manager (always at bottom)
+            if (ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
             {
-                Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
-                Text = @"Start Page",
-                HideOnClose = true
-            };
-            _startContent.Controls.Add(_startPage);
-            _startContent.Show(MainDock);
-        }
-
-        public void DockControl(DockDescription description)
-        {
-            if (description.Control == null) return;
-
-            DockContent ctrl = new DockContent() { Text = description.TabText, Icon = description.Icon };
-            ctrl.Controls.Add(description.Control);
-
-            DockAreas areas = DockAreas.Document;
-
-            if (description.DockAreas == DockDescAreas.Sides)
-            {
-                areas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
-            }
-            else if (description.DockAreas == (DockDescAreas.Document | DockDescAreas.Sides))
-            {
-                areas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
+                menuConfigManager_Click(null, EventArgs.Empty);
+                return;
             }
 
-            ctrl.DockAreas = areas;
-
-            if (description.Control is EditorObject)
-            {
-                // adds an event to find dirtied forms and notifies the user.
-                ctrl.FormClosing += Content_FormClosing;
-
-                ((EditorObject)description.Control).OnTabTextChange += new EventHandler<string>(delegate(object o, string e)
-                {
-                    ctrl.Text = e;
-                });
-            }
-
-            description.OnShow += new EventHandler(delegate(object o, EventArgs e)
-            {
-                ctrl.Show();
-            });
-
-            description.OnHide += new EventHandler(delegate(object o, EventArgs e)
-            {
-                ctrl.Hide();
-            });
-
-            description.OnToggle += new EventHandler(delegate(object o, EventArgs e)
-            {
-                if (ctrl.IsHidden) ctrl.Show();
-                else ctrl.Hide();
-            });
-
-            DockState state = DockState.Document;
-            if (description.DockState == DockDescStyle.Side && areas.HasFlag(DockAreas.DockLeft))
-                state = DockState.DockLeft;
-
-            ctrl.Show(MainDock, state);
+            Global.Settings.Preset = ConfigSelectTool.Text;
+            UpdatePresetList();
         }
 
-        public string[] Documents
+        private void PlatformTool_SelectedIndexChanged(object sender, EventArgs e)
         {
-            get
-            {
-                List<string> strings = new List<string>();
+            if (_loadingPresets) return;
 
-                foreach (IDockContent content in MainDock.Contents)
-                {
-                    Form f = content.DockHandler.Form;
-                    if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
-                        strings.Add(((EditorObject)content.DockHandler.Form.Controls[0]).FileName);
-                }
-
-                return strings.ToArray();
-            }
+            Global.Settings.TestPlatform = PlatformTool.Text;
+            UpdatePresetList();
         }
+        #endregion
 
-        public void RemoveControl(string name)
+        public IDocumentView CurrentDocument
         {
-            DockContent c = FindDocument(name);
-            if (c != null) c.DockHandler.Close();
-        }
-
-        public EditorObject CurrentDocument
-        {
-            get { return _currentControl; }
+            get { return _activeTab.View; }
         }
 
         public ProjectSettings CurrentGame
@@ -336,7 +480,21 @@ namespace SphereStudio
             get { return Global.CurrentProject; }
         }
 
-        // used for supplying an entirely new menu and it's children
+        public string[] Documents
+        {
+            get { return (from tab in _documentTabs select tab.FileName).ToArray(); }
+        }
+
+        public ISettings Settings
+        {
+            get { return Global.Settings; }
+        }
+
+        /// <summary>
+        /// Adds a new top-level menu to the IDE menu bar.
+        /// </summary>
+        /// <param name="item">The menu item to add.</param>
+        /// <param name="before">The name of the menu before which this one will be inserted.</param>
         public void AddMenuItem(ToolStripMenuItem item, string before = "")
         {
             if (string.IsNullOrEmpty(before)) EditorMenu.Items.Add(item);
@@ -350,12 +508,11 @@ namespace SphereStudio
             EditorMenu.Items.Insert(insertion, item);
         }
 
-        private ToolStripMenuItem GetMenuItem(ToolStripItemCollection collection, string name)
-        {
-            return collection.OfType<ToolStripMenuItem>().FirstOrDefault(item => item.Text.Replace("&", "") == name);
-        }
-
-        // used for adding children to existing menus
+        /// <summary>
+        /// Adds a subitem to an existing menu
+        /// </summary>
+        /// <param name="location">The menu to add the item to. Use dots to drill down, e.g. "File.New"</param>
+        /// <param name="newItem">The ToolStripItem of the menu item to add.</param>
         public void AddMenuItem(string location, ToolStripItem newItem)
         {
             string[] items = location.Split('.');
@@ -381,46 +538,77 @@ namespace SphereStudio
             item.DropDownItems.Add(newItem);
         }
 
-        public void RegisterOpenFileType(string typeName, string filters)
+        public void DockControl(DockDescription description)
         {
-            _openFileTypes[filters] = typeName;
-        }
+            if (description.Control == null) return;
 
-        public void RemoveMenuItem(ToolStripItem item)
-        {
-            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
-            if (menuItem != null) menuItem.DropDownItems.Remove(item);
-        }
+            DockContent ctrl = new DockContent() { Text = description.TabText, Icon = description.Icon };
+            ctrl.Controls.Add(description.Control);
 
-        public void RemoveMenuItem(string name)
-        {
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
-            if (item != null) item.Dispose();
-        }
+            DockAreas areas = DockAreas.Document;
 
-        public void UnregisterOpenFileType(string filters)
-        {
-            if (!_openFileTypes.ContainsKey(filters)) return;
-            _openFileTypes.Remove(filters);
-        }
-        #endregion
-
-        private void EditorForm_Shown(object sender, EventArgs e)
-        {
-            if (_firsttime)
+            if (description.DockAreas == DockDescAreas.Sides)
             {
-                MessageBox.Show(@"Hello! It's your first time here! I would love to help you " +
-                                @"set a few things up!", @"Welcome First Timer", MessageBoxButtons.OK,
-                                MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-                Global.Settings.SetValue("setupComplete", true);
-                OpenConfigManager(null, EventArgs.Empty);
-                _firsttime = false;
+                areas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
+            }
+            else if (description.DockAreas == (DockDescAreas.Document | DockDescAreas.Sides))
+            {
+                areas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
             }
 
-            if (!String.IsNullOrWhiteSpace(_default_active))
+            ctrl.DockAreas = areas;
+
+            description.OnShow += new EventHandler(delegate(object o, EventArgs e)
             {
-                var doc = GetDocument(_default_active);
-                if (doc != null) doc.DockHandler.Activate();
+                ctrl.Show();
+            });
+
+            description.OnHide += new EventHandler(delegate(object o, EventArgs e)
+            {
+                ctrl.Hide();
+            });
+
+            description.OnToggle += new EventHandler(delegate(object o, EventArgs e)
+            {
+                if (ctrl.IsHidden) ctrl.Show();
+                else ctrl.Hide();
+            });
+
+            DockState state = DockState.Document;
+            if (description.DockState == DockDescStyle.Side && areas.HasFlag(DockAreas.DockLeft))
+                state = DockState.DockLeft;
+
+            ctrl.Show(MainDock, state);
+        }
+
+        public void OpenDocument(string filePath)
+        {
+            // try to open the file through the plugin manager
+            IDocumentView view;
+            if (!PluginManager.OpenDocument(filePath, out view))
+            {
+                // no bite, see if there's a wildcard plugin and use that
+                string wildcard = Global.Settings.DefaultEditor;
+                var q = from plugin in PluginManager.GetWildcards()
+                        where wildcard == plugin.Name
+                        select plugin;
+                IEditorPlugin wcPlugin = q.FirstOrDefault();
+                if (wcPlugin == null || !wcPlugin.OpenDocument(filePath, out view))
+                {
+                    string extension = Path.GetExtension(filePath);
+                    if (extension == null) return;
+                    MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
+                                    @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            if (view != null)
+            {
+                DocumentTab tab = new DocumentTab(this, view, filePath);
+                tab.Closed += (sender, e) => _documentTabs.Remove(tab);
+                tab.Activate();
+                _documentTabs.Add(tab);
             }
         }
 
@@ -462,101 +650,41 @@ namespace SphereStudio
                 OpenDocument(s);
             }
 
-            var doc = GetDocument(Global.CurrentUser.CurrentDocument);
-            if (doc != null) doc.DockHandler.Activate();
-            else _startContent.Show();
+            DocumentTab tab = GetDocument(Global.CurrentUser.CurrentDocument);
+            if (tab != null)
+                tab.Activate();
+            else
+                _startContent.Show();
 
             UpdateButtons();
         }
 
-        // Loads and adds a new document to the editor.
-        private void LoadDocument(Control control, string path)
+        public ISettings OpenSettings(string section)
         {
-            AddDocument(control, Path.GetFileName(path));
-            if (_currentControl != null) _currentControl.LoadFile(path);
+            return new INISettings("Sphere Studio.ini", section);
         }
 
-        // adds a new document to the form.
-        #region document addition handling
-        private void AddNewDocument(Control control, string name)
+        public void RegisterOpenFileType(string typeName, string filters)
         {
-            AddDocument(control, name);
-            if (_currentControl != null) _currentControl.CreateNew();
+            _openFileTypes[filters] = typeName;
         }
 
-        private void AddDocument(Control control, string text)
+        public void RemoveControl(string name)
         {
-            DockContent content;
-            control.Dock = DockStyle.Fill;
-            content = new DockContent();
-            content.Controls.Add(control);
-            if (MainDock.DocumentsCount == 0) content.Show(MainDock, DockState.Document);
-            else content.Show(MainDock.Panes[0], null);
-            content.DockState = DockState.Document;
-            content.DockAreas = DockAreas.Document;
-            content.Text = text;
-            content.FormClosing += Content_FormClosing;
-
-            SetCurrentControl(control);
-
-            if (text == "Sphere") { content.AllowEndUserDocking = false; }
-            else
-                content.Icon = Icon.FromHandle(Properties.Resources.page_white_edit.GetHicon());
-
-            if (_currentControl != null) _currentControl.HelpLabel = HelpLabel;
-        }
-        #endregion
-
-        // used to process modified forms when closing:
-        void Content_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DockContent obj = (DockContent)sender;
-            if (obj.Text.EndsWith("*"))
-            {
-                switch (MessageBox.Show(@"File has been modified, save?", obj.Text,
-                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
-                {
-                    case DialogResult.Yes:
-                        SaveMenuItem_Click(null, EventArgs.Empty);
-                        break;
-                    case DialogResult.Cancel:
-                        e.Cancel = true;
-                        break;
-                }
-            }
+            DockContent c = FindDocument(name);
+            if (c != null) c.DockHandler.Close();
         }
 
-        /// <summary>
-        /// Searches any EditorObject controls in the dock contents for a file.
-        /// </summary>
-        /// <param name="filepath">The name to search against.</param>
-        /// <returns>null if none found, or the IDockContent.</returns>
-        public IDockContent GetDocument(string filepath)
+        public void RemoveMenuItem(ToolStripItem item)
         {
-            foreach (IDockContent content in MainDock.Contents)
-            {
-                Form form = content.DockHandler.Form;
-                if (form.Controls.Count <= 0 || !(form.Controls[0] is EditorObject)) continue;
-                if (((EditorObject)form.Controls[0]).FileName == filepath) return content;
-            }
-            return null;
+            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
+            if (menuItem != null) menuItem.DropDownItems.Remove(item);
         }
 
-        private DockContent FindDocument(string name)
+        public void RemoveMenuItem(string name)
         {
-            return MainDock.Contents.Cast<DockContent>().FirstOrDefault(content => content.DockHandler.TabText == name);
-        }
-
-        /// <summary>
-        /// Selects a document by tab name, this is not ideal for editors but useful for
-        /// persistent objects like the project tree and plugins.
-        /// </summary>
-        /// <param name="name">The content's tab text to look for.</param>
-        public void SelectDocument(string name)
-        {
-            foreach (IDockContent content in MainDock.Contents)
-                if (content.DockHandler.TabText == name)
-                    content.DockHandler.Activate();
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
+            if (item != null) item.Dispose();
         }
 
         /// <summary>
@@ -564,9 +692,57 @@ namespace SphereStudio
         /// </summary>
         public void RestyleEditors()
         {
-            foreach (DockContent dc in MainDock.Contents)
-                if (dc.Controls.Count > 0 && dc.Controls[0] is EditorObject)
-                    ((EditorObject)dc.Controls[0]).Restyle();
+            foreach (DocumentTab tab in _documentTabs)
+            {
+                tab.Restyle();
+            }
+        }
+
+        public void UnregisterOpenFileType(string filters)
+        {
+            if (!_openFileTypes.ContainsKey(filters)) return;
+            _openFileTypes.Remove(filters);
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(MainMenuStrip);
+            StyleSettings.ApplyStyle(EditorTools);
+            StyleSettings.ApplyStyle(EditorStatus);
+            UpdateMenuItems();
+        }
+
+        #region Private IDE routines
+        /// <summary>
+        /// Searches open document tabs for one with a specified filename.
+        /// </summary>
+        /// <param name="filepath">The name of the file to search for.</param>
+        /// <returns>The DocumentTab of the document, or null if none was found.</returns>
+        internal DocumentTab GetDocument(string filepath)
+        {
+            foreach (DocumentTab tab in _documentTabs)
+            {
+                if (tab.FileName == filepath) return tab;
+            }
+            return null;
+        }
+
+        internal string[] GetFilesToOpen(bool multiselect)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                string filterString = "";
+                foreach (string filterID in from key in _openFileTypes.Keys orderby _openFileTypes[key] select key)
+                {
+                    filterString += String.Format("{0}|{1}|", _openFileTypes[filterID], filterID);
+                }
+                filterString += @"All Files|*.*";
+                dialog.Filter = filterString;
+                dialog.FilterIndex = 5 + _openFileTypes.Count;
+                dialog.InitialDirectory = Global.CurrentProject.RootPath;
+                dialog.Multiselect = multiselect;
+                return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
+            }
         }
 
         /// <summary>
@@ -574,9 +750,56 @@ namespace SphereStudio
         /// Used internally when dragging a file onto the executable.
         /// </summary>
         /// <param name="name">File path of the document to set.</param>
-        public void SetDefaultActive(string name)
+        internal void SetDefaultActive(string name)
         {
             _default_active = name;
+        }
+
+        private bool IsProjectOpen
+        {
+            get { return Global.CurrentProject != null; }
+        }
+
+        private DockContent FindDocument(string name)
+        {
+            return MainDock.Contents.Cast<DockContent>().FirstOrDefault(content => content.DockHandler.TabText == name);
+        }
+
+        private void InitializeDocking()
+        {
+            _treeContent = new DockContent();
+            _treeContent.Controls.Add(_tree);
+            _treeContent.Text = @"Project Explorer";
+            _treeContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
+            _treeContent.HideOnClose = true;
+            _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
+            _treeContent.Show(MainDock, DockState.DockLeft);
+
+            _startContent = new DockContent
+            {
+                Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
+                Text = @"Start Page",
+                HideOnClose = true
+            };
+            _startContent.Controls.Add(_startPage);
+            _startContent.Show(MainDock);
+        }
+
+        /// <summary>
+        /// Saves all currently opened documents.
+        /// </summary>
+        private void ApplyRefresh(bool ignore_presets = false)
+        {
+            if (!ignore_presets)
+                UpdatePresetList();
+
+            UpdateButtons();
+            SuspendLayout();
+            _startPage.PopulateGameList();
+            UpdateMenuItems();
+            UpdateStyle();
+            Invalidate(true);
+            ResumeLayout();
         }
 
         /// <summary>
@@ -586,102 +809,85 @@ namespace SphereStudio
         private bool CloseAllDocuments()
         {
             List<DockContentHandler> handles = new List<DockContentHandler>();
-            foreach (IDockContent content in MainDock.Contents)
+            foreach (DocumentTab tab in _documentTabs)
             {
-                Form f = content.DockHandler.Form;
-                if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
-                {
-                    if (f.Text.EndsWith("*"))
-                    {
-                        switch (MessageBox.Show(@"File has been modified, save?", f.Text,
-                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
-                        {
-                            case DialogResult.Yes:
-                                ((EditorObject)content.DockHandler.Form.Controls[0]).Save();
-                                break;
-                            case DialogResult.Cancel:
-                                return false;
-                        }
-                    }
-
-                    handles.Add(content.DockHandler);
-                }
+                tab.Close();
             }
 
-            foreach (DockContentHandler handle in handles) handle.Close();
             _startContent.Hide();
             return true;
         }
 
-        /// <summary>
-        /// Saves all currently opened documents.
-        /// </summary>
+        private bool CloseCurrentProject()
+        {
+            if (Global.CurrentUser != null)
+            {
+                if (_activeTab != null)
+                {
+                    Global.CurrentUser.CurrentDocument = _activeTab.FileName;
+                }
+                Global.CurrentUser.Documents = Documents;
+            }
+
+            bool success = CloseAllDocuments();
+            if (!success) return false;
+
+            if (UnloadProject != null) UnloadProject(null, EventArgs.Empty);
+            SaveAndCloseProject(false);
+            return true;
+        }
+
+        // Needed to make sure menu items are visible on a variety of
+        // color themes. Eg, White text on a white theme = unreadable.
+        private void CreateRootMenuItem(ToolStripMenuItem item)
+        {
+            item.DropDownOpening += menu_DropDownOpening;
+            item.DropDownClosed += menu_DropDownClosed;
+        }
+
+        private ToolStripMenuItem GetMenuItem(ToolStripItemCollection collection, string name)
+        {
+            return collection.OfType<ToolStripMenuItem>().FirstOrDefault(item => item.Text.Replace("&", "") == name);
+        }
+
+        public void OpenEditorSettings()
+        {
+            if (Global.EditSettings()) ApplyRefresh();
+        }
+
+        private void OpenGameSettings()
+        {
+            using (GameSettings settings = new GameSettings(Global.CurrentProject))
+            {
+                if (settings.ShowDialog() == DialogResult.OK)
+                {
+                    Global.CurrentProject.SetSettings(settings.GetSettings());
+                    Global.CurrentProject.SaveSettings();
+                }
+            }
+        }
+
+        private void RefreshProject()
+        {
+            _tree.Open();
+            _tree.Refresh();
+            if (Global.CurrentProject.RootPath != null)
+                Global.Settings.LastProject = Global.CurrentProject.RootPath;
+            UpdateButtons();
+            _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
+        }
+
+        private void RemoveRootMenuItem(ToolStripMenuItem item)
+        {
+            item.DropDownOpening -= menu_DropDownOpening;
+            item.DropDownClosed -= menu_DropDownClosed;
+        }
+
         private void SaveAllDocuments()
         {
-            foreach (IDockContent content in MainDock.Contents)
+            foreach (DocumentTab tab in _documentTabs)
             {
-                Form f = content.DockHandler.Form;
-                if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
-                    ((EditorObject)content.DockHandler.Form.Controls[0]).Save();
-            }
-        }
-
-        #region file menu options
-        private void FileMenu_DropDownOpened(object sender, EventArgs e)
-        {
-            SaveAsMenuItem.Enabled = SaveMenuItem.Enabled = (_currentControl != null);
-            CloseProjectMenuItem.Enabled = IsProjectOpen;
-            OpenLastProjectMenuItem.Enabled = (!IsProjectOpen ||
-                Global.Settings.LastProject != Global.CurrentProject.RootPath);
-        }
-
-        public void CallNewProject(object sender, EventArgs e)
-        {
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string rootPath = Path.Combine(sphereDir, "Projects");
-            NewProjectForm myProject = new NewProjectForm { RootFolder = rootPath };
-
-            if (!CloseCurrentProject()) return;
-
-            if (myProject.ShowDialog() == DialogResult.OK)
-            {
-                Directory.CreateDirectory(rootPath);
-
-                if (Global.CurrentProject == null)
-                    Global.CurrentProject = new ProjectSettings();
-
-                Global.CurrentProject.SetSettings(myProject.GetSettings());
-                Global.CurrentProject.Create();
-                Global.CurrentProject.Script = "main.js";
-                Global.CurrentProject.SaveSettings();
-
-                // automatically create the starting script //
-                using (StreamWriter startscript = new StreamWriter(File.Open(Global.CurrentProject.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
-                {
-                    const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
-                    startscript.Write(string.Format(header, Global.CurrentProject.Author, DateTime.Today.ToShortDateString()));
-                    startscript.Flush();
-                }
-
-                RefreshProject(null, EventArgs.Empty);
-                _startPage.PopulateGameList();
-                OpenDocument(Global.CurrentProject.RootPath + "\\scripts\\main.js");
-            }
-        }
-
-        private void OpenProjectMenuItem_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog projDiag = new OpenFileDialog())
-            {
-                projDiag.Title = @"Open Project";
-                projDiag.Filter = @"Game Files|*.sgm|All Files|*.*";
-
-                string[] paths = Global.Settings.GetStringArray("gamePaths");
-                if (paths.Length > 0)
-                    projDiag.InitialDirectory = paths[0];
-
-                if (projDiag.ShowDialog() == DialogResult.OK)
-                    OpenProject(projDiag.FileName);
+                tab.Save();
             }
         }
 
@@ -711,430 +917,103 @@ namespace SphereStudio
             }
         }
 
-        private bool CloseCurrentProject()
+        /// <summary>
+        /// Selects a document by tab name, this is not ideal for editors but useful for
+        /// persistent objects like the project tree and plugins.
+        /// </summary>
+        /// <param name="name">The content's tab text to look for.</param>
+        private void SelectDocument(string name)
         {
-            if (Global.CurrentUser != null)
-            {
-                if (_currentControl != null)
-                {
-                    Global.CurrentUser.CurrentDocument = _currentControl.FileName;
-                }
-                Global.CurrentUser.Documents = Documents;
-            }
-
-            bool success = CloseAllDocuments();
-            if (!success) return false;
-
-            if (UnloadProject != null) UnloadProject(null, EventArgs.Empty);
-            SaveAndCloseProject(false);
-            return true;
-        }
-
-        private void CloseProject(object sender, EventArgs e)
-        {
-            bool success = CloseCurrentProject();
-            if (success)
-            {
-                _tree.Close();
-                _tree.ProjectName = "Project Name";
-
-                OpenLastProjectMenuItem.Enabled = (Global.Settings.LastProject.Length > 0);
-                UpdateButtons();
-            }
-        }
-
-        private void OpenLastProject(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(Global.Settings.LastProject) &&
-                Directory.Exists(Global.Settings.LastProject))
-            {
-                OpenProject(Global.Settings.LastProject + "\\game.sgm");
-            }
-            else UpdateButtons();
-        }
-
-        private void SaveMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.Save();
-        }
-
-        private void SaveAsMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.SaveAs();
-        }
-
-        private void SaveOpenedItem_Click(object sender, EventArgs e)
-        {
-            SaveAllDocuments();
-        }
-
-        private void ExitMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveAndCloseProject();
-            Close();
-        }
-        #endregion
-
-        #region open sub-menu items
-
-        #endregion
-
-        #region edit items
-        private void PasteMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.Paste();
-        }
-
-        private void CopyMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.Copy();
-        }
-
-        private void CutMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.Cut();
-        }
-
-        private void EditMenu_DropDownOpening(object sender, EventArgs e)
-        {
-            CutMenuItem.Enabled = SelectAllMenuItem.Enabled = _currentControl is IScriptEditor;
-            CopyToolButton.Enabled = CopyMenuItem.Enabled = RedoMenuItem.Enabled = UndoMenuItem.Enabled = _currentControl != null;
-            SaveLayoutMenuItem.Enabled = CutMenuItem.Enabled = CutToolButton.Enabled = _currentControl != null;
-            PasteMenuItem.Enabled = PasteToolButton.Enabled = true;
-            ZoomInMenuItem.Enabled = ZoomOutMenuItem.Enabled = !(_currentControl is IScriptEditor);
-            item_DropDownOpening(sender, e);
-        }
-
-        private void SelectAllMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.SelectAll();
-        }
-
-        private void UndoMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.Undo();
-        }
-
-        private void RedoMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.Redo();
-        }
-
-        private void ZoomInMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.ZoomIn();
-        }
-
-        private void ZoomOutMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.ZoomOut();
-        }
-        #endregion
-
-        #region project menu items
-        private void OptionsToolButton_Click(object sender, EventArgs e)
-        {
-            string path = Path.GetDirectoryName(Global.Settings.EngineConfigPath);
-            if (path != null) Directory.SetCurrentDirectory(path);
-            if (File.Exists(Global.Settings.EngineConfigPath))
-                Process.Start(Global.Settings.EngineConfigPath);
-            Directory.SetCurrentDirectory(Application.StartupPath);
-        }
-
-        private void OpenEditorSettings(object sender, EventArgs e)
-        {
-            OpenEditorSettings();
-        }
-
-        private void OpenConfigManager(object sender, EventArgs e)
-        {
-            new ConfigManagerForm().ShowDialog(this);
-            UpdatePresetList();
-        }
-        
-        private void ViewGameSettings(object sender, EventArgs e)
-        {
-            OpenGameSettings();
-        }
-
-        public void ApplyRefresh(bool ignore_presets = false)
-        {
-            if (!ignore_presets)
-                UpdatePresetList();
-
-            UpdateButtons();
-            SuspendLayout();
-            _startPage.PopulateGameList();
-            UpdateMenuItems();
-            UpdateStyle();
-            Invalidate(true);
-            ResumeLayout();
-        }
-
-        public void OpenEditorSettings()
-        {
-            if (Global.EditSettings()) ApplyRefresh();
-        }
-
-        private void OpenGameSettings()
-        {
-            using (GameSettings settings = new GameSettings(Global.CurrentProject))
-            {
-                if (settings.ShowDialog() == DialogResult.OK)
-                {
-                    Global.CurrentProject.SetSettings(settings.GetSettings());
-                    Global.CurrentProject.SaveSettings();
-                }
-            }
-        }
-
-        private void OpenDirectoryMenuItem_Click(object sender, EventArgs e)
-        {
-            string path = Global.CurrentProject.RootPath;
-            var proc = Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
-            proc.Dispose();
-        }
-
-        private void RunToolButton_ButtonClick(object sender, EventArgs e)
-        {
-            if (TestGame != null) TestGame(null, EventArgs.Empty);
-
-            if (IsProjectOpen)
-            {
-                Global.CurrentProject.SaveSettings();
-                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string enginePath = PlatformTool.Text == "x64"
-                    ? Global.Settings.EnginePath64
-                    : Global.Settings.EnginePath;
-                Process.Start(enginePath, args);
-            }
-            else
-                Process.Start(Global.Settings.EnginePath);
-        }
-
-        private void RunToolButton_MenuClick(object sender, EventArgs e)
-        {
-            if (TestGame != null) TestGame(null, EventArgs.Empty);
-
-            if (IsProjectOpen)
-            {
-                Global.CurrentProject.SaveSettings();
-                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string engineType = ((ToolStripMenuItem)sender).Text;
-                string enginePath = (string)((ToolStripMenuItem)sender).Tag;
-                Process.Start(enginePath, args);
-            }
-            else
-                Process.Start(Global.Settings.EnginePath);
-        }
-
-        public void RefreshProject()
-        {
-            _tree.Open();
-            _tree.Refresh();
-            if (Global.CurrentProject.RootPath != null)
-                Global.Settings.LastProject = Global.CurrentProject.RootPath;
-            UpdateButtons();
-            _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
-        }
-
-        private void RefreshProject(object sender, EventArgs e)
-        {
-            RefreshProject();
-        }
-        #endregion
-
-        #region view menu items
-        private void StartPageMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_startContent.IsHidden) _startContent.Show();
-            else _startContent.Hide();
-        }
-
-        private void ProjectExplorerMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_treeContent.IsHidden) _treeContent.Show(MainDock, DockState.DockLeft);
-            else _treeContent.Hide();
-        }
-        #endregion
-
-        #region help items
-        private void AboutMenuItem_Click(object sender, EventArgs e)
-        {
-            using (AboutBoxForm about = new AboutBoxForm())
-            {
-                about.ShowDialog();
-            }
-        }
-        #endregion
-
-        private void SetCurrentControl(Control value)
-        {
-            if (_currentControl != null) _currentControl.Deactivate();
-
-            _currentControl = (value is EditorObject) ? (EditorObject)value : null;
-
-            if (_currentControl != null)
-            {
-                _currentControl.Activate();
-            }
-        }
-
-        private void DockTest_ActiveDocumentChanged(object sender, EventArgs e)
-        {
-            if (MainDock.ActiveDocument == null) return;
-            Form form = MainDock.ActiveDocument.DockHandler.Form;
-            if (form.Controls.Count == 0) return;
-            SetCurrentControl(form.Controls[0]);
-            UpdateButtons();
-        }
-
-        private void EditorForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            SaveAndCloseProject();
-        }
-
-        private void SaveLayoutMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_currentControl != null) _currentControl.SaveLayout();
-        }
-
-        private void ViewMenu_DropDownOpening(object sender, EventArgs e)
-        {
-            if (MainDock.Contents.Count == 0) return;
-            ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
-            ViewMenu.DropDownItems.Add(ts);
             foreach (IDockContent content in MainDock.Contents)
-            {
-                Form f = content.DockHandler.Form;
-                ToolStripMenuItem item = new ToolStripMenuItem(content.DockHandler.TabText) { Name = "zz_v" };
-                item.Click += ViewItem_Click;
-
-                if (f.Controls.Count > 0 && f.Controls[0] is EditorObject)
-                    item.Tag = ((EditorObject)f.Controls[0]).FileName;
-                else
-                    item.Tag = content.DockHandler.TabText;
-
-                if (content.DockHandler.IsActivated) item.CheckState = CheckState.Checked;
-                ViewMenu.DropDownItems.Add(item);
-            }
-            item_DropDownOpening(sender, e);
+                if (content.DockHandler.TabText == name)
+                    content.DockHandler.Activate();
         }
 
-        void ViewItem_Click(object sender, EventArgs e)
+        private void UpdateButtons()
         {
-            IDockContent content = GetDocument((string)((ToolStripItem)sender).Tag);
-            if (content != null) content.DockHandler.Activate();
-            else SelectDocument((string)((ToolStripMenuItem)sender).Tag);
-        }
+            bool config = File.Exists(Global.Settings.EngineConfigPath);
+            OptionsToolButton.Enabled = menuConfigEngine.Enabled = config;
 
-        private void ViewMenu_DropDownClosed(object sender, EventArgs e)
-        {
-            for (int i = 0; i < ViewMenu.DropDownItems.Count; ++i)
-            {
-                if (ViewMenu.DropDownItems[i].Name == "zz_v")
-                {
-                    ViewMenu.DropDownItems.RemoveAt(i);
-                    i--;
-                }
-            }
-            item_DropDownClosed(sender, e);
-        }
+            bool sphereFound = File.Exists(Global.Settings.EnginePath)
+                || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
+            toolTestGame.Enabled = menuTestGame.Enabled = sphereFound;
 
-        private void ClosePaneItem_Click(object sender, EventArgs e)
-        {
-            if (MainDock.ActiveDocument == null) return;
+            bool last = !string.IsNullOrEmpty(Global.Settings.LastProject);
+            menuOpenLastProject.Enabled = last;
 
-            if (MainDock.ActiveDocument is DockContent &&
-                ((DockContent)MainDock.ActiveDocument).Controls[0] is StartPage)
-            {
-                StartPageMenuItem_Click(null, EventArgs.Empty);
-            }
-            else MainDock.ActiveDocument.DockHandler.Close();
-        }
+            menuGameSettings.Enabled = GameToolButton.Enabled = IsProjectOpen;
+            menuOpenGameDir.Enabled = menuRefreshProject.Enabled = IsProjectOpen;
 
-        private void OpenMenuItem_Click(object sender, EventArgs e)
-        {
-            string[] fileNames = GetFilesToOpen(false);
-            if (fileNames == null) return;
-            OpenDocument(fileNames[0]);
-        }
+            SaveToolButton.Enabled = _activeTab != null;
+            CutToolButton.Enabled = _activeTab != null;
+            CopyToolButton.Enabled = _activeTab != null;
 
-        private void ApiDocsMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenDocument(Path.Combine(Application.StartupPath, "Docs/api.txt"));
-        }
-
-        public void UpdateStyle()
-        {
-            StyleSettings.ApplyStyle(MainMenuStrip);
-            StyleSettings.ApplyStyle(EditorTools);
-            StyleSettings.ApplyStyle(EditorStatus);
-            UpdateMenuItems();
-        }
-
-        // Needed to make sure menu items are visible on a variety of
-        // color themes. Eg, White text on a white theme = unreadable.
-        private void CreateRootMenuItem(ToolStripMenuItem item)
-        {
-            item.DropDownOpening += item_DropDownOpening;
-            item.DropDownClosed += item_DropDownClosed;
-        }
-
-        private void RemoveRootMenuItem(ToolStripMenuItem item)
-        {
-            item.DropDownOpening -= item_DropDownOpening;
-            item.DropDownClosed -= item_DropDownClosed;
         }
 
         private void UpdateMenuItems()
         {
             foreach (ToolStripMenuItem item in MainMenuStrip.Items)
-                item_DropDownClosed(item, null);
+                menu_DropDownClosed(item, null);
         }
 
-        void item_DropDownClosed(object sender, EventArgs e)
+        private void UpdatePresetList()
         {
-            Color c = MainMenuStrip.BackColor;
-            if (c.R + c.G + c.B > 380) // find contrast level.
-                ((ToolStripMenuItem)sender).ForeColor = Color.Black;
-            else
-                ((ToolStripMenuItem)sender).ForeColor = Color.White;
-        }
+            bool wasLoadingPresets = _loadingPresets;
+            _loadingPresets = true;
 
-        void item_DropDownOpening(object sender, EventArgs e)
-        {
-            Color c = ((ToolStripMenuItem)sender).DropDown.BackColor;
-            if (c.R + c.G + c.B > 380)
-                ((ToolStripMenuItem)sender).ForeColor = Color.Black;
-            else
-                ((ToolStripMenuItem)sender).ForeColor = Color.White;
-        }
-
-        private void ConfigSelectTool_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_loadingPresets) return;
-
-            if (ConfigSelectTool.SelectedIndex == 0 && Global.Settings.Preset == null)
-                return;
-
-            // user selected Configuration Manager (always at bottom)
-            if (ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
+            toolTestGame.DropDown.Items.Clear();
+            PlatformTool.Items.Clear();
+            if (Environment.Is64BitOperatingSystem && File.Exists(Global.Settings.EnginePath64))
             {
-                OpenConfigManager(null, EventArgs.Empty);
-                return;
+                string engineName = String.Format("x64 {0}", Path.GetFileName(Global.Settings.EnginePath64));
+                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
+                item.Click += menuTestGame_Click;
+                item.Tag = Global.Settings.EnginePath64;
+                toolTestGame.DropDown.Items.Add(item);
+                PlatformTool.Items.Add("x64");
+            }
+            if (File.Exists(Global.Settings.EnginePath))
+            {
+                string engineName = String.Format("x86 {0}", Path.GetFileName(Global.Settings.EnginePath));
+                ToolStripMenuItem item = new ToolStripMenuItem(engineName);
+                item.Click += menuTestGame_Click;
+                item.Tag = Global.Settings.EnginePath;
+                toolTestGame.DropDown.Items.Add(item);
+                PlatformTool.Items.Add("x86");
+            }
+            PlatformTool.Enabled = PlatformTool.Items.Count > 0;
+            if (PlatformTool.Items.Contains(Global.Settings.TestPlatform))
+                PlatformTool.Text = Global.Settings.TestPlatform;
+            else if (PlatformTool.Enabled)
+                PlatformTool.SelectedIndex = 0;
+
+            ConfigSelectTool.Items.Clear();
+
+            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string path = Path.Combine(sphereDir, @"Presets");
+            if (Directory.Exists(path))
+            {
+                var presetFiles = from filename in Directory.GetFiles(path, "*.preset")
+                                  orderby filename ascending
+                                  select filename;
+                foreach (string s in presetFiles)
+                {
+                    ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
+                }
+                if (Global.Settings.Preset != null)
+                    ConfigSelectTool.SelectedItem = Global.Settings.Preset;
+            }
+            ConfigSelectTool.Items.Add("Configuration Manager...");
+
+            // if no active preset selected, settings were edited manually
+            if (ConfigSelectTool.SelectedIndex == -1)
+            {
+                ConfigSelectTool.Items.Insert(0, "Custom Settings");
+                ConfigSelectTool.SelectedIndex = 0;
             }
 
-            Global.Settings.Preset = ConfigSelectTool.Text;
-            UpdatePresetList();
+            _loadingPresets = wasLoadingPresets;
         }
-
-        private void PlatformTool_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_loadingPresets) return;
-
-            Global.Settings.TestPlatform = PlatformTool.Text;
-            UpdatePresetList();
-        }
+        #endregion
     }
 }

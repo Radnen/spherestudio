@@ -7,10 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
+
+using WeifenLuo.WinFormsUI.Docking;
+
 using Sphere.Core.Editor;
 using SphereStudio.Forms;
+using SphereStudio.IDE;
 using SphereStudio.Properties;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Components
 {
@@ -470,10 +473,10 @@ namespace SphereStudio.Components
             pathtop = pathtop.Substring(idx);
             string path = Global.CurrentProject.RootPath + pathtop;
 
-            IDockContent content = EditorForm.GetDocument(path);
-            if (content != null)
+            DocumentTab tab = EditorForm.GetDocument(path);
+            if (tab != null)
             {
-                content.DockHandler.Activate();
+                tab.Activate();
                 return;
             }
 

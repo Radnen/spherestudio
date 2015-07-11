@@ -140,7 +140,7 @@ namespace SphereStudio.Plugins
             }
             ((DirectionLayout)DirectionHolder.Controls[0]).Select(0);
             _selectedFrame = ((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame;
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index)));
+            SpriteDrawer.Content = (Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index));
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
             _tilesetCtrl = new TilesetControl2 {Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite), CanInsert = false};
@@ -160,7 +160,7 @@ namespace SphereStudio.Plugins
         {
             _selectedFrame.Index = tiles[0];
             DirectionHolder.Invalidate(true);
-            SpriteDrawer.SetImage(_tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic, true);
+            SpriteDrawer.Content = _tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic;
             MakeDirty();
         }
 
@@ -255,7 +255,7 @@ namespace SphereStudio.Plugins
                     _sprite.SpriteWidth = (short)frm.WidthSize;
                     _sprite.SpriteHeight = (short)frm.HeightSize;
                 }
-                SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selectedFrame.Index));
+                SpriteDrawer.Content = (Bitmap)_sprite.GetImage(_selectedFrame.Index);
                 UpdateControls();
                 MakeDirty();
             }
@@ -270,7 +270,7 @@ namespace SphereStudio.Plugins
             if (_selectedFrame != null) _selectedFrame.Selected = false;
             _selectedDirection = (DirectionLayout)sender;
             _selectedFrame = _selectedDirection.SelectedFrame;
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selectedFrame.Index));
+            SpriteDrawer.Content = (Bitmap)_sprite.GetImage(_selectedFrame.Index);
             FrameBaseEditor.Frame = _selectedFrame.Frame;
             DirectionAnim.Direction = _selectedDirection.Direction;
             DirectionAnim.Invalidate(true);
@@ -334,9 +334,9 @@ namespace SphereStudio.Plugins
             MakeDirty();
         }
 
-        private void SpriteDrawer_ImageEdited(object sender, EventArgs e)
+        private void SpriteDrawer_ImageChanged(object sender, EventArgs e)
         {
-            Bitmap img = SpriteDrawer.GetImage();
+            Bitmap img = SpriteDrawer.Content;
             _sprite.Images[_selectedFrame.Index] = img;
             _tilesetCtrl.Tileset.Tiles[_selectedFrame.Index].Graphic = img;
             Modified(sender, e);

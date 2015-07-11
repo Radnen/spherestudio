@@ -15,8 +15,11 @@ namespace SphereStudio.Plugins
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default image editor"; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; set; }
-        
+        public Icon Icon { get; private set; }
+
+        private const string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
+        private readonly string[] _extensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
+
         public ImageEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
@@ -34,7 +37,7 @@ namespace SphereStudio.Plugins
                 _rescaleMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.RegisterExtensions(this, "png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.RegisterEditor(EditorType.Image, this);
             PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
             PluginManager.IDE.AddMenuItem(_imageMenu, "View");
@@ -43,45 +46,24 @@ namespace SphereStudio.Plugins
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions("png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_newImageMenuItem);
             PluginManager.IDE.RemoveMenuItem("Image");
             PluginManager.UnregisterEditor(this);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
-        public DockDescription OpenDocument(string filename = "")
+        public IDocumentView CreateEditView()
         {
-            // Creates a new editor instance:
-            Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
-
-            // if no filename provided, initialize a new image
-            if (string.IsNullOrEmpty(filename)) editor.CreateNew();
-
-            // And creates + styles a dock panel:
-            DockDescription dockDesc = new DockDescription();
-            dockDesc.TabText = @"Untitled";
-            dockDesc.Control = editor;
-            dockDesc.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                dockDesc.TabText = Path.GetFileName(filename);
-            }
-
-            return dockDesc;
+            return new ImageEditView();
         }
 
-        public EditorObject CreateEditControl()
+        public bool OpenDocument(string filename, out IDocumentView view)
         {
-            return new Drawer2();
+            view = new ImageEditView();
+            view.Load(filename);
+            return true;
         }
-
-        private const string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
-        private readonly string[] _extensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
 
         #region menu item declarations
         private ToolStripMenuItem _newImageMenuItem;
@@ -89,16 +71,6 @@ namespace SphereStudio.Plugins
         private ToolStripMenuItem _rescaleMenuItem;
         private ToolStripMenuItem _resizeMenuItem;
         #endregion
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenDocument(e.Path));
-                e.Handled = true;
-            }
-        }
 
         private void document_Activate(object sender, EventArgs e)
         {
@@ -113,18 +85,18 @@ namespace SphereStudio.Plugins
         #region menu item click handlers
         private void _newImageMenuItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenDocument());
+            //PluginManager.IDE.DockControl(OpenDocument());
         }
 
         private void _rescaleMenuItem_Click(object sender, EventArgs e)
         {
             using (SizeForm form = new SizeForm())
             {
-                Drawer2 editor = PluginManager.IDE.CurrentDocument as Drawer2;
-                form.WidthSize = editor.ImageWidth;
-                form.HeightSize = editor.ImageHeight;
+                ImageEditView editor = PluginManager.IDE.CurrentDocument as ImageEditView;
+                form.WidthSize = editor.Content.Width;
+                form.HeightSize = editor.Content.Height;
                 if (form.ShowDialog() == DialogResult.OK)
-                    editor.SetScale(form.WidthSize, form.HeightSize, form.Mode);
+                    editor.Rescale(form.WidthSize, form.HeightSize, form.Mode);
             }
         }
 
@@ -132,12 +104,12 @@ namespace SphereStudio.Plugins
         {
             using (SizeForm form = new SizeForm())
             {
-                Drawer2 editor = PluginManager.IDE.CurrentDocument as Drawer2;
-                form.WidthSize = editor.ImageWidth;
-                form.HeightSize = editor.ImageHeight;
+                ImageEditView editor = PluginManager.IDE.CurrentDocument as ImageEditView;
+                form.WidthSize = editor.Content.Width;
+                form.HeightSize = editor.Content.Height;
                 form.UseScale = false;
                 if (form.ShowDialog() == DialogResult.OK)
-                    editor.SetSize(form.WidthSize, form.HeightSize);
+                    editor.Resize(form.WidthSize, form.HeightSize);
             }
         }
         #endregion

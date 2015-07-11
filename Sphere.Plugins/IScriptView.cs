@@ -9,10 +9,10 @@ namespace Sphere.Plugins
     /// <summary>
     /// Specifies the interface for a script editing component.
     /// </summary>
-    public interface IScriptEditor
+    public interface IScriptView : IDocumentView
     {
         /// <summary>
-        /// Gets or sets the contents of the script editor.
+        /// Gets or sets the contents of the script view.
         /// </summary>
         string Text { get; set; }
     }

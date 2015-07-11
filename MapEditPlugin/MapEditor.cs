@@ -361,7 +361,7 @@ namespace SphereStudio.Plugins
             MapControl.SelWidth = TilesetControl.Selection.Width;
             MapControl.CurrentTile = tiles[0];
             Bitmap img = TilesetControl.GetCompiledImage();
-            TileDrawer.SetImage(img, true);
+            TileDrawer.Content = img;
             img.Dispose();
             TileEditor.Tile = Map.Tileset.Tiles[tiles[0]];
         }

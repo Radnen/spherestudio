@@ -101,15 +101,10 @@ namespace SphereStudio.Plugins
             InitWindow();
         }
 
-        public override void Copy() { StyleDrawer.Copy(); }
-        public override void Paste() { StyleDrawer.Paste(); }
-        public override void Undo() { StyleDrawer.Undo(); }
-        public override void Redo() { StyleDrawer.Redo(); }
-
         private void InitWindow()
         {
             _style.GeneratePreview(WindowPanel.Width, WindowPanel.Height);
-            StyleDrawer.SetImage(_style.Images[0]);
+            StyleDrawer.Content = _style.Images[0];
             StyleDrawer.ZoomIn();
             _windW = WindowPanel.Width;
             _windH = WindowPanel.Height;
@@ -122,9 +117,9 @@ namespace SphereStudio.Plugins
             WindowPanel.Location = new Point(x, y);
         }
 
-        private void StyleDrawer_ImageEdited(object sender, EventArgs e)
+        private void StyleDrawer_ImageChanged(object sender, EventArgs e)
         {
-            _style.Images[_style.Selected] = StyleDrawer.GetImage();
+            _style.Images[_style.Selected] = StyleDrawer.Content;
             _style.GeneratePreview(_windW, _windH);
             WindowPanel.Invalidate();
             MakeDirty();
@@ -194,7 +189,7 @@ namespace SphereStudio.Plugins
         private void SelectImage(int num)
         {
             _style.Selected = num;
-            StyleDrawer.SetImage(_style.Images[num]);
+            StyleDrawer.Content = _style.Images[num];
             WindowPanel.Refresh();
         }
 
@@ -255,7 +250,7 @@ namespace SphereStudio.Plugins
         private void EditBGItem_Click(object sender, EventArgs e)
         {
             _style.Selected = 8;
-            StyleDrawer.SetImage(_style.Images[8]);
+            StyleDrawer.Content = _style.Images[8];
             WindowPanel.Refresh();
         }
 

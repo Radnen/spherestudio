@@ -17,8 +17,8 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
-        readonly List<string> _extensionList = new List<string>(new[] { ".js", ".coffee" });
-        const string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
+        private readonly string[] _extensions = new[] { "js", "coffee" };
+        private readonly string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
 
         readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
         readonly ToolStripMenuItem _autoCompleteItem, _codeFoldItem;
@@ -96,7 +96,7 @@ namespace SphereStudio.Plugins
             
             // wire up the plugin to IDE
             PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.RegisterExtensions(this, _extensions);
 
             // show the root menu for this control; appearing before the 'View' menu.
             PluginManager.IDE.AddMenuItem(_rootMenu, "View");
@@ -117,55 +117,29 @@ namespace SphereStudio.Plugins
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions(_extensions);
             PluginManager.UnregisterEditor(this);
             PluginManager.UnregisterWildcard(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
             PluginManager.IDE.RemoveMenuItem("Script");
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
-        public DockDescription OpenDocument(string filename = "")
+        public bool OpenDocument(string filename, out IDocumentView view)
         {
-            // create a new editor instance
-            ScriptEditor editor = new ScriptEditor() { CanDirty = true, Dock = DockStyle.Fill };
-
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
-
-            // specify docking behavior
-            DockDescription dockDesc = new DockDescription();
-            dockDesc.TabText = @"Untitled";
-            dockDesc.Control = editor;
-            dockDesc.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                dockDesc.TabText = Path.GetFileName(filename);
-            }
-
-            return dockDesc;
+            view = CreateEditView();
+            view.Load(filename);
+            return true;
         }
 
-        public EditorObject CreateEditControl()
+        public IDocumentView CreateEditView()
         {
-            return new ScriptEditor();
-        }
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenDocument(e.Path));
-                e.Handled = true;
-            }
+            return new ScriptEditView();
         }
 
         void NewScriptItem_Click(object sender, EventArgs e)
         {
-            PluginManager.IDE.DockControl(OpenDocument());
+            //PluginManager.IDE.DockControl(OpenDocument());
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)

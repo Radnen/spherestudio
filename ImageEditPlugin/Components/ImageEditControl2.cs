@@ -49,7 +49,7 @@ namespace SphereStudio.Plugins.Components
 
         public bool CanUndo { get { return _h_manager.CanUndo; } }
         public bool CanRedo { get { return _h_manager.CanRedo; } }
-        public Image EditImage { get { return _edit_layer; } }
+        public Bitmap EditImage { get { return _edit_layer; } }
         public Color DrawColor
         {
             get { return _draw_pen.Color; }
