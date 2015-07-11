@@ -109,7 +109,10 @@ namespace SphereStudio.Plugins
         {
             get
             {
-                return string.Format("{0},{1}", _codeBox.Caret.Position, _codeBox.Caret.Anchor);
+                return string.Format("{0},{1},{2}",
+                    _codeBox.Caret.Position,
+                    _codeBox.Caret.Anchor,
+                    _codeBox.Lines.FirstVisibleIndex);
             }
             set
             {
@@ -118,7 +121,7 @@ namespace SphereStudio.Plugins
                     string[] parse = value.Split(',');
                     _codeBox.Caret.Position = Convert.ToInt32(parse[0]);
                     _codeBox.Caret.Anchor = Convert.ToInt32(parse[1]);
-                    _codeBox.Scrolling.ScrollToCaret();
+                    _codeBox.Lines.FirstVisibleIndex = Convert.ToInt32(parse[2]);
                 }
                 catch (Exception)
                 {

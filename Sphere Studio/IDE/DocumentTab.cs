@@ -52,7 +52,7 @@ namespace SphereStudio.IDE
             // restore the saved view state
             if (FileName != null)
             {
-                View.ViewState = Global.CurrentUser.GetString("view@" + FileName);
+                View.ViewState = Global.CurrentUser.GetString("view:" + FileName);
             }
 
             UpdateTabText();
