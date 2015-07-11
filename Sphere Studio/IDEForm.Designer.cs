@@ -548,7 +548,7 @@
             // 
             this.sphereProjectToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
-            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.sphereProjectToolStripMenuItem.Text = "Sphere &Project";
             this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
@@ -891,28 +891,28 @@
             this.menuConfigEngine.Enabled = false;
             this.menuConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
             this.menuConfigEngine.Name = "menuConfigEngine";
-            this.menuConfigEngine.Size = new System.Drawing.Size(198, 22);
+            this.menuConfigEngine.Size = new System.Drawing.Size(207, 22);
             this.menuConfigEngine.Text = "&Configure Sphere...";
             this.menuConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(204, 6);
             // 
             // menuConfigManager
             // 
             this.menuConfigManager.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
             this.menuConfigManager.Name = "menuConfigManager";
-            this.menuConfigManager.Size = new System.Drawing.Size(198, 22);
-            this.menuConfigManager.Text = "&Configuration Manager";
+            this.menuConfigManager.Size = new System.Drawing.Size(207, 22);
+            this.menuConfigManager.Text = "&Configuration Manager...";
             this.menuConfigManager.Click += new System.EventHandler(this.menuConfigManager_Click);
             // 
             // menuEditorSettings
             // 
             this.menuEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.menuEditorSettings.Name = "menuEditorSettings";
-            this.menuEditorSettings.Size = new System.Drawing.Size(198, 22);
+            this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
             this.menuEditorSettings.Text = "&Editor Settings...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 

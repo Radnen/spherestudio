@@ -40,7 +40,7 @@ namespace SphereStudio.IDE
                 : string.Format("Untitled{0}", _unsavedID++);
             _ide = ide;
             _content = new DockContent();
-            _content.FormClosing += content_FormClosing;
+            _content.FormClosing += on_FormClosing;
             _content.FormClosed += on_FormClosed;
             _content.Tag = this;
             _content.Icon = View.Icon;
@@ -49,13 +49,19 @@ namespace SphereStudio.IDE
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
 
+            // restore the saved view state
+            if (FileName != null)
+            {
+                View.ViewState = Global.CurrentUser.GetString("view@" + FileName);
+            }
+
             UpdateTabText();
         }
 
         public void Dispose()
         {
-            _ide.FormClosing -= content_FormClosing;
-            _content.FormClosing -= content_FormClosing;
+            _content.FormClosed -= on_FormClosed;
+            _content.FormClosing -= on_FormClosing;
             _content.Dispose();
         }
 
@@ -140,6 +146,7 @@ namespace SphereStudio.IDE
                 return SaveAs(path);
             
             View.Save(FileName);
+            Global.CurrentUser.SaveObject("view:" + FileName, View.ViewState);
             return true;
         }
 
@@ -201,7 +208,12 @@ namespace SphereStudio.IDE
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;
         }
         
-        private void content_FormClosing(object sender, FormClosingEventArgs e)
+        private void on_DirtyChanged(object sender, EventArgs e)
+        {
+            UpdateTabText();
+        }
+
+        private void on_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (View.IsDirty)
             {
@@ -216,13 +228,10 @@ namespace SphereStudio.IDE
             }
         }
 
-        private void on_DirtyChanged(object sender, EventArgs e)
-        {
-            UpdateTabText();
-        }
-        
         private void on_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (FileName != null && !View.IsDirty)
+                Global.CurrentUser.SaveObject("view:" + FileName, View.ViewState);
             if (Closed != null) Closed(this, EventArgs.Empty);
             Dispose();
         }

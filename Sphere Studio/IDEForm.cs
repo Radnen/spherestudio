@@ -125,7 +125,7 @@ namespace SphereStudio
         {
             if (!e.Cancel)
             {
-                SaveAndCloseProject();
+                CloseCurrentProject();
             }
         }
 
@@ -201,7 +201,6 @@ namespace SphereStudio
 
         private void menuExit_Click(object sender, EventArgs e)
         {
-            SaveAndCloseProject();
             Close();
         }
 
@@ -907,6 +906,7 @@ namespace SphereStudio
                     Global.CurrentUser.CurrentDocument = _activeTab.FileName;
                 }
                 Global.CurrentUser.Documents = Documents;
+                Global.CurrentUser.StartHidden = !_startContent.Visible;
             }
 
             bool success = CloseAllDocuments();
@@ -985,7 +985,6 @@ namespace SphereStudio
                     {
                         Global.CurrentUser.Documents = Documents;
                     }
-                    Global.CurrentUser.StartHidden = !_startContent.Visible;
                     Global.CurrentUser.ProjectName = Global.CurrentProject.Name;
                     Global.CurrentUser.Author = Global.CurrentProject.Author;
                     Global.CurrentUser.SaveSettings(Global.CurrentProject.RootPath);

@@ -48,10 +48,7 @@ namespace SphereStudio.Plugins
 
         public Bitmap Content
         {
-            get
-            {
-                return ImageEditor.EditImage;
-            }
+            get { return ImageEditor.EditImage; }
             set
             {
                 ImageEditor.SetImage(value);
@@ -68,15 +65,16 @@ namespace SphereStudio.Plugins
 
         public bool IsDirty
         {
-            get
-            {
-                return _isDirty;
-            }
+            get { return _isDirty; }
             private set
             {
-                if (value != _isDirty && DirtyChanged != null)
-                    DirtyChanged(this, EventArgs.Empty);
+                bool oldvalue = _isDirty;
                 _isDirty = value;
+                if (value != oldvalue && DirtyChanged != null)
+                {
+                    _isDirty = value;
+                    DirtyChanged(this, EventArgs.Empty);
+                }
             }
         }
 
