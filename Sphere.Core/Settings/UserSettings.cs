@@ -35,9 +35,9 @@ namespace Sphere.Core.Settings
             get
             {
                 string docs = GetString("documents");
-                return docs.Split(',');
+                return docs.Split('|');
             }
-            set { SetItem("documents", String.Join(",", value)); }
+            set { SetItem("documents", String.Join("|", value)); }
         }
 
         /// <summary>

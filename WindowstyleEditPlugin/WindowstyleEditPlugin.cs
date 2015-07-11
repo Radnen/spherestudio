@@ -30,33 +30,30 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            // initialize the menu items
-            _newWindowstyleMenuItem = new ToolStripMenuItem("Windowstyle", Properties.Resources.PaletteToolIcon, _newWindowstyleMenuItem_Click);
-
-            // check everything in with the plugin manager
             PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterNewHandler("Windowstyle", this);
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
-            PluginManager.IDE.AddMenuItem("File.New", _newWindowstyleMenuItem);
         }
 
         public void Destroy()
         {
             PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_newWindowstyleMenuItem);
         }
 
         public IDocumentView CreateEditView() { return null; }
 
-        public bool OpenDocument(string filename, out IDocumentView view)
+        public IDocumentView NewDocument()
         {
-            view = null;
-            return false;
+            return null;
         }
-
-        #region menu item declarations
-        private ToolStripMenuItem _newWindowstyleMenuItem;
-        #endregion
+        
+        public IDocumentView OpenDocument(string filepath)
+        {
+            // TODO: update windowstyle plugin for IDocumentView
+            return null;
+        }
 
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)
         {
@@ -68,13 +65,6 @@ namespace SphereStudio.Plugins
             }
         }
 
-        #region menu item click handlers
-        private void _newWindowstyleMenuItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-        #endregion
-        
         private  DockDescription OpenEditor(string filename = "")
         {
             // Creates a new editor instance:

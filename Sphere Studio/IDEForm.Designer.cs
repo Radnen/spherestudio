@@ -88,7 +88,6 @@
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.sphereProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
@@ -261,6 +260,8 @@
             this.NewToolButton.Name = "NewToolButton";
             this.NewToolButton.Size = new System.Drawing.Size(60, 25);
             this.NewToolButton.Text = "&New";
+            this.NewToolButton.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
+            this.NewToolButton.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
             // OpenToolButton
             // 
@@ -489,8 +490,7 @@
             this.menuFile.Size = new System.Drawing.Size(37, 20);
             this.menuFile.Text = "&File";
             this.menuFile.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
-            this.menuFile.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
-            this.menuFile.DropDownOpened += new System.EventHandler(this.menuFile_DropDownOpened);
+            this.menuFile.DropDownOpening += new System.EventHandler(this.menuFile_DropDownOpening);
             // 
             // menuNewProject
             // 
@@ -536,25 +536,21 @@
             // menuNew
             // 
             this.menuNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sphereProjectToolStripMenuItem,
-            this.toolStripSeparator4});
+            this.sphereProjectToolStripMenuItem});
             this.menuNew.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.menuNew.Name = "menuNew";
             this.menuNew.Size = new System.Drawing.Size(187, 22);
             this.menuNew.Text = "&New";
+            this.menuNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
+            this.menuNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
             // sphereProjectToolStripMenuItem
             // 
             this.sphereProjectToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
-            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sphereProjectToolStripMenuItem.Text = "Sphere &Project";
             this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.menuNewProject_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
             // 
             // menuOpen
             // 
@@ -930,7 +926,6 @@
             this.Controls.Add(this.EditorTools);
             this.Controls.Add(this.EditorStatus);
             this.Controls.Add(this.EditorMenu);
-            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.KeyPreview = true;
@@ -941,6 +936,7 @@
             this.Text = "Sphere Studio";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IDEForm_FormClosing);
+            this.Load += new System.EventHandler(this.IDEForm_Load);
             this.Shown += new System.EventHandler(this.IDEForm_Shown);
             this.EditorTabContextMenu.ResumeLayout(false);
             this.EditorTools.ResumeLayout(false);
@@ -1032,7 +1028,6 @@
         private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSplitButton toolTestGame;
         private System.Windows.Forms.ToolStripComboBox PlatformTool;
         private System.Windows.Forms.ToolStripMenuItem menuTools;

@@ -27,19 +27,9 @@ namespace SphereStudio.Settings
         public void SetValue(string key, object value)
         {
             if (value is IEnumerable<string>)
-            {
-                string valuestr = "";
-                foreach (object item in (value as Array))
-                {
-                    if (valuestr != "") valuestr += ",";
-                    valuestr += item.ToString();
-                }
-                _ini.WriteString(_section, key, valuestr);
-            }
+                _ini.WriteString(_section, key, string.Join("|", value as IEnumerable<string>));
             else
-            {
                 _ini.WriteString(_section, key, value.ToString());
-            }
         }
 
         public bool GetBoolean(string key, bool defValue)
@@ -79,7 +69,7 @@ namespace SphereStudio.Settings
             if (_ini.KeyExists(_section, key))
             {
                 string cs = _ini.ReadString(_section, key);
-                return cs.Split(',');
+                return cs.Split('|');
             }
             else
                 return new string[0];

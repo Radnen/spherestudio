@@ -29,7 +29,6 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             // initialize the menu items
-            _newMapMenuItem = new ToolStripMenuItem("&Map", Properties.Resources.MapIcon, _newMapMenuItem_Click);
             _mapMenu = new ToolStripMenuItem("&Map") { Visible = false };
             _exportTilesetMenuItem = new ToolStripMenuItem("E&xport Tileset...", null, _exportTilesetItem_Click);
             _importTilesetMenuItem = new ToolStripMenuItem("&Import Tileset...", null, _importTilesetMenuItem_Click);
@@ -44,45 +43,41 @@ namespace SphereStudio.Plugins
                 _mapPropertiesMenuItem });
             
             // check everything in with the plugin manager
-            PluginManager.IDE.AddMenuItem("File.New", _newMapMenuItem);
             PluginManager.IDE.AddMenuItem(_mapMenu, "View");
+            PluginManager.IDE.RegisterNewHandler("Map", this);
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
         }
 
         public void Destroy()
         {
             PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_newMapMenuItem);
             PluginManager.IDE.RemoveMenuItem("Map");
         }
 
         public IDocumentView CreateEditView() { return null; }
 
-        public bool OpenDocument(string filename, out IDocumentView view)
+        public IDocumentView NewDocument()
         {
-            view = null;
-            return false;
+            IDocumentView view = new MapEditView();
+            return view.NewDocument() ? view : null;
         }
-        
+
+        public IDocumentView OpenDocument(string filepath)
+        {
+            IDocumentView view = new MapEditView();
+            view.Load(filepath);
+            return view ;
+        }
+
         #region menu item declarations
-        private ToolStripMenuItem _newMapMenuItem;
         private ToolStripMenuItem _mapMenu;
         private ToolStripMenuItem _exportTilesetMenuItem;
         private ToolStripMenuItem _mapPropertiesMenuItem;
         private ToolStripMenuItem _recenterMenuItem;
         private ToolStripMenuItem _importTilesetMenuItem;
         #endregion
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
-                e.Handled = true;
-            }
-        }
 
         private void document_Activate(object sender, EventArgs e)
         {
@@ -109,13 +104,13 @@ namespace SphereStudio.Plugins
                 diag.DefaultExt = "png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.IDE.CurrentDocument as MapEditor).SaveTileset(diag.FileName);
+                    (PluginManager.IDE.CurrentDocument as MapEditView).SaveTileset(diag.FileName);
             }
         }
 
         private void _mapPropertiesMenuItem_Click(object sender, EventArgs e)
         {
-            MapEditor editor = PluginManager.IDE.CurrentDocument as MapEditor;
+            MapEditView editor = PluginManager.IDE.CurrentDocument as MapEditView;
             using (MapPropertiesForm form = new MapPropertiesForm(editor.Map))
             {
                 if (form.ShowDialog() == DialogResult.OK)
@@ -123,14 +118,9 @@ namespace SphereStudio.Plugins
             }
         }
 
-        private void _newMapMenuItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-
         private void _recenterMapItem_Click(object sender, EventArgs e)
         {
-            MapEditor editor = PluginManager.IDE.CurrentDocument as MapEditor;
+            MapEditView editor = PluginManager.IDE.CurrentDocument as MapEditView;
             if (editor != null) editor.MapControl.CenterMap();
         }
 
@@ -142,49 +132,9 @@ namespace SphereStudio.Plugins
                 diag.Filter = @"Image Files (.png)|*.png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.IDE.CurrentDocument as MapEditor).UpdateTileset(diag.FileName);
+                    (PluginManager.IDE.CurrentDocument as MapEditView).UpdateTileset(diag.FileName);
             }
         }
         #endregion
-		
-        private DockDescription OpenEditor(string filename = "")
-        {
-            // Creates a new editor instance:
-            MapEditor editor = new MapEditor() { Dock = DockStyle.Fill };
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
-
-            // if no filename provided, initialize a new map
-            if (string.IsNullOrEmpty(filename))
-            {
-                using (Forms.NewMapDialogue diag = new Forms.NewMapDialogue())
-                {
-                    if (diag.ShowDialog() == DialogResult.OK)
-                    {
-                        editor.CreateNew(diag.MapWidth, diag.MapHeight, diag.TileWidth, diag.TileHeight, diag.Tileset);
-                    }
-                    else
-                    {
-                        editor.Dispose();
-                        return null;
-                    }
-                }
-            }
-
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText = @"Untitled";
-            description.Control = editor;
-            description.Icon = Icon;
-            description.DockState = DockDescStyle.Document;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
-
-            return description;
-        }
     }
 }

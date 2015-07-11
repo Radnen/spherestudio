@@ -211,7 +211,7 @@ namespace SphereStudio.IDE
                 e.Cancel |= result == DialogResult.Cancel;
                 if (result == DialogResult.Yes)
                 {
-                    Save();
+                    e.Cancel |= !Save();
                 }
             }
         }

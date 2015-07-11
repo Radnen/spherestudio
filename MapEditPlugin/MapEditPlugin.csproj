@@ -113,11 +113,11 @@
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MapEditPlugin.cs" />
-    <Compile Include="MapEditor.cs">
+    <Compile Include="MapEditView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MapEditor.Designer.cs">
-      <DependentUpon>MapEditor.cs</DependentUpon>
+    <Compile Include="MapEditView.Designer.cs">
+      <DependentUpon>MapEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -173,8 +173,8 @@
     <EmbeddedResource Include="Forms\ZoneForm.resx">
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MapEditor.resx">
-      <DependentUpon>MapEditor.cs</DependentUpon>
+    <EmbeddedResource Include="MapEditView.resx">
+      <DependentUpon>MapEditView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -65,13 +65,12 @@ namespace SphereStudio.Plugins
         }
 
         public IDocumentView CreateEditView() { return null; }
+        public IDocumentView NewDocument() { return null; }
         
-        public bool OpenDocument(string path, out IDocumentView view)
+        public IDocumentView OpenDocument(string filepath)
         {
-            view = null;  // no document tab needed
-            _soundPicker.PlayFile(path);
-           
-            return true;
+            _soundPicker.PlayFile(filepath);
+            return null;
         }
 
         private void IDE_LoadProject(object sender, EventArgs e)

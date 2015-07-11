@@ -63,9 +63,9 @@ namespace SphereStudio.Plugins.UndoRedo
         short _startindex;
         List<Tile> _tiles;
         List<short[,]> _layertiles;
-        MapEditor _parent;
+        MapEditView _parent;
 
-        public TileRemovePage(MapEditor parent, List<Tile> tiles, short startindex, List<short[,]> layertiles)
+        public TileRemovePage(MapEditView parent, List<Tile> tiles, short startindex, List<short[,]> layertiles)
         {
             _tiles = tiles;
             _parent = parent;
@@ -98,12 +98,12 @@ namespace SphereStudio.Plugins.UndoRedo
 
     internal class TileAddPage : HistoryPage
     {
-        MapEditor _parent;
+        MapEditView _parent;
         List<Tile> _added;
         List<short[,]> _layertiles;
         short _startindex;
 
-        public TileAddPage(MapEditor parent, List<Tile> added, short startindex, List<short[,]> layertiles)
+        public TileAddPage(MapEditView parent, List<Tile> added, short startindex, List<short[,]> layertiles)
         {
             _parent = parent;
             _added = added;

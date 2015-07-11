@@ -70,6 +70,10 @@ namespace Sphere.Plugins
         /// <param name="newItem">The ToolStripMenuItem to add.</param>
         void AddMenuItem(string location, ToolStripItem newItem);
 
+        void RegisterNewHandler(string typeName, IEditorPlugin plugin);
+        
+        void UnregisterNewHandler(IEditorPlugin plugin);
+        
         /// <summary>
         /// Registers a file type to be shown in the "Open File" dialog of the IDE.
         /// </summary>

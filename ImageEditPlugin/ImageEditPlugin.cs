@@ -28,7 +28,6 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             // initialize the menu items
-            _newImageMenuItem = new ToolStripMenuItem("Image", Properties.Resources.palette, _newImageMenuItem_Click);
             _imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
             _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, _rescaleMenuItem_Click);
             _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, _resizeMenuItem_Click);
@@ -39,8 +38,8 @@ namespace SphereStudio.Plugins
             // check everything in with the plugin manager
             PluginManager.RegisterExtensions(this, "png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.RegisterEditor(EditorType.Image, this);
-            PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
             PluginManager.IDE.AddMenuItem(_imageMenu, "View");
+            PluginManager.IDE.RegisterNewHandler("Image", this);
             PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 
@@ -48,7 +47,6 @@ namespace SphereStudio.Plugins
         {
             PluginManager.UnregisterExtensions("png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_newImageMenuItem);
             PluginManager.IDE.RemoveMenuItem("Image");
             PluginManager.UnregisterEditor(this);
         }
@@ -58,15 +56,20 @@ namespace SphereStudio.Plugins
             return new ImageEditView();
         }
 
-        public bool OpenDocument(string filename, out IDocumentView view)
+        public IDocumentView NewDocument()
         {
-            view = new ImageEditView();
-            view.Load(filename);
-            return true;
+            IDocumentView view = new ImageEditView();
+            return view.NewDocument() ? view : null;
+        }
+
+        public IDocumentView OpenDocument(string filepath)
+        {
+            IDocumentView view = new ImageEditView();
+            view.Load(filepath);
+            return view;
         }
 
         #region menu item declarations
-        private ToolStripMenuItem _newImageMenuItem;
         private ToolStripMenuItem _imageMenu;
         private ToolStripMenuItem _rescaleMenuItem;
         private ToolStripMenuItem _resizeMenuItem;
@@ -83,11 +86,6 @@ namespace SphereStudio.Plugins
         }
         
         #region menu item click handlers
-        private void _newImageMenuItem_Click(object sender, EventArgs e)
-        {
-            //PluginManager.IDE.DockControl(OpenDocument());
-        }
-
         private void _rescaleMenuItem_Click(object sender, EventArgs e)
         {
             using (SizeForm form = new SizeForm())

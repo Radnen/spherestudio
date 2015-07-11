@@ -18,7 +18,7 @@ using SphereStudio.Settings;
 
 namespace SphereStudio
 {
-    internal partial class IDEForm : Form, IIDE, IStyleable
+    partial class IDEForm : Form, IIDE, IStyleable
     {
         // uninitialized data:
         private DockContent _treeContent;
@@ -26,18 +26,22 @@ namespace SphereStudio
         private readonly StartPage _startPage;
         private readonly ProjectTree _tree;
         private bool _firsttime;
+        private readonly Dictionary<IEditorPlugin, string> _newHandlers = new Dictionary<IEditorPlugin, string>();
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
         private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType, IEditorPlugin>();
         private string _default_active;
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
-        private List<DocumentTab> _documentTabs = new List<DocumentTab>();
+        private List<DocumentTab> _tabs = new List<DocumentTab>();
 
         public event EventHandler LoadProject;
         public event EventHandler TestGame;
         public event EventHandler UnloadProject;
 
+        /// <summary>
+        /// Represents the main window for the Sphere Studio IDE
+        /// </summary>
         public IDEForm()
         {
             InitializeComponent();
@@ -63,9 +67,6 @@ namespace SphereStudio
             Invalidate(true);
             ResumeLayout();
 
-            if (Global.Settings.AutoOpenProject)
-                menuOpenLastProject_Click(null, EventArgs.Empty);
-
             UpdatePresetList();
 
             // make sure this is active only when we use it.
@@ -76,14 +77,28 @@ namespace SphereStudio
                 (Is64) ? "x64" : "x86", Application.ProductVersion);
 
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
+
+            if (Global.Settings.AutoOpenProject)
+                menuOpenLastProject_Click(null, EventArgs.Empty);
         }
 
         #region Main IDE form event handlers
-        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void IDEForm_Load(object sender, EventArgs e)
         {
-            if (!e.Cancel)
+            // this works around glitchy WeifenLuo behavior when messing with panel
+            // visibility before the form loads.
+            if (Global.Settings.AutoOpenProject)
             {
-                SaveAndCloseProject();
+                if (Global.CurrentUser.StartHidden)
+                {
+                    _startContent.Hide();
+                }
+
+                DocumentTab tab = GetDocument(Global.CurrentUser.CurrentDocument);
+                if (tab != null)
+                    tab.Activate();
+                else
+                    _startContent.Show();
             }
         }
 
@@ -103,6 +118,14 @@ namespace SphereStudio
             {
                 DocumentTab tab = GetDocument(_default_active);
                 if (tab != null) tab.Activate();
+            }
+        }
+
+        private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!e.Cancel)
+            {
+                SaveAndCloseProject();
             }
         }
 
@@ -128,8 +151,6 @@ namespace SphereStudio
         {
             if (MainDock.ActiveDocument == null) return;
             DockContent content = MainDock.ActiveDocument as DockContent;
-            if (content.DockHandler.Form.Controls.Count == 0)
-                return;  // okay...
             if (content.Tag is DocumentTab)
             {
                 if (_activeTab != null) _activeTab.Deactivate();
@@ -141,12 +162,41 @@ namespace SphereStudio
         #endregion
 
         #region File menu Click handlers
-        private void menuFile_DropDownOpened(object sender, EventArgs e)
+        private void menuFile_DropDownOpening(object sender, EventArgs e)
         {
             menuSaveAs.Enabled = menuSave.Enabled = (_activeTab != null);
             menuCloseProject.Enabled = IsProjectOpen;
             menuOpenLastProject.Enabled = (!IsProjectOpen ||
                 Global.Settings.LastProject != Global.CurrentProject.RootPath);
+            menu_DropDownOpening(sender, e);
+        }
+
+        private void menuNew_DropDownOpening(object sender, EventArgs e)
+        {
+            ToolStripDropDown dropdown = ((ToolStripDropDownItem)sender).DropDown;
+            
+            if (_newHandlers.Count > 0)
+                dropdown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
+            foreach (var kv in (from kv in _newHandlers orderby kv.Value select kv))
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(kv.Value) { Name = "8:12" };
+                item.Image = kv.Key.Icon.ToBitmap();
+                item.Click += (sender1, e1) =>
+                {
+                    AddDocument(kv.Key.NewDocument());
+                };
+                dropdown.Items.Add(item);
+            }
+        }
+
+        private void menuNew_DropDownClosed(object sender, EventArgs e)
+        {
+            ToolStripDropDown dropdown = ((ToolStripDropDownItem)sender).DropDown;
+
+            while (dropdown.Items.ContainsKey("8:12"))
+            {
+                dropdown.Items.RemoveByKey("8:12");
+            }
         }
 
         private void menuExit_Click(object sender, EventArgs e)
@@ -305,12 +355,12 @@ namespace SphereStudio
         #region View menu Click handlers
         private void menuView_DropDownOpening(object sender, EventArgs e)
         {
-            if (_documentTabs.Count > 0)
+            if (_tabs.Count > 0)
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
                 menuView.DropDownItems.Add(ts);
             }
-            foreach (DocumentTab tab in _documentTabs)
+            foreach (DocumentTab tab in _tabs)
             {
                 ToolStripMenuItem item = new ToolStripMenuItem(tab.Title) { Name = "zz_v" };
                 item.Click += menuDocumentItem_Click;
@@ -480,9 +530,19 @@ namespace SphereStudio
             get { return Global.CurrentProject; }
         }
 
+        /// <summary>
+        /// Gets a list of filenames of opened documents. Unsaved documents
+        /// without filenames will be excluded.
+        /// </summary>
         public string[] Documents
         {
-            get { return (from tab in _documentTabs select tab.FileName).ToArray(); }
+            get
+            {
+                var q = from tab in _tabs
+                        where tab.FileName != null
+                        select tab.FileName;
+                return q.ToArray();
+            }
         }
 
         public ISettings Settings
@@ -583,32 +643,32 @@ namespace SphereStudio
 
         public void OpenDocument(string filePath)
         {
-            // try to open the file through the plugin manager
+            // the IDE will try to open the file through the plugin manager first.
+            // if that fails, then use the current default editor (if any).
             IDocumentView view;
             if (!PluginManager.OpenDocument(filePath, out view))
             {
-                // no bite, see if there's a wildcard plugin and use that
+                // nobody claimed the file, so find the current default editor plugin
                 string wildcard = Global.Settings.DefaultEditor;
                 var q = from plugin in PluginManager.GetWildcards()
                         where wildcard == plugin.Name
                         select plugin;
                 IEditorPlugin wcPlugin = q.FirstOrDefault();
-                if (wcPlugin == null || !wcPlugin.OpenDocument(filePath, out view))
+                
+                // if there's a default editor, use it.
+                if (wcPlugin != null)
+                    view = wcPlugin.OpenDocument(filePath);
+                else
                 {
                     string extension = Path.GetExtension(filePath);
-                    if (extension == null) return;
                     MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
-                                    @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
             if (view != null)
             {
-                DocumentTab tab = new DocumentTab(this, view, filePath);
-                tab.Closed += (sender, e) => _documentTabs.Remove(tab);
-                tab.Activate();
-                _documentTabs.Add(tab);
+                AddDocument(view, filePath);
             }
         }
 
@@ -634,27 +694,29 @@ namespace SphereStudio
             Global.CurrentUser = new UserSettings();
             Global.CurrentUser.LoadSettings(Path.GetDirectoryName(filename));
 
-            if (Global.CurrentUser.StartHidden)
-            {
-                _startContent.Hide();
-            }
-            else
-            {
-                _startContent.Show();
-            }
-
+            _startContent.Show();
+            
             string[] docs = Global.CurrentUser.Documents;
             foreach (string s in docs)
             {
                 if (String.IsNullOrWhiteSpace(s)) continue;
-                OpenDocument(s);
+                try { OpenDocument(s); }
+                catch (Exception) { }
             }
 
-            DocumentTab tab = GetDocument(Global.CurrentUser.CurrentDocument);
-            if (tab != null)
-                tab.Activate();
-            else
-                _startContent.Show();
+            // if the form is not visible, don't try to mess with the panels.
+            // it will be done in Form_Load.
+            if (Visible)
+            {
+                if (Global.CurrentUser.StartHidden)
+                    _startContent.Hide();
+
+                DocumentTab tab = GetDocument(Global.CurrentUser.CurrentDocument);
+                if (tab != null)
+                    tab.Activate();
+                else
+                    _startContent.Show();
+            }
 
             UpdateButtons();
         }
@@ -662,6 +724,11 @@ namespace SphereStudio
         public ISettings OpenSettings(string section)
         {
             return new INISettings("Sphere Studio.ini", section);
+        }
+
+        public void RegisterNewHandler(string typeName, IEditorPlugin plugin)
+        {
+            _newHandlers[plugin] = typeName;
         }
 
         public void RegisterOpenFileType(string typeName, string filters)
@@ -692,12 +759,17 @@ namespace SphereStudio
         /// </summary>
         public void RestyleEditors()
         {
-            foreach (DocumentTab tab in _documentTabs)
+            foreach (DocumentTab tab in _tabs)
             {
                 tab.Restyle();
             }
         }
 
+        public void UnregisterNewHandler(IEditorPlugin plugin)
+        {
+            _newHandlers.Remove(plugin);
+        }
+        
         public void UnregisterOpenFileType(string filters)
         {
             if (!_openFileTypes.ContainsKey(filters)) return;
@@ -713,6 +785,26 @@ namespace SphereStudio
         }
 
         #region Private IDE routines
+        private void InitializeDocking()
+        {
+            _treeContent = new DockContent();
+            _treeContent.Controls.Add(_tree);
+            _treeContent.Text = @"Project Explorer";
+            _treeContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
+            _treeContent.HideOnClose = true;
+            _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
+            _treeContent.Show(MainDock, DockState.DockLeft);
+
+            _startContent = new DockContent
+            {
+                Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
+                Text = @"Start Page",
+                HideOnClose = true
+            };
+            _startContent.Controls.Add(_startPage);
+            _startContent.Show(MainDock);
+        }
+
         /// <summary>
         /// Searches open document tabs for one with a specified filename.
         /// </summary>
@@ -720,7 +812,7 @@ namespace SphereStudio
         /// <returns>The DocumentTab of the document, or null if none was found.</returns>
         internal DocumentTab GetDocument(string filepath)
         {
-            foreach (DocumentTab tab in _documentTabs)
+            foreach (DocumentTab tab in _tabs)
             {
                 if (tab.FileName == filepath) return tab;
             }
@@ -760,29 +852,17 @@ namespace SphereStudio
             get { return Global.CurrentProject != null; }
         }
 
+        private void AddDocument(IDocumentView view, string filepath = null)
+        {
+            DocumentTab tab = new DocumentTab(this, view, filepath);
+            tab.Closed += (sender, e) => _tabs.Remove(tab);
+            tab.Activate();
+            _tabs.Add(tab);
+        }
+
         private DockContent FindDocument(string name)
         {
             return MainDock.Contents.Cast<DockContent>().FirstOrDefault(content => content.DockHandler.TabText == name);
-        }
-
-        private void InitializeDocking()
-        {
-            _treeContent = new DockContent();
-            _treeContent.Controls.Add(_tree);
-            _treeContent.Text = @"Project Explorer";
-            _treeContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
-            _treeContent.HideOnClose = true;
-            _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
-            _treeContent.Show(MainDock, DockState.DockLeft);
-
-            _startContent = new DockContent
-            {
-                Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
-                Text = @"Start Page",
-                HideOnClose = true
-            };
-            _startContent.Controls.Add(_startPage);
-            _startContent.Show(MainDock);
         }
 
         /// <summary>
@@ -808,8 +888,8 @@ namespace SphereStudio
         /// <param name="save">Set to true to invoke save routines.</param>
         private bool CloseAllDocuments()
         {
-            List<DockContentHandler> handles = new List<DockContentHandler>();
-            foreach (DocumentTab tab in _documentTabs)
+            DocumentTab[] toClose = (from tab in _tabs select tab).ToArray();
+            foreach (DocumentTab tab in toClose)
             {
                 tab.Close();
             }
@@ -885,7 +965,7 @@ namespace SphereStudio
 
         private void SaveAllDocuments()
         {
-            foreach (DocumentTab tab in _documentTabs)
+            foreach (DocumentTab tab in _tabs)
             {
                 tab.Save();
             }

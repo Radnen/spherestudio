@@ -72,7 +72,8 @@ namespace Sphere.Plugins
         /// <summary>
         /// Sets up the document view for a new file.
         /// </summary>
-        void NewDocument();
+        /// <returns>true if a fresh slate was set up, false otherwise.</returns>
+        bool NewDocument();
         
         /// <summary>
         /// Loads a file into the document view.

@@ -21,36 +21,36 @@ namespace SphereStudio.Plugins
         private const string _openFileFilters = "*.rfn";
         private readonly string[] _extensions = new[] { "rfn" };
 
-        private readonly ToolStripMenuItem _newFontItem;
-
         public FontEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.style.GetHicon());
-
-            _newFontItem = new ToolStripMenuItem("Font", Properties.Resources.style);
-            _newFontItem.Click += FontItem_Click;
         }
 
         public void Initialize(ISettings conf)
         {
             PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterNewHandler("Font", this);
             PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
-            PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
         }
 
         public void Destroy()
         {
-            PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.UnregisterExtensions(_extensions);
         }
 
         public IDocumentView CreateEditView() { return null; }
 
-        public bool OpenDocument(string filename, out IDocumentView view)
+        public IDocumentView NewDocument()
+        {
+            return null;
+        }
+        
+        public IDocumentView OpenDocument(string filename)
         {
             // TODO: update FontEditPlugin for IDocumentView
-            view = null;
-            return false;
+            return null;
         }
         
         private void IDE_TryEditFile(object sender, EditFileEventArgs e)

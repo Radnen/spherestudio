@@ -99,9 +99,10 @@ namespace SphereStudio.Plugins
         public void Copy() { }
         public void Paste() { }
         
-        public void NewDocument()
+        public bool NewDocument()
         {
             ImageEditor.MakeNew(80, 80);
+            return true;
         }
         
         public new void Load(string path)

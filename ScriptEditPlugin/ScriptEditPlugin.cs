@@ -20,7 +20,7 @@ namespace SphereStudio.Plugins
         private readonly string[] _extensions = new[] { "js", "coffee" };
         private readonly string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
 
-        readonly ToolStripMenuItem _rootMenu, _indentMenu, _newScriptItem;
+        readonly ToolStripMenuItem _rootMenu, _indentMenu;
         readonly ToolStripMenuItem _autoCompleteItem, _codeFoldItem;
         readonly ToolStripMenuItem _highlightLineItem, _highlightBracesItem;
         readonly ToolStripMenuItem _useTabsItem, _changeFontItem;
@@ -81,8 +81,6 @@ namespace SphereStudio.Plugins
             _rootMenu.DropDownItems.Add(_changeFontItem);
             _rootMenu.Visible = false;
 
-            _newScriptItem = new ToolStripMenuItem("Script", Properties.Resources.script_edit);
-            _newScriptItem.Click += NewScriptItem_Click;
             #endregion
         }
 
@@ -95,12 +93,12 @@ namespace SphereStudio.Plugins
             PluginManager.RegisterWildcard(this);
             
             // wire up the plugin to IDE
+            PluginManager.IDE.RegisterNewHandler("Script", this);
             PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
             PluginManager.RegisterExtensions(this, _extensions);
 
             // show the root menu for this control; appearing before the 'View' menu.
             PluginManager.IDE.AddMenuItem(_rootMenu, "View");
-            PluginManager.IDE.AddMenuItem("File.New", _newScriptItem);
 
             // check off the active settings in the menus
             _autoCompleteItem.Checked = PluginManager.IDE.Settings.GetBoolean("script-autocomplete", true);
@@ -120,16 +118,9 @@ namespace SphereStudio.Plugins
             PluginManager.UnregisterExtensions(_extensions);
             PluginManager.UnregisterEditor(this);
             PluginManager.UnregisterWildcard(this);
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             Functions.Clear();
-            PluginManager.IDE.RemoveMenuItem("Script");
-        }
-
-        public bool OpenDocument(string filename, out IDocumentView view)
-        {
-            view = CreateEditView();
-            view.Load(filename);
-            return true;
         }
 
         public IDocumentView CreateEditView()
@@ -137,9 +128,17 @@ namespace SphereStudio.Plugins
             return new ScriptEditView();
         }
 
-        void NewScriptItem_Click(object sender, EventArgs e)
+        public IDocumentView NewDocument()
         {
-            //PluginManager.IDE.DockControl(OpenDocument());
+            IDocumentView view = new ScriptEditView();
+            return view.NewDocument() ? view : null;
+        }
+
+        public IDocumentView OpenDocument(string filename)
+        {
+            IDocumentView view = new ScriptEditView();
+            view.Load(filename);
+            return view;
         }
 
         void EightUnitItem_Click(object sender, EventArgs e)

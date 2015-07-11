@@ -28,7 +28,6 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             // initialize the menu items
-            _newSpritesetMenuItem = new ToolStripMenuItem("Spriteset", Properties.Resources.PaletteToolIcon, _newSpritesetMenuItem_Click);
             _spritesetMenu = new ToolStripMenuItem("&Spriteset") { Visible = false };
             _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, _resizeMenuItem_Click);
             _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, _rescaleMenuItem_Click);
@@ -44,29 +43,32 @@ namespace SphereStudio.Plugins
 
             // check everything in with the plugin manager
             PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterNewHandler("Spriteset", this);
             PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
-            PluginManager.IDE.AddMenuItem("File.New", _newSpritesetMenuItem);
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
         }
 
         public void Destroy()
         {
             PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem("Spriteset");
-            PluginManager.IDE.RemoveMenuItem(_newSpritesetMenuItem);
         }
 
         public IDocumentView CreateEditView() { return null; }
 
-        public bool OpenDocument(string filename, out IDocumentView view)
+        public IDocumentView NewDocument()
         {
-            view = null;
-            return false;
+            return null;
+        }
+
+        public IDocumentView OpenDocument(string filepath)
+        {
+            // TODO: update spriteset plugin for IDocumentView
+            return null;
         }
 
         #region menu item declarations
-        private ToolStripMenuItem _newSpritesetMenuItem;
         private ToolStripMenuItem _spritesetMenu;
         private ToolStripMenuItem _exportMenuItem;
         private ToolStripMenuItem _importMenuItem;
@@ -95,11 +97,6 @@ namespace SphereStudio.Plugins
         }
         
         #region menu item click handlers
-        private void _newSpritesetMenuItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-        
         private void _exportMenuItem_Click(object sender, EventArgs e)
         {
             // TODO: implement spriteset export!

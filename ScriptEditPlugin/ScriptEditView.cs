@@ -153,15 +153,18 @@ namespace SphereStudio.Plugins
         {
         }
         
-        public void NewDocument()
+        public bool NewDocument()
         {
+            _codeBox.Text = "";
             if (PluginManager.IDE.Settings.GetBoolean("autoScriptHeader", false))
             {
                 string author = (PluginManager.IDE.CurrentGame != null) ? PluginManager.IDE.CurrentGame.Author : "Unnamed";
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
-                _codeBox.UndoRedo.EmptyUndoBuffer();
             }
+            _codeBox.UndoRedo.EmptyUndoBuffer();
+            _codeBox.Modified = false;
+            return true;
         }
         
         public void Load(string filename)

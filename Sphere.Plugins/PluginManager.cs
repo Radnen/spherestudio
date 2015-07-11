@@ -40,6 +40,25 @@ namespace Sphere.Plugins
         }
 
         /// <summary>
+        /// Creates an IDocumentView for a new, untitled document.
+        /// </summary>
+        /// <param name="extension">The file extension, sans dot, of the document to create.</param>
+        /// <returns>
+        /// An IDocumentView of the new document, or null if it couldn't be created for
+        /// any reason.
+        /// </returns>
+        public static IDocumentView NewDocument(string extension)
+        {
+            if (_handlers.Keys.Contains(extension))
+            {
+                IEditorPlugin plugin = _handlers[extension];
+                return plugin.NewDocument();
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Opens a specified file as an IDocumentView.
         /// </summary>
         /// <param name="filename">The fully qualified path to the file to open.</param>
@@ -56,7 +75,8 @@ namespace Sphere.Plugins
             if (_handlers.Keys.Contains(extension))
             {
                 IEditorPlugin plugin = _handlers[extension];
-                return plugin.OpenDocument(filename, out view);
+                view = plugin.OpenDocument(filename);
+                return view != null;
             }
             return false;
         }

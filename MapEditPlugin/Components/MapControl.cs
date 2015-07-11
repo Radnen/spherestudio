@@ -13,7 +13,7 @@ using SphereStudio.Plugins.UndoRedo;
 
 namespace SphereStudio.Plugins.Components
 {
-    internal partial class MapControl : UserControl
+    partial class MapControl : UserControl
     {
         #region Attributes
         private int _vw, _vh;
