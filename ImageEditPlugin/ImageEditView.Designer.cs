@@ -118,7 +118,7 @@
             this.ImageEditor.TabIndex = 0;
             this.ImageEditor.Tool = Components.ImageEditControl2.ImageTool.Pen;
             this.ImageEditor.UseGrid = false;
-            this.ImageEditor.ImageEdited += new System.EventHandler(this.ImageEditor_ImageEdited);
+            this.ImageEditor.ImageChanged += new System.EventHandler(this.ImageEditor_ImageChanged);
             this.ImageEditor.ColorChanged += new System.EventHandler(this.ImageEditor_ColorChanged);
             this.ImageEditor.Paint += new System.Windows.Forms.PaintEventHandler(this.ImageEditor_Paint);
             // 

@@ -26,7 +26,7 @@ namespace SphereStudio.Plugins.Components
         private HistoryManager _h_manager;
         private Point _start_anchor = new Point();
         private Point _end_anchor = new Point();
-        public event EventHandler ImageEdited;
+        public event EventHandler ImageChanged;
         public event EventHandler ColorChanged;
         public ToolStripLabel LocationLabel { get; set; }
         public bool Outlined { get; set; }
@@ -341,7 +341,7 @@ namespace SphereStudio.Plugins.Components
                 _paint = false;
                 DoTool();
                 PushHistory();
-                if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+                if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
             }
         }
 
@@ -448,7 +448,7 @@ namespace SphereStudio.Plugins.Components
             PushResizePage(image);
             SetImage(image);
             image.Dispose();
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
         }
 
         public void RescaleImage(int width, int height, InterpolationMode mode)
@@ -462,7 +462,7 @@ namespace SphereStudio.Plugins.Components
             PushResizePage(image);
             SetImage(image);
             image.Dispose();
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
         }
 
         public void Slide(int ox, int oy)
@@ -509,7 +509,7 @@ namespace SphereStudio.Plugins.Components
             _end_anchor.X = _image.Width - 1;
             _end_anchor.Y = _image.Height - 1;
             PushHistory();
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
         }
 
         private void selectColorItem_Click(object sender, EventArgs e)
@@ -537,7 +537,7 @@ namespace SphereStudio.Plugins.Components
                     Bitmap image = (Bitmap)obj.GetData("System.Drawing.Bitmap");
                     PushResizePage(image);
                     SetImage(image);
-                    if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+                    if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
                 }
             }
         }
@@ -553,7 +553,7 @@ namespace SphereStudio.Plugins.Components
                 _end_anchor.X = _image.Width - 1;
                 _end_anchor.Y = _image.Height - 1;
                 PushHistory();
-                if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+                if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
             }
         }
 
@@ -592,7 +592,7 @@ namespace SphereStudio.Plugins.Components
             _end_anchor.Y = _image.Height - 1;
             PushHistory();
             Invalidate();
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
+            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
         }
 
         private void horizontalItem_Click(object sender, EventArgs e)

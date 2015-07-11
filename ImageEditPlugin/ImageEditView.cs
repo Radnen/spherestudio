@@ -11,12 +11,13 @@ using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class ImageEditView : UserControl, IImageView
+    partial class ImageEditView : UserControl, IImageView
     {
         private readonly DockContent _drawContent = new DockContent();
         private readonly DockContent _paletteContent = new DockContent();
         private readonly DockPanel _editorDock = new DockPanel();
 
+        private bool _isDirty;
         private ColorBox _selectedBox;
 
         public ImageEditView()
@@ -67,7 +68,16 @@ namespace SphereStudio.Plugins
 
         public bool IsDirty
         {
-            get { return true; }
+            get
+            {
+                return _isDirty;
+            }
+            private set
+            {
+                if (value != _isDirty && DirtyChanged != null)
+                    DirtyChanged(this, EventArgs.Empty);
+                _isDirty = value;
+            }
         }
 
         public Icon Icon { get; private set; }
@@ -76,10 +86,12 @@ namespace SphereStudio.Plugins
 
         public void Activate()
         {
+
         }
 
         public void Deactivate()
         {
+
         }
 
         // TODO: implement clipboard functions for ImageEditView
@@ -92,7 +104,7 @@ namespace SphereStudio.Plugins
             ImageEditor.MakeNew(80, 80);
         }
         
-        public void Load(string path)
+        public new void Load(string path)
         {
             using (Bitmap img = (Bitmap)Image.FromFile(path))
             {
@@ -353,23 +365,24 @@ namespace SphereStudio.Plugins
             ImageEditor.ResizeToFit();
         }
 
-        private void ImageEditor_ImageEdited(object sender, EventArgs e)
-        {
-            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
-            UndoButton.Enabled = ImageEditor.CanUndo;
-            RedoButton.Enabled = ImageEditor.CanRedo;
-        }
-
-        private void ImageEditor_Paint(object sender, PaintEventArgs e)
-        {
-            ZoomLabel.Text = @"Zoom: " + ImageEditor.Zoom;
-        }
-
         private void ImageEditor_ColorChanged(object sender, EventArgs e)
         {
             _selectedBox.SelectedColor = ImageEditor.DrawColor;
             AlphaTracker.Value = ImageEditor.DrawColor.A;
             AlphaLabel.Text = @"Alpha: " + AlphaTracker.Value;
+        }
+
+        private void ImageEditor_ImageChanged(object sender, EventArgs e)
+        {
+            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
+            UndoButton.Enabled = ImageEditor.CanUndo;
+            RedoButton.Enabled = ImageEditor.CanRedo;
+            IsDirty = true;
+        }
+
+        private void ImageEditor_Paint(object sender, PaintEventArgs e)
+        {
+            ZoomLabel.Text = @"Zoom: " + ImageEditor.Zoom;
         }
 
         private void MirrorButton_Click(object sender, EventArgs e)
