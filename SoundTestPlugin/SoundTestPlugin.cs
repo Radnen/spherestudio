@@ -64,10 +64,10 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
         }
 
-        public IDocumentView CreateEditView() { return null; }
-        public IDocumentView NewDocument() { return null; }
+        public DocumentView CreateEditView() { return null; }
+        public DocumentView NewDocument() { return null; }
         
-        public IDocumentView OpenDocument(string filepath)
+        public DocumentView OpenDocument(string filepath)
         {
             _soundPicker.PlayFile(filepath);
             return null;

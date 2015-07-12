@@ -13,21 +13,21 @@ namespace Sphere.Plugins.EditShims
 {
     public partial class ImageEditShim : UserControl
     {
-        private IImageView _view;
+        private ImageView _view;
 
         public ImageEditShim()
         {
             InitializeComponent();
             
-            _view = PluginManager.CreateEditView(EditorType.Image) as IImageView;
+            _view = PluginManager.CreateEditView(EditorType.Image) as ImageView;
             if (_view != null)
             {
-                _view.Control.Dock = DockStyle.Fill;
+                _view.Dock = DockStyle.Fill;
                 _view.ImageChanged += (sender, e) =>
                 {
                     if (ImageChanged != null) ImageChanged(this, e);
                 };
-                Controls.Add(_view.Control);
+                Controls.Add(_view);
                 statusLabel.Hide();
             }
             else

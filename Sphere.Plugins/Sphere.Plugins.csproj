@@ -44,12 +44,18 @@
   <ItemGroup>
     <Compile Include="DockDescription.cs" />
     <Compile Include="EditFileEventArgs.cs" />
-    <Compile Include="IDocumentView.cs" />
+    <Compile Include="DocumentView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="IEditorPlugin.cs" />
-    <Compile Include="IImageView.cs" />
+    <Compile Include="ImageView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="IIDE.cs" />
     <Compile Include="IPlugin.cs" />
-    <Compile Include="IScriptView.cs" />
+    <Compile Include="ScriptView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ISettings.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginWrapper.cs" />

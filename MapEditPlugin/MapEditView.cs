@@ -16,7 +16,7 @@ using SphereStudio.Plugins.UndoRedo;
 
 namespace SphereStudio.Plugins
 {
-    partial class MapEditView : UserControl, IDocumentView
+    partial class MapEditView : DocumentView
     {
         private DockContent _mapContent;
         private DockContent _drawContent;
@@ -38,39 +38,13 @@ namespace SphereStudio.Plugins
             TilesetControl.MultiSelect = true;
         }
 
-        public event EventHandler DirtyChanged;
-
-        public bool IsDirty
-        {
-            get { return _isDirty; }
-            private set
-            {
-                bool oldvalue = _isDirty;
-                _isDirty = value;
-                if (value != oldvalue && DirtyChanged != null)
-                {
-                    _isDirty = value;
-                    DirtyChanged(this, EventArgs.Empty);
-                }
-            }
-        }
-
-        public Control Control
-        {
-            get { return _mainPanel; }
-        }
-
-        public string[] FileExtensions
+        public override string[] FileExtensions
         {
             get { return new[] { "rmp" }; }
         }
 
-        public Icon Icon
+        public override string ViewState
         {
-            get; private set;
-        }
-
-        public string ViewState {
             get
             {
                 return string.Format("{0}|{1}",
@@ -84,15 +58,8 @@ namespace SphereStudio.Plugins
                 MapControl.hScrollBar.Value = Convert.ToInt32(parse[1]);
             }
         }
-        
-        public void Activate() { }
-        public void Deactivate() { }
-        public void Cut() { }
-        public void Copy() { }
-        public void Paste() { }
-        public void Restyle() { }
-        
-        public bool NewDocument()
+
+        public override bool NewDocument()
         {
             using (var diag = new Forms.NewMapDialogue())
             {
@@ -103,8 +70,8 @@ namespace SphereStudio.Plugins
                 return true;
             }
         }
-        
-        public new void Load(string filepath)
+
+        public override void Load(string filepath)
         {
             Map map = new Map();
             map.Load(filepath);
@@ -120,7 +87,7 @@ namespace SphereStudio.Plugins
             Invalidate(true);
         }
 
-        public void Save(string filepath)
+        public override void Save(string filepath)
         {
             if (!Map.Save(filepath))
             {
@@ -140,12 +107,22 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public void ZoomIn()
+        public override void Activate()
+        {
+            MapEditPlugin.ShowMenus(true);
+        }
+
+        public override void Deactivate()
+        {
+            MapEditPlugin.ShowMenus(false);
+        }
+        
+        public override void ZoomIn()
         {
             MapControl.ZoomIn();
         }
 
-        public void ZoomOut()
+        public override void ZoomOut()
         {
             MapControl.ZoomOut();
         }

@@ -28,9 +28,9 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterExtensions(this, _extensions);
             PluginManager.IDE.RegisterNewHandler(this, "Font");
             PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
+            PluginManager.RegisterExtensions(this, _extensions);
         }
 
         public void Destroy()
@@ -40,52 +40,23 @@ namespace SphereStudio.Plugins
             PluginManager.UnregisterExtensions(_extensions);
         }
 
-        public IDocumentView CreateEditView() { return null; }
-
-        public IDocumentView NewDocument()
+        public DocumentView CreateEditView()
         {
-            return null;
+            return new FontEditView();
+        }
+
+        public DocumentView NewDocument()
+        {
+            DocumentView view = new FontEditView();
+            view.NewDocument();
+            return view;
         }
         
-        public IDocumentView OpenDocument(string filename)
+        public DocumentView OpenDocument(string filepath)
         {
-            // TODO: update FontEditPlugin for IDocumentView
-            return null;
-        }
-        
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
-                e.Handled = true;
-            }
-        }
-
-        void FontItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-
-        public DockDescription OpenEditor(string filename = "")
-        {
-            // Creates a new editor instance:
-            FontEditor editor = new FontEditor() { Dock = DockStyle.Fill };
-
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText =  @"Font Importer";
-            description.Control = editor;
-            description.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
-
-            return description;
+            DocumentView view = new FontEditView();
+            view.Load(filepath);
+            return view;
         }
     }
 }

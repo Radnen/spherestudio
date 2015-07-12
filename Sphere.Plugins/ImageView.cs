@@ -10,17 +10,28 @@ namespace Sphere.Plugins
     /// <summary>
     /// Specifies the interface for an image editing component.
     /// </summary>
-    public interface IImageView : IDocumentView
+    public abstract class ImageView : DocumentView
     {
+        public override bool IsDirty
+        {
+            get { return base.IsDirty; }
+            protected set
+            {
+                if (value && ImageChanged != null)
+                    ImageChanged(this, EventArgs.Empty);
+                base.IsDirty = value;
+            }
+        }
+        
         /// <summary>
         /// Raised when the image data has been modified.
         /// </summary>
-        event EventHandler ImageChanged;
+        public event EventHandler ImageChanged;
 
         /// <summary>
         /// Gets or sets the image as it is shown in the document.
         /// </summary>
-        Bitmap Content { get; set; }
+        public abstract Bitmap Content { get; set; }
 
         /// <summary>
         /// Splits the image being edited into tiles and returns the images for each of those tiles.
@@ -28,6 +39,6 @@ namespace Sphere.Plugins
         /// <param name="tileWidth">The width of the tiles.</param>
         /// <param name="tileHeight">The height of the tiles.</param>
         /// <returns>A list of images representing the individual tiles.</returns>
-        IList<Bitmap> GetImages(short tileWidth, short tileHeight);
+        public abstract IList<Bitmap> GetImages(short tileWidth, short tileHeight);
     }
 }

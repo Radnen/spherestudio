@@ -50,11 +50,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WindowstyleEditor.cs">
+    <Compile Include="WindowstyleEditView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WindowstyleEditor.Designer.cs">
-      <DependentUpon>WindowstyleEditor.cs</DependentUpon>
+    <Compile Include="WindowstyleEditView.Designer.cs">
+      <DependentUpon>WindowstyleEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowstyleEditPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,8 +74,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="WindowstyleEditor.resx">
-      <DependentUpon>WindowstyleEditor.cs</DependentUpon>
+    <EmbeddedResource Include="WindowstyleEditView.resx">
+      <DependentUpon>WindowstyleEditView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

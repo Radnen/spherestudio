@@ -83,11 +83,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SpritesetEditor.cs">
+    <Compile Include="SpritesetEditView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SpritesetEditor.Designer.cs">
-      <DependentUpon>SpritesetEditor.cs</DependentUpon>
+    <Compile Include="SpritesetEditView.Designer.cs">
+      <DependentUpon>SpritesetEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="SpritesetEditPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,8 +122,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SpritesetEditor.resx">
-      <DependentUpon>SpritesetEditor.cs</DependentUpon>
+    <EmbeddedResource Include="SpritesetEditView.resx">
+      <DependentUpon>SpritesetEditView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

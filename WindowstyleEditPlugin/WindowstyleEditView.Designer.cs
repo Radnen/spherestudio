@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins
 {
-    partial class WindowstyleEditor
+    partial class WindowstyleEditView
     {
         /// <summary> 
         /// Required designer variable.

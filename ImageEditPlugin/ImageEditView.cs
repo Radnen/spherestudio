@@ -11,13 +11,12 @@ using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins
 {
-    partial class ImageEditView : UserControl, IImageView
+    partial class ImageEditView : ImageView
     {
         private readonly DockContent _drawContent = new DockContent();
         private readonly DockContent _paletteContent = new DockContent();
         private readonly DockPanel _editorDock = new DockPanel();
 
-        private bool _isDirty;
         private ColorBox _selectedBox;
 
         public ImageEditView()
@@ -38,15 +37,7 @@ namespace SphereStudio.Plugins
             box_MouseClick(ColorFlow.Controls[0], null);
         }
 
-        public event EventHandler DirtyChanged;
-        public event EventHandler ImageChanged;
-
-        public Control Control
-        {
-            get { return _editorDock; }
-        }
-
-        public Bitmap Content
+        public override Bitmap Content
         {
             get { return ImageEditor.EditImage; }
             set
@@ -58,52 +49,18 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public string[] FileExtensions
+        public override string[] FileExtensions
         {
             get { return new[] { "png", "jpg", "bmp", "gif" }; }
         }
 
-        public bool IsDirty
-        {
-            get { return _isDirty; }
-            private set
-            {
-                bool oldvalue = _isDirty;
-                _isDirty = value;
-                if (value != oldvalue && DirtyChanged != null)
-                {
-                    _isDirty = value;
-                    DirtyChanged(this, EventArgs.Empty);
-                }
-            }
-        }
-
-        public Icon Icon { get; private set; }
-
-        public string ViewState { get; set; }
-
-        public void Activate()
-        {
-
-        }
-
-        public void Deactivate()
-        {
-
-        }
-
-        // TODO: implement clipboard functions for ImageEditView
-        public void Cut() { }
-        public void Copy() { }
-        public void Paste() { }
-        
-        public bool NewDocument()
+        public override bool NewDocument()
         {
             ImageEditor.MakeNew(80, 80);
             return true;
         }
-        
-        public new void Load(string path)
+
+        public override void Load(string path)
         {
             using (Bitmap img = (Bitmap)Image.FromFile(path))
             {
@@ -111,13 +68,38 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public void Redo()
+        public override void Save(string path)
+        {
+            using (Image img = ImageEditor.GetImage())
+            {
+                img.Save(path);
+            }
+        }
+        
+        public override void Activate()
+        {
+            ImageEditPlugin.ShowMenus(true);
+        }
+
+        public override void Deactivate()
+        {
+            ImageEditPlugin.ShowMenus(false);
+        }
+
+        public override void Undo()
+        {
+            if (ImageEditor.CanUndo) ImageEditor.Undo();
+            UndoButton.Enabled = ImageEditor.CanUndo;
+            RedoButton.Enabled = ImageEditor.CanRedo;
+            IsDirty = true;
+        }
+
+        public override void Redo()
         {
             if (ImageEditor.CanRedo) ImageEditor.Redo();
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
-            if (ImageChanged != null)
-                ImageChanged(this, EventArgs.Empty);
+            IsDirty = true;
         }
 
         public void Rescale(int width, int height, InterpolationMode mode)
@@ -130,34 +112,6 @@ namespace SphereStudio.Plugins
             ImageEditor.ResizeImage(width, height);
         }
 
-        public void Restyle()
-        {
-
-        }
-
-        public void Save(string path)
-        {
-            using (Image img = ImageEditor.GetImage())
-            {
-                img.Save(path);
-            }
-        }
-
-        public void Undo()
-        {
-            if (ImageEditor.CanUndo) ImageEditor.Undo();
-            UndoButton.Enabled = ImageEditor.CanUndo;
-            RedoButton.Enabled = ImageEditor.CanRedo;
-            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
-        }
-
-        public void ZoomIn()
-        {
-        }
-
-        public void ZoomOut()
-        {
-        }
 
         
         
@@ -238,7 +192,7 @@ namespace SphereStudio.Plugins
         /// <param name="tileWidth">Width of sub-image.</param>
         /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public IList<Bitmap> GetImages(short tileWidth,short tileHeight)
+        public override IList<Bitmap> GetImages(short tileWidth,short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;
@@ -373,7 +327,6 @@ namespace SphereStudio.Plugins
 
         private void ImageEditor_ImageChanged(object sender, EventArgs e)
         {
-            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
             UndoButton.Enabled = ImageEditor.CanUndo;
             RedoButton.Enabled = ImageEditor.CanRedo;
             IsDirty = true;

@@ -30,12 +30,12 @@ namespace SphereStudio.IDE
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="filename">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(IDEForm ide, IDocumentView view, string filename = null, bool restoreView = false)
+        public DocumentTab(IDEForm ide, DocumentView view, string filename = null, bool restoreView = false)
         {
             FileName = filename;
             View = view;
 
-            View.Control.Dock = DockStyle.Fill;
+            View.Dock = DockStyle.Fill;
             
             _tabText = filename != null ? Path.GetFileName(filename)
                 : string.Format("Untitled{0}", _unsavedID++);
@@ -45,7 +45,7 @@ namespace SphereStudio.IDE
             _content.Tag = this;
             _content.Icon = View.Icon;
             _content.TabText = _tabText;
-            _content.Controls.Add(View.Control);
+            _content.Controls.Add(View);
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
 
@@ -55,7 +55,7 @@ namespace SphereStudio.IDE
             {
                 string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
                 try { View.ViewState = Global.CurrentUser.GetString(setting); }
-                catch (Exception) { View.ViewState = null; }
+                catch (Exception) { }
             }
         }
 
@@ -84,79 +84,13 @@ namespace SphereStudio.IDE
         /// <summary>
         /// Gets the underlying IDocumentView for the tab.
         /// </summary>
-        public IDocumentView View { get; private set; }
+        public DocumentView View { get; private set; }
 
-        /// <summary>
-        /// Makes the tab active and notifies the underlying document that it has
-        /// received focus.
-        /// </summary>
-        public void Activate()
-        {
-            _content.DockHandler.Activate();
-            View.Activate();
-        }
-
-        /// <summary>
-        /// Closes the tab.
-        /// </summary>
-        /// <param name="saveView">'true' to save the current view state before closing.</param>
-        /// <param name="forceClose">'true' to bypass the Unsaved Changes prompt.</param>
-        /// <returns>'true' if the tab was closed; 'false' on cancel.</returns>
-        public bool Close(bool saveView = false, bool forceClose = false)
-        {
-            if (forceClose || PromptSave())
-            {
-                string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
-                if (saveView && FileName != null && !View.IsDirty)  // save view only if clean
-                    Global.CurrentUser.SaveObject(setting, View.ViewState);
-                _content.Close();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        
-        public void Copy()
-        {
-            View.Copy();
-        }
-        
-        public void Cut()
-        {
-            View.Cut();
-        }
-
-        /// <summary>
-        /// Notifies the underlying document that it has lost focus.
-        /// </summary>
-        public void Deactivate()
-        {
-            View.Deactivate();
-        }
-
-        public void Paste()
-        {
-            View.Paste();
-        }
-        
-        public void Redo()
-        {
-            View.Redo();
-        }
-
-        public void Restyle()
-        {
-            View.Restyle();
-        }
-        
         /// <summary>
         /// Prompts the user to save a modified document. The document will
         /// remain open afterwards.
         /// </summary>
-        /// <returns>'true' if the user saved or answered No; 'false' on cancel.</returns>
-        /// <remarks>If the document hasn't been modified, returns 'true' immediately without prompting.</remarks>
+        /// <returns>'true' if the user saved, answered No, or if the file is clean; 'false' on cancel.</returns>
         public bool PromptSave()
         {
             if (View.IsDirty)
@@ -173,7 +107,7 @@ namespace SphereStudio.IDE
             }
             return true;
         }
-        
+
         /// <summary>
         /// Saves the document in this tab. If the document hasn't been saved yet,
         /// the user will be asked to provide a filename.
@@ -183,7 +117,7 @@ namespace SphereStudio.IDE
         {
             if (FileName == null)
                 return SaveAs(path);
-            
+
             View.Save(FileName);
             return true;
         }
@@ -209,7 +143,7 @@ namespace SphereStudio.IDE
                 diag.FileName = _tabText;
                 diag.Filter = filterString;
                 diag.DefaultExt = View.FileExtensions[0];
-                
+
                 // show the Save As dialog
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
@@ -226,24 +160,106 @@ namespace SphereStudio.IDE
             }
         }
 
-        public void SaveView()
+        /// <summary>
+        /// Closes the tab.
+        /// </summary>
+        /// <param name="saveView">'true' to save the current view state before closing.</param>
+        /// <param name="forceClose">'true' to bypass the Unsaved Changes prompt.</param>
+        /// <returns>'true' if the tab was closed; 'false' on cancel.</returns>
+        public bool Close(bool saveView = false, bool forceClose = false)
         {
+            if (forceClose || PromptSave())
+            {
+                string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
+                string state = View.ViewState ?? "";
+                if (saveView && FileName != null && !View.IsDirty)  // save view only if clean
+                    Global.CurrentUser.SaveObject(setting, state);
+                _content.Close();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public void RestoreView()
+        /// <summary>
+        /// Notifies the document that a styling option changed.
+        /// </summary>
+        public void Restyle()
         {
+            View.Restyle();
         }
 
+        /// <summary>
+        /// Makes the tab active and notifies the underlying document that it has
+        /// received focus.
+        /// </summary>
+        public void Activate()
+        {
+            _content.DockHandler.Activate();
+            View.Activate();
+        }
+
+        /// <summary>
+        /// Notifies the underlying document that it has lost focus.
+        /// </summary>
+        public void Deactivate()
+        {
+            View.Deactivate();
+        }
+
+        /// <summary>
+        /// Sends a Cut command to the document view.
+        /// </summary>
+        public void Cut()
+        {
+            View.Cut();
+        }
+
+        /// <summary>
+        /// Sends a Copy command to the document view.
+        /// </summary>
+        public void Copy()
+        {
+            View.Copy();
+        }
+
+        /// <summary>
+        /// Sends a Paste command to the document view.
+        /// </summary>
+        public void Paste()
+        {
+            View.Paste();
+        }
+
+        /// <summary>
+        /// Sends an Undo command to the document view.
+        /// </summary>
         public void Undo()
         {
             View.Undo();
         }
 
+        /// <summary>
+        /// Sends a Redo command to the document view.
+        /// </summary>
+        public void Redo()
+        {
+            View.Redo();
+        }
+
+        /// <summary>
+        /// Sends a Zoom In command to the document view.
+        /// </summary>
         public void ZoomIn()
         {
             View.ZoomIn();
         }
 
+        /// <summary>
+        /// Sends a Zoom Out command to the document view.
+        /// </summary>
         public void ZoomOut()
         {
             View.ZoomOut();

@@ -13,18 +13,18 @@ namespace Sphere.Plugins.EditShims
 {
     public partial class ScriptEditShim : UserControl
     {
-        private IScriptView _view;
+        private ScriptView _view;
 
         public ScriptEditShim()
         {
             InitializeComponent();
             
             // try to use a plugin for script editing
-            _view = PluginManager.CreateEditView(EditorType.Script) as IScriptView;
+            _view = PluginManager.CreateEditView(EditorType.Script) as ScriptView;
             if (_view != null)
             {
-                _view.Control.Dock = DockStyle.Fill;
-                Controls.Add(_view.Control);
+                _view.Dock = DockStyle.Fill;
+                Controls.Add(_view);
                 fallbackTextBox.Hide();
             }
         }

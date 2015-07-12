@@ -25,19 +25,19 @@ namespace Sphere.Plugins
     public interface IEditorPlugin : IPlugin
     {
         /// <summary>
-        /// Creates a new editor view.
+        /// Creates a new document view.
         /// </summary>
-        IDocumentView CreateEditView();
+        DocumentView CreateEditView();
 
         /// <summary>
         /// Creates a new document as an IDocumentView.
         /// </summary>
         /// <returns>The IDocumentView of the new document, or null on failure.</returns>
-        IDocumentView NewDocument();
+        DocumentView NewDocument();
         
         /// <summary>
         /// Opens the specified file as an IDocumentView.
         /// </summary>
-        IDocumentView OpenDocument(string filepath);
+        DocumentView OpenDocument(string filepath);
     }
 }

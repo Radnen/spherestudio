@@ -40,7 +40,7 @@ namespace SphereStudio
         public event EventHandler UnloadProject;
 
         /// <summary>
-        /// Represents the main window for the Sphere Studio IDE
+        /// Represents the main window for the Sphere Studio IDE.
         /// </summary>
         public IDEForm()
         {
@@ -508,7 +508,7 @@ namespace SphereStudio
         }
         #endregion
 
-        public IDocumentView CurrentDocument
+        public DocumentView CurrentDocument
         {
             get { return _activeTab.View; }
         }
@@ -633,7 +633,7 @@ namespace SphereStudio
         {
             // the IDE will try to open the file through the plugin manager first.
             // if that fails, then use the current default editor (if any).
-            IDocumentView view;
+            DocumentView view;
             if (!PluginManager.OpenDocument(filePath, out view))
             {
                 // nobody claimed the file, so find the current default editor plugin
@@ -840,7 +840,7 @@ namespace SphereStudio
             get { return Global.CurrentProject != null; }
         }
 
-        private void AddDocument(IDocumentView view, string filepath = null, bool restoreView = false)
+        private void AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
         {
             DocumentTab tab = new DocumentTab(this, view, filepath, restoreView);
             tab.Closed += (sender, e) => _tabs.Remove(tab);

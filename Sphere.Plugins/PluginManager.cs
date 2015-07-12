@@ -31,7 +31,7 @@ namespace Sphere.Plugins
         /// </summary>
         /// <param name="type">The type of object to be edited.</param>
         /// <returns>The new edit control, or null if no suitable plugin is available.</returns>
-        public static IDocumentView CreateEditView(EditorType type)
+        public static DocumentView CreateEditView(EditorType type)
         {
             if (_embedders.Keys.Contains(type))
                 return _embedders[type].CreateEditView();
@@ -47,12 +47,13 @@ namespace Sphere.Plugins
         /// An IDocumentView of the new document, or null if it couldn't be created for
         /// any reason.
         /// </returns>
-        public static IDocumentView NewDocument(string extension)
+        public static DocumentView NewDocument(string extension)
         {
             if (_handlers.Keys.Contains(extension))
             {
                 IEditorPlugin plugin = _handlers[extension];
-                return plugin.NewDocument();
+                DocumentView view = plugin.NewDocument();
+                return view;
             }
 
             return null;
@@ -66,7 +67,7 @@ namespace Sphere.Plugins
         /// An IDocumentView of the opened document, or null if the file couldn't
         /// be opened with any active plugin.
         /// </returns>
-        public static bool OpenDocument(string filename, out IDocumentView view)
+        public static bool OpenDocument(string filename, out DocumentView view)
         {
             view = null;
             
@@ -76,9 +77,12 @@ namespace Sphere.Plugins
             {
                 IEditorPlugin plugin = _handlers[extension];
                 view = plugin.OpenDocument(filename);
-                return view != null;
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

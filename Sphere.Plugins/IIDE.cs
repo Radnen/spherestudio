@@ -27,7 +27,7 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets the EditorObject representing the active document.
         /// </summary>
-        IDocumentView CurrentDocument { get; }
+        DocumentView CurrentDocument { get; }
         
         /// <summary>
         /// Add event handlers to do things when a project opens.

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SphereStudio.Plugins
 {
-    partial class ScriptEditView : IScriptView
+    partial class ScriptEditView : ScriptView
     {
         private Scintilla _codeBox = new Scintilla();
 
@@ -55,44 +55,22 @@ namespace SphereStudio.Plugins
 
             _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
 
-            _codeBox.CharAdded += CodeBox_CharAdded;
-            _codeBox.ModifiedChanged += CodeBox_ModifiedChanged;
-            _codeBox.TextDeleted += CodeBox_TextChanged;
-            _codeBox.TextInserted += CodeBox_TextChanged;
+            _codeBox.CharAdded += codeBox_CharAdded;
+            _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
+            _codeBox.TextDeleted += codeBox_TextChanged;
+            _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
 
-            UpdateStyle();
+            Controls.Add(_codeBox);
+            Restyle();
         }
 
-        public void Dispose()
-        {
-            _codeBox.Dispose();
-        }
-
-        public event EventHandler DirtyChanged;
-
-        public bool IsDirty
-        {
-            get { return _codeBox.Modified; }
-        }
-
-        public Control Control
-        {
-            get { return _codeBox; }
-        }
-        
-        public string[] FileExtensions
+        public override string[] FileExtensions
         {
             get { return new[] { "js", "coffee" }; }
         }
 
-        public Icon Icon
-        {
-            get;
-            private set;
-        }
-
-        public string Text
+        public override string Text
         {
             get
             {
@@ -105,7 +83,7 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public string ViewState
+        public override string ViewState
         {
             get
             {
@@ -123,33 +101,7 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public void Activate()
-        {
-        }
-
-        public void Cut()
-        {
-            if (_codeBox.Clipboard.CanCut)
-                _codeBox.Clipboard.Cut();
-        }
-
-        public void Copy()
-        {
-            if (_codeBox.Clipboard.CanCopy)
-                _codeBox.Clipboard.Copy();
-        }
-
-        public void Paste()
-        {
-            if (_codeBox.Clipboard.CanPaste)
-                _codeBox.Clipboard.Paste();
-        }
-
-        public void Deactivate()
-        {
-        }
-        
-        public bool NewDocument()
+        public override bool NewDocument()
         {
             _codeBox.Text = "";
             if (PluginManager.IDE.Settings.GetBoolean("autoScriptHeader", false))
@@ -162,8 +114,8 @@ namespace SphereStudio.Plugins
             _codeBox.Modified = false;
             return true;
         }
-        
-        public void Load(string filename)
+
+        public override void Load(string filename)
         {
             using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), true))
             {
@@ -180,20 +132,7 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public void Redo()
-        {
-            if (_codeBox.UndoRedo.CanRedo)
-            {
-                _codeBox.UndoRedo.Redo();
-            }
-        }
-
-        public void Restyle()
-        {
-
-        }
-
-        public void Save(string filename)
+        public override void Save(string filename)
         {
             using (StreamWriter writer = new StreamWriter(filename, false, UTF_8_NOBOM))
             {
@@ -214,33 +153,7 @@ namespace SphereStudio.Plugins
             _codeBox.Modified = false;
         }
 
-        public void Undo()
-        {
-            if (_codeBox.UndoRedo.CanUndo)
-            {
-                _codeBox.UndoRedo.Undo();
-            }
-        }
-
-        public void ZoomIn()
-        {
-            _codeBox.ZoomIn();
-        }
-
-        public void ZoomOut()
-        {
-            _codeBox.ZoomOut();
-        }
-
-        void ScriptEditor_OnRestyle(object sender, EventArgs e)
-        {
-            UpdateStyle();
-        }
-
-        /// <summary>
-        /// Styles the code box per the options specified in the editor settings.
-        /// </summary>
-        public void UpdateStyle()
+        public override void Restyle()
         {
             _codeBox.Indentation.TabWidth = PluginManager.IDE.Settings.GetInteger("script-spaces", 2);
             _codeBox.Indentation.UseTabs = PluginManager.IDE.Settings.GetBoolean("script-tabs", true);
@@ -260,7 +173,67 @@ namespace SphereStudio.Plugins
             }*/
         }
 
-        public void CodeBox_CharAdded(object sender, CharAddedEventArgs e)
+        public override void Activate()
+        {
+            ScriptEditPlugin.ShowMenus(true);
+        }
+
+        public override void Deactivate()
+        {
+            ScriptEditPlugin.ShowMenus(false);
+        }
+
+        public override void Cut()
+        {
+            if (_codeBox.Clipboard.CanCut)
+                _codeBox.Clipboard.Cut();
+        }
+
+        public override void Copy()
+        {
+            if (_codeBox.Clipboard.CanCopy)
+                _codeBox.Clipboard.Copy();
+        }
+
+        public override void Paste()
+        {
+            if (_codeBox.Clipboard.CanPaste)
+                _codeBox.Clipboard.Paste();
+        }
+
+        public override void Undo()
+        {
+            if (_codeBox.UndoRedo.CanUndo)
+            {
+                _codeBox.UndoRedo.Undo();
+            }
+        }
+
+        public override void Redo()
+        {
+            if (_codeBox.UndoRedo.CanRedo)
+            {
+                _codeBox.UndoRedo.Redo();
+            }
+        }
+
+        public override void ZoomIn()
+        {
+            _codeBox.ZoomIn();
+        }
+
+        public override void ZoomOut()
+        {
+            _codeBox.ZoomOut();
+        }
+
+        private void SetMarginSize(Font font)
+        {
+            int spaces = (int)Math.Log10(_codeBox.Lines.Count) + 1;
+            _codeBox.Margins[0].Width = 2 + spaces * (int)font.SizeInPoints;
+        }
+
+        private void codeBox_CharAdded(object sender, CharAddedEventArgs e)
         {
             if (!_autocomplete) return;
 
@@ -277,20 +250,14 @@ namespace SphereStudio.Plugins
             }
         }
 
-        void CodeBox_ModifiedChanged(object sender, EventArgs e)
+        private void codeBox_ModifiedChanged(object sender, EventArgs e)
         {
-            if (DirtyChanged != null) DirtyChanged(this, EventArgs.Empty);
+            IsDirty = _codeBox.Modified;
         }
 
-        void CodeBox_TextChanged(object sender, EventArgs e)
+        private void codeBox_TextChanged(object sender, EventArgs e)
         {
             SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
-        }
-
-        private void SetMarginSize(Font font)
-        {
-            int spaces = (int)Math.Log10(_codeBox.Lines.Count) + 1;
-            _codeBox.Margins[0].Width = 2 + spaces * (int)font.SizeInPoints;
         }
     }
 }

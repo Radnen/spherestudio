@@ -14,7 +14,7 @@ namespace SphereStudio.Plugins.Components
         private Direction _direction;
         private bool _drag;
         private Point _drag_start;
-        private SpritesetEditor _parent_editor;
+        private SpritesetEditView _parent_editor;
         private bool _showDelay;
 
         public event EventHandler OnFrameClick;
@@ -24,7 +24,7 @@ namespace SphereStudio.Plugins.Components
         private FramePanel _panel_to_add = null;
         public FramePanel SelectedFrame { get; set; }
 
-        public DirectionLayout(Spriteset sprite, Direction direction, SpritesetEditor parent)
+        public DirectionLayout(Spriteset sprite, Direction direction, SpritesetEditView parent)
         {
             InitializeComponent();
             NameTextBox.Text = direction.Name;

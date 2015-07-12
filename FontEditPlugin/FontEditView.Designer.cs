@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins
 {
-    partial class FontEditor
+    partial class FontEditView
     {
         /// <summary> 
         /// Required designer variable.

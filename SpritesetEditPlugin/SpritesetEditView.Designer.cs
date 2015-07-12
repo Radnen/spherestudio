@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins
 {
-    partial class SpritesetEditor
+    partial class SpritesetEditView
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesetEditor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesetEditView));
             this.DirectionHolder = new Sphere.Core.Editor.EditorPanel();
             this.SpriteDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
             this.DirectionSplitter = new System.Windows.Forms.SplitContainer();

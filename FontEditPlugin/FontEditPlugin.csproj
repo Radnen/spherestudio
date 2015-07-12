@@ -48,11 +48,11 @@
     <Compile Include="FontSet.Designer.cs">
       <DependentUpon>FontSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="FontEditor.cs">
+    <Compile Include="FontEditView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FontEditor.Designer.cs">
-      <DependentUpon>FontEditor.cs</DependentUpon>
+    <Compile Include="FontEditView.Designer.cs">
+      <DependentUpon>FontEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -67,8 +67,8 @@
     <EmbeddedResource Include="FontSet.resx">
       <DependentUpon>FontSet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FontEditor.resx">
-      <DependentUpon>FontEditor.cs</DependentUpon>
+    <EmbeddedResource Include="FontEditView.resx">
+      <DependentUpon>FontEditView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
