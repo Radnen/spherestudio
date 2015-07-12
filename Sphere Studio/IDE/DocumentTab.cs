@@ -29,7 +29,8 @@ namespace SphereStudio.IDE
         /// <param name="ide">The IDE form that the tab will be created in.</param>
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="filename">The fully-qualified filename of the document, or null if untitled.</param>
-        public DocumentTab(IDEForm ide, IDocumentView view, string filename = null)
+        /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
+        public DocumentTab(IDEForm ide, IDocumentView view, string filename = null, bool restoreView = false)
         {
             FileName = filename;
             View = view;
@@ -40,7 +41,6 @@ namespace SphereStudio.IDE
                 : string.Format("Untitled{0}", _unsavedID++);
             _ide = ide;
             _content = new DockContent();
-            _content.FormClosing += on_FormClosing;
             _content.FormClosed += on_FormClosed;
             _content.Tag = this;
             _content.Icon = View.Icon;
@@ -49,19 +49,16 @@ namespace SphereStudio.IDE
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
 
-            // restore the saved view state
-            if (FileName != null)
+            UpdateTabText();
+
+            if (restoreView && FileName != null)
             {
                 View.ViewState = Global.CurrentUser.GetString("view:" + FileName);
             }
-
-            UpdateTabText();
         }
 
         public void Dispose()
         {
-            _content.FormClosed -= on_FormClosed;
-            _content.FormClosing -= on_FormClosing;
             _content.Dispose();
         }
 
@@ -97,9 +94,25 @@ namespace SphereStudio.IDE
             View.Activate();
         }
 
-        public void Close()
+        /// <summary>
+        /// Closes the tab.
+        /// </summary>
+        /// <param name="saveView">'true' to save the current view state before closing.</param>
+        /// <param name="forceClose">'true' to bypass the Unsaved Changes prompt.</param>
+        /// <returns>'true' if the tab was closed; 'false' on cancel.</returns>
+        public bool Close(bool saveView = false, bool forceClose = false)
         {
-            _content.Close();
+            if (forceClose || PromptSave())
+            {
+                if (saveView && FileName != null && !View.IsDirty)  // save view only if clean
+                    Global.CurrentUser.SaveObject("view:" + FileName, View.ViewState);
+                _content.Close();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         
         public void Copy()
@@ -133,6 +146,29 @@ namespace SphereStudio.IDE
         public void Restyle()
         {
             View.Restyle();
+        }
+        
+        /// <summary>
+        /// Prompts the user to save a modified document. The document will
+        /// remain open afterwards.
+        /// </summary>
+        /// <returns>'true' if the user saved or answered No; 'false' on cancel.</returns>
+        /// <remarks>If the document hasn't been modified, returns 'true' immediately without prompting.</remarks>
+        public bool PromptSave()
+        {
+            if (View.IsDirty)
+            {
+                Activate();
+                DialogResult result = MessageBox.Show(
+                    string.Format("{0}\n\nThis document has been modified. Any unsaved changes will be lost if you continue. Do you want to save it now?", _tabText),
+                    "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (result == DialogResult.Cancel) return false;
+                if (result == DialogResult.Yes)
+                {
+                    if (!Save()) return false;
+                }
+            }
+            return true;
         }
         
         /// <summary>
@@ -188,6 +224,14 @@ namespace SphereStudio.IDE
             }
         }
 
+        public void SaveView()
+        {
+        }
+
+        public void RestoreView()
+        {
+        }
+
         public void Undo()
         {
             View.Undo();
@@ -213,25 +257,8 @@ namespace SphereStudio.IDE
             UpdateTabText();
         }
 
-        private void on_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (View.IsDirty)
-            {
-                Activate();
-                DialogResult result = MessageBox.Show(string.Format("{0}\n\nThis document has been modified. Do you want to save it before closing?", _tabText),
-                    "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                e.Cancel |= result == DialogResult.Cancel;
-                if (result == DialogResult.Yes)
-                {
-                    e.Cancel |= !Save();
-                }
-            }
-        }
-
         private void on_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (FileName != null && !View.IsDirty)
-                Global.CurrentUser.SaveObject("view:" + FileName, View.ViewState);
             if (Closed != null) Closed(this, EventArgs.Empty);
             Dispose();
         }

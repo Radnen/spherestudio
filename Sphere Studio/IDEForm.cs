@@ -123,10 +123,7 @@ namespace SphereStudio
 
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!e.Cancel)
-            {
-                CloseCurrentProject();
-            }
+            e.Cancel |= !CloseCurrentProject();
         }
 
         void menu_DropDownOpening(object sender, EventArgs e)
@@ -206,8 +203,7 @@ namespace SphereStudio
 
         private void menuCloseProject_Click(object sender, EventArgs e)
         {
-            bool success = CloseCurrentProject();
-            if (success)
+            if (CloseCurrentProject())
             {
                 _tree.Close();
                 _tree.ProjectName = "Project Name";
@@ -640,7 +636,7 @@ namespace SphereStudio
             ctrl.Show(MainDock, state);
         }
 
-        public void OpenDocument(string filePath)
+        public void OpenDocument(string filePath, bool restoreView = false)
         {
             // the IDE will try to open the file through the plugin manager first.
             // if that fails, then use the current default editor (if any).
@@ -667,7 +663,7 @@ namespace SphereStudio
 
             if (view != null)
             {
-                AddDocument(view, filePath);
+                AddDocument(view, filePath, restoreView);
             }
         }
 
@@ -699,7 +695,7 @@ namespace SphereStudio
             foreach (string s in docs)
             {
                 if (String.IsNullOrWhiteSpace(s)) continue;
-                try { OpenDocument(s); }
+                try { OpenDocument(s, true); }
                 catch (Exception) { }
             }
 
@@ -851,9 +847,9 @@ namespace SphereStudio
             get { return Global.CurrentProject != null; }
         }
 
-        private void AddDocument(IDocumentView view, string filepath = null)
+        private void AddDocument(IDocumentView view, string filepath = null, bool restoreView = false)
         {
-            DocumentTab tab = new DocumentTab(this, view, filepath);
+            DocumentTab tab = new DocumentTab(this, view, filepath, restoreView);
             tab.Closed += (sender, e) => _tabs.Remove(tab);
             tab.Activate();
             _tabs.Add(tab);
@@ -885,35 +881,55 @@ namespace SphereStudio
         /// Closes all opened documents; optionally saving them as well.
         /// </summary>
         /// <param name="save">Set to true to invoke save routines.</param>
+        /// <returns>true if all documents were closed, false if a save prompt was canceled.</returns>
         private bool CloseAllDocuments()
         {
             DocumentTab[] toClose = (from tab in _tabs select tab).ToArray();
             foreach (DocumentTab tab in toClose)
-            {
-                tab.Close();
-            }
+                if (!tab.PromptSave()) return false;
+            foreach (DocumentTab tab in toClose)
+                tab.Close(true, true);
 
             _startContent.Hide();
             return true;
         }
 
+        /// <summary>
+        /// Closes the current project and all open documents.
+        /// </summary>
+        /// <returns>'true' if the project was closed; 'false' on cancel.</returns>
         private bool CloseCurrentProject()
         {
+            // user values will be lost if we don't record them now.
             if (Global.CurrentUser != null)
             {
-                if (_activeTab != null)
-                {
-                    Global.CurrentUser.CurrentDocument = _activeTab.FileName;
-                }
-                Global.CurrentUser.Documents = Documents;
+                Global.CurrentUser.ProjectName = Global.CurrentProject.Name;
+                Global.CurrentUser.Author = Global.CurrentProject.Author;
                 Global.CurrentUser.StartHidden = !_startContent.Visible;
+                Global.CurrentUser.Documents = Documents;
+                if (_activeTab != null)
+                    Global.CurrentUser.CurrentDocument = _activeTab.FileName;
             }
 
-            bool success = CloseAllDocuments();
-            if (!success) return false;
-
-            if (UnloadProject != null) UnloadProject(null, EventArgs.Empty);
-            SaveAndCloseProject(false);
+            // close all open document tabs
+            if (!CloseAllDocuments())
+                return false;
+            
+            // save and unload the project
+            if (Global.CurrentProject != null)
+            {
+                if (UnloadProject != null)
+                    UnloadProject(null, EventArgs.Empty);
+                Global.CurrentProject.SaveSettings();
+            }
+            if (Global.CurrentUser != null)
+            {
+                Global.CurrentUser.SaveSettings(Global.CurrentProject.RootPath);
+            }
+            
+            // all clear!
+            Global.CurrentUser = null;
+            Global.CurrentProject = null;
             return true;
         }
 
@@ -977,23 +993,6 @@ namespace SphereStudio
         /// <param name="save_docs">Optional, because sometimes you want to do this before the final closure.</param>
         private void SaveAndCloseProject(bool save_docs = true)
         {
-            if (Global.CurrentProject != null)
-            {
-                if (Global.CurrentProject != null && Global.CurrentUser != null)
-                {
-                    if (save_docs)
-                    {
-                        Global.CurrentUser.Documents = Documents;
-                    }
-                    Global.CurrentUser.ProjectName = Global.CurrentProject.Name;
-                    Global.CurrentUser.Author = Global.CurrentProject.Author;
-                    Global.CurrentUser.SaveSettings(Global.CurrentProject.RootPath);
-                    Global.CurrentUser = null;
-                }
-
-                Global.CurrentProject.SaveSettings();
-                Global.CurrentProject = null;
-            }
         }
 
         /// <summary>
