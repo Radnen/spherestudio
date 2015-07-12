@@ -53,7 +53,8 @@ namespace SphereStudio.IDE
 
             if (restoreView && FileName != null)
             {
-                try { View.ViewState = Global.CurrentUser.GetString("view:" + FileName); }
+                string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
+                try { View.ViewState = Global.CurrentUser.GetString(setting); }
                 catch (Exception) { View.ViewState = null; }
             }
         }
@@ -105,8 +106,9 @@ namespace SphereStudio.IDE
         {
             if (forceClose || PromptSave())
             {
+                string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
                 if (saveView && FileName != null && !View.IsDirty)  // save view only if clean
-                    Global.CurrentUser.SaveObject("view:" + FileName, View.ViewState);
+                    Global.CurrentUser.SaveObject(setting, View.ViewState);
                 _content.Close();
                 return true;
             }
@@ -183,7 +185,6 @@ namespace SphereStudio.IDE
                 return SaveAs(path);
             
             View.Save(FileName);
-            Global.CurrentUser.SaveObject("view:" + FileName, View.ViewState);
             return true;
         }
 
