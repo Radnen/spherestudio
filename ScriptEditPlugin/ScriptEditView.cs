@@ -109,24 +109,17 @@ namespace SphereStudio.Plugins
         {
             get
             {
-                return string.Format("{0},{1},{2}",
+                return string.Format("{0}|{1}|{2}",
                     _codeBox.Caret.Position,
                     _codeBox.Caret.Anchor,
                     _codeBox.Lines.FirstVisibleIndex);
             }
             set
             {
-                try
-                {
-                    string[] parse = value.Split(',');
-                    _codeBox.Caret.Position = Convert.ToInt32(parse[0]);
-                    _codeBox.Caret.Anchor = Convert.ToInt32(parse[1]);
-                    _codeBox.Lines.FirstVisibleIndex = Convert.ToInt32(parse[2]);
-                }
-                catch (Exception)
-                {
-                    _codeBox.Caret.Position = _codeBox.Caret.Anchor = 0;
-                }
+                string[] parse = value.Split('|');
+                _codeBox.Caret.Position = Convert.ToInt32(parse[0]);
+                _codeBox.Caret.Anchor = Convert.ToInt32(parse[1]);
+                _codeBox.Lines.FirstVisibleIndex = Convert.ToInt32(parse[2]);
             }
         }
 

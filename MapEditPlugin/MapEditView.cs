@@ -4,10 +4,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
+using WeifenLuo.WinFormsUI.Docking;
+
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.Forms;
 using SphereStudio.Plugins.UndoRedo;
@@ -68,7 +70,20 @@ namespace SphereStudio.Plugins
             get; private set;
         }
 
-        public string ViewState { get; set; }
+        public string ViewState {
+            get
+            {
+                return string.Format("{0}|{1}",
+                    MapControl.vScrollBar.Value,
+                    MapControl.hScrollBar.Value);
+            }
+            set
+            {
+                string[] parse = value.Split('|');
+                MapControl.vScrollBar.Value = Convert.ToInt32(parse[0]);
+                MapControl.hScrollBar.Value = Convert.ToInt32(parse[1]);
+            }
+        }
         
         public void Activate() { }
         public void Deactivate() { }

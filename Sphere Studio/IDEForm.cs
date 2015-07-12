@@ -203,14 +203,7 @@ namespace SphereStudio
 
         private void menuCloseProject_Click(object sender, EventArgs e)
         {
-            if (CloseCurrentProject())
-            {
-                _tree.Close();
-                _tree.ProjectName = "Project Name";
-
-                menuOpenLastProject.Enabled = (Global.Settings.LastProject.Length > 0);
-                UpdateButtons();
-            }
+            CloseCurrentProject();
         }
 
         private void menuNewProject_Click(object sender, EventArgs e)
@@ -927,9 +920,15 @@ namespace SphereStudio
                 Global.CurrentUser.SaveSettings(Global.CurrentProject.RootPath);
             }
             
+            // clear the project tree
+            _tree.Close();
+            _tree.ProjectName = "Project Name";
+            menuOpenLastProject.Enabled = (Global.Settings.LastProject.Length > 0);
+            
             // all clear!
             Global.CurrentUser = null;
             Global.CurrentProject = null;
+            UpdateButtons();
             return true;
         }
 

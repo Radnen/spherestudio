@@ -53,7 +53,8 @@ namespace SphereStudio.IDE
 
             if (restoreView && FileName != null)
             {
-                View.ViewState = Global.CurrentUser.GetString("view:" + FileName);
+                try { View.ViewState = Global.CurrentUser.GetString("view:" + FileName); }
+                catch (Exception) { View.ViewState = null; }
             }
         }
 
