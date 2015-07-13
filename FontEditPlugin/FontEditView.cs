@@ -33,6 +33,7 @@ namespace SphereStudio.Plugins
         public override void Save(string filepath)
         {
             _fontLayout.SaveToFile(filepath);
+            IsDirty = false;
         }
 
         public override void Paste()

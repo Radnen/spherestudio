@@ -11,7 +11,7 @@ namespace Sphere.Plugins
     /// <summary>
     /// Specifies the interface for editable documents in Sphere Studio.
     /// </summary>
-    public abstract class DocumentView : UserControl
+    public class DocumentView : UserControl
     {
         private bool _isDirty = false;
         
@@ -23,7 +23,7 @@ namespace Sphere.Plugins
             get { return _isDirty; }
             protected set
             {
-                bool oldvalue = value;
+                bool oldvalue = _isDirty;
                 _isDirty = value;
                 if (value != oldvalue && DirtyChanged != null)
                     DirtyChanged(this, EventArgs.Empty);
@@ -67,13 +67,13 @@ namespace Sphere.Plugins
         /// Loads a file into the document view.
         /// </summary>
         /// <param name="filename">The filename of the file to load.</param>
-        public abstract new void Load(string filename);
+        public virtual new void Load(string filename) { throw new NotImplementedException(); }
 
         /// <summary>
         /// Saves the contents of the document to a specified filename.
         /// </summary>
         /// <param name="filename">The filename to save under.</param>
-        public abstract void Save(string filename);
+        public virtual void Save(string filename) { throw new NotImplementedException(); }
         
         /// <summary>
         /// Refreshes the document when the UI style has changed.

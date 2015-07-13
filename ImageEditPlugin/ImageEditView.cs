@@ -74,6 +74,7 @@ namespace SphereStudio.Plugins
             {
                 img.Save(path);
             }
+            IsDirty = false;
         }
         
         public override void Activate()

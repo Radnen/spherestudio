@@ -24,7 +24,6 @@ namespace SphereStudio.Plugins
         private DockContent _layerContent;
         private DockContent _tilesetContent;
         private DockPanel _mainPanel;
-        private bool _isDirty = false;
         public Map Map { get { return MapControl.BaseMap; } }
 
         public MapEditView()
@@ -105,6 +104,7 @@ namespace SphereStudio.Plugins
                     }
                 }
             }
+            IsDirty = false;
         }
 
         public override void Activate()
@@ -250,14 +250,14 @@ namespace SphereStudio.Plugins
             LayerEditor.Layers.SelectItem(MapControl.CurrentLayer);
         }
 
-        public void Undo()
+        public override void Undo()
         {
             undoButton.Enabled = MapControl.Undo();
             redoButton.Enabled = true;
             InitLayers();
         }
 
-        public void Redo()
+        public override void Redo()
         {
             redoButton.Enabled = MapControl.Redo();
             undoButton.Enabled = true;

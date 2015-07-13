@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace Sphere.Plugins
 {
     /// <summary>
-    /// Specifies the interface for an image editing component.
+    /// Provides a base class for an image editing component.
     /// </summary>
-    public abstract class ImageView : DocumentView
+    public class ImageView : DocumentView
     {
         public override bool IsDirty
         {
@@ -31,7 +31,11 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets or sets the image as it is shown in the document.
         /// </summary>
-        public abstract Bitmap Content { get; set; }
+        public virtual Bitmap Content
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
         /// <summary>
         /// Splits the image being edited into tiles and returns the images for each of those tiles.
@@ -39,6 +43,9 @@ namespace Sphere.Plugins
         /// <param name="tileWidth">The width of the tiles.</param>
         /// <param name="tileHeight">The height of the tiles.</param>
         /// <returns>A list of images representing the individual tiles.</returns>
-        public abstract IList<Bitmap> GetImages(short tileWidth, short tileHeight);
+        public virtual IList<Bitmap> GetImages(short tileWidth, short tileHeight)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

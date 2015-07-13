@@ -57,6 +57,7 @@ namespace SphereStudio.Plugins
         public override void Save(string filepath)
         {
             _style.Save(filepath);
+            IsDirty = false;
         }
 
         public override void ZoomIn()

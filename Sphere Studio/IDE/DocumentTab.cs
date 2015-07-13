@@ -53,7 +53,7 @@ namespace SphereStudio.IDE
 
             if (restoreView && FileName != null)
             {
-                string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
+                string setting = string.Format("view_{0:X8}", FileName.GetHashCode());
                 try { View.ViewState = Global.CurrentUser.GetString(setting); }
                 catch (Exception) { }
             }
@@ -119,6 +119,7 @@ namespace SphereStudio.IDE
                 return SaveAs(path);
 
             View.Save(FileName);
+            SaveViewState();
             return true;
         }
 
@@ -170,10 +171,7 @@ namespace SphereStudio.IDE
         {
             if (forceClose || PromptSave())
             {
-                string setting = string.Format("view:{0:X8}", FileName.GetHashCode());
-                string state = View.ViewState ?? "";
-                if (saveView && FileName != null && !View.IsDirty)  // save view only if clean
-                    Global.CurrentUser.SaveObject(setting, state);
+                if (saveView) SaveViewState();
                 _content.Close();
                 return true;
             }
@@ -265,6 +263,14 @@ namespace SphereStudio.IDE
             View.ZoomOut();
         }
 
+        private void SaveViewState()
+        {
+            string setting = string.Format("view_{0:X8}", FileName.GetHashCode());
+            string state = View.ViewState ?? "";
+            if (FileName != null && !View.IsDirty)  // save view only if clean
+                Global.CurrentUser.SaveObject(setting, state);
+        }
+        
         private void UpdateTabText()
         {
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;

@@ -207,6 +207,7 @@ namespace SphereStudio.Plugins
         public override void Save(string filepath)
         {
             _sprite.Save(filepath);
+            IsDirty = false;
         }
 
         public override void Activate()
