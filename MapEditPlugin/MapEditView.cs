@@ -46,15 +46,20 @@ namespace SphereStudio.Plugins
         {
             get
             {
-                return string.Format("{0}|{1}",
+                return string.Format("{0}|{1}|{2}|{3}",
                     MapControl.vScrollBar.Value,
-                    MapControl.hScrollBar.Value);
+                    MapControl.hScrollBar.Value,
+                    TilesetControl.Selected[0],
+                    MapControl.CurrentLayer);
             }
             set
             {
                 string[] parse = value.Split('|');
+
                 MapControl.vScrollBar.Value = Convert.ToInt32(parse[0]);
                 MapControl.hScrollBar.Value = Convert.ToInt32(parse[1]);
+                TilesetControl.Select(Convert.ToInt16(parse[2]));
+                MapControl.CurrentLayer = Convert.ToInt16(parse[3]);
             }
         }
 
