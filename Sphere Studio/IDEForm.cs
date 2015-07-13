@@ -123,7 +123,8 @@ namespace SphereStudio
 
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel |= !CloseCurrentProject();
+            if (e.Cancel) return;
+            CloseCurrentProject(true);
         }
 
         void menu_DropDownOpening(object sender, EventArgs e)
@@ -874,11 +875,14 @@ namespace SphereStudio
         /// </summary>
         /// <param name="save">Set to true to invoke save routines.</param>
         /// <returns>true if all documents were closed, false if a save prompt was canceled.</returns>
-        private bool CloseAllDocuments()
+        private bool CloseAllDocuments(bool forceClose = false)
         {
             DocumentTab[] toClose = (from tab in _tabs select tab).ToArray();
-            foreach (DocumentTab tab in toClose)
-                if (!tab.PromptSave()) return false;
+            if (!forceClose)
+            {
+                foreach (DocumentTab tab in toClose)
+                    if (!tab.PromptSave()) return false;
+            }
             foreach (DocumentTab tab in toClose)
                 tab.Close(true, true);
 
@@ -890,7 +894,7 @@ namespace SphereStudio
         /// Closes the current project and all open documents.
         /// </summary>
         /// <returns>'true' if the project was closed; 'false' on cancel.</returns>
-        private bool CloseCurrentProject()
+        private bool CloseCurrentProject(bool forceClose = false)
         {
             // user values will be lost if we don't record them now.
             if (Global.CurrentUser != null)
@@ -904,7 +908,7 @@ namespace SphereStudio
             }
 
             // close all open document tabs
-            if (!CloseAllDocuments())
+            if (!CloseAllDocuments(forceClose))
                 return false;
             
             // save and unload the project

@@ -41,6 +41,7 @@ namespace SphereStudio.IDE
                 : string.Format("Untitled{0}", _unsavedID++);
             _ide = ide;
             _content = new DockContent();
+            _content.FormClosing += on_FormClosing;
             _content.FormClosed += on_FormClosed;
             _content.Tag = this;
             _content.Icon = View.Icon;
@@ -279,6 +280,13 @@ namespace SphereStudio.IDE
         private void on_DirtyChanged(object sender, EventArgs e)
         {
             UpdateTabText();
+        }
+
+        private void on_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !PromptSave();
+            if (!e.Cancel)
+                _content.FormClosing -= on_FormClosing;
         }
 
         private void on_FormClosed(object sender, FormClosedEventArgs e)
