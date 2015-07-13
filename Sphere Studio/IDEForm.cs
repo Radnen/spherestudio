@@ -428,9 +428,8 @@ namespace SphereStudio
             {
                 Global.CurrentProject.SaveSettings();
                 string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
-                string enginePath = PlatformTool.Text == "x64"
-                    ? Global.Settings.EnginePath64
-                    : Global.Settings.EnginePath;
+                string enginePath = ((ToolStripItem)sender).Tag as string ??
+                    (PlatformTool.Text == "x64" ? Global.Settings.EnginePath64 : Global.Settings.EnginePath);
                 Process.Start(enginePath, args);
             }
             else
