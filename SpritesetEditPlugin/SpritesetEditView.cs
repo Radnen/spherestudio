@@ -35,6 +35,8 @@ namespace SphereStudio.Plugins
             InitializeComponent();
             InitializeDocking();
 
+            Icon = Icon.FromHandle(Properties.Resources.PersonIcon.GetHicon());
+            
             _sprite = new Spriteset();
             DirectionAnim.Sprite = _sprite;
             FrameBaseEditor.Sprite = _sprite;
@@ -181,7 +183,7 @@ namespace SphereStudio.Plugins
         {
             get { return new[] { "rss" }; }
         }
-        
+
         public override bool NewDocument()
         {
             _sprite.MakeNew();

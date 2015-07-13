@@ -10,7 +10,6 @@ namespace SphereStudio.Plugins
     partial class FontEditView : DocumentView
     {
         private FontSet _fontLayout;
-        private bool _isDirty = false;
         Font _selected;
 
         public FontEditView()
@@ -18,6 +17,8 @@ namespace SphereStudio.Plugins
             InitializeComponent();
             InitializeFontLayout();
 
+            Icon = Icon.FromHandle(Properties.Resources.style.GetHicon());
+            
             CompilePreview();
         }
 

@@ -28,6 +28,8 @@ namespace SphereStudio.Plugins
         {
             InitializeComponent();
             InitializeDocking();
+
+            Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
         }
 
         public override string[] FileExtensions

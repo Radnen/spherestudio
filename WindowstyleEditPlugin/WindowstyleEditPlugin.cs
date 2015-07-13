@@ -25,7 +25,7 @@ namespace SphereStudio.Plugins
 
         public WindowstyleEditPlugin()
         {
-            Icon = Icon.FromHandle(Properties.Resources.PaletteToolIcon.GetHicon());
+            Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
         }
 
         public void Initialize(ISettings conf)
