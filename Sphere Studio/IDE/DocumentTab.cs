@@ -54,7 +54,7 @@ namespace SphereStudio.IDE
 
             if (restoreView && FileName != null)
             {
-                string setting = string.Format("view_{0:X8}", FileName.GetHashCode());
+                string setting = string.Format("viewstate_{0:X8}", FileName.GetHashCode());
                 try { View.ViewState = Global.CurrentUser.GetString(setting); }
                 catch (Exception) { }
             }
@@ -172,6 +172,10 @@ namespace SphereStudio.IDE
         {
             if (forceClose || PromptSave())
             {
+                // unsubscribe FormClosing event to prevent duplicate prompt
+                _content.FormClosing -= on_FormClosing;
+                
+                // save view state and close tab
                 if (saveView) SaveViewState();
                 _content.Close();
                 return true;
@@ -266,7 +270,7 @@ namespace SphereStudio.IDE
 
         private void SaveViewState()
         {
-            string setting = string.Format("view_{0:X8}", FileName.GetHashCode());
+            string setting = string.Format("viewstate_{0:X8}", FileName.GetHashCode());
             string state = View.ViewState ?? "";
             if (FileName != null && !View.IsDirty)  // save view only if clean
                 Global.CurrentUser.SaveObject(setting, state);
@@ -285,8 +289,6 @@ namespace SphereStudio.IDE
         private void on_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !PromptSave();
-            if (!e.Cancel)
-                _content.FormClosing -= on_FormClosing;
         }
 
         private void on_FormClosed(object sender, FormClosedEventArgs e)
