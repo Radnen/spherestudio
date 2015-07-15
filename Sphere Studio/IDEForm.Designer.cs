@@ -51,8 +51,8 @@
             this.SaveTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainDock = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.EditorTools = new System.Windows.Forms.ToolStrip();
-            this.NewToolButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.OpenToolButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolNew = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolOpen = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
@@ -230,8 +230,8 @@
             this.EditorTools.AutoSize = false;
             this.EditorTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.EditorTools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewToolButton,
-            this.OpenToolButton,
+            this.toolNew,
+            this.toolOpen,
             this.SaveToolButton,
             this.ToolSeperator1,
             this.GameToolButton,
@@ -255,22 +255,22 @@
             // 
             // NewToolButton
             // 
-            this.NewToolButton.Image = global::SphereStudio.Properties.Resources.script_edit;
-            this.NewToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.NewToolButton.Name = "NewToolButton";
-            this.NewToolButton.Size = new System.Drawing.Size(60, 25);
-            this.NewToolButton.Text = "&New";
-            this.NewToolButton.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
-            this.NewToolButton.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
+            this.toolNew.Image = global::SphereStudio.Properties.Resources.script_edit;
+            this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolNew.Name = "NewToolButton";
+            this.toolNew.Size = new System.Drawing.Size(60, 25);
+            this.toolNew.Text = "&New";
+            this.toolNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
+            this.toolNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
             // OpenToolButton
             // 
-            this.OpenToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OpenToolButton.Image = global::SphereStudio.Properties.Resources.open;
-            this.OpenToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OpenToolButton.Name = "OpenToolButton";
-            this.OpenToolButton.Size = new System.Drawing.Size(29, 25);
-            this.OpenToolButton.Text = "&Open";
+            this.toolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolOpen.Image = global::SphereStudio.Properties.Resources.open;
+            this.toolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolOpen.Name = "OpenToolButton";
+            this.toolOpen.Size = new System.Drawing.Size(29, 25);
+            this.toolOpen.Text = "&Open";
             // 
             // SaveToolButton
             // 
@@ -980,8 +980,8 @@
         private System.Windows.Forms.ToolStripMenuItem ExportSsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ImportSsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
-        private System.Windows.Forms.ToolStripDropDownButton NewToolButton;
-        private System.Windows.Forms.ToolStripDropDownButton OpenToolButton;
+        private System.Windows.Forms.ToolStripDropDownButton toolNew;
+        private System.Windows.Forms.ToolStripDropDownButton toolOpen;
         private System.Windows.Forms.ToolStripMenuItem menuFile;
         private System.Windows.Forms.ToolStripMenuItem menuNewProject;
         private System.Windows.Forms.ToolStripMenuItem OpenProjectMenuItem;

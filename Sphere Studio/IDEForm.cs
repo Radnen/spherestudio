@@ -53,8 +53,8 @@ namespace SphereStudio
             _startPage = new StartPage(this) { Dock = DockStyle.Fill, HelpLabel = HelpLabel };
             _startPage.PopulateGameList();
 
-            NewToolButton.DropDown = menuNew.DropDown;
-            OpenToolButton.DropDown = menuOpen.DropDown;
+            toolNew.DropDown = menuNew.DropDown;
+            toolOpen.DropDown = menuOpen.DropDown;
 
             InitializeDocking();
 
