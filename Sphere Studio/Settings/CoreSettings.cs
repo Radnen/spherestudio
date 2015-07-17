@@ -94,12 +94,14 @@ namespace SphereStudio.Settings
                 string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
                 if (!string.IsNullOrWhiteSpace(value) && File.Exists(path))
                 {
-                    INI preset = new INI(path, false);
-                    EngineConfigPath = preset.Read("Preset", "engineConfigPath", "");
-                    EnginePath = preset.Read("Preset", "enginePath", "");
-                    EnginePath64 = preset.Read("Preset", "enginePath64", "");
-                    DefaultEditor = preset.Read("Preset", "defaultEditor", "");
-                    Plugins = preset.Read("Preset", "plugins", "").Split('|');
+                    using (INI preset = new INI(path, false))
+                    {
+                        EngineConfigPath = preset.Read("Preset", "engineConfigPath", "");
+                        EnginePath = preset.Read("Preset", "enginePath", "");
+                        EnginePath64 = preset.Read("Preset", "enginePath64", "");
+                        DefaultEditor = preset.Read("Preset", "defaultEditor", "");
+                        Plugins = preset.Read("Preset", "plugins", "").Split('|');
+                    }
                     SetValue("preset", value);
                 }
                 else

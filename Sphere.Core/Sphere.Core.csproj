@@ -87,7 +87,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Segment.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
     <Compile Include="Spriteset.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Tileset.cs" />

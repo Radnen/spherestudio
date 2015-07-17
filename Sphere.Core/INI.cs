@@ -61,6 +61,9 @@ namespace Sphere.Core
             }
         }
 
+        /// <summary>
+        /// Releases any resources held by the INI object.
+        /// </summary>
         public void Dispose()
         {
             // nothing to dispose at present.

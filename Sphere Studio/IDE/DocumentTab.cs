@@ -54,8 +54,8 @@ namespace SphereStudio.IDE
 
             if (restoreView && FileName != null)
             {
-                string setting = string.Format("viewstate_{0:X8}", FileName.GetHashCode());
-                try { View.ViewState = Global.CurrentUser.GetString(setting); }
+                string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
+                try { View.ViewState = Global.CurrentUser.GetString(setting, ""); }
                 catch (Exception) { }
             }
         }
@@ -270,10 +270,9 @@ namespace SphereStudio.IDE
 
         private void SaveViewState()
         {
-            string setting = string.Format("viewstate_{0:X8}", FileName.GetHashCode());
-            string state = View.ViewState ?? "";
+            string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
             if (FileName != null && !View.IsDirty)  // save view only if clean
-                Global.CurrentUser.SaveObject(setting, state);
+                Global.CurrentUser.SetValue(setting, View.ViewState);
         }
         
         private void UpdateTabText()

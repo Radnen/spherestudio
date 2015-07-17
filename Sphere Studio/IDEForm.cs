@@ -51,7 +51,7 @@ namespace SphereStudio
             string filepath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 @"Sphere Studio\Settings", "Sphere Studio.ini");
-            _iniFile = new INI(filepath, true);
+            _iniFile = new INI(filepath);
             Global.Settings = new CoreSettings(_iniFile);
             
             _firsttime = !Global.Settings.GetBoolean("setupComplete", false);
@@ -695,8 +695,7 @@ namespace SphereStudio
 
             HelpLabel.Text = @"Game project loaded successfully!";
 
-            Global.CurrentUser = new UserSettings();
-            Global.CurrentUser.LoadSettings(Path.GetDirectoryName(filename));
+            Global.CurrentUser = new UserSettings(Path.GetDirectoryName(filename));
 
             _startContent.Show();
             
@@ -939,7 +938,7 @@ namespace SphereStudio
             }
             if (Global.CurrentUser != null)
             {
-                Global.CurrentUser.SaveSettings(Global.CurrentProject.RootPath);
+                Global.CurrentUser.Save();
             }
             
             // clear the project tree
