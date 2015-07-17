@@ -28,6 +28,11 @@ namespace Sphere.Plugins
         /// Gets the EditorObject representing the active document.
         /// </summary>
         DocumentView CurrentDocument { get; }
+
+        /// <summary>
+        /// Gets the path of the current Sphere engine used for game testing.
+        /// </summary>
+        string EnginePath { get; }
         
         /// <summary>
         /// Add event handlers to do things when a project opens.

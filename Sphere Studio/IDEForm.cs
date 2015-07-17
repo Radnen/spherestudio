@@ -10,6 +10,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Core.Settings;
+using Sphere.Core;
 using Sphere.Plugins;
 using SphereStudio.Components;
 using SphereStudio.Forms;
@@ -33,6 +34,7 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
+        private INI _iniFile;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
         public event EventHandler LoadProject;
@@ -46,6 +48,12 @@ namespace SphereStudio
         {
             InitializeComponent();
 
+            string filepath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                @"Sphere Studio\Settings", "Sphere Studio.ini");
+            _iniFile = new INI(filepath, true);
+            Global.Settings = new CoreSettings(_iniFile);
+            
             _firsttime = !Global.Settings.GetBoolean("setupComplete", false);
 
             _tree = new ProjectTree() { Dock = DockStyle.Fill, EditorForm = this };
@@ -253,10 +261,9 @@ namespace SphereStudio
             {
                 projDiag.Title = @"Open Project";
                 projDiag.Filter = @"Game Files|*.sgm|All Files|*.*";
-
-                string[] paths = Global.Settings.GetStringArray("gamePaths");
-                if (paths.Length > 0)
-                    projDiag.InitialDirectory = paths[0];
+                projDiag.InitialDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    @"Sphere Studio\Projects");
 
                 if (projDiag.ShowDialog() == DialogResult.OK)
                     OpenProject(projDiag.FileName);
@@ -517,6 +524,16 @@ namespace SphereStudio
             get { return Global.CurrentProject; }
         }
 
+        public string EnginePath
+        {
+            get
+            {
+                return PlatformTool.Text == "x64"
+                    ? Global.Settings.EnginePath64
+                    : Global.Settings.EnginePath;
+            }
+        }
+
         /// <summary>
         /// Gets a list of filenames of opened documents. Unsaved documents
         /// without filenames will be excluded.
@@ -711,9 +728,9 @@ namespace SphereStudio
             UpdateButtons();
         }
 
-        public ISettings OpenSettings(string section)
+        public ISettings OpenSettings(string settingsID)
         {
-            return new INISettings("Sphere Studio.ini", section);
+            return new INISettings(_iniFile, settingsID);
         }
 
         public void RegisterNewHandler(IEditorPlugin plugin, string name)

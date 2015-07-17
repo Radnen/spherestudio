@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 using SphereStudio.Settings;
 using Sphere.Plugins;
+using Sphere.Core;
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
@@ -171,12 +172,14 @@ namespace SphereStudio.Forms
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     @"Sphere Studio\Presets", filename);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
-                INISettings preset = new INISettings(path, "Preset");
-                preset.SetValue("enginePath", enginePathBox.Text);
-                preset.SetValue("enginePath64", enginePath64Box.Text);
-                preset.SetValue("engineConfigPath", configPathBox.Text);
-                preset.SetValue("defaultEditor", defEditorCombo.SelectedIndex > 0 ? defEditorCombo.Text : "");
-                preset.SetValue("plugins", Global.Settings.Plugins);
+                using (INI preset = new INI(path))
+                {
+                    preset.Write("Preset", "enginePath", enginePathBox.Text);
+                    preset.Write("Preset", "enginePath64", enginePath64Box.Text);
+                    preset.Write("Preset", "engineConfigPath", configPathBox.Text);
+                    preset.Write("Preset", "defaultEditor", defEditorCombo.SelectedIndex > 0 ? defEditorCombo.Text : "");
+                    preset.Write("Preset", "plugins", string.Join("|", Global.Settings.Plugins));
+                }
                 Global.Settings.Preset = Path.GetFileNameWithoutExtension(filename);
                 Global.Settings.Apply();
                 UpdatePresetBox();

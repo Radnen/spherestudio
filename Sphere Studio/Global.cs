@@ -68,7 +68,7 @@ namespace SphereStudio
 
         public static ProjectSettings CurrentProject = null;
         public static UserSettings CurrentUser = null;
-        public static CoreSettings Settings = new CoreSettings();
+        public static CoreSettings Settings;
         public static Sphere.Core.Entity CopiedEnt { get; set; }
 
         /// <summary>

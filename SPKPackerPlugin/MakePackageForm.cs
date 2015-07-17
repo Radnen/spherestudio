@@ -208,7 +208,7 @@ namespace Sphere.Plugins
             cancelButton.Enabled = true;
             fileList.Enabled = true;
             deflateLevel.Enabled = true;
-            testButton.Enabled = true;
+            testButton.Enabled = !string.IsNullOrWhiteSpace(PluginManager.IDE.EnginePath);
             makePackageButton.Text = "Make &Package!";
             cancelButton.Text = "&Close";
         }
@@ -221,12 +221,8 @@ namespace Sphere.Plugins
         private void testButton_Click(object sender, EventArgs e)
         {
             ISettings settings = PluginManager.IDE.Settings;
-            string enginePath = settings.GetString("enginePath", "");
-            string enginePath64 = settings.GetString("enginePath64", "");
-            string filename = System.Environment.Is64BitOperatingSystem && !string.IsNullOrWhiteSpace(enginePath64)
-                ? enginePath64 : enginePath;
             string args = string.Format("-package \"{0}\"", testButton.Tag);
-            Process.Start(filename, args);
+            Process.Start(PluginManager.IDE.EnginePath, args);
         }
     }
 }

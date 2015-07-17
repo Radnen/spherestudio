@@ -6,14 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Sphere.Core;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 
 namespace SphereStudio.Settings
 {
     class CoreSettings : INISettings
     {
-        public CoreSettings():
-            base("Sphere Studio.ini", "Sphere Studio")
+        public CoreSettings(INI ini):
+            base(ini, "Sphere Studio")
         {
             Preset = GetString("preset", "");
         }
@@ -92,12 +94,12 @@ namespace SphereStudio.Settings
                 string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
                 if (!string.IsNullOrWhiteSpace(value) && File.Exists(path))
                 {
-                    INISettings preset = new INISettings(path, "Preset");
-                    EngineConfigPath = preset.GetString("engineConfigPath", "");
-                    EnginePath = preset.GetString("enginePath", "");
-                    EnginePath64 = preset.GetString("enginePath64", "");
-                    DefaultEditor = preset.GetString("defaultEditor", "");
-                    Plugins = preset.GetStringArray("plugins");
+                    INI preset = new INI(path, false);
+                    EngineConfigPath = preset.Read("Preset", "engineConfigPath", "");
+                    EnginePath = preset.Read("Preset", "enginePath", "");
+                    EnginePath64 = preset.Read("Preset", "enginePath64", "");
+                    DefaultEditor = preset.Read("Preset", "defaultEditor", "");
+                    Plugins = preset.Read("Preset", "plugins", "").Split('|');
                     SetValue("preset", value);
                 }
                 else
