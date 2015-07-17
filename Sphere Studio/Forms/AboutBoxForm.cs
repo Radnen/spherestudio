@@ -11,8 +11,7 @@ namespace SphereStudio.Forms
         {
             InitializeComponent();
             this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version: {0}", AssemblyVersion);
+            this.labelProductName.Text = string.Format("{0} {1}", AssemblyProduct, AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = "By: " + AssemblyCompany;
             this.labelBits.Text = Environment.Is64BitProcess ? "64-bit" : "32-bit";
@@ -101,7 +100,9 @@ namespace SphereStudio.Forms
 
         private void websiteUrlLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(websiteUrlLink.Text);
+            Process.Start(websiteUrlLink.Text.Substring(
+                websiteUrlLink.LinkArea.Start,
+                websiteUrlLink.LinkArea.Length));
         }
     }
 }

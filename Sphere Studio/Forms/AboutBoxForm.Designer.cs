@@ -29,7 +29,6 @@
         {
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.labelProductName = new System.Windows.Forms.Label();
-            this.labelVersion = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.labelCompanyName = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
@@ -63,17 +62,6 @@
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "Product Name";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelVersion
-            // 
-            this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelVersion.Location = new System.Drawing.Point(374, 36);
-            this.labelVersion.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
-            this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(91, 21);
-            this.labelVersion.TabIndex = 0;
-            this.labelVersion.Text = "Version";
-            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelCopyright
             // 
@@ -137,17 +125,20 @@
             // 
             // websiteUrlLink
             // 
-            this.websiteUrlLink.Location = new System.Drawing.Point(176, 110);
+            this.websiteUrlLink.LinkArea = new System.Windows.Forms.LinkArea(12, 25);
+            this.websiteUrlLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.websiteUrlLink.Location = new System.Drawing.Point(217, 114);
             this.websiteUrlLink.Name = "websiteUrlLink";
-            this.websiteUrlLink.Size = new System.Drawing.Size(318, 18);
+            this.websiteUrlLink.Size = new System.Drawing.Size(248, 18);
             this.websiteUrlLink.TabIndex = 25;
             this.websiteUrlLink.TabStop = true;
-            this.websiteUrlLink.Text = "http://www.spheredev.org/";
+            this.websiteUrlLink.Text = "Visit us at http://www.spheredev.org/";
+            this.websiteUrlLink.UseCompatibleTextRendering = true;
             this.websiteUrlLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.websiteUrlLink_LinkClicked);
             // 
             // labelBits
             // 
-            this.labelBits.Location = new System.Drawing.Point(371, 59);
+            this.labelBits.Location = new System.Drawing.Point(371, 37);
             this.labelBits.Name = "labelBits";
             this.labelBits.Size = new System.Drawing.Size(94, 19);
             this.labelBits.TabIndex = 26;
@@ -175,7 +166,6 @@
             this.Controls.Add(this.labelBits);
             this.Controls.Add(this.websiteUrlLink);
             this.Controls.Add(this.labelCompanyName);
-            this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.labelProductName);
             this.Controls.Add(this.logoPictureBox);
             this.Controls.Add(this.textBoxDescription);
@@ -203,7 +193,6 @@
 
         private System.Windows.Forms.PictureBox logoPictureBox;
         private System.Windows.Forms.Label labelProductName;
-        private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.Label labelCompanyName;
         private System.Windows.Forms.TextBox textBoxDescription;

@@ -72,9 +72,8 @@ namespace SphereStudio
             // make sure this is active only when we use it.
             if (_treeContent != null) _treeContent.Activate();
 
-            var Is64 = System.Environment.Is64BitProcess;
-            Text = string.Format("{0} {1} v{2}", Application.ProductName,
-                (Is64) ? "x64" : "x86", Application.ProductVersion);
+            Text = string.Format("{0} {1} ({2})", Application.ProductName,
+                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
 
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
 
@@ -706,6 +705,9 @@ namespace SphereStudio
                     _startContent.Show();
             }
 
+            Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
+                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
+                CurrentGame.Name);
             UpdateButtons();
         }
 
@@ -931,6 +933,8 @@ namespace SphereStudio
             // all clear!
             Global.CurrentUser = null;
             Global.CurrentProject = null;
+            Text = string.Format("{0} {1} ({2})", Application.ProductName,
+                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
             UpdateButtons();
             return true;
         }
