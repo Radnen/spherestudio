@@ -15,8 +15,57 @@ namespace SphereStudio.Plugins
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default image editor"; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; set; }
+        public Icon Icon { get; private set; }
+
+        #region wire up Image menu items
+        private static ToolStripMenuItem _imageMenu;
+        private static ToolStripMenuItem _rescaleMenuItem;
+        private static ToolStripMenuItem _resizeMenuItem;
         
+        static ImageEditPlugin()
+        {
+            _imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
+            _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, menuRescale_Click);
+            _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, menuResize_Click);
+            _imageMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                _resizeMenuItem,
+                _rescaleMenuItem });
+        }
+
+        private static void menuRescale_Click(object sender, EventArgs e)
+        {
+            using (SizeForm form = new SizeForm())
+            {
+                ImageEditView editor = PluginManager.IDE.CurrentDocument as ImageEditView;
+                form.WidthSize = editor.Content.Width;
+                form.HeightSize = editor.Content.Height;
+                if (form.ShowDialog() == DialogResult.OK)
+                    editor.Rescale(form.WidthSize, form.HeightSize, form.Mode);
+            }
+        }
+
+        private static void menuResize_Click(object sender, EventArgs e)
+        {
+            using (SizeForm form = new SizeForm())
+            {
+                ImageEditView editor = PluginManager.IDE.CurrentDocument as ImageEditView;
+                form.WidthSize = editor.Content.Width;
+                form.HeightSize = editor.Content.Height;
+                form.UseScale = false;
+                if (form.ShowDialog() == DialogResult.OK)
+                    editor.Resize(form.WidthSize, form.HeightSize);
+            }
+        }
+        #endregion
+        
+        internal static void ShowMenus(bool show)
+        {
+            _imageMenu.Visible = show;
+        }
+
+        private readonly string[] _extensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
+        private readonly string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
+
         public ImageEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
@@ -24,122 +73,37 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            // initialize the menu items
-            _newImageMenuItem = new ToolStripMenuItem("Image", Properties.Resources.palette, _newImageMenuItem_Click);
-            _imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
-            _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, _rescaleMenuItem_Click);
-            _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, _resizeMenuItem_Click);
-            _imageMenu.DropDownItems.AddRange(new ToolStripItem[] {
-                _resizeMenuItem,
-                _rescaleMenuItem });
-            
-            // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
+            PluginManager.RegisterExtensions(this, "png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.RegisterEditor(EditorType.Image, this);
-            PluginManager.IDE.AddMenuItem("File.New", _newImageMenuItem);
-            PluginManager.IDE.AddMenuItem(_imageMenu, "View");
+            PluginManager.IDE.AddMenuItem(_imageMenu, "Tools");
+            PluginManager.IDE.RegisterNewHandler(this, "Image");
             PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions("png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_newImageMenuItem);
-            PluginManager.IDE.RemoveMenuItem("Image");
+            PluginManager.IDE.RemoveMenuItem(_imageMenu);
             PluginManager.UnregisterEditor(this);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
 
-        public DockDescription OpenDocument(string filename = "")
+        public DocumentView CreateEditView()
         {
-            // Creates a new editor instance:
-            Drawer2 editor = new Drawer2() { CanDirty = true, Dock = DockStyle.Fill };
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
-
-            // if no filename provided, initialize a new image
-            if (string.IsNullOrEmpty(filename)) editor.CreateNew();
-
-            // And creates + styles a dock panel:
-            DockDescription dockDesc = new DockDescription();
-            dockDesc.TabText = @"Untitled";
-            dockDesc.Control = editor;
-            dockDesc.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                dockDesc.TabText = Path.GetFileName(filename);
-            }
-
-            return dockDesc;
+            return new ImageEditView();
         }
 
-        public EditorObject CreateEditControl()
+        public DocumentView NewDocument()
         {
-            return new Drawer2();
+            DocumentView view = new ImageEditView();
+            return view.NewDocument() ? view : null;
         }
 
-        private const string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
-        private readonly string[] _extensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
-
-        #region menu item declarations
-        private ToolStripMenuItem _newImageMenuItem;
-        private ToolStripMenuItem _imageMenu;
-        private ToolStripMenuItem _rescaleMenuItem;
-        private ToolStripMenuItem _resizeMenuItem;
-        #endregion
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
+        public DocumentView OpenDocument(string filepath)
         {
-            if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenDocument(e.Path));
-                e.Handled = true;
-            }
+            DocumentView view = new ImageEditView();
+            view.Load(filepath);
+            return view;
         }
-
-        private void document_Activate(object sender, EventArgs e)
-        {
-        	_imageMenu.Visible = true;
-        }
-
-        private void document_Deactivate(object sender, EventArgs e)
-        {
-       		_imageMenu.Visible = false;
-        }
-        
-        #region menu item click handlers
-        private void _newImageMenuItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenDocument());
-        }
-
-        private void _rescaleMenuItem_Click(object sender, EventArgs e)
-        {
-            using (SizeForm form = new SizeForm())
-            {
-                Drawer2 editor = PluginManager.IDE.CurrentDocument as Drawer2;
-                form.WidthSize = editor.ImageWidth;
-                form.HeightSize = editor.ImageHeight;
-                if (form.ShowDialog() == DialogResult.OK)
-                    editor.SetScale(form.WidthSize, form.HeightSize, form.Mode);
-            }
-        }
-
-        private void _resizeMenuItem_Click(object sender, EventArgs e)
-        {
-            using (SizeForm form = new SizeForm())
-            {
-                Drawer2 editor = PluginManager.IDE.CurrentDocument as Drawer2;
-                form.WidthSize = editor.ImageWidth;
-                form.HeightSize = editor.ImageHeight;
-                form.UseScale = false;
-                if (form.ShowDialog() == DialogResult.OK)
-                    editor.SetSize(form.WidthSize, form.HeightSize);
-            }
-        }
-        #endregion
     }
 }

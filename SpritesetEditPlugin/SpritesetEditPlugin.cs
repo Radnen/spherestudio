@@ -5,33 +5,32 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class SpritesetEditPlugin : IPlugin
+    public class SpritesetEditPlugin : IEditorPlugin
     {
-        private readonly string[] _extensions = new[] { ".rss" };
-        private const string _openFileFilters = "*.rss";
-
         public string Name { get { return "Spriteset Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default spriteset editor"; } }
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
 
-        public SpritesetEditPlugin()
-        {
-            Icon = Icon.FromHandle(Properties.Resources.PaletteToolIcon.GetHicon());
-        }
+        #region wire up Spriteset menu
+        private static ToolStripMenuItem _spritesetMenu;
+        private static ToolStripMenuItem _exportMenuItem;
+        private static ToolStripMenuItem _importMenuItem;
+        private static ToolStripMenuItem _rescaleMenuItem;
+        private static ToolStripMenuItem _resizeMenuItem;
 
-        public void Initialize(ISettings conf)
+        static SpritesetEditPlugin()
         {
-            // initialize the menu items
-            _newSpritesetMenuItem = new ToolStripMenuItem("Spriteset", Properties.Resources.PaletteToolIcon, _newSpritesetMenuItem_Click);
             _spritesetMenu = new ToolStripMenuItem("&Spriteset") { Visible = false };
-            _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, _resizeMenuItem_Click);
-            _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, _rescaleMenuItem_Click);
-            _importMenuItem = new ToolStripMenuItem("&Import...", null, _importMenuItem_Click);
-            _exportMenuItem = new ToolStripMenuItem("E&xport...", null, _exportMenuItem_Click);
+            _resizeMenuItem = new ToolStripMenuItem("&Resize...", Properties.Resources.arrow_inout, menuResize_Click);
+            _rescaleMenuItem = new ToolStripMenuItem("Re&scale...", Properties.Resources.arrow_inout, menuRescale_Click);
+            _importMenuItem = new ToolStripMenuItem("&Import...", null, menuImport_Click);
+            _exportMenuItem = new ToolStripMenuItem("E&xport...", null, menuExport_Click);
             _spritesetMenu.DropDownItems.AddRange(new ToolStripItem[] {
                 _resizeMenuItem,
                 _rescaleMenuItem,
@@ -39,103 +38,71 @@ namespace SphereStudio.Plugins
                 _importMenuItem,
                 _exportMenuItem
             });
-
-            // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newSpritesetMenuItem);
-            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
-            PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
-        }
-
-        public void Destroy()
-        {
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem("Spriteset");
-            PluginManager.IDE.RemoveMenuItem(_newSpritesetMenuItem);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
         }
         
-        #region menu item declarations
-        private ToolStripMenuItem _newSpritesetMenuItem;
-        private ToolStripMenuItem _spritesetMenu;
-        private ToolStripMenuItem _exportMenuItem;
-        private ToolStripMenuItem _importMenuItem;
-        private ToolStripMenuItem _rescaleMenuItem;
-        private ToolStripMenuItem _resizeMenuItem;
-        #endregion
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
-                e.Handled = true;
-            }
-        }
-        
-        private void document_Activate(object sender, EventArgs e)
-        {
-        	_spritesetMenu.Visible = true;
-        }
-
-        private void document_Deactivate(object sender, EventArgs e)
-        {
-        	_spritesetMenu.Visible = false;
-        }
-        
-        #region menu item click handlers
-        private void _newSpritesetMenuItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-        
-        private void _exportMenuItem_Click(object sender, EventArgs e)
+        private static void menuExport_Click(object sender, EventArgs e)
         {
             // TODO: implement spriteset export!
             throw new NotImplementedException();
         }
 
-        private void _importMenuItem_Click(object sender, EventArgs e)
+        private static void menuImport_Click(object sender, EventArgs e)
         {
             // TODO: implement spriteset import!
             throw new NotImplementedException();
         }
 
-        private void _rescaleMenuItem_Click(object sender, EventArgs e)
+        private static void menuRescale_Click(object sender, EventArgs e)
         {
-            (PluginManager.IDE.CurrentDocument as SpritesetEditor).RescaleAll();
+            (PluginManager.IDE.CurrentDocument as SpritesetEditView).RescaleAll();
         }
 
-        private void _resizeMenuItem_Click(object sender, EventArgs e)
+        private static void menuResize_Click(object sender, EventArgs e)
         {
-            (PluginManager.IDE.CurrentDocument as SpritesetEditor).ResizeAll();
+            (PluginManager.IDE.CurrentDocument as SpritesetEditView).ResizeAll();
         }
         #endregion
-        
-        private DockDescription OpenEditor(string filename = "")
+
+        internal static void ShowMenus(bool show)
         {
-            // Creates a new editor instance:
-            SpritesetEditor editor = new SpritesetEditor() { Dock = DockStyle.Fill };
-            editor.OnActivate += document_Activate;
-            editor.OnDeactivate += document_Deactivate;
+            _spritesetMenu.Visible = show;
+        }
+        
+        private readonly string[] _extensions = new[] { "rss" };
+        private const string _openFileFilters = "*.rss";
 
-            // if no filename provided, initialize a new document
-            if (string.IsNullOrEmpty(filename)) editor.CreateNew();
+        public SpritesetEditPlugin()
+        {
+            Icon = Icon.FromHandle(Properties.Resources.PersonIcon.GetHicon());
+        }
 
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText = @"Untitled";
-            description.Control = editor;
-            description.Icon = Icon;
+        public void Initialize(ISettings conf)
+        {
+            PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterNewHandler(this, "Spriteset");
+            PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
+            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
+        }
 
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
+        public void Destroy()
+        {
+            PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterNewHandler(this);
+            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+        }
 
-            return description;
+        public DocumentView CreateEditView() { return null; }
+
+        public DocumentView NewDocument()
+        {
+            return null;
+        }
+
+        public DocumentView OpenDocument(string filepath)
+        {
+            SpritesetEditView view = new SpritesetEditView();
+            view.Load(filepath);
+            return view;
         }
     }
 }

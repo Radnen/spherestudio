@@ -4,9 +4,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using Sphere.Plugins;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class SoundTestPlugin : IPlugin
+    public class SoundTestPlugin : IEditorPlugin
     {
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Lord English"; } }
@@ -15,11 +17,11 @@ namespace SphereStudio.Plugins
         public Icon Icon { get; set; }
 
         private const string _openFileFilters = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";
-        private readonly List<string> _extensionList = new List<string>(new[] {
-            ".mp3", ".ogg", ".flac",  // compressed audio formats
-            ".mod", ".it", ".s3d",    // tracker formats
-            ".wav"                    // uncompressed/PCM formats
-        });
+        private readonly string[] _extensionList = new[] {
+            "mp3", "ogg", "flac",  // compressed audio formats
+            "mod", "it", "s3d",    // tracker formats
+            "wav"                  // uncompressed/PCM formats
+        };
         
         private SoundPicker _soundPicker;
 
@@ -41,25 +43,34 @@ namespace SphereStudio.Plugins
             description.HideOnClose = true;
             description.DockState = DockDescStyle.Side;
 
+            PluginManager.RegisterExtensions(this, _extensionList);
             PluginManager.IDE.DockControl(description);
             PluginManager.IDE.RegisterOpenFileType("Audio", _openFileFilters);
             PluginManager.IDE.LoadProject += IDE_LoadProject;
             PluginManager.IDE.UnloadProject += IDE_UnloadProject;
             PluginManager.IDE.TestGame += IDE_TestGame;
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
             _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions(_extensionList);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
             PluginManager.IDE.RemoveControl("Sound Test");
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
             PluginManager.IDE.TestGame -= IDE_TestGame;
             PluginManager.IDE.LoadProject -= IDE_LoadProject;
             PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
+        }
+
+        public DocumentView CreateEditView() { return null; }
+        public DocumentView NewDocument() { return null; }
+        
+        public DocumentView OpenDocument(string filepath)
+        {
+            _soundPicker.PlayFile(filepath);
+            return null;
         }
 
         private void IDE_LoadProject(object sender, EventArgs e)
@@ -70,16 +81,6 @@ namespace SphereStudio.Plugins
         private void IDE_UnloadProject(object sender, EventArgs e)
         {
             _soundPicker.WatchProject(null);
-        }
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
-            {
-                _soundPicker.PlayFile(e.Path);
-                e.Handled = true;
-            }
         }
 
         private void IDE_TestGame(object sender, EventArgs e)

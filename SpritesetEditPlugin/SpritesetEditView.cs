@@ -12,7 +12,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class SpritesetEditor : EditorObject
+    partial class SpritesetEditView : DocumentView
     {
         #region attributes
         private readonly Spriteset _sprite;
@@ -30,11 +30,13 @@ namespace SphereStudio.Plugins
         private DockContent _baseContent;
         #endregion
 
-        public SpritesetEditor()
+        public SpritesetEditView()
         {
             InitializeComponent();
             InitializeDocking();
 
+            Icon = Icon.FromHandle(Properties.Resources.PersonIcon.GetHicon());
+            
             _sprite = new Spriteset();
             DirectionAnim.Sprite = _sprite;
             FrameBaseEditor.Sprite = _sprite;
@@ -140,7 +142,7 @@ namespace SphereStudio.Plugins
             }
             ((DirectionLayout)DirectionHolder.Controls[0]).Select(0);
             _selectedFrame = ((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame;
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index)));
+            SpriteDrawer.Content = (Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index));
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
             _tilesetCtrl = new TilesetControl2 {Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite), CanInsert = false};
@@ -160,69 +162,70 @@ namespace SphereStudio.Plugins
         {
             _selectedFrame.Index = tiles[0];
             DirectionHolder.Invalidate(true);
-            SpriteDrawer.SetImage(_tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic, true);
-            MakeDirty();
+            SpriteDrawer.Content = _tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic;
+            IsDirty = true;
         }
 
         void _tileset_ctrl_TileRemoved(short startindex, List<Tile> tiles)
         {
             _sprite.RemoveFrameReference(startindex);
             DirectionHolder.Invalidate(true);
-            MakeDirty();
+            IsDirty = true;
         }
 
         void _tileset_ctrl_TileAdded(short startindex, List<Tile> tiles)
         {
             foreach (Tile t in tiles) _sprite.Images.Add(t.Graphic);
-            MakeDirty();
+            IsDirty = true;
         }
 
-        public override void CreateNew()
+        public override string[] FileExtensions
+        {
+            get { return new[] { "rss" }; }
+        }
+
+        public override bool NewDocument()
         {
             _sprite.MakeNew();
             Init();
+            return true;
         }
 
-        public override void LoadFile(string filename)
+        public override void Load(string filepath)
         {
-            if (_sprite.Load(filename))
+            if (_sprite.Load(filepath))
             {
-                FileName = filename;
-                SetTabText(Path.GetFileName(filename));
                 Init();
             }
             else
             {
-                MessageBox.Show(@"Error: Can't load spriteset: " + filename);
+                MessageBox.Show(@"Error: Can't load spriteset: " + filepath);
                 ((DockContent)Parent).Close();
             }
         }
 
-        public override void Save()
+        public override void Save(string filepath)
         {
-            if (!IsSaved()) SaveAs();
-            else
-            {
-                SetTabText(Path.GetFileName(FileName));
-                _sprite.Save(FileName);
-            }
+            _sprite.Save(filepath);
+            IsDirty = false;
         }
 
-        public override void SaveAs()
+        public override void Activate()
         {
-            SaveFileDialog diag = new SaveFileDialog {Filter = @"Spriteset Files (.rss)|*.rss"};
-
-            if (PluginManager.IDE.CurrentGame != null)
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\spritesets";
-
-            if (diag.ShowDialog() == DialogResult.OK)
-            {
-                FileName = diag.FileName;
-                Save();
-            }
+            SpritesetEditPlugin.ShowMenus(true);
         }
 
-        public override void SaveLayout()
+        public override void Deactivate()
+        {
+            SpritesetEditPlugin.ShowMenus(false);
+        }
+
+
+
+
+
+
+        public void SaveLayout()
         {
             _mainDockPanel.SaveAsXml("SpriteEditor.xml");
         }
@@ -255,9 +258,9 @@ namespace SphereStudio.Plugins
                     _sprite.SpriteWidth = (short)frm.WidthSize;
                     _sprite.SpriteHeight = (short)frm.HeightSize;
                 }
-                SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selectedFrame.Index));
+                SpriteDrawer.Content = (Bitmap)_sprite.GetImage(_selectedFrame.Index);
                 UpdateControls();
-                MakeDirty();
+                IsDirty = true;
             }
 
             // these method were made public to resize the contained image:
@@ -270,7 +273,7 @@ namespace SphereStudio.Plugins
             if (_selectedFrame != null) _selectedFrame.Selected = false;
             _selectedDirection = (DirectionLayout)sender;
             _selectedFrame = _selectedDirection.SelectedFrame;
-            SpriteDrawer.SetImage((Bitmap)_sprite.GetImage(_selectedFrame.Index));
+            SpriteDrawer.Content = (Bitmap)_sprite.GetImage(_selectedFrame.Index);
             FrameBaseEditor.Frame = _selectedFrame.Frame;
             DirectionAnim.Direction = _selectedDirection.Direction;
             DirectionAnim.Invalidate(true);
@@ -323,7 +326,7 @@ namespace SphereStudio.Plugins
             layout.Zoom = _zoom;
             DirectionHolder.Controls.Add(layout);
             layout.Location = new Point(2, DirectionHolder.Controls.Count-1 * (layout.Height + 2) + 2);
-            MakeDirty();
+            IsDirty = true;
         }
 
         public void RemoveDirection(DirectionLayout layout)
@@ -331,12 +334,12 @@ namespace SphereStudio.Plugins
             _sprite.Directions.Remove(layout.Direction);
             DirectionHolder.Controls.Remove(layout);
             UpdateControls();
-            MakeDirty();
+            IsDirty = true;
         }
 
-        private void SpriteDrawer_ImageEdited(object sender, EventArgs e)
+        private void SpriteDrawer_ImageChanged(object sender, EventArgs e)
         {
-            Bitmap img = SpriteDrawer.GetImage();
+            Bitmap img = SpriteDrawer.Content;
             _sprite.Images[_selectedFrame.Index] = img;
             _tilesetCtrl.Tileset.Tiles[_selectedFrame.Index].Graphic = img;
             Modified(sender, e);
@@ -345,7 +348,7 @@ namespace SphereStudio.Plugins
 
         private void Modified(object sender, EventArgs e)
         {
-            MakeDirty();
+            IsDirty = true;
         }
     }
 }

@@ -11,33 +11,20 @@ using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class Drawer2 : EditorObject, IImageEditor
+    partial class ImageEditView : ImageView
     {
-        public event EventHandler ImageEdited;
-        
-        public bool CanDirty { get; set; }
-
-        public bool FixedSize
-        {
-            get { return ImageEditor.FixedSize; }
-            set { ImageEditor.FixedSize = value; }
-        }
-
-        public int ImageWidth { get { return ImageEditor.EditImage.Width; } }
-        public int ImageHeight { get { return ImageEditor.EditImage.Height; } }
-
         private readonly DockContent _drawContent = new DockContent();
         private readonly DockContent _paletteContent = new DockContent();
         private readonly DockPanel _editorDock = new DockPanel();
 
         private ColorBox _selectedBox;
 
-        public Drawer2()
+        public ImageEditView()
         {
             InitializeComponent();
             InitializeDocking();
 
-            CanDirty = false;
+            Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
 
             for (int i = 0; i < 8; ++i)
             {
@@ -50,6 +37,118 @@ namespace SphereStudio.Plugins
             box_MouseClick(ColorFlow.Controls[0], null);
         }
 
+        public override Bitmap Content
+        {
+            get { return ImageEditor.EditImage; }
+            set
+            {
+                ImageEditor.SetImage(value);
+                ImageEditor.ClearHistory();
+                UndoButton.Enabled = RedoButton.Enabled = false;
+                ImageEditor.Invalidate();
+            }
+        }
+
+        public override string[] FileExtensions
+        {
+            get { return new[] { "png", "jpg", "bmp", "gif" }; }
+        }
+
+        public override bool NewDocument()
+        {
+            ImageEditor.MakeNew(80, 80);
+            return true;
+        }
+
+        public override void Load(string path)
+        {
+            using (Bitmap img = (Bitmap)Image.FromFile(path))
+            {
+                ImageEditor.SetImage(img);
+            }
+        }
+
+        public override void Save(string path)
+        {
+            using (Image img = ImageEditor.GetImage())
+            {
+                img.Save(path);
+            }
+            IsDirty = false;
+        }
+        
+        public override void Activate()
+        {
+            ImageEditPlugin.ShowMenus(true);
+        }
+
+        public override void Deactivate()
+        {
+            ImageEditPlugin.ShowMenus(false);
+        }
+
+        public override void Undo()
+        {
+            if (ImageEditor.CanUndo) ImageEditor.Undo();
+            UndoButton.Enabled = ImageEditor.CanUndo;
+            RedoButton.Enabled = ImageEditor.CanRedo;
+            IsDirty = true;
+        }
+
+        public override void Redo()
+        {
+            if (ImageEditor.CanRedo) ImageEditor.Redo();
+            UndoButton.Enabled = ImageEditor.CanUndo;
+            RedoButton.Enabled = ImageEditor.CanRedo;
+            IsDirty = true;
+        }
+
+        public void Rescale(int width, int height, InterpolationMode mode)
+        {
+            ImageEditor.RescaleImage(width, height, mode);
+        }
+
+        public new void Resize(int width, int height)
+        {
+            ImageEditor.ResizeImage(width, height);
+        }
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         void box_MouseClick(object sender, MouseEventArgs e)
         {
             foreach (ColorBox box in ColorFlow.Controls)
@@ -82,84 +181,9 @@ namespace SphereStudio.Plugins
         }
 
 
-        public override void CreateNew() { ImageEditor.MakeNew(80, 80); }
-        public override void Copy() { ImageEditor.Copy(); }
-        public override void Paste()
-        {
-            ImageEditor.Paste();
-            ImageEditor.Invalidate();
-        }
-
-        public override void Save()
-        {
-            if (!IsSaved()) SaveAs();
-            else
-            {
-                using (Image img = ImageEditor.GetImage())
-                {
-                    img.Save(FileName);
-                }
-                SetTabText(System.IO.Path.GetFileName(FileName));
-            }
-        }
-
-        public override void SaveAs()
-        {
-            SaveFileDialog diag = new SaveFileDialog
-                {
-                    Filter = @"Image Files (.png, .gif, .bmp, .jpg)|*.png;*.gif;*.bmp;*.jpg"
-                };
-
-            if (PluginManager.IDE.CurrentGame.RootPath != null)
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\images";
-
-            if (diag.ShowDialog() == DialogResult.OK)
-            {
-                FileName = diag.FileName;
-                Save();
-            }
-        }
-
-        public override void LoadFile(string filename)
-        {
-            FileName = filename;
-            using (Bitmap img = (Bitmap)Image.FromFile(filename))
-            {
-                ImageEditor.SetImage(img);
-            }
-            SetTabText(Path.GetFileName(filename));
-        }
-
-        public override void Undo()
-        {
-            if (ImageEditor.CanUndo) ImageEditor.Undo();
-            UndoButton.Enabled = ImageEditor.CanUndo;
-            RedoButton.Enabled = ImageEditor.CanRedo;
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
-        }
-
-        public override void Redo()
-        {
-            if (ImageEditor.CanRedo) ImageEditor.Redo();
-            UndoButton.Enabled = ImageEditor.CanUndo;
-            RedoButton.Enabled = ImageEditor.CanRedo;
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
-        }
-
         public void SetImage(Bitmap image)
         {
             ImageEditor.SetImage(image);
-            ImageEditor.Invalidate();
-        }
-
-        public void SetImage(Bitmap image, bool clearHistory)
-        {
-            ImageEditor.SetImage(image);
-            if (clearHistory)
-            {
-                ImageEditor.ClearHistory();
-                UndoButton.Enabled = RedoButton.Enabled = false;
-            }
             ImageEditor.Invalidate();
         }
 
@@ -169,7 +193,7 @@ namespace SphereStudio.Plugins
         /// <param name="tileWidth">Width of sub-image.</param>
         /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public IList<Bitmap> GetImages(short tileWidth,short tileHeight)
+        public override IList<Bitmap> GetImages(short tileWidth,short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;
@@ -186,11 +210,6 @@ namespace SphereStudio.Plugins
                 }
             }
             return images;
-        }
-
-        public Bitmap GetImage()
-        {
-            return ImageEditor.GetImage();
         }
 
         /// <summary>
@@ -234,7 +253,7 @@ namespace SphereStudio.Plugins
             ImageEditor.DrawColor = _selectedBox.SelectedColor;
         }
 
-        // sure there might be a better way, but this is more elegamt due to it's simplicity.
+        // sure there might be a better way, but this is more elegant due to it's simplicity.
         private void UnselectButtons()
         {
             RectangleButton.Checked = false;
@@ -300,24 +319,23 @@ namespace SphereStudio.Plugins
             ImageEditor.ResizeToFit();
         }
 
-        private void ImageEditor_ImageEdited(object sender, EventArgs e)
-        {
-            if (ImageEdited != null) ImageEdited(this, EventArgs.Empty);
-            UndoButton.Enabled = ImageEditor.CanUndo;
-            RedoButton.Enabled = ImageEditor.CanRedo;
-            if (CanDirty) MakeDirty();
-        }
-
-        private void ImageEditor_Paint(object sender, PaintEventArgs e)
-        {
-            ZoomLabel.Text = @"Zoom: " + ImageEditor.Zoom;
-        }
-
         private void ImageEditor_ColorChanged(object sender, EventArgs e)
         {
             _selectedBox.SelectedColor = ImageEditor.DrawColor;
             AlphaTracker.Value = ImageEditor.DrawColor.A;
             AlphaLabel.Text = @"Alpha: " + AlphaTracker.Value;
+        }
+
+        private void ImageEditor_ImageChanged(object sender, EventArgs e)
+        {
+            UndoButton.Enabled = ImageEditor.CanUndo;
+            RedoButton.Enabled = ImageEditor.CanRedo;
+            IsDirty = true;
+        }
+
+        private void ImageEditor_Paint(object sender, PaintEventArgs e)
+        {
+            ZoomLabel.Text = @"Zoom: " + ImageEditor.Zoom;
         }
 
         private void MirrorButton_Click(object sender, EventArgs e)

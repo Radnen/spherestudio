@@ -68,7 +68,7 @@ namespace Sphere.Core.Settings
         /// <param name="items">The string array to store.</param>
         public void StoreArray(string key, IEnumerable<string> items)
         {
-            SetItem(key, string.Join(",", items));
+            SetItem(key, string.Join("|", items));
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Sphere.Core.Settings
         public string[] GetArray(string key)
         {
             var s = GetString(key);
-            return !string.IsNullOrWhiteSpace(s) ? s.Split(',') : new string[0];
+            return !string.IsNullOrWhiteSpace(s) ? s.Split('|') : new string[0];
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class WindowstyleEditor : EditorObject
+    internal partial class WindowstyleEditView : DocumentView
     {
         #region attributes
         private Windowstyle _style;
@@ -24,46 +24,53 @@ namespace SphereStudio.Plugins
         private DockPanel _styleDockPanel;
         #endregion
 
-        public WindowstyleEditor()
+        public WindowstyleEditView()
         {
             InitializeComponent();
             InitializeDocking();
+
+            Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
         }
 
-        private void InitializeDocking()
+        public override string[] FileExtensions
         {
-            Controls.Remove(MainSplitter);
-
-            WindowHolder.Dock = DockStyle.Fill;
-            StyleDrawer.Dock = DockStyle.Fill;
-            _styleContent = new DockContent {Text = @"WindowStyle Preview"};
-            _styleContent.Controls.Add(WindowHolder);
-            _styleContent.Controls.Add(StyleStatusStrip);
-            _styleContent.Controls.Add(StyleToolStrip);
-            StyleStatusStrip.SendToBack();
-            StyleToolStrip.BringToFront();
-
-            _imageContent = new DockContent {Text = @"WindowStyle Image Editor"};
-            _imageContent.Controls.Add(StyleDrawer);
-            _styleContent.CloseButtonVisible = _imageContent.CloseButtonVisible = false;
-
-            _styleDockPanel = new DockPanel {Dock = DockStyle.Fill, DocumentStyle = DocumentStyle.DockingWindow};
-            if (File.Exists("WindowEditor.xml"))
-            {
-                DeserializeDockContent dc = GetContent;
-                _styleDockPanel.LoadFromXml("WindowEditor.xml", dc);
-            }
-            else
-            {
-                _styleContent.Show(_styleDockPanel, DockState.Document);
-                _imageContent.Show(_styleContent.Pane, DockAlignment.Bottom, 0.40);
-            }
-
-            Controls.Add(_styleDockPanel);
-            _styleDockPanel.BringToFront();
+            get { return new[] { "rws" }; }
+        }
+        
+        public override bool NewDocument()
+        {
+            _style = new Windowstyle { Grid = true };
+            InitWindow();
+            return true;
         }
 
-        public override void SaveLayout()
+        public override void Load(string filepath)
+        {
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(filepath)))
+            {
+                _style = new Windowstyle(reader);
+            }
+            _style.Grid = true;
+            InitWindow();
+        }
+
+        public override void Save(string filepath)
+        {
+            _style.Save(filepath);
+            IsDirty = false;
+        }
+
+        public override void ZoomIn()
+        {
+            ZoomInItem_Click(null, EventArgs.Empty);
+        }
+
+        public override void ZoomOut()
+        {
+            ZoomOutItem_Click(null, EventArgs.Empty);
+        }
+
+        public void SaveLayout()
         {
             _styleDockPanel.SaveAsXml("WindowEditor.xml");
         }
@@ -83,33 +90,43 @@ namespace SphereStudio.Plugins
             return new DockContent();
         }
 
-        public override void CreateNew()
+        private void InitializeDocking()
         {
-            _style = new Windowstyle {Grid = true};
-            InitWindow();
-        }
+            Controls.Remove(MainSplitter);
 
-        public override void LoadFile(string filename)
-        {
-            FileName = filename;
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(filename)))
+            WindowHolder.Dock = DockStyle.Fill;
+            StyleDrawer.Dock = DockStyle.Fill;
+            _styleContent = new DockContent { Text = @"WindowStyle Preview" };
+            _styleContent.Controls.Add(WindowHolder);
+            _styleContent.Controls.Add(StyleStatusStrip);
+            _styleContent.Controls.Add(StyleToolStrip);
+            StyleStatusStrip.SendToBack();
+            StyleToolStrip.BringToFront();
+
+            _imageContent = new DockContent { Text = @"WindowStyle Image Editor" };
+            _imageContent.Controls.Add(StyleDrawer);
+            _styleContent.CloseButtonVisible = _imageContent.CloseButtonVisible = false;
+
+            _styleDockPanel = new DockPanel { Dock = DockStyle.Fill, DocumentStyle = DocumentStyle.DockingWindow };
+            if (File.Exists("WindowEditor.xml"))
             {
-                _style = new Windowstyle(reader);
+                DeserializeDockContent dc = GetContent;
+                _styleDockPanel.LoadFromXml("WindowEditor.xml", dc);
             }
-            _style.Grid = true;
-            SetTabText(Path.GetFileName(filename));
-            InitWindow();
-        }
+            else
+            {
+                _styleContent.Show(_styleDockPanel, DockState.Document);
+                _imageContent.Show(_styleContent.Pane, DockAlignment.Bottom, 0.40);
+            }
 
-        public override void Copy() { StyleDrawer.Copy(); }
-        public override void Paste() { StyleDrawer.Paste(); }
-        public override void Undo() { StyleDrawer.Undo(); }
-        public override void Redo() { StyleDrawer.Redo(); }
+            Controls.Add(_styleDockPanel);
+            _styleDockPanel.BringToFront();
+        }
 
         private void InitWindow()
         {
             _style.GeneratePreview(WindowPanel.Width, WindowPanel.Height);
-            StyleDrawer.SetImage(_style.Images[0]);
+            StyleDrawer.Content = _style.Images[0];
             StyleDrawer.ZoomIn();
             _windW = WindowPanel.Width;
             _windH = WindowPanel.Height;
@@ -122,43 +139,13 @@ namespace SphereStudio.Plugins
             WindowPanel.Location = new Point(x, y);
         }
 
-        private void StyleDrawer_ImageEdited(object sender, EventArgs e)
+        private void StyleDrawer_ImageChanged(object sender, EventArgs e)
         {
-            _style.Images[_style.Selected] = StyleDrawer.GetImage();
+            _style.Images[_style.Selected] = StyleDrawer.Content;
             _style.GeneratePreview(_windW, _windH);
             WindowPanel.Invalidate();
-            MakeDirty();
+            IsDirty = true;
         }
-
-        public override void Save()
-        {
-            if (!IsSaved()) SaveAs();
-            else
-            {
-                SetTabText(Path.GetFileName(FileName));
-                _style.Save(FileName);
-            }
-        }
-
-        public override void SaveAs()
-        {
-            using (SaveFileDialog diag = new SaveFileDialog())
-            {
-                diag.Filter = @"WindowStyle Files (.rws)|*.rws";
-
-                if (PluginManager.IDE.CurrentGame != null)
-                    diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\windowstyles";
-
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    FileName = diag.FileName;
-                    Save();
-                }
-            }
-        }
-
-        public override void ZoomIn() { ZoomInItem_Click(null, EventArgs.Empty); }
-        public override void ZoomOut() { ZoomOutItem_Click(null, EventArgs.Empty); }
 
         private void WindowStyleEditor_Resize(object sender, EventArgs e)
         {
@@ -194,7 +181,7 @@ namespace SphereStudio.Plugins
         private void SelectImage(int num)
         {
             _style.Selected = num;
-            StyleDrawer.SetImage(_style.Images[num]);
+            StyleDrawer.Content = _style.Images[num];
             WindowPanel.Refresh();
         }
 
@@ -255,7 +242,7 @@ namespace SphereStudio.Plugins
         private void EditBGItem_Click(object sender, EventArgs e)
         {
             _style.Selected = 8;
-            StyleDrawer.SetImage(_style.Images[8]);
+            StyleDrawer.Content = _style.Images[8];
             WindowPanel.Refresh();
         }
 
@@ -265,7 +252,7 @@ namespace SphereStudio.Plugins
             SelectImage(_style.Selected);
             ImgLabel.Text = @"Image: " + _style.Selected;
             LeftButton.Enabled = _style.Selected > 0;
-            if (!LeftButton.Enabled && HelpLabel != null) HelpLabel.Text = "";
+            if (!LeftButton.Enabled && HelpText != null) HelpText = "";
             RightButton.Enabled = true;
         }
 
@@ -275,58 +262,58 @@ namespace SphereStudio.Plugins
             SelectImage(_style.Selected);
             ImgLabel.Text = @"Image: " + _style.Selected;
             RightButton.Enabled = _style.Selected < 8;
-            if (!RightButton.Enabled && HelpLabel != null) HelpLabel.Text = "";
+            if (!RightButton.Enabled && HelpText != null) HelpText = "";
             LeftButton.Enabled = true;
         }
 
         #region tip texts
         private void ClearTip(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = "";
+            if (HelpText == null) return;
+            HelpText = "";
         }
 
         private void WindowPanel_MouseEnter(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = @"Selecting a side allows you to edit that portion.";
+            if (HelpText == null) return;
+            HelpText = @"Selecting a side allows you to edit that portion.";
         }
 
         private void WindowPanel_MouseLeave(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = "";
+            if (HelpText == null) return;
+            HelpText = "";
             Cursor = Cursors.Default;
         }
 
         private void GridButton_MouseEnter(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = @"The grid can show you the window sections.";
+            if (HelpText == null) return;
+            HelpText = @"The grid can show you the window sections.";
         }
 
         private void WindowHolder_MouseEnter(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = @"Right-click to show the context menu.";
+            if (HelpText == null) return;
+            HelpText = @"Right-click to show the context menu.";
         }
 
         private void LeftButton_MouseEnter(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = @"Click to set last image.";
+            if (HelpText == null) return;
+            HelpText = @"Click to set last image.";
         }
 
         private void RightButton_MouseEnter(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = @"Click to set next image.";
+            if (HelpText == null) return;
+            HelpText = @"Click to set next image.";
         }
 
         private void EditBGItem_MouseEnter(object sender, EventArgs e)
         {
-            if (HelpLabel == null) return;
-            HelpLabel.Text = @"Directly edit the window background.";
+            if (HelpText == null) return;
+            HelpText = @"Directly edit the window background.";
         }
 
         #endregion

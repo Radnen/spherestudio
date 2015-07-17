@@ -72,14 +72,14 @@
             this.DeleteZoneItem,
             this.EditZoneItem});
             this.MapContextMenu.Name = "MapContextMenu";
-            this.MapContextMenu.Size = new System.Drawing.Size(153, 230);
+            this.MapContextMenu.Size = new System.Drawing.Size(141, 208);
             this.MapContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.MapContextMenu_Opening);
             // 
             // SelectItem
             // 
             this.SelectItem.Image = global::SphereStudio.Plugins.Properties.Resources.pencil;
             this.SelectItem.Name = "SelectItem";
-            this.SelectItem.Size = new System.Drawing.Size(152, 22);
+            this.SelectItem.Size = new System.Drawing.Size(140, 22);
             this.SelectItem.Text = "Select &Tile";
             this.SelectItem.Click += new System.EventHandler(this.SelectItem_Click);
             // 
@@ -87,26 +87,26 @@
             // 
             this.SetStartItem.Image = global::SphereStudio.Plugins.Properties.Resources.startpos;
             this.SetStartItem.Name = "SetStartItem";
-            this.SetStartItem.Size = new System.Drawing.Size(152, 22);
+            this.SetStartItem.Size = new System.Drawing.Size(140, 22);
             this.SetStartItem.Text = "Set &Start";
             this.SetStartItem.Click += new System.EventHandler(this.SetStartItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(137, 6);
             // 
             // CopyEntityItem
             // 
             this.CopyEntityItem.Name = "CopyEntityItem";
-            this.CopyEntityItem.Size = new System.Drawing.Size(152, 22);
+            this.CopyEntityItem.Size = new System.Drawing.Size(140, 22);
             this.CopyEntityItem.Text = "Copy Entity";
             this.CopyEntityItem.Click += new System.EventHandler(this.CopyEntityItem_Click);
             // 
             // PasteEntityItem
             // 
             this.PasteEntityItem.Name = "PasteEntityItem";
-            this.PasteEntityItem.Size = new System.Drawing.Size(152, 22);
+            this.PasteEntityItem.Size = new System.Drawing.Size(140, 22);
             this.PasteEntityItem.Text = "Paste Entity";
             this.PasteEntityItem.Click += new System.EventHandler(this.PasteEntityItem_Click);
             // 
@@ -116,7 +116,7 @@
             this.PersonItem,
             this.TriggerItem});
             this.AddEntityItem.Name = "AddEntityItem";
-            this.AddEntityItem.Size = new System.Drawing.Size(152, 22);
+            this.AddEntityItem.Size = new System.Drawing.Size(140, 22);
             this.AddEntityItem.Text = "Add Entity";
             // 
             // PersonItem
@@ -138,28 +138,28 @@
             // EditEntityItem
             // 
             this.EditEntityItem.Name = "EditEntityItem";
-            this.EditEntityItem.Size = new System.Drawing.Size(152, 22);
+            this.EditEntityItem.Size = new System.Drawing.Size(140, 22);
             this.EditEntityItem.Text = "&Edit Entity...";
             this.EditEntityItem.Click += new System.EventHandler(this.EditEntityItem_Click);
             // 
             // DeleteEntityItem
             // 
             this.DeleteEntityItem.Name = "DeleteEntityItem";
-            this.DeleteEntityItem.Size = new System.Drawing.Size(152, 22);
+            this.DeleteEntityItem.Size = new System.Drawing.Size(140, 22);
             this.DeleteEntityItem.Text = "&Delete Entity";
             this.DeleteEntityItem.Click += new System.EventHandler(this.DeleteEntityItem_Click);
             // 
             // DeleteZoneItem
             // 
             this.DeleteZoneItem.Name = "DeleteZoneItem";
-            this.DeleteZoneItem.Size = new System.Drawing.Size(152, 22);
+            this.DeleteZoneItem.Size = new System.Drawing.Size(140, 22);
             this.DeleteZoneItem.Text = "&Delete Zone";
             this.DeleteZoneItem.Click += new System.EventHandler(this.DeleteZoneItem_Click);
             // 
             // EditZoneItem
             // 
             this.EditZoneItem.Name = "EditZoneItem";
-            this.EditZoneItem.Size = new System.Drawing.Size(152, 22);
+            this.EditZoneItem.Size = new System.Drawing.Size(140, 22);
             this.EditZoneItem.Text = "Edit &Zone...";
             this.EditZoneItem.Visible = false;
             this.EditZoneItem.Click += new System.EventHandler(this.EditZoneItem_Click);
@@ -175,8 +175,8 @@
             // 
             // hScrollBar
             // 
-            this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.hScrollBar.Location = new System.Drawing.Point(-1, 0);
             this.hScrollBar.Name = "hScrollBar";
             this.hScrollBar.Size = new System.Drawing.Size(287, 17);
@@ -233,8 +233,8 @@
         private System.Windows.Forms.ToolStripMenuItem PasteEntityItem;
         private System.Windows.Forms.ToolStripMenuItem EditZoneItem;
         private System.Windows.Forms.ToolStripMenuItem DeleteZoneItem;
-        private System.Windows.Forms.VScrollBar vScrollBar;
-        private System.Windows.Forms.HScrollBar hScrollBar;
         private System.Windows.Forms.Panel panel1;
+        internal System.Windows.Forms.VScrollBar vScrollBar;
+        internal System.Windows.Forms.HScrollBar hScrollBar;
     }
 }

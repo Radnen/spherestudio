@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins
 {
-    partial class WindowstyleEditor
+    partial class WindowstyleEditView
     {
         /// <summary> 
         /// Required designer variable.
@@ -292,12 +292,11 @@
             // StyleDrawer
             // 
             this.StyleDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StyleDrawer.HelpLabel = null;
             this.StyleDrawer.Location = new System.Drawing.Point(0, 0);
             this.StyleDrawer.Name = "StyleDrawer";
             this.StyleDrawer.Size = new System.Drawing.Size(520, 157);
             this.StyleDrawer.TabIndex = 0;
-            this.StyleDrawer.ImageEdited += new System.EventHandler(this.StyleDrawer_ImageEdited);
+            this.StyleDrawer.ImageChanged += new System.EventHandler(this.StyleDrawer_ImageChanged);
             // 
             // WindowstyleEditor
             // 

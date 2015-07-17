@@ -51,19 +51,19 @@
             this.SaveTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainDock = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.EditorTools = new System.Windows.Forms.ToolStrip();
-            this.NewToolButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.OpenToolButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolNew = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolOpen = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
             this.OptionsToolButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolEditorSettings = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.CutToolButton = new System.Windows.Forms.ToolStripButton();
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.RunToolButton = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolTestGame = new System.Windows.Forms.ToolStripSplitButton();
             this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
             this.PlatformTool = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
@@ -80,58 +80,55 @@
             this.UpdateFromMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.NewProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CloseProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenLastProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCloseProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOpenLastProject = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.NewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.sphereProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.SaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveOpenedItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.UndoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RedoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRedo = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.CutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CopyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PasteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.ZoomInMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ZoomOutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Seperator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.SaveLayoutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ProjectMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.GameSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenDirectoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuZoomIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuZoomOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuGameSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOpenGameDir = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.TestGameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RefreshMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ClosePaneItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRefreshProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuView = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuClosePane = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.StartPageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ProjectExplorerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ApiDocsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStartPage = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuProjectTree = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAPI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.WebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuVisitSite = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
-            this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ConfigureSphereMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuConfigEngine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.configurationManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -225,7 +222,7 @@
             this.MainDock.Skin = dockPanelSkin1;
             this.MainDock.SupportDeeplyNestedContent = true;
             this.MainDock.TabIndex = 0;
-            this.MainDock.ActiveDocumentChanged += new System.EventHandler(this.DockTest_ActiveDocumentChanged);
+            this.MainDock.ActiveDocumentChanged += new System.EventHandler(this.MainDock_ActiveDocumentChanged);
             // 
             // EditorTools
             // 
@@ -233,19 +230,19 @@
             this.EditorTools.AutoSize = false;
             this.EditorTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.EditorTools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewToolButton,
-            this.OpenToolButton,
+            this.toolNew,
+            this.toolOpen,
             this.SaveToolButton,
             this.ToolSeperator1,
             this.GameToolButton,
             this.OptionsToolButton,
-            this.toolStripButton1,
+            this.toolEditorSettings,
             this.ToolSeperator2,
             this.CutToolButton,
             this.CopyToolButton,
             this.PasteToolButton,
             this.toolStripSeparator2,
-            this.RunToolButton,
+            this.toolTestGame,
             this.ConfigSelectTool,
             this.PlatformTool});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
@@ -258,20 +255,22 @@
             // 
             // NewToolButton
             // 
-            this.NewToolButton.Image = global::SphereStudio.Properties.Resources.script_edit;
-            this.NewToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.NewToolButton.Name = "NewToolButton";
-            this.NewToolButton.Size = new System.Drawing.Size(60, 25);
-            this.NewToolButton.Text = "&New";
+            this.toolNew.Image = global::SphereStudio.Properties.Resources.script_edit;
+            this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolNew.Name = "NewToolButton";
+            this.toolNew.Size = new System.Drawing.Size(60, 25);
+            this.toolNew.Text = "&New";
+            this.toolNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
+            this.toolNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
             // OpenToolButton
             // 
-            this.OpenToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OpenToolButton.Image = global::SphereStudio.Properties.Resources.open;
-            this.OpenToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OpenToolButton.Name = "OpenToolButton";
-            this.OpenToolButton.Size = new System.Drawing.Size(29, 25);
-            this.OpenToolButton.Text = "&Open";
+            this.toolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolOpen.Image = global::SphereStudio.Properties.Resources.open;
+            this.toolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolOpen.Name = "OpenToolButton";
+            this.toolOpen.Size = new System.Drawing.Size(29, 25);
+            this.toolOpen.Text = "&Open";
             // 
             // SaveToolButton
             // 
@@ -282,7 +281,7 @@
             this.SaveToolButton.Name = "SaveToolButton";
             this.SaveToolButton.Size = new System.Drawing.Size(23, 25);
             this.SaveToolButton.Text = "&Save";
-            this.SaveToolButton.Click += new System.EventHandler(this.SaveMenuItem_Click);
+            this.SaveToolButton.Click += new System.EventHandler(this.menuSave_Click);
             // 
             // ToolSeperator1
             // 
@@ -299,7 +298,7 @@
             this.GameToolButton.Name = "GameToolButton";
             this.GameToolButton.Size = new System.Drawing.Size(23, 25);
             this.GameToolButton.Text = "Game Settings";
-            this.GameToolButton.Click += new System.EventHandler(this.ViewGameSettings);
+            this.GameToolButton.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
             // OptionsToolButton
             // 
@@ -310,17 +309,17 @@
             this.OptionsToolButton.Name = "OptionsToolButton";
             this.OptionsToolButton.Size = new System.Drawing.Size(23, 25);
             this.OptionsToolButton.Text = "Configure Sphere";
-            this.OptionsToolButton.Click += new System.EventHandler(this.OptionsToolButton_Click);
+            this.OptionsToolButton.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
-            // toolStripButton1
+            // toolEditorSettings
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::SphereStudio.Properties.Resources.application_view_list;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 25);
-            this.toolStripButton1.Text = "Editor Settings";
-            this.toolStripButton1.Click += new System.EventHandler(this.OpenEditorSettings);
+            this.toolEditorSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
+            this.toolEditorSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolEditorSettings.Name = "toolEditorSettings";
+            this.toolEditorSettings.Size = new System.Drawing.Size(23, 25);
+            this.toolEditorSettings.Text = "Editor Settings";
+            this.toolEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
             // ToolSeperator2
             // 
@@ -336,7 +335,7 @@
             this.CutToolButton.Name = "CutToolButton";
             this.CutToolButton.Size = new System.Drawing.Size(23, 25);
             this.CutToolButton.Text = "C&ut";
-            this.CutToolButton.Click += new System.EventHandler(this.CutMenuItem_Click);
+            this.CutToolButton.Click += new System.EventHandler(this.menuCut_Click);
             // 
             // CopyToolButton
             // 
@@ -347,7 +346,7 @@
             this.CopyToolButton.Name = "CopyToolButton";
             this.CopyToolButton.Size = new System.Drawing.Size(23, 25);
             this.CopyToolButton.Text = "&Copy";
-            this.CopyToolButton.Click += new System.EventHandler(this.CopyMenuItem_Click);
+            this.CopyToolButton.Click += new System.EventHandler(this.menuCopy_Click);
             // 
             // PasteToolButton
             // 
@@ -357,7 +356,7 @@
             this.PasteToolButton.Name = "PasteToolButton";
             this.PasteToolButton.Size = new System.Drawing.Size(23, 25);
             this.PasteToolButton.Text = "&Paste";
-            this.PasteToolButton.Click += new System.EventHandler(this.PasteMenuItem_Click);
+            this.PasteToolButton.Click += new System.EventHandler(this.menuPaste_Click);
             // 
             // toolStripSeparator2
             // 
@@ -365,16 +364,16 @@
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
             // 
-            // RunToolButton
+            // toolTestGame
             // 
-            this.RunToolButton.Enabled = false;
-            this.RunToolButton.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.RunToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.RunToolButton.Name = "RunToolButton";
-            this.RunToolButton.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.RunToolButton.Size = new System.Drawing.Size(95, 25);
-            this.RunToolButton.Text = "Test Game";
-            this.RunToolButton.ButtonClick += new System.EventHandler(this.RunToolButton_ButtonClick);
+            this.toolTestGame.Enabled = false;
+            this.toolTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolTestGame.Name = "toolTestGame";
+            this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.toolTestGame.Size = new System.Drawing.Size(95, 25);
+            this.toolTestGame.Text = "Test Game";
+            this.toolTestGame.ButtonClick += new System.EventHandler(this.menuTestGame_Click);
             // 
             // ConfigSelectTool
             // 
@@ -471,38 +470,37 @@
             this.RescaleMenuItem.Name = "RescaleMenuItem";
             this.RescaleMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // FileMenu
+            // menuFile
             // 
-            this.FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewProjectMenuItem,
+            this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuNewProject,
             this.OpenProjectMenuItem,
-            this.CloseProjectMenuItem,
-            this.OpenLastProjectMenuItem,
+            this.menuCloseProject,
+            this.menuOpenLastProject,
             this.Separator1,
-            this.NewMenuItem,
-            this.OpenMenuItem,
+            this.menuNew,
+            this.menuOpen,
             this.Seperator2,
-            this.SaveMenuItem,
-            this.SaveAsMenuItem,
-            this.SaveOpenedItem,
+            this.menuSave,
+            this.menuSaveAs,
+            this.menuSaveAll,
             this.Seperator3,
-            this.ExitMenuItem});
-            this.FileMenu.Name = "FileMenu";
-            this.FileMenu.Size = new System.Drawing.Size(37, 20);
-            this.FileMenu.Text = "&File";
-            this.FileMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
-            this.FileMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
-            this.FileMenu.DropDownOpened += new System.EventHandler(this.FileMenu_DropDownOpened);
+            this.menuExit});
+            this.menuFile.Name = "menuFile";
+            this.menuFile.Size = new System.Drawing.Size(37, 20);
+            this.menuFile.Text = "&File";
+            this.menuFile.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.menuFile.DropDownOpening += new System.EventHandler(this.menuFile_DropDownOpening);
             // 
-            // NewProjectMenuItem
+            // menuNewProject
             // 
-            this.NewProjectMenuItem.Image = global::SphereStudio.Properties.Resources.new_item;
-            this.NewProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.NewProjectMenuItem.Name = "NewProjectMenuItem";
-            this.NewProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.NewProjectMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.NewProjectMenuItem.Text = "New &Project";
-            this.NewProjectMenuItem.Click += new System.EventHandler(this.CallNewProject);
+            this.menuNewProject.Image = global::SphereStudio.Properties.Resources.new_item;
+            this.menuNewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.menuNewProject.Name = "menuNewProject";
+            this.menuNewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.menuNewProject.Size = new System.Drawing.Size(187, 22);
+            this.menuNewProject.Text = "New &Project";
+            this.menuNewProject.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
             // OpenProjectMenuItem
             // 
@@ -510,40 +508,41 @@
             this.OpenProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenProjectMenuItem.Name = "OpenProjectMenuItem";
             this.OpenProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.OpenProjectMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.OpenProjectMenuItem.Size = new System.Drawing.Size(187, 22);
             this.OpenProjectMenuItem.Text = "&Open Project";
-            this.OpenProjectMenuItem.Click += new System.EventHandler(this.OpenProjectMenuItem_Click);
+            this.OpenProjectMenuItem.Click += new System.EventHandler(this.menuOpenProject_Click);
             // 
-            // CloseProjectMenuItem
+            // menuCloseProject
             // 
-            this.CloseProjectMenuItem.Enabled = false;
-            this.CloseProjectMenuItem.Image = global::SphereStudio.Properties.Resources.cross;
-            this.CloseProjectMenuItem.Name = "CloseProjectMenuItem";
-            this.CloseProjectMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.CloseProjectMenuItem.Text = "&Close Project";
-            this.CloseProjectMenuItem.Click += new System.EventHandler(this.CloseProject);
+            this.menuCloseProject.Enabled = false;
+            this.menuCloseProject.Image = global::SphereStudio.Properties.Resources.cross;
+            this.menuCloseProject.Name = "menuCloseProject";
+            this.menuCloseProject.Size = new System.Drawing.Size(187, 22);
+            this.menuCloseProject.Text = "&Close Project";
+            this.menuCloseProject.Click += new System.EventHandler(this.menuCloseProject_Click);
             // 
-            // OpenLastProjectMenuItem
+            // menuOpenLastProject
             // 
-            this.OpenLastProjectMenuItem.Name = "OpenLastProjectMenuItem";
-            this.OpenLastProjectMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.OpenLastProjectMenuItem.Text = "Open &Last Project";
-            this.OpenLastProjectMenuItem.Click += new System.EventHandler(this.OpenLastProject);
+            this.menuOpenLastProject.Name = "menuOpenLastProject";
+            this.menuOpenLastProject.Size = new System.Drawing.Size(187, 22);
+            this.menuOpenLastProject.Text = "Open &Last Project";
+            this.menuOpenLastProject.Click += new System.EventHandler(this.menuOpenLastProject_Click);
             // 
             // Separator1
             // 
             this.Separator1.Name = "Separator1";
-            this.Separator1.Size = new System.Drawing.Size(212, 6);
+            this.Separator1.Size = new System.Drawing.Size(184, 6);
             // 
-            // NewMenuItem
+            // menuNew
             // 
-            this.NewMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sphereProjectToolStripMenuItem,
-            this.toolStripSeparator4});
-            this.NewMenuItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
-            this.NewMenuItem.Name = "NewMenuItem";
-            this.NewMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.NewMenuItem.Text = "&New";
+            this.menuNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sphereProjectToolStripMenuItem});
+            this.menuNew.Image = global::SphereStudio.Properties.Resources.page_white_edit;
+            this.menuNew.Name = "menuNew";
+            this.menuNew.Size = new System.Drawing.Size(187, 22);
+            this.menuNew.Text = "&New";
+            this.menuNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
+            this.menuNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
             // sphereProjectToolStripMenuItem
             // 
@@ -551,391 +550,371 @@
             this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
             this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.sphereProjectToolStripMenuItem.Text = "Sphere &Project";
-            this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.CallNewProject);
+            this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
-            // toolStripSeparator4
+            // menuOpen
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
-            // 
-            // OpenMenuItem
-            // 
-            this.OpenMenuItem.Image = global::SphereStudio.Properties.Resources.open;
-            this.OpenMenuItem.Name = "OpenMenuItem";
-            this.OpenMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.OpenMenuItem.Text = "&Open...";
-            this.OpenMenuItem.Click += new System.EventHandler(this.OpenMenuItem_Click);
+            this.menuOpen.Image = global::SphereStudio.Properties.Resources.open;
+            this.menuOpen.Name = "menuOpen";
+            this.menuOpen.Size = new System.Drawing.Size(187, 22);
+            this.menuOpen.Text = "&Open...";
+            this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
             // 
             // Seperator2
             // 
             this.Seperator2.Name = "Seperator2";
-            this.Seperator2.Size = new System.Drawing.Size(212, 6);
+            this.Seperator2.Size = new System.Drawing.Size(184, 6);
             // 
-            // SaveMenuItem
+            // menuSave
             // 
-            this.SaveMenuItem.Image = global::SphereStudio.Properties.Resources.disk;
-            this.SaveMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveMenuItem.Name = "SaveMenuItem";
-            this.SaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.SaveMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.SaveMenuItem.Text = "&Save";
-            this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
+            this.menuSave.Image = global::SphereStudio.Properties.Resources.disk;
+            this.menuSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.menuSave.Name = "menuSave";
+            this.menuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.menuSave.Size = new System.Drawing.Size(187, 22);
+            this.menuSave.Text = "&Save";
+            this.menuSave.Click += new System.EventHandler(this.menuSave_Click);
             // 
-            // SaveAsMenuItem
+            // menuSaveAs
             // 
-            this.SaveAsMenuItem.Image = global::SphereStudio.Properties.Resources.disk_multiple;
-            this.SaveAsMenuItem.Name = "SaveAsMenuItem";
-            this.SaveAsMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.SaveAsMenuItem.Text = "Save &As";
-            this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
+            this.menuSaveAs.Image = global::SphereStudio.Properties.Resources.disk_multiple;
+            this.menuSaveAs.Name = "menuSaveAs";
+            this.menuSaveAs.Size = new System.Drawing.Size(187, 22);
+            this.menuSaveAs.Text = "Save &As";
+            this.menuSaveAs.Click += new System.EventHandler(this.menuSaveAs_Click);
             // 
-            // SaveOpenedItem
+            // menuSaveAll
             // 
-            this.SaveOpenedItem.Image = global::SphereStudio.Properties.Resources.disk_multiple;
-            this.SaveOpenedItem.Name = "SaveOpenedItem";
-            this.SaveOpenedItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.menuSaveAll.Image = global::SphereStudio.Properties.Resources.disk_multiple;
+            this.menuSaveAll.Name = "menuSaveAll";
+            this.menuSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.SaveOpenedItem.Size = new System.Drawing.Size(215, 22);
-            this.SaveOpenedItem.Text = "Save Opene&d";
-            this.SaveOpenedItem.Click += new System.EventHandler(this.SaveOpenedItem_Click);
+            this.menuSaveAll.Size = new System.Drawing.Size(187, 22);
+            this.menuSaveAll.Text = "Save &All";
+            this.menuSaveAll.Click += new System.EventHandler(this.menuSaveAll_Click);
             // 
             // Seperator3
             // 
             this.Seperator3.Name = "Seperator3";
-            this.Seperator3.Size = new System.Drawing.Size(212, 6);
+            this.Seperator3.Size = new System.Drawing.Size(184, 6);
             // 
-            // ExitMenuItem
+            // menuExit
             // 
-            this.ExitMenuItem.Image = global::SphereStudio.Properties.Resources.door_in;
-            this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.ExitMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.ExitMenuItem.Text = "E&xit";
-            this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
+            this.menuExit.Image = global::SphereStudio.Properties.Resources.door_in;
+            this.menuExit.Name = "menuExit";
+            this.menuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.menuExit.Size = new System.Drawing.Size(187, 22);
+            this.menuExit.Text = "E&xit";
+            this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
-            // EditMenu
+            // menuEdit
             // 
-            this.EditMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UndoMenuItem,
-            this.RedoMenuItem,
+            this.menuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuUndo,
+            this.menuRedo,
             this.Seperator4,
-            this.CutMenuItem,
-            this.CopyMenuItem,
-            this.PasteMenuItem,
+            this.menuCut,
+            this.menuCopy,
+            this.menuPaste,
             this.Seperator5,
-            this.SelectAllMenuItem,
+            this.menuSelectAll,
             this.Separator6,
-            this.ZoomInMenuItem,
-            this.ZoomOutMenuItem,
-            this.Seperator8,
-            this.SaveLayoutMenuItem});
-            this.EditMenu.Name = "EditMenu";
-            this.EditMenu.Size = new System.Drawing.Size(39, 20);
-            this.EditMenu.Text = "&Edit";
-            this.EditMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
-            this.EditMenu.DropDownOpening += new System.EventHandler(this.EditMenu_DropDownOpening);
+            this.menuZoomIn,
+            this.menuZoomOut});
+            this.menuEdit.Name = "menuEdit";
+            this.menuEdit.Size = new System.Drawing.Size(39, 20);
+            this.menuEdit.Text = "&Edit";
+            this.menuEdit.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.menuEdit.DropDownOpening += new System.EventHandler(this.menuEdit_DropDownOpening);
             // 
-            // UndoMenuItem
+            // menuUndo
             // 
-            this.UndoMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_undo;
-            this.UndoMenuItem.Name = "UndoMenuItem";
-            this.UndoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.UndoMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.UndoMenuItem.Text = "&Undo";
-            this.UndoMenuItem.Click += new System.EventHandler(this.UndoMenuItem_Click);
+            this.menuUndo.Image = global::SphereStudio.Properties.Resources.arrow_undo;
+            this.menuUndo.Name = "menuUndo";
+            this.menuUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.menuUndo.Size = new System.Drawing.Size(196, 22);
+            this.menuUndo.Text = "&Undo";
+            this.menuUndo.Click += new System.EventHandler(this.menuUndo_Click);
             // 
-            // RedoMenuItem
+            // menuRedo
             // 
-            this.RedoMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_redo;
-            this.RedoMenuItem.Name = "RedoMenuItem";
-            this.RedoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.RedoMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.RedoMenuItem.Text = "&Redo";
-            this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
+            this.menuRedo.Image = global::SphereStudio.Properties.Resources.arrow_redo;
+            this.menuRedo.Name = "menuRedo";
+            this.menuRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.menuRedo.Size = new System.Drawing.Size(196, 22);
+            this.menuRedo.Text = "&Redo";
+            this.menuRedo.Click += new System.EventHandler(this.menuRedo_Click);
             // 
             // Seperator4
             // 
             this.Seperator4.Name = "Seperator4";
             this.Seperator4.Size = new System.Drawing.Size(193, 6);
             // 
-            // CutMenuItem
+            // menuCut
             // 
-            this.CutMenuItem.Image = global::SphereStudio.Properties.Resources.cut;
-            this.CutMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.CutMenuItem.Name = "CutMenuItem";
-            this.CutMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.CutMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.CutMenuItem.Text = "Cu&t";
-            this.CutMenuItem.Click += new System.EventHandler(this.CutMenuItem_Click);
+            this.menuCut.Image = global::SphereStudio.Properties.Resources.cut;
+            this.menuCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.menuCut.Name = "menuCut";
+            this.menuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.menuCut.Size = new System.Drawing.Size(196, 22);
+            this.menuCut.Text = "Cu&t";
+            this.menuCut.Click += new System.EventHandler(this.menuCut_Click);
             // 
-            // CopyMenuItem
+            // menuCopy
             // 
-            this.CopyMenuItem.Image = global::SphereStudio.Properties.Resources.page_copy;
-            this.CopyMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.CopyMenuItem.Name = "CopyMenuItem";
-            this.CopyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.CopyMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.CopyMenuItem.Text = "&Copy";
-            this.CopyMenuItem.Click += new System.EventHandler(this.CopyMenuItem_Click);
+            this.menuCopy.Image = global::SphereStudio.Properties.Resources.page_copy;
+            this.menuCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.menuCopy.Name = "menuCopy";
+            this.menuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.menuCopy.Size = new System.Drawing.Size(196, 22);
+            this.menuCopy.Text = "&Copy";
+            this.menuCopy.Click += new System.EventHandler(this.menuCopy_Click);
             // 
-            // PasteMenuItem
+            // menuPaste
             // 
-            this.PasteMenuItem.Image = global::SphereStudio.Properties.Resources.paste_plain;
-            this.PasteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.PasteMenuItem.Name = "PasteMenuItem";
-            this.PasteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.PasteMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.PasteMenuItem.Text = "&Paste";
-            this.PasteMenuItem.Click += new System.EventHandler(this.PasteMenuItem_Click);
+            this.menuPaste.Image = global::SphereStudio.Properties.Resources.paste_plain;
+            this.menuPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.menuPaste.Name = "menuPaste";
+            this.menuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.menuPaste.Size = new System.Drawing.Size(196, 22);
+            this.menuPaste.Text = "&Paste";
+            this.menuPaste.Click += new System.EventHandler(this.menuPaste_Click);
             // 
             // Seperator5
             // 
             this.Seperator5.Name = "Seperator5";
             this.Seperator5.Size = new System.Drawing.Size(193, 6);
             // 
-            // SelectAllMenuItem
+            // menuSelectAll
             // 
-            this.SelectAllMenuItem.Name = "SelectAllMenuItem";
-            this.SelectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.SelectAllMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.SelectAllMenuItem.Text = "Select &All";
-            this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
+            this.menuSelectAll.Name = "menuSelectAll";
+            this.menuSelectAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.menuSelectAll.Size = new System.Drawing.Size(196, 22);
+            this.menuSelectAll.Text = "Select &All";
+            this.menuSelectAll.Click += new System.EventHandler(this.menuSelectAll_Click);
             // 
             // Separator6
             // 
             this.Separator6.Name = "Separator6";
             this.Separator6.Size = new System.Drawing.Size(193, 6);
             // 
-            // ZoomInMenuItem
+            // menuZoomIn
             // 
-            this.ZoomInMenuItem.Image = global::SphereStudio.Properties.Resources.magnifier_zoom_in;
-            this.ZoomInMenuItem.Name = "ZoomInMenuItem";
-            this.ZoomInMenuItem.ShortcutKeyDisplayString = "Ctrl+Plus";
-            this.ZoomInMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-            this.ZoomInMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.ZoomInMenuItem.Text = "Zoom &In";
-            this.ZoomInMenuItem.Click += new System.EventHandler(this.ZoomInMenuItem_Click);
+            this.menuZoomIn.Image = global::SphereStudio.Properties.Resources.magnifier_zoom_in;
+            this.menuZoomIn.Name = "menuZoomIn";
+            this.menuZoomIn.ShortcutKeyDisplayString = "Ctrl+Plus";
+            this.menuZoomIn.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
+            this.menuZoomIn.Size = new System.Drawing.Size(196, 22);
+            this.menuZoomIn.Text = "Zoom &In";
+            this.menuZoomIn.Click += new System.EventHandler(this.menuZoomIn_Click);
             // 
-            // ZoomOutMenuItem
+            // menuZoomOut
             // 
-            this.ZoomOutMenuItem.Image = global::SphereStudio.Properties.Resources.magnifier_zoom_out;
-            this.ZoomOutMenuItem.Name = "ZoomOutMenuItem";
-            this.ZoomOutMenuItem.ShortcutKeyDisplayString = "Ctrl+Minus";
-            this.ZoomOutMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-            this.ZoomOutMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.ZoomOutMenuItem.Text = "Zoom &Out";
-            this.ZoomOutMenuItem.Click += new System.EventHandler(this.ZoomOutMenuItem_Click);
+            this.menuZoomOut.Image = global::SphereStudio.Properties.Resources.magnifier_zoom_out;
+            this.menuZoomOut.Name = "menuZoomOut";
+            this.menuZoomOut.ShortcutKeyDisplayString = "Ctrl+Minus";
+            this.menuZoomOut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
+            this.menuZoomOut.Size = new System.Drawing.Size(196, 22);
+            this.menuZoomOut.Text = "Zoom &Out";
+            this.menuZoomOut.Click += new System.EventHandler(this.menuZoomOut_Click);
             // 
-            // Seperator8
+            // menuProject
             // 
-            this.Seperator8.Name = "Seperator8";
-            this.Seperator8.Size = new System.Drawing.Size(193, 6);
-            // 
-            // SaveLayoutMenuItem
-            // 
-            this.SaveLayoutMenuItem.Enabled = false;
-            this.SaveLayoutMenuItem.Name = "SaveLayoutMenuItem";
-            this.SaveLayoutMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.SaveLayoutMenuItem.Text = "Save Layout";
-            this.SaveLayoutMenuItem.Click += new System.EventHandler(this.SaveLayoutMenuItem_Click);
-            // 
-            // ProjectMenu
-            // 
-            this.ProjectMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.GameSettingsMenuItem,
-            this.OpenDirectoryMenuItem,
+            this.menuProject.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuGameSettings,
+            this.menuOpenGameDir,
             this.Separator7,
-            this.TestGameMenuItem,
-            this.RefreshMenuItem});
-            this.ProjectMenu.Name = "ProjectMenu";
-            this.ProjectMenu.Size = new System.Drawing.Size(56, 20);
-            this.ProjectMenu.Text = "&Project";
-            this.ProjectMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
-            this.ProjectMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
+            this.menuTestGame,
+            this.menuRefreshProject});
+            this.menuProject.Name = "menuProject";
+            this.menuProject.Size = new System.Drawing.Size(56, 20);
+            this.menuProject.Text = "&Project";
+            this.menuProject.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.menuProject.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
-            // GameSettingsMenuItem
+            // menuGameSettings
             // 
-            this.GameSettingsMenuItem.Enabled = false;
-            this.GameSettingsMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
-            this.GameSettingsMenuItem.Name = "GameSettingsMenuItem";
-            this.GameSettingsMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.GameSettingsMenuItem.Text = "&Game Settings...";
-            this.GameSettingsMenuItem.Click += new System.EventHandler(this.ViewGameSettings);
+            this.menuGameSettings.Enabled = false;
+            this.menuGameSettings.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.menuGameSettings.Name = "menuGameSettings";
+            this.menuGameSettings.Size = new System.Drawing.Size(188, 22);
+            this.menuGameSettings.Text = "&Game Settings...";
+            this.menuGameSettings.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
-            // OpenDirectoryMenuItem
+            // menuOpenGameDir
             // 
-            this.OpenDirectoryMenuItem.Enabled = false;
-            this.OpenDirectoryMenuItem.Image = global::SphereStudio.Properties.Resources.folder_closed;
-            this.OpenDirectoryMenuItem.Name = "OpenDirectoryMenuItem";
-            this.OpenDirectoryMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.OpenDirectoryMenuItem.Text = "Open Game &Directory";
-            this.OpenDirectoryMenuItem.Click += new System.EventHandler(this.OpenDirectoryMenuItem_Click);
+            this.menuOpenGameDir.Enabled = false;
+            this.menuOpenGameDir.Image = global::SphereStudio.Properties.Resources.folder_closed;
+            this.menuOpenGameDir.Name = "menuOpenGameDir";
+            this.menuOpenGameDir.Size = new System.Drawing.Size(188, 22);
+            this.menuOpenGameDir.Text = "Open Game &Directory";
+            this.menuOpenGameDir.Click += new System.EventHandler(this.menuOpenGameDir_Click);
             // 
             // Separator7
             // 
             this.Separator7.Name = "Separator7";
             this.Separator7.Size = new System.Drawing.Size(185, 6);
             // 
-            // TestGameMenuItem
+            // menuTestGame
             // 
-            this.TestGameMenuItem.Enabled = false;
-            this.TestGameMenuItem.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.TestGameMenuItem.Name = "TestGameMenuItem";
-            this.TestGameMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.TestGameMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.TestGameMenuItem.Text = "&Test Game";
-            this.TestGameMenuItem.Click += new System.EventHandler(this.RunToolButton_ButtonClick);
+            this.menuTestGame.Enabled = false;
+            this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.menuTestGame.Name = "menuTestGame";
+            this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
+            this.menuTestGame.Size = new System.Drawing.Size(188, 22);
+            this.menuTestGame.Text = "&Test Game";
+            this.menuTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
-            // RefreshMenuItem
+            // menuRefreshProject
             // 
-            this.RefreshMenuItem.Enabled = false;
-            this.RefreshMenuItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
-            this.RefreshMenuItem.Name = "RefreshMenuItem";
-            this.RefreshMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.RefreshMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.RefreshMenuItem.Text = "&Refresh";
-            this.RefreshMenuItem.Click += new System.EventHandler(this.RefreshProject);
+            this.menuRefreshProject.Enabled = false;
+            this.menuRefreshProject.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
+            this.menuRefreshProject.Name = "menuRefreshProject";
+            this.menuRefreshProject.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.menuRefreshProject.Size = new System.Drawing.Size(188, 22);
+            this.menuRefreshProject.Text = "&Refresh";
+            this.menuRefreshProject.Click += new System.EventHandler(this.menuRefreshProject_Click);
             // 
-            // ViewMenu
+            // menuView
             // 
-            this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ClosePaneItem,
+            this.menuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuClosePane,
             this.toolStripSeparator3,
-            this.StartPageMenuItem,
-            this.ProjectExplorerMenuItem});
-            this.ViewMenu.Name = "ViewMenu";
-            this.ViewMenu.Size = new System.Drawing.Size(44, 20);
-            this.ViewMenu.Text = "&View";
-            this.ViewMenu.DropDownClosed += new System.EventHandler(this.ViewMenu_DropDownClosed);
-            this.ViewMenu.DropDownOpening += new System.EventHandler(this.ViewMenu_DropDownOpening);
+            this.menuStartPage,
+            this.menuProjectTree});
+            this.menuView.Name = "menuView";
+            this.menuView.Size = new System.Drawing.Size(44, 20);
+            this.menuView.Text = "&View";
+            this.menuView.DropDownClosed += new System.EventHandler(this.menuView_DropDownClosed);
+            this.menuView.DropDownOpening += new System.EventHandler(this.menuView_DropDownOpening);
             // 
-            // ClosePaneItem
+            // menuClosePane
             // 
-            this.ClosePaneItem.Name = "ClosePaneItem";
-            this.ClosePaneItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.ClosePaneItem.Size = new System.Drawing.Size(213, 22);
-            this.ClosePaneItem.Text = "Close Active Pane";
-            this.ClosePaneItem.Click += new System.EventHandler(this.ClosePaneItem_Click);
+            this.menuClosePane.Name = "menuClosePane";
+            this.menuClosePane.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.menuClosePane.Size = new System.Drawing.Size(213, 22);
+            this.menuClosePane.Text = "Close Active Pane";
+            this.menuClosePane.Click += new System.EventHandler(this.menuClosePane_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(210, 6);
             // 
-            // StartPageMenuItem
+            // menuStartPage
             // 
-            this.StartPageMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
-            this.StartPageMenuItem.Name = "StartPageMenuItem";
-            this.StartPageMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.StartPageMenuItem.Text = "&Start Page";
-            this.StartPageMenuItem.Click += new System.EventHandler(this.StartPageMenuItem_Click);
+            this.menuStartPage.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.menuStartPage.Name = "menuStartPage";
+            this.menuStartPage.Size = new System.Drawing.Size(213, 22);
+            this.menuStartPage.Text = "&Start Page";
+            this.menuStartPage.Click += new System.EventHandler(this.menuStartPage_Click);
             // 
-            // ProjectExplorerMenuItem
+            // menuProjectTree
             // 
-            this.ProjectExplorerMenuItem.Image = global::SphereStudio.Properties.Resources.bullet_toggle_plus;
-            this.ProjectExplorerMenuItem.Name = "ProjectExplorerMenuItem";
-            this.ProjectExplorerMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.ProjectExplorerMenuItem.Text = "Project &Explorer";
-            this.ProjectExplorerMenuItem.Click += new System.EventHandler(this.ProjectExplorerMenuItem_Click);
+            this.menuProjectTree.Image = global::SphereStudio.Properties.Resources.bullet_toggle_plus;
+            this.menuProjectTree.Name = "menuProjectTree";
+            this.menuProjectTree.Size = new System.Drawing.Size(213, 22);
+            this.menuProjectTree.Text = "Project &Explorer";
+            this.menuProjectTree.Click += new System.EventHandler(this.menuProjectTree_Click);
             // 
-            // HelpMenu
+            // menuHelp
             // 
-            this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ApiDocsMenuItem,
+            this.menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuAPI,
             this.toolStripSeparator1,
-            this.AboutMenuItem,
-            this.WebsiteMenuItem});
-            this.HelpMenu.Name = "HelpMenu";
-            this.HelpMenu.Size = new System.Drawing.Size(44, 20);
-            this.HelpMenu.Text = "&Help";
-            this.HelpMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
-            this.HelpMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
+            this.menuAbout,
+            this.menuVisitSite});
+            this.menuHelp.Name = "menuHelp";
+            this.menuHelp.Size = new System.Drawing.Size(44, 20);
+            this.menuHelp.Text = "&Help";
+            this.menuHelp.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.menuHelp.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
-            // ApiDocsMenuItem
+            // menuAPI
             // 
-            this.ApiDocsMenuItem.Image = global::SphereStudio.Properties.Resources.help;
-            this.ApiDocsMenuItem.Name = "ApiDocsMenuItem";
-            this.ApiDocsMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.ApiDocsMenuItem.Text = "Sphere &API Reference";
-            this.ApiDocsMenuItem.Click += new System.EventHandler(this.ApiDocsMenuItem_Click);
+            this.menuAPI.Image = global::SphereStudio.Properties.Resources.help;
+            this.menuAPI.Name = "menuAPI";
+            this.menuAPI.Size = new System.Drawing.Size(186, 22);
+            this.menuAPI.Text = "Sphere &API Reference";
+            this.menuAPI.Click += new System.EventHandler(this.menuAPI_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
             // 
-            // AboutMenuItem
+            // menuAbout
             // 
-            this.AboutMenuItem.Image = global::SphereStudio.Properties.Resources.information;
-            this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.AboutMenuItem.Text = "&About";
-            this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
+            this.menuAbout.Image = global::SphereStudio.Properties.Resources.information;
+            this.menuAbout.Name = "menuAbout";
+            this.menuAbout.Size = new System.Drawing.Size(186, 22);
+            this.menuAbout.Text = "&About";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
-            // WebsiteMenuItem
+            // menuVisitSite
             // 
-            this.WebsiteMenuItem.Name = "WebsiteMenuItem";
-            this.WebsiteMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.WebsiteMenuItem.Text = "Visit Website!";
-            this.WebsiteMenuItem.Visible = false;
+            this.menuVisitSite.Name = "menuVisitSite";
+            this.menuVisitSite.Size = new System.Drawing.Size(186, 22);
+            this.menuVisitSite.Text = "Visit Website!";
+            this.menuVisitSite.Visible = false;
             // 
             // EditorMenu
             // 
             this.EditorMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenu,
-            this.EditMenu,
-            this.ViewMenu,
-            this.ProjectMenu,
-            this.ToolsMenu,
-            this.HelpMenu});
+            this.menuFile,
+            this.menuEdit,
+            this.menuView,
+            this.menuProject,
+            this.menuTools,
+            this.menuHelp});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
             this.EditorMenu.Name = "EditorMenu";
             this.EditorMenu.Size = new System.Drawing.Size(787, 24);
             this.EditorMenu.TabIndex = 1;
             this.EditorMenu.Text = "Menu";
             // 
-            // ToolsMenu
+            // menuTools
             // 
-            this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ConfigureSphereMenuItem,
+            this.menuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuConfigEngine,
             this.toolStripSeparator5,
-            this.configurationManagerToolStripMenuItem,
-            this.toolStripMenuItem1});
-            this.ToolsMenu.Name = "ToolsMenu";
-            this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
-            this.ToolsMenu.Text = "&Tools";
-            this.ToolsMenu.DropDownClosed += new System.EventHandler(this.item_DropDownClosed);
-            this.ToolsMenu.DropDownOpening += new System.EventHandler(this.item_DropDownOpening);
+            this.menuConfigManager,
+            this.menuEditorSettings});
+            this.menuTools.Name = "menuTools";
+            this.menuTools.Size = new System.Drawing.Size(48, 20);
+            this.menuTools.Text = "&Tools";
+            this.menuTools.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.menuTools.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
-            // ConfigureSphereMenuItem
+            // menuConfigEngine
             // 
-            this.ConfigureSphereMenuItem.Enabled = false;
-            this.ConfigureSphereMenuItem.Image = global::SphereStudio.Properties.Resources.cog;
-            this.ConfigureSphereMenuItem.Name = "ConfigureSphereMenuItem";
-            this.ConfigureSphereMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.ConfigureSphereMenuItem.Text = "&Configure Sphere...";
-            this.ConfigureSphereMenuItem.Click += new System.EventHandler(this.OptionsToolButton_Click);
+            this.menuConfigEngine.Enabled = false;
+            this.menuConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
+            this.menuConfigEngine.Name = "menuConfigEngine";
+            this.menuConfigEngine.Size = new System.Drawing.Size(207, 22);
+            this.menuConfigEngine.Text = "&Configure Sphere...";
+            this.menuConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(195, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(204, 6);
             // 
-            // configurationManagerToolStripMenuItem
+            // menuConfigManager
             // 
-            this.configurationManagerToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
-            this.configurationManagerToolStripMenuItem.Name = "configurationManagerToolStripMenuItem";
-            this.configurationManagerToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.configurationManagerToolStripMenuItem.Text = "&Configuration Manager";
-            this.configurationManagerToolStripMenuItem.Click += new System.EventHandler(this.OpenConfigManager);
+            this.menuConfigManager.Image = global::SphereStudio.Properties.Resources.SphericalLogo;
+            this.menuConfigManager.Name = "menuConfigManager";
+            this.menuConfigManager.Size = new System.Drawing.Size(207, 22);
+            this.menuConfigManager.Text = "&Configuration Manager...";
+            this.menuConfigManager.Click += new System.EventHandler(this.menuConfigManager_Click);
             // 
-            // toolStripMenuItem1
+            // menuEditorSettings
             // 
-            this.toolStripMenuItem1.Image = global::SphereStudio.Properties.Resources.application_view_list;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
-            this.toolStripMenuItem1.Text = "&Editor Settings...";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.OpenEditorSettings);
+            this.menuEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
+            this.menuEditorSettings.Name = "menuEditorSettings";
+            this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
+            this.menuEditorSettings.Text = "&Editor Settings...";
+            this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
             // IDEForm
             // 
@@ -947,7 +926,6 @@
             this.Controls.Add(this.EditorTools);
             this.Controls.Add(this.EditorStatus);
             this.Controls.Add(this.EditorMenu);
-            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.KeyPreview = true;
@@ -957,8 +935,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.EditorForm_FormClosed);
-            this.Shown += new System.EventHandler(this.EditorForm_Shown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IDEForm_FormClosing);
+            this.Load += new System.EventHandler(this.IDEForm_Load);
+            this.Shown += new System.EventHandler(this.IDEForm_Shown);
             this.EditorTabContextMenu.ResumeLayout(false);
             this.EditorTools.ResumeLayout(false);
             this.EditorTools.PerformLayout();
@@ -988,78 +967,75 @@
         private System.Windows.Forms.ToolStripMenuItem CloseAllTabItem;
         private System.Windows.Forms.ToolStripMenuItem SaveTabItem;
         private System.Windows.Forms.ToolStripMenuItem ResizeMenuItem;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
         private System.Windows.Forms.ToolStripMenuItem PropertiesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RescaleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem TilesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExportTilesetItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateFromMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel HelpLabel;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolEditorSettings;
         private System.Windows.Forms.ToolStripMenuItem SsResizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SsRescaleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SpriteTilesetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExportSsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ImportSsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
-        private System.Windows.Forms.ToolStripDropDownButton NewToolButton;
-        private System.Windows.Forms.ToolStripDropDownButton OpenToolButton;
-        private System.Windows.Forms.ToolStripMenuItem FileMenu;
-        private System.Windows.Forms.ToolStripMenuItem NewProjectMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton toolNew;
+        private System.Windows.Forms.ToolStripDropDownButton toolOpen;
+        private System.Windows.Forms.ToolStripMenuItem menuFile;
+        private System.Windows.Forms.ToolStripMenuItem menuNewProject;
         private System.Windows.Forms.ToolStripMenuItem OpenProjectMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CloseProjectMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenLastProjectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuCloseProject;
+        private System.Windows.Forms.ToolStripMenuItem menuOpenLastProject;
         private System.Windows.Forms.ToolStripSeparator Separator1;
-        private System.Windows.Forms.ToolStripMenuItem NewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuNew;
+        private System.Windows.Forms.ToolStripMenuItem menuOpen;
         private System.Windows.Forms.ToolStripSeparator Seperator2;
-        private System.Windows.Forms.ToolStripMenuItem SaveMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SaveAsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SaveOpenedItem;
+        private System.Windows.Forms.ToolStripMenuItem menuSave;
+        private System.Windows.Forms.ToolStripMenuItem menuSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem menuSaveAll;
         private System.Windows.Forms.ToolStripSeparator Seperator3;
-        private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem EditMenu;
-        private System.Windows.Forms.ToolStripMenuItem UndoMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem RedoMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuExit;
+        private System.Windows.Forms.ToolStripMenuItem menuEdit;
+        private System.Windows.Forms.ToolStripMenuItem menuUndo;
+        private System.Windows.Forms.ToolStripMenuItem menuRedo;
         private System.Windows.Forms.ToolStripSeparator Seperator4;
-        private System.Windows.Forms.ToolStripMenuItem CutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CopyMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem PasteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuCut;
+        private System.Windows.Forms.ToolStripMenuItem menuCopy;
+        private System.Windows.Forms.ToolStripMenuItem menuPaste;
         private System.Windows.Forms.ToolStripSeparator Seperator5;
-        private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuSelectAll;
         private System.Windows.Forms.ToolStripSeparator Separator6;
-        private System.Windows.Forms.ToolStripMenuItem ZoomInMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ZoomOutMenuItem;
-        private System.Windows.Forms.ToolStripSeparator Seperator8;
-        private System.Windows.Forms.ToolStripMenuItem SaveLayoutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ProjectMenu;
-        private System.Windows.Forms.ToolStripMenuItem GameSettingsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenDirectoryMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuZoomIn;
+        private System.Windows.Forms.ToolStripMenuItem menuZoomOut;
+        private System.Windows.Forms.ToolStripMenuItem menuProject;
+        private System.Windows.Forms.ToolStripMenuItem menuGameSettings;
+        private System.Windows.Forms.ToolStripMenuItem menuOpenGameDir;
         private System.Windows.Forms.ToolStripSeparator Separator7;
-        private System.Windows.Forms.ToolStripMenuItem TestGameMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem RefreshMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ViewMenu;
-        private System.Windows.Forms.ToolStripMenuItem ClosePaneItem;
+        private System.Windows.Forms.ToolStripMenuItem menuTestGame;
+        private System.Windows.Forms.ToolStripMenuItem menuRefreshProject;
+        private System.Windows.Forms.ToolStripMenuItem menuView;
+        private System.Windows.Forms.ToolStripMenuItem menuClosePane;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem StartPageMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ProjectExplorerMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem HelpMenu;
-        private System.Windows.Forms.ToolStripMenuItem ApiDocsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuStartPage;
+        private System.Windows.Forms.ToolStripMenuItem menuProjectTree;
+        private System.Windows.Forms.ToolStripMenuItem menuHelp;
+        private System.Windows.Forms.ToolStripMenuItem menuAPI;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem WebsiteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuAbout;
+        private System.Windows.Forms.ToolStripMenuItem menuVisitSite;
         private System.Windows.Forms.MenuStrip EditorMenu;
         private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripSplitButton RunToolButton;
+        private System.Windows.Forms.ToolStripSplitButton toolTestGame;
         private System.Windows.Forms.ToolStripComboBox PlatformTool;
-        private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
-        private System.Windows.Forms.ToolStripMenuItem ConfigureSphereMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuTools;
+        private System.Windows.Forms.ToolStripMenuItem menuConfigEngine;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem configurationManagerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem menuConfigManager;
+        private System.Windows.Forms.ToolStripMenuItem menuEditorSettings;
+        internal WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
     }
 }
 

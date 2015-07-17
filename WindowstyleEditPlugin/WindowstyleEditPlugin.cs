@@ -8,9 +8,11 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class WindowstyleEditPlugin : IPlugin
+    public class WindowstyleEditPlugin : IEditorPlugin
     {
         public string Name { get { return "Windowstyle Editor"; } }
         public string Author { get { return "Radnen"; } }
@@ -18,74 +20,40 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
 
+        private readonly string[] _extensions = new[] { "rws" };
+        private const string _openFileFilters = "*.rws";
+
         public WindowstyleEditPlugin()
         {
-            Icon = Icon.FromHandle(Properties.Resources.PaletteToolIcon.GetHicon());
+            Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
         }
 
         public void Initialize(ISettings conf)
         {
-            // initialize the menu items
-            _newWindowstyleMenuItem = new ToolStripMenuItem("Windowstyle", Properties.Resources.PaletteToolIcon, _newWindowstyleMenuItem_Click);
-
-            // check everything in with the plugin manager
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newWindowstyleMenuItem);
+            PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterNewHandler(this, "Windowstyle");
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
         }
 
         public void Destroy()
         {
+            PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.RemoveMenuItem(_newWindowstyleMenuItem);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+        }
+
+        public DocumentView CreateEditView() { return null; }
+
+        public DocumentView NewDocument()
+        {
+            return null;
         }
         
-        private readonly List<string> _extensionList = new List<string>(new[] { ".rws" });
-        private const string _openFileFilters = "*.rws";
-
-        #region menu item declarations
-        private ToolStripMenuItem _newWindowstyleMenuItem;
-        #endregion
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
+        public DocumentView OpenDocument(string filepath)
         {
-            if (e.Handled) return;
-            if (_extensionList.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
-                e.Handled = true;
-            }
-        }
-
-        #region menu item click handlers
-        private void _newWindowstyleMenuItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-        #endregion
-        
-        private  DockDescription OpenEditor(string filename = "")
-        {
-            // Creates a new editor instance:
-            WindowstyleEditor editor = new WindowstyleEditor() { Dock = DockStyle.Fill };
-
-            // if no filename provided, initialize a new document
-            if (string.IsNullOrEmpty(filename)) editor.CreateNew();
-
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText = @"Untitled";
-            description.Control = editor;
-            description.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
-
-            return description;
+            WindowstyleEditView view = new WindowstyleEditView();
+            view.Load(filepath);
+            return view;
         }
    }
 }

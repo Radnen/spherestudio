@@ -20,18 +20,24 @@ namespace Sphere.Plugins
     }
 
     /// <summary>
-    /// Defines a plugin that allows the user to edit something.
+    /// Specifies the interface for an editing plugin.
     /// </summary>
     public interface IEditorPlugin : IPlugin
     {
         /// <summary>
-        /// Creates a new image editor control.
+        /// Creates a new document view.
         /// </summary>
-        EditorObject CreateEditControl();
+        DocumentView CreateEditView();
+
+        /// <summary>
+        /// Creates a new document as an IDocumentView.
+        /// </summary>
+        /// <returns>The IDocumentView of the new document, or null on failure.</returns>
+        DocumentView NewDocument();
         
         /// <summary>
-        /// Creates a new image editor control.
+        /// Opens the specified file as an IDocumentView.
         /// </summary>
-        DockDescription OpenDocument(string filename);
+        DocumentView OpenDocument(string filepath);
     }
 }

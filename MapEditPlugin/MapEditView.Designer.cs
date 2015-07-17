@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins
 {
-    partial class MapEditor
+    partial class MapEditView
     {
         /// <summary> 
         /// Required designer variable.
@@ -32,7 +32,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapEditor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapEditView));
             this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
@@ -429,13 +429,13 @@
             // 
             // TileDrawer
             // 
+            this.TileDrawer.Content = null;
             this.TileDrawer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TileDrawer.HelpLabel = null;
             this.TileDrawer.Location = new System.Drawing.Point(3, 3);
             this.TileDrawer.Name = "TileDrawer";
             this.TileDrawer.Size = new System.Drawing.Size(443, 210);
             this.TileDrawer.TabIndex = 0;
-            this.TileDrawer.ImageEdited += new System.EventHandler(this.TileDrawer_ImageEdited);
+            this.TileDrawer.ImageChanged += new System.EventHandler(this.TileDrawer_ImageEdited);
             // 
             // tileTab
             // 
@@ -520,12 +520,12 @@
             this.TilesetControl.TileRemoved += new SphereStudio.Plugins.Components.TilesetControl2.TileHandler(this.TilesetControl_TileRemoved);
             this.TilesetControl.TileAdded += new SphereStudio.Plugins.Components.TilesetControl2.TileHandler(this.TilesetControl_TileAdded);
             // 
-            // MapEditor
+            // MapEditView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.SplitContainer);
-            this.Name = "MapEditor";
+            this.Name = "MapEditView";
             this.Size = new System.Drawing.Size(681, 453);
             this.SplitContainer.Panel1.ResumeLayout(false);
             this.SplitContainer.Panel2.ResumeLayout(false);

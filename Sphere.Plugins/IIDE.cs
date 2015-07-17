@@ -27,7 +27,7 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets the EditorObject representing the active document.
         /// </summary>
-        EditorObject CurrentDocument { get; }
+        DocumentView CurrentDocument { get; }
         
         /// <summary>
         /// Add event handlers to do things when a project opens.
@@ -38,11 +38,6 @@ namespace Sphere.Plugins
         /// Add event handlers to do things when the Test Game command is clicked.
         /// </summary>
         event EventHandler TestGame;
-
-        /// <summary>
-        /// Add event handlers to attempt to open files double-clicked in the project tree.
-        /// </summary>
-        event EditFileEventHandler TryEditFile;
 
         /// <summary>
         /// Add event handlers to do things when a project closes.
@@ -75,6 +70,20 @@ namespace Sphere.Plugins
         /// <param name="newItem">The ToolStripMenuItem to add.</param>
         void AddMenuItem(string location, ToolStripItem newItem);
 
+        /// <summary>
+        /// Registers an editor plugin as a File:New handler. This adds an
+        /// entry to the File:New menu in the IDE.
+        /// </summary>
+        /// <param name="plugin">The editor plugin to register.</param>
+        /// <param name="name">The friendly name of the document being created, e.g. "Script" or "Image".</param>
+        void RegisterNewHandler(IEditorPlugin plugin, string name);
+        
+        /// <summary>
+        /// Unregisters a previously registered File:New handler.
+        /// </summary>
+        /// <param name="plugin">The editor plugin to unregister.</param>
+        void UnregisterNewHandler(IEditorPlugin plugin);
+        
         /// <summary>
         /// Registers a file type to be shown in the "Open File" dialog of the IDE.
         /// </summary>

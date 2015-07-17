@@ -5,9 +5,11 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using System.IO;
 
+using Sphere.Core.Editor;
+
 namespace SphereStudio.Plugins
 {
-    public class FontEditPlugin : IPlugin
+    public class FontEditPlugin : IEditorPlugin
     {
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Radnen"; } }
@@ -17,64 +19,44 @@ namespace SphereStudio.Plugins
         public Icon Icon { get; private set; }
 
         private const string _openFileFilters = "*.rfn";
-        private readonly string[] _extensions = new[] { ".rfn" };
-
-        private readonly ToolStripMenuItem _newFontItem;
+        private readonly string[] _extensions = new[] { "rfn" };
 
         public FontEditPlugin()
         {
             Icon = Icon.FromHandle(Properties.Resources.style.GetHicon());
-
-            _newFontItem = new ToolStripMenuItem("Font", Properties.Resources.style);
-            _newFontItem.Click += FontItem_Click;
-        }
-
-        private void IDE_TryEditFile(object sender, EditFileEventArgs e)
-        {
-            if (e.Handled) return;
-            if (_extensions.Contains(e.Extension.ToLowerInvariant()))
-            {
-                PluginManager.IDE.DockControl(OpenEditor(e.Path));
-                e.Handled = true;
-            }
-        }
-
-        void FontItem_Click(object sender, EventArgs e)
-        {
-            PluginManager.IDE.DockControl(OpenEditor());
-        }
-
-        public DockDescription OpenEditor(string filename = "")
-        {
-            // Creates a new editor instance:
-            FontEditor editor = new FontEditor() { Dock = DockStyle.Fill };
-
-            // And creates + styles a dock panel:
-            DockDescription description = new DockDescription();
-            description.TabText =  @"Font Importer";
-            description.Control = editor;
-            description.Icon = Icon;
-
-            if (!string.IsNullOrEmpty(filename))
-            {
-                editor.LoadFile(filename);
-                description.TabText = Path.GetFileName(filename);
-            }
-
-            return description;
         }
 
         public void Initialize(ISettings conf)
         {
+            PluginManager.IDE.RegisterNewHandler(this, "Font");
             PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
-            PluginManager.IDE.TryEditFile += IDE_TryEditFile;
-            PluginManager.IDE.AddMenuItem("File.New", _newFontItem);
+            PluginManager.RegisterExtensions(this, _extensions);
         }
 
         public void Destroy()
         {
+            PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
-            PluginManager.IDE.TryEditFile -= IDE_TryEditFile;
+            PluginManager.UnregisterExtensions(_extensions);
+        }
+
+        public DocumentView CreateEditView()
+        {
+            return new FontEditView();
+        }
+
+        public DocumentView NewDocument()
+        {
+            DocumentView view = new FontEditView();
+            view.NewDocument();
+            return view;
+        }
+        
+        public DocumentView OpenDocument(string filepath)
+        {
+            DocumentView view = new FontEditView();
+            view.Load(filepath);
+            return view;
         }
     }
 }

@@ -13,31 +13,35 @@ namespace Sphere.Plugins.EditShims
 {
     public partial class ScriptEditShim : UserControl
     {
+        private ScriptView _view;
+
         public ScriptEditShim()
         {
             InitializeComponent();
             
             // try to use a plugin for script editing
-            _editor = PluginManager.CreateEditControl(EditorType.Script);
-            if (_editor != null)
+            _view = PluginManager.CreateEditView(EditorType.Script) as ScriptView;
+            if (_view != null)
             {
-                IImageEditor editor = _editor as IImageEditor;
-                _editor.Dock = DockStyle.Fill;
-                Controls.Add(_editor);
+                _view.Dock = DockStyle.Fill;
+                Controls.Add(_view);
                 fallbackTextBox.Hide();
             }
         }
 
         public override string Text
         {
-            get { return _editor != null ? (_editor as IScriptEditor).Text : fallbackTextBox.Text; }
+            get
+            {
+                return _view != null ? _view.Text : fallbackTextBox.Text;
+            }
             set
             {
-                if (_editor != null) (_editor as IScriptEditor).Text = value;
-                    else fallbackTextBox.Text = value;
+                if (_view != null)
+                    _view.Text = value;
+                else
+                    fallbackTextBox.Text = value;
             }
         }
-
-        private EditorObject _editor;
     }
 }

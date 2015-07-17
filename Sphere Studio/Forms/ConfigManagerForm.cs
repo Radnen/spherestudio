@@ -148,6 +148,8 @@ namespace SphereStudio.Forms
 
         private void presetBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_updatingPresets) return;
+            
             Global.Settings.Preset = presetBox.Text;
             Global.Settings.Apply();
             enginePathBox.Text = Global.Settings.EnginePath;

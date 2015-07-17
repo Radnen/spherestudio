@@ -37,7 +37,9 @@
             this.headerLabel = new Sphere.Core.Editor.EditorLabel();
             this.websiteUrlLink = new System.Windows.Forms.LinkLabel();
             this.labelBits = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // logoPictureBox
@@ -54,10 +56,10 @@
             // 
             // labelProductName
             // 
-            this.labelProductName.Location = new System.Drawing.Point(176, 36);
+            this.labelProductName.Location = new System.Drawing.Point(214, 36);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(189, 21);
+            this.labelProductName.Size = new System.Drawing.Size(151, 21);
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "Product Name";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -75,20 +77,20 @@
             // 
             // labelCopyright
             // 
-            this.labelCopyright.Location = new System.Drawing.Point(176, 78);
+            this.labelCopyright.Location = new System.Drawing.Point(214, 78);
             this.labelCopyright.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(289, 21);
+            this.labelCopyright.Size = new System.Drawing.Size(251, 21);
             this.labelCopyright.TabIndex = 21;
             this.labelCopyright.Text = "Copyright";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCompanyName
             // 
-            this.labelCompanyName.Location = new System.Drawing.Point(176, 57);
+            this.labelCompanyName.Location = new System.Drawing.Point(214, 57);
             this.labelCompanyName.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelCompanyName.Name = "labelCompanyName";
-            this.labelCompanyName.Size = new System.Drawing.Size(189, 21);
+            this.labelCompanyName.Size = new System.Drawing.Size(151, 21);
             this.labelCompanyName.TabIndex = 22;
             this.labelCompanyName.Text = "Company Name";
             this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -152,13 +154,24 @@
             this.labelBits.Text = "Platform";
             this.labelBits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // AboutSphereEditor
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.pictureBox1.Location = new System.Drawing.Point(176, 36);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 27;
+            this.pictureBox1.TabStop = false;
+            // 
+            // AboutBoxForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.okButton;
             this.ClientSize = new System.Drawing.Size(599, 367);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labelBits);
             this.Controls.Add(this.websiteUrlLink);
             this.Controls.Add(this.labelCompanyName);
@@ -174,12 +187,13 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AboutSphereEditor";
+            this.Name = "AboutBoxForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -197,5 +211,6 @@
         private Sphere.Core.Editor.EditorLabel headerLabel;
         private System.Windows.Forms.LinkLabel websiteUrlLink;
         private System.Windows.Forms.Label labelBits;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

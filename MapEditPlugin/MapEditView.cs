@@ -4,19 +4,20 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
+using WeifenLuo.WinFormsUI.Docking;
+
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.Forms;
 using SphereStudio.Plugins.UndoRedo;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class MapEditor : EditorObject
+    partial class MapEditView : DocumentView
     {
-        #region attributes
         private DockContent _mapContent;
         private DockContent _drawContent;
         private DockContent _tileContent;
@@ -24,14 +25,111 @@ namespace SphereStudio.Plugins
         private DockContent _tilesetContent;
         private DockPanel _mainPanel;
         public Map Map { get { return MapControl.BaseMap; } }
-        #endregion
 
-        public MapEditor()
+        public MapEditView()
         {
             InitializeComponent();
             InitializeDocking();
+
+            Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
+
             TileEditor.Tileset = TilesetControl;
             TilesetControl.MultiSelect = true;
+        }
+
+        public override string[] FileExtensions
+        {
+            get { return new[] { "rmp" }; }
+        }
+
+        public override string ViewState
+        {
+            get
+            {
+                return string.Format("{0}|{1}|{2}|{3}",
+                    MapControl.vScrollBar.Value,
+                    MapControl.hScrollBar.Value,
+                    TilesetControl.Selected[0],
+                    MapControl.CurrentLayer);
+            }
+            set
+            {
+                string[] parse = value.Split('|');
+
+                MapControl.vScrollBar.Value = Convert.ToInt32(parse[0]);
+                MapControl.hScrollBar.Value = Convert.ToInt32(parse[1]);
+                TilesetControl.Select(Convert.ToInt16(parse[2]));
+                MapControl.CurrentLayer = Convert.ToInt16(parse[3]);
+            }
+        }
+
+        public override bool NewDocument()
+        {
+            using (var diag = new Forms.NewMapDialogue())
+            {
+                if (diag.ShowDialog() == DialogResult.OK)
+                    CreateNew(diag.MapWidth, diag.MapHeight, diag.TileWidth, diag.TileHeight, diag.Tileset);
+                else
+                    return false;
+                return true;
+            }
+        }
+
+        public override void Load(string filepath)
+        {
+            Map map = new Map();
+            map.Load(filepath);
+
+            MapControl.BaseMap = map;
+            TilesetControl.Tileset = MapControl.BaseMap.Tileset;
+            TilesetControl.Select(0);
+            SelectTiles(TilesetControl.Selected);
+            TilesetControl.ZoomIn();
+            InitLayers();
+            MapControl.UpdateView();
+
+            Invalidate(true);
+        }
+
+        public override void Save(string filepath)
+        {
+            if (!Map.Save(filepath))
+            {
+                if (MessageBox.Show(@"Tileset needs to be saved.", @"Save the Tileset", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                {
+                    using (SaveFileDialog diag = new SaveFileDialog())
+                    {
+                        diag.Filter = @"Tileset Files (.rts)|*.rts";
+                        diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
+                        if (diag.ShowDialog() == DialogResult.OK)
+                        {
+                            Map.Scripts[0] = Path.GetFileName(diag.FileName);
+                            Map.Save(filepath);
+                        }
+                    }
+                }
+            }
+            IsDirty = false;
+        }
+
+        public override void Activate()
+        {
+            MapEditPlugin.ShowMenus(true);
+        }
+
+        public override void Deactivate()
+        {
+            MapEditPlugin.ShowMenus(false);
+        }
+        
+        public override void ZoomIn()
+        {
+            MapControl.ZoomIn();
+        }
+
+        public override void ZoomOut()
+        {
+            MapControl.ZoomOut();
         }
 
         #region docking
@@ -133,69 +231,9 @@ namespace SphereStudio.Plugins
             Invalidate(true);
         }
 
-        public override void SaveLayout()
+        public void SaveLayout()
         {
             _mainPanel.SaveAsXml("MapEditor.xml");
-        }
-
-        public override void LoadFile(string filename)
-        {
-            FileName = filename;
-
-            Map map = new Map();
-            map.Load(filename);
-
-            MapControl.BaseMap = map;
-            TilesetControl.Tileset = MapControl.BaseMap.Tileset;
-            TilesetControl.Select(0);
-            SelectTiles(TilesetControl.Selected);
-            TilesetControl.ZoomIn();
-            InitLayers();
-            MapControl.UpdateView();
-            SetTabText(Path.GetFileName(filename));
-
-            Invalidate(true);
-        }
-
-        public override void Save()
-        {
-            if (!IsSaved()) SaveAs();
-            else
-            {
-                if (!Map.Save(FileName))
-                {
-                    if (MessageBox.Show(@"Tileset needs to be saved.", @"Save the Tileset", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
-                    {
-                        using (SaveFileDialog diag = new SaveFileDialog())
-                        {
-                            diag.Filter = @"Tileset Files (.rts)|*.rts";
-                            diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
-                            if (diag.ShowDialog() == DialogResult.OK)
-                            {
-                                Map.Scripts[0] = Path.GetFileName(diag.FileName);
-                                Map.Save(FileName);
-                                SetTabText(Path.GetFileName(FileName));
-                            }
-                        }
-                    }
-                }
-                else SetTabText(Path.GetFileName(FileName));
-            }
-        }
-
-        public override void SaveAs()
-        {
-            using (SaveFileDialog diag = new SaveFileDialog())
-            {
-                diag.Filter = @"Map Files (.rmp)|*.rmp";
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
-                diag.DefaultExt = "rmp";
-                if (diag.ShowDialog() == DialogResult.OK)
-                {
-                    FileName = diag.FileName;
-                    Save();
-                }
-            }
         }
 
         private void InitLayers()
@@ -217,16 +255,6 @@ namespace SphereStudio.Plugins
             LayerEditor.Layers.SelectItem(MapControl.CurrentLayer);
         }
 
-        public override void ZoomIn()
-        {
-            MapControl.ZoomIn();
-        }
-
-        public override void ZoomOut()
-        {
-            MapControl.ZoomOut();
-        }
-
         public override void Undo()
         {
             undoButton.Enabled = MapControl.Undo();
@@ -246,7 +274,7 @@ namespace SphereStudio.Plugins
             MapControl.ResizeLayers(tileWidth, tileHeight);
             TilesetControl.UpdateTileSize();
             TilesetControl.Invalidate();
-            MakeDirty();
+            IsDirty = true;
         }
 
         public void UpdateTileset(string filename)
@@ -270,7 +298,7 @@ namespace SphereStudio.Plugins
             foreach (Zone zone in Map.Zones)
                 if (zone.Layer == layer.Index) zone.Visible = layer.Visible;
             MapControl.Invalidate();
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void Layers_LayerSelected(LayerControl sender, LayerItem layer)
@@ -287,7 +315,7 @@ namespace SphereStudio.Plugins
             MapControl.SetLayers(layers, start);
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void zoomInButton_Click(object sender, EventArgs e)
@@ -361,7 +389,7 @@ namespace SphereStudio.Plugins
             MapControl.SelWidth = TilesetControl.Selection.Width;
             MapControl.CurrentTile = tiles[0];
             Bitmap img = TilesetControl.GetCompiledImage();
-            TileDrawer.SetImage(img, true);
+            TileDrawer.Content = img;
             img.Dispose();
             TileEditor.Tile = Map.Tileset.Tiles[tiles[0]];
         }
@@ -377,7 +405,7 @@ namespace SphereStudio.Plugins
         {
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void zoneButton_Click(object sender, EventArgs e)
@@ -394,7 +422,7 @@ namespace SphereStudio.Plugins
             short th = TilesetControl.Tileset.TileHeight;
             TilesetControl.SetImages(TileDrawer.GetImages(tw, th));
             MapControl.RefreshLayers();
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void MapControl_Paint(object sender, PaintEventArgs e)
@@ -427,7 +455,7 @@ namespace SphereStudio.Plugins
             LayerItem item = new LayerItem(lay) {Text = "Untitled", Visible = true};
             LayerEditor.Layers.AddItem(item);
             MapControl.RefreshLayers();
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void Layers_LayerRemoved(object sender, EventArgs e)
@@ -446,7 +474,7 @@ namespace SphereStudio.Plugins
             Map.Layers.Remove(target);
             LayerEditor.Layers.RemoveItem(LayerEditor.Layers.SelectedIndex);
             MapControl.RefreshLayers();
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void TilesetControl_TileSelected(List<short> tiles)
@@ -465,7 +493,7 @@ namespace SphereStudio.Plugins
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void TilesetControl_TileAdded(short tile, List<Tile> tiles)
@@ -479,7 +507,7 @@ namespace SphereStudio.Plugins
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);
-            MakeDirty();
+            IsDirty = true;
         }
 
         private void ShowNumButton_Click(object sender, EventArgs e)
