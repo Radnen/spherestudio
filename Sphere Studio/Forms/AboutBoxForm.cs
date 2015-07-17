@@ -14,7 +14,16 @@ namespace SphereStudio.Forms
             this.labelProductName.Text = string.Format("{0} {1}", AssemblyProduct, AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = "By: " + AssemblyCompany;
-            this.labelBits.Text = Environment.Is64BitProcess ? "64-bit" : "32-bit";
+            Version os = Environment.OSVersion.Version;
+            string windowsVersion = os.Major == 5 && os.Minor == 1 ? "XP"
+                : os.Major == 6 && os.Minor == 0 ? "Vista"
+                : os.Major == 6 && os.Minor == 1 ? "7"
+                : os.Major == 6 && os.Minor == 2 ? "8"
+                : os.Major == 6 && os.Minor == 3 ? "8.1"
+                : os.Major == 10 && os.Minor == 0 ? "10"
+                : string.Format("{0}.{1}", os.Major, os.Minor);
+            this.labelPlatform.Text = string.Format("Windows {0}\n{1}",
+                windowsVersion, Environment.Is64BitProcess ? "x64" : "x86");
             this.textBoxDescription.Text = AssemblyDescription;
         }
 

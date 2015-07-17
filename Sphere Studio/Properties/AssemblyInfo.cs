@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Sphere Studio")]
 
-[assembly: AssemblyDescription("A modern Sphere development environment made for Windows with the .NET Framework 4.5 or higher.\r\n\r\n"+
+[assembly: AssemblyDescription("A modern Sphere development environment written in C# for .NET 4.5 or higher.\r\n\r\n"+
     "Special Thanks:\r\n\r\n"+
     "Developers:\r\n"+
     "Andrew 'Radnen' Helenius\r\n"+
@@ -15,8 +15,7 @@ using System.Runtime.InteropServices;
     "Testers:\r\n" +
     "DaVince\r\n" +
     "Eggbert\r\n" +
-    "Flying Jester\r\n\r\n" +
-    "Don't forget to visit us at www.spheredev.org!")]
+    "Flying Jester")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]

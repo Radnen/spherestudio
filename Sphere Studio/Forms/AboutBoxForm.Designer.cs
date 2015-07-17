@@ -35,7 +35,7 @@
             this.okButton = new System.Windows.Forms.Button();
             this.headerLabel = new Sphere.Core.Editor.EditorLabel();
             this.websiteUrlLink = new System.Windows.Forms.LinkLabel();
-            this.labelBits = new System.Windows.Forms.Label();
+            this.labelPlatform = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -138,12 +138,12 @@
             // 
             // labelBits
             // 
-            this.labelBits.Location = new System.Drawing.Point(371, 37);
-            this.labelBits.Name = "labelBits";
-            this.labelBits.Size = new System.Drawing.Size(94, 19);
-            this.labelBits.TabIndex = 26;
-            this.labelBits.Text = "Platform";
-            this.labelBits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelPlatform.Location = new System.Drawing.Point(371, 37);
+            this.labelPlatform.Name = "labelBits";
+            this.labelPlatform.Size = new System.Drawing.Size(94, 62);
+            this.labelPlatform.TabIndex = 26;
+            this.labelPlatform.Text = "Platform";
+            this.labelPlatform.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // pictureBox1
             // 
@@ -163,7 +163,7 @@
             this.CancelButton = this.okButton;
             this.ClientSize = new System.Drawing.Size(599, 367);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.labelBits);
+            this.Controls.Add(this.labelPlatform);
             this.Controls.Add(this.websiteUrlLink);
             this.Controls.Add(this.labelCompanyName);
             this.Controls.Add(this.labelProductName);
@@ -199,7 +199,7 @@
         private System.Windows.Forms.Button okButton;
         private Sphere.Core.Editor.EditorLabel headerLabel;
         private System.Windows.Forms.LinkLabel websiteUrlLink;
-        private System.Windows.Forms.Label labelBits;
+        private System.Windows.Forms.Label labelPlatform;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
