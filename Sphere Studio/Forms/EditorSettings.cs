@@ -4,10 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using Sphere.Core.Editor;
-using Sphere.Core.Settings;
-using Sphere.Plugins;
 using SphereStudio.Settings;
+using Sphere.Core.Editor;
+using Sphere.Plugins;
 
 namespace SphereStudio.Forms
 {

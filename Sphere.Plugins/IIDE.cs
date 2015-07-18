@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using System.Drawing;
 
 using Sphere.Core.Editor;
-using Sphere.Core.Settings;
 
 namespace Sphere.Plugins
 {
@@ -20,9 +19,9 @@ namespace Sphere.Plugins
         ISettings Settings { get; }
         
         /// <summary>
-        /// Gets the .sgm settings of the currently loaded game, or null.
+        /// Provides access to the project settings.
         /// </summary>
-        ProjectSettings CurrentGame { get; }
+        IProject CurrentGame { get; }
 
         /// <summary>
         /// Gets the EditorObject representing the active document.

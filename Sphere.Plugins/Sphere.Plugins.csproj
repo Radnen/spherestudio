@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="IIDE.cs" />
     <Compile Include="IPlugin.cs" />
+    <Compile Include="IProject.cs" />
     <Compile Include="ScriptView.cs">
       <SubType>UserControl</SubType>
     </Compile>

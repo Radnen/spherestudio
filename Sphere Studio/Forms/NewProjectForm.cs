@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
-using Sphere.Core.Settings;
+
+using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
@@ -59,23 +61,6 @@ namespace SphereStudio.Forms
             }
         }
 
-        public ProjectSettings GetSettings()
-        {
-            ProjectSettings settings = new ProjectSettings
-                {
-                    Name = NameBox.Text,
-                    Author = AuthorBox.Text,
-                    Description = DescriptionBox.Text,
-                    Script = "main.js",
-                    Width = WidthBox.Text,
-                    Height = HeightBox.Text
-                };
-
-            settings.SetRootPath(DirectoryBox.Text);
-
-            return settings;
-        }
-
         private void CheckForOk()
         {
             OKButton.Enabled = true;
@@ -116,6 +101,30 @@ namespace SphereStudio.Forms
             StyleSettings.ApplyStyle(ButtonPanel);
             StyleSettings.ApplyStyle(OKButton);
             StyleSettings.ApplyStyle(cancelButton);
+        }
+
+        private void OKButton_Click(object sender, EventArgs e)
+        {
+            ProjectSettings project = new ProjectSettings(Path.Combine(DirectoryBox.Text, "game.ssproj"))
+            {
+                Name = NameBox.Text,
+                Author = AuthorBox.Text,
+                Description = DescriptionBox.Text,
+                ScreenWidth = int.Parse(WidthBox.Text),
+                ScreenHeight = int.Parse(HeightBox.Text),
+                MainScript = "main.js"
+            };
+            project.PrepareNew();
+
+            // automatically create the starting script //
+            using (StreamWriter startscript = new StreamWriter(File.Open(project.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
+            {
+                const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
+                startscript.Write(string.Format(header, Global.CurrentGame.Author, DateTime.Today.ToShortDateString()));
+                startscript.Flush();
+            }
+
+            Global.CurrentGame = project;
         }
     }
 }

@@ -76,8 +76,6 @@
     <Compile Include="Editor\StyleGroup.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="INI.cs" />
-    <Compile Include="Settings\GameProject.cs" />
-    <Compile Include="Settings\GenSettings.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

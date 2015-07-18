@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using Sphere.Core.Settings;
-using Sphere.Core.Editor;
 using System.Collections.Generic;
 using System.Linq;
+
+using SphereStudio.Settings;
+using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
 {
@@ -26,8 +27,8 @@ namespace SphereStudio.Forms
             NameTextBox.Text = _project.Name;
             AuthorTextBox.Text = _project.Author;
             DescTextBox.Text = _project.Description;
-            WidthTextBox.Text = _project.Width;
-            HeightTextBox.Text = _project.Height;
+            WidthTextBox.Text = _project.ScreenWidth.ToString();
+            HeightTextBox.Text = _project.ScreenHeight.ToString();
             
             // I'll need to populate the script combo box.
             DirectoryInfo dir = new DirectoryInfo(PathTextBox.Text + "\\scripts");
@@ -40,20 +41,7 @@ namespace SphereStudio.Forms
             {
                 ScriptComboBox.Items.Add(filename);
             }
-            ScriptComboBox.Text = _project.Script;
-        }
-
-        public ProjectSettings GetSettings()
-        {
-            ProjectSettings settings = new ProjectSettings();
-            settings.SetRootPath(PathTextBox.Text);
-            settings.Name = NameTextBox.Text;
-            settings.Author = AuthorTextBox.Text;
-            settings.Description = DescTextBox.Text;
-            settings.Width = WidthTextBox.Text;
-            settings.Height = HeightTextBox.Text;
-            settings.Script = ScriptComboBox.Text;
-            return settings;
+            ScriptComboBox.Text = _project.MainScript;
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -64,8 +52,19 @@ namespace SphereStudio.Forms
         public void UpdateStyle()
         {
             StyleSettings.ApplyStyle(ButtonPanel);
-            StyleSettings.ApplyStyle(okayButton);
-            StyleSettings.ApplyStyle(cancelButton);
+            StyleSettings.ApplyStyle(buttonOK);
+            StyleSettings.ApplyStyle(buttonCancel);
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            _project.Name = NameTextBox.Text;
+            _project.Author = AuthorTextBox.Text;
+            _project.Description = DescTextBox.Text;
+            _project.ScreenWidth = int.Parse(WidthTextBox.Text);
+            _project.ScreenHeight = int.Parse(WidthTextBox.Text);
+            _project.MainScript = ScriptComboBox.Text;
+            _project.Save();
         }
     }
 }

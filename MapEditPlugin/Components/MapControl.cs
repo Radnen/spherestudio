@@ -385,8 +385,8 @@ namespace SphereStudio.Plugins.Components
 
         private void DrawCameraBounds(Graphics g)
         {
-            int sw = int.Parse(PluginManager.IDE.CurrentGame.Width);
-            int sh = int.Parse(PluginManager.IDE.CurrentGame.Height);
+            int sw = PluginManager.IDE.CurrentGame.ScreenWidth;
+            int sh = PluginManager.IDE.CurrentGame.ScreenHeight;
             int x = (sw / 2) * Zoom;
             int y = (sh / 2) * Zoom;
             int w = _vw - sw * Zoom;
