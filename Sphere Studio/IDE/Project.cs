@@ -20,10 +20,6 @@ namespace SphereStudio.IDE
         
         public static Project Create(string rootPath, string name)
         {
-            string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
-            string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
-            string filename = Regex.Replace(name, pattern, "_") + ".ssproj";
-
             Directory.CreateDirectory(rootPath);
             string[] subfolders = new[] {
                 "animations", "fonts", "images", "maps", "scripts",
@@ -32,7 +28,7 @@ namespace SphereStudio.IDE
             {
                 Directory.CreateDirectory(Path.Combine(rootPath, subfolder));
             }
-            return new Project(Path.Combine(rootPath, filename)) { Name = name };
+            return new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
         }
 
         public static Project Open(string rootPath)
@@ -71,15 +67,20 @@ namespace SphereStudio.IDE
                         string value = match.Success ? match.Groups[2].Value : null;
                         switch (key.ToLower())
                         {
-                            case "name": this.Name = value; break;
-                            case "author": this.Author = value; break;
-                            case "description": this.Author = value; break;
-                            case "screen_width": this.ScreenWidth = Convert.ToInt32(value); break;
-                            case "screen_height": this.ScreenHeight = Convert.ToInt32(value); break;
-                            case "script": this.MainScript = value; break;
+                            case "name": Name = value; break;
+                            case "author": Author = value; break;
+                            case "description": Description = value; break;
+                            case "screen_width": ScreenWidth = Convert.ToInt32(value); break;
+                            case "screen_height": ScreenHeight = Convert.ToInt32(value); break;
+                            case "script": MainScript = value; break;
                         }
                     }
+                    file.Close();
                 }
+                string oldPath = _path;
+                string newPath = Path.Combine(Path.GetDirectoryName(_path), MakeFileName(Name));
+                File.Delete(oldPath);
+                SaveAs(newPath);
             }
             else
             {
@@ -164,6 +165,13 @@ namespace SphereStudio.IDE
             string dirpath = Path.GetDirectoryName(projectPath);
             return Path.Combine(dirpath,
                 Path.GetFileNameWithoutExtension(projectPath) + ".ssuser");
+        }
+        
+        private static string MakeFileName(string name)
+        {
+            string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            return Regex.Replace(name, pattern, "_") + ".ssproj";
         }
     }
 }
