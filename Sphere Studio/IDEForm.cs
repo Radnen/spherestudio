@@ -414,12 +414,9 @@ namespace SphereStudio
 
             if (IsProjectOpen)
             {
-                Global.CurrentGame.Save();
-                Global.CurrentGame.Build();
-                string args = string.Format("-game \"{0}\"", Global.CurrentGame.RootPath);
-                string enginePath = ((ToolStripItem)sender).Tag as string ??
-                    (PlatformTool.Text == "x64" ? Global.Settings.EnginePath64 : Global.Settings.EnginePath);
-                Process.Start(enginePath, args);
+                string gamePath = Global.CurrentGame.Build();
+                Process.Start(((ToolStripItem)sender).Tag as string ?? EnginePath,
+                    string.Format("-game \"{0}\"", gamePath));
             }
             else
                 Process.Start(Global.Settings.EnginePath);

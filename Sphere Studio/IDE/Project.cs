@@ -85,28 +85,39 @@ namespace SphereStudio.IDE
             {
                 _ini = new INISettings(new INI(_path, false), ".ssproj");
             }
-            
         }
 
         public UserSettings User { get; private set; }
 
+        /// <summary>
+        /// Gets the full path of the project's root directory.
+        /// </summary>
         public string RootPath
         {
             get { return Path.GetDirectoryName(_path); }
         }
         
+        /// <summary>
+        /// Gets or sets the project name (usually a title).
+        /// </summary>
         public string Name
         {
             get { return _ini.GetString("name", "Untitled"); }
             set { _ini.SetValue("name", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the project author.
+        /// </summary>
         public string Author
         {
             get { return _ini.GetString("author", ""); }
             set { _ini.SetValue("author", value); }
         }
 
+        /// <summary>
+        /// Gets or sets a short description of the game.
+        /// </summary>
         public string Description
         {
             get { return _ini.GetString("description", ""); }
@@ -119,34 +130,44 @@ namespace SphereStudio.IDE
             set { _ini.SetValue("mainScript", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the game's vertical resolution.
+        /// </summary>
         public int ScreenWidth
         {
             get { return _ini.GetInteger("screenWidth", 320); }
             set { _ini.SetValue("screenWidth", value); }
         }
         
+        /// <summary>
+        /// Gets or sets the game's horizontal resolution.
+        /// </summary>
         public int ScreenHeight
         {
             get { return _ini.GetInteger("screenHeight", 240); }
             set { _ini.SetValue("screenHeight", value); }
         }
 
+        /// <summary>
+        /// Saves any changes made to the project.
+        /// </summary>
         public void Save()
         {
-            SaveAs(_path);
-        }
-        
-        public void SaveAs(string filepath)
-        {
-            _path = filepath;
             User.SaveAs(GetUserFilePath(_path));
             _ini.SaveAs(_path);
         }
-
-        public void Build()
+        
+        /// <summary>
+        /// Builds the project so it can be run by Sphere.
+        /// </summary>
+        /// <returns>The full path of the generated `game.sgm`.</returns>
+        public string Build()
         {
-            string dirpath = Path.GetDirectoryName(_path);
-            string sgmPath = Path.Combine(dirpath, "game.sgm");
+            // save the project before building
+            Save();
+
+            // write out game.sgm
+            string sgmPath = Path.Combine(Path.GetDirectoryName(_path), "game.sgm");
             using (StreamWriter writer = new StreamWriter(sgmPath, false))
             {
                 writer.WriteLine(string.Format("name={0}", Name));
@@ -157,6 +178,7 @@ namespace SphereStudio.IDE
                 writer.WriteLine(string.Format("script={0}", MainScript));
                 writer.Close();
             }
+            return sgmPath;
         }
 
         private string GetUserFilePath(string projectPath)

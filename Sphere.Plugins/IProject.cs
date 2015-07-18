@@ -12,7 +12,7 @@ namespace Sphere.Plugins
     public interface IProject
     {
         /// <summary>
-        /// Gets the fully qualified path of the project's root directory.
+        /// Gets the full path of the project's root directory.
         /// </summary>
         string RootPath { get; }
         
@@ -44,6 +44,7 @@ namespace Sphere.Plugins
         /// <summary>
         /// Builds the project so it can be run by Sphere.
         /// </summary>
-        void Build();
+        /// <returns>The fully qualified path of the generated game.sgm.</returns>
+        string Build();
     }
 }
