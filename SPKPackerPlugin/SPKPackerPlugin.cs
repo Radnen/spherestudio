@@ -31,6 +31,7 @@ namespace Sphere.Plugins
                 MessageBox.Show("You must load a project into the editor first.", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
+                PluginManager.IDE.CurrentGame.Build();
                 new MakePackageForm(project.RootPath, _conf).ShowDialog();
             }
         }
