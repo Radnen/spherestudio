@@ -626,6 +626,15 @@ namespace SphereStudio
 
         public void OpenDocument(string filePath, bool restoreView = false)
         {
+            string extension = Path.GetExtension(filePath);
+            
+            // is it a project?
+            if ((new[] { ".sgm", ".ssproj" }).Contains(extension))
+            {
+                OpenProject(filePath);
+                return;
+            }
+            
             // the IDE will try to open the file through the plugin manager first.
             // if that fails, then use the current default editor (if any).
             DocumentView view;
@@ -643,7 +652,6 @@ namespace SphereStudio
                     view = wcPlugin.OpenDocument(filePath);
                 else
                 {
-                    string extension = Path.GetExtension(filePath);
                     MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
                         @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

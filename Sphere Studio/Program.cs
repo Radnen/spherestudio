@@ -21,10 +21,7 @@ namespace SphereStudio
             foreach (string s in args)
             {
                 if (!File.Exists(s)) continue;
-                if (Path.GetExtension(s) == ".sgm")
-                    form.OpenProject(s);
-                else
-                    form.OpenDocument(s);
+                form.OpenDocument(s);
             }
 
             if (args.Length > 0 && File.Exists(args[args.Length - 1]))
