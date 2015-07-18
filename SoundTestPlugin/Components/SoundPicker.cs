@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
-using Sphere.Core.Settings;
 using Sphere.Plugins;
 
 namespace SphereStudio.Plugins
@@ -105,7 +104,7 @@ namespace SphereStudio.Plugins
         /// add new additions to the sound list.
         /// </summary>
         /// <param name="game"></param>
-        public void WatchProject(ProjectSettings game)
+        public void WatchProject(IProject game)
         {
             if (game != null && game.RootPath != null)
             {

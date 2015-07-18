@@ -124,7 +124,7 @@ namespace SphereStudio.Components
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Global.CurrentProject.RootPath + pathtop;
+            string path = Global.CurrentGame.RootPath + pathtop;
 
             if (!File.Exists(path)) return;
             try
@@ -169,7 +169,7 @@ namespace SphereStudio.Components
         {
             base.Refresh();
 
-            if (Global.CurrentProject == null || string.IsNullOrEmpty(Global.CurrentProject.RootPath)) return;
+            if (Global.CurrentGame == null || string.IsNullOrEmpty(Global.CurrentGame.RootPath)) return;
 
             Cursor.Current = Cursors.WaitCursor;
 
@@ -197,7 +197,7 @@ namespace SphereStudio.Components
             // Repopulate the tree
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
-            var projectNode = new TreeNode(Global.CurrentProject.Name) { Tag = "project-node" };
+            var projectNode = new TreeNode(Global.CurrentGame.Name) { Tag = "project-node" };
             ProjectTreeView.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], baseDir);
@@ -278,13 +278,13 @@ namespace SphereStudio.Components
                     string path = "";
                     if (ProjectTreeView.SelectedNode.Index == 0)
                     {
-                        path = Path.Combine(Global.CurrentProject.RootPath, form.Input);
+                        path = Path.Combine(Global.CurrentGame.RootPath, form.Input);
                     }
                     else
                     {
                         string toppath = ProjectTreeView.SelectedNode.FullPath;
                         toppath = toppath.Substring(toppath.IndexOf('\\'));
-                        string rootpath = Global.CurrentProject.RootPath + toppath;
+                        string rootpath = Global.CurrentGame.RootPath + toppath;
                         path = Path.Combine(rootpath, form.Input);
                     }
 
@@ -309,7 +309,7 @@ namespace SphereStudio.Components
         /// <returns>The full filepath the node corresponds to.</returns>
         private static string ResolvePath(TreeNode node)
         {
-            var root = Global.CurrentProject.RootPath;
+            var root = Global.CurrentGame.RootPath;
             var path = node.FullPath;
             var idx = path.IndexOf("\\");
             path = path.Substring(idx, path.Length - idx);
@@ -367,13 +367,9 @@ namespace SphereStudio.Components
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (var settings = new GameSettings(Global.CurrentProject))
+            using (var settings = new GameSettings(Global.CurrentGame))
             {
-                if (settings.ShowDialog() == DialogResult.OK)
-                {
-                    Global.CurrentProject.SetSettings(settings.GetSettings());
-                    Global.CurrentProject.SaveSettings();
-                }
+                settings.ShowDialog();
             }
         }
 
@@ -423,21 +419,21 @@ namespace SphereStudio.Components
         private void ExecuteScriptItem_Click(object sender, EventArgs e)
         {
             // Write to file the current script:
-            String oldScript = Global.CurrentProject.Script;
-            Global.CurrentProject.Script = ProjectTreeView.SelectedNode.Text;
-            Global.CurrentProject.SaveSettings();
+            String oldScript = Global.CurrentGame.MainScript;
+            Global.CurrentGame.MainScript = ProjectTreeView.SelectedNode.Text;
+            Global.CurrentGame.Save();
             // And then execute the engine:
             Process.Start(Global.Settings.EnginePath, "-game \"" +
-                Global.CurrentProject.RootPath + "\"");
-            Global.CurrentProject.Script = oldScript;
-            Global.CurrentProject.SaveSettings();
+                Global.CurrentGame.RootPath + "\"");
+            Global.CurrentGame.MainScript = oldScript;
+            Global.CurrentGame.Save();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Global.CurrentProject.RootPath + pathtop;
+            string path = Global.CurrentGame.RootPath + pathtop;
 
             if (!Directory.Exists(path)) return;
             try
@@ -455,8 +451,8 @@ namespace SphereStudio.Components
 
         public void Open()
         {
-            if (!string.IsNullOrEmpty(Global.CurrentProject.RootPath))
-                SystemWatcher.Path = Global.CurrentProject.RootPath;
+            if (!string.IsNullOrEmpty(Global.CurrentGame.RootPath))
+                SystemWatcher.Path = Global.CurrentGame.RootPath;
             else return;
 
             SystemWatcher.EnableRaisingEvents = true;
@@ -471,7 +467,7 @@ namespace SphereStudio.Components
             if (idx < 0) return; // we're at root.
 
             pathtop = pathtop.Substring(idx);
-            string path = Global.CurrentProject.RootPath + pathtop;
+            string path = Global.CurrentGame.RootPath + pathtop;
 
             DocumentTab tab = EditorForm.GetDocument(path);
             if (tab != null)
@@ -547,7 +543,7 @@ namespace SphereStudio.Components
             var node = ProjectTreeView.SelectedNode;
 
             if (node.Level == 0 && node.Index == 0)
-                path = Global.CurrentProject.RootPath;
+                path = Global.CurrentGame.RootPath;
             else
                 path = ResolvePath(node);
 

@@ -1,14 +1,14 @@
-﻿using Sphere.Core.Settings;
-using Sphere.Plugins;
-using SphereStudio.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
 
+using SphereStudio.Forms;
+using SphereStudio.IDE;
 using SphereStudio.Settings;
+using Sphere.Plugins;
 
 namespace SphereStudio
 {
@@ -66,7 +66,7 @@ namespace SphereStudio
                     wrapper.Activate();
         }
 
-        public static ProjectSettings CurrentProject = null;
+        public static Project CurrentGame = null;
         public static UserSettings CurrentUser = null;
         public static CoreSettings Settings;
         public static Sphere.Core.Entity CopiedEnt { get; set; }

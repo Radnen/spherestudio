@@ -177,6 +177,7 @@
             this.OKButton.TabIndex = 3;
             this.OKButton.Text = "Create!";
             this.OKButton.UseVisualStyleBackColor = true;
+            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
             // 
             // PropertiesBox
             // 
@@ -325,7 +326,7 @@
             // 
             this.StatusLabel.ForeColor = System.Drawing.Color.White;
             this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(184, 17);
+            this.StatusLabel.Size = new System.Drawing.Size(183, 17);
             this.StatusLabel.Text = "You\'ll need a name and directory.";
             // 
             // NewProjectPic

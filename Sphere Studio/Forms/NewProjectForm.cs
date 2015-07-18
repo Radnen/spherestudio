@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
-using Sphere.Core.Settings;
+
+using SphereStudio.IDE;
+using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
@@ -59,23 +62,6 @@ namespace SphereStudio.Forms
             }
         }
 
-        public ProjectSettings GetSettings()
-        {
-            ProjectSettings settings = new ProjectSettings
-                {
-                    Name = NameBox.Text,
-                    Author = AuthorBox.Text,
-                    Description = DescriptionBox.Text,
-                    Script = "main.js",
-                    Width = WidthBox.Text,
-                    Height = HeightBox.Text
-                };
-
-            settings.SetRootPath(DirectoryBox.Text);
-
-            return settings;
-        }
-
         private void CheckForOk()
         {
             OKButton.Enabled = true;
@@ -116,6 +102,27 @@ namespace SphereStudio.Forms
             StyleSettings.ApplyStyle(ButtonPanel);
             StyleSettings.ApplyStyle(OKButton);
             StyleSettings.ApplyStyle(cancelButton);
+        }
+
+        private void OKButton_Click(object sender, EventArgs e)
+        {
+            Project project = Project.Create(DirectoryBox.Text, NameBox.Text);
+            project.Author = AuthorBox.Text;
+            project.Description = DescriptionBox.Text;
+            project.ScreenWidth = int.Parse(WidthBox.Text);
+            project.ScreenHeight = int.Parse(HeightBox.Text);
+            project.MainScript = "main.js";
+            project.Save();
+
+            // automatically create the starting script //
+            using (StreamWriter startscript = new StreamWriter(File.Open(project.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
+            {
+                const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
+                startscript.Write(string.Format(header, project.Author, DateTime.Today.ToShortDateString()));
+                startscript.Close();
+            }
+
+            Global.CurrentGame = project;
         }
     }
 }

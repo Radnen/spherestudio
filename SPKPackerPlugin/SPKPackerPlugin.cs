@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Sphere.Core.Settings;
 using Sphere.Plugins;
 
 namespace Sphere.Plugins
@@ -26,12 +25,13 @@ namespace Sphere.Plugins
         
         private void packageGame_Click(object sender, EventArgs e)
         {
-            ProjectSettings project;
+            IProject project;
 
             if ((project = PluginManager.IDE.CurrentGame) == null)
                 MessageBox.Show("You must load a project into the editor first.", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
+                PluginManager.IDE.CurrentGame.Build();
                 new MakePackageForm(project.RootPath, _conf).ShowDialog();
             }
         }

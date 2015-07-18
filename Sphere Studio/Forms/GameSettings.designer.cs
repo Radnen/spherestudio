@@ -42,8 +42,8 @@
             this.XLabel = new System.Windows.Forms.Label();
             this.WidthTextBox = new System.Windows.Forms.TextBox();
             this.HeightTextBox = new System.Windows.Forms.TextBox();
-            this.okayButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.NewProjectPic = new System.Windows.Forms.PictureBox();
             this.ButtonPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).BeginInit();
@@ -175,27 +175,28 @@
             this.HeightTextBox.TabIndex = 13;
             this.HeightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
-            // okayButton
+            // buttonOK
             // 
-            this.okayButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okayButton.Location = new System.Drawing.Point(94, 5);
-            this.okayButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.okayButton.Name = "okayButton";
-            this.okayButton.Size = new System.Drawing.Size(87, 28);
-            this.okayButton.TabIndex = 0;
-            this.okayButton.Text = "Save";
-            this.okayButton.UseVisualStyleBackColor = true;
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOK.Location = new System.Drawing.Point(94, 5);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(87, 28);
+            this.buttonOK.TabIndex = 0;
+            this.buttonOK.Text = "Save";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
-            // cancelButton
+            // buttonCancel
             // 
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(187, 5);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(87, 28);
-            this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(187, 5);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(87, 28);
+            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
             // 
             // NewProjectPic
             // 
@@ -210,8 +211,8 @@
             // 
             // ButtonPanel
             // 
-            this.ButtonPanel.Controls.Add(this.okayButton);
-            this.ButtonPanel.Controls.Add(this.cancelButton);
+            this.ButtonPanel.Controls.Add(this.buttonOK);
+            this.ButtonPanel.Controls.Add(this.buttonCancel);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ButtonPanel.Location = new System.Drawing.Point(0, 427);
             this.ButtonPanel.Name = "ButtonPanel";
@@ -220,10 +221,10 @@
             // 
             // GameSettings
             // 
-            this.AcceptButton = this.okayButton;
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.cancelButton;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(360, 464);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectPic);
@@ -273,8 +274,8 @@
         private System.Windows.Forms.Label XLabel;
         private System.Windows.Forms.TextBox WidthTextBox;
         private System.Windows.Forms.TextBox HeightTextBox;
-        private System.Windows.Forms.Button okayButton;
-        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.PictureBox NewProjectPic;
         private System.Windows.Forms.Panel ButtonPanel;
 

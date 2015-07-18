@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
-using Sphere.Core.Settings;
 using Sphere.Core;
 using Sphere.Plugins;
 using SphereStudio.Components;
@@ -34,7 +33,7 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
-        private INI _iniFile;
+        private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
         public event EventHandler LoadProject;
@@ -51,8 +50,8 @@ namespace SphereStudio
             string filepath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 @"Sphere Studio\Settings", "Sphere Studio.ini");
-            _iniFile = new INI(filepath);
-            Global.Settings = new CoreSettings(_iniFile);
+            _settingsINI = new INI(filepath);
+            Global.Settings = new CoreSettings(_settingsINI);
             
             _firsttime = !Global.Settings.GetBoolean("setupComplete", false);
 
@@ -96,12 +95,12 @@ namespace SphereStudio
             // visibility before the form loads.
             if (Global.Settings.AutoOpenProject)
             {
-                if (Global.CurrentUser.StartHidden)
+                if (Global.CurrentGame.User.StartHidden)
                 {
                     _startContent.Hide();
                 }
 
-                DocumentTab tab = GetDocument(Global.CurrentUser.CurrentDocument);
+                DocumentTab tab = GetDocument(Global.CurrentGame.User.CurrentDocument);
                 if (tab != null)
                     tab.Activate();
                 else
@@ -172,7 +171,7 @@ namespace SphereStudio
             menuSaveAs.Enabled = menuSave.Enabled = (_activeTab != null);
             menuCloseProject.Enabled = IsProjectOpen;
             menuOpenLastProject.Enabled = (!IsProjectOpen ||
-                Global.Settings.LastProject != Global.CurrentProject.RootPath);
+                Global.Settings.LastProject != Global.CurrentGame.RootPath);
             menu_DropDownOpening(sender, e);
         }
 
@@ -224,27 +223,9 @@ namespace SphereStudio
 
             if (myProject.ShowDialog() == DialogResult.OK)
             {
-                Directory.CreateDirectory(rootPath);
-
-                if (Global.CurrentProject == null)
-                    Global.CurrentProject = new ProjectSettings();
-
-                Global.CurrentProject.SetSettings(myProject.GetSettings());
-                Global.CurrentProject.Create();
-                Global.CurrentProject.Script = "main.js";
-                Global.CurrentProject.SaveSettings();
-
-                // automatically create the starting script //
-                using (StreamWriter startscript = new StreamWriter(File.Open(Global.CurrentProject.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
-                {
-                    const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
-                    startscript.Write(string.Format(header, Global.CurrentProject.Author, DateTime.Today.ToShortDateString()));
-                    startscript.Flush();
-                }
-
                 menuRefreshProject_Click(null, EventArgs.Empty);
                 _startPage.PopulateGameList();
-                OpenDocument(Global.CurrentProject.RootPath + "\\scripts\\main.js");
+                OpenDocument(Global.CurrentGame.RootPath + "\\scripts\\main.js");
             }
         }
 
@@ -422,7 +403,7 @@ namespace SphereStudio
 
         private void menuOpenGameDir_Click(object sender, EventArgs e)
         {
-            string path = Global.CurrentProject.RootPath;
+            string path = Global.CurrentGame.RootPath;
             var proc = Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
             proc.Dispose();
         }
@@ -433,8 +414,9 @@ namespace SphereStudio
 
             if (IsProjectOpen)
             {
-                Global.CurrentProject.SaveSettings();
-                string args = string.Format("-game \"{0}\"", Global.CurrentProject.RootPath);
+                Global.CurrentGame.Save();
+                Global.CurrentGame.Build();
+                string args = string.Format("-game \"{0}\"", Global.CurrentGame.RootPath);
                 string enginePath = ((ToolStripItem)sender).Tag as string ??
                     (PlatformTool.Text == "x64" ? Global.Settings.EnginePath64 : Global.Settings.EnginePath);
                 Process.Start(enginePath, args);
@@ -519,9 +501,9 @@ namespace SphereStudio
             get { return _activeTab.View; }
         }
 
-        public ProjectSettings CurrentGame
+        public IProject CurrentGame
         {
-            get { return Global.CurrentProject; }
+            get { return Global.CurrentGame; }
         }
 
         public string EnginePath
@@ -685,8 +667,7 @@ namespace SphereStudio
             if (string.IsNullOrEmpty(filename)) return;
             if (!CloseCurrentProject()) return;
 
-            Global.CurrentProject = new ProjectSettings();
-            Global.CurrentProject.LoadSettings(filename);
+            Global.CurrentGame = Project.Open(filename);
 
             RefreshProject();
 
@@ -695,11 +676,9 @@ namespace SphereStudio
 
             HelpLabel.Text = @"Game project loaded successfully!";
 
-            Global.CurrentUser = new UserSettings(Path.GetDirectoryName(filename));
-
             _startContent.Show();
             
-            string[] docs = Global.CurrentUser.Documents;
+            string[] docs = Global.CurrentGame.User.Documents;
             foreach (string s in docs)
             {
                 if (String.IsNullOrWhiteSpace(s)) continue;
@@ -711,10 +690,10 @@ namespace SphereStudio
             // it will be done in Form_Load.
             if (Visible)
             {
-                if (Global.CurrentUser.StartHidden)
+                if (Global.CurrentGame.User.StartHidden)
                     _startContent.Hide();
 
-                DocumentTab tab = GetDocument(Global.CurrentUser.CurrentDocument);
+                DocumentTab tab = GetDocument(Global.CurrentGame.User.CurrentDocument);
                 if (tab != null)
                     tab.Activate();
                 else
@@ -729,7 +708,7 @@ namespace SphereStudio
 
         public ISettings OpenSettings(string settingsID)
         {
-            return new INISettings(_iniFile, settingsID);
+            return new INISettings(_settingsINI, settingsID);
         }
 
         public void RegisterNewHandler(IEditorPlugin plugin, string name)
@@ -837,7 +816,7 @@ namespace SphereStudio
                 filterString += @"All Files|*.*";
                 dialog.Filter = filterString;
                 dialog.FilterIndex = 5 + _openFileTypes.Count;
-                dialog.InitialDirectory = Global.CurrentProject.RootPath;
+                dialog.InitialDirectory = Global.CurrentGame.RootPath;
                 dialog.Multiselect = multiselect;
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
@@ -855,7 +834,7 @@ namespace SphereStudio
 
         private bool IsProjectOpen
         {
-            get { return Global.CurrentProject != null; }
+            get { return Global.CurrentGame != null; }
         }
 
         private void AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
@@ -914,31 +893,27 @@ namespace SphereStudio
         /// <returns>'true' if the project was closed; 'false' on cancel.</returns>
         private bool CloseCurrentProject(bool forceClose = false)
         {
+            if (Global.CurrentGame == null)
+                return true;
+            
             // user values will be lost if we don't record them now.
-            if (Global.CurrentUser != null)
-            {
-                Global.CurrentUser.ProjectName = Global.CurrentProject.Name;
-                Global.CurrentUser.Author = Global.CurrentProject.Author;
-                Global.CurrentUser.StartHidden = !_startContent.Visible;
-                Global.CurrentUser.Documents = Documents;
-                if (_activeTab != null)
-                    Global.CurrentUser.CurrentDocument = _activeTab.FileName;
-            }
+            Global.CurrentGame.User.ProjectName = Global.CurrentGame.Name;
+            Global.CurrentGame.User.Author = Global.CurrentGame.Author;
+            Global.CurrentGame.User.StartHidden = !_startContent.Visible;
+            Global.CurrentGame.User.Documents = Documents;
+            if (_activeTab != null)
+                Global.CurrentGame.User.CurrentDocument = _activeTab.FileName;
 
             // close all open document tabs
             if (!CloseAllDocuments(forceClose))
                 return false;
             
             // save and unload the project
-            if (Global.CurrentProject != null)
+            if (Global.CurrentGame != null)
             {
                 if (UnloadProject != null)
                     UnloadProject(null, EventArgs.Empty);
-                Global.CurrentProject.SaveSettings();
-            }
-            if (Global.CurrentUser != null)
-            {
-                Global.CurrentUser.Save();
+                Global.CurrentGame.Save();
             }
             
             // clear the project tree
@@ -947,8 +922,7 @@ namespace SphereStudio
             menuOpenLastProject.Enabled = (Global.Settings.LastProject.Length > 0);
             
             // all clear!
-            Global.CurrentUser = null;
-            Global.CurrentProject = null;
+            Global.CurrentGame = null;
             Text = string.Format("{0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
             UpdateButtons();
@@ -975,13 +949,9 @@ namespace SphereStudio
 
         private void OpenGameSettings()
         {
-            using (GameSettings settings = new GameSettings(Global.CurrentProject))
+            using (GameSettings settings = new GameSettings(Global.CurrentGame))
             {
-                if (settings.ShowDialog() == DialogResult.OK)
-                {
-                    Global.CurrentProject.SetSettings(settings.GetSettings());
-                    Global.CurrentProject.SaveSettings();
-                }
+                settings.ShowDialog();
             }
         }
 
@@ -989,10 +959,10 @@ namespace SphereStudio
         {
             _tree.Open();
             _tree.Refresh();
-            if (Global.CurrentProject.RootPath != null)
-                Global.Settings.LastProject = Global.CurrentProject.RootPath;
+            if (Global.CurrentGame.RootPath != null)
+                Global.Settings.LastProject = Global.CurrentGame.RootPath;
             UpdateButtons();
-            _tree.ProjectName = "Project: " + Global.CurrentProject.Name;
+            _tree.ProjectName = "Project: " + Global.CurrentGame.Name;
         }
 
         private void RemoveRootMenuItem(ToolStripMenuItem item)

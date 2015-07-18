@@ -11,7 +11,7 @@ using Sphere.Plugins;
 
 namespace SphereStudio.Settings
 {
-    public class INISettings : ISettings
+    class INISettings : ISettings
     {
         private INI _ini;
         private string _section;
@@ -61,9 +61,10 @@ namespace SphereStudio.Settings
         {
             return _ini.Save();
         }
-        
-        public bool SaveAs(string filepath)
+
+        public virtual bool SaveAs(string filepath)
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(filepath));
             return _ini.SaveAs(filepath);
         }
     }

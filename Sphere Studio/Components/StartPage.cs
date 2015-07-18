@@ -5,15 +5,18 @@ using System.Drawing;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Sphere.Core.Settings;
+
 using WeifenLuo.WinFormsUI.Docking;
+
+using SphereStudio.IDE;
+using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Components
 {
     internal partial class StartPage : UserControl, IStyleable
     {
-        private readonly ProjectSettings _proj = new ProjectSettings();
+        private Project _proj;
         private ListViewItem _currentItem;
 
         private readonly DockPanel _startDock = new DockPanel();
@@ -111,23 +114,24 @@ namespace SphereStudio.Components
                 Populate(d);
 
                 // search this folder for game:
-                string path = d.FullName + "/game.sgm";
-                if (!File.Exists(path)) continue;
-
-                ProjectSettings proj = new ProjectSettings();
-                proj.LoadSettings(Path.Combine(d.FullName, @"game.sgm"));
-                int img = CheckForIcon(d.FullName);
-                ListViewItem item = new ListViewItem(proj.Name, img) { Tag = path };
-                item.SubItems.Add(proj.Author);
-                item.SubItems.Add(d.FullName);
-                GameFolders.Items.Add(item);
+                try
+                {
+                    Project proj = Project.Open(d.FullName);
+                    int img = CheckForIcon(d.FullName);
+                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = d.FullName };
+                    item.SubItems.Add(proj.Author);
+                    item.SubItems.Add(d.FullName);
+                    GameFolders.Items.Add(item);
+                }
+                catch (FileNotFoundException)
+                { }
             }
             GameFolders.EndUpdate();
             GameFolders.Invalidate();
         }
 
         /// <summary>
-        /// Recursively searches the subfolders of /base_dir/ for games
+        /// Recursively searches the subfolders of /baseDir/ for games
         /// to add to the games panel.
         /// </summary>
         /// <param name="baseDir">Directory to start looking from.</param>
@@ -136,15 +140,19 @@ namespace SphereStudio.Components
             DirectoryInfo[] dirs = baseDir.GetDirectories();
             foreach (DirectoryInfo d in dirs)
             {
-                string path = d.FullName + "/game.sgm";
-                if (!File.Exists(path)) { Populate(d); continue; }
                 int img = CheckForIcon(d.FullName);
-                ProjectSettings proj = new ProjectSettings();
-                proj.LoadSettings(Path.Combine(d.FullName, @"game.sgm"));
-                ListViewItem item = new ListViewItem(proj.Name, img) { Tag = path };
-                item.SubItems.Add(proj.Author);
-                item.SubItems.Add(d.FullName);
-                GameFolders.Items.Add(item);
+                try
+                {
+                    Project proj = Project.Open(d.FullName);
+                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = d.FullName };
+                    item.SubItems.Add(proj.Author);
+                    item.SubItems.Add(d.FullName);
+                    GameFolders.Items.Add(item);
+                }
+                catch (FileNotFoundException)
+                {
+                    Populate(d);
+                }
             }
         }
 
@@ -173,7 +181,7 @@ namespace SphereStudio.Components
         {
             _currentItem = GameFolders.GetItemAt(e.X, e.Y);
             if (_currentItem == null) return;
-            _proj.LoadSettings((string)_currentItem.Tag);
+            _proj = Project.Open((string)_currentItem.Tag);
             SetProjData();
         }
 
@@ -181,7 +189,7 @@ namespace SphereStudio.Components
         {
             NameLabel.Text = @"Name: " + _proj.Name;
             AuthorLabel.Text = @"Author: " + _proj.Author;
-            SizeLabel.Text = string.Format(@"Resolution: {0}x{1}", _proj.Width, _proj.Height);
+            SizeLabel.Text = string.Format(@"Resolution: {0}x{1}", _proj.ScreenWidth, _proj.ScreenHeight);
             DescTextLabel.Text = _proj.Description;
         }
 
@@ -223,7 +231,7 @@ namespace SphereStudio.Components
 
         private bool RenameProject(string oldname, string newname)
         {
-            if (oldname == Global.CurrentProject.RootPath)
+            if (oldname == Global.CurrentGame.RootPath)
             {
                 MessageBox.Show(@"Can't change name of active project.", @"Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;

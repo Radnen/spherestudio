@@ -12,8 +12,8 @@ namespace SphereStudio.Settings
 {
     class UserSettings : INISettings
     {
-        public UserSettings(string projectPath):
-            base(new INI(Path.Combine(projectPath, ".ssuser"), false), "User")
+        public UserSettings(string filepath):
+            base(new INI(filepath, false), ".ssuser")
         {
 
         }

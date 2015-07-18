@@ -270,7 +270,7 @@ namespace SphereStudio.RadEditors
             set
             {
                 filename = value;
-                string path = Global.CurrentProject.RootPath + "/images/" + value;
+                string path = Global.CurrentGame.RootPath + "/images/" + value;
                 if (System.IO.File.Exists(path))
                 {
                     image_preview = (Bitmap)Bitmap.FromFile(path);

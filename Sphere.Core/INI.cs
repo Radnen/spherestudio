@@ -127,14 +127,17 @@ namespace Sphere.Core
             {
                 using (StreamWriter file = new StreamWriter(filepath))
                 {
-                    foreach (string section in _sections.Keys)
+                    var sections = from section in _sections
+                                   where section.Value.Count > 0
+                                   select section.Key;
+                    foreach (string name in sections)
                     {
-                        file.WriteLine(string.Format("[{0}]", section));
-                        foreach (var item in _sections[section].Keys)
+                        file.WriteLine(string.Format("[{0}]", name));
+                        foreach (var item in _sections[name].Keys)
                         {
                             file.WriteLine(string.Format("{0}={1}",
                                 item,
-                                _sections[section][item]));
+                                _sections[name][item]));
                         }
                         file.WriteLine();
                     }
