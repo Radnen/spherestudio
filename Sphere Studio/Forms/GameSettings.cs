@@ -63,7 +63,7 @@ namespace SphereStudio.Forms
             _project.Author = AuthorTextBox.Text;
             _project.Description = DescTextBox.Text;
             _project.ScreenWidth = int.Parse(WidthTextBox.Text);
-            _project.ScreenHeight = int.Parse(WidthTextBox.Text);
+            _project.ScreenHeight = int.Parse(HeightTextBox.Text);
             _project.MainScript = ScriptComboBox.Text;
             _project.Save();
         }
