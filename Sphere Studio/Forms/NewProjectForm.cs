@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
+using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
@@ -105,23 +106,20 @@ namespace SphereStudio.Forms
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            ProjectSettings project = new ProjectSettings(Path.Combine(DirectoryBox.Text, "game.ssproj"))
-            {
-                Name = NameBox.Text,
-                Author = AuthorBox.Text,
-                Description = DescriptionBox.Text,
-                ScreenWidth = int.Parse(WidthBox.Text),
-                ScreenHeight = int.Parse(HeightBox.Text),
-                MainScript = "main.js"
-            };
-            project.PrepareNew();
+            Project project = Project.Create(DirectoryBox.Text, NameBox.Text);
+            project.Author = AuthorBox.Text;
+            project.Description = DescriptionBox.Text;
+            project.ScreenWidth = int.Parse(WidthBox.Text);
+            project.ScreenHeight = int.Parse(HeightBox.Text);
+            project.MainScript = "main.js";
+            project.Save();
 
             // automatically create the starting script //
             using (StreamWriter startscript = new StreamWriter(File.Open(project.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
             {
                 const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
-                startscript.Write(string.Format(header, Global.CurrentGame.Author, DateTime.Today.ToShortDateString()));
-                startscript.Flush();
+                startscript.Write(string.Format(header, project.Author, DateTime.Today.ToShortDateString()));
+                startscript.Close();
             }
 
             Global.CurrentGame = project;

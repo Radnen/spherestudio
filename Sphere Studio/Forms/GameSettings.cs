@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 
+using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
@@ -11,9 +12,9 @@ namespace SphereStudio.Forms
 {
     internal partial class GameSettings : Form, IStyleable
     {
-        private ProjectSettings _project;
+        private Project _project;
         
-        public GameSettings(ProjectSettings someProject)
+        public GameSettings(Project someProject)
         {
             InitializeComponent();
             UpdateStyle();

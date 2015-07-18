@@ -7,17 +7,50 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using SphereStudio.Settings;
 using Sphere.Core;
 using Sphere.Plugins;
 
-namespace SphereStudio.Settings
+namespace SphereStudio.IDE
 {
-    class ProjectSettings : IProject
+    class Project : IProject
     {
         private INI _ini;
         private string _path;
         
-        public ProjectSettings(string filepath)
+        public static Project Create(string rootPath, string name)
+        {
+            string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            string filename = Regex.Replace(name, pattern, "_") + ".ssproj";
+
+            Directory.CreateDirectory(rootPath);
+            string[] subfolders = new[] {
+                "animations", "fonts", "images", "maps", "scripts",
+                "sounds", "spritesets", "windowstyles" };
+            foreach (string subfolder in subfolders)
+            {
+                Directory.CreateDirectory(Path.Combine(rootPath, subfolder));
+            }
+            return new Project(Path.Combine(rootPath, filename)) { Name = name };
+        }
+
+        public static Project Open(string rootPath)
+        {
+            if (!Directory.Exists(rootPath))
+                rootPath = Path.GetDirectoryName(rootPath);
+            
+            string[] ssprojs = Directory.GetFiles(rootPath, "*.ssproj");
+            string[] sgms = Directory.GetFiles(rootPath, "game.sgm");
+            if (ssprojs.Length > 0)
+                return new Project(ssprojs[0]);
+            else if (sgms.Length > 0)
+                return new Project(sgms[0]);
+            else
+                throw new FileNotFoundException("No Sphere project was found in the specified directory.");
+        }
+        
+        private Project(string filepath)
         {
             _path = filepath;
             var userpath = GetUserFilePath(filepath);
@@ -110,22 +143,7 @@ namespace SphereStudio.Settings
             _ini.SaveAs(_path);
         }
 
-        public void PrepareNew()
-        {
-            string path = Path.GetDirectoryName(_path);
-            Directory.CreateDirectory(path);
-            string[] subfolders = new[] {
-                "animations", "fonts", "images", "maps", "scripts",
-                "sounds", "spritesets", "windowstyles" };
-            foreach (string folder in subfolders)
-            {
-                Directory.CreateDirectory(Path.Combine(path, folder));
-            }
-            Save();
-            WriteSGM();
-        }
-        
-        public void WriteSGM()
+        public void Build()
         {
             string dirpath = Path.GetDirectoryName(_path);
             string sgmPath = Path.Combine(dirpath, "game.sgm");

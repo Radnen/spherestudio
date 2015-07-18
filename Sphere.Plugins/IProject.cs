@@ -40,5 +40,10 @@ namespace Sphere.Plugins
         /// Gets or sets the game's default vertical resolution.
         /// </summary>
         int ScreenHeight { get; set; }
+
+        /// <summary>
+        /// Builds the project so it can be run by Sphere.
+        /// </summary>
+        void Build();
     }
 }

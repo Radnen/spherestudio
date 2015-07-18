@@ -415,7 +415,7 @@ namespace SphereStudio
             if (IsProjectOpen)
             {
                 Global.CurrentGame.Save();
-                Global.CurrentGame.WriteSGM();
+                Global.CurrentGame.Build();
                 string args = string.Format("-game \"{0}\"", Global.CurrentGame.RootPath);
                 string enginePath = ((ToolStripItem)sender).Tag as string ??
                     (PlatformTool.Text == "x64" ? Global.Settings.EnginePath64 : Global.Settings.EnginePath);
@@ -667,7 +667,7 @@ namespace SphereStudio
             if (string.IsNullOrEmpty(filename)) return;
             if (!CloseCurrentProject()) return;
 
-            Global.CurrentGame = new ProjectSettings(filename);
+            Global.CurrentGame = Project.Open(filename);
 
             RefreshProject();
 

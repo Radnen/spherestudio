@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Linq;
 
 using SphereStudio.Forms;
+using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Plugins;
 
@@ -65,7 +66,7 @@ namespace SphereStudio
                     wrapper.Activate();
         }
 
-        public static ProjectSettings CurrentGame = null;
+        public static Project CurrentGame = null;
         public static UserSettings CurrentUser = null;
         public static CoreSettings Settings;
         public static Sphere.Core.Entity CopiedEnt { get; set; }
