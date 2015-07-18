@@ -915,10 +915,6 @@ namespace SphereStudio
                     UnloadProject(null, EventArgs.Empty);
                 Global.CurrentGame.Save();
             }
-            if (Global.CurrentGame.User != null)
-            {
-                Global.CurrentGame.User.Save();
-            }
             
             // clear the project tree
             _tree.Close();

@@ -15,7 +15,7 @@ namespace SphereStudio.IDE
 {
     class Project : IProject
     {
-        private INI _ini;
+        private INISettings _ini;
         private string _path;
         
         public static Project Create(string rootPath, string name)
@@ -28,7 +28,9 @@ namespace SphereStudio.IDE
             {
                 Directory.CreateDirectory(Path.Combine(rootPath, subfolder));
             }
-            return new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
+            var project = new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
+            project.Save();
+            return project;
         }
 
         public static Project Open(string rootPath)
@@ -56,7 +58,7 @@ namespace SphereStudio.IDE
             if (Path.GetFileName(filepath) == "game.sgm")
             {
                 _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
-                _ini = new INI(_path, false);
+                _ini = new INISettings(new INI(_path, false), ".ssproj");
                 using (StreamReader file = new StreamReader(filepath))
                 {
                     Regex regex = new Regex("^(.*)=(.*)$");
@@ -77,14 +79,11 @@ namespace SphereStudio.IDE
                     }
                     file.Close();
                 }
-                string oldPath = _path;
-                string newPath = Path.Combine(Path.GetDirectoryName(_path), MakeFileName(Name));
-                File.Delete(oldPath);
-                SaveAs(newPath);
+                _path = Path.Combine(Path.GetDirectoryName(_path), MakeFileName(Name));
             }
             else
             {
-                _ini = new INI(_path, false);
+                _ini = new INISettings(new INI(_path, false), ".ssproj");
             }
             
         }
@@ -98,38 +97,38 @@ namespace SphereStudio.IDE
         
         public string Name
         {
-            get { return _ini.Read("ssproj", "name", "Untitled"); }
-            set { _ini.Write("ssproj", "name", value); }
+            get { return _ini.GetString("name", "Untitled"); }
+            set { _ini.SetValue("name", value); }
         }
 
         public string Author
         {
-            get { return _ini.Read("ssproj", "author", ""); }
-            set { _ini.Write("ssproj", "author", value); }
+            get { return _ini.GetString("author", ""); }
+            set { _ini.SetValue("author", value); }
         }
 
         public string Description
         {
-            get { return _ini.Read("ssproj", "description", ""); }
-            set { _ini.Write("ssproj", "description", value); }
+            get { return _ini.GetString("description", ""); }
+            set { _ini.SetValue("description", value); }
         }
 
         public string MainScript
         {
-            get { return _ini.Read("ssproj", "mainScript", ""); }
-            set { _ini.Write("ssproj", "mainScript", value); }
+            get { return _ini.GetString("mainScript", ""); }
+            set { _ini.SetValue("mainScript", value); }
         }
 
         public int ScreenWidth
         {
-            get { return Convert.ToInt32(_ini.Read("ssproj", "screenWidth", "320")); }
-            set { _ini.Write("ssproj", "screenWidth", value.ToString()); }
+            get { return _ini.GetInteger("screenWidth", 320); }
+            set { _ini.SetValue("screenWidth", value); }
         }
         
         public int ScreenHeight
         {
-            get { return Convert.ToInt32(_ini.Read("ssproj", "screenHeight", "240")); }
-            set { _ini.Write("ssproj", "screenHeight", value.ToString()); }
+            get { return _ini.GetInteger("screenHeight", 240); }
+            set { _ini.SetValue("screenHeight", value); }
         }
 
         public void Save()
