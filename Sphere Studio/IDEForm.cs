@@ -897,12 +897,10 @@ namespace SphereStudio
                 return true;
             
             // user values will be lost if we don't record them now.
-            Global.CurrentGame.User.ProjectName = Global.CurrentGame.Name;
-            Global.CurrentGame.User.Author = Global.CurrentGame.Author;
             Global.CurrentGame.User.StartHidden = !_startContent.Visible;
             Global.CurrentGame.User.Documents = Documents;
-            if (_activeTab != null)
-                Global.CurrentGame.User.CurrentDocument = _activeTab.FileName;
+            Global.CurrentGame.User.CurrentDocument = _activeTab != null
+                ? _activeTab.FileName : "";
 
             // close all open document tabs
             if (!CloseAllDocuments(forceClose))

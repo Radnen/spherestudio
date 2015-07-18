@@ -19,24 +19,6 @@ namespace SphereStudio.Settings
         }
 
         /// <summary>
-        /// Identifies the author of this file.
-        /// </summary>
-        public string Author
-        {
-            get { return GetString("author", ""); }
-            set { SetValue("author", value); }
-        }
-
-        /// <summary>
-        /// Identifies the project name this file belongs to.
-        /// </summary>
-        public string ProjectName
-        {
-            get { return GetString("projectName", ""); }
-            set { SetValue("projectName", value); }
-        }
-
-        /// <summary>
         /// Stores as a comma-separated list the opened files in the editor.
         /// </summary>
         public string[] Documents
