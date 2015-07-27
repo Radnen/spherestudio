@@ -96,7 +96,7 @@ namespace Sphere.Plugins
         {
             const int bufferSize = 1048576;
 
-            var packageDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Packages");
+            var packageDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Games");
             Directory.CreateDirectory(packageDir);
             BinaryWriter spkWriter = null;
             using (var dialog = new SaveFileDialog())
