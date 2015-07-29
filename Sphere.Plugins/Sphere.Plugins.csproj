@@ -47,6 +47,7 @@
     <Compile Include="DocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="IDebugger.cs" />
     <Compile Include="IEditorPlugin.cs" />
     <Compile Include="ImageView.cs">
       <SubType>UserControl</SubType>
