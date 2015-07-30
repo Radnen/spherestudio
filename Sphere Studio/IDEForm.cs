@@ -10,11 +10,13 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Core;
-using Sphere.Plugins;
 using SphereStudio.Components;
 using SphereStudio.Forms;
 using SphereStudio.IDE;
 using SphereStudio.Settings;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio
 {

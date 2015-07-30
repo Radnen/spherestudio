@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using Sphere.Plugins;
-using System.IO;
 
-using Sphere.Core.Editor;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -84,7 +83,7 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.UnregisterExtensions(_extensions);
             PluginManager.IDE.UnregisterNewHandler(this);

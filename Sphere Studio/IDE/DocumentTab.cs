@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.IDE
 {

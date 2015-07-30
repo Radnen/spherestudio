@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Sphere.Plugins;
 using System.IO;
 
 using Sphere.Core.Editor;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -35,7 +37,7 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.UnregisterExtensions(_extensions);
             PluginManager.IDE.UnregisterNewHandler(this);

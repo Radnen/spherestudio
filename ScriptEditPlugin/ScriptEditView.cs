@@ -1,13 +1,15 @@
-﻿using ScintillaNET;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
+using ScintillaNET;
+
+using Sphere.Plugins;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {

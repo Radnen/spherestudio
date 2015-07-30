@@ -1,4 +1,6 @@
-﻿namespace Sphere.Plugins
+﻿using Sphere.Plugins.Interfaces;
+
+namespace Sphere.Plugins
 {
     /// <summary>
     /// A simple wrapper of a plugin object, used to activate and deactivate them.
@@ -48,7 +50,7 @@
         public void Deactivate()
         {
             if (!Enabled) return;
-            Plugin.Destroy();
+            Plugin.ShutDown();
             Enabled = false;
         }
     }

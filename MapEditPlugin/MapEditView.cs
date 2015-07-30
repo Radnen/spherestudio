@@ -10,6 +10,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
+using Sphere.Plugins.Views;
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.Forms;
 using SphereStudio.Plugins.UndoRedo;

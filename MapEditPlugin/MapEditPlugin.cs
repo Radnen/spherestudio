@@ -2,11 +2,13 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Sphere.Plugins;
-using SphereStudio.Plugins.Forms;
 using System.IO;
 
 using Sphere.Core.Editor;
+using SphereStudio.Plugins.Forms;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -109,7 +111,7 @@ namespace SphereStudio.Plugins
             PluginManager.RegisterExtensions(this, _extensions);
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);

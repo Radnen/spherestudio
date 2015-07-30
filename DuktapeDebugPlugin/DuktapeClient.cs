@@ -1,24 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Sphere.Plugins
+using Sphere.Plugins.Interfaces;
+
+namespace SphereStudio.Plugins
 {
     class DuktapeClient : IDisposable, IDebugger
     {
-        TcpClient tcp;
+        TcpClient tcp = new TcpClient();
 
-        public DuktapeClient(string hostname, int port)
+        public DuktapeClient()
         {
-            tcp = new TcpClient(hostname, port);
         }
 
         public void Dispose()
         {
             tcp.Close();
+        }
+
+        public void Connect(string hostname, int port, uint timeout = 10000)
+        {
+            long end = DateTime.Now.Ticks + timeout * 10000;
+            while (DateTime.Now.Ticks < end)
+            {
+                try {
+                    tcp.Connect(hostname, port);
+                    return;
+                }
+                catch (SocketException) { }
+            }
+            throw new TimeoutException();
         }
 
         public void Run()

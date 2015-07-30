@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sphere.Plugins
+namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
     /// Specifies the interface for a Sphere game project.

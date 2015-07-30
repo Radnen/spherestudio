@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
+
 using SphereStudio.Plugins.Forms;
-using System.IO;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -80,7 +80,7 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.UnregisterExtensions("png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);

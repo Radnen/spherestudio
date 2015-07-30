@@ -43,22 +43,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DockDescription.cs" />
-    <Compile Include="EditFileEventArgs.cs" />
-    <Compile Include="DocumentView.cs">
+    <Compile Include="Views\DocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="IDebugger.cs" />
+    <Compile Include="Interfaces\IDebugger.cs" />
+    <Compile Include="IDebugPlugin.cs" />
     <Compile Include="IEditorPlugin.cs" />
-    <Compile Include="ImageView.cs">
+    <Compile Include="Views\ImageView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="IIDE.cs" />
+    <Compile Include="Interfaces\IIDE.cs" />
     <Compile Include="IPlugin.cs" />
-    <Compile Include="IProject.cs" />
-    <Compile Include="ScriptView.cs">
+    <Compile Include="Interfaces\IProject.cs" />
+    <Compile Include="Views\ScriptView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ISettings.cs" />
+    <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Sphere.Plugins
+namespace Sphere.Plugins.Views
 {
     /// <summary>
     /// Specifies the interface for editable documents in Sphere Studio.

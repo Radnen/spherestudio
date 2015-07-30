@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sphere.Plugins
+namespace Sphere.Plugins.Views
 {
     /// <summary>
     /// Provides a base class for an image editing component.

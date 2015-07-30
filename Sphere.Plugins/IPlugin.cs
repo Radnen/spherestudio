@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 
+using Sphere.Plugins.Interfaces;
+
 namespace Sphere.Plugins
 {
     /// <summary>
@@ -23,6 +25,6 @@ namespace Sphere.Plugins
         /// <summary>
         /// Called by the plugin manager when the plugin is unloaded.
         /// </summary>
-        void Destroy();
+        void ShutDown();
     }
 }

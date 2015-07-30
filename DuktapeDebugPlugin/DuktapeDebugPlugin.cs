@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Timers;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
-namespace Sphere.Plugins
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+
+namespace SphereStudio.Plugins
 {
-    public class DuktapeDebugPlugin : IPlugin
+    public class DuktapeDebugPlugin : IDebugPlugin
     {
         public string Name { get { return "minisphere Debugger"; } }
         public string Author { get { return "Lord English"; } }
@@ -22,7 +19,7 @@ namespace Sphere.Plugins
 
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
 
         }
@@ -31,7 +28,9 @@ namespace Sphere.Plugins
         {
             string exePath = PluginManager.IDE.EnginePath;
             var args = string.Format(@"--debug --game ""{0}""\game.sgm", project.RootPath);
-            return new DuktapeClient("localhost", 812);
+            var client = new DuktapeClient();
+            client.Connect("localhost", 812);
+            return client;
         }
     }
 }

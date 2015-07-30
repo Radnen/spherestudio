@@ -2,10 +2,12 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
+
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using WeifenLuo.WinFormsUI.Docking;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {

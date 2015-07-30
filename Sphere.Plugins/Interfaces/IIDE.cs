@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Drawing;
 
-using Sphere.Core.Editor;
+using Sphere.Plugins.Views;
 
-namespace Sphere.Plugins
+namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
     /// Provides the interface to the Sphere Studio core.

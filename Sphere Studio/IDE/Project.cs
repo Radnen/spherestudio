@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using SphereStudio.Settings;
 using Sphere.Core;
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.IDE
 {
