@@ -42,8 +42,6 @@ namespace SphereStudio.Plugins
             }
             catch (TimeoutException)
             {
-                MessageBox.Show("Duktape Remote was unable to connect to the debug target. The request timed out.",
-                    "Connection Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }

@@ -1093,15 +1093,22 @@ namespace SphereStudio
 
         private void toolDebug_Click(object sender, EventArgs e)
         {
-            var debuggers = from f in Global.Plugins.Values
-                            where f.Enabled
+            var debuggers = from f in Global.Plugins.Values where f.Enabled
                             where f.Plugin is IDebugPlugin
                             select (IDebugPlugin)f.Plugin;
             var plugin = debuggers.FirstOrDefault();
             if (plugin != null)
             {
                 IDebugger debug = plugin.Start(CurrentGame);
-                if (debug != null) debug.Run();
+                if (debug != null)
+                    debug.Run();
+                else
+                {
+                    Activate();
+                    MessageBox.Show(
+                        "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
+                        "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
