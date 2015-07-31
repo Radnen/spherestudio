@@ -13,7 +13,8 @@ namespace Sphere.Plugins
         /// <summary>
         /// Starts a debugging session for a project.
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">The debug target.</param>
+        /// <returns>An IDebugger object representing the session.</returns>
         IDebugger Start(IProject project);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
@@ -16,7 +17,6 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-
         }
 
         public void ShutDown()
@@ -26,9 +26,13 @@ namespace SphereStudio.Plugins
 
         public IDebugger Start(IProject project)
         {
-            string exePath = PluginManager.IDE.EnginePath;
-            var args = string.Format(@"--debug --game ""{0}""\game.sgm", project.RootPath);
-            var client = new DuktapeClient();
+            // start minisphere in debugging mode
+            string enginePath = PluginManager.IDE.EnginePath;
+            string args = string.Format(@"--debug --game ""{0}""\game.sgm", project.RootPath);
+            Process.Start(enginePath, args);
+
+            // fire up the debugger
+            DuktapeClient client = new DuktapeClient();
             client.Connect("localhost", 812);
             return client;
         }

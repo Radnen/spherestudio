@@ -1090,5 +1090,18 @@ namespace SphereStudio
             _loadingPresets = wasLoadingPresets;
         }
         #endregion
+
+        private void toolDebug_Click(object sender, EventArgs e)
+        {
+            var debuggers = from f in Global.Plugins.Values
+                            where f.Plugin is IDebugPlugin
+                            select (IDebugPlugin)f.Plugin;
+            var plugin = debuggers.FirstOrDefault();
+            if (plugin != null)
+            {
+                IDebugger debug = plugin.Start(CurrentGame);
+                debug.Run();
+            }
+        }
     }
 }

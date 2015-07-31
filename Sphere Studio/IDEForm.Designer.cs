@@ -129,6 +129,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -243,6 +244,7 @@
             this.PasteToolButton,
             this.toolStripSeparator2,
             this.toolTestGame,
+            this.toolDebug,
             this.ConfigSelectTool,
             this.PlatformTool});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
@@ -253,22 +255,22 @@
             this.EditorTools.TabIndex = 2;
             this.EditorTools.Text = "Tool Strip";
             // 
-            // NewToolButton
+            // toolNew
             // 
             this.toolNew.Image = global::SphereStudio.Properties.Resources.script_edit;
             this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolNew.Name = "NewToolButton";
+            this.toolNew.Name = "toolNew";
             this.toolNew.Size = new System.Drawing.Size(60, 25);
             this.toolNew.Text = "&New";
             this.toolNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
             this.toolNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
-            // OpenToolButton
+            // toolOpen
             // 
             this.toolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolOpen.Image = global::SphereStudio.Properties.Resources.open;
             this.toolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolOpen.Name = "OpenToolButton";
+            this.toolOpen.Name = "toolOpen";
             this.toolOpen.Size = new System.Drawing.Size(29, 25);
             this.toolOpen.Text = "&Open";
             // 
@@ -371,7 +373,7 @@
             this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolTestGame.Name = "toolTestGame";
             this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolTestGame.Size = new System.Drawing.Size(95, 25);
+            this.toolTestGame.Size = new System.Drawing.Size(94, 25);
             this.toolTestGame.Text = "Test Game";
             this.toolTestGame.ButtonClick += new System.EventHandler(this.menuTestGame_Click);
             // 
@@ -881,7 +883,7 @@
             this.menuConfigManager,
             this.menuEditorSettings});
             this.menuTools.Name = "menuTools";
-            this.menuTools.Size = new System.Drawing.Size(48, 20);
+            this.menuTools.Size = new System.Drawing.Size(47, 20);
             this.menuTools.Text = "&Tools";
             this.menuTools.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.menuTools.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
@@ -915,6 +917,15 @@
             this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
             this.menuEditorSettings.Text = "&Editor Settings...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
+            // 
+            // toolDebug
+            // 
+            this.toolDebug.Image = global::SphereStudio.Properties.Resources.play;
+            this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolDebug.Name = "toolDebug";
+            this.toolDebug.Size = new System.Drawing.Size(62, 25);
+            this.toolDebug.Text = "&Debug";
+            this.toolDebug.Click += new System.EventHandler(this.toolDebug_Click);
             // 
             // IDEForm
             // 
@@ -1036,6 +1047,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuConfigManager;
         private System.Windows.Forms.ToolStripMenuItem menuEditorSettings;
         internal WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
+        private System.Windows.Forms.ToolStripButton toolDebug;
     }
 }
 
