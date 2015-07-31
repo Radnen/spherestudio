@@ -19,7 +19,7 @@ namespace SphereStudio.Plugins
             tcp.Close();
         }
 
-        public void Connect(string hostname, int port, uint timeout = 10000)
+        public void Connect(string hostname, int port, uint timeout = 5000)
         {
             long end = DateTime.Now.Ticks + timeout * 10000;
             while (DateTime.Now.Ticks < end)
@@ -35,8 +35,8 @@ namespace SphereStudio.Plugins
 
         public void Run()
         {
-            byte[] request = new byte[] { 0x01, 0x13, 0x0 };
-
+            // REQ 13h EOM (Resume)
+            byte[] request = new byte[] { 0x01, 0x93, 0 };
             tcp.Client.Send(request);
         }
 

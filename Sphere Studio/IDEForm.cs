@@ -1094,13 +1094,24 @@ namespace SphereStudio
         private void toolDebug_Click(object sender, EventArgs e)
         {
             var debuggers = from f in Global.Plugins.Values
+                            where f.Enabled
                             where f.Plugin is IDebugPlugin
                             select (IDebugPlugin)f.Plugin;
             var plugin = debuggers.FirstOrDefault();
             if (plugin != null)
             {
                 IDebugger debug = plugin.Start(CurrentGame);
-                debug.Run();
+                if (debug != null) debug.Run();
+            }
+            else
+            {
+                var result = MessageBox.Show(
+                    "You must enable debugging by selecting an appropriate plugin from Configuration Manager. Do you want to do that now?",
+                    "No Debugger Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    menuConfigManager_Click(this, EventArgs.Empty);
+                }
             }
         }
     }

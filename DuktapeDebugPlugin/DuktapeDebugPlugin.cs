@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
@@ -8,10 +10,10 @@ namespace SphereStudio.Plugins
 {
     public class DuktapeDebugPlugin : IDebugPlugin
     {
-        public string Name { get { return "minisphere Debugger"; } }
+        public string Name { get { return "Duktape Remote"; } }
         public string Author { get { return "Lord English"; } }
-        public string Description { get { return "A stepping debugger for minisphere"; } }
-        public string Version { get { return "1.6.0"; } }
+        public string Description { get { return "Remote debugger for Duktape-based engines"; } }
+        public string Version { get { return "1.2.0"; } }
 
         public Icon Icon { get; private set; }
 
@@ -33,8 +35,17 @@ namespace SphereStudio.Plugins
 
             // fire up the debugger
             DuktapeClient client = new DuktapeClient();
-            client.Connect("localhost", 812);
-            return client;
+            try
+            {
+                client.Connect("localhost", 812);
+                return client;
+            }
+            catch (TimeoutException)
+            {
+                MessageBox.Show("Duktape Remote was unable to connect to the debug target. The request timed out.",
+                    "Connection Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
     }
 }
