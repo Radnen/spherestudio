@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DuktapeClient.cs" />
     <Compile Include="DuktapeDebugPlugin.cs" />
+    <Compile Include="DValues\DValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,27 @@ namespace Sphere.Plugins.Interfaces
     public interface IDebugger
     {
         /// <summary>
+        /// Gets the fully qualified path of the source file currently being
+        /// executed in the debugger.
+        /// </summary>
+        string FileName { get; }
+
+        /// <summary>
+        /// Gets the line number to be executed next by the debugger.
+        /// </summary>
+        int LineNumber { get; }
+
+        /// <summary>
+        /// Gets whether the debug target is currently executing.
+        /// </summary>
+        bool Running { get; }
+
+        /// <summary>
+        /// Invoked when execution pauses (e.g. at a breakpoint).
+        /// </summary>
+        event EventHandler Paused;
+        
+        /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,
         /// whichever comes first.
         /// </summary>
