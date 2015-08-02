@@ -34,7 +34,7 @@ namespace SphereStudio.Plugins
             Process.Start(enginePath, args);
 
             // fire up the debugger
-            DuktapeClient client = new DuktapeClient(project);
+            DuktapeClient client = new DuktapeClient(project, enginePath);
             try
             {
                 client.Connect("localhost", 812);

@@ -25,9 +25,24 @@ namespace Sphere.Plugins.Interfaces
         bool Running { get; }
 
         /// <summary>
-        /// Invoked when execution pauses (e.g. at a breakpoint).
+        /// Fires when the debugger is detached.
+        /// </summary>
+        event EventHandler Detached;
+        
+        /// <summary>
+        /// Fires when execution pauses (e.g. at a breakpoint).
         /// </summary>
         event EventHandler Paused;
+
+        /// <summary>
+        /// Fires when execution resumes.
+        /// </summary>
+        event EventHandler Resumed;
+
+        /// <summary>
+        /// Detaches the debugger.
+        /// </summary>
+        void Detach();
         
         /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,

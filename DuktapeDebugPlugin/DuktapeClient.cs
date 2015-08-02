@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
+using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.DValues;
 
@@ -12,17 +13,20 @@ namespace SphereStudio.Plugins
 {
     class DuktapeClient : IDisposable, IDebugger
     {
-        private TcpClient tcp = new TcpClient();
-        private IProject project;
+        private string _engineDir;
+        private IProject _project;
+        private TcpClient _tcp;
+        private Thread _thread;
 
-        public DuktapeClient(IProject project)
+        public DuktapeClient(IProject project, string enginePath)
         {
-            this.project = project;
+            _engineDir = Path.GetDirectoryName(enginePath);
+            _project = project;
         }
 
         public void Dispose()
         {
-            tcp.Close();
+            Detach();
         }
 
         public string FileName { get; private set; }
@@ -31,7 +35,9 @@ namespace SphereStudio.Plugins
 
         public bool Running { get; private set; }
 
+        public event EventHandler Detached;
         public event EventHandler Paused;
+        public event EventHandler Resumed;
 
         public void Connect(string hostname, int port, uint timeout = 5000)
         {
@@ -39,19 +45,19 @@ namespace SphereStudio.Plugins
             while (DateTime.Now.Ticks < end)
             {
                 try {
-                    tcp.Connect(hostname, port);
+                    _tcp = new TcpClient(hostname, port);
                     string line = "";
                     byte[] buffer = new byte[1];
                     while (buffer[0] != '\n')
                     {
-                        tcp.Client.Receive(buffer);
+                        _tcp.Client.Receive(buffer);
                         line += (char)buffer[0];
                     }
                     int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
                     if (debuggerVersion != 1)
                         throw new NotSupportedException("The debugger protocol is not supported.");
-                    var thread = new Thread(Listener);
-                    thread.Start();
+                    _thread = new Thread(RunDebugger);
+                    _thread.Start();
                     return;
                 }
                 catch (SocketException) { }
@@ -59,35 +65,46 @@ namespace SphereStudio.Plugins
             throw new TimeoutException();
         }
 
+        public void Detach()
+        {
+            if (_thread != null)
+            {
+                _thread.Abort();
+                _tcp.Close();
+                _thread = null;
+                _tcp = null;
+            }
+        }
+
         public void Run()
         {
             // REQ 13h EOM (Resume)
             byte[] request = new byte[] { 0x01, 0x93, 0 };
-            tcp.Client.Send(request);
+            _tcp.Client.Send(request);
         }
 
         public void StepInto()
         {
-            // REQ 14h EOM (Resume)
+            // REQ 14h EOM (Step Into)
             byte[] request = new byte[] { 0x01, 0x94, 0 };
-            tcp.Client.Send(request);
+            _tcp.Client.Send(request);
         }
 
         public void StepOut()
         {
-            // REQ 16h EOM (Resume)
+            // REQ 16h EOM (Step Out)
             byte[] request = new byte[] { 0x01, 0x96, 0 };
-            tcp.Client.Send(request);
+            _tcp.Client.Send(request);
         }
 
         public void StepOver()
         {
-            // REQ 15h EOM (Resume)
+            // REQ 15h EOM (Step Over)
             byte[] request = new byte[] { 0x01, 0x95, 0 };
-            tcp.Client.Send(request);
+            _tcp.Client.Send(request);
         }
 
-        private void Listener()
+        private void RunDebugger()
         {
             var message = new List<object>();
             while (true)
@@ -96,8 +113,8 @@ namespace SphereStudio.Plugins
                 object value;
                 while (true)
                 {
-                    if ((value = tcp.Client.ReceiveDValue()) == null)
-                        return;
+                    if ((value = _tcp.Client.ReceiveDValue()) == null)
+                        goto detach;
                     message.Add(value);
                     if (value.Equals(DValue.EOM))
                         break;
@@ -107,15 +124,33 @@ namespace SphereStudio.Plugins
                     switch ((int)message[1])
                     {
                         case 0x01:
-                            FileName = Path.Combine(project.RootPath, "scripts", (string)message[3]);
+                            string path = (string)message[3];
+                            if (path.Substring(0, 5) == "~sgm/")
+                                FileName = Path.Combine(_project.RootPath, path.Substring(5));
+                            else if (path.Substring(0, 2) == "~/")
+                                FileName = Path.Combine(_project.RootPath, path.Substring(2));
+                            else if (path.Substring(0, 5) == "~sys/")
+                                FileName = Path.Combine(_engineDir, "system", path.Substring(5));
+                            else if (path.Substring(0, 5) == "~usr/")
+                                FileName = Path.Combine(
+                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                                    "minisphere", path.Substring(5));
+                            else
+                                FileName = Path.Combine(_project.RootPath, "scripts", path);
                             LineNumber = (int)message[5];
+                            bool wasRunning = Running;
                             Running = (int)message[2] == 0;
+                            if (Running && !wasRunning && Resumed != null)
+                                Resumed(this, EventArgs.Empty);
                             if (!Running && Paused != null)
                                 Paused(this, EventArgs.Empty);
                             break;
                     }
                 }
             }
+
+        detach:
+            if (Detached != null) Detached(this, EventArgs.Empty);
         }
     }
 }

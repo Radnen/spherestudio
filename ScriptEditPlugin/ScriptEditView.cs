@@ -82,7 +82,8 @@ namespace SphereStudio.Plugins
                     _codeBox.Lines[_activeLine - 1].DeleteAllMarkers();
                 _activeLine = value;
                 _codeBox.Lines[_activeLine - 1].AddMarker(0);
-                _codeBox.GoTo.Line(_activeLine - 1);
+                if (_activeLine > 0)
+                    _codeBox.GoTo.Line(_activeLine - 1);
             }
         }
 

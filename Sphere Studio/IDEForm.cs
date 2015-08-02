@@ -133,6 +133,7 @@ namespace SphereStudio
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.Cancel) return;
+            if (_debugger != null) _debugger.Detach();
             CloseCurrentProject(true);
         }
 
@@ -1021,7 +1022,11 @@ namespace SphereStudio
 
             bool sphereFound = File.Exists(Global.Settings.EnginePath)
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
-            toolTestGame.Enabled = menuTestGame.Enabled = sphereFound;
+            toolTestGame.Enabled = menuTestGame.Enabled = sphereFound && _debugger == null;
+            toolDebug.Enabled = menuDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
+            menuStepInto.Enabled = _debugger != null && !_debugger.Running;
+            menuStepOut.Enabled = _debugger != null && !_debugger.Running;
+            menuStepOver.Enabled = _debugger != null && !_debugger.Running;
 
             bool last = !string.IsNullOrEmpty(Global.Settings.LastProject);
             menuOpenLastProject.Enabled = last;
@@ -1101,15 +1106,45 @@ namespace SphereStudio
         }
         #endregion
 
+        private void debugger_Detached(object sender, EventArgs e)
+        {
+            Invoke(new Action(() =>
+            {
+                var scriptViews = from tab in _tabs
+                                  where tab.View is ScriptView
+                                  select tab.View;
+                foreach (ScriptView view in scriptViews)
+                    view.ActiveLine = 0;
+                _debugger = null;
+                menuDebug.Text = "Start &Debugging";
+                toolDebug.Text = "Debug";
+                UpdateButtons();
+            }));
+        }
+
         private void debugger_Paused(object sender, EventArgs e)
         {
             Invoke(new Action(() =>
             {
+                UpdateButtons();
                 ScriptView view = OpenDocument(_debugger.FileName) as ScriptView;
                 if (view != null)
                 {
                     view.ActiveLine = _debugger.LineNumber;
                 }
+            }));
+        }
+
+        private void debugger_Resumed(object sender, EventArgs e)
+        {
+            Invoke(new Action(() =>
+            {
+                var scriptViews = from tab in _tabs
+                                  where tab.View is ScriptView
+                                  select tab.View;
+                foreach (ScriptView view in scriptViews)
+                    view.ActiveLine = 0;
+                UpdateButtons();
             }));
         }
 
@@ -1144,7 +1179,14 @@ namespace SphereStudio
                     _debugger = plugin.Start(CurrentGame);
                     if (_debugger != null)
                     {
+                        menuDebug.Text = "&Resume";
+                        toolDebug.Text = "Resume";
+                        menuTestGame.Enabled = false;
+                        toolTestGame.Enabled = false;
+                        _debugger.Detached += debugger_Detached;
                         _debugger.Paused += debugger_Paused;
+                        _debugger.Resumed += debugger_Resumed;
+                        _debugger.Run();
                     }
                     else
                     {

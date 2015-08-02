@@ -899,42 +899,45 @@
             this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
             this.menuTestGame.Name = "menuTestGame";
             this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.menuTestGame.Size = new System.Drawing.Size(175, 22);
+            this.menuTestGame.Size = new System.Drawing.Size(179, 22);
             this.menuTestGame.Text = "&Test Game";
             // 
             // menuDebug
             // 
             this.menuDebug.Name = "menuDebug";
             this.menuDebug.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.menuDebug.Size = new System.Drawing.Size(175, 22);
-            this.menuDebug.Text = "&Debug/Resume";
+            this.menuDebug.Size = new System.Drawing.Size(179, 22);
+            this.menuDebug.Text = "Start &Debugging";
             this.menuDebug.Click += new System.EventHandler(this.menuDebug_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
             // 
             // menuStepInto
             // 
+            this.menuStepInto.Enabled = false;
             this.menuStepInto.Name = "menuStepInto";
             this.menuStepInto.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.menuStepInto.Size = new System.Drawing.Size(175, 22);
+            this.menuStepInto.Size = new System.Drawing.Size(179, 22);
             this.menuStepInto.Text = "Step &Into";
             this.menuStepInto.Click += new System.EventHandler(this.menuStepInto_Click);
             // 
             // menuStepOver
             // 
+            this.menuStepOver.Enabled = false;
             this.menuStepOver.Name = "menuStepOver";
             this.menuStepOver.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.menuStepOver.Size = new System.Drawing.Size(175, 22);
+            this.menuStepOver.Size = new System.Drawing.Size(179, 22);
             this.menuStepOver.Text = "&Step Over";
             this.menuStepOver.Click += new System.EventHandler(this.menuStepOver_Click);
             // 
             // menuStepOut
             // 
+            this.menuStepOut.Enabled = false;
             this.menuStepOut.Name = "menuStepOut";
-            this.menuStepOut.Size = new System.Drawing.Size(175, 22);
+            this.menuStepOut.Size = new System.Drawing.Size(179, 22);
             this.menuStepOut.Text = "Step &Out";
             this.menuStepOut.Click += new System.EventHandler(this.menuStepOut_Click);
             // 
