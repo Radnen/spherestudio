@@ -35,6 +35,7 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
+        private IDebugger _debugger;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -626,7 +627,7 @@ namespace SphereStudio
             ctrl.Show(MainDock, state);
         }
 
-        public void OpenDocument(string filePath, bool restoreView = false)
+        public DocumentView OpenDocument(string filePath, bool restoreView = false)
         {
             string extension = Path.GetExtension(filePath);
             
@@ -634,7 +635,15 @@ namespace SphereStudio
             if ((new[] { ".sgm", ".ssproj" }).Contains(extension))
             {
                 OpenProject(filePath);
-                return;
+                return null;
+            }
+
+            // if the file is already open, just switch to it
+            DocumentTab tab = GetDocument(filePath);
+            if (tab != null)
+            {
+                tab.Activate();
+                return tab.View;
             }
             
             // the IDE will try to open the file through the plugin manager first.
@@ -663,6 +672,7 @@ namespace SphereStudio
             {
                 AddDocument(view, filePath, restoreView);
             }
+            return view;
         }
 
         /// <summary>
@@ -1091,33 +1101,68 @@ namespace SphereStudio
         }
         #endregion
 
-        private void toolDebug_Click(object sender, EventArgs e)
+        private void debugger_Paused(object sender, EventArgs e)
         {
-            var debuggers = from f in Global.Plugins.Values where f.Enabled
-                            where f.Plugin is IDebugPlugin
-                            select (IDebugPlugin)f.Plugin;
-            var plugin = debuggers.FirstOrDefault();
-            if (plugin != null)
+            Invoke(new Action(() =>
             {
-                IDebugger debug = plugin.Start(CurrentGame);
-                if (debug != null)
-                    debug.Run();
-                else
+                ScriptView view = OpenDocument(_debugger.FileName) as ScriptView;
+                if (view != null)
                 {
-                    Activate();
-                    MessageBox.Show(
-                        "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
-                        "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    view.ActiveLine = _debugger.LineNumber;
                 }
-            }
+            }));
+        }
+
+        private void menuStepInto_Click(object sender, EventArgs e)
+        {
+            _debugger.StepInto();
+        }
+
+        private void menuStepOut_Click(object sender, EventArgs e)
+        {
+            _debugger.StepOut();
+        }
+
+        private void menuStepOver_Click(object sender, EventArgs e)
+        {
+            _debugger.StepOver();
+        }
+
+        private void menuDebug_Click(object sender, EventArgs e)
+        {
+            if (_debugger != null)
+                _debugger.Run();
             else
             {
-                var result = MessageBox.Show(
-                    "You must enable debugging by selecting an appropriate plugin from Configuration Manager. Do you want to do that now?",
-                    "No Debugger Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                var debuggers = from f in Global.Plugins.Values
+                                where f.Enabled
+                                where f.Plugin is IDebugPlugin
+                                select (IDebugPlugin)f.Plugin;
+                var plugin = debuggers.FirstOrDefault();
+                if (plugin != null)
                 {
-                    menuConfigManager_Click(this, EventArgs.Empty);
+                    _debugger = plugin.Start(CurrentGame);
+                    if (_debugger != null)
+                    {
+                        _debugger.Paused += debugger_Paused;
+                    }
+                    else
+                    {
+                        Activate();
+                        MessageBox.Show(
+                            "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
+                            "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    var result = MessageBox.Show(
+                        "You must enable debugging by selecting an appropriate plugin from Configuration Manager. Do you want to do that now?",
+                        "No Debugger Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        menuConfigManager_Click(this, EventArgs.Empty);
+                    }
                 }
             }
         }

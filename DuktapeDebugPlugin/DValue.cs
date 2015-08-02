@@ -28,7 +28,7 @@ namespace Sphere.Plugins.DValues
         {
             byte[] bytes;
             int length;
-            Encoding utf = new UTF8Encoding(false);
+            Encoding utf8 = new UTF8Encoding(false);
 
             if (socket.Receive(bytes = new byte[1]) == 0)
                 return null;
@@ -38,7 +38,7 @@ namespace Sphere.Plugins.DValues
                 Array.Resize(ref bytes, 1 + length);
                 if (socket.Receive(bytes = new byte[length]) == 0)
                     return null;
-                return utf.GetString(bytes);
+                return utf8.GetString(bytes);
             }
             else if (bytes[0] >= 0x80 && bytes[0] < 0xC0)
             {
@@ -70,14 +70,14 @@ namespace Sphere.Plugins.DValues
                         length = bytes[0] << 24 + bytes[1] << 16 + bytes[2] << 8 + bytes[3];
                         if (socket.Receive(bytes = new byte[length]) == 0)
                             return null;
-                        return utf.GetString(bytes);
+                        return utf8.GetString(bytes);
                     case 0x12: // string with 16-bit length
                         if (socket.Receive(bytes = new byte[2]) == 0)
                             return null;
                         length = bytes[0] << 8 + bytes[1];
                         if (socket.Receive(bytes = new byte[length]) == 0)
                             return null;
-                        return utf.GetString(bytes);
+                        return utf8.GetString(bytes);
                     case 0x13: // buffer with 32-bit length
                         if (socket.Receive(bytes = new byte[4]) == 0)
                             return null;

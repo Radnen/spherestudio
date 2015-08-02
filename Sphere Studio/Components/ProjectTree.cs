@@ -469,13 +469,6 @@ namespace SphereStudio.Components
             pathtop = pathtop.Substring(idx);
             string path = Global.CurrentGame.RootPath + pathtop;
 
-            DocumentTab tab = EditorForm.GetDocument(path);
-            if (tab != null)
-            {
-                tab.Activate();
-                return;
-            }
-
             // if the node is anything other than a file, don't do anything
             if ((string) node.Tag != "file-node") return;
 

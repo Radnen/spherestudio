@@ -16,6 +16,7 @@ namespace SphereStudio.Plugins
     partial class ScriptEditView : ScriptView
     {
         private Scintilla _codeBox = new Scintilla();
+        private int _activeLine = 0;
 
         // We should technically be using ISO-8859-1 or Windows-1252 for compatibility with the old editor.
         // However, UTF-8 works fine in Sphere and some JS engines (e.g. Duktape) won't accept
@@ -70,6 +71,19 @@ namespace SphereStudio.Plugins
         public override string[] FileExtensions
         {
             get { return new[] { "js", "coffee" }; }
+        }
+
+        public override int ActiveLine
+        {
+            get { return _activeLine; }
+            set
+            {
+                if (_activeLine > 0)
+                    _codeBox.Lines[_activeLine - 1].DeleteAllMarkers();
+                _activeLine = value;
+                _codeBox.Lines[_activeLine - 1].AddMarker(0);
+                _codeBox.GoTo.Line(_activeLine - 1);
+            }
         }
 
         public override string Text

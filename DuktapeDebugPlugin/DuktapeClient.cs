@@ -66,9 +66,26 @@ namespace SphereStudio.Plugins
             tcp.Client.Send(request);
         }
 
-        public void StepInto() { }
-        public void StepOut() { }
-        public void StepOver() { }
+        public void StepInto()
+        {
+            // REQ 14h EOM (Resume)
+            byte[] request = new byte[] { 0x01, 0x94, 0 };
+            tcp.Client.Send(request);
+        }
+
+        public void StepOut()
+        {
+            // REQ 16h EOM (Resume)
+            byte[] request = new byte[] { 0x01, 0x96, 0 };
+            tcp.Client.Send(request);
+        }
+
+        public void StepOver()
+        {
+            // REQ 15h EOM (Resume)
+            byte[] request = new byte[] { 0x01, 0x95, 0 };
+            tcp.Client.Send(request);
+        }
 
         private void Listener()
         {
@@ -90,7 +107,7 @@ namespace SphereStudio.Plugins
                     switch ((int)message[1])
                     {
                         case 0x01:
-                            FileName = Path.Combine(project.RootPath, (string)message[3]);
+                            FileName = Path.Combine(project.RootPath, "scripts", (string)message[3]);
                             LineNumber = (int)message[5];
                             Running = (int)message[2] == 0;
                             if (!Running && Paused != null)

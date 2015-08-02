@@ -64,6 +64,7 @@
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTestGame = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
             this.PlatformTool = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
@@ -111,7 +112,6 @@
             this.menuGameSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpenGameDir = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRefreshProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuView = new System.Windows.Forms.ToolStripMenuItem();
             this.menuClosePane = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,12 +124,18 @@
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuVisitSite = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuStepInto = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStepOver = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStepOut = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.menuConfigEngine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -376,6 +382,15 @@
             this.toolTestGame.Size = new System.Drawing.Size(94, 25);
             this.toolTestGame.Text = "Test Game";
             this.toolTestGame.ButtonClick += new System.EventHandler(this.menuTestGame_Click);
+            // 
+            // toolDebug
+            // 
+            this.toolDebug.Image = global::SphereStudio.Properties.Resources.play;
+            this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolDebug.Name = "toolDebug";
+            this.toolDebug.Size = new System.Drawing.Size(62, 25);
+            this.toolDebug.Text = "&Debug";
+            this.toolDebug.Click += new System.EventHandler(this.menuDebug_Click);
             // 
             // ConfigSelectTool
             // 
@@ -726,7 +741,6 @@
             this.menuGameSettings,
             this.menuOpenGameDir,
             this.Separator7,
-            this.menuTestGame,
             this.menuRefreshProject});
             this.menuProject.Name = "menuProject";
             this.menuProject.Size = new System.Drawing.Size(56, 20);
@@ -756,16 +770,6 @@
             // 
             this.Separator7.Name = "Separator7";
             this.Separator7.Size = new System.Drawing.Size(185, 6);
-            // 
-            // menuTestGame
-            // 
-            this.menuTestGame.Enabled = false;
-            this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.menuTestGame.Name = "menuTestGame";
-            this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.menuTestGame.Size = new System.Drawing.Size(188, 22);
-            this.menuTestGame.Text = "&Test Game";
-            this.menuTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // menuRefreshProject
             // 
@@ -867,6 +871,7 @@
             this.menuEdit,
             this.menuView,
             this.menuProject,
+            this.debugToolStripMenuItem,
             this.menuTools,
             this.menuHelp});
             this.EditorMenu.Location = new System.Drawing.Point(0, 0);
@@ -874,6 +879,64 @@
             this.EditorMenu.Size = new System.Drawing.Size(787, 24);
             this.EditorMenu.TabIndex = 1;
             this.EditorMenu.Text = "Menu";
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuTestGame,
+            this.menuDebug,
+            this.toolStripSeparator4,
+            this.menuStepInto,
+            this.menuStepOver,
+            this.menuStepOut});
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.debugToolStripMenuItem.Text = "&Debug";
+            // 
+            // menuTestGame
+            // 
+            this.menuTestGame.Enabled = false;
+            this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.menuTestGame.Name = "menuTestGame";
+            this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
+            this.menuTestGame.Size = new System.Drawing.Size(175, 22);
+            this.menuTestGame.Text = "&Test Game";
+            // 
+            // menuDebug
+            // 
+            this.menuDebug.Name = "menuDebug";
+            this.menuDebug.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.menuDebug.Size = new System.Drawing.Size(175, 22);
+            this.menuDebug.Text = "&Debug/Resume";
+            this.menuDebug.Click += new System.EventHandler(this.menuDebug_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(172, 6);
+            // 
+            // menuStepInto
+            // 
+            this.menuStepInto.Name = "menuStepInto";
+            this.menuStepInto.ShortcutKeys = System.Windows.Forms.Keys.F11;
+            this.menuStepInto.Size = new System.Drawing.Size(175, 22);
+            this.menuStepInto.Text = "Step &Into";
+            this.menuStepInto.Click += new System.EventHandler(this.menuStepInto_Click);
+            // 
+            // menuStepOver
+            // 
+            this.menuStepOver.Name = "menuStepOver";
+            this.menuStepOver.ShortcutKeys = System.Windows.Forms.Keys.F10;
+            this.menuStepOver.Size = new System.Drawing.Size(175, 22);
+            this.menuStepOver.Text = "&Step Over";
+            this.menuStepOver.Click += new System.EventHandler(this.menuStepOver_Click);
+            // 
+            // menuStepOut
+            // 
+            this.menuStepOut.Name = "menuStepOut";
+            this.menuStepOut.Size = new System.Drawing.Size(175, 22);
+            this.menuStepOut.Text = "Step &Out";
+            this.menuStepOut.Click += new System.EventHandler(this.menuStepOut_Click);
             // 
             // menuTools
             // 
@@ -917,15 +980,6 @@
             this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
             this.menuEditorSettings.Text = "&Editor Settings...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
-            // 
-            // toolDebug
-            // 
-            this.toolDebug.Image = global::SphereStudio.Properties.Resources.play;
-            this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolDebug.Name = "toolDebug";
-            this.toolDebug.Size = new System.Drawing.Size(62, 25);
-            this.toolDebug.Text = "&Debug";
-            this.toolDebug.Click += new System.EventHandler(this.toolDebug_Click);
             // 
             // IDEForm
             // 
@@ -1023,7 +1077,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuGameSettings;
         private System.Windows.Forms.ToolStripMenuItem menuOpenGameDir;
         private System.Windows.Forms.ToolStripSeparator Separator7;
-        private System.Windows.Forms.ToolStripMenuItem menuTestGame;
         private System.Windows.Forms.ToolStripMenuItem menuRefreshProject;
         private System.Windows.Forms.ToolStripMenuItem menuView;
         private System.Windows.Forms.ToolStripMenuItem menuClosePane;
@@ -1048,6 +1101,13 @@
         private System.Windows.Forms.ToolStripMenuItem menuEditorSettings;
         internal WeifenLuo.WinFormsUI.Docking.DockPanel MainDock;
         private System.Windows.Forms.ToolStripButton toolDebug;
+        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuTestGame;
+        private System.Windows.Forms.ToolStripMenuItem menuDebug;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem menuStepInto;
+        private System.Windows.Forms.ToolStripMenuItem menuStepOver;
+        private System.Windows.Forms.ToolStripMenuItem menuStepOut;
     }
 }
 
