@@ -1022,7 +1022,7 @@ namespace SphereStudio
 
             bool sphereFound = File.Exists(Global.Settings.EnginePath)
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
-            menuTestGame.Enabled = toolTestGame.Enabled = sphereFound && _debugger == null;
+            menuTestGame.Enabled = toolTestGame.Enabled = sphereFound;
             menuDebug.Enabled = toolDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
             menuStopDebug.Enabled = _debugger != null;
             menuStepInto.Enabled = _debugger != null && !_debugger.Running;
@@ -1133,6 +1133,7 @@ namespace SphereStudio
                 {
                     view.ActiveLine = _debugger.LineNumber;
                 }
+                Activate();
             }));
         }
 

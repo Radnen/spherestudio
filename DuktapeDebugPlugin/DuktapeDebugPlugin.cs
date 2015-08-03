@@ -31,10 +31,10 @@ namespace SphereStudio.Plugins
             // start minisphere in debugging mode
             string enginePath = PluginManager.IDE.EnginePath;
             string args = string.Format(@"--debug --game ""{0}""\game.sgm", project.RootPath);
-            Process.Start(enginePath, args);
+            Process engine = Process.Start(enginePath, args);
 
             // fire up the debugger
-            DuktapeClient client = new DuktapeClient(project, enginePath);
+            DuktapeClient client = new DuktapeClient(project, enginePath, engine);
             try
             {
                 client.Connect("localhost", 812);

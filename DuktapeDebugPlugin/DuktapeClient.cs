@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
@@ -13,13 +15,19 @@ namespace SphereStudio.Plugins
 {
     class DuktapeClient : IDisposable, IDebugger
     {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        private Process _engine;
         private string _engineDir;
         private IProject _project;
         private TcpClient _tcp;
         private Thread _thread;
 
-        public DuktapeClient(IProject project, string enginePath)
+        public DuktapeClient(IProject project, string enginePath, Process engine)
         {
+            _engine = engine;
             _engineDir = Path.GetDirectoryName(enginePath);
             _project = project;
         }
@@ -36,7 +44,9 @@ namespace SphereStudio.Plugins
         public bool Running { get; private set; }
 
         public event EventHandler Detached;
+
         public event EventHandler Paused;
+
         public event EventHandler Resumed;
 
         public void Connect(string hostname, int port, uint timeout = 5000)
@@ -73,8 +83,7 @@ namespace SphereStudio.Plugins
                 _tcp.Close();
                 _thread = null;
                 _tcp = null;
-                if (Detached != null)
-                    Detached(this, EventArgs.Empty);
+                if (Detached != null) Detached(this, EventArgs.Empty);
             }
         }
 
@@ -142,17 +151,25 @@ namespace SphereStudio.Plugins
                             LineNumber = (int)message[5];
                             bool wasRunning = Running;
                             Running = (int)message[2] == 0;
-                            if (Running && !wasRunning && Resumed != null)
-                                Resumed(this, EventArgs.Empty);
-                            if (!Running && Paused != null)
-                                Paused(this, EventArgs.Empty);
+                            if (Running && !wasRunning)
+                            {
+                                SetForegroundWindow(_engine.MainWindowHandle);
+                                if (Resumed != null)
+                                    Resumed(this, EventArgs.Empty);
+                            }
+                            if (!Running)
+                            {
+                                if (Paused != null)
+                                    Paused(this, EventArgs.Empty);
+                            }
                             break;
                     }
                 }
             }
 
         detach:
-            if (Detached != null) Detached(this, EventArgs.Empty);
+            if (Detached != null)
+                Detached(this, EventArgs.Empty);
         }
     }
 }
