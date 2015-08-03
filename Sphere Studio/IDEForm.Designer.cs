@@ -136,6 +136,8 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStopDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -884,7 +886,9 @@
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuTestGame,
+            this.toolStripSeparator6,
             this.menuDebug,
+            this.menuStopDebug,
             this.toolStripSeparator4,
             this.menuStepInto,
             this.menuStepOver,
@@ -892,6 +896,8 @@
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.debugToolStripMenuItem.Text = "&Debug";
+            this.debugToolStripMenuItem.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.debugToolStripMenuItem.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
             // menuTestGame
             // 
@@ -983,6 +989,19 @@
             this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
             this.menuEditorSettings.Text = "&Editor Settings...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
+            // 
+            // menuStopDebug
+            // 
+            this.menuStopDebug.Enabled = false;
+            this.menuStopDebug.Name = "menuStopDebug";
+            this.menuStopDebug.Size = new System.Drawing.Size(179, 22);
+            this.menuStopDebug.Text = "S&top Debugging";
+            this.menuStopDebug.Click += new System.EventHandler(this.menuStopDebug_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(176, 6);
             // 
             // IDEForm
             // 
@@ -1111,6 +1130,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuStepInto;
         private System.Windows.Forms.ToolStripMenuItem menuStepOver;
         private System.Windows.Forms.ToolStripMenuItem menuStepOut;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem menuStopDebug;
     }
 }
 

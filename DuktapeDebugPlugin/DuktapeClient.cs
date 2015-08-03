@@ -73,6 +73,8 @@ namespace SphereStudio.Plugins
                 _tcp.Close();
                 _thread = null;
                 _tcp = null;
+                if (Detached != null)
+                    Detached(this, EventArgs.Empty);
             }
         }
 

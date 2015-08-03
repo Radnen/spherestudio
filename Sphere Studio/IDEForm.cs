@@ -1022,8 +1022,9 @@ namespace SphereStudio
 
             bool sphereFound = File.Exists(Global.Settings.EnginePath)
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
-            toolTestGame.Enabled = menuTestGame.Enabled = sphereFound && _debugger == null;
-            toolDebug.Enabled = menuDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
+            menuTestGame.Enabled = toolTestGame.Enabled = sphereFound && _debugger == null;
+            menuDebug.Enabled = toolDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
+            menuStopDebug.Enabled = _debugger != null;
             menuStepInto.Enabled = _debugger != null && !_debugger.Running;
             menuStepOut.Enabled = _debugger != null && !_debugger.Running;
             menuStepOver.Enabled = _debugger != null && !_debugger.Running;
@@ -1207,6 +1208,11 @@ namespace SphereStudio
                     }
                 }
             }
+        }
+
+        private void menuStopDebug_Click(object sender, EventArgs e)
+        {
+            _debugger.Detach();
         }
     }
 }

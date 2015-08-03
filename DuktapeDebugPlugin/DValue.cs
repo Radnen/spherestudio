@@ -49,7 +49,7 @@ namespace Sphere.Plugins.DValues
                 Array.Resize(ref bytes, 2);
                 if (socket.Receive(bytes, 1, 1, SocketFlags.None) != 1)
                     return null;
-                return (bytes[0] - 0xC0) << 8 + bytes[1];
+                return ((bytes[0] - 0xC0) << 8) + bytes[1];
             }
             else
             {
@@ -63,32 +63,32 @@ namespace Sphere.Plugins.DValues
                     case 0x10: // 32-bit integer
                         if (socket.Receive(bytes = new byte[4]) != 4)
                             return null;
-                        return bytes[0] << 24 + bytes[1] << 16 + bytes[2] << 8 + bytes[3];
+                        return (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
                     case 0x11: // string with 32-bit length
                         if (socket.Receive(bytes = new byte[4]) != 4)
                             return null;
-                        length = bytes[0] << 24 + bytes[1] << 16 + bytes[2] << 8 + bytes[3];
+                        length = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
                         if (socket.Receive(bytes = new byte[length]) != length)
                             return null;
                         return utf8.GetString(bytes);
                     case 0x12: // string with 16-bit length
                         if (socket.Receive(bytes = new byte[2]) != 2)
                             return null;
-                        length = bytes[0] << 8 + bytes[1];
+                        length = (bytes[0] << 8) + bytes[1];
                         if (socket.Receive(bytes = new byte[length]) != length)
                             return null;
                         return utf8.GetString(bytes);
                     case 0x13: // buffer with 32-bit length
                         if (socket.Receive(bytes = new byte[4]) != 4)
                             return null;
-                        length = bytes[0] << 24 + bytes[1] << 16 + bytes[2] << 8 + bytes[3];
+                        length = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
                         if (socket.Receive(bytes = new byte[length]) != length)
                             return null;
                         return bytes;
                     case 0x14: // buffer with 16-bit length
                         if (socket.Receive(bytes = new byte[2]) != 2)
                             return null;
-                        length = bytes[0] << 8 + bytes[1];
+                        length = (bytes[0] << 8) + bytes[1];
                         if (socket.Receive(bytes = new byte[length]) != length)
                             return null;
                         return bytes;
