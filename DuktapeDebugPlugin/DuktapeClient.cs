@@ -19,6 +19,7 @@ namespace SphereStudio.Plugins
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        private Timer _activator;
         private Process _engine;
         private string _engineDir;
         private IProject _project;
@@ -30,6 +31,7 @@ namespace SphereStudio.Plugins
             _engine = engine;
             _engineDir = Path.GetDirectoryName(enginePath);
             _project = project;
+            _activator = new Timer(FocusEngine, this, Timeout.Infinite, Timeout.Infinite);
         }
 
         public void Dispose()
@@ -115,6 +117,12 @@ namespace SphereStudio.Plugins
             _tcp.Client.Send(request);
         }
 
+        private static void FocusEngine(object state)
+        {
+            DuktapeClient me = (DuktapeClient)state;
+            SetForegroundWindow(me._engine.MainWindowHandle);
+        }
+
         private void RunDebugger()
         {
             var message = new List<object>();
@@ -153,12 +161,13 @@ namespace SphereStudio.Plugins
                             Running = (int)message[2] == 0;
                             if (Running && !wasRunning)
                             {
-                                SetForegroundWindow(_engine.MainWindowHandle);
+                                _activator.Change(250, Timeout.Infinite);
                                 if (Resumed != null)
                                     Resumed(this, EventArgs.Empty);
                             }
                             if (!Running)
                             {
+                                _activator.Change(Timeout.Infinite, Timeout.Infinite);
                                 if (Paused != null)
                                     Paused(this, EventArgs.Empty);
                             }
