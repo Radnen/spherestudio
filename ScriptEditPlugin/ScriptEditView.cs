@@ -19,7 +19,7 @@ namespace SphereStudio.Plugins
         private int _activeLine = 0;
 
         // We should technically be using ISO-8859-1 or Windows-1252 for compatibility with the old editor.
-        // However, UTF-8 works fine in Sphere and some JS engines (e.g. Duktape) won't accept
+        // However, UTF-8 works mostly fine in Sphere and some JS engines (e.g. Duktape) won't accept
         // 8-bit encodings if they contain extended characters, so we'll use UTF-8 and compromise
         // by not including a byte order mark.
         private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
@@ -67,25 +67,22 @@ namespace SphereStudio.Plugins
             _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
 
             _codeBox.CharAdded += codeBox_CharAdded;
+            _codeBox.MouseHover += codeBox_MouseHover;
+            _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
             _codeBox.TextDeleted += codeBox_TextChanged;
             _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
 
-            _codeBox.Markers[0].Symbol = MarkerSymbol.ShortArrow;  // current line highlight
-            _codeBox.Markers[0].BackColor = Color.Yellow;
-            _codeBox.Markers[0].ForeColor = Color.Black;
-            _codeBox.Markers[1].Symbol = MarkerSymbol.Circle;  // breakpoint
-            _codeBox.Markers[1].BackColor = Color.Red;
+            _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint
+            _codeBox.Markers[0].BackColor = Color.Red;
+            _codeBox.Markers[0].ForeColor = Color.DarkRed;
+            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // current line highlight
+            _codeBox.Markers[1].BackColor = Color.Yellow;
             _codeBox.Markers[1].ForeColor = Color.Black;
 
             Controls.Add(_codeBox);
             Restyle();
-        }
-
-        public override string[] FileExtensions
-        {
-            get { return new[] { "js", "coffee" }; }
         }
 
         public override int ActiveLine
@@ -94,11 +91,11 @@ namespace SphereStudio.Plugins
             set
             {
                 if (_activeLine > 0)
-                    _codeBox.Lines[_activeLine - 1].DeleteMarker(0);
+                    _codeBox.Lines[_activeLine - 1].DeleteMarker(1);
                 _activeLine = value;
                 if (_activeLine > 0)
                 {
-                    _codeBox.Lines[_activeLine - 1].AddMarker(0);
+                    _codeBox.Lines[_activeLine - 1].AddMarker(1);
                     _codeBox.GoTo.Line(_activeLine - 1);
                     var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
                     if (parent != null && !parent.FoldExpanded)
@@ -107,6 +104,30 @@ namespace SphereStudio.Plugins
                     }
                 }
             }
+        }
+
+        public override int[] BreakPoints
+        {
+            get
+            {
+                var q = from Line line in _codeBox.Lines
+                        where line.GetMarkers().Contains(_codeBox.Markers[0])
+                        select line.Number + 1;
+                return q.ToArray();
+            }
+            set
+            {
+                _codeBox.Markers.DeleteAll(0);
+                foreach (int line in value)
+                {
+                    _codeBox.Lines[line - 1].AddMarker(0);
+                }
+            }
+        }
+
+        public override string[] FileExtensions
+        {
+            get { return new[] { "js", "coffee" }; }
         }
 
         public override string Text
@@ -168,6 +189,11 @@ namespace SphereStudio.Plugins
                 _codeBox.Modified = false;
                 
                 SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
+
+                int[] breaks = new int[0];
+                if (PluginManager.IDE.CurrentGame != null)
+                    breaks = PluginManager.IDE.CurrentGame.GetBreakpoints(filename);
+                BreakPoints = breaks;
             }
         }
 
@@ -279,7 +305,10 @@ namespace SphereStudio.Plugins
             if (char.IsLetter(e.Ch))
             {
                 string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
-                List<string> filter = (from s in ScriptEditPlugin.Functions where s.ToLower().Contains(word) select s.Replace(";", "")).ToList();
+                var q = from s in ScriptEditPlugin.Functions
+                        where s.ToLower().Contains(word)
+                        select s.Replace(";", "");
+                List<string> filter = q.ToList();
 
                 if (filter.Count != 0)
                 {
@@ -289,9 +318,24 @@ namespace SphereStudio.Plugins
             }
         }
 
+        private void codeBox_MarginClick(object sender, MarginClickEventArgs e)
+        {
+            if (e.Margin == _codeBox.Margins.Margin1)
+            {
+                e.ToggleMarkerNumber = 0;
+            }
+        }
+
         private void codeBox_ModifiedChanged(object sender, EventArgs e)
         {
             IsDirty = _codeBox.Modified;
+        }
+
+        private void codeBox_MouseHover(object sender, EventArgs e)
+        {
+            Point mouse = _codeBox.PointToClient(MousePosition);
+            int position = _codeBox.PositionFromPoint(mouse.X, mouse.Y);
+            string name = _codeBox.GetWordFromPosition(position);
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)

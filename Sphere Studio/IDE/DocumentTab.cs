@@ -53,11 +53,14 @@ namespace SphereStudio.IDE
 
             UpdateTabText();
 
+            if (View is ScriptView)
+                ((ScriptView)View).BreakPoints = Global.CurrentGame.GetBreakpoints(FileName);
+
             if (restoreView && FileName != null)
             {
                 string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
                 try { View.ViewState = Global.CurrentGame.User.GetString(setting, ""); }
-                catch (Exception) { }
+                catch (Exception) { } // *munch*
             }
         }
 
@@ -173,6 +176,10 @@ namespace SphereStudio.IDE
         {
             if (forceClose || PromptSave())
             {
+                // record breakpoints
+                if (View is ScriptView)
+                    Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).BreakPoints);
+                
                 // unsubscribe FormClosing event to prevent duplicate prompt
                 _content.FormClosing -= on_FormClosing;
                 
@@ -271,11 +278,13 @@ namespace SphereStudio.IDE
 
         private void SaveViewState()
         {
-            string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
-            if (FileName != null && !View.IsDirty)  // save view only if clean
-                Global.CurrentGame.User.SetValue(setting, View.ViewState);
+            if (FileName == null || View.IsDirty)
+                return;  // save view only if clean
+            Global.CurrentGame.User.SetValue(
+                string.Format("viewState_{0:X8}", FileName.GetHashCode()),
+                View.ViewState);
         }
-        
+
         private void UpdateTabText()
         {
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;

@@ -108,5 +108,27 @@ namespace minisphere.Remote
                 }
             }
         }
+
+        public static void SendDValue(this Socket socket, int value)
+        {
+            byte[] bytes = new byte[]
+            {
+                (byte)(value >> 24 & 0xFF),
+                (byte)(value >> 16 & 0xFF),
+                (byte)(value >> 8 & 0xFF),
+                (byte)(value & 0xFF)
+            };
+            socket.Send(new byte[] { 0x10 });
+            socket.Send(bytes);
+        }
+
+        public static void SendDValue(this Socket socket, string value)
+        {
+            var utf8 = new UTF8Encoding(false);
+            byte[] bytes = utf8.GetBytes(value);
+            socket.Send(new byte[] { 0x11 });
+            socket.SendDValue(bytes.Length);
+            socket.Send(bytes);
+        }
     }
 }

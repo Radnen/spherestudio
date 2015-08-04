@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,16 @@ namespace Sphere.Plugins.Views
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Gets a list of the line numbers of all breakpoints
+        /// set in this script view.
+        /// </summary>
+        public virtual int[] BreakPoints
+        {
+            get { return new int[0]; }
+            set { }
         }
 
         /// <summary>

@@ -21,6 +21,7 @@ namespace minisphere.Remote
         private Process _engine;
         private string _engineDir;
         private IProject _project;
+        private Queue<object[]> _replies = new Queue<object[]>();
         private TcpClient _tcp;
         private Thread _thread;
 
@@ -52,6 +53,7 @@ namespace minisphere.Remote
         public void Connect(string hostname, int port, uint timeout = 5000)
         {
             long end = DateTime.Now.Ticks + timeout * 10000;
+            var breaks = _project.GetAllBreakpoints();
             while (DateTime.Now.Ticks < end)
             {
                 try {
@@ -66,6 +68,20 @@ namespace minisphere.Remote
                     int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
                     if (debuggerVersion != 1)
                         throw new NotSupportedException("The debugger protocol is not supported.");
+                    foreach (string filename in breaks.Keys)
+                    {
+                        foreach (int lineNumber in breaks[filename])
+                        {
+                            string relativePath = filename;
+                            string rootPath = Path.Combine(_project.RootPath, @"scripts") + @"\";
+                            if (filename.Substring(0, rootPath.Length) == rootPath)
+                                relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
+                            _tcp.Client.Send(new byte[] { 0x01, 0x98 });
+                            _tcp.Client.SendDValue(relativePath);
+                            _tcp.Client.SendDValue(lineNumber);
+                            _tcp.Client.Send(new byte[] { 0 });
+                        }
+                    }
                     _thread = new Thread(RunDebugger);
                     _thread.Start();
                     return;
@@ -90,8 +106,7 @@ namespace minisphere.Remote
 
         public void Run()
         {
-            // REQ 13h EOM (Resume)
-            byte[] request = new byte[] { 0x01, 0x93, 0 };
+            byte[] request = new byte[] { 0x01, 0x93, 0 };  // REQ 13h EOM
             _tcp.Client.Send(request);
         }
 
@@ -172,6 +187,10 @@ namespace minisphere.Remote
                             }
                             break;
                     }
+                }
+                else if (message[0].Equals(DValue.REP))
+                {
+                    _replies.Enqueue(message.ToArray());
                 }
             }
 

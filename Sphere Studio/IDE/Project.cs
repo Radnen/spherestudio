@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using SphereStudio.Settings;
 using Sphere.Core;
-using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.IDE
 {
     class Project : IProject
     {
+        Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
         private INISettings _ini;
         private string _path;
-        
+
         public static Project Create(string rootPath, string name)
         {
             Directory.CreateDirectory(rootPath);
@@ -180,6 +177,46 @@ namespace SphereStudio.IDE
                 writer.Close();
             }
             return sgmPath;
+        }
+
+        public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
+        {
+            Dictionary<string, int[]> retval = new Dictionary<string, int[]>();
+            foreach (string k in _breakpoints.Keys)
+            {
+                retval.Add(k, _breakpoints[k].ToArray());
+            }
+            return retval;
+        }
+
+
+        public int[] GetBreakpoints(string scriptPath)
+        {
+            int hash = scriptPath.GetHashCode();
+            if (_breakpoints.ContainsKey(scriptPath))
+                return _breakpoints[scriptPath].ToArray();
+            else
+            {
+                int[] lines = new int[0];
+                try
+                {
+                    lines = Array.ConvertAll(
+                        User.GetString(string.Format("bp_{0:X8}", hash), "").Split(','),
+                        int.Parse);
+                } catch (Exception) { }  // *munch*
+                _breakpoints.Add(scriptPath, new HashSet<int>(lines));
+                return lines;
+            }
+        }
+
+        public void SetBreakpoints(string scriptPath, int[] lineNumbers)
+        {
+            _breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
+            foreach (var k in _breakpoints.Keys)
+            {
+                User.SetValue(string.Format("bp_{0:X8}", k.GetHashCode()),
+                    string.Join(",", _breakpoints[k]));
+            }
         }
 
         private string GetUserFilePath(string projectPath)
