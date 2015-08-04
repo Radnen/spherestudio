@@ -47,9 +47,17 @@ namespace SphereStudio.Plugins
             _codeBox.Folding.MarkerScheme = FoldMarkerScheme.Custom;
             _codeBox.Folding.Flags = FoldFlag.LineAfterContracted;
             _codeBox.Folding.UseCompactFolding = false;
-            _codeBox.Margins.Margin1.IsClickable = true;
-            _codeBox.Margins.Margin1.IsFoldMargin = true;
             _codeBox.Styles.LineNumber.BackColor = Color.FromArgb(235, 235, 255);
+
+            _codeBox.Margins.Margin1.IsClickable = true;
+            _codeBox.Margins.Margin1.IsFoldMargin = false;
+            _codeBox.Margins.Margin1.IsMarkerMargin = true;
+            _codeBox.Margins.Margin1.Type = MarginType.Symbol;
+            _codeBox.Margins.Margin1.Width = 16;
+            _codeBox.Margins.Margin2.IsClickable = true;
+            _codeBox.Margins.Margin2.IsFoldMargin = true;
+            _codeBox.Margins.Margin2.IsMarkerMargin = false;
+            _codeBox.Margins.Margin2.Width = 16;
             _codeBox.Margins.FoldMarginColor = Color.FromArgb(235, 235, 255);
 
             _codeBox.Indentation.SmartIndentType = SmartIndent.CPP;
@@ -63,6 +71,13 @@ namespace SphereStudio.Plugins
             _codeBox.TextDeleted += codeBox_TextChanged;
             _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
+
+            _codeBox.Markers[0].Symbol = MarkerSymbol.ShortArrow;  // current line highlight
+            _codeBox.Markers[0].BackColor = Color.Yellow;
+            _codeBox.Markers[0].ForeColor = Color.Black;
+            _codeBox.Markers[1].Symbol = MarkerSymbol.Circle;  // breakpoint
+            _codeBox.Markers[1].BackColor = Color.Red;
+            _codeBox.Markers[1].ForeColor = Color.Black;
 
             Controls.Add(_codeBox);
             Restyle();
@@ -79,11 +94,18 @@ namespace SphereStudio.Plugins
             set
             {
                 if (_activeLine > 0)
-                    _codeBox.Lines[_activeLine - 1].DeleteAllMarkers();
+                    _codeBox.Lines[_activeLine - 1].DeleteMarker(0);
                 _activeLine = value;
-                _codeBox.Lines[_activeLine - 1].AddMarker(0);
                 if (_activeLine > 0)
+                {
+                    _codeBox.Lines[_activeLine - 1].AddMarker(0);
                     _codeBox.GoTo.Line(_activeLine - 1);
+                    var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
+                    if (parent != null && !parent.FoldExpanded)
+                    {
+                        parent.ToggleFoldExpanded();
+                    }
+                }
             }
         }
 

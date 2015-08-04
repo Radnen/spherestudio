@@ -6,14 +6,14 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.Plugins
+namespace minisphere.Remote
 {
-    public class DuktapeDebugPlugin : IDebugPlugin
+    public class minisphereRemotePlugin : IDebugPlugin
     {
-        public string Name { get { return "Duktape Remote"; } }
-        public string Author { get { return "Lord English"; } }
-        public string Description { get { return "Remote debugger for Duktape-based engines"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Name { get { return "minisphere Remote"; } }
+        public string Author { get { return "Fat Cerberus"; } }
+        public string Description { get { return "Provides debugging support for minisphere."; } }
+        public string Version { get { return "1.6.2"; } }
 
         public Icon Icon { get; private set; }
 
@@ -34,7 +34,7 @@ namespace SphereStudio.Plugins
             Process engine = Process.Start(enginePath, args);
 
             // fire up the debugger
-            DuktapeClient client = new DuktapeClient(project, enginePath, engine);
+            DebugClient client = new DebugClient(project, enginePath, engine);
             try
             {
                 client.Connect("localhost", 812);

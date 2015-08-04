@@ -126,7 +126,9 @@
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStopDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStepInto = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStepOver = new System.Windows.Forms.ToolStripMenuItem();
@@ -136,8 +138,6 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStopDebug = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -778,7 +778,6 @@
             this.menuRefreshProject.Enabled = false;
             this.menuRefreshProject.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
             this.menuRefreshProject.Name = "menuRefreshProject";
-            this.menuRefreshProject.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.menuRefreshProject.Size = new System.Drawing.Size(188, 22);
             this.menuRefreshProject.Text = "&Refresh";
             this.menuRefreshProject.Click += new System.EventHandler(this.menuRefreshProject_Click);
@@ -908,6 +907,11 @@
             this.menuTestGame.Size = new System.Drawing.Size(179, 22);
             this.menuTestGame.Text = "&Test Game";
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(176, 6);
+            // 
             // menuDebug
             // 
             this.menuDebug.Name = "menuDebug";
@@ -915,6 +919,14 @@
             this.menuDebug.Size = new System.Drawing.Size(179, 22);
             this.menuDebug.Text = "Start &Debugging";
             this.menuDebug.Click += new System.EventHandler(this.menuDebug_Click);
+            // 
+            // menuStopDebug
+            // 
+            this.menuStopDebug.Enabled = false;
+            this.menuStopDebug.Name = "menuStopDebug";
+            this.menuStopDebug.Size = new System.Drawing.Size(179, 22);
+            this.menuStopDebug.Text = "S&top Debugging";
+            this.menuStopDebug.Click += new System.EventHandler(this.menuStopDebug_Click);
             // 
             // toolStripSeparator4
             // 
@@ -989,19 +1001,6 @@
             this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
             this.menuEditorSettings.Text = "&Editor Settings...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
-            // 
-            // menuStopDebug
-            // 
-            this.menuStopDebug.Enabled = false;
-            this.menuStopDebug.Name = "menuStopDebug";
-            this.menuStopDebug.Size = new System.Drawing.Size(179, 22);
-            this.menuStopDebug.Text = "S&top Debugging";
-            this.menuStopDebug.Click += new System.EventHandler(this.menuStopDebug_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(176, 6);
             // 
             // IDEForm
             // 

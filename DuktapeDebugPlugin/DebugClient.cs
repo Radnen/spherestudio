@@ -9,14 +9,12 @@ using System.Threading;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.DValues;
 
-namespace SphereStudio.Plugins
+namespace minisphere.Remote
 {
-    class DuktapeClient : IDisposable, IDebugger
+    class DebugClient : IDisposable, IDebugger
     {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         private Timer _activator;
@@ -26,7 +24,7 @@ namespace SphereStudio.Plugins
         private TcpClient _tcp;
         private Thread _thread;
 
-        public DuktapeClient(IProject project, string enginePath, Process engine)
+        public DebugClient(IProject project, string enginePath, Process engine)
         {
             _engine = engine;
             _engineDir = Path.GetDirectoryName(enginePath);
@@ -81,6 +79,7 @@ namespace SphereStudio.Plugins
         {
             if (_thread != null)
             {
+                _engine.CloseMainWindow();
                 _thread.Abort();
                 _tcp.Close();
                 _thread = null;
@@ -119,7 +118,7 @@ namespace SphereStudio.Plugins
 
         private static void FocusEngine(object state)
         {
-            DuktapeClient me = (DuktapeClient)state;
+            DebugClient me = (DebugClient)state;
             SetForegroundWindow(me._engine.MainWindowHandle);
         }
 

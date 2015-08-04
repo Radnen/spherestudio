@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "Spri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPKPackerPlugin", "SPKPackerPlugin\SPKPackerPlugin.csproj", "{4C86712C-F591-432E-8185-F077903254D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuktapeDebugPlugin", "DuktapeDebugPlugin\DuktapeDebugPlugin.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minisphere Remote", "DuktapeDebugPlugin\minisphere Remote.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

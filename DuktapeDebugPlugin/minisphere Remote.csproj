@@ -7,10 +7,12 @@
     <ProjectGuid>{D242F8EF-7D85-4B6B-9446-6758B68A7F54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sphere.Plugins</RootNamespace>
-    <AssemblyName>DuktapeDebugPlugin</AssemblyName>
+    <RootNamespace>minisphere.Remote</RootNamespace>
+    <AssemblyName>minisphereRemotePlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DuktapeClient.cs" />
-    <Compile Include="DuktapeDebugPlugin.cs" />
+    <Compile Include="DebugClient.cs" />
+    <Compile Include="PluginMain.cs" />
     <Compile Include="DValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
