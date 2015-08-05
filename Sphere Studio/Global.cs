@@ -27,7 +27,10 @@ namespace SphereStudio
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             
             // don't rearrange, we want to load user plugins first
-            string[] paths = { Path.Combine(sphereDir, "Plugins"), Path.Combine(Application.StartupPath, "Plugins") };
+            string[] paths = {
+                Path.Combine(sphereDir, "Plugins"),
+                Path.Combine(Application.StartupPath, "Plugins")
+            };
 
             foreach (string path in
                 from path in paths

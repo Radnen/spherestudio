@@ -104,9 +104,17 @@ namespace minisphere.Remote
             }
         }
 
+        public void BreakNow()
+        {
+            // REQ 12h EOM
+            byte[] request = new byte[] { 0x01, 0x92, 0 };
+            _tcp.Client.Send(request);
+        }
+
         public void Run()
         {
-            byte[] request = new byte[] { 0x01, 0x93, 0 };  // REQ 13h EOM
+            // REQ 13h EOM
+            byte[] request = new byte[] { 0x01, 0x93, 0 };
             _tcp.Client.Send(request);
         }
 

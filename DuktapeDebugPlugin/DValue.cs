@@ -111,24 +111,43 @@ namespace minisphere.Remote
 
         public static void SendDValue(this Socket socket, int value)
         {
-            byte[] bytes = new byte[]
+            if (value < 64)
             {
-                (byte)(value >> 24 & 0xFF),
-                (byte)(value >> 16 & 0xFF),
-                (byte)(value >> 8 & 0xFF),
-                (byte)(value & 0xFF)
-            };
-            socket.Send(new byte[] { 0x10 });
-            socket.Send(bytes);
+                socket.Send(new byte[] { (byte)(0x80 + value) });
+            }
+            else if (value < 16384)
+            {
+                socket.Send(new byte[] {
+                    (byte)(0xC0 + (value >> 8 & 0xFF)),
+                    (byte)(value & 0xFF)
+                });
+            }
+            else
+            {
+                socket.Send(new byte[] { 0x10 });
+                socket.Send(new byte[] {
+                    (byte)(value >> 24 & 0xFF),
+                    (byte)(value >> 16 & 0xFF),
+                    (byte)(value >> 8 & 0xFF),
+                    (byte)(value & 0xFF)
+                });
+            }
         }
 
         public static void SendDValue(this Socket socket, string value)
         {
             var utf8 = new UTF8Encoding(false);
-            byte[] bytes = utf8.GetBytes(value);
+            byte[] stringBytes = utf8.GetBytes(value);
+
             socket.Send(new byte[] { 0x11 });
-            socket.SendDValue(bytes.Length);
-            socket.Send(bytes);
+            socket.Send(new byte[]
+            {
+                (byte)(stringBytes.Length >> 24 & 0xFF),
+                (byte)(stringBytes.Length >> 16 & 0xFF),
+                (byte)(stringBytes.Length >> 8 & 0xFF),
+                (byte)(stringBytes.Length & 0xFF)
+            });
+            socket.Send(stringBytes);
         }
     }
 }

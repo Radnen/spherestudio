@@ -67,6 +67,7 @@ namespace SphereStudio.Plugins
             _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
 
             _codeBox.CharAdded += codeBox_CharAdded;
+            _codeBox.KeyDown += codebox_KeyDown;
             _codeBox.MouseHover += codeBox_MouseHover;
             _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
@@ -83,6 +84,20 @@ namespace SphereStudio.Plugins
 
             Controls.Add(_codeBox);
             Restyle();
+        }
+
+        private void codebox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F9)
+            {
+                e.Handled = true;
+                var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
+                var markers = line.GetMarkers();
+                if (markers.Contains(_codeBox.Markers[0]))
+                    line.DeleteMarker(0);
+                else
+                    line.AddMarker(0);
+            }
         }
 
         public override int ActiveLine

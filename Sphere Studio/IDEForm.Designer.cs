@@ -128,6 +128,7 @@
             this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuBreakNow = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStopDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStepInto = new System.Windows.Forms.ToolStripMenuItem();
@@ -887,6 +888,7 @@
             this.menuTestGame,
             this.toolStripSeparator6,
             this.menuDebug,
+            this.menuBreakNow,
             this.menuStopDebug,
             this.toolStripSeparator4,
             this.menuStepInto,
@@ -904,42 +906,49 @@
             this.menuTestGame.Image = global::SphereStudio.Properties.Resources.lightning;
             this.menuTestGame.Name = "menuTestGame";
             this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.menuTestGame.Size = new System.Drawing.Size(179, 22);
+            this.menuTestGame.Size = new System.Drawing.Size(182, 22);
             this.menuTestGame.Text = "&Test Game";
             this.menuTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(179, 6);
             // 
             // menuDebug
             // 
             this.menuDebug.Name = "menuDebug";
             this.menuDebug.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.menuDebug.Size = new System.Drawing.Size(179, 22);
+            this.menuDebug.Size = new System.Drawing.Size(182, 22);
             this.menuDebug.Text = "Start &Debugging";
             this.menuDebug.Click += new System.EventHandler(this.menuDebug_Click);
+            // 
+            // menuBreakNow
+            // 
+            this.menuBreakNow.Name = "menuBreakNow";
+            this.menuBreakNow.Size = new System.Drawing.Size(182, 22);
+            this.menuBreakNow.Text = "&Break into Debugger";
+            this.menuBreakNow.Click += new System.EventHandler(this.debugBreakNow_Click);
             // 
             // menuStopDebug
             // 
             this.menuStopDebug.Enabled = false;
             this.menuStopDebug.Name = "menuStopDebug";
-            this.menuStopDebug.Size = new System.Drawing.Size(179, 22);
+            this.menuStopDebug.Size = new System.Drawing.Size(182, 22);
             this.menuStopDebug.Text = "S&top Debugging";
             this.menuStopDebug.Click += new System.EventHandler(this.menuStopDebug_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(179, 6);
             // 
             // menuStepInto
             // 
             this.menuStepInto.Enabled = false;
             this.menuStepInto.Name = "menuStepInto";
             this.menuStepInto.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.menuStepInto.Size = new System.Drawing.Size(179, 22);
+            this.menuStepInto.Size = new System.Drawing.Size(182, 22);
             this.menuStepInto.Text = "Step &Into";
             this.menuStepInto.Click += new System.EventHandler(this.menuStepInto_Click);
             // 
@@ -948,7 +957,7 @@
             this.menuStepOver.Enabled = false;
             this.menuStepOver.Name = "menuStepOver";
             this.menuStepOver.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.menuStepOver.Size = new System.Drawing.Size(179, 22);
+            this.menuStepOver.Size = new System.Drawing.Size(182, 22);
             this.menuStepOver.Text = "&Step Over";
             this.menuStepOver.Click += new System.EventHandler(this.menuStepOver_Click);
             // 
@@ -956,7 +965,7 @@
             // 
             this.menuStepOut.Enabled = false;
             this.menuStepOut.Name = "menuStepOut";
-            this.menuStepOut.Size = new System.Drawing.Size(179, 22);
+            this.menuStepOut.Size = new System.Drawing.Size(182, 22);
             this.menuStepOut.Text = "Step &Out";
             this.menuStepOut.Click += new System.EventHandler(this.menuStepOut_Click);
             // 
@@ -1132,6 +1141,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuStepOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem menuStopDebug;
+        private System.Windows.Forms.ToolStripMenuItem menuBreakNow;
     }
 }
 

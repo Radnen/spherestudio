@@ -40,6 +40,11 @@ namespace Sphere.Plugins.Interfaces
         event EventHandler Resumed;
 
         /// <summary>
+        /// Pauses execution and breaks into the debugger.
+        /// </summary>
+        void BreakNow();
+        
+        /// <summary>
         /// Detaches the debugger.
         /// </summary>
         void Detach();

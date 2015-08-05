@@ -169,22 +169,17 @@ namespace SphereStudio.IDE
         /// <summary>
         /// Closes the tab.
         /// </summary>
-        /// <param name="saveView">'true' to save the current view state before closing.</param>
         /// <param name="forceClose">'true' to bypass the Unsaved Changes prompt.</param>
         /// <returns>'true' if the tab was closed; 'false' on cancel.</returns>
-        public bool Close(bool saveView = false, bool forceClose = false)
+        public bool Close(bool forceClose = false)
         {
             if (forceClose || PromptSave())
             {
-                // record breakpoints
-                if (View is ScriptView)
-                    Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).BreakPoints);
-                
                 // unsubscribe FormClosing event to prevent duplicate prompt
                 _content.FormClosing -= on_FormClosing;
                 
                 // save view state and close tab
-                if (saveView) SaveViewState();
+                SaveViewState();
                 _content.Close();
                 return true;
             }
@@ -280,6 +275,12 @@ namespace SphereStudio.IDE
         {
             if (FileName == null || View.IsDirty)
                 return;  // save view only if clean
+
+            // record breakpoints if script tab
+            if (View is ScriptView)
+                Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).BreakPoints);
+
+            // save view (cursor position, etc.)
             Global.CurrentGame.User.SetValue(
                 string.Format("viewState_{0:X8}", FileName.GetHashCode()),
                 View.ViewState);

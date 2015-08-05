@@ -418,6 +418,12 @@ namespace SphereStudio
 
             if (IsProjectOpen)
             {
+                foreach (DocumentTab tab in
+                    from tab in _tabs where tab.FileName != null
+                    select tab)
+                {
+                    tab.Save();  // save all non-untitled documents
+                }
                 string gamePath = Global.CurrentGame.Build();
                 Process.Start(((ToolStripItem)sender).Tag as string ?? EnginePath,
                     string.Format("-game \"{0}\"", gamePath));
@@ -899,7 +905,7 @@ namespace SphereStudio
                     if (!tab.PromptSave()) return false;
             }
             foreach (DocumentTab tab in toClose)
-                tab.Close(true, true);
+                tab.Close(true);
 
             _startContent.Hide();
             return true;
@@ -1024,6 +1030,7 @@ namespace SphereStudio
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
             menuTestGame.Enabled = toolTestGame.Enabled = sphereFound;
             menuDebug.Enabled = toolDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
+            menuBreakNow.Enabled = _debugger != null && _debugger.Running;
             menuStopDebug.Enabled = _debugger != null;
             menuStepInto.Enabled = _debugger != null && !_debugger.Running;
             menuStepOut.Enabled = _debugger != null && !_debugger.Running;
@@ -1178,6 +1185,14 @@ namespace SphereStudio
                 var plugin = debuggers.FirstOrDefault();
                 if (plugin != null)
                 {
+                    foreach (DocumentTab tab in
+                        from tab in _tabs
+                        where tab.FileName != null
+                        select tab)
+                    {
+                        tab.Save();  // save all non-untitled documents
+                    }
+                    Global.CurrentGame.Build();
                     _debugger = plugin.Start(CurrentGame);
                     if (_debugger != null)
                     {
@@ -1209,6 +1224,11 @@ namespace SphereStudio
                     }
                 }
             }
+        }
+
+        private void debugBreakNow_Click(object sender, EventArgs e)
+        {
+            _debugger.BreakNow();
         }
 
         private void menuStopDebug_Click(object sender, EventArgs e)
