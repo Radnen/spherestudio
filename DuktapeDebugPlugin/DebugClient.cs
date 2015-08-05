@@ -74,8 +74,19 @@ namespace minisphere.Remote
                         {
                             string relativePath = filename;
                             string rootPath = Path.Combine(_project.RootPath, @"scripts") + @"\";
-                            if (filename.Substring(0, rootPath.Length) == rootPath)
-                                relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
+                            string sysPath = Path.Combine(_engineDir, @"system") + @"\";
+                            try
+                            {
+                                if (filename.Substring(0, rootPath.Length) == rootPath)
+                                    relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
+                            }
+                            catch { } // *munch*
+                            try
+                            {
+                                if (filename.Substring(0, sysPath.Length) == sysPath)
+                                    relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
+                            }
+                            catch { } // *munch*
                             _tcp.Client.Send(new byte[] { 0x01, 0x98 });
                             _tcp.Client.SendDValue(relativePath);
                             _tcp.Client.SendDValue(lineNumber);
@@ -178,6 +189,7 @@ namespace minisphere.Remote
                                     "minisphere", path.Substring(5));
                             else
                                 FileName = Path.Combine(_project.RootPath, "scripts", path);
+                            FileName = FileName.Replace('/', '\\');
                             LineNumber = (int)message[5];
                             bool wasRunning = Running;
                             Running = (int)message[2] == 0;

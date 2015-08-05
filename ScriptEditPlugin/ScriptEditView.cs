@@ -88,7 +88,7 @@ namespace SphereStudio.Plugins
 
         private void codebox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F9)
+            if (e.KeyCode == Keys.F9 && e.Modifiers == 0x0)
             {
                 e.Handled = true;
                 var line = _codeBox.Lines[_codeBox.Caret.LineNumber];

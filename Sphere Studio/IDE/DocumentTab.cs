@@ -47,6 +47,7 @@ namespace SphereStudio.IDE
             _content.Tag = this;
             _content.Icon = View.Icon;
             _content.TabText = _tabText;
+            _content.ToolTipText = FileName;
             _content.Controls.Add(View);
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
@@ -289,8 +290,9 @@ namespace SphereStudio.IDE
         private void UpdateTabText()
         {
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;
+            _content.ToolTipText = FileName;
         }
-        
+
         private void on_DirtyChanged(object sender, EventArgs e)
         {
             UpdateTabText();
