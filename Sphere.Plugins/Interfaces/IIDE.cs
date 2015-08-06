@@ -27,6 +27,8 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         DocumentView CurrentDocument { get; }
 
+        IDebugger Debugger { get; }
+        
         /// <summary>
         /// Gets the path of the current Sphere engine used for game testing.
         /// </summary>

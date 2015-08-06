@@ -513,6 +513,11 @@ namespace SphereStudio
             get { return Global.CurrentGame; }
         }
 
+        public IDebugger Debugger
+        {
+            get { return _debugger; }
+        }
+
         public string EnginePath
         {
             get
@@ -656,23 +661,30 @@ namespace SphereStudio
             // the IDE will try to open the file through the plugin manager first.
             // if that fails, then use the current default editor (if any).
             DocumentView view;
-            if (!PluginManager.OpenDocument(filePath, out view))
+            try
             {
-                // nobody claimed the file, so find the current default editor plugin
-                string wildcard = Global.Settings.DefaultEditor;
-                var q = from plugin in PluginManager.GetWildcards()
-                        where wildcard == plugin.Name
-                        select plugin;
-                IEditorPlugin wcPlugin = q.FirstOrDefault();
-                
-                // if there's a default editor, use it.
-                if (wcPlugin != null)
-                    view = wcPlugin.OpenDocument(filePath);
-                else
+                if (!PluginManager.OpenDocument(filePath, out view))
                 {
-                    MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
-                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // nobody claimed the file, so find the current default editor plugin
+                    string wildcard = Global.Settings.DefaultEditor;
+                    var q = from plugin in PluginManager.GetWildcards()
+                            where wildcard == plugin.Name
+                            select plugin;
+                    IEditorPlugin wcPlugin = q.FirstOrDefault();
+
+                    // if there's a default editor, use it.
+                    if (wcPlugin != null)
+                        view = wcPlugin.OpenDocument(filePath);
+                    else
+                    {
+                        MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
+                            @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
             }
 
             if (view != null)
@@ -1135,11 +1147,14 @@ namespace SphereStudio
             Invoke(new Action(() =>
             {
                 UpdateButtons();
-                ScriptView view = OpenDocument(_debugger.FileName) as ScriptView;
+                ScriptView view = null;
+                view = OpenDocument(_debugger.FileName) as ScriptView;
                 if (view != null)
-                {
                     view.ActiveLine = _debugger.LineNumber;
-                }
+                else    
+                    // in case we couldn't load the source for this location,
+                    // step over it.
+                    _debugger.StepOut();
                 Activate();
             }));
         }

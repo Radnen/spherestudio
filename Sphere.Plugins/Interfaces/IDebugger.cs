@@ -48,7 +48,7 @@ namespace Sphere.Plugins.Interfaces
         /// Detaches the debugger.
         /// </summary>
         void Detach();
-        
+
         /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,
         /// whichever comes first.

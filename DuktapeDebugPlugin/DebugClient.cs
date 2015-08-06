@@ -177,13 +177,13 @@ namespace minisphere.Remote
                     {
                         case 0x01:
                             string path = (string)message[3];
-                            if (path.Substring(0, 5) == "~sgm/")
-                                FileName = Path.Combine(_project.RootPath, path.Substring(5));
-                            else if (path.Substring(0, 2) == "~/")
+                            if (path.Length >= 2 && path.Substring(0, 2) == "~/")
                                 FileName = Path.Combine(_project.RootPath, path.Substring(2));
-                            else if (path.Substring(0, 5) == "~sys/")
+                            else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
+                                FileName = Path.Combine(_project.RootPath, path.Substring(5));
+                            else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
                                 FileName = Path.Combine(_engineDir, "system", path.Substring(5));
-                            else if (path.Substring(0, 5) == "~usr/")
+                            else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
                                 FileName = Path.Combine(
                                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                     "minisphere", path.Substring(5));

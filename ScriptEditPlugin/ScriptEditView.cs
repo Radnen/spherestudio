@@ -68,7 +68,6 @@ namespace SphereStudio.Plugins
 
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.KeyDown += codebox_KeyDown;
-            _codeBox.MouseHover += codeBox_MouseHover;
             _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
             _codeBox.TextDeleted += codeBox_TextChanged;
@@ -344,13 +343,6 @@ namespace SphereStudio.Plugins
         private void codeBox_ModifiedChanged(object sender, EventArgs e)
         {
             IsDirty = _codeBox.Modified;
-        }
-
-        private void codeBox_MouseHover(object sender, EventArgs e)
-        {
-            Point mouse = _codeBox.PointToClient(MousePosition);
-            int position = _codeBox.PositionFromPoint(mouse.X, mouse.Y);
-            string name = _codeBox.GetWordFromPosition(position);
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)
