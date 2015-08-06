@@ -40,6 +40,12 @@ namespace Sphere.Plugins.Interfaces
         event EventHandler Resumed;
 
         /// <summary>
+        /// Gets a list of all variables in the current scope and their values.
+        /// </summary>
+        /// <returns>A dictionary mapping variable names to their values.</returns>
+        IReadOnlyDictionary<string, object> GetVariables();
+        
+        /// <summary>
         /// Pauses execution and breaks into the debugger.
         /// </summary>
         void BreakNow();

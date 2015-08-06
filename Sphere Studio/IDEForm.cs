@@ -36,6 +36,8 @@ namespace SphereStudio
 
         private DocumentTab _activeTab;
         private IDebugger _debugger;
+        private DebugPane _debugPane = new DebugPane() { Dock = DockStyle.Fill };
+        private DockDescription _debugDock;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -59,6 +61,14 @@ namespace SphereStudio
             _firsttime = !Global.Settings.GetBoolean("setupComplete", false);
 
             _tree = new ProjectTree() { Dock = DockStyle.Fill, EditorForm = this };
+
+            _debugDock = new DockDescription();
+            _debugDock.Control = _debugPane;
+            _debugDock.DockAreas = DockDescAreas.Sides;
+            _debugDock.DockState = DockDescStyle.Side;
+            _debugDock.HideOnClose = true;
+            _debugDock.TabText = "Debug";
+            DockControl(_debugDock);
 
             _startPage = new StartPage(this) { Dock = DockStyle.Fill, HelpLabel = HelpLabel };
             _startPage.PopulateGameList();
@@ -1128,8 +1138,9 @@ namespace SphereStudio
 
         private void debugger_Detached(object sender, EventArgs e)
         {
-            Invoke(new Action(() =>
+            BeginInvoke(new Action(() =>
             {
+                _debugDock.Hide();
                 var scriptViews = from tab in _tabs
                                   where tab.View is ScriptView
                                   select tab.View;
@@ -1144,25 +1155,30 @@ namespace SphereStudio
 
         private void debugger_Paused(object sender, EventArgs e)
         {
-            Invoke(new Action(() =>
+            BeginInvoke(new Action(() =>
             {
                 UpdateButtons();
                 ScriptView view = null;
                 view = OpenDocument(_debugger.FileName) as ScriptView;
                 if (view != null)
+                {
                     view.ActiveLine = _debugger.LineNumber;
-                else    
-                    // in case we couldn't load the source for this location,
-                    // step over it.
+                    _debugPane.SetVariables(_debugger.GetVariables());
+                }
+                else
+                {
+                    // if no source is available, step through.
                     _debugger.StepOut();
+                }
                 Activate();
             }));
         }
 
         private void debugger_Resumed(object sender, EventArgs e)
         {
-            Invoke(new Action(() =>
+            BeginInvoke(new Action(() =>
             {
+                _debugPane.Clear();
                 var scriptViews = from tab in _tabs
                                   where tab.View is ScriptView
                                   select tab.View;
@@ -1211,6 +1227,7 @@ namespace SphereStudio
                     _debugger = plugin.Start(CurrentGame);
                     if (_debugger != null)
                     {
+                        _debugDock.Show();
                         menuDebug.Text = "&Resume";
                         toolDebug.Text = "Resume";
                         menuTestGame.Enabled = false;

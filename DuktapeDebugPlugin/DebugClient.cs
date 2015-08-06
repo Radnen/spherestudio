@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using System.Threading.Tasks;
 
 namespace minisphere.Remote
 {
@@ -21,7 +23,7 @@ namespace minisphere.Remote
         private Process _engine;
         private string _engineDir;
         private IProject _project;
-        private Queue<object[]> _replies = new Queue<object[]>();
+        private ConcurrentQueue<object[]> _replies = new ConcurrentQueue<object[]>();
         private TcpClient _tcp;
         private Thread _thread;
 
@@ -68,6 +70,8 @@ namespace minisphere.Remote
                     int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
                     if (debuggerVersion != 1)
                         throw new NotSupportedException("The debugger protocol is not supported.");
+                    _thread = new Thread(RunDebugger);
+                    _thread.Start();
                     foreach (string filename in breaks.Keys)
                     {
                         foreach (int lineNumber in breaks[filename])
@@ -87,14 +91,14 @@ namespace minisphere.Remote
                                     relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
                             }
                             catch { } // *munch*
-                            _tcp.Client.Send(new byte[] { 0x01, 0x98 });
+                            _tcp.Client.SendDValue(DValue.REQ);
+                            _tcp.Client.SendDValue(0x18);
                             _tcp.Client.SendDValue(relativePath);
                             _tcp.Client.SendDValue(lineNumber);
-                            _tcp.Client.Send(new byte[] { 0 });
+                            _tcp.Client.SendDValue(DValue.EOM);
+                            ReadReply();
                         }
                     }
-                    _thread = new Thread(RunDebugger);
-                    _thread.Start();
                     return;
                 }
                 catch (SocketException) { }
@@ -115,11 +119,26 @@ namespace minisphere.Remote
             }
         }
 
+        public IReadOnlyDictionary<string, object> GetVariables()
+        {
+            _tcp.Client.Send(new byte[] { 0x01, 0x9D, 0 });
+            object[] reply = ReadReply();
+            var variables = new Dictionary<string, object>();
+            int count = (reply.Length - 2) / 2;
+            for (int i = 0; i < count; ++i)
+            {
+                variables.Add(reply[i * 2 + 1].ToString(), reply[i * 2 + 2]);
+            }
+            return variables;
+        }
+
+
         public void BreakNow()
         {
             // REQ 12h EOM
             byte[] request = new byte[] { 0x01, 0x92, 0 };
             _tcp.Client.Send(request);
+            ReadReply();
         }
 
         public void Run()
@@ -127,6 +146,7 @@ namespace minisphere.Remote
             // REQ 13h EOM
             byte[] request = new byte[] { 0x01, 0x93, 0 };
             _tcp.Client.Send(request);
+            ReadReply();
         }
 
         public void StepInto()
@@ -134,6 +154,7 @@ namespace minisphere.Remote
             // REQ 14h EOM (Step Into)
             byte[] request = new byte[] { 0x01, 0x94, 0 };
             _tcp.Client.Send(request);
+            ReadReply();
         }
 
         public void StepOut()
@@ -141,6 +162,7 @@ namespace minisphere.Remote
             // REQ 16h EOM (Step Out)
             byte[] request = new byte[] { 0x01, 0x96, 0 };
             _tcp.Client.Send(request);
+            ReadReply();
         }
 
         public void StepOver()
@@ -148,12 +170,21 @@ namespace minisphere.Remote
             // REQ 15h EOM (Step Over)
             byte[] request = new byte[] { 0x01, 0x95, 0 };
             _tcp.Client.Send(request);
+            ReadReply();
         }
 
         private static void FocusEngine(object state)
         {
             DebugClient me = (DebugClient)state;
             SetForegroundWindow(me._engine.MainWindowHandle);
+        }
+
+        private object[] ReadReply()
+        {
+            while (_replies.Count <= 0) ;
+            object[] reply;
+            bool ok = _replies.TryDequeue(out reply);
+            return ok ? reply : null;
         }
 
         private void RunDebugger()
@@ -208,7 +239,8 @@ namespace minisphere.Remote
                             break;
                     }
                 }
-                else if (message[0].Equals(DValue.REP))
+                else if (message[0].Equals(DValue.REP)
+                    || message[0].Equals(DValue.ERR))
                 {
                     _replies.Enqueue(message.ToArray());
                 }

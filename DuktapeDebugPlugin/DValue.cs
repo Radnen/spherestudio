@@ -20,6 +20,10 @@ namespace minisphere.Remote
         Null,
         True,
         False,
+        Object,
+        HeapPtr,
+        Pointer,
+        Lightfunc,
     }
 
     static class DValueExtensions
@@ -103,9 +107,42 @@ namespace minisphere.Remote
                         if (BitConverter.IsLittleEndian)
                             Array.Reverse(bytes);
                         return BitConverter.ToDouble(bytes, 0);
+                    case 0x1B: // JS object
+                        socket.Receive(bytes = new byte[2]);
+                        socket.Receive(new byte[bytes[1]]);
+                        return DValue.Object;
+                    case 0x1C: // pointer
+                        socket.Receive(bytes = new byte[1]);
+                        socket.Receive(new byte[bytes[0]]);
+                        return DValue.Pointer;
+                    case 0x1D: // Duktape lightfunc
+                        socket.Receive(bytes = new byte[3]);
+                        socket.Receive(new byte[bytes[2]]);
+                        return DValue.Lightfunc;
+                    case 0x1E: // Duktape heap pointer
+                        socket.Receive(bytes = new byte[1]);
+                        socket.Receive(new byte[bytes[0]]);
+                        return DValue.HeapPtr;
                     default:
                         return DValue.EOM;
                 }
+            }
+        }
+
+        public static void SendDValue(this Socket socket, DValue value)
+        {
+            switch (value)
+            {
+                case DValue.EOM: socket.Send(new byte[1] { 0x00 }); break;
+                case DValue.REQ: socket.Send(new byte[1] { 0x01 }); break;
+                case DValue.REP: socket.Send(new byte[1] { 0x02 }); break;
+                case DValue.ERR: socket.Send(new byte[1] { 0x03 }); break;
+                case DValue.NFY: socket.Send(new byte[1] { 0x04 }); break;
+                case DValue.Unused: socket.Send(new byte[1] { 0x15 }); break;
+                case DValue.Undefined: socket.Send(new byte[1] { 0x16 }); break;
+                case DValue.Null: socket.Send(new byte[1] { 0x17 }); break;
+                case DValue.True: socket.Send(new byte[1] { 0x18 }); break;
+                case DValue.False: socket.Send(new byte[1] { 0x19 }); break;
             }
         }
 
