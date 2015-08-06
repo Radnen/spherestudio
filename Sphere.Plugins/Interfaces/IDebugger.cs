@@ -40,10 +40,11 @@ namespace Sphere.Plugins.Interfaces
         event EventHandler Resumed;
 
         /// <summary>
-        /// Gets a list of all variables in the current scope and their values.
+        /// Gets a list of all variables in the current scope and their JSON-encoded
+        /// values.
         /// </summary>
         /// <returns>A dictionary mapping variable names to their values.</returns>
-        IReadOnlyDictionary<string, object> GetVariables();
+        IReadOnlyDictionary<string, string> GetVariables();
         
         /// <summary>
         /// Pauses execution and breaks into the debugger.
@@ -55,6 +56,13 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         void Detach();
 
+        /// <summary>
+        /// Evaluates a JavaScript expression and returns the result.
+        /// </summary>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <returns>The result of evaluating the expression.</returns>
+        object Evaluate(string expression);
+        
         /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,
         /// whichever comes first.

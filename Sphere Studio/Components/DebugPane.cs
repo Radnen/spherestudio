@@ -22,13 +22,13 @@ namespace SphereStudio.Components
             listVariables.Items.Clear();
         }
 
-        public void SetVariables(IReadOnlyDictionary<string, object> variables)
+        public void SetVariables(IReadOnlyDictionary<string, string> variables)
         {
             listVariables.Items.Clear();
             foreach (var k in variables.Keys)
             {
                 var item = listVariables.Items.Add(k);
-                item.SubItems.Add(variables[k].ToString());
+                item.SubItems.Add(variables[k]);
             }
         }
     }

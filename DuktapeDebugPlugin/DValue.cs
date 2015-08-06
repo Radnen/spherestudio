@@ -28,19 +28,30 @@ namespace minisphere.Remote
 
     static class DValueExtensions
     {
+        public static bool ReceiveAll(this Socket socket, byte[] buffer, SocketFlags socketFlags = SocketFlags.None)
+        {
+            int offset = 0;
+            while (offset < buffer.Length)
+            {
+                int size = socket.Receive(buffer, offset, buffer.Length - offset, socketFlags);
+                offset += size;
+                if (size == 0) return false;
+            }
+            return true;
+        }
+
         public static object ReceiveDValue(this Socket socket)
         {
             byte[] bytes;
             int length = -1;
             Encoding utf8 = new UTF8Encoding(false);
 
-            if (socket.Receive(bytes = new byte[1]) != 1)
+            if (!socket.ReceiveAll(bytes = new byte[1]))
                 return null;
             if (bytes[0] >= 0x60 && bytes[0] < 0x80)
             {
                 length = bytes[0] - 0x60;
-                Array.Resize(ref bytes, 1 + length);
-                if (socket.Receive(bytes = new byte[length]) != length)
+                if (!socket.ReceiveAll(bytes = new byte[length]))
                     return null;
                 return utf8.GetString(bytes);
             }
@@ -51,7 +62,7 @@ namespace minisphere.Remote
             else if (bytes[0] >= 0xC0)
             {
                 Array.Resize(ref bytes, 2);
-                if (socket.Receive(bytes, 1, 1, SocketFlags.None) != 1)
+                if (socket.Receive(bytes, 1, 1, SocketFlags.None) == 0)
                     return null;
                 return ((bytes[0] - 0xC0) << 8) + bytes[1];
             }
@@ -65,35 +76,35 @@ namespace minisphere.Remote
                     case 0x03: return DValue.ERR;
                     case 0x04: return DValue.NFY;
                     case 0x10: // 32-bit integer
-                        if (socket.Receive(bytes = new byte[4]) != 4)
+                        if (!socket.ReceiveAll(bytes = new byte[4]))
                             return null;
                         return (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
                     case 0x11: // string with 32-bit length
-                        if (socket.Receive(bytes = new byte[4]) != 4)
+                        if (!socket.ReceiveAll(bytes = new byte[4]))
                             return null;
                         length = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
-                        if (socket.Receive(bytes = new byte[length]) != length)
+                        if (!socket.ReceiveAll(bytes = new byte[length]))
                             return null;
                         return utf8.GetString(bytes);
                     case 0x12: // string with 16-bit length
-                        if (socket.Receive(bytes = new byte[2]) != 2)
+                        if (!socket.ReceiveAll(bytes = new byte[2]))
                             return null;
                         length = (bytes[0] << 8) + bytes[1];
-                        if (socket.Receive(bytes = new byte[length]) != length)
+                        if (!socket.ReceiveAll(bytes = new byte[length]))
                             return null;
                         return utf8.GetString(bytes);
                     case 0x13: // buffer with 32-bit length
-                        if (socket.Receive(bytes = new byte[4]) != 4)
+                        if (!socket.ReceiveAll(bytes = new byte[4]))
                             return null;
                         length = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
-                        if (socket.Receive(bytes = new byte[length]) != length)
+                        if (!socket.ReceiveAll(bytes = new byte[length]))
                             return null;
                         return bytes;
                     case 0x14: // buffer with 16-bit length
-                        if (socket.Receive(bytes = new byte[2]) != 2)
+                        if (!socket.ReceiveAll(bytes = new byte[2]))
                             return null;
                         length = (bytes[0] << 8) + bytes[1];
-                        if (socket.Receive(bytes = new byte[length]) != length)
+                        if (!socket.ReceiveAll(bytes = new byte[length]))
                             return null;
                         return bytes;
                     case 0x15: return DValue.Unused;
@@ -102,26 +113,26 @@ namespace minisphere.Remote
                     case 0x18: return DValue.True;
                     case 0x19: return DValue.False;
                     case 0x1A: // IEEE double
-                        if (socket.Receive(bytes = new byte[8]) != 8)
+                        if (!socket.ReceiveAll(bytes = new byte[8]))
                             return null;
                         if (BitConverter.IsLittleEndian)
                             Array.Reverse(bytes);
                         return BitConverter.ToDouble(bytes, 0);
                     case 0x1B: // JS object
-                        socket.Receive(bytes = new byte[2]);
-                        socket.Receive(new byte[bytes[1]]);
+                        socket.ReceiveAll(bytes = new byte[2]);
+                        socket.ReceiveAll(new byte[bytes[1]]);
                         return DValue.Object;
                     case 0x1C: // pointer
-                        socket.Receive(bytes = new byte[1]);
-                        socket.Receive(new byte[bytes[0]]);
+                        socket.ReceiveAll(bytes = new byte[1]);
+                        socket.ReceiveAll(new byte[bytes[0]]);
                         return DValue.Pointer;
                     case 0x1D: // Duktape lightfunc
-                        socket.Receive(bytes = new byte[3]);
-                        socket.Receive(new byte[bytes[2]]);
+                        socket.ReceiveAll(bytes = new byte[3]);
+                        socket.ReceiveAll(new byte[bytes[2]]);
                         return DValue.Lightfunc;
                     case 0x1E: // Duktape heap pointer
-                        socket.Receive(bytes = new byte[1]);
-                        socket.Receive(new byte[bytes[0]]);
+                        socket.ReceiveAll(bytes = new byte[1]);
+                        socket.ReceiveAll(new byte[bytes[0]]);
                         return DValue.HeapPtr;
                     default:
                         return DValue.EOM;

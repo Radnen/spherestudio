@@ -64,7 +64,7 @@ namespace minisphere.Remote
                     byte[] buffer = new byte[1];
                     while (buffer[0] != '\n')
                     {
-                        _tcp.Client.Receive(buffer);
+                        _tcp.Client.ReceiveAll(buffer);
                         line += (char)buffer[0];
                     }
                     int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
@@ -83,14 +83,12 @@ namespace minisphere.Remote
                             {
                                 if (filename.Substring(0, rootPath.Length) == rootPath)
                                     relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
-                            }
-                            catch { } // *munch*
+                            } catch { } // *munch*
                             try
                             {
                                 if (filename.Substring(0, sysPath.Length) == sysPath)
                                     relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
-                            }
-                            catch { } // *munch*
+                            } catch { } // *munch*
                             _tcp.Client.SendDValue(DValue.REQ);
                             _tcp.Client.SendDValue(0x18);
                             _tcp.Client.SendDValue(relativePath);
@@ -119,19 +117,28 @@ namespace minisphere.Remote
             }
         }
 
-        public IReadOnlyDictionary<string, object> GetVariables()
+        public IReadOnlyDictionary<string, string> GetVariables()
         {
             _tcp.Client.Send(new byte[] { 0x01, 0x9D, 0 });
             object[] reply = ReadReply();
-            var variables = new Dictionary<string, object>();
+            var variables = new Dictionary<string, string>();
             int count = (reply.Length - 2) / 2;
             for (int i = 0; i < count; ++i)
             {
-                variables.Add(reply[i * 2 + 1].ToString(), reply[i * 2 + 2]);
+                string name = reply[i * 2 + 1].ToString();
+                variables.Add(name, (string)Evaluate(string.Format("Duktape.enc('jx', {0}, null, 1)", name)));
             }
             return variables;
         }
 
+
+        public void Run()
+        {
+            // REQ 13h EOM
+            byte[] request = new byte[] { 0x01, 0x93, 0 };
+            _tcp.Client.Send(request);
+            ReadReply();
+        }
 
         public void BreakNow()
         {
@@ -141,12 +148,14 @@ namespace minisphere.Remote
             ReadReply();
         }
 
-        public void Run()
+        public object Evaluate(string expression)
         {
-            // REQ 13h EOM
-            byte[] request = new byte[] { 0x01, 0x93, 0 };
-            _tcp.Client.Send(request);
-            ReadReply();
+            _tcp.Client.SendDValue(DValue.REQ);
+            _tcp.Client.SendDValue(0x1E);
+            _tcp.Client.SendDValue(expression);
+            _tcp.Client.SendDValue(DValue.EOM);
+            var reply = ReadReply();
+            return (int)reply[1] == 0 ? reply[2] : null;
         }
 
         public void StepInto()
@@ -181,7 +190,7 @@ namespace minisphere.Remote
 
         private object[] ReadReply()
         {
-            while (_replies.Count <= 0) ;
+            while (_replies.Count <= 0 && _thread.IsAlive) ;
             object[] reply;
             bool ok = _replies.TryDequeue(out reply);
             return ok ? reply : null;

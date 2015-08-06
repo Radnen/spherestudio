@@ -70,6 +70,7 @@ namespace SphereStudio.Plugins
             _codeBox.KeyDown += codebox_KeyDown;
             _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
+            _codeBox.MouseHover += codeBox_MouseHover;
             _codeBox.TextDeleted += codeBox_TextChanged;
             _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
@@ -83,20 +84,6 @@ namespace SphereStudio.Plugins
 
             Controls.Add(_codeBox);
             Restyle();
-        }
-
-        private void codebox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F9 && e.Modifiers == 0x0)
-            {
-                e.Handled = true;
-                var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
-                var markers = line.GetMarkers();
-                if (markers.Contains(_codeBox.Markers[0]))
-                    line.DeleteMarker(0);
-                else
-                    line.AddMarker(0);
-            }
         }
 
         public override int ActiveLine
@@ -332,6 +319,20 @@ namespace SphereStudio.Plugins
             }
         }
 
+        private void codebox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F9 && e.Modifiers == 0x0)
+            {
+                e.Handled = true;
+                var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
+                var markers = line.GetMarkers();
+                if (markers.Contains(_codeBox.Markers[0]))
+                    line.DeleteMarker(0);
+                else
+                    line.AddMarker(0);
+            }
+        }
+
         private void codeBox_MarginClick(object sender, MarginClickEventArgs e)
         {
             if (e.Margin == _codeBox.Margins.Margin1)
@@ -343,6 +344,22 @@ namespace SphereStudio.Plugins
         private void codeBox_ModifiedChanged(object sender, EventArgs e)
         {
             IsDirty = _codeBox.Modified;
+        }
+
+        private void codeBox_MouseHover(object sender, EventArgs e)
+        {
+            if (PluginManager.IDE.Debugger != null)
+            {
+                var debug = PluginManager.IDE.Debugger;
+                Point origin = _codeBox.PointToClient(MousePosition);
+                int position = _codeBox.PositionFromPoint(origin.X, origin.Y);
+                string word = _codeBox.GetWordFromPosition(position);
+                var vars = debug.GetVariables();
+                if (vars.ContainsKey(word))
+                {
+                    // TODO: tooltip with variable value
+                }
+            }
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)
