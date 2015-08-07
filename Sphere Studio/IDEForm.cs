@@ -62,14 +62,6 @@ namespace SphereStudio
 
             _tree = new ProjectTree() { Dock = DockStyle.Fill, EditorForm = this };
 
-            _debugDock = new DockDescription();
-            _debugDock.Control = _debugPane;
-            _debugDock.DockAreas = DockDescAreas.Sides;
-            _debugDock.DockState = DockDescStyle.Side;
-            _debugDock.HideOnClose = true;
-            _debugDock.TabText = "Debug";
-            DockControl(_debugDock);
-
             _startPage = new StartPage(this) { Dock = DockStyle.Fill, HelpLabel = HelpLabel };
             _startPage.PopulateGameList();
 
@@ -96,6 +88,16 @@ namespace SphereStudio
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
 
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
+
+            _debugDock = new DockDescription();
+            _debugDock.Control = _debugPane;
+            _debugDock.DockAreas = DockDescAreas.Sides;
+            _debugDock.DockState = DockDescStyle.Side;
+            _debugDock.HideOnClose = true;
+            _debugDock.TabText = "Debugger";
+            _debugDock.Icon = Icon.FromHandle(Properties.Resources.eye.GetHicon());
+            DockControl(_debugDock);
+            _debugDock.Hide();
 
             if (Global.Settings.AutoOpenProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
@@ -1043,6 +1045,56 @@ namespace SphereStudio
                     content.DockHandler.Activate();
         }
 
+        private void StartDebugger()
+        {
+            var debuggers = from f in Global.Plugins.Values
+                            where f.Enabled
+                            where f.Plugin is IDebugPlugin
+                            select (IDebugPlugin)f.Plugin;
+            var plugin = debuggers.FirstOrDefault();
+            if (plugin != null)
+            {
+                foreach (DocumentTab tab in
+                    from tab in _tabs
+                    where tab.FileName != null
+                    select tab)
+                {
+                    tab.Save();  // save all non-untitled documents
+                }
+                Global.CurrentGame.Build();
+                _debugger = plugin.Start(CurrentGame);
+                if (_debugger != null)
+                {
+                    _debugDock.Show();
+                    menuDebug.Text = "&Resume";
+                    toolDebug.Text = "Resume";
+                    menuTestGame.Enabled = false;
+                    toolTestGame.Enabled = false;
+                    _debugger.Detached += debugger_Detached;
+                    _debugger.Paused += debugger_Paused;
+                    _debugger.Resumed += debugger_Resumed;
+                    _debugger.Run();
+                }
+                else
+                {
+                    Activate();
+                    MessageBox.Show(
+                        "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
+                        "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                var result = MessageBox.Show(
+                    "You must enable debugging by selecting an appropriate plugin from Configuration Manager. Do you want to do that now?",
+                    "No Debugger Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    menuConfigManager_Click(this, EventArgs.Empty);
+                }
+            }
+        }
+
         private void UpdateButtons()
         {
             bool config = File.Exists(Global.Settings.EngineConfigPath);
@@ -1163,7 +1215,7 @@ namespace SphereStudio
                 if (view != null)
                 {
                     view.ActiveLine = _debugger.LineNumber;
-                    _debugPane.SetVariables(_debugger.GetVariables());
+                    _debugPane.SetVariables(_debugger.GetVariableList());
                 }
                 else
                 {
@@ -1208,54 +1260,7 @@ namespace SphereStudio
             if (_debugger != null)
                 _debugger.Run();
             else
-            {
-                var debuggers = from f in Global.Plugins.Values
-                                where f.Enabled
-                                where f.Plugin is IDebugPlugin
-                                select (IDebugPlugin)f.Plugin;
-                var plugin = debuggers.FirstOrDefault();
-                if (plugin != null)
-                {
-                    foreach (DocumentTab tab in
-                        from tab in _tabs
-                        where tab.FileName != null
-                        select tab)
-                    {
-                        tab.Save();  // save all non-untitled documents
-                    }
-                    Global.CurrentGame.Build();
-                    _debugger = plugin.Start(CurrentGame);
-                    if (_debugger != null)
-                    {
-                        _debugDock.Show();
-                        menuDebug.Text = "&Resume";
-                        toolDebug.Text = "Resume";
-                        menuTestGame.Enabled = false;
-                        toolTestGame.Enabled = false;
-                        _debugger.Detached += debugger_Detached;
-                        _debugger.Paused += debugger_Paused;
-                        _debugger.Resumed += debugger_Resumed;
-                        _debugger.Run();
-                    }
-                    else
-                    {
-                        Activate();
-                        MessageBox.Show(
-                            "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
-                            "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    var result = MessageBox.Show(
-                        "You must enable debugging by selecting an appropriate plugin from Configuration Manager. Do you want to do that now?",
-                        "No Debugger Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                    {
-                        menuConfigManager_Click(this, EventArgs.Empty);
-                    }
-                }
-            }
+                StartDebugger();
         }
 
         private void debugBreakNow_Click(object sender, EventArgs e)

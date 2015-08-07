@@ -297,9 +297,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DuktapeDebugPlugin\minisphere Remote.csproj">
+    <ProjectReference Include="..\DuktapeDebugPlugin\minisphereDebugPlugin.csproj">
       <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
-      <Name>minisphere Remote</Name>
+      <Name>minisphereDebugPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>

@@ -348,17 +348,17 @@ namespace SphereStudio.Plugins
 
         private void codeBox_MouseHover(object sender, EventArgs e)
         {
-            if (PluginManager.IDE.Debugger != null)
+            var debug = PluginManager.IDE.Debugger;
+            if (debug != null && !debug.Running)
             {
-                var debug = PluginManager.IDE.Debugger;
                 Point origin = _codeBox.PointToClient(MousePosition);
                 int position = _codeBox.PositionFromPoint(origin.X, origin.Y);
                 string word = _codeBox.GetWordFromPosition(position);
-                var vars = debug.GetVariables();
+                /*var vars = debug.GetVariables();
                 if (vars.ContainsKey(word))
                 {
                     // TODO: tooltip with variable value
-                }
+                }*/
             }
         }
 

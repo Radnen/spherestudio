@@ -117,7 +117,7 @@ namespace minisphere.Remote
             }
         }
 
-        public IReadOnlyDictionary<string, string> GetVariables()
+        public IReadOnlyDictionary<string, string> GetVariableList()
         {
             _tcp.Client.Send(new byte[] { 0x01, 0x9D, 0 });
             object[] reply = ReadReply();
@@ -126,11 +126,11 @@ namespace minisphere.Remote
             for (int i = 0; i < count; ++i)
             {
                 string name = reply[i * 2 + 1].ToString();
-                variables.Add(name, (string)Evaluate(string.Format("Duktape.enc('jx', {0}, null, 1)", name)));
+                string value = reply[i * 2 + 2].Equals(DValue.Object) ? "(JavaScript object)" : Evaluate(name);
+                variables.Add(name, value);
             }
             return variables;
         }
-
 
         public void Run()
         {
@@ -148,14 +148,16 @@ namespace minisphere.Remote
             ReadReply();
         }
 
-        public object Evaluate(string expression)
+        public string Evaluate(string expression)
         {
+            var eval = string.Format(@"Duktape.enc('jx', ({0}), null, 2)", expression);
             _tcp.Client.SendDValue(DValue.REQ);
             _tcp.Client.SendDValue(0x1E);
-            _tcp.Client.SendDValue(expression);
+            _tcp.Client.SendDValue(eval);
             _tcp.Client.SendDValue(DValue.EOM);
             var reply = ReadReply();
-            return (int)reply[1] == 0 ? reply[2] : null;
+            bool ok = (int)reply[1] == 0;
+            return ok ? (string)reply[2] : null;
         }
 
         public void StepInto()
