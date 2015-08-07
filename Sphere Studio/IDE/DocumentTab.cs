@@ -301,6 +301,10 @@ namespace SphereStudio.IDE
         private void on_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !PromptSave();
+            if (!e.Cancel)
+            {
+                SaveViewState();
+            }
         }
 
         private void on_FormClosed(object sender, FormClosedEventArgs e)

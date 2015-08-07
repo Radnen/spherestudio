@@ -33,13 +33,17 @@
             this.listVariables = new System.Windows.Forms.ListView();
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imagesVarList = new System.Windows.Forms.ImageList(this.components);
             this.splitter = new System.Windows.Forms.SplitContainer();
             this.textValue = new System.Windows.Forms.TextBox();
-            this.imagesVarList = new System.Windows.Forms.ImageList(this.components);
+            this.textEvalBox = new System.Windows.Forms.TextBox();
+            this.panelEval = new System.Windows.Forms.Panel();
+            this.buttonEval = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitter)).BeginInit();
             this.splitter.Panel1.SuspendLayout();
             this.splitter.Panel2.SuspendLayout();
             this.splitter.SuspendLayout();
+            this.panelEval.SuspendLayout();
             this.SuspendLayout();
             // 
             // listVariables
@@ -50,6 +54,7 @@
             this.listVariables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listVariables.FullRowSelect = true;
             this.listVariables.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listVariables.HideSelection = false;
             this.listVariables.Location = new System.Drawing.Point(0, 0);
             this.listVariables.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listVariables.Name = "listVariables";
@@ -70,6 +75,12 @@
             this.columnValue.Text = "Value";
             this.columnValue.Width = 250;
             // 
+            // imagesVarList
+            // 
+            this.imagesVarList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imagesVarList.ImageStream")));
+            this.imagesVarList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imagesVarList.Images.SetKeyName(0, "eye.png");
+            // 
             // splitter
             // 
             this.splitter.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -85,30 +96,59 @@
             // splitter.Panel2
             // 
             this.splitter.Panel2.Controls.Add(this.textValue);
+            this.splitter.Panel2.Controls.Add(this.panelEval);
             this.splitter.Size = new System.Drawing.Size(387, 654);
             this.splitter.SplitterDistance = 231;
             this.splitter.TabIndex = 1;
             // 
             // textValue
             // 
-            this.textValue.BackColor = System.Drawing.Color.Black;
             this.textValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textValue.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.textValue.Location = new System.Drawing.Point(0, 0);
+            this.textValue.Location = new System.Drawing.Point(0, 24);
             this.textValue.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textValue.Multiline = true;
             this.textValue.Name = "textValue";
+            this.textValue.ReadOnly = true;
             this.textValue.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textValue.Size = new System.Drawing.Size(387, 419);
+            this.textValue.Size = new System.Drawing.Size(387, 395);
             this.textValue.TabIndex = 0;
             this.textValue.WordWrap = false;
             // 
-            // imagesVarList
+            // textEvalBox
             // 
-            this.imagesVarList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imagesVarList.ImageStream")));
-            this.imagesVarList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imagesVarList.Images.SetKeyName(0, "eye.png");
+            this.textEvalBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textEvalBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textEvalBox.Location = new System.Drawing.Point(0, 0);
+            this.textEvalBox.Name = "textEvalBox";
+            this.textEvalBox.Size = new System.Drawing.Size(323, 23);
+            this.textEvalBox.TabIndex = 1;
+            this.textEvalBox.TextChanged += new System.EventHandler(this.textEvalBox_TextChanged);
+            this.textEvalBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEvalBox_KeyDown);
+            // 
+            // panelEval
+            // 
+            this.panelEval.Controls.Add(this.textEvalBox);
+            this.panelEval.Controls.Add(this.buttonEval);
+            this.panelEval.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelEval.Location = new System.Drawing.Point(0, 0);
+            this.panelEval.Name = "panelEval";
+            this.panelEval.Size = new System.Drawing.Size(387, 24);
+            this.panelEval.TabIndex = 2;
+            // 
+            // buttonEval
+            // 
+            this.buttonEval.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonEval.Enabled = false;
+            this.buttonEval.Image = global::SphereStudio.Properties.Resources.lightbulb;
+            this.buttonEval.Location = new System.Drawing.Point(323, 0);
+            this.buttonEval.Name = "buttonEval";
+            this.buttonEval.Size = new System.Drawing.Size(64, 24);
+            this.buttonEval.TabIndex = 2;
+            this.buttonEval.Text = "&Eval";
+            this.buttonEval.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonEval.UseVisualStyleBackColor = true;
+            this.buttonEval.Click += new System.EventHandler(this.buttonEval_Click);
             // 
             // DebugPane
             // 
@@ -124,6 +164,8 @@
             this.splitter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitter)).EndInit();
             this.splitter.ResumeLayout(false);
+            this.panelEval.ResumeLayout(false);
+            this.panelEval.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -136,5 +178,8 @@
         private System.Windows.Forms.SplitContainer splitter;
         private System.Windows.Forms.TextBox textValue;
         private System.Windows.Forms.ImageList imagesVarList;
+        private System.Windows.Forms.TextBox textEvalBox;
+        private System.Windows.Forms.Panel panelEval;
+        private System.Windows.Forms.Button buttonEval;
     }
 }

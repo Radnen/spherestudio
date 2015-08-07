@@ -36,7 +36,7 @@ namespace SphereStudio
 
         private DocumentTab _activeTab;
         private IDebugger _debugger;
-        private DebugPane _debugPane = new DebugPane() { Dock = DockStyle.Fill };
+        private DebugPane _debugPane = new DebugPane() { Dock = DockStyle.Fill, Enabled = false };
         private DockDescription _debugDock;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
@@ -1192,6 +1192,8 @@ namespace SphereStudio
         {
             BeginInvoke(new Action(() =>
             {
+                _debugPane.Enabled = false;
+                _debugPane.Clear();
                 _debugDock.Hide();
                 var scriptViews = from tab in _tabs
                                   where tab.View is ScriptView
@@ -1209,6 +1211,7 @@ namespace SphereStudio
         {
             BeginInvoke(new Action(() =>
             {
+                _debugPane.Enabled = true;
                 UpdateButtons();
                 ScriptView view = null;
                 view = OpenDocument(_debugger.FileName) as ScriptView;
@@ -1230,6 +1233,7 @@ namespace SphereStudio
         {
             BeginInvoke(new Action(() =>
             {
+                _debugPane.Enabled = false;
                 _debugPane.Clear();
                 var scriptViews = from tab in _tabs
                                   where tab.View is ScriptView

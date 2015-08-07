@@ -40,18 +40,22 @@ namespace SphereStudio
                 DirectoryInfo dir = new DirectoryInfo(path);
                 foreach (FileInfo file in dir.GetFiles("*.dll"))
                 {
-                    Assembly assembly = Assembly.LoadFrom(file.FullName);
-                    foreach (Type type in assembly.GetTypes())
+                    try
                     {
-                        if (type.GetInterface("IPlugin") != null)
+                        Assembly assembly = Assembly.LoadFrom(file.FullName);
+                        foreach (Type type in assembly.GetTypes())
                         {
-                            IPlugin b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPlugin;
-                            if (b == null) continue;
-                            string name = Path.GetFileNameWithoutExtension(file.Name);
-                            if (name != null && !Plugins.Keys.Contains(name))  // only the first by that name is used
-                                Plugins[name] = new PluginWrapper(b, name);
+                            if (type.GetInterface("IPlugin") != null)
+                            {
+                                IPlugin b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPlugin;
+                                if (b == null) continue;
+                                string name = Path.GetFileNameWithoutExtension(file.Name);
+                                if (name != null && !Plugins.Keys.Contains(name))  // only the first by that name is used
+                                    Plugins[name] = new PluginWrapper(b, name);
+                            }
                         }
                     }
+                    catch { } // *munch*
                 }
             }
         }
