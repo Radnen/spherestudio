@@ -150,7 +150,9 @@ namespace minisphere.Remote
 
         public string Evaluate(string expression)
         {
-            var eval = string.Format(@"Duktape.enc('jx', ({0}), null, 2)", expression);
+            var eval = string.Format(
+                @"(function() {{ try {{ return Duktape.enc('jx', ({0}), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
+                expression);
             _tcp.Client.SendDValue(DValue.REQ);
             _tcp.Client.SendDValue(0x1E);
             _tcp.Client.SendDValue(eval);

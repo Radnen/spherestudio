@@ -125,6 +125,7 @@ namespace Sphere.Core
         {
             try
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(filepath));
                 using (StreamWriter file = new StreamWriter(filepath))
                 {
                     var sections = from section in _sections
