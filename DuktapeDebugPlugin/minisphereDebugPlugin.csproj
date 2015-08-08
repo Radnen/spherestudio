@@ -46,9 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugClient.cs" />
+    <Compile Include="DebugSession.cs" />
+    <Compile Include="DuktapeClient.cs" />
     <Compile Include="PluginMain.cs" />
-    <Compile Include="DValue.cs" />
+    <Compile Include="SocketExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

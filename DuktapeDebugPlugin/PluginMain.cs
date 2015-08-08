@@ -34,7 +34,7 @@ namespace minisphere.Remote
             Process engine = Process.Start(enginePath, args);
 
             // fire up the debugger
-            DebugClient client = new DebugClient(project, enginePath, engine);
+            DebugSession client = new DebugSession(project, enginePath, engine);
             try
             {
                 client.Connect("localhost", 812);

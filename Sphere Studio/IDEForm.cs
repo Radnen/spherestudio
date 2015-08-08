@@ -1211,6 +1211,9 @@ namespace SphereStudio
         {
             BeginInvoke(new Action(() =>
             {
+                if (_debugger.Running)
+                    return;
+
                 _debugPane.Enabled = true;
                 UpdateButtons();
                 ScriptView view = null;
@@ -1233,6 +1236,9 @@ namespace SphereStudio
         {
             BeginInvoke(new Action(() =>
             {
+                if (!_debugger.Running)
+                    return;
+
                 _debugPane.Enabled = false;
                 _debugPane.Clear();
                 var scriptViews = from tab in _tabs

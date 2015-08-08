@@ -14,25 +14,25 @@ using System.Threading.Tasks;
 
 namespace minisphere.Remote
 {
-    class DebugClient : IDisposable, IDebugger
+    class DebugSession : IDisposable, IDebugger
     {
         [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        private Timer _activator;
-        private Process _engine;
-        private string _engineDir;
-        private IProject _project;
-        private ConcurrentQueue<object[]> _replies = new ConcurrentQueue<object[]>();
-        private TcpClient _tcp;
-        private Thread _thread;
+        private IProject ssproj;
+        private DuktapeClient duktape;
+        private Process engineProcess;
+        private string engineDir;
+        private ConcurrentQueue<object[]> replies = new ConcurrentQueue<object[]>();
+        private Thread messageReader;
+        private Timer focusSwitchTimer;
 
-        public DebugClient(IProject project, string enginePath, Process engine)
+        public DebugSession(IProject project, string enginePath, Process engine)
         {
-            _engine = engine;
-            _engineDir = Path.GetDirectoryName(enginePath);
-            _project = project;
-            _activator = new Timer(FocusEngine, this, Timeout.Infinite, Timeout.Infinite);
+            ssproj = project;
+            engineProcess = engine;
+            engineDir = Path.GetDirectoryName(enginePath);
+            focusSwitchTimer = new Timer(FocusEngine, this, Timeout.Infinite, Timeout.Infinite);
         }
 
         public void Dispose()
@@ -55,30 +55,20 @@ namespace minisphere.Remote
         public void Connect(string hostname, int port, uint timeout = 5000)
         {
             long end = DateTime.Now.Ticks + timeout * 10000;
-            var breaks = _project.GetAllBreakpoints();
+            var breaks = ssproj.GetAllBreakpoints();
             while (DateTime.Now.Ticks < end)
             {
                 try {
-                    _tcp = new TcpClient(hostname, port);
-                    string line = "";
-                    byte[] buffer = new byte[1];
-                    while (buffer[0] != '\n')
-                    {
-                        _tcp.Client.ReceiveAll(buffer);
-                        line += (char)buffer[0];
-                    }
-                    int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
-                    if (debuggerVersion != 1)
-                        throw new NotSupportedException("The debugger protocol is not supported.");
-                    _thread = new Thread(RunDebugger);
-                    _thread.Start();
+                    duktape = new DuktapeClient(hostname, port);
+                    messageReader = new Thread(RunDebugger);
+                    messageReader.Start();
                     foreach (string filename in breaks.Keys)
                     {
                         foreach (int lineNumber in breaks[filename])
                         {
                             string relativePath = filename;
-                            string rootPath = Path.Combine(_project.RootPath, @"scripts") + @"\";
-                            string sysPath = Path.Combine(_engineDir, @"system") + @"\";
+                            string rootPath = Path.Combine(ssproj.RootPath, @"scripts") + @"\";
+                            string sysPath = Path.Combine(engineDir, @"system") + @"\";
                             try
                             {
                                 if (filename.Substring(0, rootPath.Length) == rootPath)
@@ -89,11 +79,11 @@ namespace minisphere.Remote
                                 if (filename.Substring(0, sysPath.Length) == sysPath)
                                     relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
                             } catch { } // *munch*
-                            _tcp.Client.SendDValue(DValue.REQ);
-                            _tcp.Client.SendDValue(0x18);
-                            _tcp.Client.SendDValue(relativePath);
-                            _tcp.Client.SendDValue(lineNumber);
-                            _tcp.Client.SendDValue(DValue.EOM);
+                            duktape.SendDValue(DValueTag.REQ);
+                            duktape.SendDValue(0x18);
+                            duktape.SendDValue(relativePath);
+                            duktape.SendDValue(lineNumber);
+                            duktape.SendDValue(DValueTag.EOM);
                             ReadReply();
                         }
                     }
@@ -106,27 +96,27 @@ namespace minisphere.Remote
 
         public void Detach()
         {
-            if (_thread != null)
+            if (messageReader != null)
             {
-                _engine.CloseMainWindow();
-                _thread.Abort();
-                _tcp.Close();
-                _thread = null;
-                _tcp = null;
+                engineProcess.CloseMainWindow();
+                messageReader.Abort();
+                duktape.Dispose();
+                messageReader = null;
+                duktape = null;
                 if (Detached != null) Detached(this, EventArgs.Empty);
             }
         }
 
         public IReadOnlyDictionary<string, string> GetVariableList()
         {
-            _tcp.Client.Send(new byte[] { 0x01, 0x9D, 0 });
+            duktape.SendMessage(DValueTag.REQ, 0x1D, DValueTag.EOM);
             object[] reply = ReadReply();
             var variables = new Dictionary<string, string>();
             int count = (reply.Length - 2) / 2;
             for (int i = 0; i < count; ++i)
             {
                 string name = reply[i * 2 + 1].ToString();
-                string value = reply[i * 2 + 2].Equals(DValue.Object) ? "(JavaScript object)" : Evaluate(name);
+                string value = reply[i * 2 + 2].Equals(DValueTag.Object) ? "(JavaScript object)" : Evaluate(name);
                 variables.Add(name, value);
             }
             return variables;
@@ -134,17 +124,13 @@ namespace minisphere.Remote
 
         public void Run()
         {
-            // REQ 13h EOM
-            byte[] request = new byte[] { 0x01, 0x93, 0 };
-            _tcp.Client.Send(request);
+            duktape.SendMessage(DValueTag.REQ, 0x13, DValueTag.EOM);
             ReadReply();
         }
 
         public void BreakNow()
         {
-            // REQ 12h EOM
-            byte[] request = new byte[] { 0x01, 0x92, 0 };
-            _tcp.Client.Send(request);
+            duktape.SendMessage(DValueTag.REQ, 0x12, DValueTag.EOM);
             ReadReply();
         }
 
@@ -153,50 +139,41 @@ namespace minisphere.Remote
             var eval = string.Format(
                 @"(function() {{ try {{ return Duktape.enc('jx', ({0}), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
                 expression);
-            _tcp.Client.SendDValue(DValue.REQ);
-            _tcp.Client.SendDValue(0x1E);
-            _tcp.Client.SendDValue(eval);
-            _tcp.Client.SendDValue(DValue.EOM);
+            duktape.SendMessage(DValueTag.REQ, 0x1E, eval, DValueTag.EOM);
             var reply = ReadReply();
-            bool ok = (int)reply[1] == 0;
+            bool ok = reply != null && (int)reply[1] == 0;
             return ok ? (string)reply[2] : null;
         }
 
         public void StepInto()
         {
-            // REQ 14h EOM (Step Into)
-            byte[] request = new byte[] { 0x01, 0x94, 0 };
-            _tcp.Client.Send(request);
+            duktape.SendMessage(DValueTag.REQ, 0x14, DValueTag.EOM);
             ReadReply();
         }
 
         public void StepOut()
         {
-            // REQ 16h EOM (Step Out)
-            byte[] request = new byte[] { 0x01, 0x96, 0 };
-            _tcp.Client.Send(request);
+            duktape.SendMessage(DValueTag.REQ, 0x16, DValueTag.EOM);
             ReadReply();
         }
 
         public void StepOver()
         {
-            // REQ 15h EOM (Step Over)
-            byte[] request = new byte[] { 0x01, 0x95, 0 };
-            _tcp.Client.Send(request);
+            duktape.SendMessage(DValueTag.REQ, 0x15, DValueTag.EOM);
             ReadReply();
         }
 
         private static void FocusEngine(object state)
         {
-            DebugClient me = (DebugClient)state;
-            SetForegroundWindow(me._engine.MainWindowHandle);
+            DebugSession me = (DebugSession)state;
+            SetForegroundWindow(me.engineProcess.MainWindowHandle);
         }
 
         private object[] ReadReply()
         {
-            while (_replies.Count <= 0 && _thread.IsAlive) ;
+            while (replies.Count <= 0 && messageReader.IsAlive) ;
             object[] reply;
-            bool ok = _replies.TryDequeue(out reply);
+            bool ok = replies.TryDequeue(out reply);
             return ok ? reply : null;
         }
 
@@ -209,53 +186,53 @@ namespace minisphere.Remote
                 object value;
                 while (true)
                 {
-                    if ((value = _tcp.Client.ReceiveDValue()) == null)
+                    if ((value = duktape.ReceiveDValue()) == null)
                         goto detach;
                     message.Add(value);
-                    if (value.Equals(DValue.EOM))
+                    if (value.Equals(DValueTag.EOM))
                         break;
                 }
-                if (message[0].Equals(DValue.NFY))
+                if (message[0].Equals(DValueTag.NFY))
                 {
                     switch ((int)message[1])
                     {
                         case 0x01:
                             string path = (string)message[3];
                             if (path.Length >= 2 && path.Substring(0, 2) == "~/")
-                                FileName = Path.Combine(_project.RootPath, path.Substring(2));
+                                FileName = Path.Combine(ssproj.RootPath, path.Substring(2));
                             else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
-                                FileName = Path.Combine(_project.RootPath, path.Substring(5));
+                                FileName = Path.Combine(ssproj.RootPath, path.Substring(5));
                             else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
-                                FileName = Path.Combine(_engineDir, "system", path.Substring(5));
+                                FileName = Path.Combine(engineDir, "system", path.Substring(5));
                             else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
                                 FileName = Path.Combine(
                                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                     "minisphere", path.Substring(5));
                             else
-                                FileName = Path.Combine(_project.RootPath, "scripts", path);
+                                FileName = Path.Combine(ssproj.RootPath, "scripts", path);
                             FileName = FileName.Replace('/', '\\');
                             LineNumber = (int)message[5];
                             bool wasRunning = Running;
                             Running = (int)message[2] == 0;
                             if (Running && !wasRunning)
                             {
-                                _activator.Change(250, Timeout.Infinite);
+                                focusSwitchTimer.Change(250, Timeout.Infinite);
                                 if (Resumed != null)
                                     Resumed(this, EventArgs.Empty);
                             }
                             if (!Running)
                             {
-                                _activator.Change(Timeout.Infinite, Timeout.Infinite);
+                                focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
                                 if (Paused != null)
                                     Paused(this, EventArgs.Empty);
                             }
                             break;
                     }
                 }
-                else if (message[0].Equals(DValue.REP)
-                    || message[0].Equals(DValue.ERR))
+                else if (message[0].Equals(DValueTag.REP)
+                    || message[0].Equals(DValueTag.ERR))
                 {
-                    _replies.Enqueue(message.ToArray());
+                    replies.Enqueue(message.ToArray());
                 }
             }
 
