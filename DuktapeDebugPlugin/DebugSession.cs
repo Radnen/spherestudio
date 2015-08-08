@@ -79,11 +79,11 @@ namespace minisphere.Remote
                                 if (filename.Substring(0, sysPath.Length) == sysPath)
                                     relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
                             } catch { } // *munch*
-                            duktape.SendDValue(DValueTag.REQ);
-                            duktape.SendDValue(0x18);
-                            duktape.SendDValue(relativePath);
-                            duktape.SendDValue(lineNumber);
-                            duktape.SendDValue(DValueTag.EOM);
+                            duktape.Send(DValueTag.REQ);
+                            duktape.Send(0x18);
+                            duktape.Send(relativePath);
+                            duktape.Send(lineNumber);
+                            duktape.Send(DValueTag.EOM);
                             ReadReply();
                         }
                     }
@@ -109,7 +109,7 @@ namespace minisphere.Remote
 
         public IReadOnlyDictionary<string, string> GetVariableList()
         {
-            duktape.SendMessage(DValueTag.REQ, 0x1D, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x1D, DValueTag.EOM);
             object[] reply = ReadReply();
             var variables = new Dictionary<string, string>();
             int count = (reply.Length - 2) / 2;
@@ -124,13 +124,13 @@ namespace minisphere.Remote
 
         public void Run()
         {
-            duktape.SendMessage(DValueTag.REQ, 0x13, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x13, DValueTag.EOM);
             ReadReply();
         }
 
         public void BreakNow()
         {
-            duktape.SendMessage(DValueTag.REQ, 0x12, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x12, DValueTag.EOM);
             ReadReply();
         }
 
@@ -139,7 +139,7 @@ namespace minisphere.Remote
             var eval = string.Format(
                 @"(function() {{ try {{ return Duktape.enc('jx', ({0}), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
                 expression);
-            duktape.SendMessage(DValueTag.REQ, 0x1E, eval, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x1E, eval, DValueTag.EOM);
             var reply = ReadReply();
             bool ok = reply != null && (int)reply[1] == 0;
             return ok ? (string)reply[2] : null;
@@ -147,19 +147,19 @@ namespace minisphere.Remote
 
         public void StepInto()
         {
-            duktape.SendMessage(DValueTag.REQ, 0x14, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x14, DValueTag.EOM);
             ReadReply();
         }
 
         public void StepOut()
         {
-            duktape.SendMessage(DValueTag.REQ, 0x16, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x16, DValueTag.EOM);
             ReadReply();
         }
 
         public void StepOver()
         {
-            duktape.SendMessage(DValueTag.REQ, 0x15, DValueTag.EOM);
+            duktape.Send(DValueTag.REQ, 0x15, DValueTag.EOM);
             ReadReply();
         }
 
@@ -186,7 +186,7 @@ namespace minisphere.Remote
                 object value;
                 while (true)
                 {
-                    if ((value = duktape.ReceiveDValue()) == null)
+                    if ((value = duktape.ReceiveValue()) == null)
                         goto detach;
                     message.Add(value);
                     if (value.Equals(DValueTag.EOM))

@@ -57,7 +57,18 @@ namespace minisphere.Remote
             tcp.Close();
         }
 
-        public object ReceiveDValue()
+        public dynamic[] Receive()
+        {
+            List<dynamic> message = new List<dynamic>();
+            dynamic value;
+            while (!(value = ReceiveValue()).Equals(DValueTag.EOM))
+            {
+                message.Add(value);
+            }
+            return message.ToArray();
+        }
+
+        public dynamic ReceiveValue()
         {
             byte[] bytes;
             int length = -1;
@@ -157,15 +168,15 @@ namespace minisphere.Remote
             }
         }
 
-        public void SendMessage(params dynamic[] values)
+        public void Send(params dynamic[] values)
         {
             foreach (dynamic value in values)
             {
-                SendDValue(value);
+                Send(value);
             }
         }
 
-        public void SendDValue(DValueTag value)
+        public void Send(DValueTag value)
         {
             switch (value)
             {
@@ -182,7 +193,7 @@ namespace minisphere.Remote
             }
         }
 
-        public void SendDValue(int value)
+        public void Send(int value)
         {
             if (value < 64)
             {
@@ -207,7 +218,7 @@ namespace minisphere.Remote
             }
         }
 
-        public void SendDValue(string value)
+        public void Send(string value)
         {
             var utf8 = new UTF8Encoding(false);
             byte[] stringBytes = utf8.GetBytes(value);
