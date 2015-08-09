@@ -108,8 +108,13 @@ namespace minisphere.Remote
             for (int i = 0; i < count; ++i)
             {
                 string name = reply[i * 2 + 1].ToString();
-                string value = reply[i * 2 + 2].Equals(DValue.Object) ? "{ ... }" : Evaluate(name);
-                variables.Add(name, value);
+                dynamic value = reply[i * 2 + 2];
+                string friendlyValue = value.Equals(DValue.Object) ? "JS object"
+                    : value is int ? value.ToString()
+                    : value is double ? value.ToString()
+                    : value is string ? string.Format("\"{0}\"", value)
+                    : Evaluate(name);
+                variables.Add(name, friendlyValue);
             }
             return variables;
         }
@@ -129,8 +134,8 @@ namespace minisphere.Remote
         public string Evaluate(string expression)
         {
             var eval = string.Format(
-                @"(function() {{ try {{ return Duktape.enc('jx', ({0}), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
-                expression);
+                @"(function() {{ try {{ return Duktape.enc('jx', eval(""{0}""), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
+                expression.Replace(@"\", @"\\").Replace(@"""", @"\"""));
             duktape.Send(DValue.REQ, 0x1E, eval, DValue.EOM);
             var reply = ReadReply();
             bool ok = reply != null && (int)reply[1] == 0;
@@ -173,7 +178,7 @@ namespace minisphere.Remote
         {
             while (true)
             {
-                dynamic[] message = duktape.Receive();
+                dynamic[] message = duktape.ReceiveAll();
                 if (message == null) goto detach;
                 if (message[0] == DValue.NFY)
                 {

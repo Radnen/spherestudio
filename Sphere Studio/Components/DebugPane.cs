@@ -14,47 +14,62 @@ namespace SphereStudio.Components
 {
     public partial class DebugPane : UserControl
     {
+        private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
+
+        string _lastVar = null;
         IReadOnlyDictionary<string, string> _variables;
 
         public DebugPane()
         {
             InitializeComponent();
 
-            textValue.Text = "Select a variable to see its value.";
+            textValue.Text = ValueBoxHint;
+            textValue.WordWrap = true;
         }
 
         public void Clear()
         {
             listVariables.Items.Clear();
             textEvalBox.Text = "";
-            textValue.Text = "";
+            textValue.Text = ValueBoxHint;
+            textValue.WordWrap = true;
         }
 
         public void SetVariables(IReadOnlyDictionary<string, string> variables)
         {
             _variables = variables;
-            listVariables.Items.Clear();
+            Clear();
             foreach (var k in _variables.Keys)
             {
                 var item = listVariables.Items.Add(k, 0);
                 item.SubItems.Add(_variables[k]);
             }
+            if (_lastVar != null)
+            {
+                var toSelect = listVariables.FindItemWithText(_lastVar);
+                if (toSelect != null)
+                    toSelect.Selected = true;
+            }
         }
 
         private void listVariables_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _lastVar = listVariables.SelectedItems.Count > 0
+                ? listVariables.SelectedItems[0].Text : null;
             if (listVariables.SelectedItems.Count > 0) {
                 string name = listVariables.SelectedItems[0].Text;
                 string value = PluginManager.IDE.Debugger.Evaluate(name)
                     .Replace("\n", "\r\n");
                 string sep = value.Contains("\r\n") ? "\r\n" : " ";
+                textValue.WordWrap = false;
                 textValue.Text = string.Format("var {0} ={1}{2};", name, sep, value);
                 textEvalBox.Text = "";
             }
             else
             {
                 textEvalBox.Text = "";
-                textValue.Text = "Select a variable to see its value.";
+                textValue.Text = ValueBoxHint;
+                textValue.WordWrap = true;
             }
         }
 
@@ -64,7 +79,7 @@ namespace SphereStudio.Components
             var expression = textEvalBox.Text;
             listVariables.SelectedItems.Clear();
             textEvalBox.Text = "";
-            textValue.Text = string.Format("eval(\"{0}\");\r\n\r\n{1}",
+            textValue.Text = string.Format("eval(\"{0}\");\r\n\r\nResult:\r\n{1}",
                 expression, debug.Evaluate(expression).Replace("\n", "\r\n"));
         }
 

@@ -36,8 +36,8 @@
             this.imagesVarList = new System.Windows.Forms.ImageList(this.components);
             this.splitter = new System.Windows.Forms.SplitContainer();
             this.textValue = new System.Windows.Forms.TextBox();
-            this.textEvalBox = new System.Windows.Forms.TextBox();
             this.panelEval = new System.Windows.Forms.Panel();
+            this.textEvalBox = new System.Windows.Forms.TextBox();
             this.buttonEval = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitter)).BeginInit();
             this.splitter.Panel1.SuspendLayout();
@@ -53,12 +53,14 @@
             this.columnValue});
             this.listVariables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listVariables.FullRowSelect = true;
+            this.listVariables.GridLines = true;
             this.listVariables.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listVariables.HideSelection = false;
             this.listVariables.Location = new System.Drawing.Point(0, 0);
             this.listVariables.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.listVariables.MultiSelect = false;
             this.listVariables.Name = "listVariables";
-            this.listVariables.Size = new System.Drawing.Size(387, 231);
+            this.listVariables.Size = new System.Drawing.Size(387, 150);
             this.listVariables.SmallImageList = this.imagesVarList;
             this.listVariables.TabIndex = 0;
             this.listVariables.UseCompatibleStateImageBehavior = false;
@@ -68,12 +70,12 @@
             // columnName
             // 
             this.columnName.Text = "Name";
-            this.columnName.Width = 100;
+            this.columnName.Width = 200;
             // 
             // columnValue
             // 
             this.columnValue.Text = "Value";
-            this.columnValue.Width = 250;
+            this.columnValue.Width = 150;
             // 
             // imagesVarList
             // 
@@ -98,7 +100,7 @@
             this.splitter.Panel2.Controls.Add(this.textValue);
             this.splitter.Panel2.Controls.Add(this.panelEval);
             this.splitter.Size = new System.Drawing.Size(387, 654);
-            this.splitter.SplitterDistance = 231;
+            this.splitter.SplitterDistance = 150;
             this.splitter.TabIndex = 1;
             // 
             // textValue
@@ -111,9 +113,19 @@
             this.textValue.Name = "textValue";
             this.textValue.ReadOnly = true;
             this.textValue.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textValue.Size = new System.Drawing.Size(387, 395);
+            this.textValue.Size = new System.Drawing.Size(387, 476);
             this.textValue.TabIndex = 0;
             this.textValue.WordWrap = false;
+            // 
+            // panelEval
+            // 
+            this.panelEval.Controls.Add(this.textEvalBox);
+            this.panelEval.Controls.Add(this.buttonEval);
+            this.panelEval.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelEval.Location = new System.Drawing.Point(0, 0);
+            this.panelEval.Name = "panelEval";
+            this.panelEval.Size = new System.Drawing.Size(387, 24);
+            this.panelEval.TabIndex = 2;
             // 
             // textEvalBox
             // 
@@ -125,16 +137,6 @@
             this.textEvalBox.TabIndex = 1;
             this.textEvalBox.TextChanged += new System.EventHandler(this.textEvalBox_TextChanged);
             this.textEvalBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textEvalBox_KeyDown);
-            // 
-            // panelEval
-            // 
-            this.panelEval.Controls.Add(this.textEvalBox);
-            this.panelEval.Controls.Add(this.buttonEval);
-            this.panelEval.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelEval.Location = new System.Drawing.Point(0, 0);
-            this.panelEval.Name = "panelEval";
-            this.panelEval.Size = new System.Drawing.Size(387, 24);
-            this.panelEval.TabIndex = 2;
             // 
             // buttonEval
             // 
