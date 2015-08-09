@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace minisphere.Remote
 {
-    enum DValueTag
+    enum DValue
     {
         EOM,
         REQ,
@@ -57,18 +57,20 @@ namespace minisphere.Remote
             tcp.Close();
         }
 
-        public dynamic[] Receive()
+        public dynamic[] ReceiveAll()
         {
             List<dynamic> message = new List<dynamic>();
             dynamic value;
-            while (!(value = ReceiveValue()).Equals(DValueTag.EOM))
+            do
             {
+                if ((value = Receive()) == null)
+                    return null;
                 message.Add(value);
-            }
+            } while (!value.Equals(DValue.EOM));
             return message.ToArray();
         }
 
-        public dynamic ReceiveValue()
+        public dynamic Receive()
         {
             byte[] bytes;
             int length = -1;
@@ -98,11 +100,11 @@ namespace minisphere.Remote
             {
                 switch (bytes[0])
                 {
-                    case 0x00: return DValueTag.EOM;
-                    case 0x01: return DValueTag.REQ;
-                    case 0x02: return DValueTag.REP;
-                    case 0x03: return DValueTag.ERR;
-                    case 0x04: return DValueTag.NFY;
+                    case 0x00: return DValue.EOM;
+                    case 0x01: return DValue.REQ;
+                    case 0x02: return DValue.REP;
+                    case 0x03: return DValue.ERR;
+                    case 0x04: return DValue.NFY;
                     case 0x10: // 32-bit integer
                         if (!tcp.Client.ReceiveAll(bytes = new byte[4]))
                             return null;
@@ -135,11 +137,11 @@ namespace minisphere.Remote
                         if (!tcp.Client.ReceiveAll(bytes = new byte[length]))
                             return null;
                         return bytes;
-                    case 0x15: return DValueTag.Unused;
-                    case 0x16: return DValueTag.Undefined;
-                    case 0x17: return DValueTag.Null;
-                    case 0x18: return DValueTag.True;
-                    case 0x19: return DValueTag.False;
+                    case 0x15: return DValue.Unused;
+                    case 0x16: return DValue.Undefined;
+                    case 0x17: return DValue.Null;
+                    case 0x18: return DValue.True;
+                    case 0x19: return DValue.False;
                     case 0x1A: // IEEE double
                         if (!tcp.Client.ReceiveAll(bytes = new byte[8]))
                             return null;
@@ -149,21 +151,21 @@ namespace minisphere.Remote
                     case 0x1B: // JS object
                         tcp.Client.ReceiveAll(bytes = new byte[2]);
                         tcp.Client.ReceiveAll(new byte[bytes[1]]);
-                        return DValueTag.Object;
+                        return DValue.Object;
                     case 0x1C: // pointer
                         tcp.Client.ReceiveAll(bytes = new byte[1]);
                         tcp.Client.ReceiveAll(new byte[bytes[0]]);
-                        return DValueTag.Pointer;
+                        return DValue.Pointer;
                     case 0x1D: // Duktape lightfunc
                         tcp.Client.ReceiveAll(bytes = new byte[3]);
                         tcp.Client.ReceiveAll(new byte[bytes[2]]);
-                        return DValueTag.Lightfunc;
+                        return DValue.Lightfunc;
                     case 0x1E: // Duktape heap pointer
                         tcp.Client.ReceiveAll(bytes = new byte[1]);
                         tcp.Client.ReceiveAll(new byte[bytes[0]]);
-                        return DValueTag.HeapPtr;
+                        return DValue.HeapPtr;
                     default:
-                        return DValueTag.EOM;
+                        return DValue.EOM;
                 }
             }
         }
@@ -176,20 +178,20 @@ namespace minisphere.Remote
             }
         }
 
-        public void Send(DValueTag value)
+        public void Send(DValue value)
         {
             switch (value)
             {
-                case DValueTag.EOM: tcp.Client.Send(new byte[1] { 0x00 }); break;
-                case DValueTag.REQ: tcp.Client.Send(new byte[1] { 0x01 }); break;
-                case DValueTag.REP: tcp.Client.Send(new byte[1] { 0x02 }); break;
-                case DValueTag.ERR: tcp.Client.Send(new byte[1] { 0x03 }); break;
-                case DValueTag.NFY: tcp.Client.Send(new byte[1] { 0x04 }); break;
-                case DValueTag.Unused: tcp.Client.Send(new byte[1] { 0x15 }); break;
-                case DValueTag.Undefined: tcp.Client.Send(new byte[1] { 0x16 }); break;
-                case DValueTag.Null: tcp.Client.Send(new byte[1] { 0x17 }); break;
-                case DValueTag.True: tcp.Client.Send(new byte[1] { 0x18 }); break;
-                case DValueTag.False: tcp.Client.Send(new byte[1] { 0x19 }); break;
+                case DValue.EOM: tcp.Client.Send(new byte[1] { 0x00 }); break;
+                case DValue.REQ: tcp.Client.Send(new byte[1] { 0x01 }); break;
+                case DValue.REP: tcp.Client.Send(new byte[1] { 0x02 }); break;
+                case DValue.ERR: tcp.Client.Send(new byte[1] { 0x03 }); break;
+                case DValue.NFY: tcp.Client.Send(new byte[1] { 0x04 }); break;
+                case DValue.Unused: tcp.Client.Send(new byte[1] { 0x15 }); break;
+                case DValue.Undefined: tcp.Client.Send(new byte[1] { 0x16 }); break;
+                case DValue.Null: tcp.Client.Send(new byte[1] { 0x17 }); break;
+                case DValue.True: tcp.Client.Send(new byte[1] { 0x18 }); break;
+                case DValue.False: tcp.Client.Send(new byte[1] { 0x19 }); break;
             }
         }
 
