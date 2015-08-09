@@ -70,6 +70,14 @@ namespace Sphere.Plugins.Interfaces
         void Run();
 
         /// <summary>
+        /// Sets or clears a breakpoint at a specified location.
+        /// </summary>
+        /// <param name="filename">The filename containing the breakpoint.</param>
+        /// <param name="lineNumber">The line number of the breakpoint.</param>
+        /// <param name="isActive">If true, a breakpoint is set. Otherwise, the existing one is cleared.</param>
+        void SetBreakpoint(string filename, int lineNumber, bool isActive);
+
+        /// <summary>
         /// Executes the next statement, stepping into function calls.
         /// </summary>
         void StepInto();

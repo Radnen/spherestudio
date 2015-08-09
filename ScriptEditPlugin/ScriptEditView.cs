@@ -107,7 +107,7 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public override int[] BreakPoints
+        public override int[] Breakpoints
         {
             get
             {
@@ -194,7 +194,7 @@ namespace SphereStudio.Plugins
                 int[] breaks = new int[0];
                 if (PluginManager.IDE.CurrentGame != null)
                     breaks = PluginManager.IDE.CurrentGame.GetBreakpoints(filename);
-                BreakPoints = breaks;
+                Breakpoints = breaks;
             }
         }
 
@@ -337,7 +337,12 @@ namespace SphereStudio.Plugins
         {
             if (e.Margin == _codeBox.Margins.Margin1)
             {
-                e.ToggleMarkerNumber = 0;
+                bool isSet = !e.Line.GetMarkers().Contains(_codeBox.Markers[0]);
+                if (isSet)
+                    e.Line.AddMarker(0);
+                else
+                    e.Line.DeleteMarker(0);
+                OnBreakpointSet(new BreakpointSetEventArgs(e.Line.Number + 1, isSet));
             }
         }
 

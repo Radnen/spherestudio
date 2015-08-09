@@ -55,7 +55,11 @@ namespace SphereStudio.IDE
             UpdateTabText();
 
             if (View is ScriptView)
-                ((ScriptView)View).BreakPoints = Global.CurrentGame.GetBreakpoints(FileName);
+            {
+                ScriptView scriptView = View as ScriptView;
+                scriptView.Breakpoints = Global.CurrentGame.GetBreakpoints(FileName);
+                scriptView.BreakpointSet += on_BreakpointSet;
+            }
 
             if (restoreView && FileName != null)
             {
@@ -279,7 +283,7 @@ namespace SphereStudio.IDE
 
             // record breakpoints if script tab
             if (View is ScriptView)
-                Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).BreakPoints);
+                Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
 
             // save view (cursor position, etc.)
             Global.CurrentGame.User.SetValue(
@@ -291,6 +295,17 @@ namespace SphereStudio.IDE
         {
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;
             _content.ToolTipText = FileName;
+        }
+
+        private void on_BreakpointSet(object sender, BreakpointSetEventArgs e)
+        {
+            if (FileName == null) return;
+            ScriptView view = View as ScriptView;
+            Global.CurrentGame.SetBreakpoints(FileName, view.Breakpoints);
+            if (_ide.Debugger != null)
+            {
+                _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);
+            }
         }
 
         private void on_DirtyChanged(object sender, EventArgs e)

@@ -59,26 +59,8 @@ namespace minisphere.Remote
                     messageReader = new Thread(RunDebugger);
                     messageReader.Start();
                     foreach (string filename in breaks.Keys)
-                    {
                         foreach (int lineNumber in breaks[filename])
-                        {
-                            string relativePath = filename;
-                            string rootPath = Path.Combine(ssproj.RootPath, @"scripts") + @"\";
-                            string sysPath = Path.Combine(engineDir, @"system") + @"\";
-                            try
-                            {
-                                if (filename.Substring(0, rootPath.Length) == rootPath)
-                                    relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
-                            } catch { } // *munch*
-                            try
-                            {
-                                if (filename.Substring(0, sysPath.Length) == sysPath)
-                                    relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
-                            } catch { } // *munch*
-                            duktape.Send(DValue.REQ, 0x18, relativePath, lineNumber, DValue.EOM);
-                            ReadReply();
-                        }
-                    }
+                            SetBreakpoint(filename, lineNumber, true);
                     return;
                 }
                 catch (SocketException) { }
@@ -117,6 +99,46 @@ namespace minisphere.Remote
                 variables.Add(name, friendlyValue);
             }
             return variables;
+        }
+
+        public void SetBreakpoint(string filename, int lineNumber, bool isActive)
+        {
+            // convert filename to a SphereFS path
+            string relativePath = filename;
+            string rootPath = Path.Combine(ssproj.RootPath, @"scripts") + @"\";
+            string sysPath = Path.Combine(engineDir, @"system") + @"\";
+            try
+            {
+                if (filename.Substring(0, rootPath.Length) == rootPath)
+                    relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
+            } catch { } // *munch*
+            try
+            {
+                if (filename.Substring(0, sysPath.Length) == sysPath)
+                    relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
+            } catch { } // *munch*
+
+            // clear any breakpoint already set at this location
+            duktape.Send(DValue.REQ, 0x17, DValue.EOM);
+            dynamic[] reply = ReadReply();
+            int count = (reply.Length - 2) / 2;
+            for (int i = count - 1; i >= 0; --i)
+            {
+                string fn = reply[1 + i * 2];
+                int line = reply[2 + i * 2];
+                if (fn == relativePath && line == lineNumber)
+                {
+                    duktape.Send(DValue.REQ, 0x19, i, DValue.EOM);
+                    ReadReply();
+                }
+            }
+
+            // set the new breakpoint if needed
+            if (isActive)
+            {
+                duktape.Send(DValue.REQ, 0x18, relativePath, lineNumber, DValue.EOM);
+                ReadReply();
+            }
         }
 
         public void Run()
