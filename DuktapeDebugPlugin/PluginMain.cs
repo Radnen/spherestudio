@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Plugins;
@@ -26,7 +27,7 @@ namespace minisphere.Remote
 
         }
 
-        public IDebugger Start(IProject project)
+        public async Task<IDebugger> Start(IProject project)
         {
             // start minisphere in debugging mode
             string enginePath = PluginManager.IDE.EnginePath;
@@ -37,7 +38,7 @@ namespace minisphere.Remote
             DebugSession client = new DebugSession(project, enginePath, engine);
             try
             {
-                client.Connect("localhost", 812);
+                await client.Connect("localhost", 812);
                 return client;
             }
             catch (TimeoutException)

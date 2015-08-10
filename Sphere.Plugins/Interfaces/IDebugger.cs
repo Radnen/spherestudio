@@ -44,12 +44,12 @@ namespace Sphere.Plugins.Interfaces
         /// Complex objects will be reported simply as "[object]".
         /// </summary>
         /// <returns>A dictionary mapping variable names to their values.</returns>
-        IReadOnlyDictionary<string, string> GetVariableList();
+        Task<IReadOnlyDictionary<string, string>> GetVariableList();
         
         /// <summary>
         /// Pauses execution and breaks into the debugger.
         /// </summary>
-        void BreakNow();
+        Task Pause();
         
         /// <summary>
         /// Detaches the debugger.
@@ -61,13 +61,13 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         /// <param name="expression">The expression to evaluate.</param>
         /// <returns>The JSON-encoded result of evaluating the expression.</returns>
-        string Evaluate(string expression);
+        Task<string> Evaluate(string expression);
 
         /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,
         /// whichever comes first.
         /// </summary>
-        void Run();
+        Task Run();
 
         /// <summary>
         /// Sets or clears a breakpoint at a specified location.
@@ -75,21 +75,21 @@ namespace Sphere.Plugins.Interfaces
         /// <param name="filename">The filename containing the breakpoint.</param>
         /// <param name="lineNumber">The line number of the breakpoint.</param>
         /// <param name="isActive">If true, a breakpoint is set. Otherwise, the existing one is cleared.</param>
-        void SetBreakpoint(string filename, int lineNumber, bool isActive);
+        Task SetBreakpoint(string filename, int lineNumber, bool isActive);
 
         /// <summary>
         /// Executes the next statement, stepping into function calls.
         /// </summary>
-        void StepInto();
+        Task StepInto();
 
         /// <summary>
         /// Runs until the current function returns.
         /// </summary>
-        void StepOut();
+        Task StepOut();
 
         /// <summary>
         /// Runs until the current statement finishes executing.
         /// </summary>
-        void StepOver();
+        Task StepOver();
     }
 }

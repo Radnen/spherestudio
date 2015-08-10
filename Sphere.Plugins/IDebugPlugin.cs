@@ -15,6 +15,6 @@ namespace Sphere.Plugins
         /// </summary>
         /// <param name="project">The debug target.</param>
         /// <returns>An IDebugger object representing the session.</returns>
-        IDebugger Start(IProject project);
+        Task<IDebugger> Start(IProject project);
     }
 }

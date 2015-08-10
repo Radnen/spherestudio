@@ -6,9 +6,11 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
 {
@@ -19,7 +21,6 @@ namespace minisphere.Remote
         private Process engineProcess;
         private string engineDir;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
-        private Thread messageReader;
         private Timer focusSwitchTimer;
 
         public DebugSession(IProject project, string enginePath, Process engine)
@@ -48,19 +49,21 @@ namespace minisphere.Remote
 
         public event EventHandler Resumed;
 
-        public void Connect(string hostname, int port, uint timeout = 5000)
+        public async Task Connect(string hostname, int port, uint timeout = 5000)
         {
             long end = DateTime.Now.Ticks + timeout * 10000;
             var breaks = ssproj.GetAllBreakpoints();
             while (DateTime.Now.Ticks < end)
             {
                 try {
-                    duktape = new DuktapeClient(hostname, port);
-                    messageReader = new Thread(RunDebugger);
-                    messageReader.Start();
+                    duktape = new DuktapeClient();
+                    duktape.Detached += duktape_Detached;
+                    duktape.Paused += duktape_Paused;
+                    duktape.Resumed += duktape_Resumed;
+                    await duktape.Connect(hostname, port);
                     foreach (string filename in breaks.Keys)
                         foreach (int lineNumber in breaks[filename])
-                            SetBreakpoint(filename, lineNumber, true);
+                            await SetBreakpoint(filename, lineNumber, true);
                     return;
                 }
                 catch (SocketException) { }
@@ -68,40 +71,50 @@ namespace minisphere.Remote
             throw new TimeoutException();
         }
 
+        private void duktape_Detached(object sender, EventArgs e)
+        {
+            if (Detached != null)
+            {
+                PluginManager.IDE.Invoke(Detached,
+                    new object[] { this, EventArgs.Empty });
+            }
+        }
+
+        private void duktape_Paused(object sender, EventArgs e)
+        {
+            focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            UpdateStatus();
+            if (Paused != null)
+            {
+                PluginManager.IDE.Invoke(Paused,
+                    new object[] { this, EventArgs.Empty });
+            }
+        }
+
+        private void duktape_Resumed(object sender, EventArgs e)
+        {
+            focusSwitchTimer.Change(250, Timeout.Infinite);
+            UpdateStatus();
+            if (Resumed != null)
+            {
+                PluginManager.IDE.Invoke(Resumed,
+                    new object[] { this, EventArgs.Empty });
+            }
+        }
+
         public void Detach()
         {
-            if (messageReader != null)
-            {
-                engineProcess.CloseMainWindow();
-                messageReader.Abort();
-                duktape.Dispose();
-                messageReader = null;
-                duktape = null;
-                if (Detached != null) Detached(this, EventArgs.Empty);
-            }
+            engineProcess.CloseMainWindow();
+            duktape.Dispose();
+            duktape = null;
         }
 
-        public IReadOnlyDictionary<string, string> GetVariableList()
+        public async Task<IReadOnlyDictionary<string, string>> GetVariableList()
         {
-            duktape.Send(DValue.REQ, 0x1D, DValue.EOM);
-            dynamic[] reply = ReadReply();
-            var variables = new Dictionary<string, string>();
-            int count = (reply.Length - 2) / 2;
-            for (int i = 0; i < count; ++i)
-            {
-                string name = reply[i * 2 + 1].ToString();
-                dynamic value = reply[i * 2 + 2];
-                string friendlyValue = value.Equals(DValue.Object) ? "JS object"
-                    : value is int ? value.ToString()
-                    : value is double ? value.ToString()
-                    : value is string ? string.Format("\"{0}\"", value)
-                    : Evaluate(name);
-                variables.Add(name, friendlyValue);
-            }
-            return variables;
+            return await duktape.GetLocals();
         }
 
-        public void SetBreakpoint(string filename, int lineNumber, bool isActive)
+        public async Task SetBreakpoint(string filename, int lineNumber, bool isActive)
         {
             // convert filename to a SphereFS path
             string relativePath = filename;
@@ -118,68 +131,41 @@ namespace minisphere.Remote
                     relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
             } catch { } // *munch*
 
-            // clear any breakpoint already set at this location
-            duktape.Send(DValue.REQ, 0x17, DValue.EOM);
-            dynamic[] reply = ReadReply();
-            int count = (reply.Length - 2) / 2;
-            for (int i = count - 1; i >= 0; --i)
-            {
-                string fn = reply[1 + i * 2];
-                int line = reply[2 + i * 2];
-                if (fn == relativePath && line == lineNumber)
-                {
-                    duktape.Send(DValue.REQ, 0x19, i, DValue.EOM);
-                    ReadReply();
-                }
-            }
-
             // set the new breakpoint if needed
             if (isActive)
             {
-                duktape.Send(DValue.REQ, 0x18, relativePath, lineNumber, DValue.EOM);
-                ReadReply();
+                await duktape.AddBreak(relativePath, lineNumber);
             }
         }
 
-        public void Run()
+        public async Task Run()
         {
-            duktape.Send(DValue.REQ, 0x13, DValue.EOM);
-            ReadReply();
+            await duktape.Run();
         }
 
-        public void BreakNow()
+        public async Task Pause()
         {
-            duktape.Send(DValue.REQ, 0x12, DValue.EOM);
-            ReadReply();
+            await duktape.Pause();
         }
 
-        public string Evaluate(string expression)
+        public async Task<string> Evaluate(string expression)
         {
-            var eval = string.Format(
-                @"(function() {{ try {{ return Duktape.enc('jx', eval(""{0}""), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
-                expression.Replace(@"\", @"\\").Replace(@"""", @"\"""));
-            duktape.Send(DValue.REQ, 0x1E, eval, DValue.EOM);
-            var reply = ReadReply();
-            bool ok = reply != null && (int)reply[1] == 0;
-            return ok ? (string)reply[2] : null;
+            return await duktape.Eval(expression);
         }
 
-        public void StepInto()
+        public async Task StepInto()
         {
-            duktape.Send(DValue.REQ, 0x14, DValue.EOM);
-            ReadReply();
+            await duktape.StepInto();
         }
 
-        public void StepOut()
+        public async Task StepOut()
         {
-            duktape.Send(DValue.REQ, 0x16, DValue.EOM);
-            ReadReply();
+            await duktape.StepOut();
         }
 
-        public void StepOver()
+        public async Task StepOver()
         {
-            duktape.Send(DValue.REQ, 0x15, DValue.EOM);
-            ReadReply();
+            await duktape.StepOver();
         }
 
         private static void FocusEngine(object state)
@@ -188,67 +174,24 @@ namespace minisphere.Remote
             NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
         }
 
-        private dynamic[] ReadReply()
+        private void UpdateStatus()
         {
-            while (replies.Count <= 0 && messageReader.IsAlive) ;
-            dynamic[] reply;
-            bool ok = replies.TryDequeue(out reply);
-            return ok ? reply : null;
-        }
-
-        private void RunDebugger()
-        {
-            while (true)
-            {
-                dynamic[] message = duktape.ReceiveAll();
-                if (message == null) goto detach;
-                if (message[0] == DValue.NFY)
-                {
-                    int commandID = message[1];
-                    switch (commandID)
-                    {
-                        case 0x01:
-                            string path = message[3];
-                            if (path.Length >= 2 && path.Substring(0, 2) == "~/")
-                                FileName = Path.Combine(ssproj.RootPath, path.Substring(2));
-                            else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
-                                FileName = Path.Combine(ssproj.RootPath, path.Substring(5));
-                            else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
-                                FileName = Path.Combine(engineDir, "system", path.Substring(5));
-                            else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
-                                FileName = Path.Combine(
-                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                                    "minisphere", path.Substring(5));
-                            else
-                                FileName = Path.Combine(ssproj.RootPath, "scripts", path);
-                            FileName = FileName.Replace('/', '\\');
-                            LineNumber = message[5];
-                            bool wasRunning = Running;
-                            Running = message[2] == 0;
-                            if (Running && !wasRunning)
-                            {
-                                focusSwitchTimer.Change(250, Timeout.Infinite);
-                                if (Resumed != null)
-                                    Resumed(this, EventArgs.Empty);
-                            }
-                            if (!Running)
-                            {
-                                focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                                if (Paused != null)
-                                    Paused(this, EventArgs.Empty);
-                            }
-                            break;
-                    }
-                }
-                else if (message[0] == DValue.REP || message[0] == DValue.ERR)
-                {
-                    replies.Enqueue(message);
-                }
-            }
-
-        detach:
-            if (Detached != null)
-                Detached(this, EventArgs.Empty);
+            string path = duktape.FileName;
+            if (path.Length >= 2 && path.Substring(0, 2) == "~/")
+                FileName = Path.Combine(ssproj.RootPath, path.Substring(2));
+            else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
+                FileName = Path.Combine(ssproj.RootPath, path.Substring(5));
+            else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
+                FileName = Path.Combine(engineDir, "system", path.Substring(5));
+            else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
+                FileName = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    "minisphere", path.Substring(5));
+            else
+                FileName = Path.Combine(ssproj.RootPath, "scripts", path);
+            FileName = FileName.Replace('/', '\\');
+            LineNumber = duktape.LineNumber;
+            Running = duktape.Running;
         }
     }
 }

@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebugSession.cs" />
-    <Compile Include="DuktapeClient.cs" />
+    <Compile Include="Duktape\DuktapeClient.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="PluginMain.cs" />
     <Compile Include="SocketExtensions.cs" />

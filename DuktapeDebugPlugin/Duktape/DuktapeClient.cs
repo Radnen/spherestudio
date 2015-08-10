@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace minisphere.Remote
+namespace minisphere.Remote.Duktape
 {
     enum DValue
     {
@@ -28,13 +31,60 @@ namespace minisphere.Remote
     class DuktapeClient : IDisposable
     {
         private TcpClient tcp = new TcpClient();
+        private Queue<dynamic[]> requests = new Queue<dynamic[]>();
+        private Dictionary<dynamic[], dynamic[]> replies = new Dictionary<dynamic[], dynamic[]>();
+        private object replyLock = new object();
+        private Thread worker;
 
-        public DuktapeClient(string hostname, int port)
+        public DuktapeClient()
         {
-            tcp.Connect(hostname, port);
+        }
 
-            // validate Duktape handshake and protocol version
-            try {
+        public void Dispose()
+        {
+            tcp.Close();
+        }
+
+        /// <summary>
+        /// Fires when the debugger is first attached.
+        /// </summary>
+        public event EventHandler Attached;
+
+        /// <summary>
+        /// Fires when the debugger is detached from the target.
+        /// </summary>
+        public event EventHandler Detached;
+
+        /// <summary>
+        /// Fires when execution pauses, e.g. at a breakpoint.
+        /// </summary>
+        public event EventHandler Paused;
+
+        /// <summary>
+        /// Fires when execution has resumed.
+        /// </summary>
+        public event EventHandler Resumed;
+        
+        /// <summary>
+        /// Gets the filename reported in the last status update.
+        /// </summary>
+        public string FileName { get; private set; }
+
+        /// <summary>
+        /// Gets the line number being executed as of the last status update.
+        /// </summary>
+        public int LineNumber { get; private set; }
+
+        /// <summary>
+        /// Gets whether the target is currently executing code.
+        /// </summary>
+        public bool Running { get; private set; }
+
+        public async Task Connect(string hostname, int port)
+        {
+            await tcp.ConnectAsync(hostname, port);
+            try
+            {
                 string line = "";
                 byte[] buffer = new byte[1];
                 while (buffer[0] != '\n')
@@ -44,33 +94,99 @@ namespace minisphere.Remote
                 }
                 int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
                 if (debuggerVersion != 1)
-                    throw new NotSupportedException("The debugger protocol is not supported.");
+                    throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
+                worker = new Thread(RunWorker);
+                worker.Start();
+                if (Attached != null)
+                {
+                    Attached(this, EventArgs.Empty);
+                }
             }
             catch
             {
-                throw new NotSupportedException("The debugger protocol is not supported.");
+                throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
             }
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Sets a breakpoint. Execution will pause automatically if the breakpoint is hit.
+        /// </summary>
+        /// <param name="filename">The filename in which to place the breakpoint.</param>
+        /// <param name="lineNumber">The line number of the breakpoint.</param>
+        /// <returns>The index assigned to the breakpoint by Duktape.</returns>
+        public async Task<int> AddBreak(string filename, int lineNumber)
         {
-            tcp.Close();
+            var reply = await Talk(DValue.REQ, 0x18, filename, lineNumber);
+            return reply[1];
         }
 
-        public dynamic[] ReceiveAll()
+        public async Task<string> Eval(string expression)
+        {
+            var code = string.Format(
+                @"(function() {{ try {{ return Duktape.enc('jx', eval(""{0}""), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
+                expression.Replace(@"\", @"\\").Replace(@"""", @"\"""));
+            var reply = await Talk(DValue.REQ, 0x1E, code);
+            return reply[2];
+        }
+
+        public async Task<IReadOnlyDictionary<string, string>> GetLocals()
+        {
+            var reply = await Talk(DValue.REQ, 0x1D);
+            var variables = new Dictionary<string, string>();
+            int count = (reply.Length - 1) / 2;
+            for (int i = 0; i < count; ++i)
+            {
+                string name = reply[1 + i * 2].ToString();
+                dynamic value = reply[2 + i * 2];
+                string friendlyValue = value.Equals(DValue.Object) ? "JS object"
+                    : value is int ? value.ToString()
+                    : value is double ? value.ToString()
+                    : value is string ? string.Format("\"{0}\"", value)
+                    : "Unknown";
+                variables.Add(name, friendlyValue);
+            }
+            return variables;
+        }
+
+        public async Task Pause()
+        {
+            await Talk(DValue.REQ, 0x12);
+        }
+
+        public async Task Run()
+        {
+            await Talk(DValue.REQ, 0x13);
+        }
+
+        public async Task StepInto()
+        {
+            await Talk(DValue.REQ, 0x14);
+        }
+
+        public async Task StepOut()
+        {
+            await Talk(DValue.REQ, 0x16);
+        }
+
+        public async Task StepOver()
+        {
+            await Talk(DValue.REQ, 0x15);
+        }
+
+        private dynamic[] ReceiveMessage()
         {
             List<dynamic> message = new List<dynamic>();
             dynamic value;
             do
             {
-                if ((value = Receive()) == null)
+                if ((value = ReceiveValue()) == null)
                     return null;
                 message.Add(value);
             } while (!value.Equals(DValue.EOM));
             return message.ToArray();
         }
 
-        public dynamic Receive()
+        private dynamic ReceiveValue()
         {
             byte[] bytes;
             int length = -1;
@@ -169,16 +285,8 @@ namespace minisphere.Remote
                 }
             }
         }
-
-        public void Send(params dynamic[] values)
-        {
-            foreach (dynamic value in values)
-            {
-                Send(value);
-            }
-        }
-
-        public void Send(DValue value)
+        
+        private void SendValue(DValue value)
         {
             switch (value)
             {
@@ -195,7 +303,7 @@ namespace minisphere.Remote
             }
         }
 
-        public void Send(int value)
+        private void SendValue(int value)
         {
             if (value < 64)
             {
@@ -220,7 +328,7 @@ namespace minisphere.Remote
             }
         }
 
-        public void Send(string value)
+        private void SendValue(string value)
         {
             var utf8 = new UTF8Encoding(false);
             byte[] stringBytes = utf8.GetBytes(value);
@@ -234,6 +342,75 @@ namespace minisphere.Remote
                 (byte)(stringBytes.Length & 0xFF)
             });
             tcp.Client.Send(stringBytes);
+        }
+
+        private async Task<dynamic[]> Talk(params dynamic[] values)
+        {
+            foreach (dynamic value in values)
+            {
+                SendValue(value);
+            }
+            SendValue(DValue.EOM);
+            lock (replyLock)
+            {
+                requests.Enqueue(values);
+            }
+            return await Task.Run(() =>
+            {
+                while (true)
+                {
+                    lock (replyLock)
+                    {
+                        if (replies.ContainsKey(values))
+                        {
+                            var reply = replies[values];
+                            replies.Remove(values);
+                            return reply;
+                        }
+                    }
+                    Thread.Sleep(0);
+                }
+            });
+        }
+
+        private void RunWorker()
+        {
+            while (true)
+            {
+                dynamic[] message = ReceiveMessage();
+                if (message == null) goto detachNow;
+                if (message[0] == DValue.NFY)
+                {
+                    int commandID = message[1];
+                    switch (commandID)
+                    {
+                        case 0x01:
+                            FileName = message[3];
+                            LineNumber = message[5];
+                            bool wasRunning = Running;
+                            Running = message[2] == 0;
+                            if (Running && !wasRunning && Resumed != null)
+                                Resumed(this, EventArgs.Empty);
+                            if (!Running && Paused != null)
+                                Paused(this, EventArgs.Empty);
+                            break;
+                    }
+                }
+                else if (message[0] == DValue.REP || message[0] == DValue.ERR)
+                {
+                    lock (replyLock)
+                    {
+                        dynamic[] request = requests.Dequeue();
+                        replies.Add(request, message.Take(message.Length - 1).ToArray());
+                    }
+                }
+            }
+
+        detachNow:
+            if (Detached != null)
+            {
+                Detached(this, EventArgs.Empty);
+            }
         }
     }
 }

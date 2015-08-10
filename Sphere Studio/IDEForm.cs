@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
@@ -1045,7 +1046,7 @@ namespace SphereStudio
                     content.DockHandler.Activate();
         }
 
-        private void StartDebugger()
+        private async Task StartDebugger()
         {
             var debuggers = from f in Global.Plugins.Values
                             where f.Enabled
@@ -1062,7 +1063,7 @@ namespace SphereStudio
                     tab.Save();  // save all non-untitled documents
                 }
                 Global.CurrentGame.Build();
-                _debugger = plugin.Start(CurrentGame);
+                _debugger = await plugin.Start(CurrentGame);
                 if (_debugger != null)
                 {
                     _debugDock.Show();
@@ -1073,7 +1074,7 @@ namespace SphereStudio
                     _debugger.Detached += debugger_Detached;
                     _debugger.Paused += debugger_Paused;
                     _debugger.Resumed += debugger_Resumed;
-                    _debugger.Run();
+                    await _debugger.Run();
                 }
                 else
                 {
@@ -1190,64 +1191,55 @@ namespace SphereStudio
 
         private void debugger_Detached(object sender, EventArgs e)
         {
-            BeginInvoke(new Action(() =>
-            {
-                _debugPane.Enabled = false;
-                _debugPane.Clear();
-                _debugDock.Hide();
-                var scriptViews = from tab in _tabs
-                                  where tab.View is ScriptView
-                                  select tab.View;
-                foreach (ScriptView view in scriptViews)
-                    view.ActiveLine = 0;
-                _debugger = null;
-                menuDebug.Text = "Start &Debugging";
-                toolDebug.Text = "Debug";
-                UpdateButtons();
-            }));
+            _debugPane.Enabled = false;
+            _debugPane.Clear();
+            _debugDock.Hide();
+            var scriptViews = from tab in _tabs
+                                where tab.View is ScriptView
+                                select tab.View;
+            foreach (ScriptView view in scriptViews)
+                view.ActiveLine = 0;
+            _debugger = null;
+            menuDebug.Text = "Start &Debugging";
+            toolDebug.Text = "Debug";
+            UpdateButtons();
         }
 
-        private void debugger_Paused(object sender, EventArgs e)
+        private async void debugger_Paused(object sender, EventArgs e)
         {
-            BeginInvoke(new Action(() =>
-            {
-                if (_debugger.Running)
-                    return;
+            if (_debugger.Running)
+                return;
 
-                _debugPane.Enabled = true;
-                UpdateButtons();
-                ScriptView view = null;
-                view = OpenDocument(_debugger.FileName) as ScriptView;
-                if (view != null)
-                {
-                    view.ActiveLine = _debugger.LineNumber;
-                    _debugPane.SetVariables(_debugger.GetVariableList());
-                }
-                else
-                {
-                    // if no source is available, step through.
-                    _debugger.StepOut();
-                }
-                Activate();
-            }));
+            _debugPane.Enabled = true;
+            UpdateButtons();
+            ScriptView view = null;
+            view = OpenDocument(_debugger.FileName) as ScriptView;
+            if (view != null)
+            {
+                view.ActiveLine = _debugger.LineNumber;
+                _debugPane.SetVariables(await _debugger.GetVariableList());
+            }
+            else
+            {
+                // if no source is available, step through.
+                await _debugger.StepOut();
+            }
+            Activate();
         }
 
         private void debugger_Resumed(object sender, EventArgs e)
         {
-            BeginInvoke(new Action(() =>
-            {
-                if (!_debugger.Running)
-                    return;
+            if (!_debugger.Running)
+                return;
 
-                _debugPane.Enabled = false;
-                _debugPane.Clear();
-                var scriptViews = from tab in _tabs
-                                  where tab.View is ScriptView
-                                  select tab.View;
-                foreach (ScriptView view in scriptViews)
-                    view.ActiveLine = 0;
-                UpdateButtons();
-            }));
+            _debugPane.Enabled = false;
+            _debugPane.Clear();
+            var scriptViews = from tab in _tabs
+                                where tab.View is ScriptView
+                                select tab.View;
+            foreach (ScriptView view in scriptViews)
+                view.ActiveLine = 0;
+            UpdateButtons();
         }
 
         private void menuStepInto_Click(object sender, EventArgs e)
@@ -1265,17 +1257,17 @@ namespace SphereStudio
             _debugger.StepOver();
         }
 
-        private void menuDebug_Click(object sender, EventArgs e)
+        private async void menuDebug_Click(object sender, EventArgs e)
         {
             if (_debugger != null)
-                _debugger.Run();
+                await _debugger.Run();
             else
-                StartDebugger();
+                await StartDebugger();
         }
 
         private void debugBreakNow_Click(object sender, EventArgs e)
         {
-            _debugger.BreakNow();
+            _debugger.Pause();
         }
 
         private void menuStopDebug_Click(object sender, EventArgs e)

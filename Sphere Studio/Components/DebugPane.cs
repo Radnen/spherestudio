@@ -52,14 +52,13 @@ namespace SphereStudio.Components
             }
         }
 
-        private void listVariables_SelectedIndexChanged(object sender, EventArgs e)
+        private async void listVariables_SelectedIndexChanged(object sender, EventArgs e)
         {
             _lastVar = listVariables.SelectedItems.Count > 0
                 ? listVariables.SelectedItems[0].Text : null;
             if (listVariables.SelectedItems.Count > 0) {
                 string name = listVariables.SelectedItems[0].Text;
-                string value = PluginManager.IDE.Debugger.Evaluate(name)
-                    .Replace("\n", "\r\n");
+                string value = (await PluginManager.IDE.Debugger.Evaluate(name)).Replace("\n", "\r\n");
                 string sep = value.Contains("\r\n") ? "\r\n" : " ";
                 textValue.WordWrap = false;
                 textValue.Text = string.Format("var {0} ={1}{2};", name, sep, value);
@@ -73,14 +72,16 @@ namespace SphereStudio.Components
             }
         }
 
-        private void buttonEval_Click(object sender, EventArgs e)
+        private async void buttonEval_Click(object sender, EventArgs e)
         {
+            buttonEval.Enabled = false;
             var debug = PluginManager.IDE.Debugger;
             var expression = textEvalBox.Text;
             listVariables.SelectedItems.Clear();
             textEvalBox.Text = "";
             textValue.Text = string.Format("eval(\"{0}\");\r\n\r\nResult:\r\n{1}",
-                expression, debug.Evaluate(expression).Replace("\n", "\r\n"));
+                expression, (await debug.Evaluate(expression)).Replace("\n", "\r\n"));
+            buttonEval.Enabled = true;
         }
 
         private void textEvalBox_KeyDown(object sender, KeyEventArgs e)
