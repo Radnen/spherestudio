@@ -34,7 +34,7 @@ namespace minisphere.Remote.Duktape
         private Queue<dynamic[]> requests = new Queue<dynamic[]>();
         private Dictionary<dynamic[], dynamic[]> replies = new Dictionary<dynamic[], dynamic[]>();
         private object replyLock = new object();
-        private Thread worker;
+        private Thread messenger;
 
         public DuktapeClient()
         {
@@ -95,8 +95,8 @@ namespace minisphere.Remote.Duktape
                 int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
                 if (debuggerVersion != 1)
                     throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
-                worker = new Thread(RunWorker);
-                worker.Start();
+                messenger = new Thread(RunMessenger);
+                messenger.Start();
                 if (Attached != null)
                 {
                     Attached(this, EventArgs.Empty);
@@ -116,8 +116,26 @@ namespace minisphere.Remote.Duktape
         /// <returns>The index assigned to the breakpoint by Duktape.</returns>
         public async Task<int> AddBreak(string filename, int lineNumber)
         {
-            var reply = await Talk(DValue.REQ, 0x18, filename, lineNumber);
+            var reply = await Converse(DValue.REQ, 0x18, filename, lineNumber);
             return reply[1];
+        }
+
+        public async Task DelBreak(int index)
+        {
+            await Converse(DValue.REQ, 0x19, index);
+        }
+
+        public async Task<Tuple<string, int>[]> ListBreak()
+        {
+            var reply = await Converse(DValue.REQ, 0x17);
+            var count = (reply.Length - 1) / 2;
+            List<Tuple<string, int>> list = new List<Tuple<string, int>>();
+            for (int i = 0; i < count; ++i)
+            {
+                var breakpoint = Tuple.Create(reply[1 + i * 2], reply[2 + i * 2]);
+                list.Add(breakpoint);
+            }
+            return list.ToArray();
         }
 
         public async Task<string> Eval(string expression)
@@ -125,13 +143,13 @@ namespace minisphere.Remote.Duktape
             var code = string.Format(
                 @"(function() {{ try {{ return Duktape.enc('jx', eval(""{0}""), null, 2); }} catch (e) {{ return e.toString(); }} }})();",
                 expression.Replace(@"\", @"\\").Replace(@"""", @"\"""));
-            var reply = await Talk(DValue.REQ, 0x1E, code);
+            var reply = await Converse(DValue.REQ, 0x1E, code);
             return reply[2];
         }
 
         public async Task<IReadOnlyDictionary<string, string>> GetLocals()
         {
-            var reply = await Talk(DValue.REQ, 0x1D);
+            var reply = await Converse(DValue.REQ, 0x1D);
             var variables = new Dictionary<string, string>();
             int count = (reply.Length - 1) / 2;
             for (int i = 0; i < count; ++i)
@@ -142,7 +160,7 @@ namespace minisphere.Remote.Duktape
                     : value is int ? value.ToString()
                     : value is double ? value.ToString()
                     : value is string ? string.Format("\"{0}\"", value)
-                    : "Unknown";
+                    : await Eval(name);
                 variables.Add(name, friendlyValue);
             }
             return variables;
@@ -150,27 +168,27 @@ namespace minisphere.Remote.Duktape
 
         public async Task Pause()
         {
-            await Talk(DValue.REQ, 0x12);
+            await Converse(DValue.REQ, 0x12);
         }
 
         public async Task Run()
         {
-            await Talk(DValue.REQ, 0x13);
+            await Converse(DValue.REQ, 0x13);
         }
 
         public async Task StepInto()
         {
-            await Talk(DValue.REQ, 0x14);
+            await Converse(DValue.REQ, 0x14);
         }
 
         public async Task StepOut()
         {
-            await Talk(DValue.REQ, 0x16);
+            await Converse(DValue.REQ, 0x16);
         }
 
         public async Task StepOver()
         {
-            await Talk(DValue.REQ, 0x15);
+            await Converse(DValue.REQ, 0x15);
         }
 
         private dynamic[] ReceiveMessage()
@@ -344,7 +362,7 @@ namespace minisphere.Remote.Duktape
             tcp.Client.Send(stringBytes);
         }
 
-        private async Task<dynamic[]> Talk(params dynamic[] values)
+        private async Task<dynamic[]> Converse(params dynamic[] values)
         {
             foreach (dynamic value in values)
             {
@@ -373,7 +391,7 @@ namespace minisphere.Remote.Duktape
             });
         }
 
-        private void RunWorker()
+        private void RunMessenger()
         {
             while (true)
             {

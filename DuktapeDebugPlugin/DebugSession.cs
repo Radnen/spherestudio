@@ -131,7 +131,17 @@ namespace minisphere.Remote
                     relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
             } catch { } // *munch*
 
-            // set the new breakpoint if needed
+            // clear all matching breakpoints
+            var breaks = await duktape.ListBreak();
+            for (int i = breaks.Length - 1; i >= 0; --i)
+            {
+                string fn = breaks[i].Item1;
+                int line = breaks[i].Item2;
+                if (relativePath == fn && lineNumber == line)
+                    await duktape.DelBreak(i);
+            }
+            
+            // set the breakpoint if needed
             if (isActive)
             {
                 await duktape.AddBreak(relativePath, lineNumber);

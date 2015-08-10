@@ -75,12 +75,15 @@ namespace SphereStudio.Components
         private async void buttonEval_Click(object sender, EventArgs e)
         {
             buttonEval.Enabled = false;
+            textValue.Text = "Evaluating...";
             var debug = PluginManager.IDE.Debugger;
             var expression = textEvalBox.Text;
             listVariables.SelectedItems.Clear();
             textEvalBox.Text = "";
-            textValue.Text = string.Format("eval(\"{0}\");\r\n\r\nResult:\r\n{1}",
-                expression, (await debug.Evaluate(expression)).Replace("\n", "\r\n"));
+            textValue.WordWrap = false;
+            textValue.Text = string.Format("Expression:\r\n{0}\r\n\r\nResult:\r\n{1}",
+                expression,
+                (await debug.Evaluate(expression)).Replace("\n", "\r\n"));
             buttonEval.Enabled = true;
         }
 

@@ -112,7 +112,7 @@
             this.textValue.Multiline = true;
             this.textValue.Name = "textValue";
             this.textValue.ReadOnly = true;
-            this.textValue.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textValue.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textValue.Size = new System.Drawing.Size(387, 476);
             this.textValue.TabIndex = 0;
             this.textValue.WordWrap = false;
