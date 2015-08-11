@@ -297,14 +297,14 @@ namespace SphereStudio.IDE
             _content.ToolTipText = FileName;
         }
 
-        private void on_BreakpointSet(object sender, BreakpointSetEventArgs e)
+        private async void on_BreakpointSet(object sender, BreakpointSetEventArgs e)
         {
             if (FileName == null) return;
             ScriptView view = View as ScriptView;
             Global.CurrentGame.SetBreakpoints(FileName, view.Breakpoints);
             if (_ide.Debugger != null)
             {
-                _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);
+                await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);
             }
         }
 

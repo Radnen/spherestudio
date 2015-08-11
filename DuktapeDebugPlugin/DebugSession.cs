@@ -43,6 +43,8 @@ namespace minisphere.Remote
 
         public bool Running { get; private set; }
 
+        public event EventHandler Attached;
+
         public event EventHandler Detached;
 
         public event EventHandler Paused;
@@ -52,23 +54,29 @@ namespace minisphere.Remote
         public async Task Connect(string hostname, int port, uint timeout = 5000)
         {
             long end = DateTime.Now.Ticks + timeout * 10000;
-            var breaks = ssproj.GetAllBreakpoints();
             while (DateTime.Now.Ticks < end)
             {
                 try {
                     duktape = new DuktapeClient();
+                    duktape.Attached += duktape_Attached;
                     duktape.Detached += duktape_Detached;
                     duktape.Paused += duktape_Paused;
                     duktape.Resumed += duktape_Resumed;
                     await duktape.Connect(hostname, port);
-                    foreach (string filename in breaks.Keys)
-                        foreach (int lineNumber in breaks[filename])
-                            await SetBreakpoint(filename, lineNumber, true);
+                    var breaks = ssproj.GetAllBreakpoints();
                     return;
-                }
-                catch (SocketException) { }
+                } catch (SocketException) { } // *munch*
             }
             throw new TimeoutException();
+        }
+
+        private void duktape_Attached(object sender, EventArgs e)
+        {
+            if (Attached != null)
+            {
+                PluginManager.IDE.Invoke(Attached,
+                    new object[] { this, EventArgs.Empty });
+            }
         }
 
         private void duktape_Detached(object sender, EventArgs e)
@@ -150,7 +158,7 @@ namespace minisphere.Remote
 
         public async Task Run()
         {
-            await duktape.Run();
+            await duktape.Resume();
         }
 
         public async Task Pause()

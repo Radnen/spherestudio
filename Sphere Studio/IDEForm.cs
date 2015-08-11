@@ -1063,9 +1063,13 @@ namespace SphereStudio
                     tab.Save();  // save all non-untitled documents
                 }
                 Global.CurrentGame.Build();
-                _debugger = await plugin.Start(CurrentGame);
+                _debugger = await plugin.Debug(CurrentGame);
                 if (_debugger != null)
                 {
+                    var breaks = Global.CurrentGame.GetAllBreakpoints();
+                    foreach (string filename in breaks.Keys)
+                        foreach (int lineNumber in breaks[filename])
+                            await _debugger.SetBreakpoint(filename, lineNumber, true);
                     _debugDock.Show();
                     menuDebug.Text = "&Resume";
                     toolDebug.Text = "Resume";
@@ -1207,9 +1211,6 @@ namespace SphereStudio
 
         private async void debugger_Paused(object sender, EventArgs e)
         {
-            if (_debugger.Running)
-                return;
-
             _debugPane.Enabled = true;
             UpdateButtons();
             ScriptView view = null;
@@ -1217,21 +1218,21 @@ namespace SphereStudio
             if (view != null)
             {
                 view.ActiveLine = _debugger.LineNumber;
-                _debugPane.SetVariables(await _debugger.GetVariableList());
+                var values = await _debugger.GetVariableList();
+                if (!_debugger.Running)
+                    _debugPane.SetVariables(values);
             }
             else
             {
                 // if no source is available, step through.
                 await _debugger.StepOut();
             }
-            Activate();
+            if (!_debugger.Running)
+                Activate();
         }
 
         private void debugger_Resumed(object sender, EventArgs e)
         {
-            if (!_debugger.Running)
-                return;
-
             _debugPane.Enabled = false;
             _debugPane.Clear();
             var scriptViews = from tab in _tabs

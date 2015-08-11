@@ -25,6 +25,11 @@ namespace Sphere.Plugins.Interfaces
         bool Running { get; }
 
         /// <summary>
+        /// Fires when the debugger is successfully attached.
+        /// </summary>
+        event EventHandler Attached;
+
+        /// <summary>
         /// Fires when the debugger is detached.
         /// </summary>
         event EventHandler Detached;

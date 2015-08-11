@@ -27,7 +27,7 @@ namespace minisphere.Remote
 
         }
 
-        public async Task<IDebugger> Start(IProject project)
+        public async Task<IDebugger> Debug(IProject project)
         {
             // start minisphere in debugging mode
             string enginePath = PluginManager.IDE.EnginePath;

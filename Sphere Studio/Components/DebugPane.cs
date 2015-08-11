@@ -57,12 +57,12 @@ namespace SphereStudio.Components
             _lastVar = listVariables.SelectedItems.Count > 0
                 ? listVariables.SelectedItems[0].Text : null;
             if (listVariables.SelectedItems.Count > 0) {
+                textEvalBox.Text = "";
                 string name = listVariables.SelectedItems[0].Text;
                 string value = (await PluginManager.IDE.Debugger.Evaluate(name)).Replace("\n", "\r\n");
                 string sep = value.Contains("\r\n") ? "\r\n" : " ";
                 textValue.WordWrap = false;
                 textValue.Text = string.Format("var {0} ={1}{2};", name, sep, value);
-                textEvalBox.Text = "";
             }
             else
             {
@@ -74,6 +74,7 @@ namespace SphereStudio.Components
 
         private async void buttonEval_Click(object sender, EventArgs e)
         {
+            textEvalBox.Enabled = false;
             buttonEval.Enabled = false;
             textValue.Text = "Evaluating...";
             var debug = PluginManager.IDE.Debugger;
@@ -81,9 +82,10 @@ namespace SphereStudio.Components
             listVariables.SelectedItems.Clear();
             textEvalBox.Text = "";
             textValue.WordWrap = false;
+            string value = await debug.Evaluate(expression);
             textValue.Text = string.Format("Expression:\r\n{0}\r\n\r\nResult:\r\n{1}",
-                expression,
-                (await debug.Evaluate(expression)).Replace("\n", "\r\n"));
+                expression, value.Replace("\n", "\r\n"));
+            textEvalBox.Enabled = true;
             buttonEval.Enabled = true;
         }
 

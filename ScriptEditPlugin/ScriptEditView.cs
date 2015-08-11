@@ -326,10 +326,12 @@ namespace SphereStudio.Plugins
                 e.Handled = true;
                 var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
                 var markers = line.GetMarkers();
-                if (markers.Contains(_codeBox.Markers[0]))
-                    line.DeleteMarker(0);
-                else
+                bool isSet = !markers.Contains(_codeBox.Markers[0]);
+                OnBreakpointSet(new BreakpointSetEventArgs(line.Number + 1, isSet));
+                if (isSet)
                     line.AddMarker(0);
+                else
+                    line.DeleteMarker(0);
             }
         }
 
@@ -338,11 +340,11 @@ namespace SphereStudio.Plugins
             if (e.Margin == _codeBox.Margins.Margin1)
             {
                 bool isSet = !e.Line.GetMarkers().Contains(_codeBox.Markers[0]);
+                OnBreakpointSet(new BreakpointSetEventArgs(e.Line.Number + 1, isSet));
                 if (isSet)
                     e.Line.AddMarker(0);
                 else
                     e.Line.DeleteMarker(0);
-                OnBreakpointSet(new BreakpointSetEventArgs(e.Line.Number + 1, isSet));
             }
         }
 

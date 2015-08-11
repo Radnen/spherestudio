@@ -125,19 +125,6 @@ namespace minisphere.Remote.Duktape
             await Converse(DValue.REQ, 0x19, index);
         }
 
-        public async Task<Tuple<string, int>[]> ListBreak()
-        {
-            var reply = await Converse(DValue.REQ, 0x17);
-            var count = (reply.Length - 1) / 2;
-            List<Tuple<string, int>> list = new List<Tuple<string, int>>();
-            for (int i = 0; i < count; ++i)
-            {
-                var breakpoint = Tuple.Create(reply[1 + i * 2], reply[2 + i * 2]);
-                list.Add(breakpoint);
-            }
-            return list.ToArray();
-        }
-
         public async Task<string> Eval(string expression)
         {
             var code = string.Format(
@@ -166,12 +153,25 @@ namespace minisphere.Remote.Duktape
             return variables;
         }
 
+        public async Task<Tuple<string, int>[]> ListBreak()
+        {
+            var reply = await Converse(DValue.REQ, 0x17);
+            var count = (reply.Length - 1) / 2;
+            List<Tuple<string, int>> list = new List<Tuple<string, int>>();
+            for (int i = 0; i < count; ++i)
+            {
+                var breakpoint = Tuple.Create(reply[1 + i * 2], reply[2 + i * 2]);
+                list.Add(breakpoint);
+            }
+            return list.ToArray();
+        }
+
         public async Task Pause()
         {
             await Converse(DValue.REQ, 0x12);
         }
 
-        public async Task Run()
+        public async Task Resume()
         {
             await Converse(DValue.REQ, 0x13);
         }
@@ -189,6 +189,35 @@ namespace minisphere.Remote.Duktape
         public async Task StepOver()
         {
             await Converse(DValue.REQ, 0x15);
+        }
+
+        private async Task<dynamic[]> Converse(params dynamic[] values)
+        {
+            foreach (dynamic value in values)
+            {
+                SendValue(value);
+            }
+            SendValue(DValue.EOM);
+            lock (replyLock)
+            {
+                requests.Enqueue(values);
+            }
+            return await Task.Run(() =>
+            {
+                while (true)
+                {
+                    lock (replyLock)
+                    {
+                        if (replies.ContainsKey(values))
+                        {
+                            var reply = replies[values];
+                            replies.Remove(values);
+                            return reply;
+                        }
+                    }
+                    Thread.Sleep(0);
+                }
+            });
         }
 
         private dynamic[] ReceiveMessage()
@@ -360,35 +389,6 @@ namespace minisphere.Remote.Duktape
                 (byte)(stringBytes.Length & 0xFF)
             });
             tcp.Client.Send(stringBytes);
-        }
-
-        private async Task<dynamic[]> Converse(params dynamic[] values)
-        {
-            foreach (dynamic value in values)
-            {
-                SendValue(value);
-            }
-            SendValue(DValue.EOM);
-            lock (replyLock)
-            {
-                requests.Enqueue(values);
-            }
-            return await Task.Run(() =>
-            {
-                while (true)
-                {
-                    lock (replyLock)
-                    {
-                        if (replies.ContainsKey(values))
-                        {
-                            var reply = replies[values];
-                            replies.Remove(values);
-                            return reply;
-                        }
-                    }
-                    Thread.Sleep(0);
-                }
-            });
         }
 
         private void RunMessenger()
