@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>minisphere.Remote</RootNamespace>
-    <AssemblyName>minisphereDebugPlugin</AssemblyName>
+    <AssemblyName>minisphereRemotePlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,12 +47,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\ConsolePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\ConsolePane.Designer.cs">
+      <DependentUpon>ConsolePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\InspectorPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\InspectorPane.Designer.cs">
+      <DependentUpon>InspectorPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="DebugSession.cs" />
     <Compile Include="Duktape\DuktapeClient.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="PluginMain.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SocketExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Components\ConsolePane.resx">
+      <DependentUpon>ConsolePane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\InspectorPane.resx">
+      <DependentUpon>InspectorPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lightbulb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application_view_list.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">

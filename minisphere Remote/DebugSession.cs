@@ -2,14 +2,18 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+
+using minisphere.Remote.Components;
 using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
@@ -20,15 +24,21 @@ namespace minisphere.Remote
         private DuktapeClient duktape;
         private Process engineProcess;
         private string engineDir;
+        private ConsolePane console;
+        private DockDescription consoleDock;
+        private InspectorPane inspector;
+        private DockDescription inspectorDock;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
-        private Timer focusSwitchTimer;
+        private System.Threading.Timer focusSwitchTimer;
 
         public DebugSession(IProject project, string enginePath, Process engine)
         {
             ssproj = project;
             engineProcess = engine;
             engineDir = Path.GetDirectoryName(enginePath);
-            focusSwitchTimer = new Timer(FocusEngine, this, Timeout.Infinite, Timeout.Infinite);
+            focusSwitchTimer = new System.Threading.Timer(
+                FocusEngine, this,
+                Timeout.Infinite, Timeout.Infinite);
         }
 
         public string FileName { get; private set; }
@@ -56,52 +66,92 @@ namespace minisphere.Remote
                     duktape.Detached += duktape_Detached;
                     duktape.Paused += duktape_Paused;
                     duktape.Resumed += duktape_Resumed;
+                    duktape.Alert += duktape_Print;
+                    duktape.Print += duktape_Print;
                     await duktape.Connect(hostname, port);
-                    var breaks = ssproj.GetAllBreakpoints();
                     return;
                 } catch (SocketException) { } // *munch*
             }
             throw new TimeoutException();
         }
 
+        private void duktape_Print(object sender, TraceEventArgs e)
+        {
+            PluginManager.IDE.Invoke(new Action(() =>
+            {
+                console.Print(e.Text);
+            }), null);
+        }
+
         private void duktape_Attached(object sender, EventArgs e)
         {
-            if (Attached != null)
+            PluginManager.IDE.Invoke(new Action(() =>
             {
-                PluginManager.IDE.Invoke(Attached,
-                    new object[] { this, EventArgs.Empty });
-            }
+                if (Attached != null)
+                    Attached(this, EventArgs.Empty);
+                inspector = new InspectorPane(this) { Dock = DockStyle.Fill, Enabled = false };
+                console = new ConsolePane() { Dock = DockStyle.Fill };
+                inspectorDock = new DockDescription();
+                inspectorDock.Control = inspector;
+                inspectorDock.DockAreas = DockDescAreas.Sides;
+                inspectorDock.DockState = DockDescStyle.Side;
+                inspectorDock.HideOnClose = true;
+                inspectorDock.TabText = "Inspector";
+                inspectorDock.Icon = Icon.FromHandle(Properties.Resources.EyeOpen.GetHicon());
+                PluginManager.IDE.DockControl(inspectorDock);
+                consoleDock = new DockDescription();
+                consoleDock.Control = console;
+                consoleDock.DockAreas = DockDescAreas.Sides;
+                consoleDock.DockState = DockDescStyle.Side;
+                consoleDock.HideOnClose = true;
+                consoleDock.TabText = "Console";
+                consoleDock.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
+                PluginManager.IDE.DockControl(consoleDock);
+                inspectorDock.Show();
+            }), null);
         }
 
         private void duktape_Detached(object sender, EventArgs e)
         {
-            if (Detached != null)
+            PluginManager.IDE.Invoke(new Action(() =>
             {
-                PluginManager.IDE.Invoke(Detached,
-                    new object[] { this, EventArgs.Empty });
-            }
+                if (Detached != null)
+                    Detached(this, EventArgs.Empty);
+                inspectorDock.Hide();
+                consoleDock.Hide();
+                inspector.Dispose();
+                console.Dispose();
+            }), null);
         }
 
         private void duktape_Paused(object sender, EventArgs e)
         {
             focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
             UpdateStatus();
-            if (Paused != null)
+            PluginManager.IDE.Invoke(new Action(async () =>
             {
-                PluginManager.IDE.Invoke(Paused,
-                    new object[] { this, EventArgs.Empty });
-            }
+                if (Paused != null)
+                    Paused(this, EventArgs.Empty);
+                var variables = await GetVariableList();
+                if (!Running)
+                {
+                    inspector.SetVariables(variables);
+                    inspector.Enabled = true;
+                }
+            }), null);
         }
 
         private void duktape_Resumed(object sender, EventArgs e)
         {
             focusSwitchTimer.Change(250, Timeout.Infinite);
             UpdateStatus();
-            if (Resumed != null)
+            PluginManager.IDE.Invoke(new Action(() =>
             {
-                PluginManager.IDE.Invoke(Resumed,
-                    new object[] { this, EventArgs.Empty });
-            }
+                if (Resumed != null)
+                    Resumed(this, EventArgs.Empty);
+                inspector.Enabled = false;
+                inspector.Clear();
+            }), null);
         }
 
         public async Task Detach()

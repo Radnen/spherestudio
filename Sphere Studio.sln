@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Studio\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4C86712C-F591-432E-8185-F077903254D9} = {4C86712C-F591-432E-8185-F077903254D9}
+		{D242F8EF-7D85-4B6B-9446-6758B68A7F54} = {D242F8EF-7D85-4B6B-9446-6758B68A7F54}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
@@ -36,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "Spri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPKPackerPlugin", "SPKPackerPlugin\SPKPackerPlugin.csproj", "{4C86712C-F591-432E-8185-F077903254D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minisphereDebugPlugin", "DuktapeDebugPlugin\minisphereDebugPlugin.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minisphere Remote", "minisphere Remote\minisphere Remote.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

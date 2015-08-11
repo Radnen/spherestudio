@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Components
+﻿namespace minisphere.Remote.Components
 {
-    partial class DebugPane
+    partial class InspectorPane
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DebugPane));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InspectorPane));
             this.listVariables = new System.Windows.Forms.ListView();
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -142,7 +142,7 @@
             // 
             this.buttonEval.Dock = System.Windows.Forms.DockStyle.Right;
             this.buttonEval.Enabled = false;
-            this.buttonEval.Image = global::SphereStudio.Properties.Resources.lightbulb;
+            this.buttonEval.Image = global::minisphere.Remote.Properties.Resources.LightBulb;
             this.buttonEval.Location = new System.Drawing.Point(323, 0);
             this.buttonEval.Name = "buttonEval";
             this.buttonEval.Size = new System.Drawing.Size(64, 24);

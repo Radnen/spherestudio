@@ -5,22 +5,24 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 
-namespace SphereStudio.Components
+namespace minisphere.Remote.Components
 {
-    public partial class DebugPane : UserControl
+    partial class InspectorPane : UserControl
     {
         private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
 
-        private bool _is_evaluating = false;
-        private string _last_var = null;
-        private IReadOnlyDictionary<string, string> _variables;
+        private DebugSession debugger;
+        private bool isEvaluating = false;
+        private string lastVarName = null;
+        private IReadOnlyDictionary<string, string> variables;
 
-        public DebugPane()
+        public InspectorPane(DebugSession session)
         {
             InitializeComponent();
-            
+
             textValue.Text = ValueBoxHint;
             textValue.WordWrap = true;
+            debugger = session;
         }
 
         public void Clear()
@@ -33,16 +35,16 @@ namespace SphereStudio.Components
 
         public void SetVariables(IReadOnlyDictionary<string, string> variables)
         {
-            _variables = variables;
+            this.variables = variables;
             Clear();
-            foreach (var k in _variables.Keys)
+            foreach (var k in this.variables.Keys)
             {
                 var item = listVariables.Items.Add(k, 0);
-                item.SubItems.Add(_variables[k]);
+                item.SubItems.Add(this.variables[k]);
             }
-            if (_last_var != null)
+            if (lastVarName != null)
             {
-                var toSelect = listVariables.FindItemWithText(_last_var);
+                var toSelect = listVariables.FindItemWithText(lastVarName);
                 if (toSelect != null)
                     toSelect.Selected = true;
             }
@@ -50,20 +52,19 @@ namespace SphereStudio.Components
 
         private async Task DoEvaluate(string expression)
         {
-            _is_evaluating = true;
+            isEvaluating = true;
             textEvalBox.Text = expression;
             textEvalBox.Enabled = false;
             buttonEval.Enabled = false;
             textValue.Text = "Evaluating...";
-            var debug = PluginManager.IDE.Debugger;
             textValue.WordWrap = false;
-            string value = await debug.Evaluate(expression);
+            string value = await debugger.Evaluate(expression);
             textValue.Text = string.Format("Expression:\r\n{0}\r\n\r\nValue:\r\n{1}",
                 expression, value.Replace("\n", "\r\n"));
             textEvalBox.Text = "";
             textEvalBox.Enabled = true;
             buttonEval.Enabled = true;
-            _is_evaluating = false;
+            isEvaluating = false;
         }
 
         private async void buttonEval_Click(object sender, EventArgs e)
@@ -73,7 +74,7 @@ namespace SphereStudio.Components
 
         private async void listVariables_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _last_var = listVariables.SelectedItems.Count > 0
+            lastVarName = listVariables.SelectedItems.Count > 0
                 ? listVariables.SelectedItems[0].Text : null;
             if (listVariables.SelectedItems.Count > 0)
                 await DoEvaluate(listVariables.SelectedItems[0].Text);
@@ -97,7 +98,7 @@ namespace SphereStudio.Components
 
         private void textEvalBox_TextChanged(object sender, EventArgs e)
         {
-            if (_is_evaluating) return;
+            if (isEvaluating) return;
 
             listVariables.SelectedItems.Clear();
             buttonEval.Enabled = !string.IsNullOrWhiteSpace(textEvalBox.Text);

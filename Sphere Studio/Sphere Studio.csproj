@@ -100,12 +100,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\DebugPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\DebugPane.Designer.cs">
-      <DependentUpon>DebugPane.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,9 +186,6 @@
     <Compile Include="Settings\CoreSettings.cs" />
     <Compile Include="IDE\Project.cs" />
     <Compile Include="Settings\UserSettings.cs" />
-    <EmbeddedResource Include="Components\DebugPane.resx">
-      <DependentUpon>DebugPane.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -297,10 +288,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DuktapeDebugPlugin\minisphereDebugPlugin.csproj">
-      <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
-      <Name>minisphereDebugPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontEditPlugin</Name>
@@ -312,6 +299,10 @@
     <ProjectReference Include="..\MapEditPlugin\MapEditPlugin.csproj">
       <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
       <Name>MapEditPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\minisphere Remote\minisphere Remote.csproj">
+      <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
+      <Name>minisphere Remote</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScriptEditPlugin\ScriptEditPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>

@@ -37,8 +37,6 @@ namespace SphereStudio
 
         private DocumentTab _activeTab;
         private IDebugger _debugger;
-        private DebugPane _debugPane = new DebugPane() { Dock = DockStyle.Fill, Enabled = false };
-        private DockDescription _debugDock;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -89,16 +87,6 @@ namespace SphereStudio
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
 
             ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
-
-            _debugDock = new DockDescription();
-            _debugDock.Control = _debugPane;
-            _debugDock.DockAreas = DockDescAreas.Sides;
-            _debugDock.DockState = DockDescStyle.Side;
-            _debugDock.HideOnClose = true;
-            _debugDock.TabText = "Debugger";
-            _debugDock.Icon = Icon.FromHandle(Properties.Resources.eye.GetHicon());
-            DockControl(_debugDock);
-            _debugDock.Hide();
 
             if (Global.Settings.AutoOpenProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
@@ -1065,6 +1053,8 @@ namespace SphereStudio
             var plugin = debuggers.FirstOrDefault();
             if (plugin != null)
             {
+                menuDebug.Enabled = false;
+                toolDebug.Enabled = false;
                 foreach (DocumentTab tab in
                     from tab in _tabs
                     where tab.FileName != null
@@ -1080,15 +1070,14 @@ namespace SphereStudio
                     foreach (string filename in breaks.Keys)
                         foreach (int lineNumber in breaks[filename])
                             await _debugger.SetBreakpoint(filename, lineNumber, true);
-                    _debugDock.Show();
                     menuDebug.Text = "&Resume";
                     toolDebug.Text = "Resume";
                     menuTestGame.Enabled = false;
                     toolTestGame.Enabled = false;
                     _debugger.Detached += debugger_Detached;
-                    _debugger.Paused += debugger_Paused;
                     _debugger.Resumed += debugger_Resumed;
                     await _debugger.Run();
+                    _debugger.Paused += debugger_Paused;
                 }
                 else
                 {
@@ -1205,9 +1194,6 @@ namespace SphereStudio
 
         private void debugger_Detached(object sender, EventArgs e)
         {
-            _debugPane.Enabled = false;
-            _debugPane.Clear();
-            _debugDock.Hide();
             var scriptViews = from tab in _tabs
                                 where tab.View is ScriptView
                                 select tab.View;
@@ -1221,33 +1207,23 @@ namespace SphereStudio
 
         private async void debugger_Paused(object sender, EventArgs e)
         {
-            _debugPane.Enabled = true;
-            UpdateButtons();
             ScriptView view = null;
             view = OpenDocument(_debugger.FileName) as ScriptView;
             if (view != null)
-            {
                 view.ActiveLine = _debugger.LineNumber;
-                var values = await _debugger.GetVariableList();
-                if (!_debugger.Running)
-                    _debugPane.SetVariables(values);
-            }
             else
-            {
                 // if no source is available, step through.
                 await _debugger.StepOut();
-            }
             if (!_debugger.Running)
                 Activate();
+            UpdateButtons();
         }
 
         private void debugger_Resumed(object sender, EventArgs e)
         {
-            _debugPane.Enabled = false;
-            _debugPane.Clear();
             var scriptViews = from tab in _tabs
-                                where tab.View is ScriptView
-                                select tab.View;
+                              where tab.View is ScriptView
+                              select tab.View;
             foreach (ScriptView view in scriptViews)
                 view.ActiveLine = 0;
             UpdateButtons();
