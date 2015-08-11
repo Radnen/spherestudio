@@ -12,14 +12,21 @@ namespace minisphere.Remote
     {
         public static bool ReceiveAll(this Socket socket, byte[] buffer, SocketFlags socketFlags = SocketFlags.None)
         {
-            int offset = 0;
-            while (offset < buffer.Length)
+            try
             {
-                int size = socket.Receive(buffer, offset, buffer.Length - offset, socketFlags);
-                offset += size;
-                if (size == 0) return false;
+                int offset = 0;
+                while (offset < buffer.Length)
+                {
+                    int size = socket.Receive(buffer, offset, buffer.Length - offset, socketFlags);
+                    offset += size;
+                    if (size == 0) return false;
+                }
+                return true;
             }
-            return true;
+            catch (SocketException)
+            {
+                return false;
+            }
         }
     }
 }

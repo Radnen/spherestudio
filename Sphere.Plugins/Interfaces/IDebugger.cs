@@ -59,7 +59,7 @@ namespace Sphere.Plugins.Interfaces
         /// <summary>
         /// Detaches the debugger.
         /// </summary>
-        void Detach();
+        Task Detach();
 
         /// <summary>
         /// Evaluates a JavaScript expression and returns the JSON-encoded result.

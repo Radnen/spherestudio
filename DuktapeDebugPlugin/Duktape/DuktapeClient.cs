@@ -20,38 +20,72 @@ namespace minisphere.Remote.Duktape
         Unused,
         Undefined,
         Null,
-        True,
-        False,
         Object,
         HeapPtr,
         Pointer,
         Lightfunc,
     }
 
+    class TraceEventArgs : EventArgs
+    {
+        public TraceEventArgs(string text)
+        {
+            Text = text;
+        }
+
+        public string Text { get; private set; }
+    }
+    
+    /// <summary>
+    /// Allows remote control of the Duktape debugger over TCP.
+    /// </summary>
     class DuktapeClient : IDisposable
     {
         private TcpClient tcp = new TcpClient();
+        private Thread messenger = null;
+        private object replyLock = new object();
         private Queue<dynamic[]> requests = new Queue<dynamic[]>();
         private Dictionary<dynamic[], dynamic[]> replies = new Dictionary<dynamic[], dynamic[]>();
-        private object replyLock = new object();
-        private Thread messenger;
 
+        /// <summary>
+        /// Constructs a DuktapeClient object used for communicating with a
+        /// Duktape debug target over TCP.
+        /// </summary>
         public DuktapeClient()
         {
         }
 
+        ~DuktapeClient()
+        {
+            Dispose();
+        }
+
+        /// <summary>
+        /// Releases all resources used by the DuktapeClient object.
+        /// </summary>
         public void Dispose()
         {
+            if (messenger != null)
+                messenger.Abort();
+            Attached = null;
+            Detached = null;
+            Paused = null;
+            Resumed = null;
             tcp.Close();
         }
 
         /// <summary>
-        /// Fires when the debugger is first attached.
+        /// Fires when a script calls alert().
+        /// </summary>
+        public event EventHandler<TraceEventArgs> Alert;
+
+        /// <summary>
+        /// Fires when the debugger is attached to a target.
         /// </summary>
         public event EventHandler Attached;
 
         /// <summary>
-        /// Fires when the debugger is detached from the target.
+        /// Fires when the debugger is detached from a target.
         /// </summary>
         public event EventHandler Detached;
 
@@ -59,6 +93,11 @@ namespace minisphere.Remote.Duktape
         /// Fires when execution pauses, e.g. at a breakpoint.
         /// </summary>
         public event EventHandler Paused;
+
+        /// <summary>
+        /// Fires when a script calls print().
+        /// </summary>
+        public event EventHandler<TraceEventArgs> Print;
 
         /// <summary>
         /// Fires when execution has resumed.
@@ -120,11 +159,35 @@ namespace minisphere.Remote.Duktape
             return reply[1];
         }
 
+        /// <summary>
+        /// Clears the breakpoint with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the breakpoint to clear, as returned by AddBreak.</param>
+        /// <returns></returns>
         public async Task DelBreak(int index)
         {
             await Converse(DValue.REQ, 0x19, index);
         }
+        
+        /// <summary>
+        /// Requests that Duktape end the debug session.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Detach()
+        {
+            if (messenger == null)
+                return;
+            await Converse(DValue.REQ, 0x1F);
+            await Task.Run(() => messenger.Join());
+            tcp.Close();
+            messenger = null;
+        }
 
+        /// <summary>
+        /// Evaluates a JS expression and returns the JX-encoded result.
+        /// </summary>
+        /// <param name="expression">The expression or statement to evaluate.</param>
+        /// <returns>The JX-encoded value produced by the expression.</returns>
         public async Task<string> Eval(string expression)
         {
             var code = string.Format(
@@ -134,6 +197,11 @@ namespace minisphere.Remote.Duktape
             return reply[2];
         }
 
+        /// <summary>
+        /// Gets a list of local values and their values. Note that objects
+        /// are not evaluated and are listed simply as "JS object".
+        /// </summary>
+        /// <returns></returns>
         public async Task<IReadOnlyDictionary<string, string>> GetLocals()
         {
             var reply = await Converse(DValue.REQ, 0x1D);
@@ -144,6 +212,7 @@ namespace minisphere.Remote.Duktape
                 string name = reply[1 + i * 2].ToString();
                 dynamic value = reply[2 + i * 2];
                 string friendlyValue = value.Equals(DValue.Object) ? "JS object"
+                    : value is bool ? value ? "true" : "false"
                     : value is int ? value.ToString()
                     : value is double ? value.ToString()
                     : value is string ? string.Format("\"{0}\"", value)
@@ -153,6 +222,13 @@ namespace minisphere.Remote.Duktape
             return variables;
         }
 
+        /// <summary>
+        /// Gets a list of currently set breakpoints.
+        /// </summary>
+        /// <returns>
+        /// An array of 2-tuples specifying the location of each breakpoint
+        /// as a filename/line number pair
+        /// </returns>
         public async Task<Tuple<string, int>[]> ListBreak()
         {
             var reply = await Converse(DValue.REQ, 0x17);
@@ -166,26 +242,48 @@ namespace minisphere.Remote.Duktape
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Requests Duktape to pause execution and break into the debugger.
+        /// This may take a second or so to register.
+        /// </summary>
+        /// <returns></returns>
         public async Task Pause()
         {
             await Converse(DValue.REQ, 0x12);
         }
 
+        /// <summary>
+        /// Resumes normal program execution.
+        /// </summary>
+        /// <returns></returns>
         public async Task Resume()
         {
             await Converse(DValue.REQ, 0x13);
         }
 
+        /// <summary>
+        /// Executes the next line of code. If a function is called, the debugger
+        /// will break at the first statement in that function.
+        /// </summary>
+        /// <returns></returns>
         public async Task StepInto()
         {
             await Converse(DValue.REQ, 0x14);
         }
 
+        /// <summary>
+        /// Resumes normal execution until the current function returns.
+        /// </summary>
+        /// <returns></returns>
         public async Task StepOut()
         {
             await Converse(DValue.REQ, 0x16);
         }
 
+        /// <summary>
+        /// Executes the next line of code.
+        /// </summary>
+        /// <returns></returns>
         public async Task StepOver()
         {
             await Converse(DValue.REQ, 0x15);
@@ -303,8 +401,8 @@ namespace minisphere.Remote.Duktape
                     case 0x15: return DValue.Unused;
                     case 0x16: return DValue.Undefined;
                     case 0x17: return DValue.Null;
-                    case 0x18: return DValue.True;
-                    case 0x19: return DValue.False;
+                    case 0x18: return true;
+                    case 0x19: return false;
                     case 0x1A: // IEEE double
                         if (!tcp.Client.ReceiveAll(bytes = new byte[8]))
                             return null;
@@ -345,9 +443,14 @@ namespace minisphere.Remote.Duktape
                 case DValue.Unused: tcp.Client.Send(new byte[1] { 0x15 }); break;
                 case DValue.Undefined: tcp.Client.Send(new byte[1] { 0x16 }); break;
                 case DValue.Null: tcp.Client.Send(new byte[1] { 0x17 }); break;
-                case DValue.True: tcp.Client.Send(new byte[1] { 0x18 }); break;
-                case DValue.False: tcp.Client.Send(new byte[1] { 0x19 }); break;
             }
+        }
+
+        private void SendValue(bool value)
+        {
+            tcp.Client.Send(new byte[] {
+                (byte)(value ? 0x18 : 0x19)
+            });
         }
 
         private void SendValue(int value)
@@ -402,7 +505,7 @@ namespace minisphere.Remote.Duktape
                     int commandID = message[1];
                     switch (commandID)
                     {
-                        case 0x01:
+                        case 0x01: // Status notification
                             FileName = message[3];
                             LineNumber = message[5];
                             bool wasRunning = Running;
@@ -411,6 +514,14 @@ namespace minisphere.Remote.Duktape
                                 Resumed(this, EventArgs.Empty);
                             if (!Running && Paused != null)
                                 Paused(this, EventArgs.Empty);
+                            break;
+                        case 0x02: // Print notification
+                            if (Print != null)
+                                Print(this, new TraceEventArgs(message[2]));
+                            break;
+                        case 0x03: // Alert notification
+                            if (Alert != null)
+                                Alert(this, new TraceEventArgs(message[2]));
                             break;
                     }
                 }

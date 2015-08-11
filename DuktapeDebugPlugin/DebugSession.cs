@@ -14,7 +14,7 @@ using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
 {
-    class DebugSession : IDisposable, IDebugger
+    class DebugSession : IDebugger
     {
         private IProject ssproj;
         private DuktapeClient duktape;
@@ -29,12 +29,6 @@ namespace minisphere.Remote
             engineProcess = engine;
             engineDir = Path.GetDirectoryName(enginePath);
             focusSwitchTimer = new Timer(FocusEngine, this, Timeout.Infinite, Timeout.Infinite);
-        }
-
-        public void Dispose()
-        {
-            focusSwitchTimer.Dispose();
-            Detach();
         }
 
         public string FileName { get; private set; }
@@ -110,11 +104,17 @@ namespace minisphere.Remote
             }
         }
 
-        public void Detach()
+        public async Task Detach()
         {
+            focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            await duktape.Detach();
             engineProcess.CloseMainWindow();
             duktape.Dispose();
-            duktape = null;
+            focusSwitchTimer.Dispose();
+            Attached = null;
+            Detached = null;
+            Paused = null;
+            Resumed = null;
         }
 
         public async Task<IReadOnlyDictionary<string, string>> GetVariableList()
@@ -128,16 +128,10 @@ namespace minisphere.Remote
             string relativePath = filename;
             string rootPath = Path.Combine(ssproj.RootPath, @"scripts") + @"\";
             string sysPath = Path.Combine(engineDir, @"system") + @"\";
-            try
-            {
-                if (filename.Substring(0, rootPath.Length) == rootPath)
-                    relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
-            } catch { } // *munch*
-            try
-            {
-                if (filename.Substring(0, sysPath.Length) == sysPath)
-                    relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
-            } catch { } // *munch*
+            if (filename.StartsWith(rootPath))
+                relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
+            if (filename.StartsWith(sysPath))
+                relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
 
             // clear all matching breakpoints
             var breaks = await duktape.ListBreak();

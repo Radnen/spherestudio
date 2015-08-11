@@ -146,8 +146,18 @@ namespace SphereStudio
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.Cancel) return;
-            if (_debugger != null) _debugger.Detach();
-            CloseCurrentProject(true);
+
+            if (_debugger == null)
+            {
+                CloseCurrentProject(true);
+            }
+            else
+            {
+                e.Cancel = true;
+                MessageBox.Show(
+                    "There is currently a debugging session in progress. Please stop debugging before trying to exit the IDE.",
+                    "Debugging in Progress");
+            }
         }
 
         void menu_DropDownOpening(object sender, EventArgs e)
