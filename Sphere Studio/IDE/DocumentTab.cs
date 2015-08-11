@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.IDE
 {
@@ -46,17 +47,25 @@ namespace SphereStudio.IDE
             _content.Tag = this;
             _content.Icon = View.Icon;
             _content.TabText = _tabText;
+            _content.ToolTipText = FileName;
             _content.Controls.Add(View);
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
 
             UpdateTabText();
 
+            if (View is ScriptView)
+            {
+                ScriptView scriptView = View as ScriptView;
+                scriptView.Breakpoints = Global.CurrentGame.GetBreakpoints(FileName);
+                scriptView.BreakpointSet += on_BreakpointSet;
+            }
+
             if (restoreView && FileName != null)
             {
                 string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
                 try { View.ViewState = Global.CurrentGame.User.GetString(setting, ""); }
-                catch (Exception) { }
+                catch (Exception) { } // *munch*
             }
         }
 
@@ -165,10 +174,9 @@ namespace SphereStudio.IDE
         /// <summary>
         /// Closes the tab.
         /// </summary>
-        /// <param name="saveView">'true' to save the current view state before closing.</param>
         /// <param name="forceClose">'true' to bypass the Unsaved Changes prompt.</param>
         /// <returns>'true' if the tab was closed; 'false' on cancel.</returns>
-        public bool Close(bool saveView = false, bool forceClose = false)
+        public bool Close(bool forceClose = false)
         {
             if (forceClose || PromptSave())
             {
@@ -176,7 +184,7 @@ namespace SphereStudio.IDE
                 _content.FormClosing -= on_FormClosing;
                 
                 // save view state and close tab
-                if (saveView) SaveViewState();
+                SaveViewState();
                 _content.Close();
                 return true;
             }
@@ -270,16 +278,36 @@ namespace SphereStudio.IDE
 
         private void SaveViewState()
         {
-            string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
-            if (FileName != null && !View.IsDirty)  // save view only if clean
-                Global.CurrentGame.User.SetValue(setting, View.ViewState);
+            if (FileName == null || View.IsDirty)
+                return;  // save view only if clean
+
+            // record breakpoints if script tab
+            if (View is ScriptView)
+                Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
+
+            // save view (cursor position, etc.)
+            Global.CurrentGame.User.SetValue(
+                string.Format("viewState_{0:X8}", FileName.GetHashCode()),
+                View.ViewState);
         }
-        
+
         private void UpdateTabText()
         {
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;
+            _content.ToolTipText = FileName;
         }
-        
+
+        private async void on_BreakpointSet(object sender, BreakpointSetEventArgs e)
+        {
+            if (FileName == null) return;
+            ScriptView view = View as ScriptView;
+            Global.CurrentGame.SetBreakpoints(FileName, view.Breakpoints);
+            if (_ide.Debugger != null)
+            {
+                await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);
+            }
+        }
+
         private void on_DirtyChanged(object sender, EventArgs e)
         {
             UpdateTabText();
@@ -288,6 +316,10 @@ namespace SphereStudio.IDE
         private void on_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !PromptSave();
+            if (!e.Cancel)
+            {
+                SaveViewState();
+            }
         }
 
         private void on_FormClosed(object sender, FormClosedEventArgs e)

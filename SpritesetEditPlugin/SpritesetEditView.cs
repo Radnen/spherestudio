@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
+using WeifenLuo.WinFormsUI.Docking;
+
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using Sphere.Core;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {

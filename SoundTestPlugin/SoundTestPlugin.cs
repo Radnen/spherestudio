@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Sphere.Plugins;
 
 using Sphere.Core.Editor;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -52,7 +54,7 @@ namespace SphereStudio.Plugins
             _soundPicker.WatchProject(PluginManager.IDE.CurrentGame);
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.UnregisterExtensions(_extensionList);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);

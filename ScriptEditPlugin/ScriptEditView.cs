@@ -1,7 +1,4 @@
-﻿using ScintillaNET;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -9,14 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using ScintillaNET;
+
+using Sphere.Plugins;
+using Sphere.Plugins.Views;
+
 namespace SphereStudio.Plugins
 {
     partial class ScriptEditView : ScriptView
     {
         private Scintilla _codeBox = new Scintilla();
+        private int _activeLine = 0;
 
         // We should technically be using ISO-8859-1 or Windows-1252 for compatibility with the old editor.
-        // However, UTF-8 works fine in Sphere and some JS engines (e.g. Duktape) won't accept
+        // However, UTF-8 works mostly fine in Sphere and some JS engines (e.g. Duktape) won't accept
         // 8-bit encodings if they contain extended characters, so we'll use UTF-8 and compromise
         // by not including a byte order mark.
         private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
@@ -44,9 +47,17 @@ namespace SphereStudio.Plugins
             _codeBox.Folding.MarkerScheme = FoldMarkerScheme.Custom;
             _codeBox.Folding.Flags = FoldFlag.LineAfterContracted;
             _codeBox.Folding.UseCompactFolding = false;
-            _codeBox.Margins.Margin1.IsClickable = true;
-            _codeBox.Margins.Margin1.IsFoldMargin = true;
             _codeBox.Styles.LineNumber.BackColor = Color.FromArgb(235, 235, 255);
+
+            _codeBox.Margins.Margin1.IsClickable = true;
+            _codeBox.Margins.Margin1.IsFoldMargin = false;
+            _codeBox.Margins.Margin1.IsMarkerMargin = true;
+            _codeBox.Margins.Margin1.Type = MarginType.Symbol;
+            _codeBox.Margins.Margin1.Width = 16;
+            _codeBox.Margins.Margin2.IsClickable = true;
+            _codeBox.Margins.Margin2.IsFoldMargin = true;
+            _codeBox.Margins.Margin2.IsMarkerMargin = false;
+            _codeBox.Margins.Margin2.Width = 16;
             _codeBox.Margins.FoldMarginColor = Color.FromArgb(235, 235, 255);
 
             _codeBox.Indentation.SmartIndentType = SmartIndent.CPP;
@@ -56,13 +67,63 @@ namespace SphereStudio.Plugins
             _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
 
             _codeBox.CharAdded += codeBox_CharAdded;
+            _codeBox.KeyDown += codebox_KeyDown;
+            _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
+            _codeBox.MouseHover += codeBox_MouseHover;
             _codeBox.TextDeleted += codeBox_TextChanged;
             _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
 
+            _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint
+            _codeBox.Markers[0].BackColor = Color.Red;
+            _codeBox.Markers[0].ForeColor = Color.DarkRed;
+            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // current line highlight
+            _codeBox.Markers[1].BackColor = Color.Yellow;
+            _codeBox.Markers[1].ForeColor = Color.Black;
+
             Controls.Add(_codeBox);
             Restyle();
+        }
+
+        public override int ActiveLine
+        {
+            get { return _activeLine; }
+            set
+            {
+                if (_activeLine > 0)
+                    _codeBox.Lines[_activeLine - 1].DeleteMarker(1);
+                _activeLine = value;
+                if (_activeLine > 0)
+                {
+                    _codeBox.Lines[_activeLine - 1].AddMarker(1);
+                    _codeBox.GoTo.Line(_activeLine - 1);
+                    var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
+                    if (parent != null && !parent.FoldExpanded)
+                    {
+                        parent.ToggleFoldExpanded();
+                    }
+                }
+            }
+        }
+
+        public override int[] Breakpoints
+        {
+            get
+            {
+                var q = from Line line in _codeBox.Lines
+                        where line.GetMarkers().Contains(_codeBox.Markers[0])
+                        select line.Number + 1;
+                return q.ToArray();
+            }
+            set
+            {
+                _codeBox.Markers.DeleteAll(0);
+                foreach (int line in value)
+                {
+                    _codeBox.Lines[line - 1].AddMarker(0);
+                }
+            }
         }
 
         public override string[] FileExtensions
@@ -129,6 +190,11 @@ namespace SphereStudio.Plugins
                 _codeBox.Modified = false;
                 
                 SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
+
+                int[] breaks = new int[0];
+                if (PluginManager.IDE.CurrentGame != null)
+                    breaks = PluginManager.IDE.CurrentGame.GetBreakpoints(filename);
+                Breakpoints = breaks;
             }
         }
 
@@ -240,7 +306,10 @@ namespace SphereStudio.Plugins
             if (char.IsLetter(e.Ch))
             {
                 string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
-                List<string> filter = (from s in ScriptEditPlugin.Functions where s.ToLower().Contains(word) select s.Replace(";", "")).ToList();
+                var q = from s in ScriptEditPlugin.Functions
+                        where s.ToLower().Contains(word)
+                        select s.Replace(";", "");
+                List<string> filter = q.ToList();
 
                 if (filter.Count != 0)
                 {
@@ -250,9 +319,54 @@ namespace SphereStudio.Plugins
             }
         }
 
+        private void codebox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F9 && e.Modifiers == 0x0)
+            {
+                e.Handled = true;
+                var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
+                var markers = line.GetMarkers();
+                bool isSet = !markers.Contains(_codeBox.Markers[0]);
+                OnBreakpointSet(new BreakpointSetEventArgs(line.Number + 1, isSet));
+                if (isSet)
+                    line.AddMarker(0);
+                else
+                    line.DeleteMarker(0);
+            }
+        }
+
+        private void codeBox_MarginClick(object sender, MarginClickEventArgs e)
+        {
+            if (e.Margin == _codeBox.Margins.Margin1)
+            {
+                bool isSet = !e.Line.GetMarkers().Contains(_codeBox.Markers[0]);
+                OnBreakpointSet(new BreakpointSetEventArgs(e.Line.Number + 1, isSet));
+                if (isSet)
+                    e.Line.AddMarker(0);
+                else
+                    e.Line.DeleteMarker(0);
+            }
+        }
+
         private void codeBox_ModifiedChanged(object sender, EventArgs e)
         {
             IsDirty = _codeBox.Modified;
+        }
+
+        private void codeBox_MouseHover(object sender, EventArgs e)
+        {
+            var debug = PluginManager.IDE.Debugger;
+            if (debug != null && !debug.Running)
+            {
+                Point origin = _codeBox.PointToClient(MousePosition);
+                int position = _codeBox.PositionFromPoint(origin.X, origin.Y);
+                string word = _codeBox.GetWordFromPosition(position);
+                /*var vars = debug.GetVariables();
+                if (vars.ContainsKey(word))
+                {
+                    // TODO: tooltip with variable value
+                }*/
+            }
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)

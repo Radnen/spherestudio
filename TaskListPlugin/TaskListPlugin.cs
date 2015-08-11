@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins
 {
@@ -78,7 +80,7 @@ namespace SphereStudio.Plugins
             if (PluginManager.IDE.CurrentGame != null) _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             // Now we need to remove anything we add to the editor
             PluginManager.IDE.RemoveControl("Task List");

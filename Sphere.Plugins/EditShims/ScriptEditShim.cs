@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Sphere.Core.Editor;
+using Sphere.Plugins.Views;
 
 namespace Sphere.Plugins.EditShims
 {

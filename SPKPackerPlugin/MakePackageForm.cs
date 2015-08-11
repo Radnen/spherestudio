@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Core;
+using Sphere.Plugins.Interfaces;
 using zlib;
 
 namespace Sphere.Plugins

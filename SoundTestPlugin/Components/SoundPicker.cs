@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using Sphere.Core.Editor;
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins
 {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Sphere.Core;
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Settings
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sphere.Plugins
+namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
     /// Specifies the interface for a Sphere game project.
@@ -40,6 +40,26 @@ namespace Sphere.Plugins
         /// Gets or sets the game's default vertical resolution.
         /// </summary>
         int ScreenHeight { get; set; }
+
+        /// <summary>
+        /// Gets a dictionary of all breakpoints set for this project.
+        /// </summary>
+        /// <returns></returns>
+        IReadOnlyDictionary<string, int[]> GetAllBreakpoints();
+        
+        /// <summary>
+        /// Gets a list of breakpoints set for a specified file.
+        /// </summary>
+        /// <param name="scriptPath">The fully qualified path of the script to get breakpoints for.</param>
+        /// <returns>An array of line numbers containing breakpoints.</returns>
+        int[] GetBreakpoints(string scriptPath);
+
+        /// <summary>
+        /// Records breakpoints for a specified script file.
+        /// </summary>
+        /// <param name="scriptPath">The fully qualified path of the script with breakpoints.</param>
+        /// <param name="lineNumbers">An array of line numbers with breakpoints.</param>
+        void SetBreakpoints(string scriptPath, int[] lineNumbers);
 
         /// <summary>
         /// Builds the project so it can be run by Sphere.

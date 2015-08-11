@@ -300,6 +300,10 @@
       <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
       <Name>MapEditPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\minisphere Remote\minisphere Remote.csproj">
+      <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
+      <Name>minisphere Remote</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScriptEditPlugin\ScriptEditPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
       <Name>ScriptEditPlugin</Name>

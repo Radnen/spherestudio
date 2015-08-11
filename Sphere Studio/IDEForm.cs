@@ -4,17 +4,20 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Core;
-using Sphere.Plugins;
 using SphereStudio.Components;
 using SphereStudio.Forms;
 using SphereStudio.IDE;
 using SphereStudio.Settings;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio
 {
@@ -33,6 +36,7 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
+        private IDebugger _debugger;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -130,7 +134,18 @@ namespace SphereStudio
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.Cancel) return;
-            CloseCurrentProject(true);
+
+            if (_debugger == null)
+            {
+                CloseCurrentProject(true);
+            }
+            else
+            {
+                e.Cancel = true;
+                MessageBox.Show(
+                    "There is currently a debugging session in progress. Please stop debugging before trying to exit the IDE.",
+                    "Debugging in Progress");
+            }
         }
 
         void menu_DropDownOpening(object sender, EventArgs e)
@@ -414,6 +429,12 @@ namespace SphereStudio
 
             if (IsProjectOpen)
             {
+                foreach (DocumentTab tab in
+                    from tab in _tabs where tab.FileName != null
+                    select tab)
+                {
+                    tab.Save();  // save all non-untitled documents
+                }
                 string gamePath = Global.CurrentGame.Build();
                 Process.Start(((ToolStripItem)sender).Tag as string ?? EnginePath,
                     string.Format("-game \"{0}\"", gamePath));
@@ -501,6 +522,11 @@ namespace SphereStudio
         public IProject CurrentGame
         {
             get { return Global.CurrentGame; }
+        }
+
+        public IDebugger Debugger
+        {
+            get { return _debugger; }
         }
 
         public string EnginePath
@@ -624,7 +650,7 @@ namespace SphereStudio
             ctrl.Show(MainDock, state);
         }
 
-        public void OpenDocument(string filePath, bool restoreView = false)
+        public DocumentView OpenDocument(string filePath, bool restoreView = false)
         {
             string extension = Path.GetExtension(filePath);
             
@@ -632,35 +658,51 @@ namespace SphereStudio
             if ((new[] { ".sgm", ".ssproj" }).Contains(extension))
             {
                 OpenProject(filePath);
-                return;
+                return null;
+            }
+
+            // if the file is already open, just switch to it
+            DocumentTab tab = GetDocument(filePath);
+            if (tab != null)
+            {
+                tab.Activate();
+                return tab.View;
             }
             
             // the IDE will try to open the file through the plugin manager first.
             // if that fails, then use the current default editor (if any).
             DocumentView view;
-            if (!PluginManager.OpenDocument(filePath, out view))
+            try
             {
-                // nobody claimed the file, so find the current default editor plugin
-                string wildcard = Global.Settings.DefaultEditor;
-                var q = from plugin in PluginManager.GetWildcards()
-                        where wildcard == plugin.Name
-                        select plugin;
-                IEditorPlugin wcPlugin = q.FirstOrDefault();
-                
-                // if there's a default editor, use it.
-                if (wcPlugin != null)
-                    view = wcPlugin.OpenDocument(filePath);
-                else
+                if (!PluginManager.OpenDocument(filePath, out view))
                 {
-                    MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
-                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // nobody claimed the file, so find the current default editor plugin
+                    string wildcard = Global.Settings.DefaultEditor;
+                    var q = from plugin in PluginManager.GetWildcards()
+                            where wildcard == plugin.Name
+                            select plugin;
+                    IEditorPlugin wcPlugin = q.FirstOrDefault();
+
+                    // if there's a default editor, use it.
+                    if (wcPlugin != null)
+                        view = wcPlugin.OpenDocument(filePath);
+                    else
+                    {
+                        MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no wildcard plugin is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
+                            @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
             }
 
             if (view != null)
             {
                 AddDocument(view, filePath, restoreView);
             }
+            return view;
         }
 
         /// <summary>
@@ -886,7 +928,7 @@ namespace SphereStudio
                     if (!tab.PromptSave()) return false;
             }
             foreach (DocumentTab tab in toClose)
-                tab.Close(true, true);
+                tab.Close(true);
 
             _startContent.Hide();
             return true;
@@ -1002,6 +1044,61 @@ namespace SphereStudio
                     content.DockHandler.Activate();
         }
 
+        private async Task StartDebugger()
+        {
+            var debuggers = from f in Global.Plugins.Values
+                            where f.Enabled
+                            where f.Plugin is IDebugPlugin
+                            select (IDebugPlugin)f.Plugin;
+            var plugin = debuggers.FirstOrDefault();
+            if (plugin != null)
+            {
+                menuDebug.Enabled = false;
+                toolDebug.Enabled = false;
+                foreach (DocumentTab tab in
+                    from tab in _tabs
+                    where tab.FileName != null
+                    select tab)
+                {
+                    tab.Save();  // save all non-untitled documents
+                }
+                Global.CurrentGame.Build();
+                _debugger = await plugin.Debug(CurrentGame);
+                if (_debugger != null)
+                {
+                    var breaks = Global.CurrentGame.GetAllBreakpoints();
+                    foreach (string filename in breaks.Keys)
+                        foreach (int lineNumber in breaks[filename])
+                            await _debugger.SetBreakpoint(filename, lineNumber, true);
+                    menuDebug.Text = "&Resume";
+                    toolDebug.Text = "Resume";
+                    menuTestGame.Enabled = false;
+                    toolTestGame.Enabled = false;
+                    _debugger.Detached += debugger_Detached;
+                    _debugger.Resumed += debugger_Resumed;
+                    await _debugger.Run();
+                    _debugger.Paused += debugger_Paused;
+                }
+                else
+                {
+                    Activate();
+                    MessageBox.Show(
+                        "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
+                        "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                var result = MessageBox.Show(
+                    "You must enable debugging by selecting an appropriate plugin from Configuration Manager. Do you want to do that now?",
+                    "No Debugger Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    menuConfigManager_Click(this, EventArgs.Empty);
+                }
+            }
+        }
+
         private void UpdateButtons()
         {
             bool config = File.Exists(Global.Settings.EngineConfigPath);
@@ -1009,7 +1106,13 @@ namespace SphereStudio
 
             bool sphereFound = File.Exists(Global.Settings.EnginePath)
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
-            toolTestGame.Enabled = menuTestGame.Enabled = sphereFound;
+            menuTestGame.Enabled = toolTestGame.Enabled = sphereFound;
+            menuDebug.Enabled = toolDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
+            menuBreakNow.Enabled = _debugger != null && _debugger.Running;
+            menuStopDebug.Enabled = _debugger != null;
+            menuStepInto.Enabled = _debugger != null && !_debugger.Running;
+            menuStepOut.Enabled = _debugger != null && !_debugger.Running;
+            menuStepOver.Enabled = _debugger != null && !_debugger.Running;
 
             bool last = !string.IsNullOrEmpty(Global.Settings.LastProject);
             menuOpenLastProject.Enabled = last;
@@ -1088,5 +1191,75 @@ namespace SphereStudio
             _loadingPresets = wasLoadingPresets;
         }
         #endregion
+
+        private void debugger_Detached(object sender, EventArgs e)
+        {
+            var scriptViews = from tab in _tabs
+                                where tab.View is ScriptView
+                                select tab.View;
+            foreach (ScriptView view in scriptViews)
+                view.ActiveLine = 0;
+            _debugger = null;
+            menuDebug.Text = "Start &Debugging";
+            toolDebug.Text = "Debug";
+            UpdateButtons();
+        }
+
+        private async void debugger_Paused(object sender, EventArgs e)
+        {
+            ScriptView view = null;
+            view = OpenDocument(_debugger.FileName) as ScriptView;
+            if (view != null)
+                view.ActiveLine = _debugger.LineNumber;
+            else
+                // if no source is available, step through.
+                await _debugger.StepOut();
+            if (!_debugger.Running)
+                Activate();
+            UpdateButtons();
+        }
+
+        private void debugger_Resumed(object sender, EventArgs e)
+        {
+            var scriptViews = from tab in _tabs
+                              where tab.View is ScriptView
+                              select tab.View;
+            foreach (ScriptView view in scriptViews)
+                view.ActiveLine = 0;
+            UpdateButtons();
+        }
+
+        private void menuStepInto_Click(object sender, EventArgs e)
+        {
+            _debugger.StepInto();
+        }
+
+        private void menuStepOut_Click(object sender, EventArgs e)
+        {
+            _debugger.StepOut();
+        }
+
+        private void menuStepOver_Click(object sender, EventArgs e)
+        {
+            _debugger.StepOver();
+        }
+
+        private async void menuDebug_Click(object sender, EventArgs e)
+        {
+            if (_debugger != null)
+                await _debugger.Run();
+            else
+                await StartDebugger();
+        }
+
+        private void debugBreakNow_Click(object sender, EventArgs e)
+        {
+            _debugger.Pause();
+        }
+
+        private void menuStopDebug_Click(object sender, EventArgs e)
+        {
+            _debugger.Detach();
+        }
     }
 }

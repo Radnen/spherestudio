@@ -15,7 +15,6 @@ namespace SphereStudio.Settings
         public UserSettings(string filepath):
             base(new INI(filepath, false), ".ssuser")
         {
-
         }
 
         /// <summary>

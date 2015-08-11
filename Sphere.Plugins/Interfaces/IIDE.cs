@@ -1,15 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
-using System.Drawing;
 
-using Sphere.Core.Editor;
+using Sphere.Plugins.Views;
 
-namespace Sphere.Plugins
+namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
     /// Provides the interface to the Sphere Studio core.
     /// </summary>
-    public interface IIDE
+    public interface IIDE : ISynchronizeInvoke
     {
         ISettings OpenSettings(string settingsID);
         
@@ -28,6 +28,8 @@ namespace Sphere.Plugins
         /// </summary>
         DocumentView CurrentDocument { get; }
 
+        IDebugger Debugger { get; }
+        
         /// <summary>
         /// Gets the path of the current Sphere engine used for game testing.
         /// </summary>

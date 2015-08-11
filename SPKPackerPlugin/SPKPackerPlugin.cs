@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
-namespace Sphere.Plugins
+namespace SphereStudio.Plugins
 {
     public class SPKPackerPlugin : IPlugin
     {
@@ -53,7 +54,7 @@ namespace Sphere.Plugins
             PluginManager.IDE.UnloadProject += IDE_UnloadProject;
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.IDE.RemoveMenuItem(packageMenuItem);
             PluginManager.IDE.RemoveMenuItem(menuSeparator1);

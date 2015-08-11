@@ -4,8 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 using Sphere.Core.Editor;
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -218,7 +221,7 @@ namespace SphereStudio.Plugins
             _eightUnitItem.Checked = spaces == 8;
         }
 
-        public void Destroy()
+        public void ShutDown()
         {
             PluginManager.UnregisterExtensions(_extensions);
             PluginManager.UnregisterEditor(this);
