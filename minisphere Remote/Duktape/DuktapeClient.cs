@@ -37,7 +37,7 @@ namespace minisphere.Remote.Duktape
     }
     
     /// <summary>
-    /// Allows remote control of the Duktape debugger over TCP.
+    /// Allows remote control of a Duktape debug target over TCP.
     /// </summary>
     class DuktapeClient : IDisposable
     {
@@ -49,7 +49,7 @@ namespace minisphere.Remote.Duktape
 
         /// <summary>
         /// Constructs a DuktapeClient object used for communicating with a
-        /// Duktape debug target over TCP.
+        /// Duktape debuggee over TCP.
         /// </summary>
         public DuktapeClient()
         {
@@ -134,7 +134,7 @@ namespace minisphere.Remote.Duktape
                 int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
                 if (debuggerVersion != 1)
                     throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
-                messenger = new Thread(RunMessenger);
+                messenger = new Thread(RunMessenger) { IsBackground = true };
                 messenger.Start();
                 if (Attached != null)
                 {
@@ -313,7 +313,7 @@ namespace minisphere.Remote.Duktape
                             return reply;
                         }
                     }
-                    Thread.Sleep(0);
+                    Thread.Sleep(1);
                 }
             });
         }

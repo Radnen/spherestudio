@@ -36,7 +36,6 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
-        private IDebugger _debugger;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -134,18 +133,8 @@ namespace SphereStudio
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.Cancel) return;
-
-            if (_debugger == null)
-            {
-                CloseCurrentProject(true);
-            }
-            else
-            {
+            if (!CloseCurrentProject(true))
                 e.Cancel = true;
-                MessageBox.Show(
-                    "There is currently a debugging session in progress. Please stop debugging before trying to exit the IDE.",
-                    "Debugging in Progress");
-            }
         }
 
         void menu_DropDownOpening(object sender, EventArgs e)
@@ -524,10 +513,7 @@ namespace SphereStudio
             get { return Global.CurrentGame; }
         }
 
-        public IDebugger Debugger
-        {
-            get { return _debugger; }
-        }
+        public IDebugger Debugger { get; private set; }
 
         public string EnginePath
         {
@@ -942,7 +928,16 @@ namespace SphereStudio
         {
             if (Global.CurrentGame == null)
                 return true;
-            
+
+            // if the debugger is active, prevent closing the project.
+            if (Debugger != null)
+            {
+                MessageBox.Show(this,
+                    "There is an ongoing debug session. Please stop the debugger before closing the project.",
+                    "Debugging in Progress");
+                return false;
+            }
+
             // user values will be lost if we don't record them now.
             Global.CurrentGame.User.StartHidden = !_startContent.Visible;
             Global.CurrentGame.User.Documents = Documents;
@@ -1025,14 +1020,6 @@ namespace SphereStudio
         }
 
         /// <summary>
-        /// Saves and closes all project related files.
-        /// </summary>
-        /// <param name="save_docs">Optional, because sometimes you want to do this before the final closure.</param>
-        private void SaveAndCloseProject(bool save_docs = true)
-        {
-        }
-
-        /// <summary>
         /// Selects a document by tab name, this is not ideal for editors but useful for
         /// persistent objects like the project tree and plugins.
         /// </summary>
@@ -1063,21 +1050,21 @@ namespace SphereStudio
                     tab.Save();  // save all non-untitled documents
                 }
                 Global.CurrentGame.Build();
-                _debugger = await plugin.Debug(CurrentGame);
-                if (_debugger != null)
+                Debugger = await plugin.Debug(CurrentGame);
+                if (Debugger != null)
                 {
                     var breaks = Global.CurrentGame.GetAllBreakpoints();
                     foreach (string filename in breaks.Keys)
                         foreach (int lineNumber in breaks[filename])
-                            await _debugger.SetBreakpoint(filename, lineNumber, true);
+                            await Debugger.SetBreakpoint(filename, lineNumber, true);
                     menuDebug.Text = "&Resume";
                     toolDebug.Text = "Resume";
                     menuTestGame.Enabled = false;
                     toolTestGame.Enabled = false;
-                    _debugger.Detached += debugger_Detached;
-                    _debugger.Resumed += debugger_Resumed;
-                    await _debugger.Run();
-                    _debugger.Paused += debugger_Paused;
+                    Debugger.Detached += debugger_Detached;
+                    Debugger.Resumed += debugger_Resumed;
+                    await Debugger.Run();
+                    Debugger.Paused += debugger_Paused;
                 }
                 else
                 {
@@ -1107,12 +1094,12 @@ namespace SphereStudio
             bool sphereFound = File.Exists(Global.Settings.EnginePath)
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
             menuTestGame.Enabled = toolTestGame.Enabled = sphereFound;
-            menuDebug.Enabled = toolDebug.Enabled = sphereFound && (_debugger == null || !_debugger.Running);
-            menuBreakNow.Enabled = _debugger != null && _debugger.Running;
-            menuStopDebug.Enabled = _debugger != null;
-            menuStepInto.Enabled = _debugger != null && !_debugger.Running;
-            menuStepOut.Enabled = _debugger != null && !_debugger.Running;
-            menuStepOver.Enabled = _debugger != null && !_debugger.Running;
+            menuDebug.Enabled = toolDebug.Enabled = sphereFound && (Debugger == null || !Debugger.Running);
+            menuBreakNow.Enabled = Debugger != null && Debugger.Running;
+            menuStopDebug.Enabled = Debugger != null;
+            menuStepInto.Enabled = Debugger != null && !Debugger.Running;
+            menuStepOut.Enabled = Debugger != null && !Debugger.Running;
+            menuStepOver.Enabled = Debugger != null && !Debugger.Running;
 
             bool last = !string.IsNullOrEmpty(Global.Settings.LastProject);
             menuOpenLastProject.Enabled = last;
@@ -1199,7 +1186,7 @@ namespace SphereStudio
                                 select tab.View;
             foreach (ScriptView view in scriptViews)
                 view.ActiveLine = 0;
-            _debugger = null;
+            Debugger = null;
             menuDebug.Text = "Start &Debugging";
             toolDebug.Text = "Debug";
             UpdateButtons();
@@ -1208,13 +1195,13 @@ namespace SphereStudio
         private async void debugger_Paused(object sender, EventArgs e)
         {
             ScriptView view = null;
-            view = OpenDocument(_debugger.FileName) as ScriptView;
+            view = OpenDocument(Debugger.FileName) as ScriptView;
             if (view != null)
-                view.ActiveLine = _debugger.LineNumber;
+                view.ActiveLine = Debugger.LineNumber;
             else
                 // if no source is available, step through.
-                await _debugger.StepOut();
-            if (!_debugger.Running)
+                await Debugger.StepOut();
+            if (!Debugger.Running)
                 Activate();
             UpdateButtons();
         }
@@ -1231,35 +1218,35 @@ namespace SphereStudio
 
         private void menuStepInto_Click(object sender, EventArgs e)
         {
-            _debugger.StepInto();
+            Debugger.StepInto();
         }
 
         private void menuStepOut_Click(object sender, EventArgs e)
         {
-            _debugger.StepOut();
+            Debugger.StepOut();
         }
 
         private void menuStepOver_Click(object sender, EventArgs e)
         {
-            _debugger.StepOver();
+            Debugger.StepOver();
         }
 
         private async void menuDebug_Click(object sender, EventArgs e)
         {
-            if (_debugger != null)
-                await _debugger.Run();
+            if (Debugger != null)
+                await Debugger.Run();
             else
                 await StartDebugger();
         }
 
         private void debugBreakNow_Click(object sender, EventArgs e)
         {
-            _debugger.Pause();
+            Debugger.Pause();
         }
 
         private void menuStopDebug_Click(object sender, EventArgs e)
         {
-            _debugger.Detach();
+            Debugger.Detach();
         }
     }
 }
