@@ -884,7 +884,7 @@ namespace SphereStudio
         }
 
         /// <summary>
-        /// Saves all currently opened documents.
+        /// Refreshes the GUI.
         /// </summary>
         private void ApplyRefresh(bool ignore_presets = false)
         {
@@ -903,7 +903,7 @@ namespace SphereStudio
         /// <summary>
         /// Closes all opened documents; optionally saving them as well.
         /// </summary>
-        /// <param name="save">Set to true to invoke save routines.</param>
+        /// <param name="forceClose">If true, closes unsaved documents without prompting.</param>
         /// <returns>true if all documents were closed, false if a save prompt was canceled.</returns>
         private bool CloseAllDocuments(bool forceClose = false)
         {
@@ -923,6 +923,7 @@ namespace SphereStudio
         /// <summary>
         /// Closes the current project and all open documents.
         /// </summary>
+        /// <param name="forceClose">If true, closes unsaved documents without prompting.</param>
         /// <returns>'true' if the project was closed; 'false' on cancel.</returns>
         private bool CloseCurrentProject(bool forceClose = false)
         {
