@@ -44,6 +44,7 @@
             this.textOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textOutput.Size = new System.Drawing.Size(276, 385);
             this.textOutput.TabIndex = 0;
+            this.textOutput.WordWrap = false;
             // 
             // ConsolePane
             // 

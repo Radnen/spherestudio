@@ -15,9 +15,6 @@ namespace minisphere.Remote.Components
         public ConsolePane()
         {
             InitializeComponent();
-
-            Print("minisphere Remote 1.7.0");
-            Print("");
         }
 
         public void Print(string text)

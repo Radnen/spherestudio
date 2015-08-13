@@ -103,6 +103,11 @@ namespace minisphere.Remote.Duktape
         /// Fires when execution has resumed.
         /// </summary>
         public event EventHandler Resumed;
+
+        /// <summary>
+        /// Gets the identification string reported in the handshake.
+        /// </summary>
+        public string TargetID { get; private set; }
         
         /// <summary>
         /// Gets the filename reported in the last status update.
@@ -131,9 +136,11 @@ namespace minisphere.Remote.Duktape
                     tcp.Client.ReceiveAll(buffer);
                     line += (char)buffer[0];
                 }
-                int debuggerVersion = Convert.ToInt32(line.Split(' ')[0]);
+                string[] handshake = line.Split(new[] { ' ' }, 4);
+                int debuggerVersion = int.Parse(handshake[0]);
                 if (debuggerVersion != 1)
                     throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
+                TargetID = handshake[3];
                 messenger = new Thread(RunMessenger) { IsBackground = true };
                 messenger.Start();
                 if (Attached != null)

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,6 +109,13 @@ namespace minisphere.Remote
                 consoleDock.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
                 PluginManager.IDE.DockControl(consoleDock);
                 inspectorDock.Show();
+                var assembly = Assembly.GetExecutingAssembly();
+                var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
+                console.Print(string.Format("{0} {1}",
+                    title.Title,
+                    assembly.GetName().Version.ToString()));
+                console.Print(duktape.TargetID);
+                console.Print("");
             }), null);
         }
 
