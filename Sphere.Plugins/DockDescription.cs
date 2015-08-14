@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace Sphere.Plugins
 {
+    /// <summary>
+    /// Describes a dockable control.
+    /// </summary>
     public class DockDescription
     {
         public event EventHandler OnShow;
@@ -65,17 +68,25 @@ namespace Sphere.Plugins
         }
     }
 
-    // A mapping between a generic docking system and a plugin
+    /// <summary>
+    /// Specifies the preferred docking location for a dockable control.
+    /// </summary>
     public enum DockDescStyle
     {
-        Document = 0,
-        Side = 1
+        Document,
+        Side,
+        Opposite,
     }
 
+    /// <summary>
+    /// Specifies valid docking positions for a dockable control.
+    /// </summary>
+    [Flags]
     public enum DockDescAreas
     {
-        Document = 0,
-        Sides = 1,
-        Both = 2
+        None = 0,
+        Document = 1,
+        Sides = 2,
+        Both = 3,
     }
 }

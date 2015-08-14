@@ -597,41 +597,37 @@ namespace SphereStudio
         {
             if (description.Control == null) return;
 
-            DockContent ctrl = new DockContent() { Text = description.TabText, Icon = description.Icon };
+            DockContent ctrl = new DockContent()
+            {
+                Text = description.TabText,
+                Icon = description.Icon,
+            };
             ctrl.Controls.Add(description.Control);
 
-            DockAreas areas = DockAreas.Document;
-
-            if (description.DockAreas == DockDescAreas.Sides)
-            {
-                areas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
-            }
-            else if (description.DockAreas == (DockDescAreas.Document | DockDescAreas.Sides))
-            {
+            DockAreas areas = DockAreas.Float;
+            if (description.DockAreas.HasFlag(DockDescAreas.Document))
+                areas |= DockAreas.Document;
+            if (description.DockAreas.HasFlag(DockDescAreas.Sides))
                 areas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
-            }
 
             ctrl.DockAreas = areas;
 
-            description.OnShow += new EventHandler(delegate(object o, EventArgs e)
-            {
-                ctrl.Show();
-            });
-
-            description.OnHide += new EventHandler(delegate(object o, EventArgs e)
-            {
-                ctrl.Hide();
-            });
-
-            description.OnToggle += new EventHandler(delegate(object o, EventArgs e)
+            description.OnShow += (sender, e) => ctrl.Show();
+            description.OnHide += (sender, e) => ctrl.Hide();
+            description.OnToggle += (sender, e) =>
             {
                 if (ctrl.IsHidden) ctrl.Show();
                 else ctrl.Hide();
-            });
+            };
 
             DockState state = DockState.Document;
-            if (description.DockState == DockDescStyle.Side && areas.HasFlag(DockAreas.DockLeft))
-                state = DockState.DockLeft;
+            if (areas.HasFlag(DockAreas.DockLeft))
+            {
+                if (description.DockState == DockDescStyle.Side)
+                    state = DockState.DockLeft;
+                else if (description.DockState == DockDescStyle.Opposite)
+                    state = DockState.DockRight;
+            }
 
             ctrl.Show(MainDock, state);
         }

@@ -60,7 +60,7 @@
             this.listVariables.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listVariables.MultiSelect = false;
             this.listVariables.Name = "listVariables";
-            this.listVariables.Size = new System.Drawing.Size(387, 150);
+            this.listVariables.Size = new System.Drawing.Size(387, 211);
             this.listVariables.SmallImageList = this.imagesVarList;
             this.listVariables.TabIndex = 0;
             this.listVariables.UseCompatibleStateImageBehavior = false;
@@ -70,12 +70,12 @@
             // columnName
             // 
             this.columnName.Text = "Name";
-            this.columnName.Width = 200;
+            this.columnName.Width = 125;
             // 
             // columnValue
             // 
             this.columnValue.Text = "Value";
-            this.columnValue.Width = 150;
+            this.columnValue.Width = 100;
             // 
             // imagesVarList
             // 
@@ -100,7 +100,7 @@
             this.splitter.Panel2.Controls.Add(this.textValue);
             this.splitter.Panel2.Controls.Add(this.panelEval);
             this.splitter.Size = new System.Drawing.Size(387, 654);
-            this.splitter.SplitterDistance = 150;
+            this.splitter.SplitterDistance = 211;
             this.splitter.TabIndex = 1;
             // 
             // textValue
@@ -113,7 +113,7 @@
             this.textValue.Name = "textValue";
             this.textValue.ReadOnly = true;
             this.textValue.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textValue.Size = new System.Drawing.Size(387, 476);
+            this.textValue.Size = new System.Drawing.Size(387, 415);
             this.textValue.TabIndex = 0;
             this.textValue.WordWrap = false;
             // 
@@ -152,14 +152,14 @@
             this.buttonEval.UseVisualStyleBackColor = true;
             this.buttonEval.Click += new System.EventHandler(this.buttonEval_Click);
             // 
-            // DebugPane
+            // InspectorPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitter);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "DebugPane";
+            this.Name = "InspectorPane";
             this.Size = new System.Drawing.Size(387, 654);
             this.splitter.Panel1.ResumeLayout(false);
             this.splitter.Panel2.ResumeLayout(false);

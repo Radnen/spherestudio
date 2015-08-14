@@ -107,7 +107,7 @@ namespace minisphere.Remote
                 inspectorDock = new DockDescription();
                 inspectorDock.Control = inspector;
                 inspectorDock.DockAreas = DockDescAreas.Sides;
-                inspectorDock.DockState = DockDescStyle.Side;
+                inspectorDock.DockState = DockDescStyle.Opposite;
                 inspectorDock.HideOnClose = true;
                 inspectorDock.TabText = "Inspector";
                 inspectorDock.Icon = Icon.FromHandle(Properties.Resources.EyeOpen.GetHicon());
@@ -115,7 +115,7 @@ namespace minisphere.Remote
                 consoleDock = new DockDescription();
                 consoleDock.Control = console;
                 consoleDock.DockAreas = DockDescAreas.Sides;
-                consoleDock.DockState = DockDescStyle.Side;
+                consoleDock.DockState = DockDescStyle.Opposite;
                 consoleDock.HideOnClose = true;
                 consoleDock.TabText = "Console";
                 consoleDock.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
@@ -125,7 +125,7 @@ namespace minisphere.Remote
                 console.Print(string.Format("{0} for Sphere Studio", title.Title));
                 console.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
                 console.Print("");
-                console.Print(duktape.TargetID);
+                console.Print(string.Format("Host is {0}.", duktape.TargetID));
                 console.Print("");
             }), null);
         }
