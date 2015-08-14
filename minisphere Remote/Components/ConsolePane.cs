@@ -19,7 +19,11 @@ namespace minisphere.Remote.Components
 
         public void Print(string text)
         {
+            
             textOutput.Text += text + "\r\n";
+            textOutput.SelectionStart = textOutput.Text.Length;
+            textOutput.SelectionLength = 0;
+            textOutput.ScrollToCaret();
         }
     }
 }
