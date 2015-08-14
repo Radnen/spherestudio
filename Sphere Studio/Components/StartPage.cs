@@ -104,7 +104,7 @@ namespace SphereStudio.Components
 
             // Search through a list of supplied directories.
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            var paths = new List<string>(Global.Settings.GetStringArray("gamePaths"));
+            var paths = new List<string>(Global.Settings.ProjectPaths);
             paths.Insert(0, Path.Combine(sphereDir, @"Projects"));
             foreach (string s in paths)
             {

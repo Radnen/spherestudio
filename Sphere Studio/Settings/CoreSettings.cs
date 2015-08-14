@@ -111,6 +111,12 @@ namespace SphereStudio.Settings
             }
         }
 
+        public string[] ProjectPaths
+        {
+            get { return GetStringArray("gamePaths"); }
+            set { SetValue("gamePaths", value); }
+        }
+
         public View StartPageView
         {
             get

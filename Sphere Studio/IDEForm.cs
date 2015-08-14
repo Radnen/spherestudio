@@ -36,7 +36,6 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
-        private bool _first_pause;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -1058,7 +1057,6 @@ namespace SphereStudio
                 }
                 Global.CurrentGame.Build();
                 Debugger = await plugin.Debug(CurrentGame);
-                _first_pause = true;
                 if (Debugger != null)
                 {
                     var breaks = Global.CurrentGame.GetAllBreakpoints();

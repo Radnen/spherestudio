@@ -61,7 +61,7 @@ namespace SphereStudio.Forms
 
         private void FillValues(CoreSettings settings)
         {
-            GamePaths = settings.GetStringArray("gamePaths");
+            GamePaths = settings.ProjectPaths;
             AutoStart = settings.AutoOpenProject;
             UseScriptUpdate = settings.AutoScriptHeader;
             UseStartPage = settings.AutoStartPage;
@@ -132,6 +132,7 @@ namespace SphereStudio.Forms
             Global.Settings.AutoOpenProject = AutoStart;
             Global.Settings.AutoStartPage = UseStartPage;
             Global.Settings.AutoScriptHeader = UseScriptUpdate;
+            Global.Settings.ProjectPaths = GamePaths;
             Invalidate(true);
         }
 
