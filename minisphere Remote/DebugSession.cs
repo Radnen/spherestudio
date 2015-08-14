@@ -156,7 +156,7 @@ namespace minisphere.Remote
                 {
                     inspector.SetVariables(variables);
                     inspector.Enabled = true;
-                    inspectorDock.Show();
+                    inspectorDock.Activate();
                 }
             }), null);
         }
@@ -169,9 +169,6 @@ namespace minisphere.Remote
             {
                 if (Resumed != null)
                     Resumed(this, EventArgs.Empty);
-                inspector.Enabled = false;
-                inspector.Clear();
-                consoleDock.Show();
             }), null);
         }
 
@@ -215,7 +212,7 @@ namespace minisphere.Remote
             }
         }
 
-        public async Task Run()
+        public async Task Resume()
         {
             await duktape.Resume();
         }
@@ -247,8 +244,14 @@ namespace minisphere.Remote
 
         private static void FocusEngine(object state)
         {
-            DebugSession me = (DebugSession)state;
-            NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
+            PluginManager.IDE.Invoke(new Action(() =>
+            {
+                DebugSession me = (DebugSession)state;
+                NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
+                me.consoleDock.Activate();
+                me.inspector.Enabled = false;
+                me.inspector.Clear();
+            }), null);
         }
 
         private void UpdateStatus()

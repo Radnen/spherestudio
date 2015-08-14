@@ -72,7 +72,7 @@ namespace Sphere.Plugins.Interfaces
         /// Runs until the next breakpoint is hit or the target terminates,
         /// whichever comes first.
         /// </summary>
-        Task Run();
+        Task Resume();
 
         /// <summary>
         /// Sets or clears a breakpoint at a specified location.

@@ -36,6 +36,7 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
+        private bool _first_pause;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -614,6 +615,15 @@ namespace SphereStudio
 
             description.OnShow += (sender, e) => ctrl.Show();
             description.OnHide += (sender, e) => ctrl.Hide();
+            description.OnActivate += (sender, e) =>
+            {
+                Control focus = this;
+                while (focus is ContainerControl)
+                    focus = ((ContainerControl)focus).ActiveControl;
+                ctrl.Show();
+                if (focus != null)
+                    focus.Focus();
+            };
             description.OnToggle += (sender, e) =>
             {
                 if (ctrl.IsHidden) ctrl.Show();
@@ -1048,6 +1058,7 @@ namespace SphereStudio
                 }
                 Global.CurrentGame.Build();
                 Debugger = await plugin.Debug(CurrentGame);
+                _first_pause = true;
                 if (Debugger != null)
                 {
                     var breaks = Global.CurrentGame.GetAllBreakpoints();
@@ -1059,9 +1070,9 @@ namespace SphereStudio
                     menuTestGame.Enabled = false;
                     toolTestGame.Enabled = false;
                     Debugger.Detached += debugger_Detached;
-                    Debugger.Resumed += debugger_Resumed;
-                    await Debugger.Run();
                     Debugger.Paused += debugger_Paused;
+                    Debugger.Resumed += debugger_Resumed;
+                    await Debugger.Resume();
                 }
                 else
                 {
@@ -1231,7 +1242,7 @@ namespace SphereStudio
         private async void menuDebug_Click(object sender, EventArgs e)
         {
             if (Debugger != null)
-                await Debugger.Run();
+                await Debugger.Resume();
             else
                 await StartDebugger();
         }

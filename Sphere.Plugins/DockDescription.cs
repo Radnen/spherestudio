@@ -5,10 +5,11 @@ using System.Windows.Forms;
 namespace Sphere.Plugins
 {
     /// <summary>
-    /// Describes a dockable control.
+    /// Represents a dockable control in a generic way.
     /// </summary>
     public class DockDescription
     {
+        public event EventHandler OnActivate;
         public event EventHandler OnShow;
         public event EventHandler OnHide;
         public event EventHandler OnToggle;
@@ -49,12 +50,27 @@ namespace Sphere.Plugins
             DockAreas = DockDescAreas.Document;
         }
 
+        /// <summary>
+        /// Shows the control without stealing focus.
+        /// </summary>
+        public void Activate()
+        {
+            if (OnActivate != null)
+                OnActivate(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Shows and activates the control.
+        /// </summary>
         public void Show()
         {
             if (OnShow != null)
                 OnShow(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Hides the dockable control.
+        /// </summary>
         public void Hide()
         {
             if (OnHide != null)
