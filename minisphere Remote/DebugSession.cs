@@ -19,7 +19,7 @@ using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
 {
-    class DebugSession : IDebugger
+    class DebugSession : IDebugger, IDisposable
     {
         private IProject ssproj;
         private DuktapeClient duktape;
@@ -40,6 +40,18 @@ namespace minisphere.Remote
             focusSwitchTimer = new System.Threading.Timer(
                 FocusEngine, this,
                 Timeout.Infinite, Timeout.Infinite);
+        }
+
+        public void Dispose()
+        {
+            Attached = null;
+            Detached = null;
+            Paused = null;
+            Resumed = null;
+            focusSwitchTimer.Dispose();
+            duktape.Dispose();
+            console.Dispose();
+            inspector.Dispose();
         }
 
         public string FileName { get; private set; }
@@ -111,9 +123,9 @@ namespace minisphere.Remote
                 inspectorDock.Show();
                 var assembly = Assembly.GetExecutingAssembly();
                 var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
-                console.Print(string.Format("{0} {1}",
-                    title.Title,
-                    assembly.GetName().Version.ToString()));
+                console.Print(string.Format("{0} for Sphere Studio", title.Title));
+                console.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
+                console.Print("");
                 console.Print(duktape.TargetID);
                 console.Print("");
             }), null);
@@ -166,13 +178,7 @@ namespace minisphere.Remote
         {
             focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
             await duktape.Detach();
-            engineProcess.CloseMainWindow();
-            duktape.Dispose();
-            focusSwitchTimer.Dispose();
-            Attached = null;
-            Detached = null;
-            Paused = null;
-            Resumed = null;
+            Dispose();
         }
 
         public async Task<IReadOnlyDictionary<string, string>> GetVariableList()

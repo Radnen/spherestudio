@@ -41,7 +41,7 @@ namespace minisphere.Remote.Duktape
     /// </summary>
     class DuktapeClient : IDisposable
     {
-        private TcpClient tcp = new TcpClient();
+        private TcpClient tcp = new TcpClient() { NoDelay = true };
         private Thread messenger = null;
         private object replyLock = new object();
         private Queue<dynamic[]> requests = new Queue<dynamic[]>();
@@ -108,6 +108,11 @@ namespace minisphere.Remote.Duktape
         /// Gets the identification string reported in the handshake.
         /// </summary>
         public string TargetID { get; private set; }
+
+        /// <summary>
+        /// Gets the version identification of the Duktape host.
+        /// </summary>
+        public string Version { get; private set; }
         
         /// <summary>
         /// Gets the filename reported in the last status update.
@@ -140,6 +145,7 @@ namespace minisphere.Remote.Duktape
                 int debuggerVersion = int.Parse(handshake[0]);
                 if (debuggerVersion != 1)
                     throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
+                Version = handshake[2];
                 TargetID = handshake[3];
                 messenger = new Thread(RunMessenger) { IsBackground = true };
                 messenger.Start();
