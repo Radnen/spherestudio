@@ -120,7 +120,6 @@ namespace minisphere.Remote
                 consoleDock.TabText = "Console";
                 consoleDock.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
                 PluginManager.IDE.DockControl(consoleDock);
-                inspectorDock.Show();
                 var assembly = Assembly.GetExecutingAssembly();
                 var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
                 console.Print(string.Format("{0} for Sphere Studio", title.Title));
@@ -157,6 +156,7 @@ namespace minisphere.Remote
                 {
                     inspector.SetVariables(variables);
                     inspector.Enabled = true;
+                    inspectorDock.Show();
                 }
             }), null);
         }
@@ -171,6 +171,7 @@ namespace minisphere.Remote
                     Resumed(this, EventArgs.Empty);
                 inspector.Enabled = false;
                 inspector.Clear();
+                consoleDock.Show();
             }), null);
         }
 
