@@ -51,28 +51,44 @@ namespace SphereStudio.IDE
             _path = filepath;
             var userpath = GetUserFilePath(filepath);
             User = new UserSettings(userpath);
-            
+
             // auto-convert game.sgm to .ssproj
             if (Path.GetFileName(filepath) == "game.sgm")
             {
                 _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
                 _ini = new INISettings(new INI(_path, false), ".ssproj");
+                Name = "Untitled";
+                Author = "";
+                Description = "";
+                ScreenWidth = 320;
+                ScreenHeight = 240;
+                MainScript = "main.js";
                 using (StreamReader file = new StreamReader(filepath))
                 {
                     Regex regex = new Regex("^(.*)=(.*)$");
                     while (!file.EndOfStream)
                     {
                         Match match = regex.Match(file.ReadLine());
-                        string key = match.Success ? match.Groups[1].Value : null;
-                        string value = match.Success ? match.Groups[2].Value : null;
-                        switch (key.ToLower())
+                        if (match.Success)
                         {
-                            case "name": Name = value; break;
-                            case "author": Author = value; break;
-                            case "description": Description = value; break;
-                            case "screen_width": ScreenWidth = Convert.ToInt32(value); break;
-                            case "screen_height": ScreenHeight = Convert.ToInt32(value); break;
-                            case "script": MainScript = value; break;
+                            string key = match.Groups[1].Value;
+                            string value = match.Groups[2].Value;
+                            int intValue;
+                            switch (key.ToLower())
+                            {
+                                case "name": Name = value; break;
+                                case "author": Author = value; break;
+                                case "description": Description = value; break;
+                                case "screen_width":
+                                    if (int.TryParse(value, out intValue))
+                                        ScreenWidth = intValue;
+                                    break;
+                                case "screen_height":
+                                    if (int.TryParse(value, out intValue))
+                                        ScreenHeight = intValue;
+                                    break;
+                                case "script": MainScript = value; break;
+                            }
                         }
                     }
                     file.Close();
