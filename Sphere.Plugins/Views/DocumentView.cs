@@ -46,6 +46,8 @@ namespace Sphere.Plugins.Views
         /// </summary>
         public Icon Icon { get; protected set; }
 
+        public virtual bool ReadOnly { get; set; }
+        
         /// <summary>
         /// Gets or sets the current view state of the document. (e.g. caret position,
         /// current selection, etc.)

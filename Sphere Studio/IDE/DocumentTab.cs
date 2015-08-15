@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -51,6 +53,21 @@ namespace SphereStudio.IDE
             _content.Controls.Add(View);
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
+
+            // is the file writable?
+            if (filename != null)
+            {
+                try
+                {
+                    FileIOPermission fp = new FileIOPermission(
+                        FileIOPermissionAccess.Write, filename);
+                    fp.Demand();
+                }
+                catch (SecurityException)
+                {
+                    View.ReadOnly = true;
+                }
+            }
 
             UpdateTabText();
 
@@ -125,12 +142,21 @@ namespace SphereStudio.IDE
         /// <param name="path">The default directory for the Save As dialog.</param>
         public bool Save(string path = null)
         {
+            if (View.ReadOnly) return true;
             if (FileName == null)
                 return SaveAs(path);
 
             View.Save(FileName);
             SaveViewState();
             return true;
+        }
+
+        public bool SaveIfDirty()
+        {
+            if (FileName == null || !View.IsDirty)
+                return true;
+
+            return Save();
         }
 
         /// <summary>
@@ -294,6 +320,8 @@ namespace SphereStudio.IDE
         private void UpdateTabText()
         {
             _content.TabText = View.IsDirty ? _tabText + "*" : _tabText;
+            if (View.ReadOnly)
+                _content.TabText += " (read-only)";
             _content.ToolTipText = FileName;
         }
 

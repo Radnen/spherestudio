@@ -131,6 +131,12 @@ namespace SphereStudio.Plugins
             get { return new[] { "js", "coffee" }; }
         }
 
+        public override bool ReadOnly
+        {
+            get { return _codeBox.IsReadOnly; }
+            set { _codeBox.IsReadOnly = value; }
+        }
+
         public override string Text
         {
             get

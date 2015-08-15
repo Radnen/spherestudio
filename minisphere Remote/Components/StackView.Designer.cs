@@ -54,7 +54,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Function";
-            this.columnHeader1.Width = 150;
+            this.columnHeader1.Width = 100;
             // 
             // columnHeader2
             // 

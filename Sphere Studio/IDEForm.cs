@@ -418,11 +418,12 @@ namespace SphereStudio
 
             if (IsProjectOpen)
             {
+                // save all non-untitled documents
                 foreach (DocumentTab tab in
                     from tab in _tabs where tab.FileName != null
                     select tab)
                 {
-                    tab.Save();  // save all non-untitled documents
+                    tab.SaveIfDirty();
                 }
                 string gamePath = Global.CurrentGame.Build();
                 Process.Start(((ToolStripItem)sender).Tag as string ?? EnginePath,
@@ -1058,7 +1059,7 @@ namespace SphereStudio
                     where tab.FileName != null
                     select tab)
                 {
-                    tab.Save();  // save all non-untitled documents
+                    tab.SaveIfDirty();
                 }
                 Global.CurrentGame.Build();
                 Debugger = await plugin.Debug(CurrentGame);
