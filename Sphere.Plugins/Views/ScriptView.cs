@@ -57,6 +57,11 @@ namespace Sphere.Plugins.Views
             set { throw new NotImplementedException(); }
         }
 
+        public virtual void GoToLine(int lineNumber)
+        {
+            throw new NotImplementedException();
+        }
+
         protected void OnBreakpointSet(BreakpointSetEventArgs e)
         {
             if (BreakpointSet != null) BreakpointSet(this, e);

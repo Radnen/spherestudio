@@ -25,10 +25,12 @@ namespace minisphere.Remote
         private DuktapeClient duktape;
         private Process engineProcess;
         private string engineDir;
-        private ConsolePane console;
-        private DockDescription consoleDock;
-        private InspectorPane inspector;
-        private DockDescription inspectorDock;
+        private DockDescription consolePanel;
+        private DockDescription inspectorPanel;
+        private DockDescription stackPanel;
+        private ConsoleView consoleView;
+        private InspectorView inspectorView;
+        private StackView stackView;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
         private System.Threading.Timer focusSwitchTimer;
 
@@ -50,8 +52,8 @@ namespace minisphere.Remote
             Resumed = null;
             focusSwitchTimer.Dispose();
             duktape.Dispose();
-            console.Dispose();
-            inspector.Dispose();
+            consoleView.Dispose();
+            inspectorView.Dispose();
         }
 
         public string FileName { get; private set; }
@@ -92,7 +94,7 @@ namespace minisphere.Remote
         {
             PluginManager.IDE.Invoke(new Action(() =>
             {
-                console.Print(e.Text);
+                consoleView.Print(e.Text);
             }), null);
         }
 
@@ -102,31 +104,45 @@ namespace minisphere.Remote
             {
                 if (Attached != null)
                     Attached(this, EventArgs.Empty);
-                inspector = new InspectorPane(this) { Dock = DockStyle.Fill, Enabled = false };
-                console = new ConsolePane() { Dock = DockStyle.Fill };
-                inspectorDock = new DockDescription();
-                inspectorDock.Control = inspector;
-                inspectorDock.DockAreas = DockDescAreas.Sides;
-                inspectorDock.DockState = DockDescStyle.Opposite;
-                inspectorDock.HideOnClose = true;
-                inspectorDock.TabText = "Inspector";
-                inspectorDock.Icon = Icon.FromHandle(Properties.Resources.EyeOpen.GetHicon());
-                PluginManager.IDE.DockControl(inspectorDock);
-                consoleDock = new DockDescription();
-                consoleDock.Control = console;
-                consoleDock.DockAreas = DockDescAreas.Sides;
-                consoleDock.DockState = DockDescStyle.Opposite;
-                consoleDock.HideOnClose = true;
-                consoleDock.TabText = "Console";
-                consoleDock.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
-                PluginManager.IDE.DockControl(consoleDock);
+
+                inspectorView = new InspectorView(this) { Dock = DockStyle.Fill, Enabled = false };
+                consoleView = new ConsoleView(this) { Dock = DockStyle.Fill };
+                stackView = new StackView(this) { Dock = DockStyle.Fill, Enabled = false };
+
+                inspectorPanel = new DockDescription();
+                inspectorPanel.Control = inspectorView;
+                inspectorPanel.DockAreas = DockDescAreas.Sides;
+                inspectorPanel.DockState = DockDescStyle.Opposite;
+                inspectorPanel.HideOnClose = true;
+                inspectorPanel.TabText = "Inspector";
+                inspectorPanel.Icon = Icon.FromHandle(Properties.Resources.EyeOpen.GetHicon());
+                PluginManager.IDE.DockControl(inspectorPanel);
+
+                stackPanel = new DockDescription();
+                stackPanel.Control = stackView;
+                stackPanel.DockAreas = DockDescAreas.Sides;
+                stackPanel.DockState = DockDescStyle.Opposite;
+                stackPanel.HideOnClose = true;
+                stackPanel.TabText = "Stack";
+                stackPanel.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
+                PluginManager.IDE.DockControl(stackPanel);
+
+                consolePanel = new DockDescription();
+                consolePanel.Control = consoleView;
+                consolePanel.DockAreas = DockDescAreas.Sides;
+                consolePanel.DockState = DockDescStyle.Opposite;
+                consolePanel.HideOnClose = true;
+                consolePanel.TabText = "Console";
+                consolePanel.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
+                PluginManager.IDE.DockControl(consolePanel);
+
                 var assembly = Assembly.GetExecutingAssembly();
                 var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
-                console.Print(string.Format("{0} for Sphere Studio", title.Title));
-                console.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
-                console.Print("");
-                console.Print(string.Format("Host is {0}.", duktape.TargetID));
-                console.Print("");
+                consoleView.Print(string.Format("{0} for Sphere Studio", title.Title));
+                consoleView.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
+                consoleView.Print("");
+                consoleView.Print(string.Format("Host is {0}.", duktape.TargetID));
+                consoleView.Print("");
             }), null);
         }
 
@@ -136,10 +152,11 @@ namespace minisphere.Remote
             {
                 if (Detached != null)
                     Detached(this, EventArgs.Empty);
-                inspectorDock.Hide();
-                consoleDock.Hide();
-                inspector.Dispose();
-                console.Dispose();
+                inspectorPanel.Hide();
+                stackPanel.Hide();
+                consolePanel.Hide();
+                inspectorView.Dispose();
+                consoleView.Dispose();
             }), null);
         }
 
@@ -152,11 +169,14 @@ namespace minisphere.Remote
                 if (Paused != null)
                     Paused(this, EventArgs.Empty);
                 var variables = await GetVariableList();
+                var calls = await duktape.GetCallStack();
                 if (!Running)
                 {
-                    inspector.SetVariables(variables);
-                    inspector.Enabled = true;
-                    inspectorDock.Activate();
+                    inspectorView.SetVariables(variables);
+                    stackView.UpdateStack(calls);
+                    inspectorView.Enabled = true;
+                    stackView.Enabled = true;
+                    inspectorPanel.Activate();
                 }
             }), null);
         }
@@ -248,28 +268,38 @@ namespace minisphere.Remote
             {
                 DebugSession me = (DebugSession)state;
                 NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
-                me.consoleDock.Activate();
-                me.inspector.Enabled = false;
-                me.inspector.Clear();
+                me.consolePanel.Activate();
+                me.inspectorView.Enabled = false;
+                me.inspectorView.Clear();
+                me.stackView.Enabled = false;
+                me.stackView.Clear();
             }), null);
+        }
+
+        /// <summary>
+        /// Resolves a SphereFS path into an absolute one.
+        /// </summary>
+        /// <param name="path">The SphereFS path to resolve.</param>
+        internal string ResolvePath(string path)
+        {
+            if (path.Length >= 2 && path.Substring(0, 2) == "~/")
+                path = Path.Combine(ssproj.RootPath, path.Substring(2));
+            else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
+                path = Path.Combine(ssproj.RootPath, path.Substring(5));
+            else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
+                path = Path.Combine(engineDir, "system", path.Substring(5));
+            else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
+                path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    "minisphere", path.Substring(5));
+            else
+                path = Path.Combine(ssproj.RootPath, "scripts", path);
+            return path.Replace('/', '\\');
         }
 
         private void UpdateStatus()
         {
-            string path = duktape.FileName;
-            if (path.Length >= 2 && path.Substring(0, 2) == "~/")
-                FileName = Path.Combine(ssproj.RootPath, path.Substring(2));
-            else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
-                FileName = Path.Combine(ssproj.RootPath, path.Substring(5));
-            else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
-                FileName = Path.Combine(engineDir, "system", path.Substring(5));
-            else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
-                FileName = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "minisphere", path.Substring(5));
-            else
-                FileName = Path.Combine(ssproj.RootPath, "scripts", path);
-            FileName = FileName.Replace('/', '\\');
+            FileName = ResolvePath(duktape.FileName);
             LineNumber = duktape.LineNumber;
             Running = duktape.Running;
         }

@@ -7,7 +7,7 @@ using Sphere.Plugins;
 
 namespace minisphere.Remote.Components
 {
-    partial class InspectorPane : UserControl
+    partial class InspectorView : UserControl
     {
         private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
 
@@ -16,7 +16,7 @@ namespace minisphere.Remote.Components
         private string lastVarName = null;
         private IReadOnlyDictionary<string, string> variables;
 
-        public InspectorPane(DebugSession session)
+        public InspectorView(DebugSession session)
         {
             InitializeComponent();
 
@@ -36,6 +36,7 @@ namespace minisphere.Remote.Components
         public void SetVariables(IReadOnlyDictionary<string, string> variables)
         {
             this.variables = variables;
+            listVariables.BeginUpdate();
             Clear();
             foreach (var k in this.variables.Keys)
             {
@@ -48,6 +49,7 @@ namespace minisphere.Remote.Components
                 if (toSelect != null)
                     toSelect.Selected = true;
             }
+            listVariables.EndUpdate();
         }
 
         private async Task DoEvaluate(string expression)

@@ -1,6 +1,6 @@
 ﻿namespace minisphere.Remote.Components
 {
-    partial class ConsolePane
+    partial class ConsoleView
     {
         /// <summary> 
         /// Required designer variable.

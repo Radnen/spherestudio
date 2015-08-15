@@ -641,7 +641,12 @@ namespace SphereStudio
             ctrl.Show(MainDock, state);
         }
 
-        public DocumentView OpenDocument(string filePath, bool restoreView = false)
+        public DocumentView OpenDocument(string filePath)
+        {
+            return OpenDocument(filePath, false);
+        }
+
+        public DocumentView OpenDocument(string filePath, bool restoreView)
         {
             string extension = Path.GetExtension(filePath);
             

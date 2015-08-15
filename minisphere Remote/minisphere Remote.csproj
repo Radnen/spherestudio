@@ -47,17 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ConsolePane.cs">
+    <Compile Include="Components\ConsoleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\ConsolePane.Designer.cs">
-      <DependentUpon>ConsolePane.cs</DependentUpon>
+    <Compile Include="Components\ConsoleView.Designer.cs">
+      <DependentUpon>ConsoleView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\InspectorPane.cs">
+    <Compile Include="Components\InspectorView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\InspectorPane.Designer.cs">
-      <DependentUpon>InspectorPane.cs</DependentUpon>
+    <Compile Include="Components\InspectorView.Designer.cs">
+      <DependentUpon>InspectorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\StackView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\StackView.Designer.cs">
+      <DependentUpon>StackView.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugSession.cs" />
     <Compile Include="Duktape\DuktapeClient.cs" />
@@ -72,12 +78,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Components\ConsolePane.resx">
-      <DependentUpon>ConsolePane.cs</DependentUpon>
+    <EmbeddedResource Include="Components\ConsoleView.resx">
+      <DependentUpon>ConsoleView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\InspectorPane.resx">
-      <DependentUpon>InspectorPane.cs</DependentUpon>
+    <EmbeddedResource Include="Components\InspectorView.resx">
+      <DependentUpon>InspectorView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\StackView.resx">
+      <DependentUpon>StackView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

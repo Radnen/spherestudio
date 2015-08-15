@@ -11,8 +11,6 @@ namespace Sphere.Plugins.Interfaces
     /// </summary>
     public interface IIDE : ISynchronizeInvoke
     {
-        ISettings OpenSettings(string settingsID);
-        
         /// <summary>
         /// Provides access to the Sphere Studio global configuration.
         /// </summary>
@@ -29,7 +27,12 @@ namespace Sphere.Plugins.Interfaces
         DocumentView CurrentDocument { get; }
 
         IDebugger Debugger { get; }
-        
+
+        /// <summary>
+        /// Gets a list of the loaded document's filepaths in the Sphere Studio's main dock panel.
+        /// </summary>
+        string[] Documents { get; }
+
         /// <summary>
         /// Gets the path of the current Sphere engine used for game testing.
         /// </summary>
@@ -105,7 +108,16 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         /// <param name="filters">The list of filters associated with the type. Must be exactly as passed to RegisterOpenFileType.</param>
         void UnregisterOpenFileType(string filters);
-        
+
+        /// <summary>
+        /// Opens a document in the IDE.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        DocumentView OpenDocument(string path);
+
+        ISettings OpenSettings(string settingsID);
+
         /// <summary>
         /// Removes the menu item from it's containing drop down menu.
         /// </summary>
@@ -117,11 +129,6 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         /// <param name="name">The name of the item to remove; Ex: 'View'.</param>
         void RemoveMenuItem(string name);
-
-        /// <summary>
-        /// Gets a list of the loaded document's filepaths in the Sphere Studio's main dock panel.
-        /// </summary>
-        string[] Documents { get; }
 
         /// <summary>
         /// Used to send an invalidate to all editors if styling has changed,

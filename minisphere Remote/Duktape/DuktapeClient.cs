@@ -211,6 +211,29 @@ namespace minisphere.Remote.Duktape
         }
 
         /// <summary>
+        /// Gets a list of function calls currently on the stack. Note that Duktape
+        /// supports tail recursion, so this may not reflect all active calls.
+        /// </summary>
+        /// <returns>
+        /// An array of 3-tuples naming the function, filename and current line number
+        /// of each function call on the stack, from top to the bottom.
+        /// </returns>
+        public async Task<Tuple<string, string, int>[]> GetCallStack()
+        {
+            var reply = await Converse(DValue.REQ, 0x1C);
+            var stack = new List<Tuple<string, string, int>>();
+            int count = (reply.Length - 1) / 4;
+            for (int i = 0; i < count; ++i)
+            {
+                string filename = reply[1 + i * 4];
+                string functionName = reply[2 + i * 4];
+                int lineNumber = reply[3 + i * 4];
+                stack.Add(Tuple.Create(functionName, filename, lineNumber));
+            }
+            return stack.ToArray();
+        }
+
+        /// <summary>
         /// Gets a list of local values and their values. Note that objects
         /// are not evaluated and are listed simply as "JS object".
         /// </summary>

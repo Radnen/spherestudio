@@ -219,6 +219,11 @@ namespace SphereStudio.Plugins
             _codeBox.Modified = false;
         }
 
+        public override void GoToLine(int lineNumber)
+        {
+            _codeBox.GoTo.Line(lineNumber - 1);
+        }
+
         public override void Restyle()
         {
             _codeBox.Indentation.TabWidth = PluginManager.IDE.Settings.GetInteger("script-spaces", 2);

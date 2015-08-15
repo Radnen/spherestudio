@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace minisphere.Remote.Components
 {
-    public partial class ConsolePane : UserControl
+    partial class ConsoleView : UserControl
     {
-        public ConsolePane()
+        public ConsoleView(DebugSession session)
         {
             InitializeComponent();
         }
