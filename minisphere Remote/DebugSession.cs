@@ -141,7 +141,8 @@ namespace minisphere.Remote
                 consoleView.Print(string.Format("{0} for Sphere Studio", title.Title));
                 consoleView.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
                 consoleView.Print("");
-                consoleView.Print(string.Format("Host is {0}.", duktape.TargetID));
+                consoleView.Print(string.Format("Debuggee: {0}", duktape.TargetID));
+                consoleView.Print(string.Format("Duktape {0}", duktape.Version));
                 consoleView.Print("");
             }), null);
         }

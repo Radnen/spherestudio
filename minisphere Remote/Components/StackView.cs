@@ -35,7 +35,9 @@ namespace minisphere.Remote.Components
             listStack.Items.Clear();
             foreach (var entry in stack)
             {
-                ListViewItem item = new ListViewItem(string.Format("{0}()", entry.Item1));
+                ListViewItem item = new ListViewItem(entry.Item1 != ""
+                    ? string.Format("{0}()", entry.Item1)
+                    : "anonymous");
                 item.SubItems.Add(string.Format("{0}:{1}", entry.Item2, entry.Item3));
                 listStack.Items.Add(item);
             }
