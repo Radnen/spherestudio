@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 namespace minisphere.Remote.Components
 {
-    partial class ConsoleView : UserControl
+    partial class ConsolePane : DebugPane
     {
-        public ConsoleView(DebugSession session)
+        public ConsolePane(DebugSession session):
+            base("Console", Properties.Resources.Console)
         {
             InitializeComponent();
         }
 
         public void Print(string text)
         {
-            
             textOutput.Text += text + "\r\n";
             textOutput.SelectionStart = textOutput.Text.Length;
             textOutput.SelectionLength = 0;

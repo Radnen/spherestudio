@@ -63,9 +63,9 @@ namespace minisphere.Remote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap EyeOpen {
+        internal static System.Drawing.Bitmap CallStack {
             get {
-                object obj = ResourceManager.GetObject("EyeOpen", resourceCulture);
+                object obj = ResourceManager.GetObject("CallStack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace minisphere.Remote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap LightBulb {
+        internal static System.Drawing.Bitmap Console {
             get {
-                object obj = ResourceManager.GetObject("LightBulb", resourceCulture);
+                object obj = ResourceManager.GetObject("Console", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,19 @@ namespace minisphere.Remote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Listing {
+        internal static System.Drawing.Bitmap Eval {
             get {
-                object obj = ResourceManager.GetObject("Listing", resourceCulture);
+                object obj = ResourceManager.GetObject("Eval", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Inspector {
+            get {
+                object obj = ResourceManager.GetObject("Inspector", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

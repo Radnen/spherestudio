@@ -598,23 +598,20 @@ namespace SphereStudio
         {
             if (description.Control == null) return;
 
-            DockContent ctrl = new DockContent()
-            {
+            DockContent ctrl = new DockContent() {
                 Text = description.TabText,
                 Icon = description.Icon,
             };
-            ctrl.Controls.Add(description.Control);
-
-            DockAreas areas = DockAreas.Float;
+            ctrl.DockAreas = DockAreas.Float;
             if (description.DockAreas.HasFlag(DockDescAreas.Document))
-                areas |= DockAreas.Document;
+                ctrl.DockAreas |= DockAreas.Document;
             if (description.DockAreas.HasFlag(DockDescAreas.Sides))
-                areas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
-
-            ctrl.DockAreas = areas;
+                ctrl.DockAreas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
+            ctrl.Controls.Add(description.Control);
 
             description.OnShow += (sender, e) => ctrl.Show();
             description.OnHide += (sender, e) => ctrl.Hide();
+
             description.OnActivate += (sender, e) =>
             {
                 Control focus = this;
@@ -624,6 +621,7 @@ namespace SphereStudio
                 if (focus != null)
                     focus.Focus();
             };
+
             description.OnToggle += (sender, e) =>
             {
                 if (ctrl.IsHidden) ctrl.Show();
@@ -631,7 +629,7 @@ namespace SphereStudio
             };
 
             DockState state = DockState.Document;
-            if (areas.HasFlag(DockAreas.DockLeft))
+            if (ctrl.DockAreas.HasFlag(DockAreas.DockLeft))
             {
                 if (description.DockState == DockDescStyle.Side)
                     state = DockState.DockLeft;

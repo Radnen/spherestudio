@@ -47,23 +47,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ConsoleView.cs">
+    <Compile Include="Components\ConsolePane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\ConsoleView.Designer.cs">
-      <DependentUpon>ConsoleView.cs</DependentUpon>
+    <Compile Include="Components\ConsolePane.Designer.cs">
+      <DependentUpon>ConsolePane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\InspectorView.cs">
+    <Compile Include="Components\DebugPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\InspectorView.Designer.cs">
-      <DependentUpon>InspectorView.cs</DependentUpon>
+    <Compile Include="Components\DebugPane.Designer.cs">
+      <DependentUpon>DebugPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\StackView.cs">
+    <Compile Include="Components\InspectorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\StackView.Designer.cs">
-      <DependentUpon>StackView.cs</DependentUpon>
+    <Compile Include="Components\InspectorPane.Designer.cs">
+      <DependentUpon>InspectorPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\StackPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\StackPane.Designer.cs">
+      <DependentUpon>StackPane.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugSession.cs" />
     <Compile Include="Duktape\DuktapeClient.cs" />
@@ -78,15 +84,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Components\ConsoleView.resx">
-      <DependentUpon>ConsoleView.cs</DependentUpon>
+    <EmbeddedResource Include="Components\ConsolePane.resx">
+      <DependentUpon>ConsolePane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\InspectorView.resx">
-      <DependentUpon>InspectorView.cs</DependentUpon>
+    <EmbeddedResource Include="Components\InspectorPane.resx">
+      <DependentUpon>InspectorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\StackView.resx">
-      <DependentUpon>StackView.cs</DependentUpon>
+    <EmbeddedResource Include="Components\StackPane.resx">
+      <DependentUpon>StackPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -107,6 +113,9 @@
       <Project>{5d04ed42-d252-4fd2-be00-df4a2d122be3}</Project>
       <Name>Sphere.Plugins</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\information.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

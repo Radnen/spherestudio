@@ -2,14 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
@@ -25,12 +22,9 @@ namespace minisphere.Remote
         private DuktapeClient duktape;
         private Process engineProcess;
         private string engineDir;
-        private DockDescription consolePanel;
-        private DockDescription inspectorPanel;
-        private DockDescription stackPanel;
-        private ConsoleView consoleView;
-        private InspectorView inspectorView;
-        private StackView stackView;
+        private ConsolePane consoleView;
+        private InspectorPane inspectorView;
+        private StackPane stackView;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
         private System.Threading.Timer focusSwitchTimer;
 
@@ -105,44 +99,17 @@ namespace minisphere.Remote
                 if (Attached != null)
                     Attached(this, EventArgs.Empty);
 
-                inspectorView = new InspectorView(this) { Dock = DockStyle.Fill, Enabled = false };
-                consoleView = new ConsoleView(this) { Dock = DockStyle.Fill };
-                stackView = new StackView(this) { Dock = DockStyle.Fill, Enabled = false };
-
-                inspectorPanel = new DockDescription();
-                inspectorPanel.Control = inspectorView;
-                inspectorPanel.DockAreas = DockDescAreas.Sides;
-                inspectorPanel.DockState = DockDescStyle.Opposite;
-                inspectorPanel.HideOnClose = true;
-                inspectorPanel.TabText = "Inspector";
-                inspectorPanel.Icon = Icon.FromHandle(Properties.Resources.EyeOpen.GetHicon());
-                PluginManager.IDE.DockControl(inspectorPanel);
-
-                stackPanel = new DockDescription();
-                stackPanel.Control = stackView;
-                stackPanel.DockAreas = DockDescAreas.Sides;
-                stackPanel.DockState = DockDescStyle.Opposite;
-                stackPanel.HideOnClose = true;
-                stackPanel.TabText = "Stack";
-                stackPanel.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
-                PluginManager.IDE.DockControl(stackPanel);
-
-                consolePanel = new DockDescription();
-                consolePanel.Control = consoleView;
-                consolePanel.DockAreas = DockDescAreas.Sides;
-                consolePanel.DockState = DockDescStyle.Opposite;
-                consolePanel.HideOnClose = true;
-                consolePanel.TabText = "Console";
-                consolePanel.Icon = Icon.FromHandle(Properties.Resources.Listing.GetHicon());
-                PluginManager.IDE.DockControl(consolePanel);
+                inspectorView = new InspectorPane(this) { Enabled = false };
+                consoleView = new ConsolePane(this);
+                stackView = new StackPane(this) { Enabled = false };
 
                 var assembly = Assembly.GetExecutingAssembly();
                 var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
                 consoleView.Print(string.Format("{0} for Sphere Studio", title.Title));
                 consoleView.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
                 consoleView.Print("");
-                consoleView.Print(string.Format("Debuggee: {0}", duktape.TargetID));
-                consoleView.Print(string.Format("Duktape {0}", duktape.Version));
+                consoleView.Print(string.Format("The debuggee is {0}.", duktape.TargetID));
+                consoleView.Print(string.Format("(Duktape {0})", duktape.Version));
                 consoleView.Print("");
             }), null);
         }
@@ -153,9 +120,9 @@ namespace minisphere.Remote
             {
                 if (Detached != null)
                     Detached(this, EventArgs.Empty);
-                inspectorPanel.Hide();
-                stackPanel.Hide();
-                consolePanel.Hide();
+                inspectorView.Dispose();
+                stackView.Dispose();
+                consoleView.Dispose();
                 inspectorView.Dispose();
                 consoleView.Dispose();
             }), null);
@@ -177,7 +144,7 @@ namespace minisphere.Remote
                     stackView.UpdateStack(calls);
                     inspectorView.Enabled = true;
                     stackView.Enabled = true;
-                    inspectorPanel.Activate();
+                    inspectorView.Activate();
                 }
             }), null);
         }
@@ -269,7 +236,7 @@ namespace minisphere.Remote
             {
                 DebugSession me = (DebugSession)state;
                 NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
-                me.consolePanel.Activate();
+                me.consoleView.Activate();
                 me.inspectorView.Enabled = false;
                 me.inspectorView.Clear();
                 me.stackView.Enabled = false;

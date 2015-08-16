@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Plugins;
@@ -14,11 +7,12 @@ using Sphere.Plugins.Views;
 
 namespace minisphere.Remote.Components
 {
-    partial class StackView : UserControl
+    partial class StackPane : DebugPane
     {
         private DebugSession session;
 
-        public StackView(DebugSession session)
+        public StackPane(DebugSession session):
+            base("Call Stack", Properties.Resources.CallStack)
         {
             InitializeComponent();
             this.session = session;

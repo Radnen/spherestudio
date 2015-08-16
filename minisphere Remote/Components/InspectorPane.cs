@@ -7,7 +7,7 @@ using Sphere.Plugins;
 
 namespace minisphere.Remote.Components
 {
-    partial class InspectorView : UserControl
+    partial class InspectorPane : DebugPane
     {
         private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
 
@@ -16,7 +16,8 @@ namespace minisphere.Remote.Components
         private string lastVarName = null;
         private IReadOnlyDictionary<string, string> variables;
 
-        public InspectorView(DebugSession session)
+        public InspectorPane(DebugSession session):
+            base("Inspector", Properties.Resources.Inspector)
         {
             InitializeComponent();
 

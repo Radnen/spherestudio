@@ -1,6 +1,6 @@
 ﻿namespace minisphere.Remote.Components
 {
-    partial class StackView
+    partial class StackPane
     {
         /// <summary> 
         /// Required designer variable.
