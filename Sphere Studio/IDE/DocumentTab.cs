@@ -153,10 +153,17 @@ namespace SphereStudio.IDE
 
         public bool SaveIfDirty()
         {
-            if (FileName == null || !View.IsDirty)
-                return true;
+            if (FileName == null) return true;
 
-            return Save();
+            if (!View.IsDirty)
+            {
+                SaveViewState();
+                return true;
+            }
+            else
+            {
+                return Save();
+            }
         }
 
         /// <summary>
