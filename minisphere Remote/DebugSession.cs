@@ -64,12 +64,33 @@ namespace minisphere.Remote
 
         public event EventHandler Resumed;
 
-        public async Task Connect(string hostname, int port, uint timeout = 5000)
+        public async Task<bool> Attach()
+        {
+            try
+            {
+                await Connect("localhost", 812);
+                return true;
+            }
+            catch (TimeoutException)
+            {
+                return false;
+            }
+        }
+
+        public async Task Detach()
+        {
+            focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            await duktape.Detach();
+            Dispose();
+        }
+
+        private async Task Connect(string hostname, int port, uint timeout = 5000)
         {
             long end = DateTime.Now.Ticks + timeout * 10000;
             while (DateTime.Now.Ticks < end)
             {
-                try {
+                try
+                {
                     duktape = new DuktapeClient();
                     duktape.Attached += duktape_Attached;
                     duktape.Detached += duktape_Detached;
@@ -79,7 +100,8 @@ namespace minisphere.Remote
                     duktape.Print += duktape_Print;
                     await duktape.Connect(hostname, port);
                     return;
-                } catch (SocketException) { } // *munch*
+                }
+                catch (SocketException) { } // *munch*
             }
             throw new TimeoutException();
         }
@@ -136,7 +158,7 @@ namespace minisphere.Remote
             {
                 if (Paused != null)
                     Paused(this, EventArgs.Empty);
-                var variables = await GetVariableList();
+                var variables = await duktape.GetLocals();
                 var calls = await duktape.GetCallStack();
                 if (!Running)
                 {
@@ -158,13 +180,6 @@ namespace minisphere.Remote
                 if (Resumed != null)
                     Resumed(this, EventArgs.Empty);
             }), null);
-        }
-
-        public async Task Detach()
-        {
-            focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            await duktape.Detach();
-            Dispose();
         }
 
         public async Task<IReadOnlyDictionary<string, string>> GetVariableList()

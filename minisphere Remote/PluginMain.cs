@@ -27,24 +27,14 @@ namespace minisphere.Remote
 
         }
 
-        public async Task<IDebugger> Debug(IProject project)
+        public IDebugger Debug(IProject project)
         {
             // start minisphere in debugging mode
             string enginePath = PluginManager.IDE.EnginePath;
             string args = string.Format(@"--debug --game ""{0}""\game.sgm", project.RootPath);
             Process engine = Process.Start(enginePath, args);
 
-            // fire up the debugger
-            DebugSession client = new DebugSession(project, enginePath, engine);
-            try
-            {
-                await client.Connect("localhost", 812);
-                return client;
-            }
-            catch (TimeoutException)
-            {
-                return null;
-            }
+            return new DebugSession(project, enginePath, engine);
         }
     }
 }

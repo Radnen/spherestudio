@@ -50,12 +50,13 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         /// <returns>A dictionary mapping variable names to their values.</returns>
         Task<IReadOnlyDictionary<string, string>> GetVariableList();
-        
+
         /// <summary>
-        /// Pauses execution and breaks into the debugger.
+        /// Attaches the debugger.
         /// </summary>
-        Task Pause();
-        
+        /// <returns>true if the debugger was successfully attached, false otherwise.</returns>
+        Task<bool> Attach();
+
         /// <summary>
         /// Detaches the debugger.
         /// </summary>
@@ -67,6 +68,11 @@ namespace Sphere.Plugins.Interfaces
         /// <param name="expression">The expression to evaluate.</param>
         /// <returns>The JSON-encoded result of evaluating the expression.</returns>
         Task<string> Evaluate(string expression);
+
+        /// <summary>
+        /// Pauses execution and breaks into the debugger.
+        /// </summary>
+        Task Pause();
 
         /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,

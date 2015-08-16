@@ -36,6 +36,7 @@ namespace SphereStudio
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
+        private bool _first_debug_pause;
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -1060,20 +1061,21 @@ namespace SphereStudio
                     tab.SaveIfDirty();
                 }
                 Global.CurrentGame.Build();
-                Debugger = await plugin.Debug(CurrentGame);
-                if (Debugger != null)
+                Debugger = plugin.Debug(CurrentGame);
+                Debugger.Detached += debugger_Detached;
+                Debugger.Paused += debugger_Paused;
+                Debugger.Resumed += debugger_Resumed;
+                menuDebug.Text = "&Resume";
+                toolDebug.Text = "Resume";
+                menuTestGame.Enabled = false;
+                toolTestGame.Enabled = false;
+                _first_debug_pause = true;
+                if (await Debugger.Attach())
                 {
                     var breaks = Global.CurrentGame.GetAllBreakpoints();
                     foreach (string filename in breaks.Keys)
                         foreach (int lineNumber in breaks[filename])
                             await Debugger.SetBreakpoint(filename, lineNumber, true);
-                    menuDebug.Text = "&Resume";
-                    toolDebug.Text = "Resume";
-                    menuTestGame.Enabled = false;
-                    toolTestGame.Enabled = false;
-                    Debugger.Detached += debugger_Detached;
-                    Debugger.Paused += debugger_Paused;
-                    Debugger.Resumed += debugger_Resumed;
                     await Debugger.Resume();
                 }
                 else
@@ -1082,6 +1084,8 @@ namespace SphereStudio
                     MessageBox.Show(
                         "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
                         "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Debugger = null;
+                    UpdateButtons();
                 }
             }
             else
@@ -1204,6 +1208,13 @@ namespace SphereStudio
 
         private async void debugger_Paused(object sender, EventArgs e)
         {
+            if (_first_debug_pause)
+            {
+                // ignore first pause
+                _first_debug_pause = false;
+                return;
+            }
+
             ScriptView view = null;
             view = OpenDocument(Debugger.FileName) as ScriptView;
             if (view != null)
