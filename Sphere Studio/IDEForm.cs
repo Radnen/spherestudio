@@ -1107,7 +1107,7 @@ namespace SphereStudio
 
             bool sphereFound = File.Exists(Global.Settings.EnginePath)
                 || (File.Exists(Global.Settings.EnginePath64) && Environment.Is64BitOperatingSystem);
-            menuTestGame.Enabled = toolTestGame.Enabled = sphereFound;
+            menuTestGame.Enabled = toolTestGame.Enabled = sphereFound && Debugger == null;
             menuDebug.Enabled = toolDebug.Enabled = sphereFound && (Debugger == null || !Debugger.Running);
             menuBreakNow.Enabled = Debugger != null && Debugger.Running;
             menuStopDebug.Enabled = Debugger != null;

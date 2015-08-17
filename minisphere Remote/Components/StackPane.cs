@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -32,7 +33,8 @@ namespace minisphere.Remote.Components
                 ListViewItem item = new ListViewItem(entry.Item1 != ""
                     ? string.Format("{0}()", entry.Item1)
                     : "anonymous");
-                item.SubItems.Add(string.Format("{0}:{1}", entry.Item2, entry.Item3));
+                item.SubItems.Add(entry.Item2);
+                item.SubItems.Add(entry.Item3.ToString());
                 listStack.Items.Add(item);
             }
             listStack.EndUpdate();
@@ -43,13 +45,16 @@ namespace minisphere.Remote.Components
             if (listStack.SelectedItems.Count > 0)
             {
                 ListViewItem item = listStack.SelectedItems[0];
-                Match match = new Regex("^(.*):(.*)$").Match(item.SubItems[1].Text);
-                string filename = session.ResolvePath(match.Groups[1].Value);
-                int lineNumber = int.Parse(match.Groups[2].Value);
+                string filename = session.ResolvePath(item.SubItems[1].Text);
+                int lineNumber = int.Parse(item.SubItems[2].Text);
                 ScriptView view = PluginManager.IDE.OpenDocument(filename) as ScriptView;
                 if (view != null)
                 {
                     view.GoToLine(lineNumber);
+                }
+                else
+                {
+                    SystemSounds.Asterisk.Play();
                 }
             }
         }

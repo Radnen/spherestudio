@@ -121,9 +121,9 @@ namespace minisphere.Remote
                 if (Attached != null)
                     Attached(this, EventArgs.Empty);
 
+                stackView = new StackPane(this) { Enabled = false };
                 inspectorView = new InspectorPane(this) { Enabled = false };
                 consoleView = new ConsolePane(this);
-                stackView = new StackPane(this) { Enabled = false };
 
                 var assembly = Assembly.GetExecutingAssembly();
                 var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
