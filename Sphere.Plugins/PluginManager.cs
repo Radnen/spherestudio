@@ -86,7 +86,7 @@ namespace Sphere.Plugins
         /// Registers a file extension with a specified editor plugin.
         /// </summary>
         /// <param name="editor">The IEditorPlugin which will handle editing.</param>
-        /// <param name="extensions">A list of file extensions to register, sans dot.</param>
+        /// <param name="extensions">An array of file extensions to register, sans dot.</param>
         public static void RegisterExtensions(IEditorPlugin editor, params string[] extensions)
         {
             foreach (string ext in extensions)
@@ -95,6 +95,10 @@ namespace Sphere.Plugins
             }
         }
 
+        /// <summary>
+        /// Unregisters file extensions registered with RegisterExtensions.
+        /// </summary>
+        /// <param name="extensions">An array of file extensions to unregister, sans dot.</param>
         public static void UnregisterExtensions(params string[] extensions)
         {
             foreach (string ext in extensions)

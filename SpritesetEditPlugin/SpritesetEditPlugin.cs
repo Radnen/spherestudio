@@ -78,7 +78,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Spriteset");
+            PluginManager.IDE.RegisterNewHandler(this, "Spriteset", "spritesets");
             PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
         }
@@ -94,7 +94,8 @@ namespace SphereStudio.Plugins
 
         public DocumentView NewDocument()
         {
-            return null;
+            SpritesetEditView view = new SpritesetEditView();
+            return view.NewDocument() ? view : null;
         }
 
         public DocumentView OpenDocument(string filepath)

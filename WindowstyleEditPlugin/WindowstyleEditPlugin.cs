@@ -33,7 +33,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Windowstyle");
+            PluginManager.IDE.RegisterNewHandler(this, "Windowstyle", "windowstyles");
             PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
         }
 
@@ -48,7 +48,8 @@ namespace SphereStudio.Plugins
 
         public DocumentView NewDocument()
         {
-            return null;
+            var view = new WindowstyleEditView();
+            return view.NewDocument() ? view : null;
         }
         
         public DocumentView OpenDocument(string filepath)

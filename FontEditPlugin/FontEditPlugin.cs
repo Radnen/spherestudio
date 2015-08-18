@@ -25,7 +25,7 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.IDE.RegisterNewHandler(this, "Font");
+            PluginManager.IDE.RegisterNewHandler(this, "Font", "fonts");
             PluginManager.IDE.RegisterOpenFileType("Sphere Fonts", _openFileFilters);
             PluginManager.RegisterExtensions(this, _extensions);
         }
@@ -45,8 +45,7 @@ namespace SphereStudio.Plugins
         public DocumentView NewDocument()
         {
             DocumentView view = new FontEditView();
-            view.NewDocument();
-            return view;
+            return view.NewDocument() ? view : null;
         }
         
         public DocumentView OpenDocument(string filepath)

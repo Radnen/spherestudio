@@ -76,7 +76,7 @@ namespace SphereStudio.Plugins
             PluginManager.RegisterExtensions(this, "png", "bmp", "gif", "jpg", "jpeg");
             PluginManager.RegisterEditor(EditorType.Image, this);
             PluginManager.IDE.AddMenuItem(_imageMenu, "Tools");
-            PluginManager.IDE.RegisterNewHandler(this, "Image");
+            PluginManager.IDE.RegisterNewHandler(this, "Image", "images");
             PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 

@@ -16,6 +16,7 @@ namespace Sphere.Plugins
     /// </summary>
     public enum EditorType
     {
+        None,
         Audio,
         Image,
         Script

@@ -11,6 +11,8 @@ using Microsoft.VisualBasic.FileIO;
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
+using Sphere.Plugins;
+using Sphere.Plugins.Views;
 using SphereStudio.Forms;
 using SphereStudio.IDE;
 using SphereStudio.Properties;
@@ -383,34 +385,9 @@ namespace SphereStudio.Components
             if (EditorForm == null) return;
             TreeNode node = ProjectTreeView.SelectedNode;
             string fullname = node.FullPath.ToLower();
-            string name = fullname.Substring(fullname.IndexOf('\\') + 1);
-            if (name.Contains("\\")) name = name.Substring(0, name.IndexOf('\\'));
-
-            // have editor fish for plugins
-            // TODO: plugins should be able to register as a New handler for a folder
-            string extension = ".*";
-            switch (name)
-            {
-                case "fonts":
-                    extension = ".rfn";
-                    break;
-                case "scripts":
-                    extension = ".js";
-                    break;
-                case "maps":
-                    extension = ".rmp";
-                    break;
-                case "spritesets":
-                    extension = ".rss";
-                    break;
-                case "images":
-                    extension = ".png";
-                    break;
-                case "windowstyles":
-                    extension = ".rws";
-                    break;
-            }
-            EditorForm.OpenDocument("?" + extension);
+            string folderName = fullname.Substring(fullname.IndexOf('\\') + 1);
+            if (folderName.Contains("\\")) folderName = folderName.Substring(0, folderName.IndexOf('\\'));
+            EditorForm.NewDocument(folderName);
         }
 
         // Assumption: The user knows the script has a game() function or the

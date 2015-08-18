@@ -105,7 +105,7 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.IDE.RegisterNewHandler(this, "Map");
+            PluginManager.IDE.RegisterNewHandler(this, "Map", "maps");
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
             PluginManager.IDE.AddMenuItem(_mapMenu, "Tools");
             PluginManager.RegisterExtensions(this, _extensions);

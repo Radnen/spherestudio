@@ -21,6 +21,20 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio
 {
+    struct NewHandler
+    {
+        public NewHandler(IEditorPlugin plugin, string name, string[] folderNames)
+        {
+            Plugin = plugin;
+            Name = name;
+            Folders = folderNames;
+        }
+
+        public IEditorPlugin Plugin { get; private set; }
+        public string Name { get; private set; }
+        public string[] Folders { get; private set; }
+    }
+
     partial class IDEForm : Form, IIDE, IStyleable
     {
         // uninitialized data:
@@ -29,7 +43,6 @@ namespace SphereStudio
         private readonly StartPage _startPage;
         private readonly ProjectTree _tree;
         private bool _firsttime;
-        private readonly Dictionary<IEditorPlugin, string> _newHandlers = new Dictionary<IEditorPlugin, string>();
         private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
         private readonly Dictionary<EditorType, IEditorPlugin> _editors = new Dictionary<EditorType, IEditorPlugin>();
         private string _default_active;
@@ -37,6 +50,7 @@ namespace SphereStudio
 
         private DocumentTab _activeTab;
         private bool _first_debug_pause;
+        private List<NewHandler> _new_handlers = new List<NewHandler>();
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -184,15 +198,16 @@ namespace SphereStudio
         {
             ToolStripDropDown dropdown = ((ToolStripDropDownItem)sender).DropDown;
             
-            if (_newHandlers.Count > 0)
+            if (_new_handlers.Count > 0)
                 dropdown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
-            foreach (var kv in (from kv in _newHandlers orderby kv.Value select kv))
+            foreach (var handler in _new_handlers)
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(kv.Value) { Name = "8:12" };
-                item.Image = kv.Key.Icon.ToBitmap();
+                ToolStripMenuItem item = new ToolStripMenuItem(handler.Name) { Name = "8:12" };
+                item.Image = handler.Plugin.Icon.ToBitmap();
                 item.Click += (sender1, e1) =>
                 {
-                    AddDocument(kv.Key.NewDocument());
+                    DocumentView view = handler.Plugin.NewDocument();
+                    if (view != null) AddDocument(view);
                 };
                 dropdown.Items.Add(item);
             }
@@ -641,6 +656,39 @@ namespace SphereStudio
             ctrl.Show(MainDock, state);
         }
 
+        public DocumentView NewDocument(string folderName)
+        {
+            var q = from handler in _new_handlers
+                    where handler.Folders.Contains(folderName)
+                    select handler.Plugin;
+            IEditorPlugin plugin = q.LastOrDefault();
+
+            DocumentView view = null;
+            if (plugin != null)
+                view = plugin.NewDocument();
+            else
+            {
+                string wildcard = Global.Settings.DefaultEditor;
+                var q2 = from wc in PluginManager.GetWildcards()
+                        where wildcard == wc.Name
+                        select wc;
+                plugin = q2.FirstOrDefault();
+                if (plugin != null)
+                    view = plugin.NewDocument();
+                else
+                {
+                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to create that type of file and no wildcard plugin is currently set.\n\nFolder: {0}", folderName),
+                        @"Unable to Create File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            if (view != null)
+            {
+                AddDocument(view);
+            }
+            return view;
+        }
+
         public DocumentView OpenDocument(string filePath)
         {
             return OpenDocument(filePath, false);
@@ -754,9 +802,9 @@ namespace SphereStudio
             return new INISettings(_settingsINI, settingsID);
         }
 
-        public void RegisterNewHandler(IEditorPlugin plugin, string name)
+        public void RegisterNewHandler(IEditorPlugin plugin, string name, params string[] folderNames)
         {
-            _newHandlers[plugin] = name;
+            _new_handlers.Add(new NewHandler(plugin, name, folderNames));
         }
 
         public void RegisterOpenFileType(string typeName, string filters)
@@ -795,7 +843,7 @@ namespace SphereStudio
 
         public void UnregisterNewHandler(IEditorPlugin plugin)
         {
-            _newHandlers.Remove(plugin);
+            _new_handlers.RemoveAll(handler => handler.Plugin == plugin);
         }
         
         public void UnregisterOpenFileType(string filters)
@@ -880,7 +928,7 @@ namespace SphereStudio
             get { return Global.CurrentGame != null; }
         }
 
-        private void AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
+        internal void AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
         {
             DocumentTab tab = new DocumentTab(this, view, filepath, restoreView);
             tab.Closed += (sender, e) => _tabs.Remove(tab);

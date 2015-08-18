@@ -84,8 +84,9 @@ namespace Sphere.Plugins.Interfaces
         /// entry to the File:New menu in the IDE.
         /// </summary>
         /// <param name="plugin">The editor plugin to register.</param>
-        /// <param name="name">The friendly name of the document being created, e.g. "Script" or "Image".</param>
-        void RegisterNewHandler(IEditorPlugin plugin, string name);
+        /// <param name="name">The friendly name of the document type being created, e.g. "Script" or "Image".</param>
+        /// <param name="folderNames">The names of the top-level folders for which this handler applies.</param>
+        void RegisterNewHandler(IEditorPlugin plugin, string name, params string[] folderNames);
         
         /// <summary>
         /// Unregisters a previously registered File:New handler.
