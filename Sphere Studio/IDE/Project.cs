@@ -182,6 +182,7 @@ namespace SphereStudio.IDE
 
             // write out game.sgm
             string sgmPath = Path.Combine(Path.GetDirectoryName(_path), "game.sgm");
+            
             using (StreamWriter writer = new StreamWriter(sgmPath, false))
             {
                 writer.WriteLine(string.Format("name={0}", Name));
@@ -192,6 +193,7 @@ namespace SphereStudio.IDE
                 writer.WriteLine(string.Format("script={0}", MainScript));
                 writer.Close();
             }
+
             return sgmPath;
         }
 

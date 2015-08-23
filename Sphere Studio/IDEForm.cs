@@ -443,7 +443,7 @@ namespace SphereStudio
                     tab.SaveIfDirty();
                 }
 
-                string gamePath = Global.CurrentGame.Build();
+                string gamePath = Global.CurrentGame.Build().Replace(@"\game.sgm", "");
                 string path = ((ToolStripItem)sender).Tag as string ?? EnginePath;
                 string args = string.Format("-game \"{0}\"", gamePath);
 
