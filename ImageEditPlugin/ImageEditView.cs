@@ -29,7 +29,7 @@ namespace SphereStudio.Plugins
 
             for (int i = 0; i < 8; ++i)
             {
-                ColorBox box = new ColorBox {SelectedColor = Color.White};
+                ColorBox box = new ColorBox { SelectedColor = Color.White };
                 box.ColorChanged += ColorUpdated;
                 box.MouseClick += box_MouseClick;
                 ColorFlow.Controls.Add(box);
@@ -77,7 +77,7 @@ namespace SphereStudio.Plugins
             }
             IsDirty = false;
         }
-        
+
         public override void Activate()
         {
             ImageEditPlugin.ShowMenus(true);
@@ -114,42 +114,6 @@ namespace SphereStudio.Plugins
             ImageEditor.ResizeImage(width, height);
         }
 
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         void box_MouseClick(object sender, MouseEventArgs e)
         {
             foreach (ColorBox box in ColorFlow.Controls)
@@ -194,7 +158,7 @@ namespace SphereStudio.Plugins
         /// <param name="tileWidth">Width of sub-image.</param>
         /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public override IList<Bitmap> GetImages(short tileWidth,short tileHeight)
+        public override IList<Bitmap> GetImages(short tileWidth, short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;

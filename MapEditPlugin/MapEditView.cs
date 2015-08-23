@@ -24,6 +24,7 @@ namespace SphereStudio.Plugins
         private DockContent _tileContent;
         private DockContent _layerContent;
         private DockContent _tilesetContent;
+        private DockContent _entityContent;
         private DockPanel _mainPanel;
         public Map Map { get { return MapControl.BaseMap; } }
 
@@ -161,6 +162,12 @@ namespace SphereStudio.Plugins
             _tilesetContent.DockHandler.CloseButtonVisible = false;
             _tilesetContent.AutoScroll = true;
 
+            _entityContent = new DockContent();
+            _entityContent.Controls.Add(EntitiesControl);
+            _entityContent.Text = @"Entity List";
+            _entityContent.DockAreas = DockAreas.DockRight | DockAreas.DockLeft | DockAreas.DockBottom;
+            _entityContent.DockHandler.CloseButtonVisible = false;
+
             _tileContent = new DockContent();
             _tileContent.Controls.Add(TileEditor);
             _tileContent.Text = @"Tile Properties";
@@ -187,7 +194,8 @@ namespace SphereStudio.Plugins
                 _mapContent.Show(_mainPanel, DockState.Document);
                 _tileContent.Show(_mapContent.Pane, DockAlignment.Bottom, 0.40);
                 _drawContent.Show(_tileContent.PanelPane, _tileContent);
-                _layerContent.Show(_mainPanel, DockState.DockRight);
+                _entityContent.Show(_mainPanel, DockState.DockRight);
+                _layerContent.Show(_entityContent.Pane, _entityContent);
                 _tilesetContent.Show(_layerContent.Pane, DockAlignment.Bottom, 0.66);
             }
 
@@ -254,6 +262,7 @@ namespace SphereStudio.Plugins
 
             LayerEditor.Layers.StartLayer = MapControl.BaseMap.StartLayer;
             LayerEditor.Layers.SelectItem(MapControl.CurrentLayer);
+            EntitiesControl.UpdateList(Map.Entities, Map.Layers);
         }
 
         public override void Undo()
@@ -438,6 +447,7 @@ namespace SphereStudio.Plugins
         {
             LayerEditor.Layers.StartLayer = Map.StartLayer;
             LayerEditor.Layers.Invalidate();
+            EntitiesControl.UpdateList(Map.Entities, Map.Layers);
             TilesetControl.Select(MapControl.CurrentTile);
             SelectTiles(TilesetControl.Selected);
             MapControl.SelWidth = 1;

@@ -38,9 +38,18 @@ namespace SphereStudio.Plugins.Forms
             CodePanel.Controls.Add(_scriptBox);
         }
 
-        public void AddString(string text)
+        /// <summary>
+        /// Use this to optinally add the layers to this Person Form.
+        /// </summary>
+        /// <param name="layers"></param>
+        public void AddLayers(List<Layer> layers)
         {
-            LayerComboBox.Items.Add(LayerComboBox.Items.Count + ". " + text);
+            LayerComboBox.BeginUpdate();
+            foreach (Layer layer in layers)
+            {
+                LayerComboBox.Items.Add(LayerComboBox.Items.Count + ": " + layer.Name);
+            }
+            LayerComboBox.EndUpdate();
         }
 
         public int SelectedIndex
@@ -114,8 +123,8 @@ namespace SphereStudio.Plugins.Forms
         {
             string dir = (string)DirectionBox.SelectedItem;
             string script = Person.Scripts[0];
-            script = string.Format("SetPersonDirection(\"{0}\", \"{1}\");\n{2}", NameTextBox.Text, dir, script);
-            _scriptBox.Text = script;
+            string format = "SetPersonDirection(\"{0}\", \"{1}\");\n{2}";
+            _scriptBox.Text = string.Format(format, NameTextBox.Text, dir, script);
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)

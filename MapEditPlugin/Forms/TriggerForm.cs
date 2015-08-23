@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Plugins.EditShims;
@@ -29,9 +30,14 @@ namespace SphereStudio.Plugins.Forms
             set { LayerComboBox.SelectedIndex = value; Trigger.Layer = (short)value; }
         }
 
-        public void AddString(string text)
+        public void AddLayers(List<Layer> layers)
         {
-            LayerComboBox.Items.Add(LayerComboBox.Items.Count + ". " + text);
+            LayerComboBox.BeginUpdate();
+            foreach (Layer layer in layers)
+            {
+                LayerComboBox.Items.Add(LayerComboBox.Items.Count + ": " + layer.Name);
+            }
+            LayerComboBox.EndUpdate();
         }
 
         private void TriggerForm_Load(object sender, EventArgs e)

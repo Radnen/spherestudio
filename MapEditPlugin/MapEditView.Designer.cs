@@ -68,6 +68,8 @@
             this.TileEditor = new SphereStudio.Plugins.Components.TileEditor();
             this.layerTileSplit = new System.Windows.Forms.SplitContainer();
             this.LayerEditor = new SphereStudio.Plugins.Components.LayerPanel();
+            this.entityListSplit = new System.Windows.Forms.SplitContainer();
+            this.EntitiesControl = new SphereStudio.Plugins.Components.EntityControl();
             this.TilesetPanel = new Sphere.Core.Editor.EditorPanel();
             this.TilesetControl = new SphereStudio.Plugins.Components.TilesetControl2();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
@@ -90,6 +92,10 @@
             this.layerTileSplit.Panel1.SuspendLayout();
             this.layerTileSplit.Panel2.SuspendLayout();
             this.layerTileSplit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.entityListSplit)).BeginInit();
+            this.entityListSplit.Panel1.SuspendLayout();
+            this.entityListSplit.Panel2.SuspendLayout();
+            this.entityListSplit.SuspendLayout();
             this.TilesetPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -472,7 +478,7 @@
             // 
             // layerTileSplit.Panel2
             // 
-            this.layerTileSplit.Panel2.Controls.Add(this.TilesetPanel);
+            this.layerTileSplit.Panel2.Controls.Add(this.entityListSplit);
             this.layerTileSplit.Size = new System.Drawing.Size(220, 453);
             this.layerTileSplit.SplitterDistance = 221;
             this.layerTileSplit.TabIndex = 1;
@@ -490,6 +496,32 @@
             this.LayerEditor.LayerAdded += new System.EventHandler(this.Layers_LayerAdded);
             this.LayerEditor.LayerRemoved += new System.EventHandler(this.Layers_LayerRemoved);
             // 
+            // entityListSplit
+            // 
+            this.entityListSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.entityListSplit.Location = new System.Drawing.Point(0, 0);
+            this.entityListSplit.Name = "entityListSplit";
+            this.entityListSplit.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // entityListSplit.Panel1
+            // 
+            this.entityListSplit.Panel1.Controls.Add(this.EntitiesControl);
+            // 
+            // entityListSplit.Panel2
+            // 
+            this.entityListSplit.Panel2.Controls.Add(this.TilesetPanel);
+            this.entityListSplit.Size = new System.Drawing.Size(220, 228);
+            this.entityListSplit.SplitterDistance = 114;
+            this.entityListSplit.TabIndex = 3;
+            // 
+            // EntitiesControl
+            // 
+            this.EntitiesControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EntitiesControl.Location = new System.Drawing.Point(0, 0);
+            this.EntitiesControl.Name = "EntitiesControl";
+            this.EntitiesControl.Size = new System.Drawing.Size(220, 114);
+            this.EntitiesControl.TabIndex = 0;
+            // 
             // TilesetPanel
             // 
             this.TilesetPanel.AutoScroll = true;
@@ -497,7 +529,7 @@
             this.TilesetPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TilesetPanel.Location = new System.Drawing.Point(0, 0);
             this.TilesetPanel.Name = "TilesetPanel";
-            this.TilesetPanel.Size = new System.Drawing.Size(220, 228);
+            this.TilesetPanel.Size = new System.Drawing.Size(220, 110);
             this.TilesetPanel.TabIndex = 1;
             this.TilesetPanel.XSnap = 0;
             this.TilesetPanel.YSnap = 0;
@@ -553,6 +585,10 @@
             this.layerTileSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layerTileSplit)).EndInit();
             this.layerTileSplit.ResumeLayout(false);
+            this.entityListSplit.Panel1.ResumeLayout(false);
+            this.entityListSplit.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.entityListSplit)).EndInit();
+            this.entityListSplit.ResumeLayout(false);
             this.TilesetPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -597,6 +633,8 @@
         public Components.MapControl MapControl;
         private System.Windows.Forms.ToolStripButton ShowNumButton;
         private Sphere.Plugins.EditShims.ImageEditShim TileDrawer;
+        private System.Windows.Forms.SplitContainer entityListSplit;
+        private Components.EntityControl EntitiesControl;
 
     }
 }

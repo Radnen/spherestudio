@@ -207,6 +207,14 @@ namespace Sphere.Core
         }
 
         /// <summary>
+        /// Returns the image representation of this entity.
+        /// </summary>
+        public Image Image
+        {
+            get { return _graphic; }
+        }
+
+        /// <summary>
         /// Used along with a list of others, it makes a unique name for this entity.
         /// </summary>
         /// <param name="others">A List of other types</param>

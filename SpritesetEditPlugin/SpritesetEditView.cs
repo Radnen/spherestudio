@@ -36,7 +36,7 @@ namespace SphereStudio.Plugins
             InitializeDocking();
 
             Icon = Icon.FromHandle(Properties.Resources.PersonIcon.GetHicon());
-            
+
             _sprite = new Spriteset();
             DirectionAnim.Sprite = _sprite;
             FrameBaseEditor.Sprite = _sprite;
@@ -46,15 +46,15 @@ namespace SphereStudio.Plugins
         #region dock content
         private void InitializeDocking()
         {
-            Controls.Remove(DirectionSplitter); 
-            
+            Controls.Remove(DirectionSplitter);
+
             SpriteDrawer.Dock = DockStyle.Fill;
-            _drawContent = new DockContent {Text = @"Sprite Drawer", DockAreas = DockAreas.Document};
+            _drawContent = new DockContent { Text = @"Sprite Drawer", DockAreas = DockAreas.Document };
             _drawContent.DockHandler.CloseButtonVisible = false;
             _drawContent.Controls.Add(SpriteDrawer);
 
             DirectionHolder.Dock = DockStyle.Fill;
-            _directionContent = new DockContent {Text = @"Sprite Directions", DockAreas = DockAreas.Document};
+            _directionContent = new DockContent { Text = @"Sprite Directions", DockAreas = DockAreas.Document };
             _directionContent.DockHandler.CloseButtonVisible = false;
             _directionContent.Controls.Add(DirectionHolder);
 
@@ -89,7 +89,7 @@ namespace SphereStudio.Plugins
             _baseContent.DockHandler.CloseButtonVisible = false;
             _baseContent.Controls.Add(BasePanel);
 
-            _mainDockPanel = new DockPanel {DocumentStyle = DocumentStyle.DockingWindow, Dock = DockStyle.Fill};
+            _mainDockPanel = new DockPanel { DocumentStyle = DocumentStyle.DockingWindow, Dock = DockStyle.Fill };
             if (File.Exists("SpriteEditor.xml"))
             {
                 DeserializeDockContent dc = GetContent;
@@ -145,7 +145,7 @@ namespace SphereStudio.Plugins
             SpriteDrawer.Content = (Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index));
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
-            _tilesetCtrl = new TilesetControl2 {Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite), CanInsert = false};
+            _tilesetCtrl = new TilesetControl2 { Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite), CanInsert = false };
             _tilesetCtrl.ZoomIn();
             _tilesetCtrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             _tilesetCtrl.TileSelected += _tileset_ctrl_TileSelected;
@@ -219,11 +219,6 @@ namespace SphereStudio.Plugins
         {
             SpritesetEditPlugin.ShowMenus(false);
         }
-
-
-
-
-
 
         public void SaveLayout()
         {
@@ -325,7 +320,7 @@ namespace SphereStudio.Plugins
             layout.Modified += Modified;
             layout.Zoom = _zoom;
             DirectionHolder.Controls.Add(layout);
-            layout.Location = new Point(2, DirectionHolder.Controls.Count-1 * (layout.Height + 2) + 2);
+            layout.Location = new Point(2, DirectionHolder.Controls.Count - 1 * (layout.Height + 2) + 2);
             IsDirty = true;
         }
 
@@ -339,7 +334,12 @@ namespace SphereStudio.Plugins
 
         private void SpriteDrawer_ImageChanged(object sender, EventArgs e)
         {
-            Bitmap img = SpriteDrawer.Content;
+            Bitmap drawerImage = SpriteDrawer.Content;
+            if (drawerImage == null) return;
+
+            // the drawer dealloc's on undo chain, so we copy:
+            Bitmap img = new Bitmap(drawerImage);
+
             _sprite.Images[_selectedFrame.Index] = img;
             _tilesetCtrl.Tileset.Tiles[_selectedFrame.Index].Graphic = img;
             Modified(sender, e);

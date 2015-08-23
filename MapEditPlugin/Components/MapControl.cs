@@ -810,7 +810,7 @@ namespace SphereStudio.Plugins.Components
         {
             using (PersonForm form = new PersonForm(_base_map.Entities))
             {
-                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
+                form.AddLayers(_base_map.Layers);
                 form.SelectedIndex = CurrentLayer;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -828,7 +828,7 @@ namespace SphereStudio.Plugins.Components
         {
             using (TriggerForm form = new TriggerForm())
             {
-                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
+                form.AddLayers(_base_map.Layers);
                 form.SelectedIndex = CurrentLayer;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -855,7 +855,7 @@ namespace SphereStudio.Plugins.Components
         {
             using (PersonForm form = new PersonForm(_cur_ent.Copy(), _base_map.Entities))
             {
-                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
+                form.AddLayers(_base_map.Layers);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     _base_map.Entities[_base_map.Entities.IndexOf(_cur_ent)] = form.Person;
@@ -868,7 +868,7 @@ namespace SphereStudio.Plugins.Components
         {
             using (TriggerForm form = new TriggerForm(_cur_ent.Copy()))
             {
-                foreach (Layer lay in _base_map.Layers) form.AddString(lay.Name);
+                form.AddLayers(_base_map.Layers);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     _base_map.Entities[_base_map.Entities.IndexOf(_cur_ent)] = form.Trigger;

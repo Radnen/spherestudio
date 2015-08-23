@@ -45,6 +45,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\EntityControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\EntityControl.Designer.cs">
+      <DependentUpon>EntityControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\GraphicalLayer.cs" />
     <Compile Include="Components\LayerControl.cs">
       <SubType>UserControl</SubType>
@@ -139,6 +145,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Components\EntityControl.resx">
+      <DependentUpon>EntityControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\LayerControl.resx">
       <DependentUpon>LayerControl.cs</DependentUpon>
     </EmbeddedResource>

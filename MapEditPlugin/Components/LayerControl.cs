@@ -16,7 +16,7 @@ namespace SphereStudio.Plugins.Components
         private short _start_layer;
         private bool do_drag, draw_drag;
         private Point DragStart = Point.Empty;
-        
+
         public List<LayerItem> Items { get; private set; }
         public LayerItem SelectedItem { get; private set; }
         public int MovedIndex { get; private set; }
@@ -141,8 +141,8 @@ namespace SphereStudio.Plugins.Components
 
             if (do_drag) // check if the users moves far enough to really drag:
             {
-                int xx = DragStart.X-e.X;
-                int yy = DragStart.Y-e.Y;
+                int xx = DragStart.X - e.X;
+                int yy = DragStart.Y - e.Y;
                 if (Math.Sqrt(xx * xx + yy * yy) > 4) // 4 pixels is optimum distance
                 {
                     draw_drag = true;
@@ -249,7 +249,7 @@ namespace SphereStudio.Plugins.Components
         private void LayerControl_DoubleClick(object sender, EventArgs e)
         {
             var localMouseX = PointToClient(MousePosition).X;
-            if (this.SelectedItem != null && localMouseX > 16)
+            if (this.SelectedItem != null && localMouseX > 18)
                 new LayerForm(this.SelectedItem.Layer).ShowDialog();
             Refresh();
         }
@@ -273,7 +273,7 @@ namespace SphereStudio.Plugins.Components
             get { return Layer.Name; }
             set { Layer.Name = value; }
         }
-        
+
         public int Index { get; set; }
         public bool Start { get; set; }
 
@@ -347,7 +347,6 @@ namespace SphereStudio.Plugins.Components
 
         public void Dispose()
         {
-
             GC.SuppressFinalize(this);
         }
 
