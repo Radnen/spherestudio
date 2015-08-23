@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DockDescription.cs" />
+    <Compile Include="Interfaces\IDock.cs" />
     <Compile Include="Views\DocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>

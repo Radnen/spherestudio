@@ -47,28 +47,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ConsolePane.cs">
+    <Compile Include="Panes\ConsolePane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\ConsolePane.Designer.cs">
+    <Compile Include="Panes\ConsolePane.Designer.cs">
       <DependentUpon>ConsolePane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\DebugPane.cs">
+    <Compile Include="Panes\DebugPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\DebugPane.Designer.cs">
+    <Compile Include="Panes\DebugPane.Designer.cs">
       <DependentUpon>DebugPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\InspectorPane.cs">
+    <Compile Include="Panes\InspectorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\InspectorPane.Designer.cs">
+    <Compile Include="Panes\InspectorPane.Designer.cs">
       <DependentUpon>InspectorPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\StackPane.cs">
+    <Compile Include="Panes\StackPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\StackPane.Designer.cs">
+    <Compile Include="Panes\StackPane.Designer.cs">
       <DependentUpon>StackPane.cs</DependentUpon>
     </Compile>
     <Compile Include="DebugSession.cs" />
@@ -84,14 +84,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Components\ConsolePane.resx">
+    <EmbeddedResource Include="Panes\ConsolePane.resx">
       <DependentUpon>ConsolePane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\InspectorPane.resx">
+    <EmbeddedResource Include="Panes\InspectorPane.resx">
       <DependentUpon>InspectorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\StackPane.resx">
+    <EmbeddedResource Include="Panes\StackPane.resx">
       <DependentUpon>StackPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

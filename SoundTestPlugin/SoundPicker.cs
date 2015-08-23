@@ -33,12 +33,17 @@ namespace SphereStudio.Plugins
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
         private readonly ImageList _listIcons = new ImageList();
+        private IDockPane _dock_pane;
         private IPlayer _music;
         private string _musicName;
 
-        public SoundPicker()
+        public SoundPicker(IPlugin plugin)
         {
             InitializeComponent();
+
+            Dock = DockStyle.Fill;
+            _dock_pane = PluginManager.IDE.Docking.AddPane(this,
+                "Sound Test", plugin.Icon, DockHint.LeftSide);
 
             _playIcons.ColorDepth = ColorDepth.Depth32Bit;
             _playIcons.Images.Add("play", Properties.Resources.play_tool);

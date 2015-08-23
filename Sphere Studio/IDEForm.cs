@@ -65,7 +65,8 @@ namespace SphereStudio
         public IDEForm()
         {
             InitializeComponent();
-
+            Docking = new DockManager(MainDock);
+            
             string filepath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 @"Sphere Studio\Settings", "Sphere Studio.ini");
@@ -544,6 +545,8 @@ namespace SphereStudio
 
         public IDebugger Debugger { get; private set; }
 
+        public IDock Docking { get; private set; }
+
         public string EnginePath
         {
             get
@@ -620,63 +623,6 @@ namespace SphereStudio
             }
 
             item.DropDownItems.Add(newItem);
-        }
-
-        public void DockControl(DockDescription description)
-        {
-            if (description.Control == null) return;
-
-            DockContent ctrl = new DockContent() {
-                Text = description.TabText,
-                Icon = description.Icon,
-            };
-            ctrl.DockAreas = DockAreas.Float;
-            if (description.DockAreas.HasFlag(DockDescAreas.Document))
-                ctrl.DockAreas |= DockAreas.Document;
-            if (description.DockAreas.HasFlag(DockDescAreas.Sides))
-                ctrl.DockAreas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop;
-            ctrl.Controls.Add(description.Control);
-
-            description.OnShow += (sender, e) => ctrl.Show();
-            description.OnHide += (sender, e) => ctrl.Hide();
-
-            description.OnActivate += (sender, e) =>
-            {
-                Control focus = this;
-                while (focus is ContainerControl)
-                    focus = ((ContainerControl)focus).ActiveControl;
-                ctrl.Show();
-                if (focus != null)
-                    focus.Focus();
-            };
-
-            description.OnToggle += (sender, e) =>
-            {
-                if (ctrl.IsHidden) ctrl.Show();
-                else ctrl.Hide();
-            };
-
-            DockState state = DockState.Document;
-            if (ctrl.DockAreas.HasFlag(DockAreas.DockLeft))
-            {
-                switch (description.DockState)
-                {
-                    case DockDescStyle.LeftSide:
-                        state = DockState.DockLeft;
-                        break;
-                    case DockDescStyle.RightSide:
-                        state = DockState.DockRight;
-                        break;
-                    case DockDescStyle.Top:
-                        state = DockState.DockTop;
-                        break;
-                    case DockDescStyle.Bottom:
-                        state = DockState.DockBottom;
-                        break;
-                }
-            }
-
-            ctrl.Show(MainDock, state);
         }
 
         public DocumentView NewDocument(string folderName)
@@ -833,12 +779,6 @@ namespace SphereStudio
         public void RegisterOpenFileType(string typeName, string filters)
         {
             _openFileTypes[filters] = typeName;
-        }
-
-        public void RemoveControl(string name)
-        {
-            DockContent c = FindDocument(name);
-            if (c != null) c.DockHandler.Close();
         }
 
         public void RemoveMenuItem(ToolStripItem item)

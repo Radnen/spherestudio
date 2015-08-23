@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 
-namespace minisphere.Remote.Components
+namespace minisphere.Remote.Panes
 {
     partial class InspectorPane : DebugPane
     {

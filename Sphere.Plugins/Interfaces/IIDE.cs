@@ -28,6 +28,8 @@ namespace Sphere.Plugins.Interfaces
 
         IDebugger Debugger { get; }
 
+        IDock Docking { get; }
+
         /// <summary>
         /// Gets a list of the loaded document's filepaths in the Sphere Studio's main dock panel.
         /// </summary>
@@ -52,18 +54,6 @@ namespace Sphere.Plugins.Interfaces
         /// Add event handlers to do things when a project closes.
         /// </summary>
         event EventHandler UnloadProject;
-
-        /// <summary>
-        /// Adds a control to the main dock panel, at the associated state.
-        /// </summary>
-        /// <param name="description">Data used to tell the editor how to dock this plugin's editor.</param>
-        void DockControl(DockDescription description);
-
-        /// <summary>
-        /// Removes the control with name 'name' from the main dock panel.
-        /// </summary>
-        /// <param name="name"></param>
-        void RemoveControl(string name);
 
         /// <summary>
         /// Add a new root level item to the Sphere Studio menu bar.

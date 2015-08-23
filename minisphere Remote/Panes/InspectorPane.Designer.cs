@@ -1,4 +1,4 @@
-﻿namespace minisphere.Remote.Components
+﻿namespace minisphere.Remote.Panes
 {
     partial class InspectorPane
     {

@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-using minisphere.Remote.Components;
+using minisphere.Remote.Panes;
 using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote

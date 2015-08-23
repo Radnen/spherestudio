@@ -15,7 +15,7 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
-        private DockDescription _desc;
+        private IDockPane _dock_pane;
         private TaskList _list;
         private ToolStripMenuItem _item;
 
@@ -39,7 +39,7 @@ namespace SphereStudio.Plugins
 
         void ItemClick(object sender, EventArgs e)
         {
-            _desc.Toggle();
+            _dock_pane.Toggle();
         }
 
         public void Initialize(ISettings conf)
@@ -49,17 +49,8 @@ namespace SphereStudio.Plugins
 
             // Add it to a dock content like so, and style your dock content
             // however you want to!
-            DockDescription description = new DockDescription();
-            description.TabText = @"Task List";
-            description.Control = _list;
-            description.DockAreas = DockDescAreas.Document | DockDescAreas.Sides;
-            description.DockState = DockDescStyle.LeftSide;
-            description.HideOnClose = true;
-            description.Icon = Icon;
-            _desc = description;
-
-            // Add the widget to the main editor at the dock state:
-            PluginManager.IDE.DockControl(description);
+            _dock_pane = PluginManager.IDE.Docking.AddPane(_list,
+                "Task List", Icon, DockHint.LeftSide);
 
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
@@ -83,7 +74,7 @@ namespace SphereStudio.Plugins
         public void ShutDown()
         {
             // Now we need to remove anything we add to the editor
-            PluginManager.IDE.RemoveControl("Task List");
+            PluginManager.IDE.Docking.RemovePane(_dock_pane);
 
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.

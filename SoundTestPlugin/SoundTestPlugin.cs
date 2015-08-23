@@ -24,7 +24,7 @@ namespace SphereStudio.Plugins
             "mod", "it", "s3d",    // tracker formats
             "wav"                  // uncompressed/PCM formats
         };
-        
+
         private SoundPicker _soundPicker;
 
         public SoundTestPlugin()
@@ -34,19 +34,10 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            _soundPicker = new SoundPicker() { Dock = DockStyle.Fill };
+            _soundPicker = new SoundPicker(this);
             _soundPicker.Refresh();
 
-            DockDescription description = new DockDescription();
-            description.TabText = @"Sound Test";
-            description.Icon = Icon;
-            description.Control = _soundPicker;
-            description.DockAreas = DockDescAreas.Document | DockDescAreas.Sides;
-            description.HideOnClose = true;
-            description.DockState = DockDescStyle.LeftSide;
-
             PluginManager.RegisterExtensions(this, _extensionList);
-            PluginManager.IDE.DockControl(description);
             PluginManager.IDE.RegisterOpenFileType("Audio", _openFileFilters);
             PluginManager.IDE.LoadProject += IDE_LoadProject;
             PluginManager.IDE.UnloadProject += IDE_UnloadProject;
@@ -60,7 +51,6 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
-            PluginManager.IDE.RemoveControl("Sound Test");
             PluginManager.IDE.TestGame -= IDE_TestGame;
             PluginManager.IDE.LoadProject -= IDE_LoadProject;
             PluginManager.IDE.UnloadProject -= IDE_UnloadProject;

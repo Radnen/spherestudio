@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
 
-namespace minisphere.Remote.Components
+namespace minisphere.Remote.Panes
 {
     partial class StackPane : DebugPane
     {

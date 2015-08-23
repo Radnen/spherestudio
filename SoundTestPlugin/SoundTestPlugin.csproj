@@ -65,10 +65,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Components\SoundPicker.cs">
+    <Compile Include="SoundPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\SoundPicker.Designer.cs">
+    <Compile Include="SoundPicker.Designer.cs">
       <DependentUpon>SoundPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="SoundTestPlugin.cs" />
@@ -90,7 +90,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\SoundPicker.resx">
+    <EmbeddedResource Include="SoundPicker.resx">
       <DependentUpon>SoundPicker.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

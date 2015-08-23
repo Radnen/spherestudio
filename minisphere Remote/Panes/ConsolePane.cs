@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
-namespace minisphere.Remote.Components
+namespace minisphere.Remote.Panes
 {
     partial class ConsolePane : DebugPane
     {
