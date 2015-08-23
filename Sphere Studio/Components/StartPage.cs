@@ -196,7 +196,7 @@ namespace SphereStudio.Components
         private void PlayMenuItem_Click(object sender, EventArgs e)
         {
             if (!File.Exists(Global.Settings.EnginePath)) return;
-            string args = string.Format("-game\"{0}\"", _proj.RootPath);
+            string args = string.Format("-game \"{0}\"", _proj.RootPath);
             Process.Start(Global.Settings.EnginePath, args);
         }
 

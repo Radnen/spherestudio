@@ -24,6 +24,7 @@ namespace SphereStudio
     struct NewHandler
     {
         public NewHandler(IEditorPlugin plugin, string name, string[] folderNames)
+            : this()
         {
             Plugin = plugin;
             Name = name;
@@ -441,9 +442,20 @@ namespace SphereStudio
                 {
                     tab.SaveIfDirty();
                 }
+
                 string gamePath = Global.CurrentGame.Build();
-                Process.Start(((ToolStripItem)sender).Tag as string ?? EnginePath,
-                    string.Format("-game \"{0}\"", gamePath));
+                string path = ((ToolStripItem)sender).Tag as string ?? EnginePath;
+                string args = string.Format("-game \"{0}\"", gamePath);
+
+                if (String.IsNullOrEmpty(path) || !File.Exists(path))
+                {
+                    // show a message if you switch to a project with an invalid path.
+                    MessageBox.Show("Error: Could not find engine in path specified.");
+                }
+                else
+                {
+                    Process.Start(path, args);
+                }
             }
             else
                 Process.Start(Global.Settings.EnginePath);
