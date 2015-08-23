@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Sphere.Plugins;
+
 namespace minisphere.Remote.Components
 {
     partial class ConsolePane : DebugPane

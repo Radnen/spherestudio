@@ -90,8 +90,10 @@ namespace Sphere.Plugins
     public enum DockDescStyle
     {
         Document,
-        Side,
-        Opposite,
+        LeftSide,
+        RightSide,
+        Top,
+        Bottom,
     }
 
     /// <summary>

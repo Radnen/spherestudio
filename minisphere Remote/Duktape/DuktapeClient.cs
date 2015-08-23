@@ -26,6 +26,34 @@ namespace minisphere.Remote.Duktape
         Lightfunc,
     }
 
+    class ErrorThrownEventArgs : EventArgs
+    {
+        public ErrorThrownEventArgs(string message, string filename, int lineNumber, bool isFatal)
+        {
+            Message = message;
+            FileName = filename;
+            LineNumber = lineNumber;
+            IsFatal = isFatal;
+        }
+
+        /// <summary>
+        /// Gets whether the error was fatal, i.e. unhandled.
+        /// </summary>
+        public bool IsFatal { get; private set; }
+
+        public string Message { get; private set; }
+        
+        /// <summary>
+        /// Gets the filename of the script throwing the error.
+        /// </summary>
+        public string FileName { get; private set; }
+
+        /// <summary>
+        /// Gets the line number where the error was thrown.
+        /// </summary>
+        public int LineNumber { get; private set; }
+    }
+
     class TraceEventArgs : EventArgs
     {
         public TraceEventArgs(string text)
@@ -67,10 +95,12 @@ namespace minisphere.Remote.Duktape
         {
             if (messenger != null)
                 messenger.Abort();
+            Alert = null;
             Attached = null;
             Detached = null;
-            Paused = null;
-            Resumed = null;
+            ErrorThrown = null;
+            Print = null;
+            Status = null;
             tcp.Close();
         }
 
@@ -90,20 +120,20 @@ namespace minisphere.Remote.Duktape
         public event EventHandler Detached;
 
         /// <summary>
-        /// Fires when execution pauses, e.g. at a breakpoint.
+        /// Fires when an error is thrown by JS code.
         /// </summary>
-        public event EventHandler Paused;
-
+        public event EventHandler<ErrorThrownEventArgs> ErrorThrown;
+        
         /// <summary>
         /// Fires when a script calls print().
         /// </summary>
         public event EventHandler<TraceEventArgs> Print;
 
         /// <summary>
-        /// Fires when execution has resumed.
+        /// Fires when execution status (code position, etc.) has changed.
         /// </summary>
-        public event EventHandler Resumed;
-
+        public event EventHandler Status;
+        
         /// <summary>
         /// Gets the identification string reported in the handshake.
         /// </summary>
@@ -212,7 +242,7 @@ namespace minisphere.Remote.Duktape
 
         /// <summary>
         /// Gets a list of function calls currently on the stack. Note that Duktape
-        /// supports tail recursion, so this may not reflect all active calls.
+        /// supports tail return, so this may not reflect all active calls.
         /// </summary>
         /// <returns>
         /// An array of 3-tuples naming the function, filename and current line number
@@ -248,6 +278,7 @@ namespace minisphere.Remote.Duktape
                 string name = reply[1 + i * 2].ToString();
                 dynamic value = reply[2 + i * 2];
                 string friendlyValue = value.Equals(DValue.Object) ? "JS object"
+                    : value.Equals(DValue.Undefined) ? "undefined"
                     : value is bool ? value ? "true" : "false"
                     : value is int ? value.ToString()
                     : value is double ? value.ToString()
@@ -544,12 +575,9 @@ namespace minisphere.Remote.Duktape
                         case 0x01: // Status notification
                             FileName = message[3];
                             LineNumber = message[5];
-                            bool wasRunning = Running;
                             Running = message[2] == 0;
-                            if (Running && !wasRunning && Resumed != null)
-                                Resumed(this, EventArgs.Empty);
-                            if (!Running && Paused != null)
-                                Paused(this, EventArgs.Empty);
+                            if (Status != null)
+                                Status(this, EventArgs.Empty);
                             break;
                         case 0x02: // Print notification
                             if (Print != null)
@@ -558,6 +586,15 @@ namespace minisphere.Remote.Duktape
                         case 0x03: // Alert notification
                             if (Alert != null)
                                 Alert(this, new TraceEventArgs(message[2]));
+                            break;
+                        case 0x05: // Throw notification
+                            Running = false;
+                            if (ErrorThrown != null)
+                            {
+                                ErrorThrown(this, new ErrorThrownEventArgs(
+                                    message[3], message[4], message[6],
+                                    message[2] != 0));
+                            }
                             break;
                     }
                 }

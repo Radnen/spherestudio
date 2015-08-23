@@ -53,7 +53,7 @@ namespace SphereStudio.Plugins
             description.TabText = @"Task List";
             description.Control = _list;
             description.DockAreas = DockDescAreas.Document | DockDescAreas.Sides;
-            description.DockState = DockDescStyle.Side;
+            description.DockState = DockDescStyle.LeftSide;
             description.HideOnClose = true;
             description.Icon = Icon;
             _desc = description;

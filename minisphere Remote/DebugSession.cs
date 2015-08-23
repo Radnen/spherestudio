@@ -3,10 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
@@ -94,24 +96,16 @@ namespace minisphere.Remote
                     duktape = new DuktapeClient();
                     duktape.Attached += duktape_Attached;
                     duktape.Detached += duktape_Detached;
-                    duktape.Paused += duktape_Paused;
-                    duktape.Resumed += duktape_Resumed;
+                    duktape.ErrorThrown += duktape_ErrorThrown;
                     duktape.Alert += duktape_Print;
                     duktape.Print += duktape_Print;
+                    duktape.Status += duktape_Status;
                     await duktape.Connect(hostname, port);
                     return;
                 }
                 catch (SocketException) { } // *munch*
             }
             throw new TimeoutException();
-        }
-
-        private void duktape_Print(object sender, TraceEventArgs e)
-        {
-            PluginManager.IDE.Invoke(new Action(() =>
-            {
-                consoleView.Print(e.Text);
-            }), null);
         }
 
         private void duktape_Attached(object sender, EventArgs e)
@@ -150,35 +144,60 @@ namespace minisphere.Remote
             }), null);
         }
 
-        private void duktape_Paused(object sender, EventArgs e)
+        private async void duktape_ErrorThrown(object sender, ErrorThrownEventArgs e)
         {
-            focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            UpdateStatus();
+            if (e.IsFatal)
+            {
+                var stack = await duktape.GetCallStack();
+                var topCall = stack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
+                string message = string.Format("An exception was thrown by game code. Execution is suspended so you can examine the state of the program.  The value (string-coerced) and location of the thrown exception is shown below:\n\n({1}:{2})\n{0}",
+                    e.Message, topCall.Item2, topCall.Item3);
+                message += "\n\n\nContinue execution?  This will unwind the stack.";
+                if (MessageBox.Show(message, "Unhandled Exception", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    await duktape.Resume();
+                }
+            }
+        }
+
+        private void duktape_Print(object sender, TraceEventArgs e)
+        {
+            PluginManager.IDE.Invoke(new Action(() =>
+            {
+                consoleView.Print(e.Text);
+            }), null);
+        }
+
+        private async void duktape_Status(object sender, EventArgs e)
+        {
+            bool wantPause = !duktape.Running;
+            bool wantResume = !Running && duktape.Running;
+            Running = duktape.Running;
+            focusSwitchTimer.Change(wantResume ? 250 : Timeout.Infinite, Timeout.Infinite);
+            Tuple<string, string, int> topCall = null;
+            Tuple<string, string, int>[] stack = null;
+            if (wantPause)
+            {
+                stack = await duktape.GetCallStack();
+                topCall = stack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
+                FileName = ResolvePath(topCall.Item2);
+                LineNumber = topCall.Item3;
+            }
             PluginManager.IDE.Invoke(new Action(async () =>
             {
-                if (Paused != null)
+                if (wantPause && Paused != null)
                     Paused(this, EventArgs.Empty);
-                var variables = await duktape.GetLocals();
-                var calls = await duktape.GetCallStack();
-                if (!Running)
+                if (wantResume && Resumed != null)
+                    Resumed(this, EventArgs.Empty);
+                if (!duktape.Running)
                 {
+                    var variables = await duktape.GetLocals();
                     inspectorView.SetVariables(variables);
-                    stackView.UpdateStack(calls);
+                    stackView.UpdateStack(stack);
                     inspectorView.Enabled = true;
                     stackView.Enabled = true;
                     inspectorView.Activate();
                 }
-            }), null);
-        }
-
-        private void duktape_Resumed(object sender, EventArgs e)
-        {
-            focusSwitchTimer.Change(250, Timeout.Infinite);
-            UpdateStatus();
-            PluginManager.IDE.Invoke(new Action(() =>
-            {
-                if (Resumed != null)
-                    Resumed(this, EventArgs.Empty);
             }), null);
         }
 

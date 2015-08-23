@@ -15,7 +15,7 @@ namespace minisphere.Remote.Components
             InitializeComponent();
         }
 
-        public DebugPane(string name, Bitmap icon = null):
+        public DebugPane(string name, Bitmap icon = null, DockDescStyle DockState = DockDescStyle.RightSide):
             this()
         {
             Dock = DockStyle.Fill;
@@ -23,7 +23,7 @@ namespace minisphere.Remote.Components
             dock = new DockDescription();
             dock.Control = this;
             dock.DockAreas = DockDescAreas.Sides;
-            dock.DockState = DockDescStyle.Opposite;
+            dock.DockState = DockState;
             dock.HideOnClose = true;
             dock.TabText = name;
             dock.Icon = icon != null ? Icon.FromHandle(icon.GetHicon()) : null;

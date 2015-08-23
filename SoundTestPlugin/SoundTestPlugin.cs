@@ -43,7 +43,7 @@ namespace SphereStudio.Plugins
             description.Control = _soundPicker;
             description.DockAreas = DockDescAreas.Document | DockDescAreas.Sides;
             description.HideOnClose = true;
-            description.DockState = DockDescStyle.Side;
+            description.DockState = DockDescStyle.LeftSide;
 
             PluginManager.RegisterExtensions(this, _extensionList);
             PluginManager.IDE.DockControl(description);

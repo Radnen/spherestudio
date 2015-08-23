@@ -659,10 +659,21 @@ namespace SphereStudio
             DockState state = DockState.Document;
             if (ctrl.DockAreas.HasFlag(DockAreas.DockLeft))
             {
-                if (description.DockState == DockDescStyle.Side)
-                    state = DockState.DockLeft;
-                else if (description.DockState == DockDescStyle.Opposite)
-                    state = DockState.DockRight;
+                switch (description.DockState)
+                {
+                    case DockDescStyle.LeftSide:
+                        state = DockState.DockLeft;
+                        break;
+                    case DockDescStyle.RightSide:
+                        state = DockState.DockRight;
+                        break;
+                    case DockDescStyle.Top:
+                        state = DockState.DockTop;
+                        break;
+                    case DockDescStyle.Bottom:
+                        state = DockState.DockBottom;
+                        break;
+                }
             }
 
             ctrl.Show(MainDock, state);
