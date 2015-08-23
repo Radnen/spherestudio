@@ -39,8 +39,16 @@ namespace SphereStudio.Plugins.Forms
         {
             nameBox.Text = layer.Name;
             xSizeBox.Value = layer.Width; ySizeBox.Value = layer.Height;
-            plxXSlide.Value = (int)Math.Round(layer.ParallaxX * 10.0f);
-            plxYSlide.Value = (int)Math.Round(layer.ParallaxY * 10.0f);
+            try
+            {
+                plxXSlide.Value = (int)Math.Round(layer.ParallaxX * 10.0f);
+                plxYSlide.Value = (int)Math.Round(layer.ParallaxY * 10.0f);
+            }
+            catch (Exception)
+            {
+                plxXSlide.Value = 0;
+                plxYSlide.Value = 0;
+            }
             scrollXSlide.Value = (int)Math.Round(layer.ScrollX * 10.0f);
             scrollYSlide.Value = (int)Math.Round(layer.ScrollY * 10.0f);
             visibleCheck.Checked = layer.Visible;

@@ -159,8 +159,10 @@ namespace Sphere.Core
                 }
 
                 // read layers:
-                while (numLayers-- > 0)
+                for (int i = 0; i < numLayers; ++i)
+                {
                     Layers.Add(Layer.FromBinary(reader));
+                }
 
                 // read entities:
                 while (numEntities-- > 0)
@@ -182,7 +184,9 @@ namespace Sphere.Core
 
                 // read tileset:
                 if (Scripts[0].Length == 0)
+                {
                     Tileset = Tileset.FromBinary(reader);
+                }
                 else
                 {
                     string path = Path.GetDirectoryName(filename) + "\\" + Scripts[0];
@@ -190,12 +194,12 @@ namespace Sphere.Core
                 }
 
                 // init all layers:
-                bool validated = true;
+                /*bool validated = true;
                 foreach (Layer layer in Layers)
                 {
                     validated = layer.Validate(Tileset.Tiles.Count);
-                }
-                ErrorOnLoad = !validated;
+                }*/
+                //ErrorOnLoad = !validated;
             }
 
             return true;

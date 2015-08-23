@@ -248,7 +248,8 @@ namespace SphereStudio.Plugins.Components
 
         private void LayerControl_DoubleClick(object sender, EventArgs e)
         {
-            if (this.SelectedItem != null)
+            var localMouseX = PointToClient(MousePosition).X;
+            if (this.SelectedItem != null && localMouseX > 16)
                 new LayerForm(this.SelectedItem.Layer).ShowDialog();
             Refresh();
         }
