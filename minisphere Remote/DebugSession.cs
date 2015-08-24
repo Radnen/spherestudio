@@ -172,18 +172,27 @@ namespace minisphere.Remote
                 bool wantResume = !Running && duktape.Running;
                 Running = duktape.Running;
                 focusTimer.Change(wantResume ? 250 : Timeout.Infinite, Timeout.Infinite);
+                Tuple<string, string, int>[] callStack = null;
+                IReadOnlyDictionary<string, string> vars = null;
                 if (wantPause)
                 {
-                    var stack = await duktape.GetCallStack();
-                    var variables = await duktape.GetLocals();
-                    var topCall = stack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
+                    callStack = await duktape.GetCallStack();
+                    vars = await duktape.GetLocals();
+                }
+                if (wantPause && !Running)
+                {
+                    var topCall = callStack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
                     FileName = ResolvePath(topCall.Item2);
                     LineNumber = topCall.Item3;
-                    inspectorView.SetVariables(variables);
-                    stackView.UpdateStack(stack);
+                    inspectorView.SetVariables(vars);
+                    stackView.UpdateStack(callStack);
                     inspectorView.Enabled = true;
                     stackView.Enabled = true;
                     inspectorView.Activate();
+                }
+                if (Running)
+                {
+                    errorView.ClearHighlight();
                 }
                 if (wantPause && Paused != null)
                     Paused(this, EventArgs.Empty);

@@ -174,7 +174,10 @@ namespace SphereStudio.IDE
         /// <summary>
         /// Builds the project so it can be run by Sphere.
         /// </summary>
-        /// <returns>The full path of the generated `game.sgm`.</returns>
+        /// <returns>
+        /// The full path of the build directory. This can be passed directly
+        /// to a Sphere-compatible engine.
+        /// </returns>
         public string Build()
         {
             // save the project before building
@@ -191,10 +194,9 @@ namespace SphereStudio.IDE
                 writer.WriteLine(string.Format("screen_width={0}", ScreenWidth));
                 writer.WriteLine(string.Format("screen_height={0}", ScreenHeight));
                 writer.WriteLine(string.Format("script={0}", MainScript));
-                writer.Close();
             }
 
-            return sgmPath;
+            return Path.GetDirectoryName(sgmPath);
         }
 
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()

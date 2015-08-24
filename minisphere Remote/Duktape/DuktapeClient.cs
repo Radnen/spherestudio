@@ -255,6 +255,9 @@ namespace minisphere.Remote.Duktape
                 string filename = reply[1 + i * 4];
                 string functionName = reply[2 + i * 4];
                 int lineNumber = reply[3 + i * 4];
+                int pc = reply[4 + i * 4];
+                if (filename == "undefined" && pc == 0)
+                    filename = TargetID;
                 stack.Add(Tuple.Create(functionName, filename, lineNumber));
             }
             return stack.ToArray();
@@ -588,9 +591,10 @@ namespace minisphere.Remote.Duktape
                             Running = false;
                             if (ErrorThrown != null)
                             {
-                                var filename =
-                                    message[4] == "undefined" && message[7] == 0 ? TargetID
-                                    : message[4];
+                                string filename = message[4];
+                                int pc = message[7];
+                                if (filename == "undefined" && pc == 0)
+                                    filename = TargetID;
                                 ErrorThrown(this, new ErrorThrownEventArgs(
                                     message[3], filename, message[6],
                                     message[2] != 0));

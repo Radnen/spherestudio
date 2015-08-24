@@ -14,7 +14,7 @@ namespace minisphere.Remote
         public string Name { get { return "minisphere Remote"; } }
         public string Author { get { return "Fat Cerberus"; } }
         public string Description { get { return "Provides debug support for minisphere."; } }
-        public string Version { get { return "1.7.2"; } }
+        public string Version { get { return "1.7.6"; } }
 
         public Icon Icon { get; private set; }
 
@@ -31,7 +31,7 @@ namespace minisphere.Remote
         {
             // start minisphere in debugging mode
             string enginePath = PluginManager.IDE.EnginePath;
-            string args = string.Format(@"--debug --game ""{0}""\game.sgm", project.RootPath);
+            string args = string.Format(@"--debug --game ""{0}""", project.Build());
             Process engine = Process.Start(enginePath, args);
 
             return new DebugSession(project, enginePath, engine);

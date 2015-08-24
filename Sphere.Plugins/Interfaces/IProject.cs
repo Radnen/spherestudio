@@ -64,7 +64,7 @@ namespace Sphere.Plugins.Interfaces
         /// <summary>
         /// Builds the project so it can be run by Sphere.
         /// </summary>
-        /// <returns>The fully qualified path of the generated game.sgm.</returns>
+        /// <returns>The path of the prepared game directory.</returns>
         string Build();
     }
 }

@@ -426,7 +426,7 @@ namespace SphereStudio
         private void menuOpenGameDir_Click(object sender, EventArgs e)
         {
             string path = Global.CurrentGame.RootPath;
-            var proc = Process.Start("explorer.exe", string.Format("/select, \"{0}\\game.sgm\"", path));
+            var proc = Process.Start("explorer.exe", string.Format(@"/select, ""{0}\game.sgm""", path));
             proc.Dispose();
         }
 
@@ -444,9 +444,9 @@ namespace SphereStudio
                     tab.SaveIfDirty();
                 }
 
-                string gamePath = Path.GetDirectoryName(Global.CurrentGame.Build());
+                string gamePath = Global.CurrentGame.Build();
                 string path = ((ToolStripItem)sender).Tag as string ?? EnginePath;
-                string args = string.Format("-game \"{0}\"", gamePath);
+                string args = string.Format(@"-game ""{0}""", gamePath);
 
                 if (String.IsNullOrEmpty(path) || !File.Exists(path))
                 {

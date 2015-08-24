@@ -22,9 +22,28 @@ namespace minisphere.Remote.Panes
 
         public void Add(string value, bool isFatal, string filename, int line)
         {
+            if (listErrors.Items.Count > 0)
+            {
+                listErrors.Items[0].BackColor = listErrors.BackColor;
+                listErrors.Items[0].ForeColor = listErrors.ForeColor;
+            }
             ListViewItem item = listErrors.Items.Insert(0, value, isFatal ? 1 : 0);
             item.SubItems.Add(filename);
             item.SubItems.Add(line.ToString());
+            if (isFatal)
+            {
+                item.BackColor = Color.DarkRed;
+                item.ForeColor = Color.Yellow;
+            }
+        }
+
+        public void ClearHighlight()
+        {
+            if (listErrors.Items.Count > 0)
+            {
+                listErrors.Items[0].BackColor = listErrors.BackColor;
+                listErrors.Items[0].ForeColor = listErrors.ForeColor;
+            }
         }
     }
 }

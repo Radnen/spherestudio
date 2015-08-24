@@ -32,7 +32,7 @@ namespace minisphere.Remote.Panes
             {
                 ListViewItem item = new ListViewItem(entry.Item1 != ""
                     ? string.Format("{0}()", entry.Item1)
-                    : "(anonymous)");
+                    : "function()");
                 item.SubItems.Add(entry.Item2);
                 item.SubItems.Add(entry.Item3.ToString());
                 listStack.Items.Add(item);
