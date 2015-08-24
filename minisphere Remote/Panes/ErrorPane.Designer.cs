@@ -31,43 +31,51 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorPane));
             this.listErrors = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnFunction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnScript = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnLine = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // listErrors
             // 
             this.listErrors.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
+            this.columnValue,
+            this.columnFunction,
+            this.columnScript,
+            this.columnLine});
             this.listErrors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listErrors.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listErrors.FullRowSelect = true;
             this.listErrors.GridLines = true;
             this.listErrors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listErrors.Location = new System.Drawing.Point(0, 0);
             this.listErrors.Name = "listErrors";
-            this.listErrors.Size = new System.Drawing.Size(884, 243);
+            this.listErrors.Size = new System.Drawing.Size(954, 243);
             this.listErrors.SmallImageList = this.imageList1;
             this.listErrors.TabIndex = 0;
             this.listErrors.UseCompatibleStateImageBehavior = false;
             this.listErrors.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // columnValue
             // 
-            this.columnHeader1.Text = "Thrown Value";
-            this.columnHeader1.Width = 500;
+            this.columnValue.Text = "Thrown Value";
+            this.columnValue.Width = 500;
             // 
-            // columnHeader2
+            // columnFunction
             // 
-            this.columnHeader2.Text = "Script";
-            this.columnHeader2.Width = 200;
+            this.columnFunction.Text = "Function";
+            this.columnFunction.Width = 150;
             // 
-            // columnHeader3
+            // columnScript
             // 
-            this.columnHeader3.Text = "Line";
+            this.columnScript.Text = "Script";
+            this.columnScript.Width = 200;
+            // 
+            // columnLine
+            // 
+            this.columnLine.Text = "Line";
             // 
             // imageList1
             // 
@@ -82,7 +90,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.listErrors);
             this.Name = "ErrorPane";
-            this.Size = new System.Drawing.Size(884, 243);
+            this.Size = new System.Drawing.Size(954, 243);
             this.ResumeLayout(false);
 
         }
@@ -90,9 +98,10 @@
         #endregion
 
         private System.Windows.Forms.ListView listErrors;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnValue;
+        private System.Windows.Forms.ColumnHeader columnLine;
+        private System.Windows.Forms.ColumnHeader columnScript;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ColumnHeader columnFunction;
     }
 }

@@ -152,7 +152,7 @@ namespace minisphere.Remote
         {
             PluginManager.IDE.Invoke(new Action(() =>
             {
-                errorView.Add(e.Message, e.IsFatal, e.FileName, e.LineNumber);
+                errorView.Add(e.Message, e.IsFatal, e.Function, e.FileName, e.LineNumber);
             }), null);
         }
 
@@ -179,9 +179,9 @@ namespace minisphere.Remote
                     callStack = await duktape.GetCallStack();
                     vars = await duktape.GetLocals();
                 }
-                if (wantPause && !Running)
+                if (wantPause && !duktape.Running)
                 {
-                    var topCall = callStack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
+                    var topCall = callStack.First(entry => entry.Item2 != duktape.TargetID || entry.Item3 != 0);
                     FileName = ResolvePath(topCall.Item2);
                     LineNumber = topCall.Item3;
                     inspectorView.SetVariables(vars);
@@ -190,7 +190,7 @@ namespace minisphere.Remote
                     stackView.Enabled = true;
                     inspectorView.Activate();
                 }
-                if (Running)
+                if (duktape.Running)
                 {
                     errorView.ClearHighlight();
                 }
@@ -201,12 +201,7 @@ namespace minisphere.Remote
             }), null);
         }
 
-        public async Task<IReadOnlyDictionary<string, string>> GetVariableList()
-        {
-            return await duktape.GetLocals();
-        }
-
-        public async Task SetBreakpoint(string filename, int lineNumber, bool isActive)
+        public async Task SetBreakpoint(string filename, int lineNumber, bool isSet)
         {
             // convert filename to a SphereFS path
             string relativePath = filename;
@@ -228,7 +223,7 @@ namespace minisphere.Remote
             }
             
             // set the breakpoint if needed
-            if (isActive)
+            if (isSet)
             {
                 await duktape.AddBreak(relativePath, lineNumber);
             }

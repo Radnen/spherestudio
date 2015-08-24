@@ -45,29 +45,15 @@ namespace Sphere.Plugins.Interfaces
         event EventHandler Resumed;
 
         /// <summary>
-        /// Gets a list of all variables in the current scope and their values.
-        /// Complex objects will be reported simply as "[object]".
-        /// </summary>
-        /// <returns>A dictionary mapping variable names to their values.</returns>
-        Task<IReadOnlyDictionary<string, string>> GetVariableList();
-
-        /// <summary>
         /// Attaches the debugger.
         /// </summary>
-        /// <returns>true if the debugger was successfully attached, false otherwise.</returns>
+        /// <returns>true if the debugger was successfully attached.</returns>
         Task<bool> Attach();
 
         /// <summary>
         /// Detaches the debugger.
         /// </summary>
         Task Detach();
-
-        /// <summary>
-        /// Evaluates a JavaScript expression and returns the JSON-encoded result.
-        /// </summary>
-        /// <param name="expression">The expression to evaluate.</param>
-        /// <returns>The JSON-encoded result of evaluating the expression.</returns>
-        Task<string> Evaluate(string expression);
 
         /// <summary>
         /// Pauses execution and breaks into the debugger.
@@ -85,8 +71,8 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         /// <param name="filename">The filename containing the breakpoint.</param>
         /// <param name="lineNumber">The line number of the breakpoint.</param>
-        /// <param name="isActive">If true, a breakpoint is set. Otherwise, the existing one is cleared.</param>
-        Task SetBreakpoint(string filename, int lineNumber, bool isActive);
+        /// <param name="isSet">If true, a breakpoint is set. Otherwise, the existing one is cleared.</param>
+        Task SetBreakpoint(string filename, int lineNumber, bool isSet);
 
         /// <summary>
         /// Executes the next statement, stepping into function calls.

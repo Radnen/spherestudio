@@ -20,7 +20,7 @@ namespace minisphere.Remote.Panes
             InitializeComponent();
         }
 
-        public void Add(string value, bool isFatal, string filename, int line)
+        public void Add(string value, bool isFatal, string func, string filename, int line)
         {
             if (listErrors.Items.Count > 0)
             {
@@ -28,6 +28,7 @@ namespace minisphere.Remote.Panes
                 listErrors.Items[0].ForeColor = listErrors.ForeColor;
             }
             ListViewItem item = listErrors.Items.Insert(0, value, isFatal ? 1 : 0);
+            item.SubItems.Add(string.Format("{0}()", func != "" ? func : "function"));
             item.SubItems.Add(filename);
             item.SubItems.Add(line.ToString());
             if (isFatal)
