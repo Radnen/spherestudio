@@ -15,7 +15,7 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; private set; }
 
-        private IDockPane _dock_pane;
+        private IDockForm _dock_pane;
         private TaskList _list;
         private ToolStripMenuItem _item;
 
@@ -50,7 +50,7 @@ namespace SphereStudio.Plugins
             // Add it to a dock content like so, and style your dock content
             // however you want to!
             _dock_pane = PluginManager.IDE.Docking.AddPane(_list,
-                "Task List", Icon, DockHint.LeftSide);
+                "Task List", Icon, DockHint.Left);
 
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 

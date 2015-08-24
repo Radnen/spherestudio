@@ -9,14 +9,14 @@ namespace minisphere.Remote.Panes
 {
     public partial class DebugPane : UserControl
     {
-        private IDockPane dockPane;
+        private IDockForm dockPane;
 
         private DebugPane()
         {
             InitializeComponent();
         }
 
-        public DebugPane(string name, Bitmap icon = null, DockHint dockHint = DockHint.RightSide):
+        public DebugPane(string name, Bitmap icon = null, DockHint dockHint = DockHint.Right):
             this()
         {
             dockPane = PluginManager.IDE.Docking.AddPane(this, name,
@@ -28,7 +28,7 @@ namespace minisphere.Remote.Panes
 
         public void Activate()
         {
-            dockPane.Activate();
+            dockPane.Show();
         }
 
         private void this_Disposed(object sender, EventArgs e)

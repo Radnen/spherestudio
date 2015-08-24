@@ -55,6 +55,8 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         event EventHandler UnloadProject;
 
+        void Activate();
+        
         /// <summary>
         /// Add a new root level item to the Sphere Studio menu bar.
         /// </summary>

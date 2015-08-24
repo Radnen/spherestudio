@@ -161,32 +161,29 @@ namespace minisphere.Remote.Duktape
 
         public async Task Connect(string hostname, int port)
         {
+            // connect to Duktape debug server
             await tcp.ConnectAsync(hostname, port);
-            try
+            string line = "";
+            byte[] buffer = new byte[1];
+            while (buffer[0] != '\n')
             {
-                string line = "";
-                byte[] buffer = new byte[1];
-                while (buffer[0] != '\n')
-                {
-                    tcp.Client.ReceiveAll(buffer);
-                    line += (char)buffer[0];
-                }
-                string[] handshake = line.Split(new[] { ' ' }, 4);
-                int debuggerVersion = int.Parse(handshake[0]);
-                if (debuggerVersion != 1)
-                    throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
-                Version = handshake[2];
-                TargetID = handshake[3];
-                messenger = new Thread(RunMessenger) { IsBackground = true };
-                messenger.Start();
-                if (Attached != null)
-                {
-                    Attached(this, EventArgs.Empty);
-                }
+                tcp.Client.ReceiveAll(buffer);
+                line += (char)buffer[0];
             }
-            catch
+            string[] handshake = line.Trim().Split(new[] { ' ' }, 4);
+            int debuggerVersion = int.Parse(handshake[0]);
+            if (debuggerVersion != 1)
+                throw new NotSupportedException("Error communicating with debug server");
+
+            Version = handshake[2];
+            TargetID = handshake[3];
+
+            // start the communication thread
+            messenger = new Thread(RunMessenger) { IsBackground = true };
+            messenger.Start();
+            if (Attached != null)
             {
-                throw new NotSupportedException("Wrong Duktape protocol version or protocol not supported");
+                Attached(this, EventArgs.Empty);
             }
         }
 
@@ -591,8 +588,11 @@ namespace minisphere.Remote.Duktape
                             Running = false;
                             if (ErrorThrown != null)
                             {
+                                var filename =
+                                    message[4] == "undefined" && message[7] == 0 ? TargetID
+                                    : message[4];
                                 ErrorThrown(this, new ErrorThrownEventArgs(
-                                    message[3], message[4], message[6],
+                                    message[3], filename, message[6],
                                     message[2] != 0));
                             }
                             break;

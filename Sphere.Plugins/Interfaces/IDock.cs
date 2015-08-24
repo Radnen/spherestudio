@@ -13,9 +13,9 @@ namespace Sphere.Plugins.Interfaces
     /// </summary>
     public enum DockHint
     {
-        Document,
-        LeftSide,
-        RightSide,
+        Float,
+        Left,
+        Right,
         Top,
         Bottom,
     }
@@ -26,40 +26,35 @@ namespace Sphere.Plugins.Interfaces
     public interface IDock
     {
         /// <summary>
-        /// Adds a new sidebar pane to the dock.
+        /// Adds a new pane to the dock.
         /// </summary>
         /// <param name="control">The WinForms control implementing the pane.</param>
         /// <param name="title">The tab title.</param>
         /// <param name="icon">The icon to display on the tab.</param>
         /// <returns>An IDockPane allowing access to the new pane.</returns>
-        IDockPane AddPane(Control control, string title, Icon icon, DockHint hint);
+        IDockForm AddPane(Control control, string title, Icon icon, DockHint hint);
 
         /// <summary>
         /// Removes a dock pane created with AddPane.
         /// </summary>
         /// <param name="pane">The dock pane to remove.</param>
-        void RemovePane(IDockPane pane);
+        void RemovePane(IDockForm pane);
     }
 
     /// <summary>
     /// Provides an interface for a dock pane.
     /// </summary>
-    public interface IDockPane
+    public interface IDockForm
     {
         /// <summary>
-        /// Activates the pane without stealing focus.
+        /// Shows the pane.
         /// </summary>
-        void Activate();
+        void Show();
 
         /// <summary>
         /// Hides the pane.
         /// </summary>
         void Hide();
-
-        /// <summary>
-        /// Shows the pane. May steal focus.
-        /// </summary>
-        void Show();
 
         /// <summary>
         /// Hides the pane if it is visible, or shows it otherwise.

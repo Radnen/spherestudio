@@ -25,17 +25,18 @@ namespace minisphere.Remote
         private Process engineProcess;
         private string engineDir;
         private ConsolePane consoleView;
+        private ErrorPane errorView;
         private InspectorPane inspectorView;
         private StackPane stackView;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
-        private System.Threading.Timer focusSwitchTimer;
+        private System.Threading.Timer focusTimer;
 
         public DebugSession(IProject project, string enginePath, Process engine)
         {
             ssproj = project;
             engineProcess = engine;
             engineDir = Path.GetDirectoryName(enginePath);
-            focusSwitchTimer = new System.Threading.Timer(
+            focusTimer = new System.Threading.Timer(
                 FocusEngine, this,
                 Timeout.Infinite, Timeout.Infinite);
         }
@@ -46,10 +47,12 @@ namespace minisphere.Remote
             Detached = null;
             Paused = null;
             Resumed = null;
-            focusSwitchTimer.Dispose();
+            focusTimer.Dispose();
             duktape.Dispose();
             consoleView.Dispose();
+            errorView.Dispose();
             inspectorView.Dispose();
+            stackView.Dispose();
         }
 
         public string FileName { get; private set; }
@@ -81,7 +84,7 @@ namespace minisphere.Remote
 
         public async Task Detach()
         {
-            focusSwitchTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            focusTimer.Change(Timeout.Infinite, Timeout.Infinite);
             await duktape.Detach();
             Dispose();
         }
@@ -115,6 +118,7 @@ namespace minisphere.Remote
                 if (Attached != null)
                     Attached(this, EventArgs.Empty);
 
+                errorView = new ErrorPane(this);
                 stackView = new StackPane(this) { Enabled = false };
                 inspectorView = new InspectorPane(this) { Enabled = false };
                 consoleView = new ConsolePane(this);
@@ -138,26 +142,18 @@ namespace minisphere.Remote
                     Detached(this, EventArgs.Empty);
                 inspectorView.Dispose();
                 stackView.Dispose();
-                consoleView.Dispose();
+                errorView.Dispose();
                 inspectorView.Dispose();
                 consoleView.Dispose();
             }), null);
         }
 
-        private async void duktape_ErrorThrown(object sender, ErrorThrownEventArgs e)
+        private void duktape_ErrorThrown(object sender, ErrorThrownEventArgs e)
         {
-            if (e.IsFatal)
+            PluginManager.IDE.Invoke(new Action(() =>
             {
-                var stack = await duktape.GetCallStack();
-                var topCall = stack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
-                string message = string.Format("An exception was thrown by game code. Execution is suspended so you can examine the state of the program.  The value (string-coerced) and location of the thrown exception is shown below:\n\n({1}:{2})\n{0}",
-                    e.Message, topCall.Item2, topCall.Item3);
-                message += "\n\n\nContinue execution?  This will unwind the stack.";
-                if (MessageBox.Show(message, "Unhandled Exception", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    await duktape.Resume();
-                }
-            }
+                errorView.Add(e.Message, e.IsFatal, e.FileName, e.LineNumber);
+            }), null);
         }
 
         private void duktape_Print(object sender, TraceEventArgs e)
@@ -168,36 +164,31 @@ namespace minisphere.Remote
             }), null);
         }
 
-        private async void duktape_Status(object sender, EventArgs e)
+        private void duktape_Status(object sender, EventArgs e)
         {
-            bool wantPause = !duktape.Running;
-            bool wantResume = !Running && duktape.Running;
-            Running = duktape.Running;
-            focusSwitchTimer.Change(wantResume ? 250 : Timeout.Infinite, Timeout.Infinite);
-            Tuple<string, string, int> topCall = null;
-            Tuple<string, string, int>[] stack = null;
-            if (wantPause)
-            {
-                stack = await duktape.GetCallStack();
-                topCall = stack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
-                FileName = ResolvePath(topCall.Item2);
-                LineNumber = topCall.Item3;
-            }
             PluginManager.IDE.Invoke(new Action(async () =>
             {
-                if (wantPause && Paused != null)
-                    Paused(this, EventArgs.Empty);
-                if (wantResume && Resumed != null)
-                    Resumed(this, EventArgs.Empty);
-                if (!duktape.Running)
+                bool wantPause = !duktape.Running;
+                bool wantResume = !Running && duktape.Running;
+                Running = duktape.Running;
+                focusTimer.Change(wantResume ? 250 : Timeout.Infinite, Timeout.Infinite);
+                if (wantPause)
                 {
+                    var stack = await duktape.GetCallStack();
                     var variables = await duktape.GetLocals();
+                    var topCall = stack.First(entry => entry.Item2 != "undefined" || entry.Item3 != 0);
+                    FileName = ResolvePath(topCall.Item2);
+                    LineNumber = topCall.Item3;
                     inspectorView.SetVariables(variables);
                     stackView.UpdateStack(stack);
                     inspectorView.Enabled = true;
                     stackView.Enabled = true;
                     inspectorView.Activate();
                 }
+                if (wantPause && Paused != null)
+                    Paused(this, EventArgs.Empty);
+                if (wantResume && Resumed != null)
+                    Resumed(this, EventArgs.Empty);
             }), null);
         }
 

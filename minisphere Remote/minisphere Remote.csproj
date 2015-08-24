@@ -59,6 +59,12 @@
     <Compile Include="Panes\DebugPane.Designer.cs">
       <DependentUpon>DebugPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Panes\ErrorPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panes\ErrorPane.Designer.cs">
+      <DependentUpon>ErrorPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="Panes\InspectorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -86,6 +92,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Panes\ConsolePane.resx">
       <DependentUpon>ConsolePane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panes\ErrorPane.resx">
+      <DependentUpon>ErrorPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panes\InspectorPane.resx">
       <DependentUpon>InspectorPane.cs</DependentUpon>

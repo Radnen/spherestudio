@@ -22,52 +22,54 @@ namespace SphereStudio.IDE
             _panel = panel;
         }
 
-        public IDockPane AddPane(Control control, string title, Icon icon, DockHint state)
+        public IDockForm AddPane(Control control, string title, Icon icon, DockHint state)
         {
-            return new DockPane(_panel, control, title, icon, state);
+            return new DockForm(_panel, control, title, icon, state);
         }
 
-        public void RemovePane(IDockPane pane)
+        public void RemovePane(IDockForm pane)
         {
-            ((DockPane)pane).Dispose();
+            ((DockForm)pane).Dispose();
         }
     }
 
-    class DockPane : IDisposable, IDockPane
+    class DockForm : IDisposable, IDockForm
     {
         DockContent _content;
-        Control _owner;
+        Control _control;
+        Control _main_form;
 
-        public DockPane(DockPanel panel, Control control, string title, Icon icon, DockHint hint)
+        public DockForm(DockPanel panel, Control control, string title, Icon icon, DockHint hint)
         {
-            control.Dock = DockStyle.Fill;
+            _main_form = panel.Parent;
+            _control = control;
 
-            _owner = panel.Parent;
-
-            _content = new DockContent() { Text = title, Icon = icon };
-            _content.Controls.Add(control);
-            _content.DockAreas = DockAreas.Float;
-            _content.DockAreas |= (hint != DockHint.Document)
-                ? DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop
-                : DockAreas.Document;
-
-            DockState state = hint == DockHint.Document ? DockState.Document
-                : hint == DockHint.LeftSide ? DockState.DockLeft
-                : hint == DockHint.RightSide ? DockState.DockRight
+            DockState state = hint == DockHint.Float ? DockState.Float
+                : hint == DockHint.Left ? DockState.DockLeft
+                : hint == DockHint.Right ? DockState.DockRight
                 : hint == DockHint.Top ? DockState.DockTop
                 : hint == DockHint.Bottom ? DockState.DockBottom
                 : DockState.Float;
+
+            _content = new DockContent() { Name = title, TabText = title, Icon = icon };
+            _content.Controls.Add(_control);
+            _control.Dock = DockStyle.Fill;
+            _content.DockAreas = DockAreas.Float
+                | DockAreas.DockLeft | DockAreas.DockRight
+                | DockAreas.DockBottom | DockAreas.DockTop;
+
             _content.Show(panel, state);
         }
 
         public void Dispose()
         {
             _content.Dispose();
+            _control.Dispose();
         }
 
-        public void Activate()
+        public void Show()
         {
-            Control oldFocus = _owner;
+            Control oldFocus = _main_form;
             while (oldFocus is ContainerControl)
                 oldFocus = ((ContainerControl)oldFocus).ActiveControl;
             _content.Show();
@@ -77,11 +79,6 @@ namespace SphereStudio.IDE
         public void Hide()
         {
             _content.Hide();
-        }
-
-        public void Show()
-        {
-            _content.Show();
         }
 
         public void Toggle()
