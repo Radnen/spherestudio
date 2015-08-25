@@ -127,6 +127,9 @@ namespace minisphere.Remote
                 Views.Console.Print(string.Format("The debuggee is {0}.", duktape.TargetID));
                 Views.Console.Print(string.Format("(Duktape {0})", duktape.Version));
                 Views.Console.Print("");
+
+                Views.Inspector.DockPane.Show();
+                Views.Stack.DockPane.Show();
             }), null);
         }
 
@@ -141,6 +144,9 @@ namespace minisphere.Remote
                 Views.Inspector.Enabled = false;
                 Views.Stack.Clear();
                 Views.Stack.Enabled = false;
+
+                Views.Console.Print("");
+                Views.Console.Print(duktape.TargetID + " detached.");
             }), null);
         }
 
@@ -149,6 +155,7 @@ namespace minisphere.Remote
             PluginManager.IDE.Invoke(new Action(() =>
             {
                 Views.Errors.Add(e.Message, e.IsFatal, e.Function, e.FileName, e.LineNumber);
+                Views.Errors.DockPane.Show();
             }), null);
         }
 

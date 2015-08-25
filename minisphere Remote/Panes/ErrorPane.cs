@@ -15,7 +15,7 @@ namespace minisphere.Remote.Panes
     partial class ErrorPane : DebugPane
     {
         public ErrorPane()
-            : base("Errors", null, DockHint.Bottom)
+            : base("Errors", Properties.Resources.Errors, DockHint.Bottom)
         {
             InitializeComponent();
         }
