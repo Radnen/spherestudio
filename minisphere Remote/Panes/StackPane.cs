@@ -10,14 +10,14 @@ namespace minisphere.Remote.Panes
 {
     partial class StackPane : DebugPane
     {
-        private DebugSession session;
-
-        public StackPane(DebugSession session):
+        public StackPane():
             base("Call Stack", Properties.Resources.CallStack)
         {
             InitializeComponent();
-            this.session = session;
+            Enabled = false;
         }
+
+        public DebugSession CurrentSession { get; set; }
 
         public void Clear()
         {
@@ -45,7 +45,7 @@ namespace minisphere.Remote.Panes
             if (listStack.SelectedItems.Count > 0)
             {
                 ListViewItem item = listStack.SelectedItems[0];
-                string filename = session.ResolvePath(item.SubItems[1].Text);
+                string filename = CurrentSession.ResolvePath(item.SubItems[1].Text);
                 int lineNumber = int.Parse(item.SubItems[2].Text);
                 ScriptView view = PluginManager.IDE.OpenDocument(filename) as ScriptView;
                 if (view != null)

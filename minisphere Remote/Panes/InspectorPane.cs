@@ -11,20 +11,21 @@ namespace minisphere.Remote.Panes
     {
         private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
 
-        private DebugSession debugger;
         private bool isEvaluating = false;
         private string lastVarName = null;
         private IReadOnlyDictionary<string, string> variables;
 
-        public InspectorPane(DebugSession session):
+        public InspectorPane():
             base("Inspector", Properties.Resources.Inspector)
         {
             InitializeComponent();
+            Enabled = false;
 
             textValue.Text = ValueBoxHint;
             textValue.WordWrap = true;
-            debugger = session;
         }
+
+        public DebugSession CurrentSession { get; set; }
 
         public void Clear()
         {
@@ -61,7 +62,7 @@ namespace minisphere.Remote.Panes
             buttonEval.Enabled = false;
             textValue.Text = "Evaluating...";
             textValue.WordWrap = false;
-            string value = await debugger.Evaluate(expression);
+            string value = await CurrentSession.Evaluate(expression);
             textValue.Text = string.Format("Expression:\r\n{0}\r\n\r\nValue:\r\n{1}",
                 expression, value.Replace("\n", "\r\n"));
             textEvalBox.Text = "";

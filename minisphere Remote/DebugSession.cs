@@ -24,10 +24,6 @@ namespace minisphere.Remote
         private DuktapeClient duktape;
         private Process engineProcess;
         private string engineDir;
-        private ConsolePane consoleView;
-        private ErrorPane errorView;
-        private InspectorPane inspectorView;
-        private StackPane stackView;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
         private System.Threading.Timer focusTimer;
 
@@ -49,10 +45,6 @@ namespace minisphere.Remote
             Resumed = null;
             focusTimer.Dispose();
             duktape.Dispose();
-            consoleView.Dispose();
-            errorView.Dispose();
-            inspectorView.Dispose();
-            stackView.Dispose();
         }
 
         public string FileName { get; private set; }
@@ -118,19 +110,23 @@ namespace minisphere.Remote
                 if (Attached != null)
                     Attached(this, EventArgs.Empty);
 
-                errorView = new ErrorPane(this);
-                stackView = new StackPane(this) { Enabled = false };
-                inspectorView = new InspectorPane(this) { Enabled = false };
-                consoleView = new ConsolePane(this);
+                Views.Inspector.CurrentSession = this;
+                Views.Stack.CurrentSession = this;
+                Views.Inspector.Enabled = false;
+                Views.Stack.Enabled = false;
+                Views.Console.Clear();
+                Views.Errors.Clear();
+                Views.Inspector.Clear();
+                Views.Stack.Clear();
 
                 var assembly = Assembly.GetExecutingAssembly();
                 var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
-                consoleView.Print(string.Format("{0} for Sphere Studio", title.Title));
-                consoleView.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
-                consoleView.Print("");
-                consoleView.Print(string.Format("The debuggee is {0}.", duktape.TargetID));
-                consoleView.Print(string.Format("(Duktape {0})", duktape.Version));
-                consoleView.Print("");
+                Views.Console.Print(string.Format("{0} for Sphere Studio", title.Title));
+                Views.Console.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
+                Views.Console.Print("");
+                Views.Console.Print(string.Format("The debuggee is {0}.", duktape.TargetID));
+                Views.Console.Print(string.Format("(Duktape {0})", duktape.Version));
+                Views.Console.Print("");
             }), null);
         }
 
@@ -140,11 +136,11 @@ namespace minisphere.Remote
             {
                 if (Detached != null)
                     Detached(this, EventArgs.Empty);
-                inspectorView.Dispose();
-                stackView.Dispose();
-                errorView.Dispose();
-                inspectorView.Dispose();
-                consoleView.Dispose();
+                Views.Errors.ClearHighlight();
+                Views.Inspector.Clear();
+                Views.Inspector.Enabled = false;
+                Views.Stack.Clear();
+                Views.Stack.Enabled = false;
             }), null);
         }
 
@@ -152,7 +148,7 @@ namespace minisphere.Remote
         {
             PluginManager.IDE.Invoke(new Action(() =>
             {
-                errorView.Add(e.Message, e.IsFatal, e.Function, e.FileName, e.LineNumber);
+                Views.Errors.Add(e.Message, e.IsFatal, e.Function, e.FileName, e.LineNumber);
             }), null);
         }
 
@@ -160,7 +156,7 @@ namespace minisphere.Remote
         {
             PluginManager.IDE.Invoke(new Action(() =>
             {
-                consoleView.Print(e.Text);
+                Views.Console.Print(e.Text);
             }), null);
         }
 
@@ -184,15 +180,20 @@ namespace minisphere.Remote
                     var topCall = callStack.First(entry => entry.Item2 != duktape.TargetID || entry.Item3 != 0);
                     FileName = ResolvePath(topCall.Item2);
                     LineNumber = topCall.Item3;
-                    inspectorView.SetVariables(vars);
-                    stackView.UpdateStack(callStack);
-                    inspectorView.Enabled = true;
-                    stackView.Enabled = true;
-                    inspectorView.Activate();
+                    Views.Inspector.SetVariables(vars);
+                    Views.Inspector.Enabled = true;
+                    Views.Stack.UpdateStack(callStack);
+                    Views.Stack.Enabled = true;
+                    Views.Inspector.DockPane.Show();
                 }
                 if (duktape.Running)
                 {
-                    errorView.ClearHighlight();
+                    Views.Errors.ClearHighlight();
+                    Views.Console.DockPane.Show();
+                    Views.Inspector.Enabled = false;
+                    Views.Stack.Enabled = false;
+                    Views.Inspector.Clear();
+                    Views.Stack.Clear();
                 }
                 if (wantPause && Paused != null)
                     Paused(this, EventArgs.Empty);
@@ -265,11 +266,6 @@ namespace minisphere.Remote
             {
                 DebugSession me = (DebugSession)state;
                 NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
-                me.consoleView.Activate();
-                me.inspectorView.Enabled = false;
-                me.inspectorView.Clear();
-                me.stackView.Enabled = false;
-                me.stackView.Clear();
             }), null);
         }
 

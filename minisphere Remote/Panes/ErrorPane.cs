@@ -14,7 +14,7 @@ namespace minisphere.Remote.Panes
 {
     partial class ErrorPane : DebugPane
     {
-        public ErrorPane(DebugSession session)
+        public ErrorPane()
             : base("Errors", null, DockHint.Bottom)
         {
             InitializeComponent();
@@ -36,6 +36,11 @@ namespace minisphere.Remote.Panes
                 item.BackColor = Color.DarkRed;
                 item.ForeColor = Color.Yellow;
             }
+        }
+
+        public void Clear()
+        {
+            listErrors.Items.Clear();
         }
 
         public void ClearHighlight()

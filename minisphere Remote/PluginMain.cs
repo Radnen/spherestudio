@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using minisphere.Remote.Panes;
 
 namespace minisphere.Remote
 {
@@ -20,11 +21,12 @@ namespace minisphere.Remote
 
         public void Initialize(ISettings conf)
         {
+            Views.Initialize();
         }
 
         public void ShutDown()
         {
-
+            Views.ShutDown();
         }
 
         public IDebugger Debug(IProject project)
@@ -35,6 +37,30 @@ namespace minisphere.Remote
             Process engine = Process.Start(enginePath, args);
 
             return new DebugSession(project, enginePath, engine);
+        }
+    }
+
+    static class Views
+    {
+        public static ConsolePane Console { get; private set; }
+        public static ErrorPane Errors { get; private set; }
+        public static InspectorPane Inspector { get; private set; }
+        public static StackPane Stack { get; private set; }
+
+        public static void Initialize()
+        {
+            Inspector = new InspectorPane();
+            Stack = new StackPane();
+            Console = new ConsolePane();
+            Errors = new ErrorPane();
+        }
+
+        public static void ShutDown()
+        {
+            Console.Dispose();
+            Errors.Dispose();
+            Inspector.Dispose();
+            Stack.Dispose();
         }
     }
 }

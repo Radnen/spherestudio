@@ -15,10 +15,15 @@ namespace minisphere.Remote.Panes
 {
     partial class ConsolePane : DebugPane
     {
-        public ConsolePane(DebugSession session):
+        public ConsolePane():
             base("Console", Properties.Resources.Console)
         {
             InitializeComponent();
+        }
+
+        public void Clear()
+        {
+            textOutput.Text = "";
         }
 
         public void Print(string text)

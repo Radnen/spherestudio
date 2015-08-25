@@ -9,8 +9,6 @@ namespace minisphere.Remote.Panes
 {
     public partial class DebugPane : UserControl
     {
-        private IDockForm dockPane;
-
         private DebugPane()
         {
             InitializeComponent();
@@ -19,21 +17,18 @@ namespace minisphere.Remote.Panes
         public DebugPane(string name, Bitmap icon = null, DockHint dockHint = DockHint.Right):
             this()
         {
-            dockPane = PluginManager.IDE.Docking.AddPane(this, name,
+            DockPane = PluginManager.IDE.Docking.AddPane(this, name,
                 icon != null ? Icon.FromHandle(icon.GetHicon()) : null,
                 dockHint);
 
             Disposed += this_Disposed;
         }
 
-        public void Activate()
-        {
-            dockPane.Show();
-        }
+        public IDockForm DockPane { get; private set; }
 
         private void this_Disposed(object sender, EventArgs e)
         {
-            dockPane.Hide();
+            DockPane.Hide();
         }
     }
 }
