@@ -145,6 +145,7 @@ namespace minisphere.Remote
                 Views.Stack.Clear();
                 Views.Stack.Enabled = false;
 
+                Views.Console.DockPane.Show();
                 Views.Console.Print("");
                 Views.Console.Print(duktape.TargetID + " detached.");
             }), null);
@@ -193,7 +194,7 @@ namespace minisphere.Remote
                     Views.Stack.Enabled = true;
                     Views.Inspector.DockPane.Show();
                 }
-                if (duktape.Running)
+                if (wantResume && duktape.Running)
                 {
                     Views.Errors.ClearHighlight();
                     Views.Console.DockPane.Show();
