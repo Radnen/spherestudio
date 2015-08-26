@@ -139,11 +139,9 @@ namespace minisphere.Remote
             {
                 if (Detached != null)
                     Detached(this, EventArgs.Empty);
+                Views.Inspector.DockPane.Hide();
+                Views.Stack.DockPane.Hide();
                 Views.Errors.ClearHighlight();
-                Views.Inspector.Clear();
-                Views.Inspector.Enabled = false;
-                Views.Stack.Clear();
-                Views.Stack.Enabled = false;
 
                 Views.Console.DockPane.Show();
                 Views.Console.Print("");

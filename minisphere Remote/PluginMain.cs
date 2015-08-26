@@ -53,6 +53,9 @@ namespace minisphere.Remote
             Stack = new StackPane();
             Console = new ConsolePane();
             Errors = new ErrorPane();
+
+            Inspector.DockPane.Hide();
+            Stack.DockPane.Hide();
         }
 
         public static void ShutDown()
