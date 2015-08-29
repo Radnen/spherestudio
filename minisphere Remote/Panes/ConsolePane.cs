@@ -15,6 +15,8 @@ namespace minisphere.Remote.Panes
 {
     partial class ConsolePane : DebugPane
     {
+        List<string> lines = new List<string>();
+
         public ConsolePane():
             base("Console", Properties.Resources.Console)
         {
@@ -23,12 +25,20 @@ namespace minisphere.Remote.Panes
 
         public void Clear()
         {
-            textOutput.Text = "";
+            lines.Clear();
+            updateTimer.Start();
         }
 
         public void Print(string text)
         {
-            textOutput.Text += text + "\r\n";
+            lines.Add(text);
+            updateTimer.Start();
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            updateTimer.Stop();
+            textOutput.Text = string.Join("\r\n", lines) + "\r\n";
             textOutput.SelectionStart = textOutput.Text.Length;
             textOutput.SelectionLength = 0;
             textOutput.ScrollToCaret();

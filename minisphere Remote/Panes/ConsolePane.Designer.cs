@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textOutput = new System.Windows.Forms.TextBox();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textOutput
@@ -46,6 +48,11 @@
             this.textOutput.TabIndex = 0;
             this.textOutput.WordWrap = false;
             // 
+            // updateTimer
+            // 
+            this.updateTimer.Interval = 250;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
             // ConsolePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -62,5 +69,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox textOutput;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }
