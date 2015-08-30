@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorPane));
             this.listErrors = new System.Windows.Forms.ListView();
             this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnFunction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnScript = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnLine = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -42,7 +41,6 @@
             // 
             this.listErrors.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnValue,
-            this.columnFunction,
             this.columnScript,
             this.columnLine});
             this.listErrors.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -52,26 +50,22 @@
             this.listErrors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listErrors.Location = new System.Drawing.Point(0, 0);
             this.listErrors.Name = "listErrors";
-            this.listErrors.Size = new System.Drawing.Size(954, 243);
+            this.listErrors.Size = new System.Drawing.Size(999, 243);
             this.listErrors.SmallImageList = this.imageList1;
             this.listErrors.TabIndex = 0;
             this.listErrors.UseCompatibleStateImageBehavior = false;
             this.listErrors.View = System.Windows.Forms.View.Details;
+            this.listErrors.DoubleClick += new System.EventHandler(this.listErrors_DoubleClick);
             // 
             // columnValue
             // 
             this.columnValue.Text = "Thrown Value";
-            this.columnValue.Width = 500;
-            // 
-            // columnFunction
-            // 
-            this.columnFunction.Text = "Function";
-            this.columnFunction.Width = 150;
+            this.columnValue.Width = 600;
             // 
             // columnScript
             // 
             this.columnScript.Text = "Script";
-            this.columnScript.Width = 200;
+            this.columnScript.Width = 300;
             // 
             // columnLine
             // 
@@ -90,7 +84,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.listErrors);
             this.Name = "ErrorPane";
-            this.Size = new System.Drawing.Size(954, 243);
+            this.Size = new System.Drawing.Size(999, 243);
             this.ResumeLayout(false);
 
         }
@@ -100,8 +94,7 @@
         private System.Windows.Forms.ListView listErrors;
         private System.Windows.Forms.ColumnHeader columnValue;
         private System.Windows.Forms.ColumnHeader columnLine;
-        private System.Windows.Forms.ColumnHeader columnScript;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ColumnHeader columnFunction;
+        private System.Windows.Forms.ColumnHeader columnScript;
     }
 }

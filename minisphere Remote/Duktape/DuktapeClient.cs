@@ -28,10 +28,9 @@ namespace minisphere.Remote.Duktape
 
     class ErrorThrownEventArgs : EventArgs
     {
-        public ErrorThrownEventArgs(string message, string functionName, string filename, int lineNumber, bool isFatal)
+        public ErrorThrownEventArgs(string message, string filename, int lineNumber, bool isFatal)
         {
             Message = message;
-            Function = functionName;
             FileName = filename;
             LineNumber = lineNumber;
             IsFatal = isFatal;
@@ -52,11 +51,6 @@ namespace minisphere.Remote.Duktape
         /// </summary>
         public string FileName { get; private set; }
 
-        /// <summary>
-        /// Gets the name of the function throwing the error.
-        /// </summary>
-        public string Function { get; private set; }
-        
         /// <summary>
         /// Gets the line number where the error was thrown.
         /// </summary>
@@ -597,15 +591,12 @@ namespace minisphere.Remote.Duktape
                                 Alert(this, new TraceEventArgs(message[2]));
                             break;
                         case 0x05: // Throw notification
-                            Running = false;
                             if (ErrorThrown != null)
                             {
                                 string filename = message[4];
-                                int pc = message[7];
-                                if (filename == "undefined" && pc == 0)
-                                    filename = TargetID;
+                                int pc = message[6];
                                 ErrorThrown(this, new ErrorThrownEventArgs(
-                                    message[3], message[5], filename, message[6],
+                                    message[3], filename, message[5],
                                     message[2] != 0));
                             }
                             break;

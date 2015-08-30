@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Media;
 using System.Windows.Forms;
 
+using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace minisphere.Remote.Panes
 {
@@ -20,7 +17,9 @@ namespace minisphere.Remote.Panes
             InitializeComponent();
         }
 
-        public void Add(string value, bool isFatal, string func, string filename, int line)
+        public DebugSession CurrentSession { get; set; }
+
+        public void Add(string value, bool isFatal, string filename, int line)
         {
             if (listErrors.Items.Count > 0)
             {
@@ -28,7 +27,6 @@ namespace minisphere.Remote.Panes
                 listErrors.Items[0].ForeColor = listErrors.ForeColor;
             }
             ListViewItem item = listErrors.Items.Insert(0, value, isFatal ? 1 : 0);
-            item.SubItems.Add(string.Format("{0}()", func != "" ? func : "function"));
             item.SubItems.Add(filename);
             item.SubItems.Add(line.ToString());
             if (isFatal)
@@ -51,5 +49,34 @@ namespace minisphere.Remote.Panes
                 listErrors.Items[0].ForeColor = listErrors.ForeColor;
             }
         }
+
+        public void HideIfClean()
+        {
+            ClearHighlight();
+            if (listErrors.Items.Count == 0)
+            {
+                DockPane.Hide();
+            }
+        }
+
+        private void listErrors_DoubleClick(object sender, EventArgs e)
+        {
+            if (listErrors.SelectedItems.Count > 0)
+            {
+                ListViewItem item = listErrors.SelectedItems[0];
+                string filename = CurrentSession.ResolvePath(item.SubItems[1].Text);
+                int lineNumber = int.Parse(item.SubItems[2].Text);
+                ScriptView view = PluginManager.IDE.OpenDocument(filename) as ScriptView;
+                if (view != null)
+                {
+                    view.GoToLine(lineNumber);
+                }
+                else
+                {
+                    SystemSounds.Asterisk.Play();
+                }
+            }
+        }
     }
 }
+

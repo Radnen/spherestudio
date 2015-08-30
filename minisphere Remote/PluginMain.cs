@@ -22,6 +22,8 @@ namespace minisphere.Remote
         public void Initialize(ISettings conf)
         {
             Views.Initialize();
+
+            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
         }
 
         public void ShutDown()
@@ -37,6 +39,12 @@ namespace minisphere.Remote
             Process engine = Process.Start(enginePath, args);
 
             return new DebugSession(project, enginePath, engine);
+        }
+
+        private void IDE_UnloadProject(object sender, EventArgs e)
+        {
+            Views.Errors.Clear();
+            Views.Console.Clear();
         }
     }
 
@@ -54,6 +62,7 @@ namespace minisphere.Remote
             Console = new ConsolePane();
             Errors = new ErrorPane();
 
+            Errors.DockPane.Hide();
             Inspector.DockPane.Hide();
             Stack.DockPane.Hide();
         }

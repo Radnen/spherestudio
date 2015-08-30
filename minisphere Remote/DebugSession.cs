@@ -18,7 +18,7 @@ using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
 {
-    class DebugSession : IDebugger, IDisposable
+    class DebugSession : IDebugger
     {
         private IProject ssproj;
         private DuktapeClient duktape;
@@ -35,16 +35,6 @@ namespace minisphere.Remote
             focusTimer = new System.Threading.Timer(
                 FocusEngine, this,
                 Timeout.Infinite, Timeout.Infinite);
-        }
-
-        public void Dispose()
-        {
-            Attached = null;
-            Detached = null;
-            Paused = null;
-            Resumed = null;
-            focusTimer.Dispose();
-            duktape.Dispose();
         }
 
         public string FileName { get; private set; }
@@ -78,7 +68,7 @@ namespace minisphere.Remote
         {
             focusTimer.Change(Timeout.Infinite, Timeout.Infinite);
             await duktape.Detach();
-            Dispose();
+            duktape.Dispose();
         }
 
         private async Task Connect(string hostname, int port, uint timeout = 5000)
@@ -112,6 +102,7 @@ namespace minisphere.Remote
 
                 Views.Inspector.CurrentSession = this;
                 Views.Stack.CurrentSession = this;
+                Views.Errors.CurrentSession = this;
                 Views.Inspector.Enabled = false;
                 Views.Stack.Enabled = false;
                 Views.Console.Clear();
@@ -130,6 +121,7 @@ namespace minisphere.Remote
 
                 Views.Inspector.DockPane.Show();
                 Views.Stack.DockPane.Show();
+                Views.Errors.DockPane.Show();
             }), null);
         }
 
@@ -141,7 +133,7 @@ namespace minisphere.Remote
                     Detached(this, EventArgs.Empty);
                 Views.Inspector.DockPane.Hide();
                 Views.Stack.DockPane.Hide();
-                Views.Errors.ClearHighlight();
+                Views.Errors.HideIfClean();
 
                 Views.Console.DockPane.Show();
                 Views.Console.Print("");
@@ -153,7 +145,7 @@ namespace minisphere.Remote
         {
             PluginManager.IDE.Invoke(new Action(() =>
             {
-                Views.Errors.Add(e.Message, e.IsFatal, e.Function, e.FileName, e.LineNumber);
+                Views.Errors.Add(e.Message, e.IsFatal, e.FileName, e.LineNumber);
                 Views.Errors.DockPane.Show();
             }), null);
         }
