@@ -194,12 +194,12 @@ namespace Sphere.Core
                 }
 
                 // init all layers:
-                /*bool validated = true;
+                bool validated = true;
                 foreach (Layer layer in Layers)
                 {
                     validated = layer.Validate(Tileset.Tiles.Count);
-                }*/
-                //ErrorOnLoad = !validated;
+                }
+                ErrorOnLoad = !validated;
             }
 
             return true;
