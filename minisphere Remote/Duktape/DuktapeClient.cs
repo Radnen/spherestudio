@@ -594,7 +594,6 @@ namespace minisphere.Remote.Duktape
                             if (ErrorThrown != null)
                             {
                                 string filename = message[4];
-                                int pc = message[6];
                                 ErrorThrown(this, new ErrorThrownEventArgs(
                                     message[3], filename, message[5],
                                     message[2] != 0));
