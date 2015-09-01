@@ -8,12 +8,9 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-
-using minisphere.Remote.Panes;
 using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
@@ -25,7 +22,8 @@ namespace minisphere.Remote
         private Process engineProcess;
         private string engineDir;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
-        private System.Threading.Timer focusTimer;
+        private Timer focusTimer;
+        private Timer updateTimer;
 
         public DebugSession(IProject project, string enginePath, Process engine)
         {
@@ -34,6 +32,9 @@ namespace minisphere.Remote
             engineDir = Path.GetDirectoryName(enginePath);
             focusTimer = new System.Threading.Timer(
                 FocusEngine, this,
+                Timeout.Infinite, Timeout.Infinite);
+            updateTimer = new System.Threading.Timer(
+                UpdateDebugViews, this,
                 Timeout.Infinite, Timeout.Infinite);
         }
 
@@ -165,33 +166,29 @@ namespace minisphere.Remote
                 bool wantPause = !duktape.Running;
                 bool wantResume = !Running && duktape.Running;
                 Running = duktape.Running;
-                focusTimer.Change(wantResume ? 250 : Timeout.Infinite, Timeout.Infinite);
-                Tuple<string, string, int>[] callStack = null;
-                IReadOnlyDictionary<string, string> vars = null;
                 if (wantPause)
                 {
-                    callStack = await duktape.GetCallStack();
-                    vars = await duktape.GetLocals();
-                }
-                if (wantPause && !duktape.Running)
-                {
-                    var topCall = callStack.First(entry => entry.Item2 != duktape.TargetID || entry.Item3 != 0);
-                    FileName = ResolvePath(topCall.Item2);
-                    LineNumber = topCall.Item3;
-                    Views.Inspector.SetVariables(vars);
-                    Views.Inspector.Enabled = true;
-                    Views.Stack.UpdateStack(callStack);
-                    Views.Stack.Enabled = true;
-                    Views.Inspector.DockPane.Show();
+                    focusTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    FileName = ResolvePath(duktape.FileName);
+                    LineNumber = duktape.LineNumber;
+                    if (!File.Exists(FileName))
+                    {
+                        // filename reported by Duktape doesn't exist; walk callstack for a
+                        // JavaScript call as a fallback
+                        var callStack = await duktape.GetCallStack();
+                        var topCall = callStack.First(entry => entry.Item2 != duktape.TargetID || entry.Item3 != 0);
+                        FileName = ResolvePath(topCall.Item2);
+                        LineNumber = topCall.Item3;
+                        Views.Stack.UpdateStack(callStack);
+                        Views.Stack.Enabled = true;
+                    }
+                    updateTimer.Change(500, Timeout.Infinite);
                 }
                 if (wantResume && duktape.Running)
                 {
+                    focusTimer.Change(250, Timeout.Infinite);
+                    updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Views.Errors.ClearHighlight();
-                    Views.Console.DockPane.Show();
-                    Views.Inspector.Enabled = false;
-                    Views.Stack.Enabled = false;
-                    Views.Inspector.Clear();
-                    Views.Stack.Clear();
                 }
                 if (wantPause && Paused != null)
                     Paused(this, EventArgs.Empty);
@@ -264,6 +261,26 @@ namespace minisphere.Remote
             {
                 DebugSession me = (DebugSession)state;
                 NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
+                Views.Console.DockPane.Show();
+                Views.Inspector.Enabled = false;
+                Views.Stack.Enabled = false;
+                Views.Inspector.Clear();
+                Views.Stack.Clear();
+            }), null);
+        }
+
+        private static void UpdateDebugViews(object state)
+        {
+            PluginManager.IDE.Invoke(new Action(async () =>
+            {
+                DebugSession me = (DebugSession)state;
+                var callStack = await me.duktape.GetCallStack();
+                var vars = await me.duktape.GetLocals();
+                Views.Stack.UpdateStack(callStack);
+                Views.Stack.Enabled = true;
+                Views.Inspector.SetVariables(vars);
+                Views.Inspector.Enabled = true;
+                Views.Inspector.DockPane.Show();
             }), null);
         }
 
