@@ -276,11 +276,14 @@ namespace minisphere.Remote
                 DebugSession me = (DebugSession)state;
                 var callStack = await me.duktape.GetCallStack();
                 var vars = await me.duktape.GetLocals();
-                Views.Stack.UpdateStack(callStack);
-                Views.Stack.Enabled = true;
-                Views.Inspector.SetVariables(vars);
-                Views.Inspector.Enabled = true;
-                Views.Inspector.DockPane.Show();
+                if (!me.Running)
+                {
+                    Views.Stack.UpdateStack(callStack);
+                    Views.Stack.Enabled = true;
+                    Views.Inspector.SetVariables(vars);
+                    Views.Inspector.Enabled = true;
+                    Views.Inspector.DockPane.Show();
+                }
             }), null);
         }
 
