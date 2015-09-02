@@ -30,6 +30,7 @@ namespace SphereStudio.Forms
             DescTextBox.Text = _project.Description;
             WidthTextBox.Text = _project.ScreenWidth.ToString();
             HeightTextBox.Text = _project.ScreenHeight.ToString();
+            BuildDirBox.Text = _project.BuildPath;
             
             // I'll need to populate the script combo box.
             DirectoryInfo dir = new DirectoryInfo(PathTextBox.Text + "\\scripts");
@@ -65,6 +66,7 @@ namespace SphereStudio.Forms
             _project.ScreenWidth = int.Parse(WidthTextBox.Text);
             _project.ScreenHeight = int.Parse(HeightTextBox.Text);
             _project.MainScript = ScriptComboBox.Text;
+            _project.BuildPath = BuildDirBox.Text;
             _project.Save();
         }
     }

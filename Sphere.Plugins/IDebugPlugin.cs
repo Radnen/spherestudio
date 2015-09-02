@@ -13,8 +13,9 @@ namespace Sphere.Plugins
         /// <summary>
         /// Starts a debugging session for a project.
         /// </summary>
-        /// <param name="project">The debug target.</param>
+        /// <param name="project">The project used to host the debug session.</param>
+        /// <param name="gamePath">The full path of the unpacked Sphere game to debug.</param>
         /// <returns>An IDebugger object representing the session.</returns>
-        IDebugger Debug(IProject project);
+        IDebugger Debug(IProject project, string gamePath);
     }
 }

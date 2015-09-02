@@ -85,6 +85,10 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jurassic.2.2.0\lib\Jurassic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -100,6 +104,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pipeline\FileWriter.cs" />
+    <Compile Include="Pipeline\BuildEngine.cs" />
+    <Compile Include="Pipeline\Source.cs" />
+    <Compile Include="Pipeline\Target.cs" />
+    <Compile Include="Components\BuildStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\BuildStatus.Designer.cs">
+      <DependentUpon>BuildStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +201,9 @@
     <Compile Include="Settings\CoreSettings.cs" />
     <Compile Include="IDE\Project.cs" />
     <Compile Include="Settings\UserSettings.cs" />
+    <EmbeddedResource Include="Components\BuildStatus.resx">
+      <DependentUpon>BuildStatus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -274,6 +291,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BuildScripts\Sphere.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="license.txt" />
     <None Include="SphericalLogo.png" />
     <Content Include="Sphere Studio.ico" />
@@ -343,6 +363,7 @@
   <PropertyGroup>
     <PostBuildEvent>if not exist ".\Plugins" mkdir ".\Plugins"
 move "*Plugin.dll" ".\Plugins"
+xcopy /y /e /d /f "$(ProjectDir)Scripts\*.*" "$(TargetDir)Scripts\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

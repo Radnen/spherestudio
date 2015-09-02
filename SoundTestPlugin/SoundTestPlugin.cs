@@ -15,7 +15,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Lord English"; } }
         public string Description { get { return "Listen to sounds from your game while you work! :o)"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Version { get { return "2.0.0"; } }
         public Icon Icon { get; set; }
 
         private const string _openFileFilters = "*.mp3;*.ogg;*.flac;*.mod;*.it;*.s3d;*.wav";

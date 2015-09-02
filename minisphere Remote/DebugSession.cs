@@ -8,34 +8,52 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using Json;
 using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
 {
     class DebugSession : IDebugger
     {
-        private IProject ssproj;
+        private string sgmPath;
         private DuktapeClient duktape;
         private Process engineProcess;
         private string engineDir;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
-        private Timer focusTimer;
-        private Timer updateTimer;
+        private System.Threading.Timer focusTimer;
+        private Dictionary<string, string> sourceMap = new Dictionary<string, string>();
+        private string sourcePath;
+        private System.Threading.Timer updateTimer;
 
-        public DebugSession(IProject project, string enginePath, Process engine)
+        public DebugSession(string gamePath, string enginePath, Process engine, IProject project)
         {
-            ssproj = project;
+            sgmPath = gamePath;
+            sourcePath = project.RootPath;
             engineProcess = engine;
             engineDir = Path.GetDirectoryName(enginePath);
             focusTimer = new System.Threading.Timer(
                 FocusEngine, this,
-                Timeout.Infinite, Timeout.Infinite);
+                Timeout.Infinite,
+                Timeout.Infinite);
             updateTimer = new System.Threading.Timer(
                 UpdateDebugViews, this,
-                Timeout.Infinite, Timeout.Infinite);
+                Timeout.Infinite,
+                Timeout.Infinite);
+
+            // load the source map
+            string srcMapPath = Path.Combine(sgmPath, "sourcemap.json");
+            if (File.Exists(srcMapPath))
+            {
+                using (var file = new StreamReader(srcMapPath))
+                {
+                    foreach (var kv in JsonParser.FromJson(file.ReadToEnd()))
+                        sourceMap.Add(kv.Key, kv.Value.ToString());
+                }
+            }
         }
 
         public string FileName { get; private set; }
@@ -122,7 +140,6 @@ namespace minisphere.Remote
 
                 Views.Inspector.DockPane.Show();
                 Views.Stack.DockPane.Show();
-                Views.Errors.DockPane.Show();
             }), null);
         }
 
@@ -200,13 +217,7 @@ namespace minisphere.Remote
         public async Task SetBreakpoint(string filename, int lineNumber, bool isSet)
         {
             // convert filename to a SphereFS path
-            string relativePath = filename;
-            string rootPath = Path.Combine(ssproj.RootPath, @"scripts") + @"\";
-            string sysPath = Path.Combine(engineDir, @"system") + @"\";
-            if (filename.StartsWith(rootPath))
-                relativePath = filename.Substring(rootPath.Length).Replace('\\', '/');
-            if (filename.StartsWith(sysPath))
-                relativePath = string.Format("~sys/{0}", filename.Substring(sysPath.Length).Replace('\\', '/'));
+            string relativePath = UnresolvePath(filename);
 
             // clear all matching breakpoints
             var breaks = await duktape.ListBreak();
@@ -293,19 +304,60 @@ namespace minisphere.Remote
         /// <param name="path">The SphereFS path to resolve.</param>
         internal string ResolvePath(string path)
         {
-            if (path.Length >= 2 && path.Substring(0, 2) == "~/")
-                path = Path.Combine(ssproj.RootPath, path.Substring(2));
-            else if (path.Length >= 5 && path.Substring(0, 5) == "~sgm/")
-                path = Path.Combine(ssproj.RootPath, path.Substring(5));
-            else if (path.Length >= 5 && path.Substring(0, 5) == "~sys/")
+            if (Path.IsPathRooted(path))
+                return path;
+            if (path.StartsWith("~/") || path.StartsWith("~sgm/"))
+            {
+                path = path.Substring(path.IndexOf('/') + 1);
+                if (sourceMap.ContainsKey(path))
+                    path = sourceMap[path];
+                path = Path.Combine(sourcePath, path);
+            }
+            else if (path.StartsWith("~sys/"))
                 path = Path.Combine(engineDir, "system", path.Substring(5));
-            else if (path.Length >= 5 && path.Substring(0, 5) == "~usr/")
+            else if (path.StartsWith("~usr/"))
                 path = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "minisphere", path.Substring(5));
             else
-                path = Path.Combine(ssproj.RootPath, "scripts", path);
-            return path.Replace('/', '\\');
+            {
+                path = Path.Combine("scripts", path).Replace(Path.DirectorySeparatorChar, '/');
+                if (sourceMap.ContainsKey(path))
+                    path = sourceMap[path];
+                path = Path.Combine(sourcePath, path);
+            }
+            return path.Replace('/', Path.DirectorySeparatorChar);
+        }
+
+        /// <summary>
+        /// Converts an absolute path into a SphereFS path. If this is
+        /// not possible, leaves the path as-is.
+        /// </summary>
+        /// <param name="path">The absolute path to unresolve.</param>
+        internal string UnresolvePath(string path)
+        {
+            var pathSep = Path.DirectorySeparatorChar.ToString();
+            string sourceRoot = sourcePath.EndsWith(pathSep)
+                ? sourcePath : sourcePath + pathSep;
+            string scriptRoot = Path.Combine(sourcePath, @"scripts") + pathSep;
+            string sysRoot = Path.Combine(engineDir, @"system") + pathSep;
+
+            if (path.StartsWith(scriptRoot))
+            {
+                path = Path.Combine("scripts", path.Substring(scriptRoot.Length)).Replace(pathSep, "/");
+                if (sourceMap.ContainsValue(path))
+                    path = sourceMap.First(kv => kv.Value == path).Key;
+                path = path.Substring(path.IndexOf('/') + 1);
+            }
+            else if (path.StartsWith(sysRoot))
+                path = string.Format("~sys/{0}", path.Substring(sysRoot.Length).Replace(pathSep, "/"));
+            else if (path.StartsWith(sourceRoot))
+            {
+                path = path.Substring(sourceRoot.Length).Replace(pathSep, "/");
+                if (sourceMap.ContainsValue(path))
+                    path = sourceMap.First(kv => kv.Value == path).Key;
+            }
+            return path;
         }
 
         private void UpdateStatus()

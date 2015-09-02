@@ -11,7 +11,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Convert TTF fonts to .rfn for use with Sphere."; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Version { get { return "2.0.0"; } }
 
         public Icon Icon { get; private set; }
 

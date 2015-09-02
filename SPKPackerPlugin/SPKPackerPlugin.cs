@@ -16,7 +16,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "SPK Packager"; } }
         public string Author { get { return "Lord English"; } }
         public string Description { get { return "Sphere Studio default game packager"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Version { get { return "2.0.0"; } }
 
         public Icon Icon { get; set; }
 
@@ -24,7 +24,7 @@ namespace SphereStudio.Plugins
         private ToolStripMenuItem  packageMenuItem;
         private ToolStripSeparator menuSeparator1;
         
-        private void packageGame_Click(object sender, EventArgs e)
+        private async void packageGame_Click(object sender, EventArgs e)
         {
             IProject project;
 
@@ -32,8 +32,12 @@ namespace SphereStudio.Plugins
                 MessageBox.Show("You must load a project into the editor first.", "SPK Packager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                PluginManager.IDE.CurrentGame.Build();
-                new MakePackageForm(project.RootPath, _conf).ShowDialog();
+                try
+                {
+                    string distPath = await PluginManager.IDE.CurrentGame.Build();
+                    new MakePackageForm(distPath, _conf).ShowDialog();
+                }
+                catch (OperationCanceledException) { }
             }
         }
 

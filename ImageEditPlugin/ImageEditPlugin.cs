@@ -14,7 +14,7 @@ namespace SphereStudio.Plugins
         public string Name { get { return "Image Editor"; } }
         public string Author { get { return "Radnen"; } }
         public string Description { get { return "Sphere Studio default image editor"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Version { get { return "2.0.0"; } }
         public Icon Icon { get; private set; }
 
         #region wire up Image menu items

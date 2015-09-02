@@ -12,15 +12,21 @@ namespace Sphere.Plugins.Interfaces
     public interface IProject
     {
         /// <summary>
-        /// Gets the full path of the project's root directory.
+        /// Gets the absolute path of the project's root directory.
         /// </summary>
         string RootPath { get; }
-        
+
+        /// <summary>
+        /// Gets or sets the path of the build directory. May be a
+        /// relative path.
+        /// </summary>
+        string BuildPath { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the project (usually the game title).
         /// </summary>
         string Name { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the name of the project's author.
         /// </summary>
@@ -42,6 +48,12 @@ namespace Sphere.Plugins.Interfaces
         int ScreenHeight { get; set; }
 
         /// <summary>
+        /// Builds a game distribution from the project.
+        /// </summary>
+        /// <returns>The full path of the built distribution.</returns>
+        Task<string> Build();
+        
+        /// <summary>
         /// Gets a dictionary of all breakpoints set for this project.
         /// </summary>
         /// <returns></returns>
@@ -60,11 +72,5 @@ namespace Sphere.Plugins.Interfaces
         /// <param name="scriptPath">The fully qualified path of the script with breakpoints.</param>
         /// <param name="lineNumbers">An array of line numbers with breakpoints.</param>
         void SetBreakpoints(string scriptPath, int[] lineNumbers);
-
-        /// <summary>
-        /// Builds the project so it can be run by Sphere.
-        /// </summary>
-        /// <returns>The path of the prepared game directory.</returns>
-        string Build();
     }
 }

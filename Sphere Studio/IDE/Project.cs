@@ -3,58 +3,61 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
+using SphereStudio.Pipeline;
 using SphereStudio.Settings;
 using Sphere.Core;
 using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.IDE
 {
-    class Project : IProject
+    class Project : IProject, IDisposable
     {
-        Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
+        private Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
+        private BuildEngine _builder;
         private INISettings _ini;
         private string _path;
 
         public static Project Create(string rootPath, string name)
         {
             Directory.CreateDirectory(rootPath);
-            string[] subfolders = new[] {
-                "animations", "fonts", "images", "maps", "scripts",
-                "sounds", "spritesets", "windowstyles" };
-            foreach (string subfolder in subfolders)
-            {
-                Directory.CreateDirectory(Path.Combine(rootPath, subfolder));
-            }
-            var project = new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
+            var project = new Project(Path.Combine(rootPath, MakeFileName(name)), true) { Name = name };
             project.Save();
+            project._builder.Prep();
             return project;
         }
 
-        public static Project Open(string rootPath)
+        /// <summary>
+        /// Loads an existing project.
+        /// </summary>
+        /// <param name="rootPath">The full path of the directory containing the project.</param>
+        /// <param name="allowBuild">Whether to initialize a build pipeline for this project.</param>
+        /// <returns></returns>
+        public static Project Open(string rootPath, bool allowBuild = true)
         {
             if (!Directory.Exists(rootPath))
                 rootPath = Path.GetDirectoryName(rootPath);
-            
+
             string[] ssprojs = Directory.GetFiles(rootPath, "*.ssproj");
             string[] sgms = Directory.GetFiles(rootPath, "game.sgm");
             if (ssprojs.Length > 0)
-                return new Project(ssprojs[0]);
+                return new Project(ssprojs[0], allowBuild);
             else if (sgms.Length > 0)
-                return new Project(sgms[0]);
+                return new Project(sgms[0], allowBuild);
             else
                 throw new FileNotFoundException("No Sphere project was found in the specified directory.");
         }
-        
-        private Project(string filepath)
+
+        private Project(string filepath, bool allowBuild)
         {
             _path = filepath;
             var userpath = GetUserFilePath(filepath);
             User = new UserSettings(userpath);
 
-            // auto-convert game.sgm to .ssproj
             if (Path.GetFileName(filepath) == "game.sgm")
             {
+                // auto-convert game.sgm to .ssproj
                 _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
                 _ini = new INISettings(new INI(_path, false), ".ssproj");
                 Name = "Untitled";
@@ -63,6 +66,7 @@ namespace SphereStudio.IDE
                 ScreenWidth = 320;
                 ScreenHeight = 240;
                 MainScript = "main.js";
+                BuildPath = "";  // for cross-compatibility with old editor
                 using (StreamReader file = new StreamReader(filepath))
                 {
                     Regex regex = new Regex("^(.*)=(.*)$");
@@ -97,7 +101,20 @@ namespace SphereStudio.IDE
             }
             else
             {
+                // loading .ssproj directly
                 _ini = new INISettings(new INI(_path, false), ".ssproj");
+            }
+            if (allowBuild)
+            {
+                _builder = new BuildEngine(this);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_builder != null)
+            {
+                _builder.Dispose();
             }
         }
 
@@ -110,7 +127,22 @@ namespace SphereStudio.IDE
         {
             get { return Path.GetDirectoryName(_path); }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the name of the directory where the project
+        /// is built. May be relative.
+        /// </summary>
+        public string BuildPath
+        {
+            get { return _ini.GetString("buildDir", "dist/"); }
+            set
+            {
+                value = value.Replace(Path.DirectorySeparatorChar, '/');
+                if (value != "" && !value.EndsWith("/")) value += "/";
+                _ini.SetValue("buildDir", value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the project name (usually a title).
         /// </summary>
@@ -138,6 +170,10 @@ namespace SphereStudio.IDE
             set { _ini.SetValue("description", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the filename of the game's startup script, relative
+        /// to the game's scripts/ directory.
+        /// </summary>
         public string MainScript
         {
             get { return _ini.GetString("mainScript", ""); }
@@ -152,7 +188,7 @@ namespace SphereStudio.IDE
             get { return _ini.GetInteger("screenWidth", 320); }
             set { _ini.SetValue("screenWidth", value); }
         }
-        
+
         /// <summary>
         /// Gets or sets the game's horizontal resolution.
         /// </summary>
@@ -170,35 +206,12 @@ namespace SphereStudio.IDE
             User.SaveAs(GetUserFilePath(_path));
             _ini.SaveAs(_path);
         }
-        
-        /// <summary>
-        /// Builds the project so it can be run by Sphere.
-        /// </summary>
-        /// <returns>
-        /// The full path of the build directory. This can be passed directly
-        /// to a Sphere-compatible engine.
-        /// </returns>
-        public string Build()
+
+        public async Task<string> Build()
         {
-            // save the project before building
-            Save();
-
-            // write out game.sgm
-            string sgmPath = Path.Combine(Path.GetDirectoryName(_path), "game.sgm");
-            
-            using (StreamWriter writer = new StreamWriter(sgmPath, false))
-            {
-                writer.WriteLine(string.Format("name={0}", Name));
-                writer.WriteLine(string.Format("author={0}", Author));
-                writer.WriteLine(string.Format("description={0}", Description));
-                writer.WriteLine(string.Format("screen_width={0}", ScreenWidth));
-                writer.WriteLine(string.Format("screen_height={0}", ScreenHeight));
-                writer.WriteLine(string.Format("script={0}", MainScript));
-            }
-
-            return Path.GetDirectoryName(sgmPath);
+            return await _builder.Build();
         }
-
+        
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
         {
             Dictionary<string, int[]> retval = new Dictionary<string, int[]>();
@@ -242,9 +255,7 @@ namespace SphereStudio.IDE
 
         private string GetUserFilePath(string projectPath)
         {
-            string dirpath = Path.GetDirectoryName(projectPath);
-            return Path.Combine(dirpath,
-                Path.GetFileNameWithoutExtension(projectPath) + ".ssuser");
+            return Path.ChangeExtension(projectPath, ".ssuser");
         }
         
         private static string MakeFileName(string name)

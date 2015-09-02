@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
+using SphereStudio.Pipeline;
 using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
@@ -116,7 +117,7 @@ namespace SphereStudio.Components
                 // search this folder for game:
                 try
                 {
-                    Project proj = Project.Open(d.FullName);
+                    Project proj = Project.Open(d.FullName, false);
                     int img = CheckForIcon(d.FullName);
                     ListViewItem item = new ListViewItem(proj.Name, img) { Tag = d.FullName };
                     item.SubItems.Add(proj.Author);
@@ -143,7 +144,7 @@ namespace SphereStudio.Components
                 int img = CheckForIcon(d.FullName);
                 try
                 {
-                    Project proj = Project.Open(d.FullName);
+                    Project proj = Project.Open(d.FullName, false);
                     ListViewItem item = new ListViewItem(proj.Name, img) { Tag = d.FullName };
                     item.SubItems.Add(proj.Author);
                     item.SubItems.Add(d.FullName);
@@ -181,7 +182,7 @@ namespace SphereStudio.Components
         {
             _currentItem = GameFolders.GetItemAt(e.X, e.Y);
             if (_currentItem == null) return;
-            _proj = Project.Open((string)_currentItem.Tag);
+            _proj = Project.Open((string)_currentItem.Tag, false);
             SetProjData();
         }
 
@@ -193,10 +194,10 @@ namespace SphereStudio.Components
             DescTextLabel.Text = _proj.Description;
         }
 
-        private void PlayMenuItem_Click(object sender, EventArgs e)
+        private async void PlayMenuItem_Click(object sender, EventArgs e)
         {
             if (!File.Exists(Global.Settings.EnginePath)) return;
-            string args = string.Format(@"-game ""{0}""", _proj.Build());
+            string args = string.Format(@"-game ""{0}""", await _proj.Build());
             Process.Start(Global.Settings.EnginePath, args);
         }
 
@@ -222,7 +223,7 @@ namespace SphereStudio.Components
             ListViewItem item = GameFolders.Items[e.Item];
             string path = Path.GetDirectoryName(Path.GetDirectoryName(GameFolders.Items[e.Item].Tag as string));
 
-            if (File.Exists(path + e.Label)) e.CancelEdit = true;
+            if (System.IO.File.Exists(path + e.Label)) e.CancelEdit = true;
             else if (!RenameProject(path + "\\" + item.Text, path + "\\" + e.Label))
             {
                 e.CancelEdit = true;
@@ -251,8 +252,8 @@ namespace SphereStudio.Components
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
                     if (diag.FileName == selPath + "\\icon.png") return;
-                    if (File.Exists(selPath + "\\icon.png")) File.Delete(selPath + "\\icon.png");
-                    File.Copy(diag.FileName, selPath + "\\icon.png");
+                    if (System.IO.File.Exists(selPath + "\\icon.png")) System.IO.File.Delete(selPath + "\\icon.png");
+                    System.IO.File.Copy(diag.FileName, selPath + "\\icon.png");
 
                     if (_currentItem.ImageIndex == 0)
                     {

@@ -11,6 +11,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Core;
+using SphereStudio.Pipeline;
 using SphereStudio.Components;
 using SphereStudio.Forms;
 using SphereStudio.IDE;
@@ -66,7 +67,9 @@ namespace SphereStudio
         {
             InitializeComponent();
             Docking = new DockManager(MainDock);
-            
+
+            PluginManager.IDE = this;
+
             string filepath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 @"Sphere Studio\Settings", "Sphere Studio.ini");
@@ -85,7 +88,6 @@ namespace SphereStudio
 
             InitializeDocking();
 
-            PluginManager.IDE = this;
             Global.EvalPlugins();
             Global.Settings.Apply();
 
@@ -240,11 +242,9 @@ namespace SphereStudio
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string rootPath = Path.Combine(sphereDir, "Projects");
             NewProjectForm myProject = new NewProjectForm { RootFolder = rootPath };
-
-            if (!CloseCurrentProject()) return;
-
             if (myProject.ShowDialog() == DialogResult.OK)
             {
+                if (!CloseCurrentProject()) return;
                 menuRefreshProject_Click(null, EventArgs.Empty);
                 _startPage.PopulateGameList();
                 OpenDocument(Global.CurrentGame.RootPath + "\\scripts\\main.js");
@@ -430,12 +430,15 @@ namespace SphereStudio
             proc.Dispose();
         }
 
-        private void menuTestGame_Click(object sender, EventArgs e)
+        private async void menuTestGame_Click(object sender, EventArgs e)
         {
             if (TestGame != null) TestGame(null, EventArgs.Empty);
 
             if (IsProjectOpen)
             {
+                menuTestGame.Enabled = toolTestGame.Enabled = false;
+                menuDebug.Enabled = toolDebug.Enabled = false;
+                
                 // save all non-untitled documents
                 foreach (DocumentTab tab in
                     from tab in _tabs where tab.FileName != null
@@ -444,22 +447,27 @@ namespace SphereStudio
                     tab.SaveIfDirty();
                 }
 
-                string gamePath = Global.CurrentGame.Build();
-                string path = ((ToolStripItem)sender).Tag as string ?? EnginePath;
-                string args = string.Format(@"-game ""{0}""", gamePath);
-
-                if (String.IsNullOrEmpty(path) || !File.Exists(path))
+                try
                 {
-                    // show a message if you switch to a project with an invalid path.
-                    MessageBox.Show("Error: Could not find engine in path specified.");
+                    string gamePath = await Global.CurrentGame.Build();
+                    string path = ((ToolStripItem)sender).Tag as string ?? EnginePath;
+                    string args = string.Format(@"-game ""{0}""", gamePath);
+                    if (string.IsNullOrEmpty(path) || !File.Exists(path))
+                    {
+                        // show a message if you switch to a project with an invalid path.
+                        MessageBox.Show("Error: Could not find engine in path specified.");
+                    }
+                    else
+                    {
+                        Process.Start(path, args);
+                    }
                 }
-                else
-                {
-                    Process.Start(path, args);
-                }
+                catch (OperationCanceledException) { }
             }
             else
                 Process.Start(Global.Settings.EnginePath);
+
+            UpdateButtons();
         }
 
         private void menuRefreshProject_Click(object sender, EventArgs e)
@@ -982,8 +990,9 @@ namespace SphereStudio
             _tree.Close();
             _tree.ProjectName = "Project Name";
             menuOpenLastProject.Enabled = (Global.Settings.LastProject.Length > 0);
-            
+
             // all clear!
+            Global.CurrentGame.Dispose();
             Global.CurrentGame = null;
             Text = string.Format("{0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
@@ -1055,6 +1064,9 @@ namespace SphereStudio
 
         private async Task StartDebugger()
         {
+            menuTestGame.Enabled = toolTestGame.Enabled = false;
+            menuDebug.Enabled = toolDebug.Enabled = false;
+
             var debuggers = from f in Global.Plugins.Values
                             where f.Enabled
                             where f.Plugin is IDebugPlugin
@@ -1071,33 +1083,36 @@ namespace SphereStudio
                 {
                     tab.SaveIfDirty();
                 }
-                Global.CurrentGame.Build();
-                Debugger = plugin.Debug(CurrentGame);
-                Debugger.Detached += debugger_Detached;
-                Debugger.Paused += debugger_Paused;
-                Debugger.Resumed += debugger_Resumed;
-                menuDebug.Text = "&Resume";
-                toolDebug.Text = "Resume";
-                menuTestGame.Enabled = false;
-                toolTestGame.Enabled = false;
-                _first_debug_pause = true;
-                if (await Debugger.Attach())
+                try
                 {
-                    var breaks = Global.CurrentGame.GetAllBreakpoints();
-                    foreach (string filename in breaks.Keys)
-                        foreach (int lineNumber in breaks[filename])
-                            await Debugger.SetBreakpoint(filename, lineNumber, true);
-                    await Debugger.Resume();
+                    Debugger = plugin.Debug(Global.CurrentGame, await Global.CurrentGame.Build());
+                    Debugger.Detached += debugger_Detached;
+                    Debugger.Paused += debugger_Paused;
+                    Debugger.Resumed += debugger_Resumed;
+                    menuTestGame.Enabled = false;
+                    toolTestGame.Enabled = false;
+                    _first_debug_pause = true;
+                    if (await Debugger.Attach())
+                    {
+                        menuDebug.Text = "&Resume";
+                        toolDebug.Text = "Resume";
+                        var breaks = Global.CurrentGame.GetAllBreakpoints();
+                        foreach (string filename in breaks.Keys)
+                            foreach (int lineNumber in breaks[filename])
+                                await Debugger.SetBreakpoint(filename, lineNumber, true);
+                        await Debugger.Resume();
+                    }
+                    else
+                    {
+                        Activate();
+                        MessageBox.Show(
+                            "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
+                            "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Debugger = null;
+                        UpdateButtons();
+                    }
                 }
-                else
-                {
-                    Activate();
-                    MessageBox.Show(
-                        "Failed to start a debugging session. The engine in use may not be supported by the active debugger.",
-                        "Unable to Start Debugging", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Debugger = null;
-                    UpdateButtons();
-                }
+                catch (OperationCanceledException) { }  // *munch*
             }
             else
             {
@@ -1109,6 +1124,8 @@ namespace SphereStudio
                     menuConfigManager_Click(this, EventArgs.Empty);
                 }
             }
+
+            UpdateButtons();
         }
 
         private void UpdateButtons()
@@ -1153,7 +1170,7 @@ namespace SphereStudio
             PlatformTool.Items.Clear();
             if (Environment.Is64BitOperatingSystem && File.Exists(Global.Settings.EnginePath64))
             {
-                string engineName = String.Format("x64 {0}", Path.GetFileName(Global.Settings.EnginePath64));
+                string engineName = string.Format("x64 {0}", Path.GetFileName(Global.Settings.EnginePath64));
                 ToolStripMenuItem item = new ToolStripMenuItem(engineName);
                 item.Click += menuTestGame_Click;
                 item.Tag = Global.Settings.EnginePath64;
@@ -1162,7 +1179,7 @@ namespace SphereStudio
             }
             if (File.Exists(Global.Settings.EnginePath))
             {
-                string engineName = String.Format("x86 {0}", Path.GetFileName(Global.Settings.EnginePath));
+                string engineName = string.Format("x86 {0}", Path.GetFileName(Global.Settings.EnginePath));
                 ToolStripMenuItem item = new ToolStripMenuItem(engineName);
                 item.Click += menuTestGame_Click;
                 item.Tag = Global.Settings.EnginePath;

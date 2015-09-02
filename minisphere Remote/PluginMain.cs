@@ -31,14 +31,14 @@ namespace minisphere.Remote
             Views.ShutDown();
         }
 
-        public IDebugger Debug(IProject project)
+        public IDebugger Debug(IProject project, string gamePath)
         {
             // start minisphere in debugging mode
             string enginePath = PluginManager.IDE.EnginePath;
-            string args = string.Format(@"--debug --game ""{0}""", project.Build());
+            string args = string.Format(@"--debug --game ""{0}""", gamePath);
             Process engine = Process.Start(enginePath, args);
 
-            return new DebugSession(project, enginePath, engine);
+            return new DebugSession(gamePath, enginePath, engine, project);
         }
 
         private void IDE_UnloadProject(object sender, EventArgs e)

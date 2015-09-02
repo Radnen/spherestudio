@@ -46,6 +46,8 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.NewProjectPic = new System.Windows.Forms.PictureBox();
             this.ButtonPanel = new System.Windows.Forms.Panel();
+            this.BuildDirBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).BeginInit();
             this.ButtonPanel.SuspendLayout();
             this.SuspendLayout();
@@ -132,7 +134,7 @@
             // ScreenSizeLabel
             // 
             this.ScreenSizeLabel.AutoSize = true;
-            this.ScreenSizeLabel.Location = new System.Drawing.Point(12, 386);
+            this.ScreenSizeLabel.Location = new System.Drawing.Point(12, 382);
             this.ScreenSizeLabel.Name = "ScreenSizeLabel";
             this.ScreenSizeLabel.Size = new System.Drawing.Size(76, 16);
             this.ScreenSizeLabel.TabIndex = 10;
@@ -140,7 +142,6 @@
             // 
             // ScriptComboBox
             // 
-            this.ScriptComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ScriptComboBox.FormattingEnabled = true;
             this.ScriptComboBox.Location = new System.Drawing.Point(112, 347);
             this.ScriptComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -151,7 +152,7 @@
             // XLabel
             // 
             this.XLabel.AutoSize = true;
-            this.XLabel.Location = new System.Drawing.Point(221, 386);
+            this.XLabel.Location = new System.Drawing.Point(224, 382);
             this.XLabel.Name = "XLabel";
             this.XLabel.Size = new System.Drawing.Size(14, 16);
             this.XLabel.TabIndex = 12;
@@ -159,7 +160,7 @@
             // 
             // WidthTextBox
             // 
-            this.WidthTextBox.Location = new System.Drawing.Point(110, 382);
+            this.WidthTextBox.Location = new System.Drawing.Point(112, 379);
             this.WidthTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.WidthTextBox.Name = "WidthTextBox";
             this.WidthTextBox.Size = new System.Drawing.Size(103, 23);
@@ -214,10 +215,26 @@
             this.ButtonPanel.Controls.Add(this.buttonOK);
             this.ButtonPanel.Controls.Add(this.buttonCancel);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 427);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 463);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(360, 37);
             this.ButtonPanel.TabIndex = 14;
+            // 
+            // BuildDirBox
+            // 
+            this.BuildDirBox.Location = new System.Drawing.Point(112, 413);
+            this.BuildDirBox.Name = "BuildDirBox";
+            this.BuildDirBox.Size = new System.Drawing.Size(236, 23);
+            this.BuildDirBox.TabIndex = 17;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 416);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(90, 16);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "Build Directory";
             // 
             // GameSettings
             // 
@@ -225,7 +242,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(360, 464);
+            this.ClientSize = new System.Drawing.Size(360, 500);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.BuildDirBox);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectPic);
             this.Controls.Add(this.HeightTextBox);
@@ -278,6 +297,7 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.PictureBox NewProjectPic;
         private System.Windows.Forms.Panel ButtonPanel;
-
+        private System.Windows.Forms.TextBox BuildDirBox;
+        private System.Windows.Forms.Label label1;
     }
 }
