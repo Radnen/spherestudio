@@ -209,7 +209,14 @@ namespace SphereStudio.IDE
 
         public async Task<string> Build()
         {
-            return await _builder.Build();
+            return await Build(false);
+        }
+
+        public async Task<string> Build(bool showStatus)
+        {
+            string distPath = await _builder.Build();
+            if (!showStatus) _builder.StatusPane.Hide();
+            return distPath;
         }
         
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
