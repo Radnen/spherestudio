@@ -20,11 +20,11 @@ namespace SphereStudio.Components
         {
             InitializeComponent();
 
-            Pane = PluginManager.IDE.Docking.AddPane(this, "Build", null, DockHint.Bottom);
-            Pane.Hide();
+            DockPane = PluginManager.IDE.Docking.AddPane(this, "Build", null, DockHint.Bottom);
+            DockPane.Hide();
         }
 
-        public IDockForm Pane { get; private set; }
+        public IDockForm DockPane { get; private set; }
 
         public void Clear()
         {

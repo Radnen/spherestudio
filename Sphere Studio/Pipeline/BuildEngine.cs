@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jurassic;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 using SphereStudio.Components;
 using SphereStudio.IDE;
 
@@ -35,6 +36,13 @@ namespace SphereStudio.Pipeline
         }
 
         /// <summary>
+        /// Gets the status pane for this build engine.
+        /// </summary>
+        public IDockForm StatusPane {
+            get { return _view.DockPane; }
+        }
+        
+        /// <summary>
         /// Gets the Jurassic context used to run scripts for this
         /// build engine.
         /// </summary>
@@ -44,28 +52,31 @@ namespace SphereStudio.Pipeline
         /// Prepares a newly created project.
         /// </summary>
         /// <param name="project"></param>
-        public void Prep()
+        public async void Prep()
         {
             _view.Clear();
-            _view.Pane.Show();
-            try
+            StatusPane.Show();
+            await Task.Run(() =>
             {
-                Print(string.Format("----------- Prepping Sphere project: {0} -----------", _project.Name));
-                SpinUp();
-                var source = new Source(this, _project);
-                JS.CallGlobalFunction("prep", source);
-                Print(string.Format("============ Successfully prepped: {0} =============", _project.Name));
-            }
-            catch (JavaScriptException exc)
-            {
-                // JS runtime error (abort build)
-                Print(string.Format("[{0}:{1}] {2}",
-                    Path.GetFileName(exc.SourcePath), exc.LineNumber,
-                    exc.Message));
-                Print(string.Format("=============== Failed to prep: {0} ================", _project.Name));
-                SystemSounds.Hand.Play();
-                throw new OperationCanceledException();
-            }
+                try
+                {
+                    Print(string.Format("----------- Prepping Sphere project: {0} -----------", _project.Name));
+                    SpinUp();
+                    var source = new Source(this, _project);
+                    JS.CallGlobalFunction("prep", source);
+                    Print(string.Format("============ Successfully prepped: {0} =============", _project.Name));
+                }
+                catch (JavaScriptException exc)
+                {
+                    // JS runtime error (abort build)
+                    Print(string.Format("[{0}:{1}] {2}",
+                        Path.GetFileName(exc.SourcePath), exc.LineNumber,
+                        exc.Message));
+                    Print(string.Format("=============== Failed to prep: {0} ================", _project.Name));
+                    SystemSounds.Hand.Play();
+                    throw new OperationCanceledException();
+                }
+            });
         }
 
         /// <summary>
@@ -77,7 +88,7 @@ namespace SphereStudio.Pipeline
         public async Task<string> Build()
         {
             _view.Clear();
-            _view.Pane.Show();
+            StatusPane.Show();
             return await Task.Run(() =>
             {
                 // run the build script
@@ -114,7 +125,7 @@ namespace SphereStudio.Pipeline
         public async Task Clean()
         {
             _view.Clear();
-            _view.Pane.Show();
+            StatusPane.Show();
             await Task.Run(() =>
             {
                 // run the clean script

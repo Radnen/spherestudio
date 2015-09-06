@@ -74,7 +74,7 @@ namespace minisphere.Remote
         {
             try
             {
-                await Connect("localhost", 812);
+                await Connect("localhost", 1208);
                 return true;
             }
             catch (TimeoutException)
