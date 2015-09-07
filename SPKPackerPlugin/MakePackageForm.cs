@@ -28,10 +28,10 @@ namespace Sphere.Plugins
     public partial class MakePackageForm : Form
     {
         private readonly string[] extensions = {
-            ".sgm", ".rmp", ".rss", ".rts", ".rfn", ".rws",
-            ".js", ".coffee", ".glsl",
-            ".png", ".jpg", ".bmp", ".pcx",
-            ".mp3", ".ogg", ".mid", ".wav", ".flac", ".it", ".s3m", ".mod",
+            ".SGM", ".RMP", ".RSS", ".RTS", ".RFN", ".RWS",
+            ".JS", ".COFFEE", ".GLSL",
+            ".MP3", ".OGG", ".MID", ".WAV", ".FLAC", ".IT", ".S3M", ".MOD",
+            ".PNG", ".JPG", ".BMP", ".PCX", ".MNG",
         };
 
         private ISettings _conf;
@@ -69,7 +69,7 @@ namespace Sphere.Plugins
                     ListViewItem item = fileList.Items.Add(relativePath);
                     item.ImageIndex = 0;
                     item.SubItems.Add(String.Format("{0} kB", Math.Ceiling((double)file.Length / 1024)));
-                    if (extensions.Contains(Path.GetExtension(file.FullName)))
+                    if (extensions.Contains(Path.GetExtension(file.FullName.ToUpperInvariant())))
                         item.Checked = true;
                 }
                 var dirInfos = from DirectoryInfo dir in thisDir.GetDirectories()

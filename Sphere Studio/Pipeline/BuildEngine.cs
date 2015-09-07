@@ -38,7 +38,7 @@ namespace SphereStudio.Pipeline
         /// <summary>
         /// Gets the status pane for this build engine.
         /// </summary>
-        public IDockForm StatusPane {
+        public IDockPane StatusPane {
             get { return _view.DockPane; }
         }
         
@@ -96,15 +96,16 @@ namespace SphereStudio.Pipeline
                 {
                     Print(string.Format("----------- Building Sphere project: {0} -----------", _project.Name));
                     SpinUp();
+                    string distPath = Path.GetFullPath(Path.Combine(_project.RootPath,
+                        _project.BuildPath.Replace('/', Path.DirectorySeparatorChar)));
                     var source = new Source(this, _project);
-                    var target = new Target(this,
-                        Path.Combine(_project.RootPath, _project.BuildPath.Replace('/', Path.DirectorySeparatorChar)));
+                    var target = new Target(this, distPath);
                     JS.CallGlobalFunction("build", source, target);
 
                     // return Sphere game dist directory. currently this is the project
                     // directory, but in the future we will create a 'dist' subdirectory
                     // for the final game.
-                    var distPath = Path.GetDirectoryName(target.RootPath);
+                    distPath = Path.GetDirectoryName(target.RootPath);
                     Print(string.Format("Distribution: {0}", distPath));
                     Print(string.Format("============= Successfully built: {0} ==============", _project.Name));
                     return distPath;

@@ -21,14 +21,9 @@ namespace minisphere.Remote.Panes
                 icon != null ? Icon.FromHandle(icon.GetHicon()) : null,
                 dockHint);
 
-            Disposed += this_Disposed;
+            Disposed += (sender, e) => DockPane.Dispose();
         }
 
-        public IDockForm DockPane { get; private set; }
-
-        private void this_Disposed(object sender, EventArgs e)
-        {
-            DockPane.Hide();
-        }
+        public IDockPane DockPane { get; private set; }
     }
 }

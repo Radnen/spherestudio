@@ -15,7 +15,7 @@ namespace SphereStudio.Plugins
         public string Version { get { return "2.0.0"; } }
         public Icon Icon { get; private set; }
 
-        private IDockForm _dock_pane;
+        private IDockPane _dock_pane;
         private TaskList _list;
         private ToolStripMenuItem _item;
 

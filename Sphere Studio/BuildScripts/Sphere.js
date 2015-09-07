@@ -1,8 +1,9 @@
 /**
  * Sphere Studio 2.0  (c) 2015 Spherical
  *
- * [Sphere.js]
- * Build script to create a Sphere game distribution.
+ * Sphere.js written by Bruce Pascoe
+ * Build script to create a Sphere game distribution, with full
+ * support for minisphere 1.7.
 **/
 
 RequireScript('link.js');
@@ -50,7 +51,7 @@ function build(source, target)
 		"rmp", "rss", "rts", "rws", "rfn",
 		"js", "coffee", "glsl",
 		"mp3", "ogg", "mid", "wav", "flac", "it", "s3m", "mod",
-		"png", "jpg", "bmp", "pcx",
+		"png", "jpg", "bmp", "pcx", "mng"
 	];
 
 	// copy over assets and build source map

@@ -32,21 +32,21 @@
             this.GameTitleLabel = new System.Windows.Forms.Label();
             this.AuthorLabel = new System.Windows.Forms.Label();
             this.PathTextBox = new System.Windows.Forms.TextBox();
-            this.NameTextBox = new System.Windows.Forms.TextBox();
-            this.AuthorTextBox = new System.Windows.Forms.TextBox();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.authorBox = new System.Windows.Forms.TextBox();
             this.DescLabel = new System.Windows.Forms.Label();
-            this.DescTextBox = new System.Windows.Forms.TextBox();
+            this.descriptionBox = new System.Windows.Forms.TextBox();
             this.ScriptLabel = new System.Windows.Forms.Label();
             this.ScreenSizeLabel = new System.Windows.Forms.Label();
-            this.ScriptComboBox = new System.Windows.Forms.ComboBox();
+            this.mainScriptBox = new System.Windows.Forms.ComboBox();
             this.XLabel = new System.Windows.Forms.Label();
-            this.WidthTextBox = new System.Windows.Forms.TextBox();
-            this.HeightTextBox = new System.Windows.Forms.TextBox();
+            this.widthBox = new System.Windows.Forms.TextBox();
+            this.heightBox = new System.Windows.Forms.TextBox();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.NewProjectPic = new System.Windows.Forms.PictureBox();
             this.ButtonPanel = new System.Windows.Forms.Panel();
-            this.BuildDirBox = new System.Windows.Forms.TextBox();
+            this.buildDirBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NewProjectPic)).BeginInit();
             this.ButtonPanel.SuspendLayout();
@@ -88,21 +88,21 @@
             this.PathTextBox.Size = new System.Drawing.Size(236, 23);
             this.PathTextBox.TabIndex = 1;
             // 
-            // NameTextBox
+            // nameBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(112, 78);
-            this.NameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(236, 23);
-            this.NameTextBox.TabIndex = 3;
+            this.nameBox.Location = new System.Drawing.Point(112, 78);
+            this.nameBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(236, 23);
+            this.nameBox.TabIndex = 3;
             // 
-            // AuthorTextBox
+            // authorBox
             // 
-            this.AuthorTextBox.Location = new System.Drawing.Point(112, 109);
-            this.AuthorTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.AuthorTextBox.Name = "AuthorTextBox";
-            this.AuthorTextBox.Size = new System.Drawing.Size(236, 23);
-            this.AuthorTextBox.TabIndex = 5;
+            this.authorBox.Location = new System.Drawing.Point(112, 109);
+            this.authorBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.authorBox.Name = "authorBox";
+            this.authorBox.Size = new System.Drawing.Size(236, 23);
+            this.authorBox.TabIndex = 5;
             // 
             // DescLabel
             // 
@@ -113,14 +113,14 @@
             this.DescLabel.TabIndex = 6;
             this.DescLabel.Text = "Description";
             // 
-            // DescTextBox
+            // descriptionBox
             // 
-            this.DescTextBox.Location = new System.Drawing.Point(12, 163);
-            this.DescTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.DescTextBox.Multiline = true;
-            this.DescTextBox.Name = "DescTextBox";
-            this.DescTextBox.Size = new System.Drawing.Size(336, 176);
-            this.DescTextBox.TabIndex = 7;
+            this.descriptionBox.Location = new System.Drawing.Point(12, 163);
+            this.descriptionBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.descriptionBox.Multiline = true;
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(336, 176);
+            this.descriptionBox.TabIndex = 7;
             // 
             // ScriptLabel
             // 
@@ -140,14 +140,14 @@
             this.ScreenSizeLabel.TabIndex = 10;
             this.ScreenSizeLabel.Text = "Screen Size";
             // 
-            // ScriptComboBox
+            // mainScriptBox
             // 
-            this.ScriptComboBox.FormattingEnabled = true;
-            this.ScriptComboBox.Location = new System.Drawing.Point(112, 347);
-            this.ScriptComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ScriptComboBox.Name = "ScriptComboBox";
-            this.ScriptComboBox.Size = new System.Drawing.Size(236, 24);
-            this.ScriptComboBox.TabIndex = 9;
+            this.mainScriptBox.FormattingEnabled = true;
+            this.mainScriptBox.Location = new System.Drawing.Point(112, 347);
+            this.mainScriptBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.mainScriptBox.Name = "mainScriptBox";
+            this.mainScriptBox.Size = new System.Drawing.Size(236, 24);
+            this.mainScriptBox.TabIndex = 9;
             // 
             // XLabel
             // 
@@ -158,27 +158,28 @@
             this.XLabel.TabIndex = 12;
             this.XLabel.Text = "x";
             // 
-            // WidthTextBox
+            // widthBox
             // 
-            this.WidthTextBox.Location = new System.Drawing.Point(112, 379);
-            this.WidthTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.WidthTextBox.Name = "WidthTextBox";
-            this.WidthTextBox.Size = new System.Drawing.Size(103, 23);
-            this.WidthTextBox.TabIndex = 11;
-            this.WidthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+            this.widthBox.Location = new System.Drawing.Point(112, 379);
+            this.widthBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.widthBox.MaxLength = 4;
+            this.widthBox.Name = "widthBox";
+            this.widthBox.Size = new System.Drawing.Size(103, 23);
+            this.widthBox.TabIndex = 11;
+            this.widthBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resolutionBox_KeyPress);
             // 
-            // HeightTextBox
+            // heightBox
             // 
-            this.HeightTextBox.Location = new System.Drawing.Point(244, 379);
-            this.HeightTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.HeightTextBox.Name = "HeightTextBox";
-            this.HeightTextBox.Size = new System.Drawing.Size(104, 23);
-            this.HeightTextBox.TabIndex = 13;
-            this.HeightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+            this.heightBox.Location = new System.Drawing.Point(244, 379);
+            this.heightBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.heightBox.MaxLength = 4;
+            this.heightBox.Name = "heightBox";
+            this.heightBox.Size = new System.Drawing.Size(104, 23);
+            this.heightBox.TabIndex = 13;
+            this.heightBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resolutionBox_KeyPress);
             // 
             // buttonOK
             // 
-            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOK.Location = new System.Drawing.Point(94, 5);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonOK.Name = "buttonOK";
@@ -220,12 +221,12 @@
             this.ButtonPanel.Size = new System.Drawing.Size(360, 37);
             this.ButtonPanel.TabIndex = 14;
             // 
-            // BuildDirBox
+            // buildDirBox
             // 
-            this.BuildDirBox.Location = new System.Drawing.Point(112, 413);
-            this.BuildDirBox.Name = "BuildDirBox";
-            this.BuildDirBox.Size = new System.Drawing.Size(236, 23);
-            this.BuildDirBox.TabIndex = 17;
+            this.buildDirBox.Location = new System.Drawing.Point(112, 413);
+            this.buildDirBox.Name = "buildDirBox";
+            this.buildDirBox.Size = new System.Drawing.Size(236, 23);
+            this.buildDirBox.TabIndex = 17;
             // 
             // label1
             // 
@@ -244,19 +245,19 @@
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(360, 500);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.BuildDirBox);
+            this.Controls.Add(this.buildDirBox);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectPic);
-            this.Controls.Add(this.HeightTextBox);
-            this.Controls.Add(this.WidthTextBox);
+            this.Controls.Add(this.heightBox);
+            this.Controls.Add(this.widthBox);
             this.Controls.Add(this.XLabel);
-            this.Controls.Add(this.ScriptComboBox);
+            this.Controls.Add(this.mainScriptBox);
             this.Controls.Add(this.ScreenSizeLabel);
             this.Controls.Add(this.ScriptLabel);
-            this.Controls.Add(this.DescTextBox);
+            this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.DescLabel);
-            this.Controls.Add(this.AuthorTextBox);
-            this.Controls.Add(this.NameTextBox);
+            this.Controls.Add(this.authorBox);
+            this.Controls.Add(this.nameBox);
             this.Controls.Add(this.PathTextBox);
             this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.GameTitleLabel);
@@ -283,21 +284,21 @@
         private System.Windows.Forms.Label GameTitleLabel;
         private System.Windows.Forms.Label AuthorLabel;
         private System.Windows.Forms.TextBox PathTextBox;
-        private System.Windows.Forms.TextBox NameTextBox;
-        private System.Windows.Forms.TextBox AuthorTextBox;
+        private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.TextBox authorBox;
         private System.Windows.Forms.Label DescLabel;
-        private System.Windows.Forms.TextBox DescTextBox;
+        private System.Windows.Forms.TextBox descriptionBox;
         private System.Windows.Forms.Label ScriptLabel;
         private System.Windows.Forms.Label ScreenSizeLabel;
-        private System.Windows.Forms.ComboBox ScriptComboBox;
+        private System.Windows.Forms.ComboBox mainScriptBox;
         private System.Windows.Forms.Label XLabel;
-        private System.Windows.Forms.TextBox WidthTextBox;
-        private System.Windows.Forms.TextBox HeightTextBox;
+        private System.Windows.Forms.TextBox widthBox;
+        private System.Windows.Forms.TextBox heightBox;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.PictureBox NewProjectPic;
         private System.Windows.Forms.Panel ButtonPanel;
-        private System.Windows.Forms.TextBox BuildDirBox;
+        private System.Windows.Forms.TextBox buildDirBox;
         private System.Windows.Forms.Label label1;
     }
 }

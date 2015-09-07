@@ -24,7 +24,7 @@ namespace SphereStudio.Components
             DockPane.Hide();
         }
 
-        public IDockForm DockPane { get; private set; }
+        public IDockPane DockPane { get; private set; }
 
         public void Clear()
         {

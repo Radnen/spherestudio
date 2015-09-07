@@ -49,13 +49,13 @@ namespace SphereStudio.IDE
                 throw new FileNotFoundException("No Sphere project was found in the specified directory.");
         }
 
-        private Project(string filepath, bool allowBuild)
+        private Project(string filepath, bool allowBuilding)
         {
-            _path = filepath;
+            filepath = Path.GetFullPath(filepath);  // canonize
             var userpath = GetUserFilePath(filepath);
             User = new UserSettings(userpath);
 
-            if (Path.GetFileName(filepath) == "game.sgm")
+            if (Path.GetExtension(filepath) == ".sgm")
             {
                 // auto-convert game.sgm to .ssproj
                 _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
@@ -66,7 +66,7 @@ namespace SphereStudio.IDE
                 ScreenWidth = 320;
                 ScreenHeight = 240;
                 MainScript = "main.js";
-                BuildPath = "";  // for cross-compatibility with old editor
+                BuildPath = "./";
                 using (StreamReader file = new StreamReader(filepath))
                 {
                     Regex regex = new Regex("^(.*)=(.*)$");
@@ -102,9 +102,10 @@ namespace SphereStudio.IDE
             else
             {
                 // loading .ssproj directly
+                _path = filepath;
                 _ini = new INISettings(new INI(_path, false), ".ssproj");
             }
-            if (allowBuild)
+            if (allowBuilding)
             {
                 _builder = new BuildEngine(this);
             }
@@ -137,8 +138,9 @@ namespace SphereStudio.IDE
             get { return _ini.GetString("buildDir", "dist/"); }
             set
             {
+                value = string.IsNullOrWhiteSpace(value) ? "./" : value;
                 value = value.Replace(Path.DirectorySeparatorChar, '/');
-                if (value != "" && !value.EndsWith("/")) value += "/";
+                if (!value.EndsWith("/")) value += "/";
                 _ini.SetValue("buildDir", value);
             }
         }

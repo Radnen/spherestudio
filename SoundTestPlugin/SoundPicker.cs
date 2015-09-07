@@ -33,7 +33,7 @@ namespace SphereStudio.Plugins
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
         private readonly ImageList _listIcons = new ImageList();
-        private IDockForm _dock_pane;
+        private IDockPane _dock_pane;
         private IPlayer _music;
         private string _musicName;
 

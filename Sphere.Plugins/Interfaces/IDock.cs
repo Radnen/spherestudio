@@ -32,19 +32,19 @@ namespace Sphere.Plugins.Interfaces
         /// <param name="title">The tab title.</param>
         /// <param name="icon">The icon to display on the tab.</param>
         /// <returns>An IDockPane allowing access to the new pane.</returns>
-        IDockForm AddPane(Control control, string title, Icon icon, DockHint hint);
+        IDockPane AddPane(Control control, string title, Icon icon, DockHint hint);
 
         /// <summary>
         /// Removes a dock pane created with AddPane.
         /// </summary>
         /// <param name="pane">The dock pane to remove.</param>
-        void RemovePane(IDockForm pane);
+        void RemovePane(IDockPane pane);
     }
 
     /// <summary>
     /// Provides an interface for a dock pane.
     /// </summary>
-    public interface IDockForm
+    public interface IDockPane : IDisposable
     {
         /// <summary>
         /// Shows the pane.

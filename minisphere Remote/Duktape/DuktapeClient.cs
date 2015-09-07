@@ -167,12 +167,15 @@ namespace minisphere.Remote.Duktape
             // connect to Duktape debug server
             await tcp.ConnectAsync(hostname, port);
             string line = "";
-            byte[] buffer = new byte[1];
-            while (buffer[0] != '\n')
+            await Task.Run(() =>
             {
-                tcp.Client.ReceiveAll(buffer);
-                line += (char)buffer[0];
-            }
+                byte[] buffer = new byte[1];
+                while (buffer[0] != '\n')
+                {
+                    tcp.Client.ReceiveAll(buffer);
+                    line += (char)buffer[0];
+                }
+            });
             string[] handshake = line.Trim().Split(new[] { ' ' }, 4);
             int debuggerVersion = int.Parse(handshake[0]);
             if (debuggerVersion != 1)

@@ -22,18 +22,18 @@ namespace SphereStudio.IDE
             _panel = panel;
         }
 
-        public IDockForm AddPane(Control control, string title, Icon icon, DockHint state)
+        public IDockPane AddPane(Control control, string title, Icon icon, DockHint state)
         {
             return new DockForm(_panel, control, title, icon, state);
         }
 
-        public void RemovePane(IDockForm pane)
+        public void RemovePane(IDockPane pane)
         {
             ((DockForm)pane).Dispose();
         }
     }
 
-    class DockForm : IDisposable, IDockForm
+    class DockForm : IDockPane
     {
         DockContent _content;
         Control _control;
