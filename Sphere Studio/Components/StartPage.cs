@@ -12,6 +12,7 @@ using SphereStudio.Pipeline;
 using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
+using System.Linq;
 
 namespace SphereStudio.Components
 {
@@ -138,43 +139,49 @@ namespace SphereStudio.Components
         /// <param name="baseDir">Directory to start looking from.</param>
         private void Populate(DirectoryInfo baseDir)
         {
-            DirectoryInfo[] dirs = baseDir.GetDirectories();
-            foreach (DirectoryInfo d in dirs)
+            DirectoryInfo[] dirInfos = baseDir.GetDirectories();
+            var q = from dirInfo in dirInfos
+                    where !dirInfo.Attributes.HasFlag(FileAttributes.Hidden)
+                    select dirInfo;
+            foreach (var dirInfo in q)
             {
-                int img = CheckForIcon(d.FullName);
+                int img = CheckForIcon(dirInfo.FullName);
                 try
                 {
-                    Project proj = Project.Open(d.FullName, false);
-                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = d.FullName };
+                    Project proj = Project.Open(dirInfo.FullName, false);
+                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = dirInfo.FullName };
                     item.SubItems.Add(proj.Author);
-                    item.SubItems.Add(d.FullName);
+                    item.SubItems.Add(dirInfo.FullName);
                     GameFolders.Items.Add(item);
                 }
                 catch (FileNotFoundException)
                 {
-                    Populate(d);
+                    Populate(dirInfo);
                 }
             }
         }
 
         private int CheckForIcon(string fullpath)
         {
-            string[] files = Directory.GetFiles(fullpath);
-            foreach (string s in files)
-            {
-                if (s.EndsWith(".png"))
+            try {
+                string[] files = Directory.GetFiles(fullpath);
+                foreach (string s in files)
                 {
-                    _listIcons.Images.Add(Image.FromFile(s));
-                    _listIconsSmall.Images.Add(Image.FromFile(s));
-                    return _listIcons.Images.Count - 1;
-                }
-                if (s.EndsWith(".ico"))
-                {
-                    _listIcons.Images.Add(new Icon(s));
-                    _listIconsSmall.Images.Add(new Icon(s));
-                    return _listIcons.Images.Count - 1;
+                    if (s.EndsWith(".png"))
+                    {
+                        _listIcons.Images.Add(Image.FromFile(s));
+                        _listIconsSmall.Images.Add(Image.FromFile(s));
+                        return _listIcons.Images.Count - 1;
+                    }
+                    if (s.EndsWith(".ico"))
+                    {
+                        _listIcons.Images.Add(new Icon(s));
+                        _listIconsSmall.Images.Add(new Icon(s));
+                        return _listIcons.Images.Count - 1;
+                    }
                 }
             }
+            catch { return 0; }
             return 0;
         }
 
