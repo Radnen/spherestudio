@@ -115,13 +115,10 @@ namespace SphereStudio
         {
             // this works around glitchy WeifenLuo behavior when messing with panel
             // visibility before the form loads.
-            if (Global.Settings.AutoOpenProject)
+            if (Global.Settings.AutoOpenProject && Global.CurrentGame != null)
             {
                 if (Global.CurrentGame.User.StartHidden)
-                {
                     _startContent.Hide();
-                }
-
                 DocumentTab tab = GetDocument(Global.CurrentGame.User.CurrentDocument);
                 if (tab != null)
                     tab.Activate();
