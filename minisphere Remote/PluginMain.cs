@@ -14,8 +14,8 @@ namespace minisphere.Remote
     {
         public string Name { get { return "minisphere Remote"; } }
         public string Author { get { return "Fat Cerberus"; } }
-        public string Description { get { return "Provides debug support for minisphere."; } }
-        public string Version { get { return "1.7.8"; } }
+        public string Description { get { return "Provides debugging support for minisphere."; } }
+        public string Version { get { return "2.0.0"; } }
 
         public Icon Icon { get; private set; }
 

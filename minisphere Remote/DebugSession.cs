@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using Json;
 using minisphere.Remote.Duktape;
 
 namespace minisphere.Remote
@@ -25,7 +24,6 @@ namespace minisphere.Remote
         private string engineDir;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
         private System.Threading.Timer focusTimer;
-        private Dictionary<string, string> sourceMap = new Dictionary<string, string>();
         private string sourcePath;
         private System.Threading.Timer updateTimer;
 
@@ -43,17 +41,6 @@ namespace minisphere.Remote
                 UpdateDebugViews, this,
                 Timeout.Infinite,
                 Timeout.Infinite);
-
-            // load the source map
-            string srcMapPath = Path.Combine(sgmPath, "sourcemap.json");
-            if (File.Exists(srcMapPath))
-            {
-                using (var file = new StreamReader(srcMapPath))
-                {
-                    foreach (var kv in JsonParser.FromJson(file.ReadToEnd()))
-                        sourceMap.Add(kv.Key, kv.Value.ToString());
-                }
-            }
         }
 
         public string FileName { get; private set; }
@@ -305,14 +292,9 @@ namespace minisphere.Remote
         internal string ResolvePath(string path)
         {
             if (Path.IsPathRooted(path))
-                return path;
+                return path.Replace('/', Path.DirectorySeparatorChar);
             if (path.StartsWith("~/") || path.StartsWith("~sgm/"))
-            {
-                path = path.Substring(path.IndexOf('/') + 1);
-                if (sourceMap.ContainsKey(path))
-                    path = sourceMap[path];
-                path = Path.Combine(sourcePath, path);
-            }
+                path = Path.Combine(sourcePath, path.Substring(path.IndexOf('/') + 1));
             else if (path.StartsWith("~sys/"))
                 path = Path.Combine(engineDir, "system", path.Substring(5));
             else if (path.StartsWith("~usr/"))
@@ -320,12 +302,7 @@ namespace minisphere.Remote
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "minisphere", path.Substring(5));
             else
-            {
-                path = Path.Combine("scripts", path).Replace(Path.DirectorySeparatorChar, '/');
-                if (sourceMap.ContainsKey(path))
-                    path = sourceMap[path];
                 path = Path.Combine(sourcePath, path);
-            }
             return path.Replace('/', Path.DirectorySeparatorChar);
         }
 
@@ -345,18 +322,12 @@ namespace minisphere.Remote
             if (path.StartsWith(scriptRoot))
             {
                 path = Path.Combine("scripts", path.Substring(scriptRoot.Length)).Replace(pathSep, "/");
-                if (sourceMap.ContainsValue(path))
-                    path = sourceMap.First(kv => kv.Value == path).Key;
                 path = path.Substring(path.IndexOf('/') + 1);
             }
             else if (path.StartsWith(sysRoot))
                 path = string.Format("~sys/{0}", path.Substring(sysRoot.Length).Replace(pathSep, "/"));
             else if (path.StartsWith(sourceRoot))
-            {
                 path = path.Substring(sourceRoot.Length).Replace(pathSep, "/");
-                if (sourceMap.ContainsValue(path))
-                    path = sourceMap.First(kv => kv.Value == path).Key;
-            }
             return path;
         }
 
