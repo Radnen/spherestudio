@@ -212,12 +212,12 @@ namespace SphereStudio.Plugins
 
         public override void Activate()
         {
-            SpritesetEditPlugin.ShowMenus(true);
+            PluginMain.ShowMenus(true);
         }
 
         public override void Deactivate()
         {
-            SpritesetEditPlugin.ShowMenus(false);
+            PluginMain.ShowMenus(false);
         }
 
         public void SaveLayout()

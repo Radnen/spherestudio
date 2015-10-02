@@ -56,17 +56,16 @@
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
-            this.OptionsToolButton = new System.Windows.Forms.ToolStripButton();
+            this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
             this.toolEditorSettings = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.CutToolButton = new System.Windows.Forms.ToolStripButton();
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolTestGame = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolTestGame = new System.Windows.Forms.ToolStripButton();
             this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
-            this.PlatformTool = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,6 +123,8 @@
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuVisitSite = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
+            this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuBuildPackage = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -245,7 +246,7 @@
             this.SaveToolButton,
             this.ToolSeperator1,
             this.GameToolButton,
-            this.OptionsToolButton,
+            this.toolConfigEngine,
             this.toolEditorSettings,
             this.ToolSeperator2,
             this.CutToolButton,
@@ -254,8 +255,7 @@
             this.toolStripSeparator2,
             this.toolTestGame,
             this.toolDebug,
-            this.ConfigSelectTool,
-            this.PlatformTool});
+            this.ConfigSelectTool});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
@@ -311,16 +311,16 @@
             this.GameToolButton.Text = "Game Settings";
             this.GameToolButton.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
-            // OptionsToolButton
+            // toolConfigEngine
             // 
-            this.OptionsToolButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.OptionsToolButton.Enabled = false;
-            this.OptionsToolButton.Image = global::SphereStudio.Properties.Resources.cog;
-            this.OptionsToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OptionsToolButton.Name = "OptionsToolButton";
-            this.OptionsToolButton.Size = new System.Drawing.Size(23, 25);
-            this.OptionsToolButton.Text = "Engine Settings";
-            this.OptionsToolButton.Click += new System.EventHandler(this.menuConfigEngine_Click);
+            this.toolConfigEngine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolConfigEngine.Enabled = false;
+            this.toolConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
+            this.toolConfigEngine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolConfigEngine.Name = "toolConfigEngine";
+            this.toolConfigEngine.Size = new System.Drawing.Size(23, 25);
+            this.toolConfigEngine.Text = "Configure Engine";
+            this.toolConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // toolEditorSettings
             // 
@@ -329,7 +329,7 @@
             this.toolEditorSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolEditorSettings.Name = "toolEditorSettings";
             this.toolEditorSettings.Size = new System.Drawing.Size(23, 25);
-            this.toolEditorSettings.Text = "Editor Settings";
+            this.toolEditorSettings.Text = "Settings Center";
             this.toolEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
             // ToolSeperator2
@@ -382,9 +382,9 @@
             this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolTestGame.Name = "toolTestGame";
             this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolTestGame.Size = new System.Drawing.Size(94, 25);
+            this.toolTestGame.Size = new System.Drawing.Size(82, 25);
             this.toolTestGame.Text = "Test Game";
-            this.toolTestGame.ButtonClick += new System.EventHandler(this.menuTestGame_Click);
+            this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // toolDebug
             // 
@@ -403,14 +403,6 @@
             this.ConfigSelectTool.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.ConfigSelectTool.Size = new System.Drawing.Size(155, 28);
             this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
-            // 
-            // PlatformTool
-            // 
-            this.PlatformTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.PlatformTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.PlatformTool.Name = "PlatformTool";
-            this.PlatformTool.Size = new System.Drawing.Size(75, 28);
-            this.PlatformTool.SelectedIndexChanged += new System.EventHandler(this.PlatformTool_SelectedIndexChanged);
             // 
             // EditorStatus
             // 
@@ -873,6 +865,7 @@
             this.menuEdit,
             this.menuView,
             this.menuProject,
+            this.buildToolStripMenuItem,
             this.debugToolStripMenuItem,
             this.menuTools,
             this.menuHelp});
@@ -881,6 +874,23 @@
             this.EditorMenu.Size = new System.Drawing.Size(787, 24);
             this.EditorMenu.TabIndex = 1;
             this.EditorMenu.Text = "Menu";
+            // 
+            // buildToolStripMenuItem
+            // 
+            this.buildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuBuildPackage});
+            this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
+            this.buildToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.buildToolStripMenuItem.Text = "&Build";
+            this.buildToolStripMenuItem.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
+            this.buildToolStripMenuItem.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
+            // 
+            // menuBuildPackage
+            // 
+            this.menuBuildPackage.Name = "menuBuildPackage";
+            this.menuBuildPackage.Size = new System.Drawing.Size(157, 22);
+            this.menuBuildPackage.Text = "&Build Package...";
+            this.menuBuildPackage.Click += new System.EventHandler(this.menuBuildPackage_Click);
             // 
             // debugToolStripMenuItem
             // 
@@ -988,7 +998,7 @@
             this.menuConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
             this.menuConfigEngine.Name = "menuConfigEngine";
             this.menuConfigEngine.Size = new System.Drawing.Size(207, 22);
-            this.menuConfigEngine.Text = "&Configure Sphere...";
+            this.menuConfigEngine.Text = "Configure &Engine...";
             this.menuConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // toolStripSeparator5
@@ -1009,7 +1019,7 @@
             this.menuEditorSettings.Image = global::SphereStudio.Properties.Resources.application_view_list;
             this.menuEditorSettings.Name = "menuEditorSettings";
             this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
-            this.menuEditorSettings.Text = "&Editor Settings...";
+            this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
             // IDEForm
@@ -1052,7 +1062,7 @@
         private System.Windows.Forms.ToolStrip EditorTools;
         private System.Windows.Forms.ToolStripButton SaveToolButton;
         private System.Windows.Forms.ToolStripSeparator ToolSeperator1;
-        private System.Windows.Forms.ToolStripButton OptionsToolButton;
+        private System.Windows.Forms.ToolStripButton toolConfigEngine;
         private System.Windows.Forms.ToolStripSeparator ToolSeperator2;
         private System.Windows.Forms.ToolStripButton CutToolButton;
         private System.Windows.Forms.ToolStripButton CopyToolButton;
@@ -1084,7 +1094,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuCloseProject;
         private System.Windows.Forms.ToolStripMenuItem menuOpenLastProject;
         private System.Windows.Forms.ToolStripSeparator Separator1;
-        private System.Windows.Forms.ToolStripMenuItem menuNew;
         private System.Windows.Forms.ToolStripMenuItem menuOpen;
         private System.Windows.Forms.ToolStripSeparator Seperator2;
         private System.Windows.Forms.ToolStripMenuItem menuSave;
@@ -1123,8 +1132,6 @@
         private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSplitButton toolTestGame;
-        private System.Windows.Forms.ToolStripComboBox PlatformTool;
         private System.Windows.Forms.ToolStripMenuItem menuTools;
         private System.Windows.Forms.ToolStripMenuItem menuConfigEngine;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
@@ -1142,6 +1149,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem menuStopDebug;
         private System.Windows.Forms.ToolStripMenuItem menuBreakNow;
+        private System.Windows.Forms.ToolStripButton toolTestGame;
+        private System.Windows.Forms.ToolStripMenuItem buildToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuBuildPackage;
+        internal System.Windows.Forms.ToolStripMenuItem menuNew;
     }
 }
 

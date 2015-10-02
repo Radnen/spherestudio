@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Sphere.Plugins.Views
 {
     /// <summary>
-    /// Specifies the interface for editable documents in Sphere Studio.
+    /// Provides a base class for editable documents in Sphere Studio.
     /// </summary>
     public class DocumentView : UserControl
     {

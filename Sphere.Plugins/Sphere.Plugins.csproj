@@ -42,22 +42,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ICompiler.cs" />
+    <Compile Include="Interfaces\IConsole.cs" />
     <Compile Include="Interfaces\IDock.cs" />
+    <Compile Include="Interfaces\IEditor.cs" />
+    <Compile Include="Interfaces\IFileOpener.cs" />
+    <Compile Include="Interfaces\IPlugin.cs" />
+    <Compile Include="Interfaces\ISettingsPage.cs" />
+    <Compile Include="Interfaces\IStarter.cs" />
     <Compile Include="Views\DocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interfaces\IDebugger.cs" />
-    <Compile Include="IDebugPlugin.cs" />
-    <Compile Include="IEditorPlugin.cs" />
     <Compile Include="Views\ImageView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interfaces\IIDE.cs" />
-    <Compile Include="IPlugin.cs" />
+    <Compile Include="IPluginMain.cs" />
     <Compile Include="Interfaces\IProject.cs" />
-    <Compile Include="Views\ScriptView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Views\ScriptView.cs" />
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginWrapper.cs" />

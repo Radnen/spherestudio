@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class SoundPicker : UserControl, IStyleable
+    partial class SoundPicker : UserControl, IStyleable
     {
         private readonly string[] _fileTypes = new[] 
         {
@@ -37,7 +38,7 @@ namespace SphereStudio.Plugins
         private IPlayer _music;
         private string _musicName;
 
-        public SoundPicker(IPlugin plugin)
+        public SoundPicker(IPluginMain plugin)
         {
             InitializeComponent();
 

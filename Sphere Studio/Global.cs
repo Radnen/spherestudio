@@ -8,6 +8,7 @@ using System.Linq;
 using SphereStudio.Forms;
 using SphereStudio.IDE;
 using SphereStudio.Settings;
+using SphereStudio.UI;
 using Sphere.Plugins;
 
 namespace SphereStudio
@@ -45,9 +46,9 @@ namespace SphereStudio
                         Assembly assembly = Assembly.LoadFrom(file.FullName);
                         foreach (Type type in assembly.GetTypes())
                         {
-                            if (type.GetInterface("IPlugin") != null)
+                            if (type.GetInterface("IPluginMain") != null)
                             {
-                                IPlugin b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPlugin;
+                                IPluginMain b = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPluginMain;
                                 if (b == null) continue;
                                 string name = Path.GetFileNameWithoutExtension(file.Name);
                                 if (name != null && !Plugins.Keys.Contains(name))  // only the first by that name is used
@@ -169,7 +170,7 @@ namespace SphereStudio
         /// <returns>Returns true if there were changes.</returns>
         public static bool EditSettings()
         {
-            EditorSettings settings = new EditorSettings(Settings);
+            SettingsCenter settings = new SettingsCenter();
             if (settings.ShowDialog() != DialogResult.OK)
                 return false;
             Settings.Apply();

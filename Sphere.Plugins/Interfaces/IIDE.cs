@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 using Sphere.Plugins.Views;
@@ -7,7 +8,7 @@ using Sphere.Plugins.Views;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
-    /// Provides the interface to the Sphere Studio core.
+    /// Specifies the interface for the Sphere Studio IDE.
     /// </summary>
     public interface IIDE : ISynchronizeInvoke
     {
@@ -36,11 +37,6 @@ namespace Sphere.Plugins.Interfaces
         string[] Documents { get; }
 
         /// <summary>
-        /// Gets the path of the current Sphere engine used for game testing.
-        /// </summary>
-        string EnginePath { get; }
-        
-        /// <summary>
         /// Add event handlers to do things when a project opens.
         /// </summary>
         event EventHandler LoadProject;
@@ -56,6 +52,18 @@ namespace Sphere.Plugins.Interfaces
         event EventHandler UnloadProject;
 
         void Activate();
+
+        /// <summary>
+        /// Creates a ScriptView for an embedded script editor.
+        /// </summary>
+        /// <returns></returns>
+        ScriptView CreateScriptView();
+
+        /// <summary>
+        /// Creates an ImageView for an embedded image editor.
+        /// </summary>
+        /// <returns></returns>
+        ImageView CreateImageView();
         
         /// <summary>
         /// Add a new root level item to the Sphere Studio menu bar.
@@ -72,19 +80,19 @@ namespace Sphere.Plugins.Interfaces
         void AddMenuItem(string location, ToolStripItem newItem);
 
         /// <summary>
-        /// Registers an editor plugin as a File:New handler. This adds an
-        /// entry to the File:New menu in the IDE.
+        /// Registers an IFileOpener as a File:New handler. This adds an entry to the
+        /// File:New menu in the IDE.
         /// </summary>
         /// <param name="plugin">The editor plugin to register.</param>
         /// <param name="name">The friendly name of the document type being created, e.g. "Script" or "Image".</param>
-        /// <param name="folderNames">The names of the top-level folders for which this handler applies.</param>
-        void RegisterNewHandler(IEditorPlugin plugin, string name, params string[] folderNames);
+        /// <param name="menuIcon">The icon to display in the New menu.</param>
+        void RegisterNewHandler(IFileOpener opener, string name, Icon menuIcon);
         
         /// <summary>
         /// Unregisters a previously registered File:New handler.
         /// </summary>
         /// <param name="plugin">The editor plugin to unregister.</param>
-        void UnregisterNewHandler(IEditorPlugin plugin);
+        void UnregisterNewHandler(IFileOpener opener);
         
         /// <summary>
         /// Registers a file type to be shown in the "Open File" dialog of the IDE.

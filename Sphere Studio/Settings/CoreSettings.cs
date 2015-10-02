@@ -19,56 +19,67 @@ namespace SphereStudio.Settings
         {
             Preset = GetString("preset", "");
         }
-        
-        public bool AutoOpenProject
+
+        public bool AutoHideBuild
+        {
+            get { return GetBoolean("autoHideBuild", true); }
+            set { SetValue("autoHideBuild", value); }
+        }
+
+        public bool AutoOpenLastProject
         {
             get { return GetBoolean("autoOpenProject", false); }
             set { SetValue("autoOpenProject", value); }
         }
 
-        public bool AutoScriptHeader
+        public bool UseScriptHeaders
         {
-            get { return GetBoolean("autoScriptHeader", false); }
-            set { SetValue("autoScriptHeader", value); }
+            get { return GetBoolean("useScriptHeaders", false); }
+            set { SetValue("useScriptHeaders", value); }
         }
 
-        public bool AutoStartPage
+        public bool UseStartPage
         {
             get { return GetBoolean("autoStartPage", true); }
             set { SetValue("autoStartPage", value); }
         }
 
-        public string DefaultEditor
+        public string Compiler
         {
-            get {
-                string value = GetString("defaultEditor", "");
-                return string.IsNullOrWhiteSpace(value) ? null : value;
-            }
-            set
-            {
-                Preset = null;
-                SetValue("defaultEditor", value ?? "");
-            }
+            get { return GetString("compiler", ""); }
+            set { Preset = null; SetValue("compiler", value); }
         }
 
-        public string EngineConfigPath
+        public string Engine
         {
-            get { return GetString("engineConfigPath", ""); }
-            set { Preset = null; SetValue("engineConfigPath", value); }
-        }
-        
-        public string EnginePath
-        {
-            get { return GetString("enginePath", ""); }
-            set { Preset = null; SetValue("enginePath", value); }
-        }
-        
-        public string EnginePath64
-        {
-            get { return GetString("enginePath64", ""); }
-            set { Preset = null; SetValue("enginePath64", value); }
+            get { return GetString("engine", ""); }
+            set { Preset = null; SetValue("engine", value); }
         }
 
+        public string DefaultFileOpener
+        {
+            get { return GetString("defaultFileOpener", ""); }
+            set { Preset = null; SetValue("defaultFileOpener", value); }
+        }
+
+        public string ImageEditor
+        {
+            get { return GetString("imageEditor", ""); }
+            set { Preset = null; SetValue("imageEditor", value); }
+        }
+
+        public string ScriptEditor
+        {
+            get { return GetString("scriptEditor", ""); }
+            set { Preset = null; SetValue("scriptEditor", value); }
+        }
+
+        public string SpherePath
+        {
+            get { return GetString("spherePath", ""); }
+            set { SetValue("spherePath", value); }
+        }
+        
         public string LastProject
         {
             get { return GetString("lastProject", ""); }
@@ -96,10 +107,11 @@ namespace SphereStudio.Settings
                 {
                     using (INI preset = new INI(path, false))
                     {
-                        EngineConfigPath = preset.Read("Preset", "engineConfigPath", "");
-                        EnginePath = preset.Read("Preset", "enginePath", "");
-                        EnginePath64 = preset.Read("Preset", "enginePath64", "");
-                        DefaultEditor = preset.Read("Preset", "defaultEditor", "");
+                        Compiler = preset.Read("Preset", "compiler", "");
+                        Engine = preset.Read("Preset", "engine", "");
+                        DefaultFileOpener = preset.Read("Preset", "defaultFileOpener", "");
+                        ImageEditor = preset.Read("Preset", "imageEditor", "");
+                        ScriptEditor = preset.Read("Preset", "scriptEditor", "");
                         Plugins = preset.Read("Preset", "plugins", "").Split('|');
                     }
                     SetValue("preset", value);
@@ -128,12 +140,6 @@ namespace SphereStudio.Settings
             {
                 SetValue("startView", value);
             }
-        }
-
-        public string TestPlatform
-        {
-            get { return GetString("testPlatform", Environment.Is64BitOperatingSystem ? "x64" : "x86"); }
-            set { SetValue("testPlatform", value); }
         }
 
         public string UIStyle

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Core.Editor;
+using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 
 namespace Sphere.Plugins.EditShims
@@ -20,8 +21,8 @@ namespace Sphere.Plugins.EditShims
         public ImageEditShim()
         {
             InitializeComponent();
-            
-            _view = PluginManager.CreateEditView(EditorType.Image) as ImageView;
+
+            _view = PluginManager.IDE.CreateImageView();
             if (_view != null)
             {
                 _view.Dock = DockStyle.Fill;

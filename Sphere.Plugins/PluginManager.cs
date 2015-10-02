@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -7,33 +8,68 @@ using Sphere.Plugins.Views;
 
 namespace Sphere.Plugins
 {
+    struct PluginEntry
+    {
+        public IPlugin Plugin;
+        public IPluginMain PluginMain;
+        public string Name;
+
+        public PluginEntry(IPluginMain main, IPlugin plugin, string name)
+        {
+            PluginMain = main;
+            Plugin = plugin;
+            Name = name;
+        }
+    }
+    
     /// <summary>
     /// Manages Sphere Studio plugins. This is a singleton.
     /// </summary>
     public static class PluginManager
     {
-        static Dictionary<EditorType, IEditorPlugin> _embedders;
-        static Dictionary<string, IEditorPlugin> _handlers;
-        static HashSet<IEditorPlugin> _wildcards;
+        static List<PluginEntry> _plugins;
+        static Dictionary<string, IFileOpener> _fileOpeners;
         
         static PluginManager()
         {
-            _embedders = new Dictionary<EditorType, IEditorPlugin>();
-            _handlers = new Dictionary<string, IEditorPlugin>();
-            _wildcards = new HashSet<IEditorPlugin>();
+            _plugins = new List<PluginEntry>();
+            _fileOpeners = new Dictionary<string, IFileOpener>();
         }
 
         /// <summary>
-        /// Creates an edit control for the specified type of object.
+        /// Registers a compiler. Compilers are used to build games.
         /// </summary>
-        /// <param name="type">The type of object to be edited.</param>
-        /// <returns>The new edit control, or null if no suitable plugin is available.</returns>
-        public static DocumentView CreateEditView(EditorType type)
+        /// <param name="compiler">The compiler to register.</param>
+        /// <param name="name">The friendly name of the compiler, used in the UI.</param>
+        public static void RegisterPlugin(IPluginMain main, IPlugin plugin, string name)
         {
-            if (_embedders.Keys.Contains(type))
-                return _embedders[type].CreateEditView();
-            else
-                return null;
+            _plugins.Add(new PluginEntry(main, plugin, name));
+        }
+
+        /// <summary>
+        /// Unregisters a compiler.
+        /// </summary>
+        /// <param name="compiler"></param>
+        public static void UnregisterPlugins(IPluginMain main)
+        {
+            _plugins.RemoveAll(i => i.PluginMain == main);
+        }
+
+        public static string[] GetPluginNames<T>()
+        {
+            return _plugins
+                .Where(x => typeof(T).IsAssignableFrom(x.Plugin.GetType()))
+                .OrderBy(x => x.Name)
+                .OrderBy(x => x.PluginMain == null ? 0 : 1)
+                .Select(x => x.Name)
+                .Distinct().ToArray();
+        }
+
+        public static T GetPlugin<T>(string name) where T : IPlugin
+        {
+            return (T)_plugins
+                .Where(i => typeof(T).IsAssignableFrom(i.Plugin.GetType()))
+                .FirstOrDefault(i => i.Name == name).Plugin;
         }
 
         /// <summary>
@@ -46,10 +82,10 @@ namespace Sphere.Plugins
         /// </returns>
         public static DocumentView NewDocument(string extension)
         {
-            if (_handlers.Keys.Contains(extension))
+            if (_fileOpeners.Keys.Contains(extension))
             {
-                IEditorPlugin plugin = _handlers[extension];
-                DocumentView view = plugin.NewDocument();
+                IFileOpener opener = _fileOpeners[extension];
+                DocumentView view = opener.New();
                 return view;
             }
 
@@ -59,21 +95,21 @@ namespace Sphere.Plugins
         /// <summary>
         /// Opens a specified file as an IDocumentView.
         /// </summary>
-        /// <param name="filename">The fully qualified path to the file to open.</param>
+        /// <param name="fileName">The fully qualified path to the file to open.</param>
         /// <returns>
         /// An IDocumentView of the opened document, or null if the file couldn't
         /// be opened with any active plugin.
         /// </returns>
-        public static bool OpenDocument(string filename, out DocumentView view)
+        public static bool OpenDocument(string fileName, out DocumentView view)
         {
             view = null;
             
-            string extension = Path.GetExtension(filename);
+            string extension = Path.GetExtension(fileName);
             if (extension != "") extension = extension.Substring(1);
-            if (_handlers.Keys.Contains(extension))
+            if (_fileOpeners.Keys.Contains(extension))
             {
-                IEditorPlugin plugin = _handlers[extension];
-                view = plugin.OpenDocument(filename);
+                IFileOpener opener = _fileOpeners[extension];
+                view = opener.Open(fileName);
                 return true;
             }
             else
@@ -83,15 +119,15 @@ namespace Sphere.Plugins
         }
 
         /// <summary>
-        /// Registers a file extension with a specified editor plugin.
+        /// Registers a file opener to open specified file types.
         /// </summary>
-        /// <param name="editor">The IEditorPlugin which will handle editing.</param>
-        /// <param name="extensions">An array of file extensions to register, sans dot.</param>
-        public static void RegisterExtensions(IEditorPlugin editor, params string[] extensions)
+        /// <param name="opener">The IFileOpener to use to open the specified types.</param>
+        /// <param name="extensions">An array of file extensions to register, sans dots.</param>
+        public static void RegisterExtensions(IFileOpener opener, params string[] extensions)
         {
             foreach (string ext in extensions)
             {
-                _handlers[ext] = editor;
+                _fileOpeners[ext] = opener;
             }
         }
 
@@ -103,58 +139,8 @@ namespace Sphere.Plugins
         {
             foreach (string ext in extensions)
             {
-                _handlers.Remove(ext);
+                _fileOpeners.Remove(ext);
             }
-        }
-
-        /// <summary>
-        /// Registers a plugin as an editor for a specified type of data.
-        /// </summary>
-        /// <param name="type">The data type which is to be edited.</param>
-        /// <param name="editor">The plugin object which will handle editing. Must implement IEditorPlugin</param>
-        public static void RegisterEditor(EditorType type, IEditorPlugin editor)
-        {
-            _embedders[type] = editor;
-        }
-
-        /// <summary>
-        /// Unregisters a previously-registered editor plugin.
-        /// </summary>
-        /// <param name="editor">The plugin object to unregister.</param>
-        public static void UnregisterEditor(IEditorPlugin editor)
-        {
-            while (_embedders.ContainsValue(editor)) {
-                var key = _embedders.Keys.FirstOrDefault(n => _embedders[n] == editor);
-                if (key != default(EditorType)) _embedders.Remove(key);
-            }
-        }
-
-        /// <summary>
-        /// Gets an array of active wildcard plugins.
-        /// </summary>
-        /// <returns></returns>
-        public static IEditorPlugin[] GetWildcards()
-        {
-            return _wildcards.ToArray();
-        }
-        
-        /// <summary>
-        /// Registers an editor plugin as a wildcard. Wildcards are used to open files
-        /// when no other plugin claims the file type.
-        /// </summary>
-        /// <param name="editor">An editor plugin to register as a wildcard.</param>
-        public static void RegisterWildcard(IEditorPlugin editor)
-        {
-            _wildcards.Add(editor);
-        }
-
-        /// <summary>
-        /// Unregisters a wildcard plugin registered with RegisterWildcard().
-        /// </summary>
-        /// <param name="editor">The plugin to unregister.</param>
-        public static void UnregisterWildcard(IEditorPlugin editor)
-        {
-            _wildcards.Remove(editor);
         }
 
         /// <summary>

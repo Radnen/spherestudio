@@ -12,12 +12,12 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class MapEditPlugin : IEditorPlugin
+    public class MapEditPlugin : IPluginMain, IFileOpener
     {
         public string Name { get { return "Map Editor"; } }
-        public string Author { get { return "Radnen"; } }
+        public string Author { get { return "Spherical"; } }
         public string Description { get { return "Sphere Studio default map editor"; } }
-        public string Version { get { return "2.0.0"; } }
+        public string Version { get { return "1.2.0"; } }
         public Icon Icon { get; set; }
 
         #region wire up Map menu items
@@ -105,32 +105,32 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.IDE.RegisterNewHandler(this, "Map", "maps");
+            PluginManager.RegisterPlugin(this, this, Name);
+            PluginManager.RegisterExtensions(this, _extensions);
+            PluginManager.IDE.RegisterNewHandler(this, "Map", Icon);
             PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
             PluginManager.IDE.AddMenuItem(_mapMenu, "Tools");
-            PluginManager.RegisterExtensions(this, _extensions);
         }
 
         public void ShutDown()
         {
+            PluginManager.UnregisterExtensions(_extensions);
+            PluginManager.UnregisterPlugins(this);
             PluginManager.IDE.UnregisterNewHandler(this);
             PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_mapMenu);
-            PluginManager.UnregisterExtensions(_extensions);
         }
 
-        public DocumentView CreateEditView() { return null; }
-
-        public DocumentView NewDocument()
+        public DocumentView New()
         {
             DocumentView view = new MapEditView();
             return view.NewDocument() ? view : null;
         }
 
-        public DocumentView OpenDocument(string filepath)
+        public DocumentView Open(string fileName)
         {
             DocumentView view = new MapEditView();
-            view.Load(filepath);
+            view.Load(fileName);
             return view;
         }
     }

@@ -20,7 +20,7 @@ namespace Sphere.Plugins.Views
     }
     
     /// <summary>
-    /// Specifies the interface for a script editing component.
+    /// Provides a base class for a script editing component.
     /// </summary>
     public class ScriptView : DocumentView
     {

@@ -80,12 +80,12 @@ namespace SphereStudio.Plugins
 
         public override void Activate()
         {
-            ImageEditPlugin.ShowMenus(true);
+            PluginMain.ShowMenus(true);
         }
 
         public override void Deactivate()
         {
-            ImageEditPlugin.ShowMenus(false);
+            PluginMain.ShowMenus(false);
         }
 
         public override void Undo()

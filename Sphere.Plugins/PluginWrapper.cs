@@ -10,7 +10,7 @@ namespace Sphere.Plugins
         /// <summary>
         /// Gets the plugin this handler handles.
         /// </summary>
-        public IPlugin Plugin { get; private set; }
+        public IPluginMain Plugin { get; private set; }
 
         /// <summary>
         /// Gets whether or not this plugin is activated.
@@ -27,7 +27,7 @@ namespace Sphere.Plugins
         /// </summary>
         /// <param name="plugin"></param>
         /// <param name="name"></param>
-        public PluginWrapper(IPlugin plugin, string name)
+        public PluginWrapper(IPluginMain plugin, string name)
         {
             Plugin = plugin;
             Name = name;

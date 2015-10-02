@@ -252,12 +252,12 @@ namespace SphereStudio.Plugins
 
         public override void Activate()
         {
-            ScriptEditPlugin.ShowMenus(true);
+            PluginMain.ShowMenus(true);
         }
 
         public override void Deactivate()
         {
-            ScriptEditPlugin.ShowMenus(false);
+            PluginMain.ShowMenus(false);
         }
 
         public override void Cut()
@@ -317,7 +317,7 @@ namespace SphereStudio.Plugins
             if (char.IsLetter(e.Ch))
             {
                 string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
-                var q = from s in ScriptEditPlugin.Functions
+                var q = from s in PluginMain.Functions
                         where s.ToLower().Contains(word)
                         select s.Replace(";", "");
                 List<string> filter = q.ToList();

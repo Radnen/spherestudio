@@ -55,7 +55,9 @@ namespace SphereStudio.Settings
         
         public string[] GetStringArray(string key)
         {
-            return GetString(key, "").Split('|');
+            string values = GetString(key, "");
+            return !string.IsNullOrEmpty(values)
+                ? values.Split('|') : new string[0];
         }
 
         public bool Save()

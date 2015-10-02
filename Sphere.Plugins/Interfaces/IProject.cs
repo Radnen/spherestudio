@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
-    /// Specifies the interface for a Sphere game project.
+    /// Specifies the interface for a Sphere Studio project.
     /// </summary>
     public interface IProject
     {
@@ -33,7 +33,7 @@ namespace Sphere.Plugins.Interfaces
         string Author { get; set; }
 
         /// <summary>
-        /// Gets or sets a short description of the game.
+        /// Gets or sets a short summary/description of the game.
         /// </summary>
         string Description { get; set; }
         
@@ -48,11 +48,11 @@ namespace Sphere.Plugins.Interfaces
         int ScreenHeight { get; set; }
 
         /// <summary>
-        /// Builds a game distribution from the project.
+        /// Gets the filename of the game's startup script, relative to
+        /// 'scripts'.
         /// </summary>
-        /// <returns>The full path of the built distribution.</returns>
-        Task<string> Build();
-        
+        string MainScript { get; }
+
         /// <summary>
         /// Gets a dictionary of all breakpoints set for this project.
         /// </summary>

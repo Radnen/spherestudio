@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-using SphereStudio.Pipeline;
+using SphereStudio.UI;
 using SphereStudio.Settings;
 using Sphere.Core;
 using Sphere.Plugins.Interfaces;
@@ -15,7 +17,7 @@ namespace SphereStudio.IDE
     class Project : IProject, IDisposable
     {
         private Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
-        private BuildEngine _builder;
+        private BuildConsole _buildView;
         private INISettings _ini;
         private string _path;
 
@@ -24,7 +26,6 @@ namespace SphereStudio.IDE
             Directory.CreateDirectory(rootPath);
             var project = new Project(Path.Combine(rootPath, MakeFileName(name)), true) { Name = name };
             project.Save();
-            project._builder.Prep();
             return project;
         }
 
@@ -46,7 +47,7 @@ namespace SphereStudio.IDE
             else if (sgms.Length > 0)
                 return new Project(sgms[0], allowBuild);
             else
-                throw new FileNotFoundException("No Sphere project was found in the specified directory.");
+                return null;
         }
 
         private Project(string filepath, bool allowBuilding)
@@ -98,6 +99,7 @@ namespace SphereStudio.IDE
                     file.Close();
                 }
                 _path = Path.Combine(Path.GetDirectoryName(_path), MakeFileName(Name));
+                _ini.Save();
             }
             else
             {
@@ -107,16 +109,14 @@ namespace SphereStudio.IDE
             }
             if (allowBuilding)
             {
-                _builder = new BuildEngine(this);
+                _buildView = new BuildConsole();
+                _buildView.DockPane.Hide();
             }
         }
 
         public void Dispose()
         {
-            if (_builder != null)
-            {
-                _builder.Dispose();
-            }
+            if (_buildView != null) _buildView.Dispose();
         }
 
         public UserSettings User { get; private set; }
@@ -135,7 +135,7 @@ namespace SphereStudio.IDE
         /// </summary>
         public string BuildPath
         {
-            get { return _ini.GetString("buildDir", "dist/"); }
+            get { return _ini.GetString("buildDir", "./"); }
             set
             {
                 value = string.IsNullOrWhiteSpace(value) ? "./" : value;
@@ -209,18 +209,6 @@ namespace SphereStudio.IDE
             _ini.SaveAs(_path);
         }
 
-        public async Task<string> Build()
-        {
-            return await Build(false);
-        }
-
-        public async Task<string> Build(bool showStatus)
-        {
-            string distPath = await _builder.Build();
-            if (!showStatus) _builder.StatusPane.Hide();
-            return distPath;
-        }
-        
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
         {
             Dictionary<string, int[]> retval = new Dictionary<string, int[]>();

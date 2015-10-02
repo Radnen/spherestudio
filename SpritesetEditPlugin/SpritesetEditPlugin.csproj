@@ -89,7 +89,7 @@
     <Compile Include="SpritesetEditView.Designer.cs">
       <DependentUpon>SpritesetEditView.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpritesetEditPlugin.cs" />
+    <Compile Include="PluginMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

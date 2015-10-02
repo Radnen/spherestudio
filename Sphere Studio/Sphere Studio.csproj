@@ -85,10 +85,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jurassic.2.2.0\lib\Jurassic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -104,27 +100,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pipeline\FileWriter.cs" />
-    <Compile Include="Pipeline\BuildEngine.cs" />
-    <Compile Include="Pipeline\Source.cs" />
-    <Compile Include="Pipeline\Target.cs" />
-    <Compile Include="Components\BuildStatus.cs">
+    <Compile Include="UI\SettingsCenter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SettingsCenter.Designer.cs">
+      <DependentUpon>SettingsCenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BuildConsole.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\BuildStatus.Designer.cs">
-      <DependentUpon>BuildStatus.cs</DependentUpon>
+    <Compile Include="UI\BuildConsole.Designer.cs">
+      <DependentUpon>BuildConsole.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutBoxForm.cs">
+    <Compile Include="UI\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutBoxForm.Designer.cs">
-      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    <Compile Include="UI\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ConfigManagerForm.cs">
+    <Compile Include="UI\ConfigManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ConfigManagerForm.Designer.cs">
-      <DependentUpon>ConfigManagerForm.cs</DependentUpon>
+    <Compile Include="UI\ConfigManager.Designer.cs">
+      <DependentUpon>ConfigManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SavePresetForm.cs">
       <SubType>Form</SubType>
@@ -133,6 +131,7 @@
       <DependentUpon>SavePresetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
+    <Compile Include="IDE\BuildEngine.cs" />
     <Compile Include="IDE\DockManager.cs" />
     <Compile Include="IDE\DocumentTab.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -148,16 +147,28 @@
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="RadEditors\RadObjects.cs" />
-    <Compile Include="Components\ProjectTree.cs">
+    <Compile Include="UI\ProjectTree.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\ProjectTree.Designer.cs">
+    <Compile Include="UI\ProjectTree.Designer.cs">
       <DependentUpon>ProjectTree.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\StartPage.cs">
+    <Compile Include="UI\SettingsPages\MainPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\StartPage.Designer.cs">
+    <Compile Include="UI\SettingsPages\MainPage.Designer.cs">
+      <DependentUpon>MainPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsPages\SpherePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\SettingsPages\SpherePage.Designer.cs">
+      <DependentUpon>SpherePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\StartPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
     <Compile Include="IDEForm.cs">
@@ -165,12 +176,6 @@
     </Compile>
     <Compile Include="IDEForm.Designer.cs">
       <DependentUpon>IDEForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditorSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\EditorSettings.Designer.cs">
-      <DependentUpon>EditorSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ColorPicker\ColorPicker.cs">
       <SubType>Form</SubType>
@@ -201,14 +206,17 @@
     <Compile Include="Settings\CoreSettings.cs" />
     <Compile Include="IDE\Project.cs" />
     <Compile Include="Settings\UserSettings.cs" />
-    <EmbeddedResource Include="Components\BuildStatus.resx">
-      <DependentUpon>BuildStatus.cs</DependentUpon>
+    <EmbeddedResource Include="UI\SettingsCenter.resx">
+      <DependentUpon>SettingsCenter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutBoxForm.resx">
-      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\BuildConsole.resx">
+      <DependentUpon>BuildConsole.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConfigManagerForm.resx">
-      <DependentUpon>ConfigManagerForm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ConfigManager.resx">
+      <DependentUpon>ConfigManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SavePresetForm.resx">
       <DependentUpon>SavePresetForm.cs</DependentUpon>
@@ -216,19 +224,22 @@
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\ProjectTree.resx">
+    <EmbeddedResource Include="UI\ProjectTree.resx">
       <DependentUpon>ProjectTree.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\StartPage.resx">
+    <EmbeddedResource Include="UI\SettingsPages\MainPage.resx">
+      <DependentUpon>MainPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SettingsPages\SpherePage.resx">
+      <DependentUpon>SpherePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\StartPage.resx">
       <DependentUpon>StartPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="IDEForm.resx">
       <DependentUpon>IDEForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditorSettings.resx">
-      <DependentUpon>EditorSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
@@ -291,9 +302,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BuildScripts\Sphere.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="license.txt" />
     <None Include="SphericalLogo.png" />
     <Content Include="Sphere Studio.ico" />
@@ -321,9 +329,9 @@
       <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
       <Name>MapEditPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\minisphere Remote\minisphere Remote.csproj">
+    <ProjectReference Include="..\minisphereGDKPlugin\minisphereGDKPlugin.csproj">
       <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
-      <Name>minisphere Remote</Name>
+      <Name>minisphereGDKPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScriptEditPlugin\ScriptEditPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
@@ -341,9 +349,9 @@
       <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
       <Name>Sphere.Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPKPackerPlugin\SPKPackerPlugin.csproj">
-      <Project>{4c86712c-f591-432e-8185-f077903254d9}</Project>
-      <Name>SPKPackerPlugin</Name>
+    <ProjectReference Include="..\SphereClassicPlugin\SphereClassicPlugin.csproj">
+      <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
+      <Name>SphereClassicPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditPlugin.csproj">
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
@@ -363,7 +371,6 @@
   <PropertyGroup>
     <PostBuildEvent>if not exist ".\Plugins" mkdir ".\Plugins"
 move "*Plugin.dll" ".\Plugins"
-xcopy /y /e /d /f "$(ProjectDir)Scripts\*.*" "$(TargetDir)Scripts\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

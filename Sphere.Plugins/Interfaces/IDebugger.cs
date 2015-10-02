@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sphere.Plugins.Interfaces
 {
+    /// <summary>
+    /// Specifies the interface for a single-step debugger.
+    /// </summary>
     public interface IDebugger
     {
         /// <summary>

@@ -59,7 +59,7 @@
     <Compile Include="TaskList.Designer.cs">
       <DependentUpon>TaskList.cs</DependentUpon>
     </Compile>
-    <Compile Include="TaskListPlugin.cs" />
+    <Compile Include="PluginMain.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
