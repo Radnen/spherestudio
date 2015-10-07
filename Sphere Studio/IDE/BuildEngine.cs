@@ -5,6 +5,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
@@ -141,11 +142,22 @@ namespace SphereStudio.IDE
         public static async Task Test(IProject project)
         {
             var starter = PluginManager.GetPlugin<IStarter>(Global.Settings.Engine);
-            string outPath = await Build(project);
-            if (outPath != null)
+            if (starter != null)
             {
-                starter.Start(outPath, false);
+                string outPath = await Build(project);
+                if (outPath != null)
+                {
+                    starter.Start(outPath, false);
+                }
             }
+            else
+            {
+                MessageBox.Show(
+                    "No engine is available to test play this project. Open Configuration Manager and select an engine, then try again.",
+                    "Unable to Test Game", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
         }
     }
 }

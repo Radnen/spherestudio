@@ -20,6 +20,7 @@ namespace minisphere.GDK.Debugger.UI
             DockPane = PluginManager.IDE.Docking.AddPane(this, name,
                 icon != null ? Icon.FromHandle(icon.GetHicon()) : null,
                 dockHint);
+            this.Disposed += (sender, e) => DockPane.Dispose();
         }
 
         public IDockPane DockPane { get; private set; }

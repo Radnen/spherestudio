@@ -888,8 +888,8 @@
             // menuBuildPackage
             // 
             this.menuBuildPackage.Name = "menuBuildPackage";
-            this.menuBuildPackage.Size = new System.Drawing.Size(157, 22);
-            this.menuBuildPackage.Text = "&Build Package...";
+            this.menuBuildPackage.Size = new System.Drawing.Size(161, 22);
+            this.menuBuildPackage.Text = "&Package Game...";
             this.menuBuildPackage.Click += new System.EventHandler(this.menuBuildPackage_Click);
             // 
             // debugToolStripMenuItem

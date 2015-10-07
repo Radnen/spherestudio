@@ -44,7 +44,7 @@ namespace Sphere.Plugins.Interfaces
     /// <summary>
     /// Provides an interface for a dock pane.
     /// </summary>
-    public interface IDockPane
+    public interface IDockPane : IDisposable
     {
         /// <summary>
         /// Shows the pane.
