@@ -159,12 +159,6 @@
     <Compile Include="UI\SettingsPages\MainPage.Designer.cs">
       <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\SettingsPages\SpherePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\SettingsPages\SpherePage.Designer.cs">
-      <DependentUpon>SpherePage.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\StartPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -230,9 +224,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SettingsPages\MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\SettingsPages\SpherePage.resx">
-      <DependentUpon>SpherePage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\StartPage.resx">
       <DependentUpon>StartPage.cs</DependentUpon>

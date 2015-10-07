@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Sphere.Plugins.Views
     /// <summary>
     /// Provides a base class for an image editing component.
     /// </summary>
+    [ToolboxItem(false)]
     public class ImageView : DocumentView
     {
         public override bool IsDirty

@@ -12,13 +12,12 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class MapEditPlugin : IPluginMain, IFileOpener
+    public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get { return "Map Editor"; } }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Sphere Studio default map editor"; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; set; }
 
         #region wire up Map menu items
         private static ToolStripMenuItem _mapMenu;
@@ -27,7 +26,7 @@ namespace SphereStudio.Plugins
         private static ToolStripMenuItem _recenterMenuItem;
         private static ToolStripMenuItem _importTilesetMenuItem;
 
-        static MapEditPlugin()
+        static PluginMain()
         {
             _mapMenu = new ToolStripMenuItem("&Map") { Visible = false };
             _exportTilesetMenuItem = new ToolStripMenuItem("E&xport Tileset...", null, menuExportTileset_Click);
@@ -58,7 +57,7 @@ namespace SphereStudio.Plugins
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath;
+                diag.InitialDirectory = PluginManager.IDE.Project.RootPath;
                 diag.Filter = @"Image Files (.png)|*.png;";
                 diag.DefaultExt = "png";
 
@@ -71,7 +70,7 @@ namespace SphereStudio.Plugins
         {
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath;
+                diag.InitialDirectory = PluginManager.IDE.Project.RootPath;
                 diag.Filter = @"Image Files (.png)|*.png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
@@ -95,31 +94,28 @@ namespace SphereStudio.Plugins
             _mapMenu.Visible = show;
         }
         
-        private readonly string[] _extensions = new[] { "rmp" };
-        private readonly string _openFileFilters = "*.rmp";
-
-        public MapEditPlugin()
+        public PluginMain()
         {
-            Icon = Icon.FromHandle(Properties.Resources.MapIcon.GetHicon());
+            FileTypeName = "Sphere Map";
+            FileExtensions = new[] { "rmp" };
+            FileIcon = Properties.Resources.MapIcon;
         }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, this, Name);
-            PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Map", Icon);
-            PluginManager.IDE.RegisterOpenFileType("Sphere Map Files", _openFileFilters);
+            PluginManager.Register(this, this, Name);
             PluginManager.IDE.AddMenuItem(_mapMenu, "Tools");
         }
 
         public void ShutDown()
         {
-            PluginManager.UnregisterExtensions(_extensions);
-            PluginManager.UnregisterPlugins(this);
-            PluginManager.IDE.UnregisterNewHandler(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.UnregisterAll(this);
             PluginManager.IDE.RemoveMenuItem(_mapMenu);
         }
+
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
 
         public DocumentView New()
         {

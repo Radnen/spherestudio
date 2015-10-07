@@ -13,7 +13,7 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    partial class SoundPicker : UserControl, IStyleable
+    partial class SoundPicker : UserControl, IDockPanel, IStyleable
     {
         private readonly string[] _fileTypes = new[] 
         {
@@ -34,17 +34,12 @@ namespace SphereStudio.Plugins
         private static DeferredFileSystemWatcher _fileWatcher;
         private readonly ImageList _playIcons = new ImageList();
         private readonly ImageList _listIcons = new ImageList();
-        private IDockPane _dock_pane;
         private IPlayer _music;
         private string _musicName;
 
         public SoundPicker(IPluginMain plugin)
         {
             InitializeComponent();
-
-            _dock_pane = PluginManager.IDE.Docking.AddPane(
-                this, "Sound Test", plugin.Icon,
-                DockHint.Left);
 
             _playIcons.ColorDepth = ColorDepth.Depth32Bit;
             _playIcons.Images.Add("play", Properties.Resources.play_tool);
@@ -57,11 +52,19 @@ namespace SphereStudio.Plugins
             _fileWatcher.Changed += fileWatcher_Changed;
             _fileWatcher.IncludeSubdirectories = true;
             _fileWatcher.EnableRaisingEvents = false;
-            WatchProject(PluginManager.IDE.CurrentGame);
+            WatchProject(PluginManager.IDE.Project);
             trackList.SmallImageList = _listIcons;
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
         }
+
+        public Control Control { get { return this; } }
+
+        public DockHint DockHint { get { return DockHint.Left; } }
+
+        public Bitmap DockIcon { get { return Properties.Resources.Icon; } }
+
+        public bool ShowInViewMenu { get { return true; } }
 
         private void fileWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
@@ -191,7 +194,7 @@ namespace SphereStudio.Plugins
         public override void Refresh()
         {
             base.Refresh();
-            if (PluginManager.IDE.CurrentGame == null) { Reset(); return; }
+            if (PluginManager.IDE.Project == null) { Reset(); return; }
 
             string currentItemName = null;
             
@@ -216,7 +219,7 @@ namespace SphereStudio.Plugins
         /// </summary>
         private void UpdateTrackList()
         {
-            string gamePath = PluginManager.IDE.CurrentGame.RootPath;
+            string gamePath = PluginManager.IDE.Project.RootPath;
             if (string.IsNullOrEmpty(gamePath)) return;
 
             trackList.BeginUpdate();

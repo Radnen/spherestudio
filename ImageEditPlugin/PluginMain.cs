@@ -9,13 +9,12 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener, IEditor<ImageView>
+    public class PluginMain : IPluginMain, INewFileOpener, IEditor<ImageView>
     {
         public string Name { get { return "Image Editor"; } }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Sphere Studio default image editor"; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; private set; }
 
         #region wire up Image menu items
         private static ToolStripMenuItem _imageMenu;
@@ -63,36 +62,33 @@ namespace SphereStudio.Plugins
             _imageMenu.Visible = show;
         }
 
-        private readonly string[] _extensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
-        private readonly string _openFileFilters = "*.bmp;*.gif;*.jpg;*.png";
-
         public PluginMain()
         {
-            Icon = Icon.FromHandle(Properties.Resources.palette.GetHicon());
+            FileTypeName = "Bitmap Image";
+            FileExtensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
+            FileIcon = Properties.Resources.palette;
         }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, this, Name);
-            PluginManager.RegisterExtensions(this, "png", "bmp", "gif", "jpg", "jpeg");
+            PluginManager.Register(this, this, Name);
             PluginManager.IDE.AddMenuItem(_imageMenu, "Tools");
-            PluginManager.IDE.RegisterNewHandler(this, "Image", Icon);
-            PluginManager.IDE.RegisterOpenFileType("Images", _openFileFilters);
         }
 
         public void ShutDown()
         {
-            PluginManager.IDE.UnregisterNewHandler(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
             PluginManager.IDE.RemoveMenuItem(_imageMenu);
-            PluginManager.UnregisterExtensions("png", "bmp", "gif", "jpg", "jpeg");
-            PluginManager.UnregisterPlugins(this);
+            PluginManager.UnregisterAll(this);
         }
 
         public ImageView CreateEditView()
         {
             return new ImageEditView();
         }
+
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
 
         public DocumentView New()
         {

@@ -7,7 +7,7 @@ using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins.Forms
 {
-    public partial class TriggerForm : Form
+    partial class TriggerForm : Form
     {
         public Entity Trigger { get; private set; }
         readonly ScriptEditShim _scriptBox = new ScriptEditShim();

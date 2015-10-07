@@ -8,13 +8,12 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener
+    public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get { return "Spriteset Editor"; } }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Sphere Studio default spriteset editor"; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; set; }
 
         #region wire up Spriteset menu
         private static ToolStripMenuItem _spritesetMenu;
@@ -67,30 +66,27 @@ namespace SphereStudio.Plugins
             _spritesetMenu.Visible = show;
         }
         
-        private readonly string[] _extensions = new[] { "rss" };
-        private const string _openFileFilters = "*.rss";
-
         public PluginMain()
         {
-            Icon = Icon.FromHandle(Properties.Resources.PersonIcon.GetHicon());
+            FileTypeName = "Sphere Spriteset";
+            FileExtensions = new[] { "rss" };
+            FileIcon = Properties.Resources.PersonIcon;
         }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, this, Name);
-            PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Spriteset", Icon);
-            PluginManager.IDE.RegisterOpenFileType("Sphere Spritesets", _openFileFilters);
+            PluginManager.Register(this, this, Name);
             PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
         }
 
         public void ShutDown()
         {
-            PluginManager.UnregisterExtensions(_extensions);
-            PluginManager.UnregisterPlugins(this);
-            PluginManager.IDE.UnregisterNewHandler(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.UnregisterAll(this);
         }
+
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
 
         public DocumentView New()
         {

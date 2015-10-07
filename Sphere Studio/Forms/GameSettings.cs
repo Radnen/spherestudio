@@ -13,7 +13,7 @@ using System.Media;
 
 namespace SphereStudio.Forms
 {
-    internal partial class GameSettings : Form, IStyleable
+    partial class GameSettings : Form, IStyleable
     {
         private Project _project;
         

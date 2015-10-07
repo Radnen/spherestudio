@@ -11,7 +11,7 @@ using Sphere.Core;
 
 namespace SphereStudio.Plugins.Components
 {
-    public partial class EntityControl : UserControl
+    partial class EntityControl : UserControl
     {
         private List<Entity> _entities = new List<Entity>();
         private List<Layer> _layers = new List<Layer>();

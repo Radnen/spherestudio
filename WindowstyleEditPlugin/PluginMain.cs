@@ -14,37 +14,33 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class WindowstyleEditPlugin : IPluginMain, IFileOpener
+    public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get { return "Windowstyle Editor"; } }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Sphere Studio default windowstyle editor"; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; set; }
 
-        private readonly string[] _extensions = new[] { "rws" };
-        private const string _openFileFilters = "*.rws";
-
-        public WindowstyleEditPlugin()
+        public PluginMain()
         {
-            Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
+            FileTypeName = "Sphere Windowstyle";
+            FileExtensions = new[] { "rws" };
+            FileIcon = Properties.Resources.GridToolIcon;
         }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, this, Name);
-            PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Windowstyle", Icon);
-            PluginManager.IDE.RegisterOpenFileType("Sphere Windowstyles", _openFileFilters);
+            PluginManager.Register(this, this, Name);
         }
 
         public void ShutDown()
         {
-            PluginManager.UnregisterExtensions(_extensions);
-            PluginManager.UnregisterPlugins(this);
-            PluginManager.IDE.UnregisterNewHandler(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.UnregisterAll(this);
         }
+
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
 
         public DocumentView New()
         {

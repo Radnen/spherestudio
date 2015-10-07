@@ -15,6 +15,7 @@ using System.Linq;
 
 namespace SphereStudio.UI
 {
+    [ToolboxItem(false)]
     internal partial class StartPage : UserControl, IStyleable
     {
         private Project _proj;

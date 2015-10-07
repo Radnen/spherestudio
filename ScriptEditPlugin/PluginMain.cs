@@ -12,30 +12,25 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener, IEditor<ScriptView>
+    public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
     {
         public string Name { get { return "Script Editor"; } }
-        public Icon Icon { get; private set; }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Sphere Studio default script editor"; } }
         public string Version { get { return "1.2.0"; } }
 
         internal static List<String> Functions = new List<string>();
 
-        private readonly string[] _extensions = new[] { "js", "coffee" };
-        private readonly string _openFileFilters = "*.js;*.coffee;*.txt;*.log;*.md;*.ini;*.sav";
-
         public PluginMain()
         {
-            Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
+            FileTypeName = "JS Script";
+            FileExtensions = new[] { "js", "coffee" };
+            FileIcon = Properties.Resources.script_edit;
         }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, this, Name);
-            PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Script", Icon);
-            PluginManager.IDE.RegisterOpenFileType("Script/Text Files", _openFileFilters);
+            PluginManager.Register(this, this, Name);
             PluginManager.IDE.AddMenuItem(_rootMenu, "Tools");
 
             LoadFunctions();
@@ -55,12 +50,13 @@ namespace SphereStudio.Plugins
 
         public void ShutDown()
         {
-            PluginManager.UnregisterExtensions(_extensions);
-            PluginManager.UnregisterPlugins(this);
-            PluginManager.IDE.UnregisterNewHandler(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.UnregisterAll(this);
             Functions.Clear();
         }
+
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
 
         public ScriptView CreateEditView()
         {

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SphereStudio.Forms.ColorPicker
 {
-    internal partial class ColorPicker : Form
+    partial class ColorPicker : Form
     {
         private Color color = Color.White;
 

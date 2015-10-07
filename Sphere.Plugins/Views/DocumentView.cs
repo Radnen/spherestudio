@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Sphere.Plugins.Views
     /// <summary>
     /// Provides a base class for editable documents in Sphere Studio.
     /// </summary>
+    [ToolboxItem(false)]
     public class DocumentView : UserControl
     {
         private bool _isDirty = false;

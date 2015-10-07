@@ -7,37 +7,29 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener
+    public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get { return "Font Importer"; } }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Convert TrueType fonts to Sphere .rfn format."; } }
         public string Version { get { return "1.2.0"; } }
 
-        public Icon Icon { get; private set; }
-
-        private const string _openFileFilters = "*.rfn";
-        private readonly string[] _extensions = new[] { "rfn" };
-
-        public PluginMain()
-        {
-            Icon = Icon.FromHandle(Properties.Resources.style.GetHicon());
-        }
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, this, Name);
-            PluginManager.RegisterExtensions(this, _extensions);
-            PluginManager.IDE.RegisterNewHandler(this, "Font", Icon);
-            PluginManager.IDE.RegisterOpenFileType("Sphere .rfn Fonts", _openFileFilters);
+            FileTypeName = "Sphere Font";
+            FileExtensions = new string[] { "rfn" };
+            FileIcon = Properties.Resources.style;
+
+            PluginManager.Register(this, this, Name);
         }
 
         public void ShutDown()
         {
-            PluginManager.UnregisterExtensions(_extensions);
-            PluginManager.UnregisterPlugins(this);
-            PluginManager.IDE.UnregisterNewHandler(this);
-            PluginManager.IDE.UnregisterOpenFileType(_openFileFilters);
+            PluginManager.UnregisterAll(this);
         }
 
         public DocumentView New()

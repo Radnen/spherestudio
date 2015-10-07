@@ -70,7 +70,6 @@ namespace SphereStudio.Plugins
             _codeBox.KeyDown += codebox_KeyDown;
             _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
-            _codeBox.MouseHover += codeBox_MouseHover;
             _codeBox.TextDeleted += codeBox_TextChanged;
             _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
@@ -173,7 +172,7 @@ namespace SphereStudio.Plugins
             _codeBox.Text = "";
             if (PluginManager.IDE.Settings.GetBoolean("autoScriptHeader", false))
             {
-                string author = (PluginManager.IDE.CurrentGame != null) ? PluginManager.IDE.CurrentGame.Author : "Unnamed";
+                string author = (PluginManager.IDE.Project != null) ? PluginManager.IDE.Project.Author : "Unnamed";
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
             }
@@ -198,8 +197,8 @@ namespace SphereStudio.Plugins
                 SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
 
                 int[] breaks = new int[0];
-                if (PluginManager.IDE.CurrentGame != null)
-                    breaks = PluginManager.IDE.CurrentGame.GetBreakpoints(filename);
+                if (PluginManager.IDE.Project != null)
+                    breaks = PluginManager.IDE.Project.GetBreakpoints(filename);
                 Breakpoints = breaks;
             }
         }
@@ -214,7 +213,7 @@ namespace SphereStudio.Plugins
                     if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
                         _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(filename);
                     if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
-                        _codeBox.Lines[2].Text = "* Written by: " + PluginManager.IDE.CurrentGame.Author;
+                        _codeBox.Lines[2].Text = "* Written by: " + PluginManager.IDE.Project.Author;
                     if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
                         _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
                     _codeBox.UndoRedo.IsUndoEnabled = true;
@@ -362,22 +361,6 @@ namespace SphereStudio.Plugins
         private void codeBox_ModifiedChanged(object sender, EventArgs e)
         {
             IsDirty = _codeBox.Modified;
-        }
-
-        private void codeBox_MouseHover(object sender, EventArgs e)
-        {
-            var debug = PluginManager.IDE.Debugger;
-            if (debug != null && !debug.Running)
-            {
-                Point origin = _codeBox.PointToClient(MousePosition);
-                int position = _codeBox.PositionFromPoint(origin.X, origin.Y);
-                string word = _codeBox.GetWordFromPosition(position);
-                /*var vars = debug.GetVariables();
-                if (vars.ContainsKey(word))
-                {
-                    // TODO: tooltip with variable value
-                }*/
-            }
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)

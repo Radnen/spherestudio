@@ -6,7 +6,7 @@ using SphereStudio.Plugins.Forms;
 
 namespace SphereStudio.Plugins.Components
 {
-    public partial class LayerPanel : UserControl
+    partial class LayerPanel : UserControl
     {
         private LayerControl layers = new LayerControl();
         public event EventHandler LayerAdded, LayerRemoved;

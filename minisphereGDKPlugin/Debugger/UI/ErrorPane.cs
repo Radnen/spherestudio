@@ -12,7 +12,7 @@ namespace minisphere.GDK.Debugger.UI
     partial class ErrorPane : DebugPane
     {
         public ErrorPane()
-            : base("Errors", Properties.Resources.Errors, DockHint.Bottom)
+            : base(Properties.Resources.Errors, DockHint.Bottom)
         {
             InitializeComponent();
         }
@@ -55,7 +55,7 @@ namespace minisphere.GDK.Debugger.UI
             ClearHighlight();
             if (listErrors.Items.Count == 0)
             {
-                DockPane.Hide();
+                PluginManager.IDE.Docking.Hide(this);
             }
         }
 

@@ -118,17 +118,15 @@ namespace minisphere.GDK.Debugger
                 Views.Inspector.Clear();
                 Views.Stack.Clear();
 
-                var assembly = Assembly.GetExecutingAssembly();
-                var title = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
-                Views.Console.Print(string.Format("{0} for Sphere Studio", title.Title));
-                Views.Console.Print(string.Format("(c) 2015 Fat Cerberus", title.Title));
+                Views.Console.Print(string.Format("minisphere GDK for Sphere Studio"));
+                Views.Console.Print(string.Format("(c) 2015 Fat Cerberus"));
                 Views.Console.Print("");
-                Views.Console.Print(string.Format("The debuggee is {0}.", duktape.TargetID));
-                Views.Console.Print(string.Format("(Duktape {0})", duktape.Version));
+                Views.Console.Print(string.Format("Debuggee IDs as {0}.", duktape.TargetID));
+                Views.Console.Print(string.Format("Duktape {0}", duktape.Version));
                 Views.Console.Print("");
 
-                Views.Inspector.DockPane.Show();
-                Views.Stack.DockPane.Show();
+                PluginManager.IDE.Docking.Show(Views.Inspector);
+                PluginManager.IDE.Docking.Show(Views.Stack);
             }), null);
         }
 
@@ -138,15 +136,15 @@ namespace minisphere.GDK.Debugger
             {
                 if (Detached != null)
                     Detached(this, EventArgs.Empty);
-                Views.Inspector.DockPane.Hide();
-                Views.Stack.DockPane.Hide();
+                PluginManager.IDE.Docking.Hide(Views.Inspector);
+                PluginManager.IDE.Docking.Hide(Views.Stack);
                 Views.Errors.HideIfClean();
 
-                Views.Console.DockPane.Show();
+                PluginManager.IDE.Docking.Show(Views.Console);
                 Views.Console.Print("");
                 Views.Console.Print(duktape.TargetID + " detached.");
                 if (!config.GetBoolean("keepConsoleOutput", false))
-                    Views.Console.DockPane.Hide();
+                    PluginManager.IDE.Docking.Hide(Views.Console);
             }), null);
         }
 
@@ -155,7 +153,7 @@ namespace minisphere.GDK.Debugger
             PluginManager.IDE.Invoke(new Action(() =>
             {
                 Views.Errors.Add(e.Message, e.IsFatal, e.FileName, e.LineNumber);
-                Views.Errors.DockPane.Show();
+                PluginManager.IDE.Docking.Show(Views.Errors);
             }), null);
         }
 
@@ -263,7 +261,7 @@ namespace minisphere.GDK.Debugger
             {
                 DebugSession me = (DebugSession)state;
                 NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
-                Views.Console.DockPane.Show();
+                PluginManager.IDE.Docking.Show(Views.Console);
                 Views.Inspector.Enabled = false;
                 Views.Stack.Enabled = false;
                 Views.Inspector.Clear();
@@ -284,7 +282,7 @@ namespace minisphere.GDK.Debugger
                     Views.Stack.Enabled = true;
                     Views.Inspector.SetVariables(vars);
                     Views.Inspector.Enabled = true;
-                    Views.Inspector.DockPane.Show();
+                    PluginManager.IDE.Docking.Show(Views.Inspector);
                 }
             }), null);
         }

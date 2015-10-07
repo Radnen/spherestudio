@@ -12,7 +12,7 @@ using Sphere.Core;
 
 namespace SphereStudio.Plugins.Forms
 {
-    public partial class LayerForm : Form
+    partial class LayerForm : Form
     {
         private Layer layer;
         

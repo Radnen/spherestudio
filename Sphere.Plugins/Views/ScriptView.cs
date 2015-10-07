@@ -18,10 +18,11 @@ namespace Sphere.Plugins.Views
         public bool Active { get; private set; }
         public int LineNumber { get; private set; }
     }
-    
+
     /// <summary>
     /// Provides a base class for a script editing component.
     /// </summary>
+    [ToolboxItem(false)]
     public class ScriptView : DocumentView
     {
         /// <summary>

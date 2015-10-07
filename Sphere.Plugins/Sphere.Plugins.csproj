@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\ICompiler.cs" />
     <Compile Include="Interfaces\IConsole.cs" />
-    <Compile Include="Interfaces\IDock.cs" />
+    <Compile Include="Interfaces\IDockPanel.cs" />
     <Compile Include="Interfaces\IEditor.cs" />
     <Compile Include="Interfaces\IFileOpener.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />

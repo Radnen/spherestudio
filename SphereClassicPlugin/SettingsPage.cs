@@ -14,7 +14,7 @@ using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins
 {
-    public partial class SettingsPage : UserControl, ISettingsPage
+    partial class SettingsPage : UserControl, ISettingsPage
     {
         private ISettings _conf;
 

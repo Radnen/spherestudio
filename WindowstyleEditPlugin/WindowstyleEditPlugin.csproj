@@ -56,7 +56,7 @@
     <Compile Include="WindowstyleEditView.Designer.cs">
       <DependentUpon>WindowstyleEditView.cs</DependentUpon>
     </Compile>
-    <Compile Include="WindowstyleEditPlugin.cs" />
+    <Compile Include="PluginMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

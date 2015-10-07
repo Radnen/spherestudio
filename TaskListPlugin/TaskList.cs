@@ -5,9 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Sphere.Plugins.Interfaces;
+
 namespace SphereStudio.Plugins
 {
-    internal partial class TaskList : UserControl
+    internal partial class TaskList : UserControl, IDockPanel
     {
         private readonly ImageList _imagelist = new ImageList();
 
@@ -47,6 +49,14 @@ namespace SphereStudio.Plugins
                 SetPriorityItem.DropDownItems.Add(s, Properties.Resources.resultset_none, eh);
             }
         }
+
+        public Control Control { get { return this; } }
+
+        public DockHint DockHint { get { return DockHint.Left; } }
+
+        public bool ShowInViewMenu { get { return true; } }
+
+        public Bitmap DockIcon { get { return Properties.Resources.lightbulb; } }
 
         private void AddTaskItem_Click(object sender, EventArgs e)
         {

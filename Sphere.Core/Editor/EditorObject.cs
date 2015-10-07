@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Sphere.Core.Editor
@@ -6,6 +7,7 @@ namespace Sphere.Core.Editor
     /// <summary>
     /// A class that opens up editor abilities.
     /// </summary>
+    [ToolboxItem(false)]
     public class EditorObject : UserControl
     {
         /// <summary>

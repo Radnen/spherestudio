@@ -6,7 +6,7 @@ using Sphere.Plugins.EditShims;
 
 namespace SphereStudio.Plugins.Forms
 {
-    public partial class MapPropertiesForm : Form
+    partial class MapPropertiesForm : Form
     {
         private ScriptEditShim ScriptBox = new ScriptEditShim();
         public Map Map { get; private set; }

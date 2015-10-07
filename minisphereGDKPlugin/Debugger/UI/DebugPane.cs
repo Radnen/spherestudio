@@ -7,22 +7,26 @@ using Sphere.Plugins.Interfaces;
 
 namespace minisphere.GDK.Debugger.UI
 {
-    public partial class DebugPane : UserControl
+    partial class DebugPane : UserControl, IDockPanel
     {
         private DebugPane()
         {
             InitializeComponent();
         }
 
-        public DebugPane(string name, Bitmap icon = null, DockHint dockHint = DockHint.Right):
-            this()
+        public DebugPane(Bitmap icon = null, DockHint dockHint = DockHint.Right)
+            : this()
         {
-            DockPane = PluginManager.IDE.Docking.AddPane(this, name,
-                icon != null ? Icon.FromHandle(icon.GetHicon()) : null,
-                dockHint);
-            this.Disposed += (sender, e) => DockPane.Dispose();
+            DockHint = dockHint;
+            DockIcon = icon;
         }
 
-        public IDockPane DockPane { get; private set; }
+        public Control Control { get { return this; } }
+
+        public DockHint DockHint { get; private set; }
+
+        public Bitmap DockIcon { get; private set; }
+
+        public bool ShowInViewMenu { get { return false; } }
     }
 }

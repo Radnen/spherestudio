@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using SphereStudio.UI;
 using SphereStudio.Settings;
 using Sphere.Core;
+using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.IDE
@@ -110,7 +111,7 @@ namespace SphereStudio.IDE
             if (allowBuilding)
             {
                 _buildView = new BuildConsole();
-                _buildView.DockPane.Hide();
+                Sphere.Plugins.PluginManager.IDE.Docking.Hide(_buildView);
             }
         }
 

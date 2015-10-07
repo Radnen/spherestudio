@@ -6,7 +6,7 @@ using Sphere.Core.Utility;
 
 namespace SphereStudio.Plugins.Components
 {
-    public partial class TileEditor : UserControl
+    partial class TileEditor : UserControl
     {
         private int _zoom = 4;
         private Tile _tile = null;

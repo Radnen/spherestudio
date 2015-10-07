@@ -8,7 +8,7 @@ using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins.Forms
 {
-    public partial class ZoneForm : Form
+    partial class ZoneForm : Form
     {
         public Zone Zone { get; private set; }
         readonly ScriptEditShim _scriptBox = new ScriptEditShim();

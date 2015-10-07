@@ -8,7 +8,7 @@ using Sphere.Core.Utility;
 
 namespace SphereStudio.Plugins
 {
-    public partial class FontSet : UserControl
+    partial class FontSet : UserControl
     {
         string signature = ".rfn";
         Int16 version = 2;

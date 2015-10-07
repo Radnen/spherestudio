@@ -18,30 +18,23 @@ namespace minisphere.GDK
         public string Description { get { return "Provides support for the minisphere GDK toolchain."; } }
         public string Version { get { return "2.0b1"; } }
 
-        public Icon Icon { get; private set; }
-
         public void Initialize(ISettings conf)
         {
-            PluginManager.RegisterPlugin(this, new CellCompiler(conf), "Cell");
-            PluginManager.RegisterPlugin(this, new minisphereStarter(conf), "minisphere");
-            PluginManager.RegisterPlugin(this, new SettingsPage(conf), "minisphere GDK");
-            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
-            Views.Initialize(conf);
+            PluginManager.Register(this, new CellCompiler(conf), "Cell");
+            PluginManager.Register(this, new minisphereStarter(conf), "minisphere");
+            PluginManager.Register(this, new SettingsPage(conf), "minisphere GDK");
+            PluginManager.IDE.UnloadProject += on_UnloadProject;
+            Views.Initialize(this, conf);
         }
 
         public void ShutDown()
         {
-            PluginManager.UnregisterPlugins(this);
-            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
+            PluginManager.UnregisterAll(this);
+            PluginManager.IDE.UnloadProject -= on_UnloadProject;
             Views.ShutDown();
         }
 
-        public bool Configure()
-        {
-            return true;
-        }
-
-        private void IDE_UnloadProject(object sender, EventArgs e)
+        private void on_UnloadProject(object sender, EventArgs e)
         {
             Views.Errors.Clear();
             Views.Console.Clear();
@@ -50,31 +43,29 @@ namespace minisphere.GDK
 
     static class Views
     {
-        public static ConsolePane Console { get; private set; }
-        public static ErrorPane Errors { get; private set; }
-        public static InspectorPane Inspector { get; private set; }
-        public static StackPane Stack { get; private set; }
+        private static IPluginMain _main;
 
-        public static void Initialize(ISettings conf)
+        public static void Initialize(IPluginMain main, ISettings conf)
         {
-            Inspector = new InspectorPane();
-            Stack = new StackPane();
-            Console = new ConsolePane();
-            Errors = new ErrorPane();
+            _main = main;
 
-            if (!conf.GetBoolean("keepConsoleOutput", false))
-                Console.DockPane.Hide();
-            Errors.DockPane.Hide();
-            Inspector.DockPane.Hide();
-            Stack.DockPane.Hide();
+            PluginManager.Register(_main, Inspector = new InspectorPane(), "Variables");
+            PluginManager.Register(_main, Stack = new StackPane(), "Call Stack");
+            PluginManager.Register(_main, Console = new ConsolePane(), "Debug Output");
+            PluginManager.Register(_main, Errors = new ErrorPane(), "Error View");
+
+            if (conf.GetBoolean("keepConsoleOutput", false))
+                PluginManager.IDE.Docking.Show(Console);
         }
 
         public static void ShutDown()
         {
-            Console.Dispose();
-            Errors.Dispose();
-            Inspector.Dispose();
-            Stack.Dispose();
+            PluginManager.UnregisterAll(_main);
         }
+
+        public static ConsolePane Console { get; private set; }
+        public static ErrorPane Errors { get; private set; }
+        public static InspectorPane Inspector { get; private set; }
+        public static StackPane Stack { get; private set; }
     }
 }

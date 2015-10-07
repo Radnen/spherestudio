@@ -17,24 +17,28 @@ using SphereStudio.IDE;
 
 namespace SphereStudio.UI
 {
-    public partial class BuildConsole : UserControl, IConsole
+    [ToolboxItem(false)]
+    partial class BuildConsole : UserControl, IConsole, IDockPanel
     {
         private string output = "";
 
         public BuildConsole()
         {
             InitializeComponent();
-
-            DockPane = PluginManager.IDE.Docking.AddPane(this, "Build", null, DockHint.Bottom);
-            DockPane.Hide();
         }
 
-        public IDockPane DockPane { get; private set; }
+        public Control Control { get { return this; } }
+
+        public DockHint DockHint { get { return DockHint.Bottom; } }
+
+        public Bitmap DockIcon { get { return Properties.Resources.application_view_list; } }
+
+        public bool ShowInViewMenu { get { return true; } }
 
         public void Clear()
         {
             output = "";
-            PluginManager.IDE.Invoke(new Action(() =>
+            Sphere.Plugins.PluginManager.IDE.Invoke(new Action(() =>
             {
                 printTimer.Enabled = true;
             }), null);
@@ -43,7 +47,7 @@ namespace SphereStudio.UI
         public void Print(string lineText)
         {
             output += Regex.Replace(lineText, "\r?\n", "\r\n");
-            PluginManager.IDE.Invoke(new Action(() =>
+            Sphere.Plugins.PluginManager.IDE.Invoke(new Action(() =>
             {
                 printTimer.Enabled = true;
             }), null);

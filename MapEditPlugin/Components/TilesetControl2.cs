@@ -10,7 +10,7 @@ using Sphere.Core.Utility;
 
 namespace SphereStudio.Plugins.Components
 {
-    public partial class TilesetControl2 : UserControl
+    partial class TilesetControl2 : UserControl
     {
         private Tileset _tileset;
         public Tileset Tileset

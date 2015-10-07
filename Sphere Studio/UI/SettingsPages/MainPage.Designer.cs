@@ -31,6 +31,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.AutoHideBuild = new System.Windows.Forms.CheckBox();
             this.UseStartPage = new System.Windows.Forms.CheckBox();
             this.OpenLastProject = new System.Windows.Forms.CheckBox();
             this.PropLabel = new Sphere.Core.Editor.EditorLabel();
@@ -52,7 +53,6 @@
             this.UpButton = new System.Windows.Forms.Button();
             this.PathList = new System.Windows.Forms.ListBox();
             this.editorLabel4 = new Sphere.Core.Editor.EditorLabel();
-            this.AutoHideBuild = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -72,7 +72,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(633, 493);
+            this.tabControl1.Size = new System.Drawing.Size(438, 400);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -84,7 +84,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(625, 467);
+            this.tabPage1.Size = new System.Drawing.Size(430, 374);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Environment";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -95,20 +95,30 @@
             this.panel1.Controls.Add(this.UseStartPage);
             this.panel1.Controls.Add(this.OpenLastProject);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 82);
+            this.panel1.Location = new System.Drawing.Point(3, 97);
             this.panel1.Margin = new System.Windows.Forms.Padding(5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(619, 92);
+            this.panel1.Size = new System.Drawing.Size(424, 92);
             this.panel1.TabIndex = 3;
+            // 
+            // AutoHideBuild
+            // 
+            this.AutoHideBuild.AutoSize = true;
+            this.AutoHideBuild.Location = new System.Drawing.Point(14, 36);
+            this.AutoHideBuild.Name = "AutoHideBuild";
+            this.AutoHideBuild.Size = new System.Drawing.Size(376, 17);
+            this.AutoHideBuild.TabIndex = 1;
+            this.AutoHideBuild.Text = "Hide the build log after successful build when testing or debugging a game";
+            this.AutoHideBuild.UseVisualStyleBackColor = true;
             // 
             // UseStartPage
             // 
             this.UseStartPage.AutoSize = true;
             this.UseStartPage.Location = new System.Drawing.Point(14, 13);
             this.UseStartPage.Name = "UseStartPage";
-            this.UseStartPage.Size = new System.Drawing.Size(174, 17);
+            this.UseStartPage.Size = new System.Drawing.Size(302, 17);
             this.UseStartPage.TabIndex = 0;
-            this.UseStartPage.Text = "Show the Start Page on startup";
+            this.UseStartPage.Text = "Show the Start Page on startup when not loading a project";
             this.UseStartPage.UseVisualStyleBackColor = true;
             // 
             // OpenLastProject
@@ -127,9 +137,9 @@
             this.PropLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.PropLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.PropLabel.ForeColor = System.Drawing.Color.White;
-            this.PropLabel.Location = new System.Drawing.Point(3, 59);
+            this.PropLabel.Location = new System.Drawing.Point(3, 74);
             this.PropLabel.Name = "PropLabel";
-            this.PropLabel.Size = new System.Drawing.Size(619, 23);
+            this.PropLabel.Size = new System.Drawing.Size(424, 23);
             this.PropLabel.TabIndex = 2;
             this.PropLabel.Text = "IDE settings";
             this.PropLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -141,7 +151,7 @@
             this.panel2.Location = new System.Drawing.Point(3, 26);
             this.panel2.Margin = new System.Windows.Forms.Padding(5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(619, 33);
+            this.panel2.Size = new System.Drawing.Size(424, 48);
             this.panel2.TabIndex = 1;
             // 
             // StylePicker
@@ -150,11 +160,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StylePicker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StylePicker.FormattingEnabled = true;
-            this.StylePicker.Location = new System.Drawing.Point(5, 5);
+            this.StylePicker.Location = new System.Drawing.Point(14, 13);
             this.StylePicker.Margin = new System.Windows.Forms.Padding(5);
             this.StylePicker.MaxDropDownItems = 10;
             this.StylePicker.Name = "StylePicker";
-            this.StylePicker.Size = new System.Drawing.Size(609, 21);
+            this.StylePicker.Size = new System.Drawing.Size(395, 21);
             this.StylePicker.TabIndex = 0;
             // 
             // editorLabel2
@@ -165,7 +175,7 @@
             this.editorLabel2.ForeColor = System.Drawing.Color.White;
             this.editorLabel2.Location = new System.Drawing.Point(3, 3);
             this.editorLabel2.Name = "editorLabel2";
-            this.editorLabel2.Size = new System.Drawing.Size(619, 23);
+            this.editorLabel2.Size = new System.Drawing.Size(424, 23);
             this.editorLabel2.TabIndex = 0;
             this.editorLabel2.Text = "Select your preferred UI style";
             this.editorLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -355,21 +365,11 @@
             this.editorLabel4.Text = "Choose directories to be searched for Sphere Studio projects";
             this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // AutoHideBuild
-            // 
-            this.AutoHideBuild.AutoSize = true;
-            this.AutoHideBuild.Location = new System.Drawing.Point(14, 36);
-            this.AutoHideBuild.Name = "AutoHideBuild";
-            this.AutoHideBuild.Size = new System.Drawing.Size(292, 17);
-            this.AutoHideBuild.TabIndex = 1;
-            this.AutoHideBuild.Text = "Automatically hide the build pane after a successful build";
-            this.AutoHideBuild.UseVisualStyleBackColor = true;
-            // 
             // MainPage
             // 
             this.Controls.Add(this.tabControl1);
             this.Name = "MainPage";
-            this.Size = new System.Drawing.Size(633, 493);
+            this.Size = new System.Drawing.Size(438, 400);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

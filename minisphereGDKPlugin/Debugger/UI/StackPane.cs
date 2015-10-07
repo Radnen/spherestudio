@@ -10,8 +10,8 @@ namespace minisphere.GDK.Debugger.UI
 {
     partial class StackPane : DebugPane
     {
-        public StackPane():
-            base("Call Stack", Properties.Resources.CallStack)
+        public StackPane() :
+            base(Properties.Resources.CallStack)
         {
             InitializeComponent();
             Enabled = false;

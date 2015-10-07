@@ -19,7 +19,8 @@ using SphereStudio.Properties;
 
 namespace SphereStudio.UI
 {
-    internal partial class ProjectTree : UserControl, IStyleable
+    [ToolboxItem(false)]
+    partial class ProjectTree : UserControl, IStyleable
     {
         private readonly IDEForm _hostForm;
         private readonly ImageList _iconlist = new ImageList();

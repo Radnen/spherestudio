@@ -26,10 +26,10 @@ namespace SphereStudio.UI
 
         protected override void OnLoad(EventArgs e)
         {
-            string[] pageNames = PluginManager.GetPluginNames<ISettingsPage>();
+            string[] pageNames = Sphere.Plugins.PluginManager.GetNames<ISettingsPage>();
             foreach (string name in pageNames)
             {
-                var page = PluginManager.GetPlugin<ISettingsPage>(name);
+                var page = Sphere.Plugins.PluginManager.Get<ISettingsPage>(name);
                 TreeNode node = new TreeNode(name) { Tag = page };
                 PageTree.Nodes.Add(node);
             }

@@ -102,7 +102,7 @@ namespace SphereStudio.Plugins
                     using (SaveFileDialog diag = new SaveFileDialog())
                     {
                         diag.Filter = @"Tileset Files (.rts)|*.rts";
-                        diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
+                        diag.InitialDirectory = PluginManager.IDE.Project.RootPath + "\\maps";
                         if (diag.ShowDialog() == DialogResult.OK)
                         {
                             Map.Scripts[0] = Path.GetFileName(diag.FileName);
@@ -116,12 +116,12 @@ namespace SphereStudio.Plugins
 
         public override void Activate()
         {
-            MapEditPlugin.ShowMenus(true);
+            PluginMain.ShowMenus(true);
         }
 
         public override void Deactivate()
         {
-            MapEditPlugin.ShowMenus(false);
+            PluginMain.ShowMenus(false);
         }
         
         public override void ZoomIn()

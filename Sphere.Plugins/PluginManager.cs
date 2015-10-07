@@ -28,34 +28,48 @@ namespace Sphere.Plugins
     public static class PluginManager
     {
         static List<PluginEntry> _plugins;
-        static Dictionary<string, IFileOpener> _fileOpeners;
         
         static PluginManager()
         {
             _plugins = new List<PluginEntry>();
-            _fileOpeners = new Dictionary<string, IFileOpener>();
         }
 
         /// <summary>
-        /// Registers a compiler. Compilers are used to build games.
+        /// Registers a plugin. Plugins add new functionality to the IDE.
         /// </summary>
-        /// <param name="compiler">The compiler to register.</param>
+        /// <param name="main">The plugin module doing the registering.</param>
+        /// <param name="plugin">The IPlugin to register.</param>
         /// <param name="name">The friendly name of the compiler, used in the UI.</param>
-        public static void RegisterPlugin(IPluginMain main, IPlugin plugin, string name)
+        public static void Register(IPluginMain main, IPlugin plugin, string name)
         {
             _plugins.Add(new PluginEntry(main, plugin, name));
         }
 
         /// <summary>
-        /// Unregisters a compiler.
+        /// Unregisters a previously registered plugin.
         /// </summary>
-        /// <param name="compiler"></param>
-        public static void UnregisterPlugins(IPluginMain main)
+        /// <param name="plugin">The plugin to unregister.</param>
+        public static void Unregister(IPlugin plugin)
         {
-            _plugins.RemoveAll(i => i.PluginMain == main);
+            _plugins.RemoveAll(x => x.Plugin == plugin);
+        }
+        
+        /// <summary>
+        /// Unregisters all plugins registered by a given plugin module.
+        /// </summary>
+        /// <param name="main">The plugin module whose plugins are being unregistered.</param>
+        public static void UnregisterAll(IPluginMain main)
+        {
+            _plugins.RemoveAll(x => x.PluginMain == main);
         }
 
-        public static string[] GetPluginNames<T>()
+        /// <summary>
+        /// Gets the names of all active plugins of a specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of plugin to get the names of.</typeparam>
+        /// <returns></returns>
+        public static string[] GetNames<T>()
+            where T : IPlugin
         {
             return _plugins
                 .Where(x => typeof(T).IsAssignableFrom(x.Plugin.GetType()))
@@ -65,86 +79,22 @@ namespace Sphere.Plugins
                 .Distinct().ToArray();
         }
 
-        public static T GetPlugin<T>(string name) where T : IPlugin
+        /// <summary>
+        /// Searches for a plugin by name and returns its interface.
+        /// </summary>
+        /// <typeparam name="T">The type of plugin being requested.</typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T Get<T>(string name)
+            where T : IPlugin
         {
             return (T)_plugins
                 .Where(i => typeof(T).IsAssignableFrom(i.Plugin.GetType()))
-                .FirstOrDefault(i => i.Name == name).Plugin;
+                .FirstOrDefault(x => x.Name == name).Plugin;
         }
 
         /// <summary>
-        /// Creates an IDocumentView for a new, untitled document.
-        /// </summary>
-        /// <param name="extension">The file extension, sans dot, of the document to create.</param>
-        /// <returns>
-        /// An IDocumentView of the new document, or null if it couldn't be created for
-        /// any reason.
-        /// </returns>
-        public static DocumentView NewDocument(string extension)
-        {
-            if (_fileOpeners.Keys.Contains(extension))
-            {
-                IFileOpener opener = _fileOpeners[extension];
-                DocumentView view = opener.New();
-                return view;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Opens a specified file as an IDocumentView.
-        /// </summary>
-        /// <param name="fileName">The fully qualified path to the file to open.</param>
-        /// <returns>
-        /// An IDocumentView of the opened document, or null if the file couldn't
-        /// be opened with any active plugin.
-        /// </returns>
-        public static bool OpenDocument(string fileName, out DocumentView view)
-        {
-            view = null;
-            
-            string extension = Path.GetExtension(fileName);
-            if (extension != "") extension = extension.Substring(1);
-            if (_fileOpeners.Keys.Contains(extension))
-            {
-                IFileOpener opener = _fileOpeners[extension];
-                view = opener.Open(fileName);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Registers a file opener to open specified file types.
-        /// </summary>
-        /// <param name="opener">The IFileOpener to use to open the specified types.</param>
-        /// <param name="extensions">An array of file extensions to register, sans dots.</param>
-        public static void RegisterExtensions(IFileOpener opener, params string[] extensions)
-        {
-            foreach (string ext in extensions)
-            {
-                _fileOpeners[ext] = opener;
-            }
-        }
-
-        /// <summary>
-        /// Unregisters file extensions registered with RegisterExtensions.
-        /// </summary>
-        /// <param name="extensions">An array of file extensions to unregister, sans dot.</param>
-        public static void UnregisterExtensions(params string[] extensions)
-        {
-            foreach (string ext in extensions)
-            {
-                _fileOpeners.Remove(ext);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the object representing the Sphere Studio IDE.
+        /// Gets the interface to the Sphere Studio IDE.
         /// </summary>
         public static IIDE IDE { get; set; }
     }

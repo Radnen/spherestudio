@@ -15,8 +15,8 @@ namespace minisphere.GDK.Debugger.UI
         private string lastVarName = null;
         private IReadOnlyDictionary<string, string> variables;
 
-        public InspectorPane():
-            base("Inspector", Properties.Resources.Inspector)
+        public InspectorPane() :
+            base(Properties.Resources.Inspector)
         {
             InitializeComponent();
             Enabled = false;

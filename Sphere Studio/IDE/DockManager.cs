@@ -13,8 +13,16 @@ using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.IDE
 {
+    struct DockForm
+    {
+        public string Name;
+        public DockContent Content;
+        public IDockPanel Panel;
+    }
+
     class DockManager : IDock
     {
+        List<DockForm> _dockForms = new List<DockForm>();
         DockPanel _panel;
 
         public DockManager(DockPanel panel)
@@ -22,71 +30,78 @@ namespace SphereStudio.IDE
             _panel = panel;
         }
 
-        public IDockPane AddPane(Control control, string title, Icon icon, DockHint state)
+        public void Refresh()
         {
-            return new DockForm(_panel, control, title, icon, state);
+            var removed = from x in _dockForms
+                          where Sphere.Plugins.PluginManager.Get<IDockPanel>(x.Name) == null
+                          select x;
+            foreach (DockForm form in removed)
+            {
+                form.Content.Dispose();
+                _dockForms.Remove(form);
+            }
+            var newPanels = from name in Sphere.Plugins.PluginManager.GetNames<IDockPanel>()
+                            where _dockForms.All(form => form.Name != name)
+                            select name;
+            foreach (string name in newPanels)
+            {
+                IDockPanel plugin = Sphere.Plugins.PluginManager.Get<IDockPanel>(name);
+                DockForm form = new DockForm() { Name = name, Panel = plugin };
+                form.Content = new DockContent() { Name = name, TabText = name };
+                form.Content.Controls.Add(plugin.Control);
+                form.Content.Icon = plugin.DockIcon != null
+                    ? Icon.FromHandle(plugin.DockIcon.GetHicon())
+                    : null;
+                form.Content.DockAreas = DockAreas.Float
+                    | DockAreas.DockLeft | DockAreas.DockRight
+                    | DockAreas.DockTop | DockAreas.DockBottom;
+                DockState state = plugin.DockHint == DockHint.Float ? DockState.Float
+                    : plugin.DockHint == DockHint.Left ? DockState.DockLeft
+                    : plugin.DockHint == DockHint.Right ? DockState.DockRight
+                    : plugin.DockHint == DockHint.Top ? DockState.DockTop
+                    : plugin.DockHint == DockHint.Bottom ? DockState.DockBottom
+                    : DockState.Float;
+                plugin.Control.Dock = DockStyle.Fill;
+                form.Content.Show(_panel, state);
+                form.Content.Hide();
+                _dockForms.Add(form);
+            }
         }
 
-        public void RemovePane(IDockPane pane)
+        public bool IsVisible(IDockPanel panel)
         {
-            ((DockForm)pane).Dispose();
-        }
-    }
-
-    class DockForm : IDockPane
-    {
-        DockContent _content;
-        Control _control;
-        Control _main_form;
-
-        public DockForm(DockPanel panel, Control control, string title, Icon icon, DockHint hint)
-        {
-            _main_form = panel.Parent;
-            _control = control;
-
-            DockState state = hint == DockHint.Float ? DockState.Float
-                : hint == DockHint.Left ? DockState.DockLeft
-                : hint == DockHint.Right ? DockState.DockRight
-                : hint == DockHint.Top ? DockState.DockTop
-                : hint == DockHint.Bottom ? DockState.DockBottom
-                : DockState.Float;
-
-            _content = new DockContent() { Name = title, TabText = title, Icon = icon };
-            _content.Controls.Add(_control);
-            _control.Dock = DockStyle.Fill;
-            _content.DockAreas = DockAreas.Float
-                | DockAreas.DockLeft | DockAreas.DockRight
-                | DockAreas.DockBottom | DockAreas.DockTop;
-
-            _content.Show(panel, state);
+            DockForm form = _dockForms.Find(x => x.Panel == panel);
+            return form.Panel != null && form.Content.Visible;
         }
 
-        public void Dispose()
+        public void Show(IDockPanel panel)
         {
-            _content.Dispose();
-            _control.Dispose();
+            Refresh();
+            DockForm form = _dockForms.Find(x => x.Panel == panel);
+            if (form.Panel != null)
+            {
+                Control oldFocus = _panel.Parent;
+                while (oldFocus is ContainerControl)
+                    oldFocus = ((ContainerControl)oldFocus).ActiveControl;
+                form.Content.Show();
+                if (oldFocus != null) oldFocus.Focus();
+            }
         }
 
-        public void Show()
+        public void Hide(IDockPanel panel)
         {
-            Control oldFocus = _main_form;
-            while (oldFocus is ContainerControl)
-                oldFocus = ((ContainerControl)oldFocus).ActiveControl;
-            _content.Show();
-            if (oldFocus != null) oldFocus.Focus();
+            Refresh();
+            DockForm form = _dockForms.Find(x => x.Panel == panel);
+            if (form.Panel != null)
+            {
+                form.Content.Hide();
+            }
         }
 
-        public void Hide()
+        public void Toggle(IDockPanel panel)
         {
-            _content.Hide();
-        }
-
-        public void Toggle()
-        {
-            if (_content.Visible)
-                Hide();
-            else
-                Show();
+            DockForm form = _dockForms.Find(x => x.Panel == panel);
+            if (form.Content.Visible) Hide(panel); else Show(panel);
         }
     }
 }

@@ -560,8 +560,8 @@
             // 
             this.sphereProjectToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
             this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
-            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-            this.sphereProjectToolStripMenuItem.Text = "Sphere &Project";
+            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.sphereProjectToolStripMenuItem.Text = "Sphere Studio &Project";
             this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
             // menuOpen

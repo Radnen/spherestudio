@@ -13,21 +13,16 @@ namespace SphereStudio.Plugins
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Keep track of game development tasks."; } }
         public string Version { get { return "1.2.0"; } }
-        public Icon Icon { get; private set; }
 
-        private IDockPane _dock_pane;
         private TaskList _list;
         private ToolStripMenuItem _item;
 
-        public PluginMain()
-        {
-            Icon = Icon.FromHandle(Properties.Resources.lightbulb.GetHicon());
-        }
+        public PluginMain() { }
 
         /* Load the Task List */
         void IDE_LoadProject(object sender, EventArgs e)
         {
-            _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
+            _list.LoadList(PluginManager.IDE.Project.RootPath);
         }
 
         /* Close and empty the task List */
@@ -37,20 +32,14 @@ namespace SphereStudio.Plugins
             _list.Clear();
         }
 
-        void ItemClick(object sender, EventArgs e)
-        {
-            _dock_pane.Toggle();
-        }
-
         public void Initialize(ISettings conf)
         {
             // Create a new instance of your custom widget, like so:
             _list = new TaskList { Dock = DockStyle.Fill };
 
-            // Add it to a dock content like so, and style your dock content
-            // however you want to!
-            _dock_pane = PluginManager.IDE.Docking.AddPane(_list,
-                "Task List", Icon, DockHint.Left);
+            // Register it as a dock panel.
+            PluginManager.Register(this, _list, "Task List");
+            PluginManager.IDE.Docking.Show(_list);
 
             // Then you can add special event listeners, if you want.
             // A task list must be able to, well, load a task list, 
@@ -58,41 +47,20 @@ namespace SphereStudio.Plugins
             PluginManager.IDE.LoadProject += IDE_LoadProject;
             PluginManager.IDE.UnloadProject += IDE_UnloadProject;
 
-            // Now, we can add a menu item like so.
-            // 'View' will search the 'View' menu item.
-            // Once it does find it, it'll add the necessary elements.
-            // You can even do paths such as 'View.Subitem.Subitem.Subitem'
-            // And it'll generate the neccessary stubs before adding the item.
-            _item = new ToolStripMenuItem("Task List", Properties.Resources.lightbulb);
-            _item.Click += ItemClick;
-            PluginManager.IDE.AddMenuItem("View", _item);
-
             // Here I ake sure the list is loaded when the plugin has been activated.
-            if (PluginManager.IDE.CurrentGame != null) _list.LoadList(PluginManager.IDE.CurrentGame.RootPath);
+            if (PluginManager.IDE.Project != null) _list.LoadList(PluginManager.IDE.Project.RootPath);
         }
 
         public void ShutDown()
         {
-            // Now we need to remove anything we add to the editor
-            PluginManager.IDE.Docking.RemovePane(_dock_pane);
-
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
             PluginManager.IDE.LoadProject -= IDE_LoadProject;
             PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
 
-            // And furthermore that menu item must be deleted as well!
-            _item.Click -= ItemClick;
-            PluginManager.IDE.RemoveMenuItem(_item);
-
             // And we can optionally null things out just to be safe:
             _list.Dispose(); _list = null;
             _item.Dispose(); _item = null;
-        }
-
-        public bool Configure()
-        {
-            return true;
         }
     }
 }

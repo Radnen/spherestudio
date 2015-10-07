@@ -17,8 +17,8 @@ namespace minisphere.GDK.Debugger.UI
     {
         List<string> lines = new List<string>();
 
-        public ConsolePane():
-            base("Console", Properties.Resources.Console)
+        public ConsolePane() :
+            base(Properties.Resources.Console)
         {
             InitializeComponent();
         }

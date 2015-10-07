@@ -4,7 +4,7 @@ using Sphere.Plugins;
 
 namespace SphereStudio.Plugins.Forms
 {
-    public partial class NewMapDialogue : Form
+    partial class NewMapDialogue : Form
     {
         public NewMapDialogue()
         {
@@ -46,7 +46,7 @@ namespace SphereStudio.Plugins.Forms
             using (OpenFileDialog diag = new OpenFileDialog())
             {
                 diag.Filter = "Tileset Files (.rts)|*.rts";
-                diag.InitialDirectory = PluginManager.IDE.CurrentGame.RootPath + "\\maps";
+                diag.InitialDirectory = PluginManager.IDE.Project.RootPath + "\\maps";
                 if (diag.ShowDialog() == DialogResult.OK) Tileset = diag.FileName;
             }
         }

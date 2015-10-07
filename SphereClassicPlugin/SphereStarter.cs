@@ -20,7 +20,14 @@ namespace SphereStudio.Plugins
             _conf = conf;
         }
 
-        public bool CanConfigure { get { return true; } }
+        public bool CanConfigure
+        {
+            get
+            {
+                string spherePath = _conf.GetString("spherePath", "");
+                return File.Exists(Path.Combine(spherePath, "config.exe"));
+            }
+        }
 
         public void Start(string gamePath, bool isPackage)
         {
@@ -31,6 +38,9 @@ namespace SphereStudio.Plugins
 
         public void Configure()
         {
+            if (!CanConfigure)
+                throw new NotSupportedException("Engine doesn't support configuration.");
+
             string spherePath = _conf.GetString("spherePath", "");
             ProcessStartInfo psi = new ProcessStartInfo()
             {

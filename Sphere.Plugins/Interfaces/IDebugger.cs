@@ -13,12 +13,12 @@ namespace Sphere.Plugins.Interfaces
     {
         /// <summary>
         /// Gets the fully qualified path of the source file currently being
-        /// executed in the debugger.
+        /// executed.
         /// </summary>
         string FileName { get; }
 
         /// <summary>
-        /// Gets the line number to be executed next by the debugger.
+        /// Gets the line number of the next instruction to be executed.
         /// </summary>
         int LineNumber { get; }
 
@@ -72,13 +72,13 @@ namespace Sphere.Plugins.Interfaces
         /// <summary>
         /// Sets or clears a breakpoint at a specified location.
         /// </summary>
-        /// <param name="filename">The filename containing the breakpoint.</param>
+        /// <param name="fileName">The filename containing the breakpoint.</param>
         /// <param name="lineNumber">The line number of the breakpoint.</param>
         /// <param name="isSet">If true, a breakpoint is set. Otherwise, the existing one is cleared.</param>
-        Task SetBreakpoint(string filename, int lineNumber, bool isSet);
+        Task SetBreakpoint(string fileName, int lineNumber, bool isSet);
 
         /// <summary>
-        /// Executes the next statement, stepping into function calls.
+        /// Executes the next line of code, stepping into function calls.
         /// </summary>
         Task StepInto();
 
@@ -88,7 +88,7 @@ namespace Sphere.Plugins.Interfaces
         Task StepOut();
 
         /// <summary>
-        /// Runs until the current statement finishes executing.
+        /// Executes the next line of code.
         /// </summary>
         Task StepOver();
     }

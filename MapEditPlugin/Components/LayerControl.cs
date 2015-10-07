@@ -8,7 +8,7 @@ using SphereStudio.Plugins.Forms;
 
 namespace SphereStudio.Plugins.Components
 {
-    public partial class LayerControl : UserControl
+    partial class LayerControl : UserControl
     {
         #region attributes
         private LayerItem hovered_item;

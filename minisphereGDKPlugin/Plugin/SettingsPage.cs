@@ -12,7 +12,7 @@ using Sphere.Plugins.Interfaces;
 
 namespace minisphere.GDK.Plugin
 {
-    public partial class SettingsPage : UserControl, ISettingsPage
+    partial class SettingsPage : UserControl, ISettingsPage
     {
         private ISettings config;
 

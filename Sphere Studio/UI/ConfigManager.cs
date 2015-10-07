@@ -60,7 +60,7 @@ namespace SphereStudio.Forms
             where T : IPlugin
         {
             combo.Items.Clear();
-            foreach (string name in PluginManager.GetPluginNames<T>())
+            foreach (string name in Sphere.Plugins.PluginManager.GetNames<T>())
             {
                 combo.Items.Add(name);
             }

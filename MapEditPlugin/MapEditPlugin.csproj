@@ -118,7 +118,7 @@
     <Compile Include="Forms\ZoneForm.Designer.cs">
       <DependentUpon>ZoneForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapEditPlugin.cs" />
+    <Compile Include="PluginMain.cs" />
     <Compile Include="MapEditView.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -20,21 +20,17 @@ namespace Sphere.Plugins.Interfaces
         /// <summary>
         /// Provides access to the project settings.
         /// </summary>
-        IProject CurrentGame { get; }
+        IProject Project { get; }
 
         /// <summary>
         /// Gets the EditorObject representing the active document.
         /// </summary>
         DocumentView CurrentDocument { get; }
 
-        IDebugger Debugger { get; }
-
-        IDock Docking { get; }
-
         /// <summary>
-        /// Gets a list of the loaded document's filepaths in the Sphere Studio's main dock panel.
+        /// Gets the interface to the IDE dock manager.
         /// </summary>
-        string[] Documents { get; }
+        IDock Docking { get; }
 
         /// <summary>
         /// Add event handlers to do things when a project opens.
@@ -50,8 +46,6 @@ namespace Sphere.Plugins.Interfaces
         /// Add event handlers to do things when a project closes.
         /// </summary>
         event EventHandler UnloadProject;
-
-        void Activate();
 
         /// <summary>
         /// Creates a ScriptView for an embedded script editor.
@@ -80,37 +74,6 @@ namespace Sphere.Plugins.Interfaces
         void AddMenuItem(string location, ToolStripItem newItem);
 
         /// <summary>
-        /// Registers an IFileOpener as a File:New handler. This adds an entry to the
-        /// File:New menu in the IDE.
-        /// </summary>
-        /// <param name="plugin">The editor plugin to register.</param>
-        /// <param name="name">The friendly name of the document type being created, e.g. "Script" or "Image".</param>
-        /// <param name="menuIcon">The icon to display in the New menu.</param>
-        void RegisterNewHandler(IFileOpener opener, string name, Icon menuIcon);
-        
-        /// <summary>
-        /// Unregisters a previously registered File:New handler.
-        /// </summary>
-        /// <param name="plugin">The editor plugin to unregister.</param>
-        void UnregisterNewHandler(IFileOpener opener);
-        
-        /// <summary>
-        /// Registers a file type to be shown in the "Open File" dialog of the IDE.
-        /// </summary>
-        /// <param name="typeName">The pluralized name of the type, e.g. "Images".</param>
-        /// <param name="filters">
-        /// A semicolon-delimited list of filename filters to associate with the type.
-        /// e.g. "*.bmp;*.gif;*.jpg;*.png"
-        /// </param>
-        void RegisterOpenFileType(string typeName, string filters);
-
-        /// <summary>
-        /// Reverses a previous call to RegisterOpenFileType.
-        /// </summary>
-        /// <param name="filters">The list of filters associated with the type. Must be exactly as passed to RegisterOpenFileType.</param>
-        void UnregisterOpenFileType(string filters);
-
-        /// <summary>
         /// Opens a document in the IDE.
         /// </summary>
         /// <param name="path"></param>
@@ -136,5 +99,15 @@ namespace Sphere.Plugins.Interfaces
         /// usually due to changing a style option through a plugin.
         /// </summary>
         void RestyleEditors();
+    }
+
+    /// <summary>
+    /// Specifies the interface for the dock panel manager.
+    /// </summary>
+    public interface IDock
+    {
+        void Hide(IDockPanel panel);
+
+        void Show(IDockPanel panel);
     }
 }

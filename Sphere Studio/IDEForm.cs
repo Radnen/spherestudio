@@ -19,6 +19,7 @@ using SphereStudio.Settings;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
+using System.Text;
 
 namespace SphereStudio
 {
@@ -45,13 +46,12 @@ namespace SphereStudio
         private readonly StartPage _startPage;
         private readonly ProjectTree _tree;
         private bool _firsttime;
-        private readonly Dictionary<string, string> _openFileTypes = new Dictionary<string, string>();
         private string _default_active;
         private bool _loadingPresets = false;
 
         private DocumentTab _activeTab;
+        private DockManager _dock = null;
         private bool _first_debug_pause;
-        private List<NewHandler> _new_handlers = new List<NewHandler>();
         private INI _settingsINI;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
@@ -65,9 +65,8 @@ namespace SphereStudio
         public IDEForm()
         {
             InitializeComponent();
-            Docking = new DockManager(MainDock);
 
-            PluginManager.IDE = this;
+            Sphere.Plugins.PluginManager.IDE = this;
 
             string filepath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -76,6 +75,7 @@ namespace SphereStudio
             Global.Settings = new CoreSettings(_settingsINI);
 
             _firsttime = !Global.Settings.GetBoolean("setupComplete", false);
+
 
             _tree = new ProjectTree(this) { Dock = DockStyle.Fill };
 
@@ -88,7 +88,7 @@ namespace SphereStudio
             InitializeDocking();
             BuildEngine.Initialize();
 
-            PluginManager.RegisterPlugin(null, new MainPage(), "Sphere Studio IDE");
+            Sphere.Plugins.PluginManager.Register(null, new MainPage(), "Sphere Studio IDE");
 
             Global.EvalPlugins();
             Global.Settings.Apply();
@@ -99,6 +99,7 @@ namespace SphereStudio
             ResumeLayout();
 
             UpdatePresetList();
+            UpdateControls();
 
             // make sure this is active only when we use it.
             if (_treeContent != null) _treeContent.Activate();
@@ -112,15 +113,17 @@ namespace SphereStudio
                 menuOpenLastProject_Click(null, EventArgs.Empty);
         }
 
+        public IDock Docking { get { return _dock; } }
+
         public ScriptView CreateScriptView()
         {
-            var plugin = PluginManager.GetPlugin<IEditor<ScriptView>>(Global.Settings.ScriptEditor);
+            var plugin = Sphere.Plugins.PluginManager.Get<IEditor<ScriptView>>(Global.Settings.ScriptEditor);
             return plugin.CreateEditView();
         }
 
         public ImageView CreateImageView()
         {
-            var plugin = PluginManager.GetPlugin<IEditor<ImageView>>(Global.Settings.ImageEditor);
+            var plugin = Sphere.Plugins.PluginManager.Get<IEditor<ImageView>>(Global.Settings.ImageEditor);
             return plugin.CreateEditView();
         }
 
@@ -213,16 +216,22 @@ namespace SphereStudio
         {
             ToolStripDropDown dropdown = ((ToolStripDropDownItem) sender).DropDown;
 
-            if (_new_handlers.Count > 0)
+            string[] pluginNames = PluginManager.GetNames<INewFileOpener>();
+            if (pluginNames.Length > 0)
                 dropdown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
-            foreach (var handler in _new_handlers)
+            var plugins = from name in pluginNames
+                          let plugin = PluginManager.Get<INewFileOpener>(name)
+                          orderby plugin.FileTypeName ascending
+                          select plugin;
+            foreach (var plugin in plugins)
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(handler.Name) { Name = "8:12" };
-                item.Image = handler.MenuIcon.ToBitmap();
-                item.Click += (sender1, e1) =>
+                ToolStripMenuItem item = new ToolStripMenuItem(plugin.FileTypeName) { Name = "8:12" };
+                item.Image = plugin.FileIcon;
+                item.Click += (s, ea) =>
                 {
-                    DocumentView view = handler.FileOpener.New();
-                    if (view != null) AddDocument(view);
+                    DocumentView view = plugin.New();
+                    if (view != null)
+                        AddDocument(view);
                 };
                 dropdown.Items.Add(item);
             }
@@ -368,6 +377,25 @@ namespace SphereStudio
         #region View menu Click handlers
         private void menuView_DropDownOpening(object sender, EventArgs e)
         {
+            var panelNames = from name in Sphere.Plugins.PluginManager.GetNames<IDockPanel>()
+                             let plugin = Sphere.Plugins.PluginManager.Get<IDockPanel>(name)
+                             where plugin.ShowInViewMenu
+                             select name;
+            if (panelNames.Any())
+            {
+                ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
+                menuView.DropDownItems.Add(ts);
+            }
+            foreach (string title in panelNames)
+            {
+                var plugin = Sphere.Plugins.PluginManager.Get<IDockPanel>(title);
+                ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
+                item.Image = plugin.DockIcon;
+                item.Checked = _dock.IsVisible(plugin);
+                item.Click += (o, ev) => _dock.Toggle(plugin);
+                menuView.DropDownItems.Add(item);
+            }
+
             if (_tabs.Count > 0)
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
@@ -477,7 +505,7 @@ namespace SphereStudio
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            PluginManager.GetPlugin<IStarter>(Global.Settings.Engine)
+            Sphere.Plugins.PluginManager.Get<IStarter>(Global.Settings.Engine)
                 .Configure();
         }
 
@@ -535,14 +563,12 @@ namespace SphereStudio
             get { return _activeTab.View; }
         }
 
-        public IProject CurrentGame
+        public IProject Project
         {
             get { return Global.CurrentGame; }
         }
 
         public IDebugger Debugger { get; private set; }
-
-        public IDock Docking { get; private set; }
 
         /// <summary>
         /// Gets a list of filenames of opened documents. Unsaved documents
@@ -643,20 +669,24 @@ namespace SphereStudio
 
             // the IDE will try to open the file through the plugin manager first.
             // if that fails, then use the current default editor (if any).
-            DocumentView view;
+            DocumentView view = null;
             try
             {
-                if (!PluginManager.OpenDocument(filePath, out view))
+                string fileExtension = Path.GetExtension(filePath);
+                if (fileExtension.StartsWith("."))
+                    fileExtension = fileExtension.Substring(1);
+                var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                              let plugin = PluginManager.Get<IFileOpener>(name)
+                              where plugin.FileExtensions.Contains(fileExtension)
+                              select plugin;
+                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Global.Settings.DefaultFileOpener);
+                IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
+                if (opener != null)
+                    view = opener.Open(filePath);
+                else
                 {
-                    // nobody claimed the file, so find the current default editor plugin
-                    var opener = PluginManager.GetPlugin<IFileOpener>(Global.Settings.DefaultFileOpener);
-                    if (opener != null)
-                        view = opener.Open(filePath);
-                    else
-                    {
-                        MessageBox.Show(String.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", extension.ToLower(), filePath),
-                            @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
+                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (FileNotFoundException)
@@ -665,9 +695,7 @@ namespace SphereStudio
             }
 
             if (view != null)
-            {
                 AddDocument(view, filePath, restoreView);
-            }
             return view;
         }
 
@@ -680,7 +708,7 @@ namespace SphereStudio
             if (string.IsNullOrEmpty(filename)) return;
             if (!CloseCurrentProject()) return;
 
-            Global.CurrentGame = Project.Open(filename);
+            Global.CurrentGame = IDE.Project.Open(filename);
 
             RefreshProject();
 
@@ -715,23 +743,13 @@ namespace SphereStudio
 
             Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
-                CurrentGame.Name);
+                Project.Name);
             UpdateControls();
         }
 
         public ISettings OpenSettings(string settingsID)
         {
             return new INISettings(_settingsINI, settingsID);
-        }
-
-        public void RegisterNewHandler(IFileOpener opener, string name, Icon menuIcon)
-        {
-            _new_handlers.Add(new NewHandler(opener, name, menuIcon));
-        }
-
-        public void RegisterOpenFileType(string typeName, string filters)
-        {
-            _openFileTypes[filters] = typeName;
         }
 
         public void RemoveMenuItem(ToolStripItem item)
@@ -755,17 +773,6 @@ namespace SphereStudio
             {
                 tab.Restyle();
             }
-        }
-
-        public void UnregisterNewHandler(IFileOpener opener)
-        {
-            _new_handlers.RemoveAll(handler => handler.FileOpener == opener);
-        }
-
-        public void UnregisterOpenFileType(string filters)
-        {
-            if (!_openFileTypes.ContainsKey(filters)) return;
-            _openFileTypes.Remove(filters);
         }
 
         public void UpdateStyle()
@@ -795,6 +802,8 @@ namespace SphereStudio
             };
             _startContent.Controls.Add(_startPage);
             _startContent.Show(MainDock);
+
+            _dock = new DockManager(MainDock);
         }
 
         /// <summary>
@@ -816,13 +825,24 @@ namespace SphereStudio
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 string filterString = "";
-                foreach (string filterID in from key in _openFileTypes.Keys orderby _openFileTypes[key] select key)
+                var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                              let plugin = PluginManager.Get<IFileOpener>(name)
+                              where plugin.FileExtensions != null
+                              orderby plugin.FileTypeName ascending
+                              select plugin;
+                foreach (IFileOpener plugin in plugins)
                 {
-                    filterString += String.Format("{0}|{1}|", _openFileTypes[filterID], filterID);
+                    StringBuilder filter = new StringBuilder();
+                    foreach (string extension in plugin.FileExtensions)
+                    {
+                        if (filter.Length > 0) filter.Append(";");
+                        filter.AppendFormat("*.{0}", extension);
+                    }
+                    filterString += String.Format("{0}|{1}|", plugin.FileTypeName, filter);
                 }
                 filterString += @"All Files|*.*";
                 dialog.Filter = filterString;
-                dialog.FilterIndex = 5 + _openFileTypes.Count;
+                dialog.FilterIndex = plugins.Count() + 1;
                 dialog.InitialDirectory = Global.CurrentGame.RootPath;
                 dialog.Multiselect = multiselect;
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
@@ -1052,7 +1072,7 @@ namespace SphereStudio
 
         private void UpdateControls()
         {
-            var starter = PluginManager.GetPlugin<IStarter>(Global.Settings.Engine);
+            var starter = Sphere.Plugins.PluginManager.Get<IStarter>(Global.Settings.Engine);
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Global.Settings.LastProject);
 
@@ -1077,6 +1097,7 @@ namespace SphereStudio
             CutToolButton.Enabled = _activeTab != null;
             CopyToolButton.Enabled = _activeTab != null;
 
+            if (_dock != null) _dock.Refresh();
         }
 
         private void UpdateMenuItems()

@@ -13,6 +13,7 @@ using SphereStudio.UI;
 
 namespace SphereStudio.UI.SettingsPages
 {
+    [ToolboxItem(false)]
     public partial class MainPage : UserControl, ISettingsPage
     {
         public MainPage()
