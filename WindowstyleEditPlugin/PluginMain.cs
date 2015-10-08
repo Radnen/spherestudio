@@ -21,15 +21,16 @@ namespace SphereStudio.Plugins
         public string Description { get { return "Sphere Studio default windowstyle editor"; } }
         public string Version { get { return "1.2.0"; } }
 
-        public PluginMain()
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
+
+        public void Initialize(ISettings conf)
         {
             FileTypeName = "Sphere Windowstyle";
             FileExtensions = new[] { "rws" };
             FileIcon = Properties.Resources.GridToolIcon;
-        }
 
-        public void Initialize(ISettings conf)
-        {
             PluginManager.Register(this, this, Name);
         }
 
@@ -37,10 +38,6 @@ namespace SphereStudio.Plugins
         {
             PluginManager.UnregisterAll(this);
         }
-
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
 
         public DocumentView New()
         {

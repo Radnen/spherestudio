@@ -19,17 +19,18 @@ namespace SphereStudio.Plugins
         public string Description { get { return "Sphere Studio default script editor"; } }
         public string Version { get { return "1.2.0"; } }
 
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
+
         internal static List<String> Functions = new List<string>();
 
-        public PluginMain()
+        public void Initialize(ISettings conf)
         {
             FileTypeName = "JS Script";
             FileExtensions = new[] { "js", "coffee" };
             FileIcon = Properties.Resources.script_edit;
-        }
 
-        public void Initialize(ISettings conf)
-        {
             PluginManager.Register(this, this, Name);
             PluginManager.IDE.AddMenuItem(_rootMenu, "Tools");
 
@@ -54,10 +55,6 @@ namespace SphereStudio.Plugins
             Functions.Clear();
         }
 
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
-
         public ScriptView CreateEditView()
         {
             return new ScriptEditView();
@@ -76,7 +73,19 @@ namespace SphereStudio.Plugins
             return view;
         }
 
-        #region Wire up Script menu items
+        private static void LoadFunctions()
+        {
+            FileInfo file = new FileInfo(Application.StartupPath + "/docs/functions.txt");
+            if (!file.Exists) return;
+
+            using (StreamReader reader = file.OpenText())
+            {
+                while (!reader.EndOfStream)
+                    Functions.Add(reader.ReadLine());
+            }
+        }
+        
+        #region initialize the script menu
         private static ToolStripMenuItem _rootMenu, _indentMenu;
         private static ToolStripMenuItem _autoCompleteItem, _codeFoldItem;
         private static ToolStripMenuItem _highlightLineItem, _highlightBracesItem;
@@ -227,17 +236,5 @@ namespace SphereStudio.Plugins
             UpdateScriptControls();
         }
         #endregion
-
-        private static void LoadFunctions()
-        {
-            FileInfo file = new FileInfo(Application.StartupPath + "/docs/functions.txt");
-            if (!file.Exists) return;
-
-            using (StreamReader reader = file.OpenText())
-            {
-                while (!reader.EndOfStream)
-                    Functions.Add(reader.ReadLine());
-            }
-        }
     }
 }

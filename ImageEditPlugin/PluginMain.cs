@@ -16,11 +16,54 @@ namespace SphereStudio.Plugins
         public string Description { get { return "Sphere Studio default image editor"; } }
         public string Version { get { return "1.2.0"; } }
 
-        #region wire up Image menu items
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
+
+        internal static void ShowMenus(bool show)
+        {
+            _imageMenu.Visible = show;
+        }
+
+        public void Initialize(ISettings conf)
+        {
+            FileTypeName = "Bitmap Image";
+            FileExtensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
+            FileIcon = Properties.Resources.palette;
+
+            PluginManager.Register(this, this, Name);
+            PluginManager.IDE.AddMenuItem(_imageMenu, "Tools");
+        }
+
+        public void ShutDown()
+        {
+            PluginManager.IDE.RemoveMenuItem(_imageMenu);
+            PluginManager.UnregisterAll(this);
+        }
+
+        public ImageView CreateEditView()
+        {
+            return new ImageEditView();
+        }
+
+        public DocumentView New()
+        {
+            DocumentView view = new ImageEditView();
+            return view.NewDocument() ? view : null;
+        }
+
+        public DocumentView Open(string fileName)
+        {
+            DocumentView view = new ImageEditView();
+            view.Load(fileName);
+            return view;
+        }
+
+        #region Initialize the Image menu
         private static ToolStripMenuItem _imageMenu;
         private static ToolStripMenuItem _rescaleMenuItem;
         private static ToolStripMenuItem _resizeMenuItem;
-        
+
         static PluginMain()
         {
             _imageMenu = new ToolStripMenuItem("&Image") { Visible = false };
@@ -56,51 +99,5 @@ namespace SphereStudio.Plugins
             }
         }
         #endregion
-        
-        internal static void ShowMenus(bool show)
-        {
-            _imageMenu.Visible = show;
-        }
-
-        public PluginMain()
-        {
-            FileTypeName = "Bitmap Image";
-            FileExtensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
-            FileIcon = Properties.Resources.palette;
-        }
-
-        public void Initialize(ISettings conf)
-        {
-            PluginManager.Register(this, this, Name);
-            PluginManager.IDE.AddMenuItem(_imageMenu, "Tools");
-        }
-
-        public void ShutDown()
-        {
-            PluginManager.IDE.RemoveMenuItem(_imageMenu);
-            PluginManager.UnregisterAll(this);
-        }
-
-        public ImageView CreateEditView()
-        {
-            return new ImageEditView();
-        }
-
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
-
-        public DocumentView New()
-        {
-            DocumentView view = new ImageEditView();
-            return view.NewDocument() ? view : null;
-        }
-
-        public DocumentView Open(string fileName)
-        {
-            DocumentView view = new ImageEditView();
-            view.Load(fileName);
-            return view;
-        }
     }
-}
+    }

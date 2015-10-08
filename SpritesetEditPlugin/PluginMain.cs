@@ -15,7 +15,44 @@ namespace SphereStudio.Plugins
         public string Description { get { return "Sphere Studio default spriteset editor"; } }
         public string Version { get { return "1.2.0"; } }
 
-        #region wire up Spriteset menu
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
+
+        internal static void ShowMenus(bool show)
+        {
+            _spritesetMenu.Visible = show;
+        }
+        
+        public void Initialize(ISettings conf)
+        {
+            FileTypeName = "Sphere Spriteset";
+            FileExtensions = new[] { "rss" };
+            FileIcon = Properties.Resources.PersonIcon;
+
+            PluginManager.Register(this, this, Name);
+            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
+        }
+
+        public void ShutDown()
+        {
+            PluginManager.UnregisterAll(this);
+        }
+
+        public DocumentView New()
+        {
+            SpritesetEditView view = new SpritesetEditView();
+            return view.NewDocument() ? view : null;
+        }
+
+        public DocumentView Open(string fileName)
+        {
+            SpritesetEditView view = new SpritesetEditView();
+            view.Load(fileName);
+            return view;
+        }
+
+        #region initialize the Spriteset menu
         private static ToolStripMenuItem _spritesetMenu;
         private static ToolStripMenuItem _exportMenuItem;
         private static ToolStripMenuItem _importMenuItem;
@@ -37,7 +74,7 @@ namespace SphereStudio.Plugins
                 _exportMenuItem
             });
         }
-        
+
         private static void menuExport_Click(object sender, EventArgs e)
         {
             // TODO: implement spriteset export!
@@ -60,45 +97,5 @@ namespace SphereStudio.Plugins
             (PluginManager.IDE.CurrentDocument as SpritesetEditView).ResizeAll();
         }
         #endregion
-
-        internal static void ShowMenus(bool show)
-        {
-            _spritesetMenu.Visible = show;
-        }
-        
-        public PluginMain()
-        {
-            FileTypeName = "Sphere Spriteset";
-            FileExtensions = new[] { "rss" };
-            FileIcon = Properties.Resources.PersonIcon;
-        }
-
-        public void Initialize(ISettings conf)
-        {
-            PluginManager.Register(this, this, Name);
-            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
-        }
-
-        public void ShutDown()
-        {
-            PluginManager.UnregisterAll(this);
-        }
-
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
-
-        public DocumentView New()
-        {
-            SpritesetEditView view = new SpritesetEditView();
-            return view.NewDocument() ? view : null;
-        }
-
-        public DocumentView Open(string fileName)
-        {
-            SpritesetEditView view = new SpritesetEditView();
-            view.Load(fileName);
-            return view;
-        }
     }
 }

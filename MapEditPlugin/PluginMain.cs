@@ -19,7 +19,45 @@ namespace SphereStudio.Plugins
         public string Description { get { return "Sphere Studio default map editor"; } }
         public string Version { get { return "1.2.0"; } }
 
-        #region wire up Map menu items
+        public string FileTypeName { get; private set; }
+        public string[] FileExtensions { get; private set; }
+        public Bitmap FileIcon { get; private set; }
+
+        internal static void ShowMenus(bool show)
+        {
+            _mapMenu.Visible = show;
+        }
+        
+        public void Initialize(ISettings conf)
+        {
+            FileTypeName = "Sphere Map";
+            FileExtensions = new[] { "rmp" };
+            FileIcon = Properties.Resources.MapIcon;
+
+            PluginManager.Register(this, this, Name);
+            PluginManager.IDE.AddMenuItem(_mapMenu, "Tools");
+        }
+
+        public void ShutDown()
+        {
+            PluginManager.UnregisterAll(this);
+            PluginManager.IDE.RemoveMenuItem(_mapMenu);
+        }
+
+        public DocumentView New()
+        {
+            DocumentView view = new MapEditView();
+            return view.NewDocument() ? view : null;
+        }
+
+        public DocumentView Open(string fileName)
+        {
+            DocumentView view = new MapEditView();
+            view.Load(fileName);
+            return view;
+        }
+        
+        #region initialize the Map menu
         private static ToolStripMenuItem _mapMenu;
         private static ToolStripMenuItem _exportTilesetMenuItem;
         private static ToolStripMenuItem _mapPropertiesMenuItem;
@@ -41,7 +79,7 @@ namespace SphereStudio.Plugins
                 new ToolStripSeparator(),
                 _mapPropertiesMenuItem });
         }
-        
+
         private static void menuRecenter_Click(object sender, EventArgs e)
         {
             MapEditView editor = PluginManager.IDE.CurrentDocument as MapEditView;
@@ -88,46 +126,5 @@ namespace SphereStudio.Plugins
             }
         }
         #endregion
-        
-        internal static void ShowMenus(bool show)
-        {
-            _mapMenu.Visible = show;
-        }
-        
-        public PluginMain()
-        {
-            FileTypeName = "Sphere Map";
-            FileExtensions = new[] { "rmp" };
-            FileIcon = Properties.Resources.MapIcon;
-        }
-
-        public void Initialize(ISettings conf)
-        {
-            PluginManager.Register(this, this, Name);
-            PluginManager.IDE.AddMenuItem(_mapMenu, "Tools");
-        }
-
-        public void ShutDown()
-        {
-            PluginManager.UnregisterAll(this);
-            PluginManager.IDE.RemoveMenuItem(_mapMenu);
-        }
-
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
-
-        public DocumentView New()
-        {
-            DocumentView view = new MapEditView();
-            return view.NewDocument() ? view : null;
-        }
-
-        public DocumentView Open(string fileName)
-        {
-            DocumentView view = new MapEditView();
-            view.Load(fileName);
-            return view;
-        }
     }
 }
