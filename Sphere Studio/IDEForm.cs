@@ -118,13 +118,13 @@ namespace SphereStudio
         public ScriptView CreateScriptView()
         {
             var plugin = Sphere.Plugins.PluginManager.Get<IEditor<ScriptView>>(Global.Settings.ScriptEditor);
-            return plugin.CreateEditView();
+            return plugin != null ? plugin.CreateEditView() : null;
         }
 
         public ImageView CreateImageView()
         {
             var plugin = Sphere.Plugins.PluginManager.Get<IEditor<ImageView>>(Global.Settings.ImageEditor);
-            return plugin.CreateEditView();
+            return plugin != null ? plugin.CreateEditView() : null;
         }
 
         #region Main IDE form event handlers
