@@ -27,13 +27,8 @@ namespace Sphere.Plugins
     /// </summary>
     public static class PluginManager
     {
-        static List<PluginEntry> _plugins;
+        static List<PluginEntry> _plugins = new List<PluginEntry>();
         
-        static PluginManager()
-        {
-            _plugins = new List<PluginEntry>();
-        }
-
         /// <summary>
         /// Registers a plugin. Plugins add new functionality to the IDE.
         /// </summary>
@@ -55,7 +50,7 @@ namespace Sphere.Plugins
         }
         
         /// <summary>
-        /// Unregisters all plugins registered by a given plugin module.
+        /// Unregisters all plugins registered by a plugin module.
         /// </summary>
         /// <param name="main">The plugin module whose plugins are being unregistered.</param>
         public static void UnregisterAll(IPluginMain main)

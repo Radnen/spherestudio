@@ -43,16 +43,12 @@ namespace minisphere.GDK
 
     static class Views
     {
-        private static IPluginMain _main;
-
         public static void Initialize(IPluginMain main, ISettings conf)
         {
-            _main = main;
-
-            PluginManager.Register(_main, Inspector = new InspectorPane(), "Variables");
-            PluginManager.Register(_main, Stack = new StackPane(), "Call Stack");
-            PluginManager.Register(_main, Console = new ConsolePane(), "Debug Output");
-            PluginManager.Register(_main, Errors = new ErrorPane(), "Error View");
+            PluginManager.Register(main, Inspector = new InspectorPane(), "Variables");
+            PluginManager.Register(main, Stack = new StackPane(), "Call Stack");
+            PluginManager.Register(main, Console = new ConsolePane(), "Debug Output");
+            PluginManager.Register(main, Errors = new ErrorPane(), "Error View");
 
             if (conf.GetBoolean("keepConsoleOutput", false))
                 PluginManager.IDE.Docking.Show(Console);
@@ -60,7 +56,10 @@ namespace minisphere.GDK
 
         public static void ShutDown()
         {
-            PluginManager.UnregisterAll(_main);
+            PluginManager.Unregister(Console);
+            PluginManager.Unregister(Errors);
+            PluginManager.Unregister(Inspector);
+            PluginManager.Unregister(Stack);
         }
 
         public static ConsolePane Console { get; private set; }
