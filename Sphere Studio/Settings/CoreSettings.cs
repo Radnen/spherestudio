@@ -152,6 +152,7 @@ namespace SphereStudio.Settings
                 else
                     plugin.Value.Deactivate();
             }
+            PluginManager.IDE.Docking.Refresh();
         }
     }
 }

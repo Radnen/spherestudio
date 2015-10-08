@@ -15,52 +15,57 @@ namespace SphereStudio.Plugins
         public string Version { get { return "1.2.0"; } }
 
         private TaskList _list;
-        private ToolStripMenuItem _item;
-
-        public PluginMain() { }
-
-        /* Load the Task List */
-        void IDE_LoadProject(object sender, EventArgs e)
-        {
-            _list.LoadList(PluginManager.IDE.Project.RootPath);
-        }
-
-        /* Close and empty the task List */
-        void IDE_UnloadProject(object sender, EventArgs e)
-        {
-            _list.SaveList();
-            _list.Clear();
-        }
 
         public void Initialize(ISettings conf)
         {
             // Create a new instance of your custom widget, like so:
             _list = new TaskList { Dock = DockStyle.Fill };
 
-            // Register it as a dock panel.
+            // Register the task list as a plugin. Since TaskList implements
+            // IDockPane, this also adds an entry for it to the View menu, but for
+            // convenience we'll show it by default anyway.
             PluginManager.Register(this, _list, "Task List");
             PluginManager.IDE.Docking.Show(_list);
 
-            // Then you can add special event listeners, if you want.
-            // A task list must be able to, well, load a task list, 
-            // so in this case we can use these to our advantage.
-            PluginManager.IDE.LoadProject += IDE_LoadProject;
-            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
+            // You can add special event listeners, if you want. A task list must
+            // be able to, well, load a task list, so in this case we can use these
+            // to our advantage.
+            PluginManager.IDE.LoadProject += on_LoadProject;
+            PluginManager.IDE.UnloadProject += on_UnloadProject;
 
-            // Here I ake sure the list is loaded when the plugin has been activated.
-            if (PluginManager.IDE.Project != null) _list.LoadList(PluginManager.IDE.Project.RootPath);
+            // Here we make sure the list is loaded when the plugin has been activated.
+            if (PluginManager.IDE.Project != null)
+                _list.LoadList(PluginManager.IDE.Project.RootPath);
         }
 
         public void ShutDown()
         {
+            // Unregister all plugins registered by this module. We could unregister
+            // them individually if we had more than one, but this is the most convenient
+            // for most plugins to do on shutdown.
+            PluginManager.UnregisterAll(this);
+            
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
-            PluginManager.IDE.LoadProject -= IDE_LoadProject;
-            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
+            PluginManager.IDE.LoadProject -= on_LoadProject;
+            PluginManager.IDE.UnloadProject -= on_UnloadProject;
 
             // And we can optionally null things out just to be safe:
             _list.Dispose(); _list = null;
-            _item.Dispose(); _item = null;
+        }
+        
+        private void on_LoadProject(object sender, EventArgs e)
+        {
+            // User loaded a different project in the IDE, load its task list.
+            _list.LoadList(PluginManager.IDE.Project.RootPath);
+        }
+
+        private void on_UnloadProject(object sender, EventArgs e)
+        {
+            // User closed the current project, so clear the list. Make sure
+            // it's saved first!
+            _list.SaveList();
+            _list.Clear();
         }
     }
 }
