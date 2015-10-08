@@ -10,7 +10,7 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener, IDockPanel
+    public class PluginMain : IPluginMain, IFileOpener, IDockPane
     {
         public string Name { get { return "Sound Test"; } }
         public string Author { get { return "Spherical"; } }

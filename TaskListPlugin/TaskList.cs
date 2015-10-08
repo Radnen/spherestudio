@@ -9,7 +9,7 @@ using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins
 {
-    internal partial class TaskList : UserControl, IDockPanel
+    internal partial class TaskList : UserControl, IDockPane
     {
         private readonly ImageList _imagelist = new ImageList();
 

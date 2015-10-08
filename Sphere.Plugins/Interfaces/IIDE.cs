@@ -106,8 +106,8 @@ namespace Sphere.Plugins.Interfaces
     /// </summary>
     public interface IDock
     {
-        void Hide(IDockPanel panel);
+        void Hide(IDockPane panel);
 
-        void Show(IDockPanel panel);
+        void Show(IDockPane panel);
     }
 }

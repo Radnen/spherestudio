@@ -134,11 +134,14 @@ namespace Sphere.Core
                     foreach (string name in sections)
                     {
                         file.WriteLine(string.Format("[{0}]", name));
-                        foreach (var item in _sections[name].Keys)
+                        var itemNames = from itemName in _sections[name].Keys
+                                        orderby itemName ascending
+                                        select itemName;
+                        foreach (string itemName in itemNames)
                         {
                             file.WriteLine(string.Format("{0}={1}",
-                                item,
-                                _sections[name][item]));
+                                itemName,
+                                _sections[name][itemName]));
                         }
                         file.WriteLine();
                     }

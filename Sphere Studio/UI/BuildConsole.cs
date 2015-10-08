@@ -18,7 +18,7 @@ using SphereStudio.IDE;
 namespace SphereStudio.UI
 {
     [ToolboxItem(false)]
-    partial class BuildConsole : UserControl, IConsole, IDockPanel
+    partial class BuildConsole : UserControl, IConsole, IDockPane
     {
         private string output = "";
 

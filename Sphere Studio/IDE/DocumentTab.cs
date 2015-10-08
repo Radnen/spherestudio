@@ -74,14 +74,14 @@ namespace SphereStudio.IDE
             if (View is ScriptView)
             {
                 ScriptView scriptView = View as ScriptView;
-                scriptView.Breakpoints = Global.CurrentGame.GetBreakpoints(FileName);
+                scriptView.Breakpoints = Global.Project.GetBreakpoints(FileName);
                 scriptView.BreakpointSet += on_BreakpointSet;
             }
 
             if (restoreView && FileName != null)
             {
-                string setting = string.Format("viewState_{0:X8}", FileName.GetHashCode());
-                try { View.ViewState = Global.CurrentGame.User.GetString(setting, ""); }
+                string setting = string.Format("viewState:{0:X8}", FileName.GetHashCode());
+                try { View.ViewState = Global.Project.User.GetString(setting, ""); }
                 catch (Exception) { } // *munch*
             }
         }
@@ -316,11 +316,11 @@ namespace SphereStudio.IDE
 
             // record breakpoints if script tab
             if (View is ScriptView)
-                Global.CurrentGame.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
+                Global.Project.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
 
             // save view (cursor position, etc.)
-            Global.CurrentGame.User.SetValue(
-                string.Format("viewState_{0:X8}", FileName.GetHashCode()),
+            Global.Project.User.SetValue(
+                string.Format("viewState:{0:X8}", FileName.GetHashCode()),
                 View.ViewState);
         }
 
@@ -336,7 +336,7 @@ namespace SphereStudio.IDE
         {
             if (FileName == null) return;
             ScriptView view = View as ScriptView;
-            Global.CurrentGame.SetBreakpoints(FileName, view.Breakpoints);
+            Global.Project.SetBreakpoints(FileName, view.Breakpoints);
             if (_ide.Debugger != null)
             {
                 await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);

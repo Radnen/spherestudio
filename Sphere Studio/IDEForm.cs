@@ -132,11 +132,11 @@ namespace SphereStudio
         {
             // this works around glitchy WeifenLuo behavior when messing with panel
             // visibility before the form loads.
-            if (Global.Settings.AutoOpenLastProject && Global.CurrentGame != null)
+            if (Global.Settings.AutoOpenLastProject && Global.Project != null)
             {
-                if (Global.CurrentGame.User.StartHidden)
+                if (Global.Project.User.StartHidden)
                     _startContent.Hide();
-                DocumentTab tab = GetDocument(Global.CurrentGame.User.CurrentDocument);
+                DocumentTab tab = GetDocument(Global.Project.User.CurrentDocument);
                 if (tab != null)
                     tab.Activate();
                 else
@@ -208,7 +208,7 @@ namespace SphereStudio
             menuSaveAs.Enabled = menuSave.Enabled = (_activeTab != null);
             menuCloseProject.Enabled = IsProjectOpen;
             menuOpenLastProject.Enabled = (!IsProjectOpen ||
-                Global.Settings.LastProject != Global.CurrentGame.RootPath);
+                Global.Settings.LastProject != Global.Project.RootPath);
             menu_DropDownOpening(sender, e);
         }
 
@@ -267,7 +267,7 @@ namespace SphereStudio
                 if (!CloseCurrentProject()) return;
                 menuRefreshProject_Click(null, EventArgs.Empty);
                 _startPage.PopulateGameList();
-                OpenDocument(Global.CurrentGame.RootPath + "\\scripts\\main.js");
+                OpenDocument(Global.Project.RootPath + "\\scripts\\main.js");
             }
         }
 
@@ -305,14 +305,14 @@ namespace SphereStudio
 
         private void menuSave_Click(object sender, EventArgs e)
         {
-            string savePath = IsProjectOpen ? Global.CurrentGame.RootPath : null;
+            string savePath = IsProjectOpen ? Global.Project.RootPath : null;
             if (_activeTab != null)
                 _activeTab.Save(savePath);
         }
 
         private void menuSaveAs_Click(object sender, EventArgs e)
         {
-            string savePath = IsProjectOpen ? Global.CurrentGame.RootPath : null;
+            string savePath = IsProjectOpen ? Global.Project.RootPath : null;
             if (_activeTab != null)
                 _activeTab.SaveAs(savePath);
         }
@@ -377,8 +377,8 @@ namespace SphereStudio
         #region View menu Click handlers
         private void menuView_DropDownOpening(object sender, EventArgs e)
         {
-            var panelNames = from name in Sphere.Plugins.PluginManager.GetNames<IDockPanel>()
-                             let plugin = Sphere.Plugins.PluginManager.Get<IDockPanel>(name)
+            var panelNames = from name in Sphere.Plugins.PluginManager.GetNames<IDockPane>()
+                             let plugin = Sphere.Plugins.PluginManager.Get<IDockPane>(name)
                              where plugin.ShowInViewMenu
                              select name;
             if (panelNames.Any())
@@ -388,7 +388,7 @@ namespace SphereStudio
             }
             foreach (string title in panelNames)
             {
-                var plugin = Sphere.Plugins.PluginManager.Get<IDockPanel>(title);
+                var plugin = Sphere.Plugins.PluginManager.Get<IDockPane>(title);
                 ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
                 item.Image = plugin.DockIcon;
                 item.Checked = _dock.IsVisible(plugin);
@@ -468,7 +468,7 @@ namespace SphereStudio
 
         private void menuOpenGameDir_Click(object sender, EventArgs e)
         {
-            string path = Global.CurrentGame.RootPath;
+            string path = Global.Project.RootPath;
             var proc = Process.Start("explorer.exe", string.Format(@"/select, ""{0}\game.sgm""", path));
             proc.Dispose();
         }
@@ -490,7 +490,7 @@ namespace SphereStudio
                     tab.SaveIfDirty();
                 }
 
-                await BuildEngine.Test(Global.CurrentGame);
+                await BuildEngine.Test(Global.Project);
             }
 
             UpdateControls();
@@ -565,7 +565,7 @@ namespace SphereStudio
 
         public IProject Project
         {
-            get { return Global.CurrentGame; }
+            get { return Global.Project; }
         }
 
         public IDebugger Debugger { get; private set; }
@@ -708,7 +708,7 @@ namespace SphereStudio
             if (string.IsNullOrEmpty(filename)) return;
             if (!CloseCurrentProject()) return;
 
-            Global.CurrentGame = IDE.Project.Open(filename);
+            Global.Project = IDE.Project.Open(filename);
 
             RefreshProject();
 
@@ -719,7 +719,7 @@ namespace SphereStudio
 
             _startContent.Show();
 
-            string[] docs = Global.CurrentGame.User.Documents;
+            string[] docs = Global.Project.User.Documents;
             foreach (string s in docs)
             {
                 if (String.IsNullOrWhiteSpace(s)) continue;
@@ -731,10 +731,10 @@ namespace SphereStudio
             // it will be done in Form_Load.
             if (Visible)
             {
-                if (Global.CurrentGame.User.StartHidden)
+                if (Global.Project.User.StartHidden)
                     _startContent.Hide();
 
-                DocumentTab tab = GetDocument(Global.CurrentGame.User.CurrentDocument);
+                DocumentTab tab = GetDocument(Global.Project.User.CurrentDocument);
                 if (tab != null)
                     tab.Activate();
                 else
@@ -843,7 +843,7 @@ namespace SphereStudio
                 filterString += @"All Files|*.*";
                 dialog.Filter = filterString;
                 dialog.FilterIndex = plugins.Count() + 1;
-                dialog.InitialDirectory = Global.CurrentGame.RootPath;
+                dialog.InitialDirectory = Global.Project.RootPath;
                 dialog.Multiselect = multiselect;
                 return dialog.ShowDialog() == DialogResult.OK ? dialog.FileNames : null;
             }
@@ -861,7 +861,7 @@ namespace SphereStudio
 
         private bool IsProjectOpen
         {
-            get { return Global.CurrentGame != null; }
+            get { return Global.Project != null; }
         }
 
         internal void AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
@@ -921,7 +921,7 @@ namespace SphereStudio
         /// <returns>'true' if the project was closed; 'false' on cancel.</returns>
         private bool CloseCurrentProject(bool forceClose = false)
         {
-            if (Global.CurrentGame == null)
+            if (Global.Project == null)
                 return true;
 
             // if the debugger is active, prevent closing the project.
@@ -934,9 +934,9 @@ namespace SphereStudio
             }
 
             // user values will be lost if we don't record them now.
-            Global.CurrentGame.User.StartHidden = !_startContent.Visible;
-            Global.CurrentGame.User.Documents = Documents;
-            Global.CurrentGame.User.CurrentDocument = _activeTab != null
+            Global.Project.User.StartHidden = !_startContent.Visible;
+            Global.Project.User.Documents = Documents;
+            Global.Project.User.CurrentDocument = _activeTab != null
                 ? _activeTab.FileName : "";
 
             // close all open document tabs
@@ -944,11 +944,11 @@ namespace SphereStudio
                 return false;
 
             // save and unload the project
-            if (Global.CurrentGame != null)
+            if (Global.Project != null)
             {
                 if (UnloadProject != null)
                     UnloadProject(null, EventArgs.Empty);
-                Global.CurrentGame.Save();
+                Global.Project.Save();
             }
 
             // clear the project tree
@@ -957,8 +957,8 @@ namespace SphereStudio
             menuOpenLastProject.Enabled = (Global.Settings.LastProject.Length > 0);
 
             // all clear!
-            Global.CurrentGame.Dispose();
-            Global.CurrentGame = null;
+            Global.Project.Dispose();
+            Global.Project = null;
             Text = string.Format("{0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
             UpdateControls();
@@ -985,7 +985,7 @@ namespace SphereStudio
 
         private void OpenGameSettings()
         {
-            using (GameSettings settings = new GameSettings(Global.CurrentGame))
+            using (GameSettings settings = new GameSettings(Global.Project))
             {
                 settings.ShowDialog();
             }
@@ -995,10 +995,10 @@ namespace SphereStudio
         {
             _tree.Open();
             _tree.Refresh();
-            if (Global.CurrentGame.RootPath != null)
-                Global.Settings.LastProject = Global.CurrentGame.RootPath;
+            if (Global.Project.RootPath != null)
+                Global.Settings.LastProject = Global.Project.RootPath;
             UpdateControls();
-            _tree.ProjectName = "Project: " + Global.CurrentGame.Name;
+            _tree.ProjectName = "Project: " + Global.Project.Name;
         }
 
         private void RemoveRootMenuItem(ToolStripMenuItem item)
@@ -1038,7 +1038,7 @@ namespace SphereStudio
             }
             menuTestGame.Enabled = toolTestGame.Enabled = false;
             menuDebug.Enabled = toolDebug.Enabled = false;
-            Debugger = await BuildEngine.Debug(Global.CurrentGame);
+            Debugger = await BuildEngine.Debug(Global.Project);
             if (Debugger != null)
             {
                 Debugger.Detached += debugger_Detached;
@@ -1051,7 +1051,7 @@ namespace SphereStudio
                 {
                     menuDebug.Text = "&Resume";
                     toolDebug.Text = "Resume";
-                    var breaks = Global.CurrentGame.GetAllBreakpoints();
+                    var breaks = Global.Project.GetAllBreakpoints();
                     foreach (string filename in breaks.Keys)
                         foreach (int lineNumber in breaks[filename])
                             await Debugger.SetBreakpoint(filename, lineNumber, true);
@@ -1222,14 +1222,14 @@ namespace SphereStudio
             SaveFileDialog sfd = new SaveFileDialog()
             {
                 Title = "Build Game Package",
-                InitialDirectory = Global.CurrentGame.RootPath,
+                InitialDirectory = Global.Project.RootPath,
                 Filter = BuildEngine.SavePackageFilters,
                 DefaultExt = "spk",
                 AddExtension = true,
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                await BuildEngine.Package(Global.CurrentGame, sfd.FileName);
+                await BuildEngine.Package(Global.Project, sfd.FileName);
             }
         }
     }

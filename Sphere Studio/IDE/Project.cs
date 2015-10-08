@@ -233,7 +233,7 @@ namespace SphereStudio.IDE
                 try
                 {
                     lines = Array.ConvertAll(
-                        User.GetString(string.Format("bp_{0:X8}", hash), "").Split(','),
+                        User.GetString(string.Format("breakpointsSet:{0:X8}", hash), "").Split(','),
                         int.Parse);
                 } catch (Exception) { }  // *munch*
                 _breakpoints.Add(scriptPath, new HashSet<int>(lines));
@@ -246,7 +246,7 @@ namespace SphereStudio.IDE
             _breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
             foreach (var k in _breakpoints.Keys)
             {
-                User.SetValue(string.Format("bp_{0:X8}", k.GetHashCode()),
+                User.SetValue(string.Format("breakpointsSet:{0:X8}", k.GetHashCode()),
                     string.Join(",", _breakpoints[k]));
             }
         }

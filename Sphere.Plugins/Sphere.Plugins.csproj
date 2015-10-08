@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\ICompiler.cs" />
     <Compile Include="Interfaces\IConsole.cs" />
-    <Compile Include="Interfaces\IDockPanel.cs" />
+    <Compile Include="Interfaces\IDockPane.cs" />
     <Compile Include="Interfaces\IEditor.cs" />
     <Compile Include="Interfaces\IFileOpener.cs" />
     <Compile Include="Interfaces\IPlugin.cs" />
@@ -60,7 +60,9 @@
     <Compile Include="Interfaces\IIDE.cs" />
     <Compile Include="IPluginMain.cs" />
     <Compile Include="Interfaces\IProject.cs" />
-    <Compile Include="Views\ScriptView.cs" />
+    <Compile Include="Views\ScriptView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginWrapper.cs" />

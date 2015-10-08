@@ -122,7 +122,7 @@ namespace SphereStudio.Forms
                 startscript.Close();
             }
 
-            Global.CurrentGame = project;
+            Global.Project = project;
         }
     }
 }

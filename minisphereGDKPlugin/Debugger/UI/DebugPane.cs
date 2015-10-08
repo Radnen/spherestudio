@@ -7,7 +7,7 @@ using Sphere.Plugins.Interfaces;
 
 namespace minisphere.GDK.Debugger.UI
 {
-    partial class DebugPane : UserControl, IDockPanel
+    partial class DebugPane : UserControl, IDockPane
     {
         private DebugPane()
         {

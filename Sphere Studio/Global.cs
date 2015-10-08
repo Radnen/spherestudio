@@ -74,7 +74,7 @@ namespace SphereStudio
                     wrapper.Activate();
         }
 
-        public static Project CurrentGame = null;
+        public static Project Project = null;
         public static UserSettings CurrentUser = null;
         public static CoreSettings Settings;
         public static Sphere.Core.Entity CopiedEnt { get; set; }

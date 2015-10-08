@@ -232,7 +232,7 @@ namespace SphereStudio.UI
 
         private bool RenameProject(string oldname, string newname)
         {
-            if (oldname == Global.CurrentGame.RootPath)
+            if (oldname == Global.Project.RootPath)
             {
                 MessageBox.Show(@"Can't change name of active project.", @"Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;

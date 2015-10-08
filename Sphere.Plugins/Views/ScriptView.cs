@@ -7,18 +7,6 @@ using System.Threading.Tasks;
 
 namespace Sphere.Plugins.Views
 {
-    public class BreakpointSetEventArgs : EventArgs
-    {
-        public BreakpointSetEventArgs(int lineNumber, bool isActive)
-        {
-            LineNumber = lineNumber;
-            Active = isActive;
-        }
-
-        public bool Active { get; private set; }
-        public int LineNumber { get; private set; }
-    }
-
     /// <summary>
     /// Provides a base class for a script editing component.
     /// </summary>
@@ -67,5 +55,27 @@ namespace Sphere.Plugins.Views
         {
             if (BreakpointSet != null) BreakpointSet(this, e);
         }
+    }
+
+    /// <summary>
+    /// Contains data for a BreakpointSet event.
+    /// </summary>
+    public class BreakpointSetEventArgs : EventArgs
+    {
+        public BreakpointSetEventArgs(int lineNumber, bool isActive)
+        {
+            LineNumber = lineNumber;
+            Active = isActive;
+        }
+
+        /// <summary>
+        /// If Active is true, the breakpoint was set. Otherwise it was cleared.
+        /// </summary>
+        public bool Active { get; private set; }
+
+        /// <summary>
+        /// The line number containing the breakpoint.
+        /// </summary>
+        public int LineNumber { get; private set; }
     }
 }

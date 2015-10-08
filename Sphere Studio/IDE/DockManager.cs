@@ -17,7 +17,7 @@ namespace SphereStudio.IDE
     {
         public string Name;
         public DockContent Content;
-        public IDockPanel Panel;
+        public IDockPane Panel;
     }
 
     class DockManager : IDock
@@ -33,19 +33,19 @@ namespace SphereStudio.IDE
         public void Refresh()
         {
             var removed = from x in _dockForms
-                          where Sphere.Plugins.PluginManager.Get<IDockPanel>(x.Name) == null
+                          where Sphere.Plugins.PluginManager.Get<IDockPane>(x.Name) == null
                           select x;
             foreach (DockForm form in removed)
             {
                 form.Content.Dispose();
                 _dockForms.Remove(form);
             }
-            var newPanels = from name in Sphere.Plugins.PluginManager.GetNames<IDockPanel>()
+            var newPanels = from name in Sphere.Plugins.PluginManager.GetNames<IDockPane>()
                             where _dockForms.All(form => form.Name != name)
                             select name;
             foreach (string name in newPanels)
             {
-                IDockPanel plugin = Sphere.Plugins.PluginManager.Get<IDockPanel>(name);
+                IDockPane plugin = Sphere.Plugins.PluginManager.Get<IDockPane>(name);
                 DockForm form = new DockForm() { Name = name, Panel = plugin };
                 form.Content = new DockContent() { Name = name, TabText = name };
                 form.Content.Controls.Add(plugin.Control);
@@ -68,13 +68,13 @@ namespace SphereStudio.IDE
             }
         }
 
-        public bool IsVisible(IDockPanel panel)
+        public bool IsVisible(IDockPane panel)
         {
             DockForm form = _dockForms.Find(x => x.Panel == panel);
             return form.Panel != null && form.Content.Visible;
         }
 
-        public void Show(IDockPanel panel)
+        public void Show(IDockPane panel)
         {
             Refresh();
             DockForm form = _dockForms.Find(x => x.Panel == panel);
@@ -88,7 +88,7 @@ namespace SphereStudio.IDE
             }
         }
 
-        public void Hide(IDockPanel panel)
+        public void Hide(IDockPane panel)
         {
             Refresh();
             DockForm form = _dockForms.Find(x => x.Panel == panel);
@@ -98,7 +98,7 @@ namespace SphereStudio.IDE
             }
         }
 
-        public void Toggle(IDockPanel panel)
+        public void Toggle(IDockPane panel)
         {
             DockForm form = _dockForms.Find(x => x.Panel == panel);
             if (form.Content.Visible) Hide(panel); else Show(panel);

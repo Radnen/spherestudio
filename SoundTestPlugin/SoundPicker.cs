@@ -13,7 +13,7 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    partial class SoundPicker : UserControl, IDockPanel, IStyleable
+    partial class SoundPicker : UserControl, IDockPane, IStyleable
     {
         private readonly string[] _fileTypes = new[] 
         {
