@@ -99,7 +99,6 @@ namespace SphereStudio.UI
             GameSettingsItem.Visible = EngineSettingsItem.Visible = false;
             NewFileItem.Visible = ImportFileItem.Visible = false;
             AddSubfolderItem.Visible = DeleteFolderItem.Visible = false;
-            ExecuteScriptItem.Visible = false;
 
             string tag = e.Node.Tag as string;
             switch (tag)
@@ -112,7 +111,6 @@ namespace SphereStudio.UI
                     OpenFileItem.Visible = DeleteFileItem.Visible = true;
                     RenameFileItem.Visible = CopyPathItem.Visible = true;
                     string s = e.Node.Text;
-                    if (Global.IsScript(ref s)) ExecuteScriptItem.Visible = true;
                     break;
                 case "directory-node":
                     NewFileItem.Visible = ImportFileItem.Visible = true;
@@ -385,22 +383,6 @@ namespace SphereStudio.UI
         private void EngineSettingsItem_Click(object sender, EventArgs e)
         {
             _hostForm.OpenEditorSettings();
-        }
-
-        // Assumption: The user knows the script has a game() function or the
-        // script has required another script that includes a game() function.
-        // Should we check if said script has a game function in it?
-        private void ExecuteScriptItem_Click(object sender, EventArgs e)
-        {
-            // Write to file the current script:
-            String oldScript = Global.Project.MainScript;
-            Global.Project.MainScript = ProjectTreeView.SelectedNode.Text;
-            Global.Project.Save();
-            // And then execute the engine:
-            Process.Start(Global.Settings.SpherePath, "-game \"" +
-                Global.Project.RootPath + "\"");
-            Global.Project.MainScript = oldScript;
-            Global.Project.Save();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)

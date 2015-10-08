@@ -39,7 +39,6 @@
             this.DeleteFolderItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenameFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyPathItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExecuteScriptItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFolderItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,12 +78,11 @@
             this.DeleteFolderItem,
             this.RenameFileItem,
             this.CopyPathItem,
-            this.ExecuteScriptItem,
             this.GameSettingsItem,
             this.EngineSettingsItem,
             this.OpenFolderItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 290);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(185, 268);
             this.ProjectFileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ProjectFileContextMenu_Opening);
             // 
             // NewFileItem
@@ -151,14 +149,6 @@
             this.CopyPathItem.Size = new System.Drawing.Size(184, 22);
             this.CopyPathItem.Text = "&Copy Path";
             this.CopyPathItem.Click += new System.EventHandler(this.CopyPathItem_Click);
-            // 
-            // ExecuteScriptItem
-            // 
-            this.ExecuteScriptItem.Image = global::SphereStudio.Properties.Resources.lightning;
-            this.ExecuteScriptItem.Name = "ExecuteScriptItem";
-            this.ExecuteScriptItem.Size = new System.Drawing.Size(184, 22);
-            this.ExecuteScriptItem.Text = "&Execute Script";
-            this.ExecuteScriptItem.Click += new System.EventHandler(this.ExecuteScriptItem_Click);
             // 
             // GameSettingsItem
             // 
@@ -234,7 +224,6 @@
         private System.Windows.Forms.ToolStripMenuItem EngineSettingsItem;
         private System.Windows.Forms.ToolStripMenuItem AddSubfolderItem;
         private System.Windows.Forms.ToolStripMenuItem CopyPathItem;
-        private System.Windows.Forms.ToolStripMenuItem ExecuteScriptItem;
         private Sphere.Core.Editor.EditorLabel ProjectNameLabel;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private Sphere.Core.Editor.DeferredFileSystemWatcher SystemWatcher;

@@ -22,7 +22,7 @@ namespace SphereStudio.Settings
 
         public bool AutoHideBuild
         {
-            get { return GetBoolean("autoHideBuild", true); }
+            get { return GetBoolean("autoHideBuild", false); }
             set { SetValue("autoHideBuild", value); }
         }
 
@@ -74,12 +74,6 @@ namespace SphereStudio.Settings
             set { Preset = null; SetValue("scriptEditor", value); }
         }
 
-        public string SpherePath
-        {
-            get { return GetString("spherePath", ""); }
-            set { SetValue("spherePath", value); }
-        }
-        
         public string LastProject
         {
             get { return GetString("lastProject", ""); }

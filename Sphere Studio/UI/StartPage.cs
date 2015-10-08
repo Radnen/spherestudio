@@ -307,8 +307,7 @@ namespace SphereStudio.UI
             _currentItem = GameFolders.GetItemAt(p.X, p.Y);
             PlayGameItem.Visible = LoadMenuItem.Visible =
                 RenameProjectItem.Visible = SetIconItem.Visible =
-                    OpenFolderItem.Visible = (_currentItem != null);
-            PlayGameItem.Visible = !string.IsNullOrEmpty(Global.Settings.SpherePath);
+                OpenFolderItem.Visible = (_currentItem != null);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)
