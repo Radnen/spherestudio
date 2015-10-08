@@ -32,10 +32,10 @@ namespace SphereStudio.IDE
 
         public void Refresh()
         {
-            var removed = from x in _dockForms
-                          where Sphere.Plugins.PluginManager.Get<IDockPane>(x.Name) == null
-                          select x;
-            foreach (DockForm form in removed)
+            DockForm[] removedForms = _dockForms
+                .Where(x => Sphere.Plugins.PluginManager.Get<IDockPane>(x.Name) == null)
+                .ToArray();
+            foreach (DockForm form in removedForms)
             {
                 form.Content.Dispose();
                 _dockForms.Remove(form);
