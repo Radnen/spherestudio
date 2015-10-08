@@ -59,7 +59,7 @@ namespace Sphere.Plugins
         }
 
         /// <summary>
-        /// Gets the names of all active plugins of a specified type.
+        /// Gets the registered names of all active plugins of a given type.
         /// </summary>
         /// <typeparam name="T">The type of plugin to get the names of.</typeparam>
         /// <returns></returns>
@@ -78,7 +78,7 @@ namespace Sphere.Plugins
         /// Searches for a plugin by name and returns its interface.
         /// </summary>
         /// <typeparam name="T">The type of plugin being requested.</typeparam>
-        /// <param name="name"></param>
+        /// <param name="name">The registered name of the plugin to find.</param>
         /// <returns></returns>
         public static T Get<T>(string name)
             where T : IPlugin

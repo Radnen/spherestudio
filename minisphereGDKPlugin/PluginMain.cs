@@ -51,7 +51,9 @@ namespace minisphere.GDK
             PluginManager.Register(main, Errors = new ErrorPane(), "Error View");
 
             if (conf.GetBoolean("keepConsoleOutput", false))
+            {
                 PluginManager.IDE.Docking.Show(Console);
+            }
         }
 
         public static void ShutDown()

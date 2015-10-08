@@ -667,13 +667,13 @@ namespace SphereStudio
                 return tab.View;
             }
 
-            // the IDE will try to open the file through the plugin manager first.
-            // if that fails, then use the current default editor (if any).
+            // the IDE will look for a file opener explicitly declaring the file extension.
+            // if that fails, then use the default opener (if any).
             DocumentView view = null;
             try
             {
                 string fileExtension = Path.GetExtension(filePath);
-                if (fileExtension.StartsWith("."))
+                if (fileExtension.StartsWith("."))  // remove dot from extension
                     fileExtension = fileExtension.Substring(1);
                 var plugins = from name in PluginManager.GetNames<IFileOpener>()
                               let plugin = PluginManager.Get<IFileOpener>(name)
@@ -685,7 +685,7 @@ namespace SphereStudio
                     view = opener.Open(filePath);
                 else
                 {
-                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
+                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
                         @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
