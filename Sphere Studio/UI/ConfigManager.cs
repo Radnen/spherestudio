@@ -19,7 +19,7 @@ using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
 {
-    public partial class ConfigManager : Form
+    partial class ConfigManager : Form
     {
         private bool _updatingDefaultsLists = false;
         private bool _updatingPresets = false;
@@ -48,7 +48,7 @@ namespace SphereStudio.Forms
 
             Core.Settings.Engine = GetPluginName(EnginePluginList);
             Core.Settings.Compiler = GetPluginName(CompilerPluginList);
-            Core.Settings.DefaultFileOpener = GetPluginName(FilePluginList);
+            Core.Settings.FileOpener = GetPluginName(FilePluginList);
             Core.Settings.ScriptEditor = GetPluginName(ScriptPluginList);
             Core.Settings.ImageEditor = GetPluginName(ImagePluginList);
             Core.Settings.Apply();
@@ -60,7 +60,7 @@ namespace SphereStudio.Forms
             where T : IPlugin
         {
             combo.Items.Clear();
-            foreach (string name in Sphere.Plugins.PluginManager.GetNames<T>())
+            foreach (string name in PluginManager.GetNames<T>())
             {
                 combo.Items.Add(name);
             }
@@ -84,7 +84,7 @@ namespace SphereStudio.Forms
             
             PopulateComboBox<ICompiler>(CompilerPluginList, Core.Settings.Compiler);
             PopulateComboBox<IStarter>(EnginePluginList, Core.Settings.Engine);
-            PopulateComboBox<IFileOpener>(FilePluginList, Core.Settings.DefaultFileOpener);
+            PopulateComboBox<IFileOpener>(FilePluginList, Core.Settings.FileOpener);
             PopulateComboBox<IEditor<ScriptView>>(ScriptPluginList, Core.Settings.ScriptEditor);
             PopulateComboBox<IEditor<ImageView>>(ImagePluginList, Core.Settings.ImageEditor);
 
@@ -149,7 +149,7 @@ namespace SphereStudio.Forms
         {
             bool haveAllPlugins = !string.IsNullOrEmpty(Core.Settings.Engine)
                 && !string.IsNullOrEmpty(Core.Settings.Compiler)
-                && !string.IsNullOrEmpty(Core.Settings.DefaultFileOpener)
+                && !string.IsNullOrEmpty(Core.Settings.FileOpener)
                 && !string.IsNullOrEmpty(Core.Settings.ScriptEditor)
                 && !string.IsNullOrEmpty(Core.Settings.ImageEditor);
             if (!haveAllPlugins)

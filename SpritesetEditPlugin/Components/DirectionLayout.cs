@@ -32,14 +32,14 @@ namespace SphereStudio.Plugins.Components
             _sprite = sprite;
             _direction = direction;
             _parent_editor = parent;
-            _showDelay = PluginManager.IDE.Settings.GetBoolean("spriteset-showdelay", false);
+            _showDelay = _parent_editor.Settings.GetBoolean("spriteset-showdelay", false);
 
             foreach (Frame f in direction.Frames) { AddImage(f); }
         }
 
         public void AddImage(Frame frame)
         {
-            FramePanel panel = new FramePanel(frame, _sprite);
+            FramePanel panel = new FramePanel(frame, _sprite, _parent_editor.Settings);
             panel.Zoom = _zoom;
             ImagesPanel.Controls.Add(panel);
             panel.BringToFront();
@@ -118,7 +118,7 @@ namespace SphereStudio.Plugins.Components
             else if (e.Data.GetDataPresent("ImageFrame"))
             {
                 Frame frame = (Frame)e.Data.GetData("ImageFrame");
-                FramePanel panel = new FramePanel(frame, _sprite);
+                FramePanel panel = new FramePanel(frame, _sprite, _parent_editor.Settings);
                 panel.Zoom = _zoom;
                 panel.MouseClick += new MouseEventHandler(Panel_MouseClick);
                 panel.MouseEnter += new System.EventHandler(Panel_MouseEnter);
@@ -178,7 +178,7 @@ namespace SphereStudio.Plugins.Components
         private void ToggleItem_Click(object sender, EventArgs e)
         {
             _showDelay = !_showDelay;
-            PluginManager.IDE.Settings.SetValue("spriteset-showdelay", _showDelay);
+            _parent_editor.Settings.SetValue("spriteset-showdelay", _showDelay);
             Parent.Invalidate(true);
         }
 

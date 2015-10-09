@@ -26,7 +26,7 @@ namespace SphereStudio
         public static void Initialize()
         {
             _buildView = new BuildConsole();
-            Sphere.Plugins.PluginManager.Register(null, _buildView, "Build Log");
+            PluginManager.Register(null, _buildView, "Build Log");
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace SphereStudio
         /// </summary>
         public static bool CanDebug
         {
-            get { return Sphere.Plugins.PluginManager.Get<IDebugStarter>(Core.Settings.Engine) != null; }
+            get { return PluginManager.Get<IDebugStarter>(Core.Settings.Engine) != null; }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SphereStudio
         /// </summary>
         public static bool CanPackage
         {
-            get { return Sphere.Plugins.PluginManager.Get<IPackager>(Core.Settings.Compiler) != null; }
+            get { return PluginManager.Get<IPackager>(Core.Settings.Compiler) != null; }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SphereStudio
             {
                 if (!CanPackage)
                     throw new NotSupportedException("The current compiler doesn't support packaging.");
-                var packager = Sphere.Plugins.PluginManager.Get<IPackager>(Core.Settings.Compiler);
+                var packager = PluginManager.Get<IPackager>(Core.Settings.Compiler);
                 return packager.SaveFileFilters;
             }
         }
@@ -68,9 +68,9 @@ namespace SphereStudio
         public static async Task<string> Build(IProject project, bool forceVisible = false)
         {
             _buildView.Clear();
-            Sphere.Plugins.PluginManager.IDE.Docking.Show(_buildView);
+            PluginManager.Core.Docking.Show(_buildView);
             _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n\n", project.Name));
-            var compiler = Sphere.Plugins.PluginManager.Get<ICompiler>(Core.Settings.Compiler);
+            var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
             bool isOK = false;
             if (compiler != null)
@@ -84,7 +84,7 @@ namespace SphereStudio
             {
                 _buildView.Print(string.Format("\n================= Successfully built: {0} ================\n", project.Name));
                 if (Core.Settings.AutoHideBuild && !forceVisible)
-                    Sphere.Plugins.PluginManager.IDE.Docking.Hide(_buildView);
+                    PluginManager.Core.Docking.Hide(_buildView);
                 return outPath;
             }
             else
@@ -107,9 +107,9 @@ namespace SphereStudio
                 throw new NotSupportedException("The current compiler doesn't support packaging.");
 
             _buildView.Clear();
-            Sphere.Plugins.PluginManager.IDE.Docking.Show(_buildView);
+            PluginManager.Core.Docking.Show(_buildView);
             _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n\n", project.Name));
-            var packager = Sphere.Plugins.PluginManager.Get<IPackager>(Core.Settings.Compiler);
+            var packager = PluginManager.Get<IPackager>(Core.Settings.Compiler);
             bool isOK = await packager.Package(project, fileName, _buildView);
             if (isOK)
                 _buildView.Print(string.Format("\n=============== Successfully packaged: {0} ===============\n", project.Name));
@@ -131,7 +131,7 @@ namespace SphereStudio
             if (!CanDebug)
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
-            var starter = Sphere.Plugins.PluginManager.Get<IDebugStarter>(Core.Settings.Engine);
+            var starter = PluginManager.Get<IDebugStarter>(Core.Settings.Engine);
             string outPath = await Build(project);
             return starter.Debug(outPath, false, project);
         }
@@ -142,7 +142,7 @@ namespace SphereStudio
         /// <param name="project">The project to test.</param>
         public static async Task Test(IProject project)
         {
-            var starter = Sphere.Plugins.PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
             if (starter != null)
             {
                 string outPath = await Build(project);

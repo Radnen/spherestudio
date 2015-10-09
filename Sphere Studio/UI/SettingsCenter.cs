@@ -14,7 +14,7 @@ using SphereStudio.UI;
 
 namespace SphereStudio.UI
 {
-    public partial class SettingsCenter : Form
+    partial class SettingsCenter : Form
     {
         private List<ISettingsPage> _applyList = new List<ISettingsPage>();
         private Control _currentPage = null;
@@ -26,10 +26,10 @@ namespace SphereStudio.UI
 
         protected override void OnLoad(EventArgs e)
         {
-            string[] pageNames = Sphere.Plugins.PluginManager.GetNames<ISettingsPage>();
+            string[] pageNames = PluginManager.GetNames<ISettingsPage>();
             foreach (string name in pageNames)
             {
-                var page = Sphere.Plugins.PluginManager.Get<ISettingsPage>(name);
+                var page = PluginManager.Get<ISettingsPage>(name);
                 TreeNode node = new TreeNode(name) { Tag = page };
                 PageTree.Nodes.Add(node);
             }

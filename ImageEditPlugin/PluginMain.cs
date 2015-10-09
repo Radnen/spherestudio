@@ -32,12 +32,12 @@ namespace SphereStudio.Plugins
             FileIcon = Properties.Resources.palette;
 
             PluginManager.Register(this, this, Name);
-            PluginManager.IDE.AddMenuItem(_imageMenu, "Tools");
+            PluginManager.Core.AddMenuItem(_imageMenu, "Tools");
         }
 
         public void ShutDown()
         {
-            PluginManager.IDE.RemoveMenuItem(_imageMenu);
+            PluginManager.Core.RemoveMenuItem(_imageMenu);
             PluginManager.UnregisterAll(this);
         }
 
@@ -78,7 +78,7 @@ namespace SphereStudio.Plugins
         {
             using (SizeForm form = new SizeForm())
             {
-                ImageEditView editor = PluginManager.IDE.CurrentDocument as ImageEditView;
+                ImageEditView editor = PluginManager.Core.ActiveDocument as ImageEditView;
                 form.WidthSize = editor.Content.Width;
                 form.HeightSize = editor.Content.Height;
                 if (form.ShowDialog() == DialogResult.OK)
@@ -90,7 +90,7 @@ namespace SphereStudio.Plugins
         {
             using (SizeForm form = new SizeForm())
             {
-                ImageEditView editor = PluginManager.IDE.CurrentDocument as ImageEditView;
+                ImageEditView editor = PluginManager.Core.ActiveDocument as ImageEditView;
                 form.WidthSize = editor.Content.Width;
                 form.HeightSize = editor.Content.Height;
                 form.UseScale = false;

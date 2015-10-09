@@ -55,7 +55,7 @@ namespace minisphere.GDK.Debugger.UI
             ClearHighlight();
             if (listErrors.Items.Count == 0)
             {
-                PluginManager.IDE.Docking.Hide(this);
+                PluginManager.Core.Docking.Hide(this);
             }
         }
 
@@ -66,7 +66,7 @@ namespace minisphere.GDK.Debugger.UI
                 ListViewItem item = listErrors.SelectedItems[0];
                 string filename = CurrentSession.ResolvePath(item.SubItems[1].Text);
                 int lineNumber = int.Parse(item.SubItems[2].Text);
-                ScriptView view = PluginManager.IDE.OpenFile(filename) as ScriptView;
+                ScriptView view = PluginManager.Core.OpenFile(filename) as ScriptView;
                 if (view != null)
                 {
                     view.GoToLine(lineNumber);

@@ -64,10 +64,10 @@ namespace SphereStudio.Plugins.Forms
             LayerComboBox.SelectedIndex = Person.Layer;
 
             // set sprite preview:
-            SpritePreview.Image = Person.GetSSImage(PluginManager.IDE.Project.RootPath);
+            SpritePreview.Image = Person.GetSSImage(PluginManager.Core.Project.RootPath);
 
             // fill in sprite directions:
-            string[] dirs = Person.GetSpriteDirections(PluginManager.IDE.Project.RootPath);
+            string[] dirs = Person.GetSpriteDirections(PluginManager.Core.Project.RootPath);
             if (dirs != null) DirectionBox.Items.AddRange(dirs);
             
             PositionLabel.Text = string.Format("(X: {0}, Y: {1})", Person.X, Person.Y);
@@ -94,7 +94,7 @@ namespace SphereStudio.Plugins.Forms
 
         private void SpritesetButton_Click(object sender, EventArgs e)
         {
-            String path = PluginManager.IDE.Project.RootPath + "\\spritesets";
+            String path = PluginManager.Core.Project.RootPath + "\\spritesets";
             using (OpenFileDialog spriteDiag = new OpenFileDialog())
             {
                 spriteDiag.Filter = @"Sprite Files (*.rss)|*.rss";
@@ -110,10 +110,10 @@ namespace SphereStudio.Plugins.Forms
                     Person.Spriteset = SpritesetBox.Text;
 
                     // Load a spriteset image as a preview:
-                    SpritePreview.Image = Person.GetSSImage(PluginManager.IDE.Project.RootPath);
+                    SpritePreview.Image = Person.GetSSImage(PluginManager.Core.Project.RootPath);
                     
                     DirectionBox.Items.Clear();
-                    object[] dirs = Person.GetSpriteDirections(PluginManager.IDE.Project.RootPath);
+                    object[] dirs = Person.GetSpriteDirections(PluginManager.Core.Project.RootPath);
                     if (dirs != null) DirectionBox.Items.AddRange(dirs);
                 }
             }

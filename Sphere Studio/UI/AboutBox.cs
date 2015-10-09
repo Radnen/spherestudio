@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SphereStudio.UI
 {
-    internal partial class AboutBox : Form
+    partial class AboutBox : Form
     {
         public AboutBox()
         {

@@ -23,14 +23,14 @@ namespace minisphere.GDK
             PluginManager.Register(this, new CellCompiler(conf), "Cell");
             PluginManager.Register(this, new minisphereStarter(conf), "minisphere");
             PluginManager.Register(this, new SettingsPage(conf), "minisphere GDK");
-            PluginManager.IDE.UnloadProject += on_UnloadProject;
+            PluginManager.Core.UnloadProject += on_UnloadProject;
             Views.Initialize(this, conf);
         }
 
         public void ShutDown()
         {
             PluginManager.UnregisterAll(this);
-            PluginManager.IDE.UnloadProject -= on_UnloadProject;
+            PluginManager.Core.UnloadProject -= on_UnloadProject;
             Views.ShutDown();
         }
 
@@ -52,7 +52,7 @@ namespace minisphere.GDK
 
             if (conf.GetBoolean("keepConsoleOutput", false))
             {
-                PluginManager.IDE.Docking.Show(Console);
+                PluginManager.Core.Docking.Show(Console);
             }
         }
 

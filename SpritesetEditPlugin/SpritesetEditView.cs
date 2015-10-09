@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 using WeifenLuo.WinFormsUI.Docking;
 
 using SphereStudio.Plugins.Components;
 using SphereStudio.Plugins.Forms;
 using Sphere.Core;
+using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
@@ -30,12 +32,15 @@ namespace SphereStudio.Plugins
         private DockContent _baseContent;
         #endregion
 
-        public SpritesetEditView()
+        internal ISettings Settings;
+
+        public SpritesetEditView(PluginMain main)
         {
             InitializeComponent();
             InitializeDocking();
 
             Icon = Icon.FromHandle(Properties.Resources.PersonIcon.GetHicon());
+            Settings = main.Settings;
 
             _sprite = new Spriteset();
             DirectionAnim.Sprite = _sprite;

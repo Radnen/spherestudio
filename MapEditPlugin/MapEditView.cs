@@ -102,7 +102,7 @@ namespace SphereStudio.Plugins
                     using (SaveFileDialog diag = new SaveFileDialog())
                     {
                         diag.Filter = @"Tileset Files (.rts)|*.rts";
-                        diag.InitialDirectory = PluginManager.IDE.Project.RootPath + "\\maps";
+                        diag.InitialDirectory = PluginManager.Core.Project.RootPath + "\\maps";
                         if (diag.ShowDialog() == DialogResult.OK)
                         {
                             Map.Scripts[0] = Path.GetFileName(diag.FileName);

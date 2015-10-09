@@ -31,7 +31,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             _soundPicker = new SoundPicker(this);
-            _soundPicker.WatchProject(PluginManager.IDE.Project);
+            _soundPicker.WatchProject(PluginManager.Core.Project);
             _soundPicker.Refresh();
 
             FileTypeName = "Audio File";
@@ -50,10 +50,10 @@ namespace SphereStudio.Plugins
 
             PluginManager.Register(this, this, "Sound Test");
 
-            PluginManager.IDE.LoadProject += IDE_LoadProject;
-            PluginManager.IDE.UnloadProject += IDE_UnloadProject;
-            PluginManager.IDE.TestGame += IDE_TestGame;
-            PluginManager.IDE.Docking.Show(this);
+            PluginManager.Core.LoadProject += IDE_LoadProject;
+            PluginManager.Core.UnloadProject += IDE_UnloadProject;
+            PluginManager.Core.TestGame += IDE_TestGame;
+            PluginManager.Core.Docking.Show(this);
         }
 
         public void ShutDown()
@@ -61,9 +61,9 @@ namespace SphereStudio.Plugins
             PluginManager.UnregisterAll(this);
             _soundPicker.WatchProject(null);
             _soundPicker.StopMusic();
-            PluginManager.IDE.TestGame -= IDE_TestGame;
-            PluginManager.IDE.LoadProject -= IDE_LoadProject;
-            PluginManager.IDE.UnloadProject -= IDE_UnloadProject;
+            PluginManager.Core.TestGame -= IDE_TestGame;
+            PluginManager.Core.LoadProject -= IDE_LoadProject;
+            PluginManager.Core.UnloadProject -= IDE_UnloadProject;
         }
 
         public DocumentView New()
@@ -79,7 +79,7 @@ namespace SphereStudio.Plugins
 
         private void IDE_LoadProject(object sender, EventArgs e)
         {
-            _soundPicker.WatchProject(PluginManager.IDE.Project);
+            _soundPicker.WatchProject(PluginManager.Core.Project);
         }
 
         private void IDE_UnloadProject(object sender, EventArgs e)

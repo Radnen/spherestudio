@@ -33,19 +33,19 @@ namespace SphereStudio
         public void Refresh()
         {
             DockForm[] removedForms = _dockForms
-                .Where(x => Sphere.Plugins.PluginManager.Get<IDockPane>(x.Name) == null)
+                .Where(x => PluginManager.Get<IDockPane>(x.Name) == null)
                 .ToArray();
             foreach (DockForm form in removedForms)
             {
                 form.Content.Dispose();
                 _dockForms.Remove(form);
             }
-            var newPanels = from name in Sphere.Plugins.PluginManager.GetNames<IDockPane>()
+            var newPanels = from name in PluginManager.GetNames<IDockPane>()
                             where _dockForms.All(form => form.Name != name)
                             select name;
             foreach (string name in newPanels)
             {
-                IDockPane plugin = Sphere.Plugins.PluginManager.Get<IDockPane>(name);
+                IDockPane plugin = PluginManager.Get<IDockPane>(name);
                 DockForm form = new DockForm() { Name = name, Panel = plugin };
                 form.Content = new DockContent() { Name = name, TabText = name };
                 form.Content.Controls.Add(plugin.Control);

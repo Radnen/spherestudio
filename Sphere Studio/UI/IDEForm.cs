@@ -20,7 +20,7 @@ using System.Text;
 
 namespace SphereStudio.UI
 {
-    partial class IDEForm : Form, IIDE, IStyleable
+    partial class IDEForm : Form, ICore, IStyleable
     {
         // uninitialized data:
         private DockContent _treeContent;
@@ -47,7 +47,7 @@ namespace SphereStudio.UI
         {
             InitializeComponent();
 
-            Sphere.Plugins.PluginManager.IDE = this;
+            PluginManager.Core = this;
 
             _firsttime = !Core.Settings.GetBoolean("setupComplete", false);
 
@@ -63,7 +63,7 @@ namespace SphereStudio.UI
             InitializeDocking();
             BuildEngine.Initialize();
 
-            Sphere.Plugins.PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
+            PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
 
             //Global.LoadAllPlugins();
             Core.Settings.Apply();
@@ -89,18 +89,6 @@ namespace SphereStudio.UI
         }
 
         public IDock Docking { get { return _dock; } }
-
-        public ScriptView CreateScriptView()
-        {
-            var plugin = Sphere.Plugins.PluginManager.Get<IEditor<ScriptView>>(Core.Settings.ScriptEditor);
-            return plugin != null ? plugin.CreateEditView() : null;
-        }
-
-        public ImageView CreateImageView()
-        {
-            var plugin = Sphere.Plugins.PluginManager.Get<IEditor<ImageView>>(Core.Settings.ImageEditor);
-            return plugin != null ? plugin.CreateEditView() : null;
-        }
 
         #region Main IDE form event handlers
         private void IDEForm_Load(object sender, EventArgs e)
@@ -352,8 +340,8 @@ namespace SphereStudio.UI
         #region View menu Click handlers
         private void menuView_DropDownOpening(object sender, EventArgs e)
         {
-            var panelNames = from name in Sphere.Plugins.PluginManager.GetNames<IDockPane>()
-                             let plugin = Sphere.Plugins.PluginManager.Get<IDockPane>(name)
+            var panelNames = from name in PluginManager.GetNames<IDockPane>()
+                             let plugin = PluginManager.Get<IDockPane>(name)
                              where plugin.ShowInViewMenu
                              select name;
             if (panelNames.Any())
@@ -363,7 +351,7 @@ namespace SphereStudio.UI
             }
             foreach (string title in panelNames)
             {
-                var plugin = Sphere.Plugins.PluginManager.Get<IDockPane>(title);
+                var plugin = PluginManager.Get<IDockPane>(title);
                 ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
                 item.Image = plugin.DockIcon;
                 item.Checked = _dock.IsVisible(plugin);
@@ -481,7 +469,7 @@ namespace SphereStudio.UI
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            Sphere.Plugins.PluginManager.Get<IStarter>(Core.Settings.Engine)
+            PluginManager.Get<IStarter>(Core.Settings.Engine)
                 .Configure();
         }
 
@@ -534,7 +522,7 @@ namespace SphereStudio.UI
         }
         #endregion
 
-        public DocumentView CurrentDocument
+        public DocumentView ActiveDocument
         {
             get { return _activeTab.View; }
         }
@@ -546,7 +534,7 @@ namespace SphereStudio.UI
 
         public IDebugger Debugger { get; private set; }
 
-        public ISettings Settings
+        public ICoreSettings Settings
         {
             get { return Core.Settings; }
         }
@@ -647,7 +635,7 @@ namespace SphereStudio.UI
                               let plugin = PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions.Contains(fileExtension)
                               select plugin;
-                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.DefaultFileOpener);
+                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
                 if (opener != null)
                     view = opener.Open(filePath);
@@ -1023,7 +1011,7 @@ namespace SphereStudio.UI
 
         private void UpdateControls()
         {
-            var starter = Sphere.Plugins.PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
 

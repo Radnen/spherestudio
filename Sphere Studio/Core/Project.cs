@@ -111,7 +111,7 @@ namespace SphereStudio
             if (allowBuilding)
             {
                 _buildView = new BuildConsole();
-                Sphere.Plugins.PluginManager.IDE.Docking.Hide(_buildView);
+                PluginManager.Core.Docking.Hide(_buildView);
             }
         }
 

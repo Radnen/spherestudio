@@ -25,17 +25,17 @@ namespace SphereStudio.Plugins
             // IDockPane, this also adds an entry for it to the View menu, but for
             // convenience we'll show it by default anyway.
             PluginManager.Register(this, _list, "Task List");
-            PluginManager.IDE.Docking.Show(_list);
+            PluginManager.Core.Docking.Show(_list);
 
             // You can add special event listeners, if you want. A task list must
             // be able to, well, load a task list, so in this case we can use these
             // to our advantage.
-            PluginManager.IDE.LoadProject += on_LoadProject;
-            PluginManager.IDE.UnloadProject += on_UnloadProject;
+            PluginManager.Core.LoadProject += on_LoadProject;
+            PluginManager.Core.UnloadProject += on_UnloadProject;
 
             // Here we make sure the list is loaded when the plugin has been activated.
-            if (PluginManager.IDE.Project != null)
-                _list.LoadList(PluginManager.IDE.Project.RootPath);
+            if (PluginManager.Core.Project != null)
+                _list.LoadList(PluginManager.Core.Project.RootPath);
         }
 
         public void ShutDown()
@@ -47,8 +47,8 @@ namespace SphereStudio.Plugins
             
             // This is for a clean removal, we don't want the editor referencing
             // a destroyed component.
-            PluginManager.IDE.LoadProject -= on_LoadProject;
-            PluginManager.IDE.UnloadProject -= on_UnloadProject;
+            PluginManager.Core.LoadProject -= on_LoadProject;
+            PluginManager.Core.UnloadProject -= on_UnloadProject;
 
             // And we can optionally null things out just to be safe:
             _list.Dispose(); _list = null;
@@ -57,7 +57,7 @@ namespace SphereStudio.Plugins
         private void on_LoadProject(object sender, EventArgs e)
         {
             // User loaded a different project in the IDE, load its task list.
-            _list.LoadList(PluginManager.IDE.Project.RootPath);
+            _list.LoadList(PluginManager.Core.Project.RootPath);
         }
 
         private void on_UnloadProject(object sender, EventArgs e)

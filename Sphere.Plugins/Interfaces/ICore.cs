@@ -10,12 +10,12 @@ namespace Sphere.Plugins.Interfaces
     /// <summary>
     /// Specifies the interface for the Sphere Studio IDE.
     /// </summary>
-    public interface IIDE : ISynchronizeInvoke
+    public interface ICore : ISynchronizeInvoke
     {
         /// <summary>
-        /// Provides access to the Sphere Studio global configuration.
+        /// Provides access to the Sphere Studio core settings.
         /// </summary>
-        ISettings Settings { get; }
+        ICoreSettings Settings { get; }
         
         /// <summary>
         /// Provides access to the project settings.
@@ -23,9 +23,9 @@ namespace Sphere.Plugins.Interfaces
         IProject Project { get; }
 
         /// <summary>
-        /// Gets the EditorObject representing the active document.
+        /// Gets the DocumentView of the document being edited.
         /// </summary>
-        DocumentView CurrentDocument { get; }
+        DocumentView ActiveDocument { get; }
 
         /// <summary>
         /// Gets the interface to the IDE dock manager.
@@ -47,18 +47,6 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         event EventHandler TestGame;
 
-        /// <summary>
-        /// Creates a ScriptView for an embedded script editor.
-        /// </summary>
-        /// <returns></returns>
-        ScriptView CreateScriptView();
-
-        /// <summary>
-        /// Creates an ImageView for an embedded image editor.
-        /// </summary>
-        /// <returns></returns>
-        ImageView CreateImageView();
-        
         /// <summary>
         /// Add a new root level item to the Sphere Studio menu bar.
         /// </summary>
@@ -97,6 +85,42 @@ namespace Sphere.Plugins.Interfaces
         /// usually due to changing a style option through a plugin.
         /// </summary>
         void RestyleEditors();
+    }
+
+    /// <summary>
+    /// Specifies the interface for ICore.Settings.
+    /// </summary>
+    public interface ICoreSettings
+    {
+        /// <summary>
+        /// Gets the list of directory paths Sphere Studio is monitoring for projects.
+        /// </summary>
+        string[] ProjectPaths { get; }        
+        
+        /// <summary>
+        /// Gets the registered name of the current engine starter plugin.
+        /// </summary>
+        string Engine { get; }
+
+        /// <summary>
+        /// Gets the registered name of the current compiler plugin.
+        /// </summary>
+        string Compiler { get; }
+
+        /// <summary>
+        /// Gets the registered name of the current default file opener plugin.
+        /// </summary>
+        string FileOpener { get; }
+
+        /// <summary>
+        /// Gets the registered name of the current script editor plugin.
+        /// </summary>
+        string ScriptEditor { get; }
+
+        /// <summary>
+        /// Gets the registered name of the current image editor plugin.
+        /// </summary>
+        string ImageEditor { get; }
     }
 
     /// <summary>

@@ -19,6 +19,8 @@ namespace SphereStudio.Plugins
         public string[] FileExtensions { get; private set; }
         public Bitmap FileIcon { get; private set; }
 
+        internal ISettings Settings { get; private set; }
+
         internal static void ShowMenus(bool show)
         {
             _spritesetMenu.Visible = show;
@@ -30,8 +32,10 @@ namespace SphereStudio.Plugins
             FileExtensions = new[] { "rss" };
             FileIcon = Properties.Resources.PersonIcon;
 
+            Settings = conf;
+
             PluginManager.Register(this, this, Name);
-            PluginManager.IDE.AddMenuItem(_spritesetMenu, "View");
+            PluginManager.Core.AddMenuItem(_spritesetMenu, "View");
         }
 
         public void ShutDown()
@@ -41,13 +45,13 @@ namespace SphereStudio.Plugins
 
         public DocumentView New()
         {
-            SpritesetEditView view = new SpritesetEditView();
+            SpritesetEditView view = new SpritesetEditView(this);
             return view.NewDocument() ? view : null;
         }
 
         public DocumentView Open(string fileName)
         {
-            SpritesetEditView view = new SpritesetEditView();
+            SpritesetEditView view = new SpritesetEditView(this);
             view.Load(fileName);
             return view;
         }
@@ -89,12 +93,12 @@ namespace SphereStudio.Plugins
 
         private static void menuRescale_Click(object sender, EventArgs e)
         {
-            (PluginManager.IDE.CurrentDocument as SpritesetEditView).RescaleAll();
+            (PluginManager.Core.ActiveDocument as SpritesetEditView).RescaleAll();
         }
 
         private static void menuResize_Click(object sender, EventArgs e)
         {
-            (PluginManager.IDE.CurrentDocument as SpritesetEditView).ResizeAll();
+            (PluginManager.Core.ActiveDocument as SpritesetEditView).ResizeAll();
         }
         #endregion
     }

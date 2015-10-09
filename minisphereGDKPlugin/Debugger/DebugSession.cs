@@ -103,7 +103,7 @@ namespace minisphere.GDK.Debugger
 
         private void duktape_Attached(object sender, EventArgs e)
         {
-            PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 if (Attached != null)
                     Attached(this, EventArgs.Empty);
@@ -125,41 +125,41 @@ namespace minisphere.GDK.Debugger
                 Views.Console.Print(string.Format("Duktape {0}", duktape.Version));
                 Views.Console.Print("");
 
-                PluginManager.IDE.Docking.Show(Views.Inspector);
-                PluginManager.IDE.Docking.Show(Views.Stack);
+                PluginManager.Core.Docking.Show(Views.Inspector);
+                PluginManager.Core.Docking.Show(Views.Stack);
             }), null);
         }
 
         private void duktape_Detached(object sender, EventArgs e)
         {
-            PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 if (Detached != null)
                     Detached(this, EventArgs.Empty);
-                PluginManager.IDE.Docking.Hide(Views.Inspector);
-                PluginManager.IDE.Docking.Hide(Views.Stack);
+                PluginManager.Core.Docking.Hide(Views.Inspector);
+                PluginManager.Core.Docking.Hide(Views.Stack);
                 Views.Errors.HideIfClean();
 
-                PluginManager.IDE.Docking.Show(Views.Console);
+                PluginManager.Core.Docking.Show(Views.Console);
                 Views.Console.Print("");
                 Views.Console.Print(duktape.TargetID + " detached.");
                 if (!config.GetBoolean("keepConsoleOutput", false))
-                    PluginManager.IDE.Docking.Hide(Views.Console);
+                    PluginManager.Core.Docking.Hide(Views.Console);
             }), null);
         }
 
         private void duktape_ErrorThrown(object sender, ErrorThrownEventArgs e)
         {
-            PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 Views.Errors.Add(e.Message, e.IsFatal, e.FileName, e.LineNumber);
-                PluginManager.IDE.Docking.Show(Views.Errors);
+                PluginManager.Core.Docking.Show(Views.Errors);
             }), null);
         }
 
         private void duktape_Print(object sender, TraceEventArgs e)
         {
-            PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 Views.Console.Print(e.Text);
             }), null);
@@ -167,7 +167,7 @@ namespace minisphere.GDK.Debugger
 
         private void duktape_Status(object sender, EventArgs e)
         {
-            PluginManager.IDE.Invoke(new Action(async () =>
+            PluginManager.Core.Invoke(new Action(async () =>
             {
                 bool wantPause = !duktape.Running;
                 bool wantResume = !Running && duktape.Running;
@@ -257,11 +257,11 @@ namespace minisphere.GDK.Debugger
 
         private static void FocusEngine(object state)
         {
-            PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 DebugSession me = (DebugSession)state;
                 NativeMethods.SetForegroundWindow(me.engineProcess.MainWindowHandle);
-                PluginManager.IDE.Docking.Show(Views.Console);
+                PluginManager.Core.Docking.Show(Views.Console);
                 Views.Inspector.Enabled = false;
                 Views.Stack.Enabled = false;
                 Views.Inspector.Clear();
@@ -271,7 +271,7 @@ namespace minisphere.GDK.Debugger
 
         private static void UpdateDebugViews(object state)
         {
-            PluginManager.IDE.Invoke(new Action(async () =>
+            PluginManager.Core.Invoke(new Action(async () =>
             {
                 DebugSession me = (DebugSession)state;
                 var callStack = await me.duktape.GetCallStack();
@@ -282,7 +282,7 @@ namespace minisphere.GDK.Debugger
                     Views.Stack.Enabled = true;
                     Views.Inspector.SetVariables(vars);
                     Views.Inspector.Enabled = true;
-                    PluginManager.IDE.Docking.Show(Views.Inspector);
+                    PluginManager.Core.Docking.Show(Views.Inspector);
                 }
             }), null);
         }

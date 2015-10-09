@@ -37,7 +37,7 @@ namespace SphereStudio.UI
         public void Clear()
         {
             output = "";
-            Sphere.Plugins.PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 printTimer.Enabled = true;
             }), null);
@@ -46,7 +46,7 @@ namespace SphereStudio.UI
         public void Print(string lineText)
         {
             output += Regex.Replace(lineText, "\r?\n", "\r\n");
-            Sphere.Plugins.PluginManager.IDE.Invoke(new Action(() =>
+            PluginManager.Core.Invoke(new Action(() =>
             {
                 printTimer.Enabled = true;
             }), null);

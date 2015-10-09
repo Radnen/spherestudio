@@ -35,13 +35,13 @@ namespace SphereStudio.Plugins
             FileIcon = Properties.Resources.MapIcon;
 
             PluginManager.Register(this, this, Name);
-            PluginManager.IDE.AddMenuItem(_mapMenu, "Tools");
+            PluginManager.Core.AddMenuItem(_mapMenu, "Tools");
         }
 
         public void ShutDown()
         {
             PluginManager.UnregisterAll(this);
-            PluginManager.IDE.RemoveMenuItem(_mapMenu);
+            PluginManager.Core.RemoveMenuItem(_mapMenu);
         }
 
         public DocumentView New()
@@ -82,7 +82,7 @@ namespace SphereStudio.Plugins
 
         private static void menuRecenter_Click(object sender, EventArgs e)
         {
-            MapEditView editor = PluginManager.IDE.CurrentDocument as MapEditView;
+            MapEditView editor = PluginManager.Core.ActiveDocument as MapEditView;
             if (editor != null) editor.MapControl.CenterMap();
         }
 
@@ -95,12 +95,12 @@ namespace SphereStudio.Plugins
         {
             using (SaveFileDialog diag = new SaveFileDialog())
             {
-                diag.InitialDirectory = PluginManager.IDE.Project.RootPath;
+                diag.InitialDirectory = PluginManager.Core.Project.RootPath;
                 diag.Filter = @"Image Files (.png)|*.png;";
                 diag.DefaultExt = "png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.IDE.CurrentDocument as MapEditView).SaveTileset(diag.FileName);
+                    (PluginManager.Core.ActiveDocument as MapEditView).SaveTileset(diag.FileName);
             }
         }
 
@@ -108,17 +108,17 @@ namespace SphereStudio.Plugins
         {
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                diag.InitialDirectory = PluginManager.IDE.Project.RootPath;
+                diag.InitialDirectory = PluginManager.Core.Project.RootPath;
                 diag.Filter = @"Image Files (.png)|*.png";
 
                 if (diag.ShowDialog() == DialogResult.OK)
-                    (PluginManager.IDE.CurrentDocument as MapEditView).UpdateTileset(diag.FileName);
+                    (PluginManager.Core.ActiveDocument as MapEditView).UpdateTileset(diag.FileName);
             }
         }
 
         private static void menuMapProps_Click(object sender, EventArgs e)
         {
-            MapEditView editor = PluginManager.IDE.CurrentDocument as MapEditView;
+            MapEditView editor = PluginManager.Core.ActiveDocument as MapEditView;
             using (MapPropertiesForm form = new MapPropertiesForm(editor.Map))
             {
                 if (form.ShowDialog() == DialogResult.OK)

@@ -14,7 +14,7 @@ using SphereStudio.UI;
 namespace SphereStudio.UI
 {
     [ToolboxItem(false)]
-    public partial class SettingsPage : UserControl, ISettingsPage
+    partial class SettingsPage : UserControl, ISettingsPage
     {
         public SettingsPage()
         {

@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -15,14 +16,14 @@ namespace SphereStudio.Plugins.Components
         private int _zoom = 1;
         private Point _drag_start = Point.Empty;
 
-        public FramePanel(Frame frame, Spriteset sprite)
+        public FramePanel(Frame frame, Spriteset sprite, ISettings settings)
         {
             _sprite = sprite;
             _frame = frame;
             DoubleBuffered = true;
             BackgroundImage = Properties.Resources.EditAreaBG2;
             Dock = DockStyle.Left;
-            _showDelay = PluginManager.IDE.Settings.GetBoolean("spriteset-showdelay", false);
+            _showDelay = settings.GetBoolean("spriteset-showdelay", false);
             Margin = new Padding(3);
         }
 

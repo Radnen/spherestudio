@@ -26,9 +26,12 @@ namespace SphereStudio.Plugins
         private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
 
         private bool _autocomplete;
+        private PluginMain _main;
 
-        public ScriptEditView()
+        public ScriptEditView(PluginMain main)
         {
+            _main = main;
+
             Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
 
             string configPath = Application.StartupPath + "\\SphereLexer.xml";
@@ -170,9 +173,9 @@ namespace SphereStudio.Plugins
         public override bool NewDocument()
         {
             _codeBox.Text = "";
-            if (PluginManager.IDE.Settings.GetBoolean("autoScriptHeader", false))
+            if (_main.Settings.GetBoolean("autoScriptHeader", false))
             {
-                string author = (PluginManager.IDE.Project != null) ? PluginManager.IDE.Project.Author : "Unnamed";
+                string author = (PluginManager.Core.Project != null) ? PluginManager.Core.Project.Author : "Unnamed";
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
             }
@@ -197,8 +200,8 @@ namespace SphereStudio.Plugins
                 SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
 
                 int[] breaks = new int[0];
-                if (PluginManager.IDE.Project != null)
-                    breaks = PluginManager.IDE.Project.GetBreakpoints(filename);
+                if (PluginManager.Core.Project != null)
+                    breaks = PluginManager.Core.Project.GetBreakpoints(filename);
                 Breakpoints = breaks;
             }
         }
@@ -207,13 +210,13 @@ namespace SphereStudio.Plugins
         {
             using (StreamWriter writer = new StreamWriter(filename, false, UTF_8_NOBOM))
             {
-                if (PluginManager.IDE.Settings.GetBoolean("autoScriptUpdate", false))
+                if (_main.Settings.GetBoolean("autoScriptUpdate", false))
                 {
                     _codeBox.UndoRedo.IsUndoEnabled = false;
                     if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
                         _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(filename);
                     if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
-                        _codeBox.Lines[2].Text = "* Written by: " + PluginManager.IDE.Project.Author;
+                        _codeBox.Lines[2].Text = "* Written by: " + PluginManager.Core.Project.Author;
                     if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
                         _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
                     _codeBox.UndoRedo.IsUndoEnabled = true;
@@ -231,14 +234,14 @@ namespace SphereStudio.Plugins
 
         public override void Restyle()
         {
-            _codeBox.Indentation.TabWidth = PluginManager.IDE.Settings.GetInteger("script-spaces", 2);
-            _codeBox.Indentation.UseTabs = PluginManager.IDE.Settings.GetBoolean("script-tabs", true);
-            _codeBox.Caret.HighlightCurrentLine = PluginManager.IDE.Settings.GetBoolean("script-hiline", true);
-            _codeBox.IsBraceMatching = PluginManager.IDE.Settings.GetBoolean("script-hibraces", true);
+            _codeBox.Indentation.TabWidth = _main.Settings.GetInteger("script-spaces", 2);
+            _codeBox.Indentation.UseTabs = _main.Settings.GetBoolean("script-tabs", true);
+            _codeBox.Caret.HighlightCurrentLine = _main.Settings.GetBoolean("script-hiline", true);
+            _codeBox.IsBraceMatching = _main.Settings.GetBoolean("script-hibraces", true);
 
-            _autocomplete = PluginManager.IDE.Settings.GetBoolean("script-autocomplete", true);
+            _autocomplete = _main.Settings.GetBoolean("script-autocomplete", true);
 
-            bool fold = PluginManager.IDE.Settings.GetBoolean("script-fold", true);
+            bool fold = _main.Settings.GetBoolean("script-fold", true);
             _codeBox.Margins.Margin1.Width = fold ? 16 : 0;
 
             /*string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
@@ -251,12 +254,12 @@ namespace SphereStudio.Plugins
 
         public override void Activate()
         {
-            PluginMain.ShowMenus(true);
+            _main.ShowMenus(true);
         }
 
         public override void Deactivate()
         {
-            PluginMain.ShowMenus(false);
+            _main.ShowMenus(false);
         }
 
         public override void Cut()
@@ -316,7 +319,7 @@ namespace SphereStudio.Plugins
             if (char.IsLetter(e.Ch))
             {
                 string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
-                var q = from s in PluginMain.Functions
+                var q = from s in _main.Functions
                         where s.ToLower().Contains(word)
                         select s.Replace(";", "");
                 List<string> filter = q.ToList();

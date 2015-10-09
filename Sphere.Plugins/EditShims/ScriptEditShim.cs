@@ -23,7 +23,8 @@ namespace Sphere.Plugins.EditShims
             InitializeComponent();
 
             // try to use a plugin for script editing
-            _view = PluginManager.IDE.CreateScriptView();
+            var plugin = PluginManager.Get<IEditor<ScriptView>>(PluginManager.Core.Settings.ScriptEditor);
+            _view = plugin != null ? plugin.CreateEditView() : null;
             if (_view != null)
             {
                 _view.Dock = DockStyle.Fill;

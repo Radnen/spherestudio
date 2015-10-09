@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Settings
 {
-    class CoreSettings : INISettings
+    class CoreSettings : INISettings, ICoreSettings
     {
         public CoreSettings(IniFile ini):
             base(ini, "Sphere Studio")
@@ -56,7 +57,7 @@ namespace SphereStudio.Settings
             set { Preset = null; SetValue("engine", value); }
         }
 
-        public string DefaultFileOpener
+        public string FileOpener
         {
             get { return GetString("defaultFileOpener", ""); }
             set { Preset = null; SetValue("defaultFileOpener", value); }
@@ -103,7 +104,7 @@ namespace SphereStudio.Settings
                     {
                         Compiler = preset.Read("Preset", "compiler", "");
                         Engine = preset.Read("Preset", "engine", "");
-                        DefaultFileOpener = preset.Read("Preset", "defaultFileOpener", "");
+                        FileOpener = preset.Read("Preset", "defaultFileOpener", "");
                         ImageEditor = preset.Read("Preset", "imageEditor", "");
                         ScriptEditor = preset.Read("Preset", "scriptEditor", "");
                         Plugins = preset.Read("Preset", "plugins", "").Split('|');
@@ -147,7 +148,7 @@ namespace SphereStudio.Settings
             StyleSettings.CurrentStyle = UIStyle;
             foreach (var plugin in Core.Plugins)
                 plugin.Value.Enabled = Plugins.Contains(plugin.Key);
-            PluginManager.IDE.Docking.Refresh();
+            PluginManager.Core.Docking.Refresh();
         }
     }
 }

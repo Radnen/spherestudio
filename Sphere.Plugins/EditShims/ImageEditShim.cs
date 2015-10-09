@@ -22,7 +22,8 @@ namespace Sphere.Plugins.EditShims
         {
             InitializeComponent();
 
-            _view = PluginManager.IDE.CreateImageView();
+            var plugin = PluginManager.Get<IEditor<ImageView>>(PluginManager.Core.Settings.ImageEditor);
+            _view = plugin != null ? plugin.CreateEditView() : null;
             if (_view != null)
             {
                 _view.Dock = DockStyle.Fill;

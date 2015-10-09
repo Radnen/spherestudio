@@ -15,7 +15,7 @@ using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio
 {
-    internal static class Core
+    static class Core
     {
         static Core()
         {
