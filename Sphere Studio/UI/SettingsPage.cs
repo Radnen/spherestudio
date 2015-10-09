@@ -11,12 +11,12 @@ using Sphere.Core.Editor;
 using Sphere.Plugins.Interfaces;
 using SphereStudio.UI;
 
-namespace SphereStudio.UI.SettingsPages
+namespace SphereStudio.UI
 {
     [ToolboxItem(false)]
-    public partial class MainPage : UserControl, ISettingsPage
+    public partial class SettingsPage : UserControl, ISettingsPage
     {
-        public MainPage()
+        public SettingsPage()
         {
             InitializeComponent();
         }

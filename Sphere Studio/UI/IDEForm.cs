@@ -11,8 +11,6 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Core;
-using SphereStudio.UI;
-using SphereStudio.UI.SettingsPages;
 using SphereStudio.Forms;
 using SphereStudio.Settings;
 using Sphere.Plugins;
@@ -20,23 +18,8 @@ using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 using System.Text;
 
-namespace SphereStudio
+namespace SphereStudio.UI
 {
-    struct NewHandler
-    {
-        public NewHandler(IFileOpener opener, string name, Icon menuIcon)
-            : this()
-        {
-            FileOpener = opener;
-            Name = name;
-            MenuIcon = menuIcon;
-        }
-
-        public IFileOpener FileOpener { get; private set; }
-        public string Name { get; private set; }
-        public Icon MenuIcon { get; private set; }
-    }
-
     partial class IDEForm : Form, IIDE, IStyleable
     {
         // uninitialized data:
@@ -66,8 +49,6 @@ namespace SphereStudio
 
             Sphere.Plugins.PluginManager.IDE = this;
 
-            Core.Settings = new CoreSettings(Core.MainIniFile);
-
             _firsttime = !Core.Settings.GetBoolean("setupComplete", false);
 
 
@@ -82,7 +63,7 @@ namespace SphereStudio
             InitializeDocking();
             BuildEngine.Initialize();
 
-            Sphere.Plugins.PluginManager.Register(null, new MainPage(), "Sphere Studio IDE");
+            Sphere.Plugins.PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
 
             //Global.LoadAllPlugins();
             Core.Settings.Apply();

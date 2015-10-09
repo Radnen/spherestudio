@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.UI.SettingsPages
+﻿namespace SphereStudio.UI
 {
-    partial class MainPage
+    partial class SettingsPage
     {
         /// <summary>
         /// Required designer variable.
@@ -156,7 +156,7 @@
             // 
             // StylePicker
             // 
-            this.StylePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.StylePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StylePicker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StylePicker.FormattingEnabled = true;
@@ -278,7 +278,7 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Name = "label1";
@@ -340,8 +340,8 @@
             // 
             // PathList
             // 
-            this.PathList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.PathList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PathList.FormattingEnabled = true;
             this.PathList.IntegralHeight = false;

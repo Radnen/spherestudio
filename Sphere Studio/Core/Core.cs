@@ -17,23 +17,16 @@ namespace SphereStudio
 {
     internal static class Core
     {
-        /// <summary>
-        /// Gets a list of all plugins found by the editor.
-        /// </summary>
-        public static Dictionary<string, PluginShim> Plugins = new Dictionary<string, PluginShim>();
-
-        /// <summary>
-        /// Refreshes the plugin list by observing the /plugins sub-directory.
-        /// </summary>
         static Core()
         {
-            // load the main .ini file (Sphere Studio.ini)
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Studio");
             string iniPath = Path.Combine(sphereDir, "Settings", "Sphere Studio.ini");
             MainIniFile = new IniFile(iniPath);
-            
-            // load plugins (user-installed plugins first)
+            Settings = new CoreSettings(Core.MainIniFile);
+
+            // load plugin modules (user-installed plugins first)
+            Plugins = new Dictionary<string, PluginShim>();
             string[] paths =
             {
                 Path.Combine(sphereDir, "Plugins"),
@@ -54,10 +47,31 @@ namespace SphereStudio
             }
         }
 
-        public static IniFile MainIniFile;
-        public static Project Project = null;
-        public static CoreSettings Settings;
+        /// <summary>
+        /// Grants access to the main .ini file (Sphere Studio.ini).
+        /// </summary>
+        public static IniFile MainIniFile { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the currently loaded project.
+        /// </summary>
+        public static Project Project { get; set; }
+
+        /// <summary>
+        /// Grants access to the Sphere Studio core configuration.
+        /// </summary>
+        public static CoreSettings Settings { get; private set; }
+
+        /// <summary>
+        /// Gets the list of loaded plugins.
+        /// </summary>
+        public static Dictionary<string, PluginShim> Plugins { get; private set; }
+
+        /// <summary>
+        /// Gets the registered name of the IFileOpener handling a specified filename.
+        /// </summary>
+        /// <param name="fileName">The filename to find a file opener for.</param>
+        /// <returns>The registered name of the correct file opener, or null if none was found.</returns>
         public static string GetFileOpenerName(string fileName)
         {
             string fileExtension = Path.GetExtension(fileName);

@@ -1,4 +1,4 @@
-﻿namespace SphereStudio
+﻿namespace SphereStudio.UI
 {
     partial class IDEForm
     {

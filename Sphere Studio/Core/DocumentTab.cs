@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
+using SphereStudio.UI;
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
 

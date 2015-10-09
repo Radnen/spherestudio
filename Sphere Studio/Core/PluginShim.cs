@@ -22,6 +22,7 @@ namespace SphereStudio
                 if (type.GetInterface("IPluginMain") != null)
                 {
                     Main = type.InvokeMember(null, BindingFlags.CreateInstance, null, null, null) as IPluginMain;
+                    break;
                 }
             }
         }

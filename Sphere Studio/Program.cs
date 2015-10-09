@@ -2,6 +2,8 @@
 using System.IO;
 using System.Windows.Forms;
 
+using SphereStudio.UI;
+
 namespace SphereStudio
 {
     public static class Program
