@@ -23,6 +23,7 @@ namespace SphereStudio.Plugins
         public Bitmap DockIcon { get; private set; }
 
         public string FileTypeName { get; private set; }
+        public Bitmap FileIcon { get; private set; }
         public string[] FileExtensions { get; private set; }
 
         private SoundPicker _soundPicker;
@@ -34,6 +35,7 @@ namespace SphereStudio.Plugins
             _soundPicker.Refresh();
 
             FileTypeName = "Audio File";
+            FileIcon = Properties.Resources.Icon;
             FileExtensions = new[]
             {
                 "mp3", "ogg", "flac",  // compressed audio formats

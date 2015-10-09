@@ -75,7 +75,7 @@
     <Compile Include="Editor\Style.cs" />
     <Compile Include="Editor\StyleGroup.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="INI.cs" />
+    <Compile Include="IniFile.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

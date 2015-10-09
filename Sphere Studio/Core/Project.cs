@@ -13,7 +13,7 @@ using Sphere.Core;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.IDE
+namespace SphereStudio
 {
     class Project : IProject, IDisposable
     {
@@ -61,7 +61,7 @@ namespace SphereStudio.IDE
             {
                 // auto-convert game.sgm to .ssproj
                 _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
-                _ini = new INISettings(new INI(_path, false), ".ssproj");
+                _ini = new INISettings(new IniFile(_path, false), ".ssproj");
                 Name = "Untitled";
                 Author = "";
                 Description = "";
@@ -106,7 +106,7 @@ namespace SphereStudio.IDE
             {
                 // loading .ssproj directly
                 _path = filepath;
-                _ini = new INISettings(new INI(_path, false), ".ssproj");
+                _ini = new INISettings(new IniFile(_path, false), ".ssproj");
             }
             if (allowBuilding)
             {

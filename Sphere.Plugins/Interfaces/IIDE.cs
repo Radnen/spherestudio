@@ -33,19 +33,19 @@ namespace Sphere.Plugins.Interfaces
         IDock Docking { get; }
 
         /// <summary>
-        /// Add event handlers to do things when a project opens.
+        /// Fires when a project is loaded into the IDE.
         /// </summary>
         event EventHandler LoadProject;
 
         /// <summary>
-        /// Add event handlers to do things when the Test Game command is clicked.
-        /// </summary>
-        event EventHandler TestGame;
-
-        /// <summary>
-        /// Add event handlers to do things when a project closes.
+        /// Fires when an open project is closed.
         /// </summary>
         event EventHandler UnloadProject;
+
+        /// <summary>
+        /// Fires when the Test Game or Debug commands are chosen.
+        /// </summary>
+        event EventHandler TestGame;
 
         /// <summary>
         /// Creates a ScriptView for an embedded script editor.
@@ -74,15 +74,6 @@ namespace Sphere.Plugins.Interfaces
         void AddMenuItem(string location, ToolStripItem newItem);
 
         /// <summary>
-        /// Opens a document in the IDE.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        DocumentView OpenDocument(string path);
-
-        ISettings OpenSettings(string settingsID);
-
-        /// <summary>
         /// Removes the menu item from it's containing drop down menu.
         /// </summary>
         /// <param name="item">The ToolStripMenuItem to remove.</param>
@@ -93,6 +84,13 @@ namespace Sphere.Plugins.Interfaces
         /// </summary>
         /// <param name="name">The name of the item to remove; Ex: 'View'.</param>
         void RemoveMenuItem(string name);
+
+        /// <summary>
+        /// Opens a file as a document in the IDE.
+        /// </summary>
+        /// <param name="fileName">The full path of the file to open.</param>
+        /// <returns>The DocumentView for the opened file.</returns>
+        DocumentView OpenFile(string fileName);
 
         /// <summary>
         /// Used to send an invalidate to all editors if styling has changed,
@@ -106,10 +104,21 @@ namespace Sphere.Plugins.Interfaces
     /// </summary>
     public interface IDock
     {
+        /// <summary>
+        /// Updates the IDE dock container with new and removed panes.
+        /// </summary>
         void Refresh();
 
-        void Hide(IDockPane panel);
+        /// <summary>
+        /// Hides a registered dock pane. If it is already hidden, does nothing.
+        /// </summary>
+        /// <param name="pane"></param>
+        void Hide(IDockPane pane);
 
-        void Show(IDockPane panel);
+        /// <summary>
+        /// Shows a registered dock pane. If it is already visible, does nothing.
+        /// </summary>
+        /// <param name="pane"></param>
+        void Show(IDockPane pane);
     }
 }

@@ -11,7 +11,7 @@ using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using SphereStudio.UI;
 
-namespace SphereStudio.IDE
+namespace SphereStudio
 {
     /// <summary>
     /// Exposes the build engine, which manages compilation and debugging.
@@ -34,7 +34,7 @@ namespace SphereStudio.IDE
         /// </summary>
         public static bool CanDebug
         {
-            get { return Sphere.Plugins.PluginManager.Get<IDebugStarter>(Global.Settings.Engine) != null; }
+            get { return Sphere.Plugins.PluginManager.Get<IDebugStarter>(Core.Settings.Engine) != null; }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SphereStudio.IDE
         /// </summary>
         public static bool CanPackage
         {
-            get { return Sphere.Plugins.PluginManager.Get<IPackager>(Global.Settings.Compiler) != null; }
+            get { return Sphere.Plugins.PluginManager.Get<IPackager>(Core.Settings.Compiler) != null; }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SphereStudio.IDE
             {
                 if (!CanPackage)
                     throw new NotSupportedException("The current compiler doesn't support packaging.");
-                var packager = Sphere.Plugins.PluginManager.Get<IPackager>(Global.Settings.Compiler);
+                var packager = Sphere.Plugins.PluginManager.Get<IPackager>(Core.Settings.Compiler);
                 return packager.SaveFileFilters;
             }
         }
@@ -70,7 +70,7 @@ namespace SphereStudio.IDE
             _buildView.Clear();
             Sphere.Plugins.PluginManager.IDE.Docking.Show(_buildView);
             _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n\n", project.Name));
-            var compiler = Sphere.Plugins.PluginManager.Get<ICompiler>(Global.Settings.Compiler);
+            var compiler = Sphere.Plugins.PluginManager.Get<ICompiler>(Core.Settings.Compiler);
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
             bool isOK = false;
             if (compiler != null)
@@ -83,7 +83,7 @@ namespace SphereStudio.IDE
             if (isOK)
             {
                 _buildView.Print(string.Format("\n================= Successfully built: {0} ================\n", project.Name));
-                if (Global.Settings.AutoHideBuild && !forceVisible)
+                if (Core.Settings.AutoHideBuild && !forceVisible)
                     Sphere.Plugins.PluginManager.IDE.Docking.Hide(_buildView);
                 return outPath;
             }
@@ -109,7 +109,7 @@ namespace SphereStudio.IDE
             _buildView.Clear();
             Sphere.Plugins.PluginManager.IDE.Docking.Show(_buildView);
             _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n\n", project.Name));
-            var packager = Sphere.Plugins.PluginManager.Get<IPackager>(Global.Settings.Compiler);
+            var packager = Sphere.Plugins.PluginManager.Get<IPackager>(Core.Settings.Compiler);
             bool isOK = await packager.Package(project, fileName, _buildView);
             if (isOK)
                 _buildView.Print(string.Format("\n=============== Successfully packaged: {0} ===============\n", project.Name));
@@ -131,7 +131,7 @@ namespace SphereStudio.IDE
             if (!CanDebug)
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
-            var starter = Sphere.Plugins.PluginManager.Get<IDebugStarter>(Global.Settings.Engine);
+            var starter = Sphere.Plugins.PluginManager.Get<IDebugStarter>(Core.Settings.Engine);
             string outPath = await Build(project);
             return starter.Debug(outPath, false, project);
         }
@@ -142,7 +142,7 @@ namespace SphereStudio.IDE
         /// <param name="project">The project to test.</param>
         public static async Task Test(IProject project)
         {
-            var starter = Sphere.Plugins.PluginManager.Get<IStarter>(Global.Settings.Engine);
+            var starter = Sphere.Plugins.PluginManager.Get<IStarter>(Core.Settings.Engine);
             if (starter != null)
             {
                 string outPath = await Build(project);

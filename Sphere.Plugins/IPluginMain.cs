@@ -32,7 +32,7 @@ namespace Sphere.Plugins
         /// <summary>
         /// Initializes the module. Called by the plugin manager when the plugin is loaded.
         /// </summary>
-        /// <param name="conf">Allows access to the plugin's unique INI file.</param>
+        /// <param name="conf">Allows access to the plugin's user configuration.</param>
         void Initialize(ISettings conf);
         
         /// <summary>

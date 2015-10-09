@@ -14,7 +14,7 @@ namespace SphereStudio.Settings
 {
     class CoreSettings : INISettings
     {
-        public CoreSettings(INI ini):
+        public CoreSettings(IniFile ini):
             base(ini, "Sphere Studio")
         {
             Preset = GetString("preset", "");
@@ -99,7 +99,7 @@ namespace SphereStudio.Settings
                 string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
                 if (!string.IsNullOrWhiteSpace(value) && File.Exists(path))
                 {
-                    using (INI preset = new INI(path, false))
+                    using (IniFile preset = new IniFile(path, false))
                     {
                         Compiler = preset.Read("Preset", "compiler", "");
                         Engine = preset.Read("Preset", "engine", "");
@@ -145,13 +145,8 @@ namespace SphereStudio.Settings
         public void Apply()
         {
             StyleSettings.CurrentStyle = UIStyle;
-            foreach (var plugin in Global.Plugins)
-            {
-                if (Plugins.Contains(plugin.Key))
-                    plugin.Value.Activate();
-                else
-                    plugin.Value.Deactivate();
-            }
+            foreach (var plugin in Core.Plugins)
+                plugin.Value.Enabled = Plugins.Contains(plugin.Key);
             PluginManager.IDE.Docking.Refresh();
         }
     }

@@ -21,7 +21,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             FileTypeName = "Sphere Font";
-            FileExtensions = new string[] { "rfn" };
+            FileExtensions = new[] { "rfn" };
             FileIcon = Properties.Resources.style;
 
             PluginManager.Register(this, this, Name);

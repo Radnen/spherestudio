@@ -13,7 +13,6 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using SphereStudio.IDE;
 
 namespace SphereStudio.UI
 {

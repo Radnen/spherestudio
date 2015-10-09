@@ -47,7 +47,7 @@ namespace SphereStudio.RadEditors
             StringBuilder build = new StringBuilder();
             build.AppendLine("/**\n* Script: Untitled.js");
             build.Append("* Written by: ");
-            build.AppendLine(Global.Project.Author);
+            build.AppendLine(Core.Project.Author);
             build.Append("* Updated: ");
             build.AppendLine(DateTime.Today.ToShortDateString());
             build.AppendLine("**/");

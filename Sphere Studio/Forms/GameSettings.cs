@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 
-using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
 using System.Drawing;

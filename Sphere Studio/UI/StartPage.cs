@@ -8,7 +8,6 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
 using System.Linq;
@@ -77,7 +76,7 @@ namespace SphereStudio.UI
 
         private void InitializeView()
         {
-            View v = Global.Settings.StartPageView;
+            View v = Core.Settings.StartPageView;
             GameFolders.View = v;
             TilesItem.Checked = false;
             switch (v)
@@ -106,7 +105,7 @@ namespace SphereStudio.UI
 
             // Search through a list of supplied directories.
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            var paths = new List<string>(Global.Settings.ProjectPaths);
+            var paths = new List<string>(Core.Settings.ProjectPaths);
             paths.Insert(0, Path.Combine(sphereDir, @"Projects"));
             foreach (string s in paths)
             {
@@ -232,7 +231,7 @@ namespace SphereStudio.UI
 
         private bool RenameProject(string oldname, string newname)
         {
-            if (oldname == Global.Project.RootPath)
+            if (oldname == Core.Project.RootPath)
             {
                 MessageBox.Show(@"Can't change name of active project.", @"Name Change", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
@@ -274,31 +273,31 @@ namespace SphereStudio.UI
         private void TilesItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Global.Settings.StartPageView = GameFolders.View = View.Tile;
+            Core.Settings.StartPageView = GameFolders.View = View.Tile;
         }
 
         private void ListItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Global.Settings.StartPageView = GameFolders.View = View.List;
+            Core.Settings.StartPageView = GameFolders.View = View.List;
         }
 
         private void SmallIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
-            Global.Settings.StartPageView = GameFolders.View = View.SmallIcon;
+            Core.Settings.StartPageView = GameFolders.View = View.SmallIcon;
         }
 
         private void LargeIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
-            Global.Settings.StartPageView = GameFolders.View = View.LargeIcon;
+            Core.Settings.StartPageView = GameFolders.View = View.LargeIcon;
         }
 
         private void DetailsItem_Click(object sender, EventArgs e)
         {
             ListItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Global.Settings.StartPageView = GameFolders.View = View.Details;
+            Core.Settings.StartPageView = GameFolders.View = View.Details;
         }
 
         private void ItemContextStrip_Opening(object sender, CancelEventArgs e)

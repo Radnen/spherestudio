@@ -13,7 +13,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
 
-namespace SphereStudio.IDE
+namespace SphereStudio
 {
     /// <summary>
     /// Represents an open document in the IDE.
@@ -74,14 +74,14 @@ namespace SphereStudio.IDE
             if (View is ScriptView)
             {
                 ScriptView scriptView = View as ScriptView;
-                scriptView.Breakpoints = Global.Project.GetBreakpoints(FileName);
+                scriptView.Breakpoints = Core.Project.GetBreakpoints(FileName);
                 scriptView.BreakpointSet += on_BreakpointSet;
             }
 
             if (restoreView && FileName != null)
             {
                 string setting = string.Format("viewState:{0:X8}", FileName.GetHashCode());
-                try { View.ViewState = Global.Project.User.GetString(setting, ""); }
+                try { View.ViewState = Core.Project.User.GetString(setting, ""); }
                 catch (Exception) { } // *munch*
             }
         }
@@ -316,10 +316,10 @@ namespace SphereStudio.IDE
 
             // record breakpoints if script tab
             if (View is ScriptView)
-                Global.Project.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
+                Core.Project.SetBreakpoints(FileName, ((ScriptView)View).Breakpoints);
 
             // save view (cursor position, etc.)
-            Global.Project.User.SetValue(
+            Core.Project.User.SetValue(
                 string.Format("viewState:{0:X8}", FileName.GetHashCode()),
                 View.ViewState);
         }
@@ -336,7 +336,7 @@ namespace SphereStudio.IDE
         {
             if (FileName == null) return;
             ScriptView view = View as ScriptView;
-            Global.Project.SetBreakpoints(FileName, view.Breakpoints);
+            Core.Project.SetBreakpoints(FileName, view.Breakpoints);
             if (_ide.Debugger != null)
             {
                 await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);

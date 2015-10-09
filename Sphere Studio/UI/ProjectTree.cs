@@ -12,9 +12,8 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Plugins;
-using Sphere.Plugins.Views;
+using Sphere.Plugins.Interfaces;
 using SphereStudio.Forms;
-using SphereStudio.IDE;
 using SphereStudio.Properties;
 
 namespace SphereStudio.UI
@@ -40,19 +39,9 @@ namespace SphereStudio.UI
             _tip.ToolTipTitle = "Image";
             _tip.ToolTipIcon = ToolTipIcon.Info;
             _tip.UseFading = true;
-            _iconlist.ColorDepth = ColorDepth.Depth32Bit;
-            _iconlist.Images.Add(Resources.SphereEditor);
-            _iconlist.Images.Add(Resources.folder);
-            _iconlist.Images.Add(Resources.folder_closed);
-            _iconlist.Images.Add(Resources.page_white_edit);
-            _iconlist.Images.Add(Resources.palette);
-            _iconlist.Images.Add(Resources.script_edit);
-            _iconlist.Images.Add(Resources.map);
-            _iconlist.Images.Add(Resources.sound);
-            _iconlist.Images.Add(Resources.style);
-            _iconlist.Images.Add(Resources.question_mark);
 
             ProjectTreeView.ImageList = _iconlist;
+            _iconlist.ColorDepth = ColorDepth.Depth32Bit;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -131,7 +120,7 @@ namespace SphereStudio.UI
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Global.Project.RootPath + pathtop;
+            string path = Core.Project.RootPath + pathtop;
 
             if (!File.Exists(path)) return;
             try
@@ -176,7 +165,20 @@ namespace SphereStudio.UI
         {
             base.Refresh();
 
-            if (Global.Project == null || string.IsNullOrEmpty(Global.Project.RootPath)) return;
+            if (Core.Project == null || string.IsNullOrEmpty(Core.Project.RootPath))
+                return;
+
+            // update the icons
+            _iconlist.Images.Clear();
+            _iconlist.Images.Add(Resources.folder_closed);
+            _iconlist.Images.Add(Resources.folder);
+            _iconlist.Images.Add(Resources.new_item);
+            string[] pluginNames = PluginManager.GetNames<IFileOpener>();
+            foreach (string name in pluginNames)
+            {
+                var plugin = PluginManager.Get<IFileOpener>(name);
+                _iconlist.Images.Add(name, plugin.FileIcon);
+            }
 
             Cursor.Current = Cursors.WaitCursor;
 
@@ -204,7 +206,7 @@ namespace SphereStudio.UI
             // Repopulate the tree
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
-            var projectNode = new TreeNode(Global.Project.Name) { Tag = "project-node" };
+            var projectNode = new TreeNode(Core.Project.Name) { Tag = "project-node" };
             ProjectTreeView.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], baseDir);
@@ -244,14 +246,14 @@ namespace SphereStudio.UI
 
             foreach (DirectoryInfo d in (from d in dirs orderby d.Name select d))
             {
-                subNode = new TreeNode(d.Name, 2, 1) { Tag = "directory-node" };
+                subNode = new TreeNode(d.Name, 0, 1) { Tag = "directory-node" };
                 baseNode.Nodes.Add(subNode);
                 PopulateDirectoryNode(subNode, d);
             }
 
             foreach (FileInfo f in (from f in files orderby f.Name select f))
             {
-                subNode = new TreeNode(f.Name, 9, 9) { Tag = "file-node" };
+                subNode = new TreeNode(f.Name) { Tag = "file-node" };
                 UpdateImage(subNode);
                 baseNode.Nodes.Add(subNode);
             }
@@ -259,20 +261,17 @@ namespace SphereStudio.UI
 
         private static void UpdateImage(TreeNode node)
         {
-            string s = node.Text;
-            if (Global.IsScript(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 5;
-            else if (Global.IsFont(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 8;
-            else if (Global.IsImage(ref s) || Global.IsSpriteset(ref s)
-                     || Global.IsWindowStyle(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 4;
-            else if (Global.IsMap(ref s) || Global.IsTileset(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 6;
-            else if (Global.IsSound(ref s))
-                node.SelectedImageIndex = node.ImageIndex = 7;
-            else // wildcard can handle these
-                node.SelectedImageIndex = node.ImageIndex = 3;
+            string pluginName = Core.GetFileOpenerName(node.Text);
+            if (pluginName != null)
+            {
+                node.ImageKey = pluginName;
+                node.SelectedImageKey = node.ImageKey;
+            }
+            else
+            {
+                node.ImageIndex = 2;
+                node.SelectedImageIndex = node.ImageIndex;
+            }
         }
 
         private void AddFolderItem_Click(object sender, EventArgs e)
@@ -285,13 +284,13 @@ namespace SphereStudio.UI
                     string path = "";
                     if (ProjectTreeView.SelectedNode.Index == 0)
                     {
-                        path = Path.Combine(Global.Project.RootPath, form.Input);
+                        path = Path.Combine(Core.Project.RootPath, form.Input);
                     }
                     else
                     {
                         string toppath = ProjectTreeView.SelectedNode.FullPath;
                         toppath = toppath.Substring(toppath.IndexOf('\\'));
-                        string rootpath = Global.Project.RootPath + toppath;
+                        string rootpath = Core.Project.RootPath + toppath;
                         path = Path.Combine(rootpath, form.Input);
                     }
 
@@ -316,7 +315,7 @@ namespace SphereStudio.UI
         /// <returns>The full filepath the node corresponds to.</returns>
         private static string ResolvePath(TreeNode node)
         {
-            var root = Global.Project.RootPath;
+            var root = Core.Project.RootPath;
             var path = node.FullPath;
             var idx = path.IndexOf("\\");
             path = path.Substring(idx, path.Length - idx);
@@ -374,7 +373,7 @@ namespace SphereStudio.UI
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (var settings = new GameSettings(Global.Project))
+            using (var settings = new GameSettings(Core.Project))
             {
                 settings.ShowDialog();
             }
@@ -389,7 +388,7 @@ namespace SphereStudio.UI
         {
             TreeNode node = ProjectTreeView.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
-            string path = Global.Project.RootPath + pathtop;
+            string path = Core.Project.RootPath + pathtop;
 
             if (!Directory.Exists(path)) return;
             try
@@ -407,8 +406,8 @@ namespace SphereStudio.UI
 
         public void Open()
         {
-            if (!string.IsNullOrEmpty(Global.Project.RootPath))
-                SystemWatcher.Path = Global.Project.RootPath;
+            if (!string.IsNullOrEmpty(Core.Project.RootPath))
+                SystemWatcher.Path = Core.Project.RootPath;
             else return;
 
             SystemWatcher.EnableRaisingEvents = true;
@@ -423,12 +422,12 @@ namespace SphereStudio.UI
             if (idx < 0) return; // we're at root.
 
             pathtop = pathtop.Substring(idx);
-            string path = Global.Project.RootPath + pathtop;
+            string path = Core.Project.RootPath + pathtop;
 
             // if the node is anything other than a file, don't do anything
             if ((string) node.Tag != "file-node") return;
 
-            _hostForm.OpenDocument(path);
+            _hostForm.OpenFile(path);
         }
 
         private void OpenFileItem_Click(object sender, EventArgs e)
@@ -492,7 +491,7 @@ namespace SphereStudio.UI
             var node = ProjectTreeView.SelectedNode;
 
             if (node.Level == 0 && node.Index == 0)
-                path = Global.Project.RootPath;
+                path = Core.Project.RootPath;
             else
                 path = ResolvePath(node);
 

@@ -26,6 +26,11 @@ namespace Sphere.Plugins.Interfaces
         string FileTypeName { get; }
 
         /// <summary>
+        /// Gets the icon used for file types handled by this plugin.
+        /// </summary>
+        Bitmap FileIcon { get; }
+
+        /// <summary>
         /// Opens an existing file.
         /// </summary>
         /// <param name="fileName">The filename of the asset to edit.</param>
@@ -35,11 +40,6 @@ namespace Sphere.Plugins.Interfaces
 
     public interface INewFileOpener : IFileOpener
     {
-        /// <summary>
-        /// Gets the icon used in the New menu for this opener.
-        /// </summary>
-        Bitmap FileIcon { get; }
-
         /// <summary>
         /// Creates a new, untitled file.
         /// </summary>

@@ -21,7 +21,7 @@ namespace SphereStudio
             foreach (string s in args)
             {
                 if (!File.Exists(s)) continue;
-                form.OpenDocument(s);
+                form.OpenFile(s);
             }
 
             if (args.Length > 0 && File.Exists(args[args.Length - 1]))

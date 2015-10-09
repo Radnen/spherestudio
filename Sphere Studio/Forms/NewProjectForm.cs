@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows.Forms;
 
-using SphereStudio.IDE;
 using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
@@ -122,7 +121,7 @@ namespace SphereStudio.Forms
                 startscript.Close();
             }
 
-            Global.Project = project;
+            Core.Project = project;
         }
     }
 }

@@ -14,10 +14,10 @@ namespace SphereStudio.Settings
 {
     class INISettings : ISettings
     {
-        private INI _ini;
+        private IniFile _ini;
         private string _section;
 
-        public INISettings(INI ini, string section)
+        public INISettings(IniFile ini, string section)
         {
             _ini = ini;
             _section = section;

@@ -28,12 +28,12 @@ namespace SphereStudio.UI.SettingsPages
             string[] paths = new string[PathList.Items.Count];
             PathList.Items.CopyTo(paths, 0);
 
-            Global.Settings.UIStyle = StylePicker.Text;
-            Global.Settings.UseStartPage = UseStartPage.Checked;
-            Global.Settings.AutoOpenLastProject = OpenLastProject.Checked;
-            Global.Settings.AutoHideBuild = AutoHideBuild.Checked;
-            Global.Settings.UseScriptHeaders = UseScriptHeader.Checked;
-            Global.Settings.ProjectPaths = paths;
+            Core.Settings.UIStyle = StylePicker.Text;
+            Core.Settings.UseStartPage = UseStartPage.Checked;
+            Core.Settings.AutoOpenLastProject = OpenLastProject.Checked;
+            Core.Settings.AutoHideBuild = AutoHideBuild.Checked;
+            Core.Settings.UseScriptHeaders = UseScriptHeader.Checked;
+            Core.Settings.ProjectPaths = paths;
             return true;
         }
 
@@ -48,12 +48,12 @@ namespace SphereStudio.UI.SettingsPages
             StylePicker.SelectedIndex = 0;
 
             // fill in current settings
-            StylePicker.Text = Global.Settings.UIStyle;
-            UseStartPage.Checked = Global.Settings.UseStartPage;
-            OpenLastProject.Checked = Global.Settings.AutoOpenLastProject;
-            AutoHideBuild.Checked = Global.Settings.AutoHideBuild;
-            UseScriptHeader.Checked = Global.Settings.UseScriptHeaders;
-            PathList.Items.AddRange(Global.Settings.ProjectPaths);
+            StylePicker.Text = Core.Settings.UIStyle;
+            UseStartPage.Checked = Core.Settings.UseStartPage;
+            OpenLastProject.Checked = Core.Settings.AutoOpenLastProject;
+            AutoHideBuild.Checked = Core.Settings.AutoHideBuild;
+            UseScriptHeader.Checked = Core.Settings.UseScriptHeaders;
+            PathList.Items.AddRange(Core.Settings.ProjectPaths);
 
             RemovePathButton.Enabled = PathList.Items.Count > 0 && PathList.SelectedIndex >= 0;
             UpButton.Enabled = DownButton.Enabled = RemovePathButton.Enabled;

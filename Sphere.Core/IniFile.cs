@@ -11,7 +11,7 @@ namespace Sphere.Core
     /// <summary>
     /// Represents an .ini format settings file.
     /// </summary>
-    public class INI : IDisposable
+    public class IniFile : IDisposable
     {
         private string _filepath;
         private Dictionary<string, Dictionary<string, string>> _sections;
@@ -24,7 +24,7 @@ namespace Sphere.Core
         /// Whether to save the file automatically after a value is written. If this is false,
         /// Save() must be called to persist the changes.
         /// </param>
-        public INI(string filepath, bool autoSave = true)
+        public IniFile(string filepath, bool autoSave = true)
         {
             _filepath = filepath;
             AutoSave = autoSave;

@@ -46,12 +46,12 @@ namespace SphereStudio.Forms
         {
             if (_updatingDefaultsLists) return;
 
-            Global.Settings.Engine = GetPluginName(EnginePluginList);
-            Global.Settings.Compiler = GetPluginName(CompilerPluginList);
-            Global.Settings.DefaultFileOpener = GetPluginName(FilePluginList);
-            Global.Settings.ScriptEditor = GetPluginName(ScriptPluginList);
-            Global.Settings.ImageEditor = GetPluginName(ImagePluginList);
-            Global.Settings.Apply();
+            Core.Settings.Engine = GetPluginName(EnginePluginList);
+            Core.Settings.Compiler = GetPluginName(CompilerPluginList);
+            Core.Settings.DefaultFileOpener = GetPluginName(FilePluginList);
+            Core.Settings.ScriptEditor = GetPluginName(ScriptPluginList);
+            Core.Settings.ImageEditor = GetPluginName(ImagePluginList);
+            Core.Settings.Apply();
             UpdatePresetsList();
             UpdateDefaultsLists();
         }
@@ -82,11 +82,11 @@ namespace SphereStudio.Forms
             if (_updatingDefaultsLists) return;
             _updatingDefaultsLists = true;
             
-            PopulateComboBox<ICompiler>(CompilerPluginList, Global.Settings.Compiler);
-            PopulateComboBox<IStarter>(EnginePluginList, Global.Settings.Engine);
-            PopulateComboBox<IFileOpener>(FilePluginList, Global.Settings.DefaultFileOpener);
-            PopulateComboBox<IEditor<ScriptView>>(ScriptPluginList, Global.Settings.ScriptEditor);
-            PopulateComboBox<IEditor<ImageView>>(ImagePluginList, Global.Settings.ImageEditor);
+            PopulateComboBox<ICompiler>(CompilerPluginList, Core.Settings.Compiler);
+            PopulateComboBox<IStarter>(EnginePluginList, Core.Settings.Engine);
+            PopulateComboBox<IFileOpener>(FilePluginList, Core.Settings.DefaultFileOpener);
+            PopulateComboBox<IEditor<ScriptView>>(ScriptPluginList, Core.Settings.ScriptEditor);
+            PopulateComboBox<IEditor<ImageView>>(ImagePluginList, Core.Settings.ImageEditor);
 
             _updatingDefaultsLists = false;
         }
@@ -98,15 +98,15 @@ namespace SphereStudio.Forms
 
             PluginsList.CreateGraphics();  // workaround for early ItemCheck event
             PluginsList.Items.Clear();
-            foreach (KeyValuePair<string, PluginWrapper> pair in Global.Plugins)
+            foreach (KeyValuePair<string, PluginShim> pair in Core.Plugins)
             {
                 ListViewItem item = new ListViewItem();
-                item.Text = pair.Value.Plugin.Name;
-                item.SubItems.Add(pair.Value.Plugin.Author);
-                item.SubItems.Add(pair.Value.Plugin.Version);
-                item.SubItems.Add(pair.Value.Plugin.Description);
+                item.Text = pair.Value.Main.Name;
+                item.SubItems.Add(pair.Value.Main.Author);
+                item.SubItems.Add(pair.Value.Main.Version);
+                item.SubItems.Add(pair.Value.Main.Description);
                 item.Tag = pair.Key;
-                item.Checked = Global.Settings.Plugins.Contains(pair.Value.Name);
+                item.Checked = Core.Settings.Plugins.Contains(pair.Value.Handle);
                 PluginsList.Items.Add(item);
             }
             
@@ -118,7 +118,7 @@ namespace SphereStudio.Forms
             if (_updatingPresets) return;
             _updatingPresets = true;
             
-            string lastItem = Global.Settings.Preset;
+            string lastItem = Core.Settings.Preset;
             
             PresetsList.Items.Clear();
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
@@ -130,9 +130,9 @@ namespace SphereStudio.Forms
             foreach (string name in presets)
                 PresetsList.Items.Add(name);
 
-            if (PresetsList.Items.Contains(Global.Settings.Preset ?? ""))
+            if (PresetsList.Items.Contains(Core.Settings.Preset ?? ""))
             {
-                PresetsList.Text = Global.Settings.Preset;
+                PresetsList.Text = Core.Settings.Preset;
                 DeletePresetButton.Enabled = true;
             }
             else
@@ -147,11 +147,11 @@ namespace SphereStudio.Forms
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            bool haveAllPlugins = !string.IsNullOrEmpty(Global.Settings.Engine)
-                && !string.IsNullOrEmpty(Global.Settings.Compiler)
-                && !string.IsNullOrEmpty(Global.Settings.DefaultFileOpener)
-                && !string.IsNullOrEmpty(Global.Settings.ScriptEditor)
-                && !string.IsNullOrEmpty(Global.Settings.ImageEditor);
+            bool haveAllPlugins = !string.IsNullOrEmpty(Core.Settings.Engine)
+                && !string.IsNullOrEmpty(Core.Settings.Compiler)
+                && !string.IsNullOrEmpty(Core.Settings.DefaultFileOpener)
+                && !string.IsNullOrEmpty(Core.Settings.ScriptEditor)
+                && !string.IsNullOrEmpty(Core.Settings.ImageEditor);
             if (!haveAllPlugins)
             {
                 DialogResult result = MessageBox.Show(
@@ -164,15 +164,15 @@ namespace SphereStudio.Forms
                     return;
                 }
             }
-            Global.Settings.Preset = PresetsList.Text;
+            Core.Settings.Preset = PresetsList.Text;
         }
 
         private void PresetsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_updatingPresets) return;
             
-            Global.Settings.Preset = PresetsList.Text;
-            Global.Settings.Apply();
+            Core.Settings.Preset = PresetsList.Text;
+            Core.Settings.Apply();
             UpdatePluginsList();
             UpdateDefaultsLists();
             UpdatePresetsList();
@@ -189,17 +189,17 @@ namespace SphereStudio.Forms
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     @"Sphere Studio\Presets", fileName);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
-                using (INI preset = new INI(path))
+                using (IniFile preset = new IniFile(path))
                 {
                     preset.Write("Preset", "compiler", GetPluginName(CompilerPluginList));
                     preset.Write("Preset", "engine", GetPluginName(EnginePluginList));
                     preset.Write("Preset", "defaultFileOpener", GetPluginName(FilePluginList));
                     preset.Write("Preset", "scriptEditor", GetPluginName(ScriptPluginList));
                     preset.Write("Preset", "imageEditor", GetPluginName(ImagePluginList));
-                    preset.Write("Preset", "plugins", string.Join("|", Global.Settings.Plugins));
+                    preset.Write("Preset", "plugins", string.Join("|", Core.Settings.Plugins));
                 }
-                Global.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
-                Global.Settings.Apply();
+                Core.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
+                Core.Settings.Apply();
                 UpdatePresetsList();
             }
         }
@@ -224,10 +224,10 @@ namespace SphereStudio.Forms
         {
             if (_updatingPlugins) return;
 
-            Global.Settings.Plugins = (from ListViewItem item in PluginsList.Items
+            Core.Settings.Plugins = (from ListViewItem item in PluginsList.Items
                                        where item.Checked
                                        select item.Tag as string).ToArray();
-            Global.Settings.Apply();
+            Core.Settings.Apply();
             UpdateDefaultsLists();
             UpdatePresetsList();
         }

@@ -106,9 +106,9 @@
             this.AutoHideBuild.AutoSize = true;
             this.AutoHideBuild.Location = new System.Drawing.Point(14, 36);
             this.AutoHideBuild.Name = "AutoHideBuild";
-            this.AutoHideBuild.Size = new System.Drawing.Size(376, 17);
+            this.AutoHideBuild.Size = new System.Drawing.Size(385, 17);
             this.AutoHideBuild.TabIndex = 1;
-            this.AutoHideBuild.Text = "Hide the build log after successful build when testing or debugging a game";
+            this.AutoHideBuild.Text = "Hide the build log after a successful build when testing or debugging a game";
             this.AutoHideBuild.UseVisualStyleBackColor = true;
             // 
             // UseStartPage
@@ -189,7 +189,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(625, 467);
+            this.tabPage3.Size = new System.Drawing.Size(430, 374);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Script Header";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -201,7 +201,7 @@
             this.ScriptHeader.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ScriptHeader.Location = new System.Drawing.Point(3, 89);
             this.ScriptHeader.Name = "ScriptHeader";
-            this.ScriptHeader.Size = new System.Drawing.Size(619, 375);
+            this.ScriptHeader.Size = new System.Drawing.Size(424, 282);
             this.ScriptHeader.TabIndex = 8;
             this.ScriptHeader.Text = "/**\n * File: [filename]\n * Author: [author]\n * Date: [MM/dd/yy]\n**/";
             // 
@@ -213,7 +213,7 @@
             this.editorLabel1.ForeColor = System.Drawing.Color.White;
             this.editorLabel1.Location = new System.Drawing.Point(3, 66);
             this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(619, 23);
+            this.editorLabel1.Size = new System.Drawing.Size(424, 23);
             this.editorLabel1.TabIndex = 7;
             this.editorLabel1.Text = "Enter template for script header";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -224,7 +224,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(3, 26);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(619, 40);
+            this.panel3.Size = new System.Drawing.Size(424, 40);
             this.panel3.TabIndex = 10;
             // 
             // UseScriptHeader
@@ -245,7 +245,7 @@
             this.editorLabel3.ForeColor = System.Drawing.Color.White;
             this.editorLabel3.Location = new System.Drawing.Point(3, 3);
             this.editorLabel3.Name = "editorLabel3";
-            this.editorLabel3.Size = new System.Drawing.Size(619, 23);
+            this.editorLabel3.Size = new System.Drawing.Size(424, 23);
             this.editorLabel3.TabIndex = 9;
             this.editorLabel3.Text = "Options";
             this.editorLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -257,7 +257,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(625, 467);
+            this.tabPage2.Size = new System.Drawing.Size(430, 374);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Project Paths";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -273,7 +273,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 26);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(619, 438);
+            this.panel6.Size = new System.Drawing.Size(424, 345);
             this.panel6.TabIndex = 1;
             // 
             // label1
@@ -282,7 +282,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(605, 27);
+            this.label1.Size = new System.Drawing.Size(410, 27);
             this.label1.TabIndex = 0;
             this.label1.Text = "\'My Documents\\Sphere Studio\\Projects\' is always searched by default.  You can spe" +
     "cify additional directories to search for Sphere projects here.";
@@ -291,7 +291,7 @@
             // 
             this.RemovePathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RemovePathButton.Enabled = false;
-            this.RemovePathButton.Location = new System.Drawing.Point(550, 409);
+            this.RemovePathButton.Location = new System.Drawing.Point(355, 316);
             this.RemovePathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.RemovePathButton.Name = "RemovePathButton";
             this.RemovePathButton.Size = new System.Drawing.Size(64, 22);
@@ -303,7 +303,7 @@
             // AddPathButton
             // 
             this.AddPathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddPathButton.Location = new System.Drawing.Point(480, 409);
+            this.AddPathButton.Location = new System.Drawing.Point(285, 316);
             this.AddPathButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AddPathButton.Name = "AddPathButton";
             this.AddPathButton.Size = new System.Drawing.Size(64, 22);
@@ -317,7 +317,7 @@
             this.DownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.DownButton.Enabled = false;
             this.DownButton.Image = global::SphereStudio.Properties.Resources.resultset_down;
-            this.DownButton.Location = new System.Drawing.Point(37, 409);
+            this.DownButton.Location = new System.Drawing.Point(37, 316);
             this.DownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(23, 22);
@@ -330,7 +330,7 @@
             this.UpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.UpButton.Enabled = false;
             this.UpButton.Image = global::SphereStudio.Properties.Resources.resultset_up;
-            this.UpButton.Location = new System.Drawing.Point(9, 409);
+            this.UpButton.Location = new System.Drawing.Point(9, 316);
             this.UpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UpButton.Name = "UpButton";
             this.UpButton.Size = new System.Drawing.Size(23, 22);
@@ -348,7 +348,7 @@
             this.PathList.Location = new System.Drawing.Point(9, 40);
             this.PathList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PathList.Name = "PathList";
-            this.PathList.Size = new System.Drawing.Size(605, 361);
+            this.PathList.Size = new System.Drawing.Size(410, 268);
             this.PathList.TabIndex = 1;
             this.PathList.SelectedIndexChanged += new System.EventHandler(this.PathList_SelectedIndexChanged);
             // 
@@ -360,7 +360,7 @@
             this.editorLabel4.ForeColor = System.Drawing.Color.White;
             this.editorLabel4.Location = new System.Drawing.Point(3, 3);
             this.editorLabel4.Name = "editorLabel4";
-            this.editorLabel4.Size = new System.Drawing.Size(619, 23);
+            this.editorLabel4.Size = new System.Drawing.Size(424, 23);
             this.editorLabel4.TabIndex = 0;
             this.editorLabel4.Text = "Choose directories to be searched for Sphere Studio projects";
             this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

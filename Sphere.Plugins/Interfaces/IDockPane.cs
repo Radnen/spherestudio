@@ -21,7 +21,7 @@ namespace Sphere.Plugins.Interfaces
     }
 
     /// <summary>
-    /// Specifies the interface for an IDE dock panel.
+    /// Specifies the interface for an IDE dock pane.
     /// </summary>
     public interface IDockPane : IPlugin
     {

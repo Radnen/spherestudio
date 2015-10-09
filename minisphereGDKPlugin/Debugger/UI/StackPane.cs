@@ -47,7 +47,7 @@ namespace minisphere.GDK.Debugger.UI
                 ListViewItem item = listStack.SelectedItems[0];
                 string filename = CurrentSession.ResolvePath(item.SubItems[1].Text);
                 int lineNumber = int.Parse(item.SubItems[2].Text);
-                ScriptView view = PluginManager.IDE.OpenDocument(filename) as ScriptView;
+                ScriptView view = PluginManager.IDE.OpenFile(filename) as ScriptView;
                 if (view != null)
                 {
                     view.GoToLine(lineNumber);

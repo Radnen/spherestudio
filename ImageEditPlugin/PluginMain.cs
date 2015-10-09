@@ -28,7 +28,7 @@ namespace SphereStudio.Plugins
         public void Initialize(ISettings conf)
         {
             FileTypeName = "Bitmap Image";
-            FileExtensions = new[] { ".bmp", ".gif", ".jpg", ".png", ".tif", ".tiff" };
+            FileExtensions = new[] { "bmp", "gif", "jpg", "png", "tif", "tiff" };
             FileIcon = Properties.Resources.palette;
 
             PluginManager.Register(this, this, Name);

@@ -11,7 +11,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.IDE
+namespace SphereStudio
 {
     struct DockForm
     {
