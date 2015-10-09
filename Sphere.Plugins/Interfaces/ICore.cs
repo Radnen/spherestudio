@@ -81,10 +81,9 @@ namespace Sphere.Plugins.Interfaces
         DocumentView OpenFile(string fileName);
 
         /// <summary>
-        /// Used to send an invalidate to all editors if styling has changed,
-        /// usually due to changing a style option through a plugin.
+        /// Refreshes the Sphere Studio UI.
         /// </summary>
-        void RestyleEditors();
+        void Refresh();
     }
 
     /// <summary>

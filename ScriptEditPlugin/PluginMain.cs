@@ -97,7 +97,7 @@ namespace SphereStudio.Plugins
         private void UpdateScriptControls()
         {
             // restyle all script controls that changed.
-            PluginManager.Core.RestyleEditors();
+            PluginManager.Core.Refresh();
         }
 
         #region initialize the script menu

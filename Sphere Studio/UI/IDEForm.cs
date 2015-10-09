@@ -36,10 +36,6 @@ namespace SphereStudio.UI
         private bool _first_debug_pause;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
-        public event EventHandler LoadProject;
-        public event EventHandler TestGame;
-        public event EventHandler UnloadProject;
-
         /// <summary>
         /// Represents the main window for the Sphere Studio IDE.
         /// </summary>
@@ -88,7 +84,195 @@ namespace SphereStudio.UI
                 menuOpenLastProject_Click(null, EventArgs.Empty);
         }
 
+        public event EventHandler LoadProject;
+        public event EventHandler TestGame;
+        public event EventHandler UnloadProject;
+
+        public DocumentView ActiveDocument { get { return _activeTab.View; } }
+        public IDebugger Debugger { get; private set; }
         public IDock Docking { get { return _dock; } }
+        public IProject Project { get { return Core.Project; } }
+        public ICoreSettings Settings { get { return Core.Settings; } }
+
+        /// <summary>
+        /// Adds a new top-level menu to the IDE menu bar.
+        /// </summary>
+        /// <param name="item">The menu item to add.</param>
+        /// <param name="before">The name of the menu before which this one will be inserted.</param>
+        public void AddMenuItem(ToolStripMenuItem item, string before = "")
+        {
+            if (string.IsNullOrEmpty(before)) EditorMenu.Items.Add(item);
+            int insertion = -1;
+            foreach (ToolStripItem menuitem in EditorMenu.Items)
+            {
+                if (menuitem.Text.Replace("&", "") == before)
+                    insertion = EditorMenu.Items.IndexOf(menuitem);
+            }
+            CreateRootMenuItem(item);
+            EditorMenu.Items.Insert(insertion, item);
+        }
+
+        /// <summary>
+        /// Adds a subitem to an existing menu
+        /// </summary>
+        /// <param name="location">The menu to add the item to. Use dots to drill down, e.g. "File.New"</param>
+        /// <param name="newItem">The ToolStripItem of the menu item to add.</param>
+        public void AddMenuItem(string location, ToolStripItem newItem)
+        {
+            string[] items = location.Split('.');
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
+            if (item == null)
+            {
+                item = new ToolStripMenuItem(items[0]);
+                CreateRootMenuItem(item);
+                EditorMenu.Items.Add(item);
+            }
+
+            for (int i = 1; i < items.Length; ++i)
+            {
+                ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
+                if (menuitem == null)
+                {
+                    menuitem = new ToolStripMenuItem(items[i]);
+                    item.DropDownItems.Add(menuitem);
+                }
+                item = menuitem;
+            }
+
+            item.DropDownItems.Add(newItem);
+        }
+
+        public void RemoveMenuItem(ToolStripItem item)
+        {
+            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
+            if (menuItem != null) menuItem.DropDownItems.Remove(item);
+        }
+
+        public void RemoveMenuItem(string name)
+        {
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
+            if (item != null) item.Dispose();
+        }
+
+        public DocumentView OpenFile(string filePath)
+        {
+            return OpenFile(filePath, false);
+        }
+
+        public DocumentView OpenFile(string filePath, bool restoreView)
+        {
+            string extension = Path.GetExtension(filePath);
+
+            // is it a project?
+            if ((new[] { ".sgm", ".ssproj" }).Contains(extension))
+            {
+                OpenProject(filePath);
+                return null;
+            }
+
+            // if the file is already open, just switch to it
+            DocumentTab tab = GetDocument(filePath);
+            if (tab != null)
+            {
+                tab.Activate();
+                return tab.View;
+            }
+
+            // the IDE will look for a file opener explicitly declaring the file extension.
+            // if that fails, then use the default opener (if any).
+            DocumentView view = null;
+            try
+            {
+                string fileExtension = Path.GetExtension(filePath);
+                if (fileExtension.StartsWith("."))  // remove dot from extension
+                    fileExtension = fileExtension.Substring(1);
+                var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                              let plugin = PluginManager.Get<IFileOpener>(name)
+                              where plugin.FileExtensions.Contains(fileExtension)
+                              select plugin;
+                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
+                IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
+                if (opener != null)
+                    view = opener.Open(filePath);
+                else
+                {
+                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
+                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            if (view != null)
+                AddDocument(view, filePath, restoreView);
+            return view;
+        }
+
+        /// <summary>
+        /// Opens a Sphere project for editor use.
+        /// </summary>
+        /// <param name="filename">The filename of the project.</param>
+        public void OpenProject(string filename)
+        {
+            if (string.IsNullOrEmpty(filename)) return;
+            if (!CloseCurrentProject()) return;
+
+            Core.Project = SphereStudio.Project.Open(filename);
+
+            RefreshProject();
+
+            if (LoadProject != null) LoadProject(null, EventArgs.Empty);
+            if (_treeContent != null) _treeContent.Activate();
+
+            HelpLabel.Text = @"Game project loaded successfully!";
+
+            _startContent.Show();
+
+            string[] docs = Core.Project.User.Documents;
+            foreach (string s in docs)
+            {
+                if (String.IsNullOrWhiteSpace(s)) continue;
+                try { OpenFile(s, true); }
+                catch (Exception) { }
+            }
+
+            // if the form is not visible, don't try to mess with the panels.
+            // it will be done in Form_Load.
+            if (Visible)
+            {
+                if (Core.Project.User.StartHidden)
+                    _startContent.Hide();
+
+                DocumentTab tab = GetDocument(Core.Project.User.CurrentDocument);
+                if (tab != null)
+                    tab.Activate();
+                else
+                    _startContent.Show();
+            }
+
+            Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
+                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
+                Project.Name);
+            UpdateControls();
+        }
+
+        public override void Refresh()
+        {
+            foreach (DocumentTab tab in _tabs)
+                tab.Restyle();
+
+            base.Refresh();
+        }
+
+        public void UpdateStyle()
+        {
+            StyleSettings.ApplyStyle(MainMenuStrip);
+            StyleSettings.ApplyStyle(EditorTools);
+            StyleSettings.ApplyStyle(EditorStatus);
+            UpdateMenuItems();
+        }
 
         #region Main IDE form event handlers
         private void IDEForm_Load(object sender, EventArgs e)
@@ -521,206 +705,6 @@ namespace SphereStudio.UI
             UpdatePresetList();
         }
         #endregion
-
-        public DocumentView ActiveDocument
-        {
-            get { return _activeTab.View; }
-        }
-
-        public IProject Project
-        {
-            get { return Core.Project; }
-        }
-
-        public IDebugger Debugger { get; private set; }
-
-        public ICoreSettings Settings
-        {
-            get { return Core.Settings; }
-        }
-
-        /// <summary>
-        /// Adds a new top-level menu to the IDE menu bar.
-        /// </summary>
-        /// <param name="item">The menu item to add.</param>
-        /// <param name="before">The name of the menu before which this one will be inserted.</param>
-        public void AddMenuItem(ToolStripMenuItem item, string before = "")
-        {
-            if (string.IsNullOrEmpty(before)) EditorMenu.Items.Add(item);
-            int insertion = -1;
-            foreach (ToolStripItem menuitem in EditorMenu.Items)
-            {
-                if (menuitem.Text.Replace("&", "") == before)
-                    insertion = EditorMenu.Items.IndexOf(menuitem);
-            }
-            CreateRootMenuItem(item);
-            EditorMenu.Items.Insert(insertion, item);
-        }
-
-        /// <summary>
-        /// Adds a subitem to an existing menu
-        /// </summary>
-        /// <param name="location">The menu to add the item to. Use dots to drill down, e.g. "File.New"</param>
-        /// <param name="newItem">The ToolStripItem of the menu item to add.</param>
-        public void AddMenuItem(string location, ToolStripItem newItem)
-        {
-            string[] items = location.Split('.');
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, items[0]);
-            if (item == null)
-            {
-                item = new ToolStripMenuItem(items[0]);
-                CreateRootMenuItem(item);
-                EditorMenu.Items.Add(item);
-            }
-
-            for (int i = 1; i < items.Length; ++i)
-            {
-                ToolStripMenuItem menuitem = GetMenuItem(item.DropDownItems, items[i]);
-                if (menuitem == null)
-                {
-                    menuitem = new ToolStripMenuItem(items[i]);
-                    item.DropDownItems.Add(menuitem);
-                }
-                item = menuitem;
-            }
-
-            item.DropDownItems.Add(newItem);
-        }
-
-        public void RemoveMenuItem(ToolStripItem item)
-        {
-            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
-            if (menuItem != null) menuItem.DropDownItems.Remove(item);
-        }
-
-        public void RemoveMenuItem(string name)
-        {
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
-            if (item != null) item.Dispose();
-        }
-
-        public DocumentView OpenFile(string filePath)
-        {
-            return OpenFile(filePath, false);
-        }
-
-        public DocumentView OpenFile(string filePath, bool restoreView)
-        {
-            string extension = Path.GetExtension(filePath);
-
-            // is it a project?
-            if ((new[] { ".sgm", ".ssproj" }).Contains(extension))
-            {
-                OpenProject(filePath);
-                return null;
-            }
-
-            // if the file is already open, just switch to it
-            DocumentTab tab = GetDocument(filePath);
-            if (tab != null)
-            {
-                tab.Activate();
-                return tab.View;
-            }
-
-            // the IDE will look for a file opener explicitly declaring the file extension.
-            // if that fails, then use the default opener (if any).
-            DocumentView view = null;
-            try
-            {
-                string fileExtension = Path.GetExtension(filePath);
-                if (fileExtension.StartsWith("."))  // remove dot from extension
-                    fileExtension = fileExtension.Substring(1);
-                var plugins = from name in PluginManager.GetNames<IFileOpener>()
-                              let plugin = PluginManager.Get<IFileOpener>(name)
-                              where plugin.FileExtensions.Contains(fileExtension)
-                              select plugin;
-                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
-                IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
-                if (opener != null)
-                    view = opener.Open(filePath);
-                else
-                {
-                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
-                        @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
-            }
-
-            if (view != null)
-                AddDocument(view, filePath, restoreView);
-            return view;
-        }
-
-        /// <summary>
-        /// Opens a Sphere project for editor use.
-        /// </summary>
-        /// <param name="filename">The filename of the project.</param>
-        public void OpenProject(string filename)
-        {
-            if (string.IsNullOrEmpty(filename)) return;
-            if (!CloseCurrentProject()) return;
-
-            Core.Project = SphereStudio.Project.Open(filename);
-
-            RefreshProject();
-
-            if (LoadProject != null) LoadProject(null, EventArgs.Empty);
-            if (_treeContent != null) _treeContent.Activate();
-
-            HelpLabel.Text = @"Game project loaded successfully!";
-
-            _startContent.Show();
-
-            string[] docs = Core.Project.User.Documents;
-            foreach (string s in docs)
-            {
-                if (String.IsNullOrWhiteSpace(s)) continue;
-                try { OpenFile(s, true); }
-                catch (Exception) { }
-            }
-
-            // if the form is not visible, don't try to mess with the panels.
-            // it will be done in Form_Load.
-            if (Visible)
-            {
-                if (Core.Project.User.StartHidden)
-                    _startContent.Hide();
-
-                DocumentTab tab = GetDocument(Core.Project.User.CurrentDocument);
-                if (tab != null)
-                    tab.Activate();
-                else
-                    _startContent.Show();
-            }
-
-            Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
-                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
-                Project.Name);
-            UpdateControls();
-        }
-
-        /// <summary>
-        /// Calls the restyle method on all loaded editors.
-        /// </summary>
-        public void RestyleEditors()
-        {
-            foreach (DocumentTab tab in _tabs)
-            {
-                tab.Restyle();
-            }
-        }
-
-        public void UpdateStyle()
-        {
-            StyleSettings.ApplyStyle(MainMenuStrip);
-            StyleSettings.ApplyStyle(EditorTools);
-            StyleSettings.ApplyStyle(EditorStatus);
-            UpdateMenuItems();
-        }
 
         #region Private IDE routines
         private void InitializeDocking()
