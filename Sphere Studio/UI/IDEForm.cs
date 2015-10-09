@@ -407,7 +407,7 @@ namespace SphereStudio.UI
             if (tab != null)
                 tab.Activate();
             else
-                SelectDocument((string) ((ToolStripMenuItem) sender).Tag);
+                SelectDockPane((string) ((ToolStripMenuItem) sender).Tag);
         }
 
         private void menuClosePane_Click(object sender, EventArgs e)
@@ -546,21 +546,6 @@ namespace SphereStudio.UI
 
         public IDebugger Debugger { get; private set; }
 
-        /// <summary>
-        /// Gets a list of filenames of opened documents. Unsaved documents
-        /// without filenames will be excluded.
-        /// </summary>
-        public string[] Documents
-        {
-            get
-            {
-                var q = from tab in _tabs
-                        where tab.FileName != null
-                        select tab.FileName;
-                return q.ToArray();
-            }
-        }
-
         public ISettings Settings
         {
             get { return Core.Settings; }
@@ -614,17 +599,24 @@ namespace SphereStudio.UI
             item.DropDownItems.Add(newItem);
         }
 
-        public DocumentView NewDocument(string folderName)
+        public void RemoveMenuItem(ToolStripItem item)
         {
-            throw new NotImplementedException();
+            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
+            if (menuItem != null) menuItem.DropDownItems.Remove(item);
+        }
+
+        public void RemoveMenuItem(string name)
+        {
+            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
+            if (item != null) item.Dispose();
         }
 
         public DocumentView OpenFile(string filePath)
         {
-            return OpenDocument(filePath, false);
+            return OpenFile(filePath, false);
         }
 
-        public DocumentView OpenDocument(string filePath, bool restoreView)
+        public DocumentView OpenFile(string filePath, bool restoreView)
         {
             string extension = Path.GetExtension(filePath);
 
@@ -699,7 +691,7 @@ namespace SphereStudio.UI
             foreach (string s in docs)
             {
                 if (String.IsNullOrWhiteSpace(s)) continue;
-                try { OpenDocument(s, true); }
+                try { OpenFile(s, true); }
                 catch (Exception) { }
             }
 
@@ -721,18 +713,6 @@ namespace SphereStudio.UI
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
                 Project.Name);
             UpdateControls();
-        }
-
-        public void RemoveMenuItem(ToolStripItem item)
-        {
-            ToolStripMenuItem menuItem = item.OwnerItem as ToolStripMenuItem;
-            if (menuItem != null) menuItem.DropDownItems.Remove(item);
-        }
-
-        public void RemoveMenuItem(string name)
-        {
-            ToolStripMenuItem item = GetMenuItem(EditorMenu.Items, name);
-            if (item != null) item.Dispose();
         }
 
         /// <summary>
@@ -843,11 +823,6 @@ namespace SphereStudio.UI
             _tabs.Add(tab);
         }
 
-        private DockContent FindDocument(string name)
-        {
-            return MainDock.Contents.Cast<DockContent>().FirstOrDefault(content => content.DockHandler.TabText == name);
-        }
-
         /// <summary>
         /// Refreshes the GUI.
         /// </summary>
@@ -906,7 +881,9 @@ namespace SphereStudio.UI
 
             // user values will be lost if we don't record them now.
             Core.Project.User.StartHidden = !_startContent.Visible;
-            Core.Project.User.Documents = Documents;
+            Core.Project.User.Documents = _tabs
+                .Where(tab => tab.FileName != null)
+                .Select(tab => tab.FileName).ToArray();
             Core.Project.User.CurrentDocument = _activeTab != null
                 ? _activeTab.FileName : "";
 
@@ -977,12 +954,6 @@ namespace SphereStudio.UI
             _tree.ProjectName = "Project: " + Core.Project.Name;
         }
 
-        private void RemoveRootMenuItem(ToolStripMenuItem item)
-        {
-            item.DropDownOpening -= menu_DropDownOpening;
-            item.DropDownClosed -= menu_DropDownClosed;
-        }
-
         private void SaveAllDocuments()
         {
             foreach (DocumentTab tab in _tabs)
@@ -992,11 +963,11 @@ namespace SphereStudio.UI
         }
 
         /// <summary>
-        /// Selects a document by tab name, this is not ideal for editors but useful for
-        /// persistent objects like the project tree and plugins.
+        /// Selects a dock pane by tab name, this is not ideal for documents but useful for
+        /// persistent panes like the project tree and plugins.
         /// </summary>
-        /// <param name="name">The content's tab text to look for.</param>
-        private void SelectDocument(string name)
+        /// <param name="name">The registered name of the dock pane to select.</param>
+        private void SelectDockPane(string name)
         {
             foreach (IDockContent content in MainDock.Contents)
                 if (content.DockHandler.TabText == name)
