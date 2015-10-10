@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.Vanilla.Plugins
 {
     class SphereStarter : IStarter
     {

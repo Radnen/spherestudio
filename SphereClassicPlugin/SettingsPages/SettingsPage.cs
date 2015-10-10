@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.Vanilla.SettingsPages
 {
     partial class SettingsPage : UserControl, ISettingsPage
     {

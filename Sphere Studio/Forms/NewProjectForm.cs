@@ -1,27 +1,55 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
 {
-    internal partial class NewProjectForm : Form, IStyleable
+    partial class NewProjectForm : Form, IStyleable
     {
+        private bool _resoChanging = false;
+
+        public NewProjectForm()
+        {
+            InitializeComponent();
+            UpdateStyle();
+        }
+
         public string RootFolder
         {
             get { return FolderBox.Text; }
             set
             {
                 FolderBox.Text = value;
-                DirectoryBox.Text = value + @"//";
+                DirectoryBox.Text = value + @"\";
             }
         }
 
-        public NewProjectForm()
+        private void NewProjectForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            UpdateStyle();
+            ResoComboBox.SelectedIndex = 0;
+        }
+
+        private void OKButton_Click(object sender, EventArgs e)
+        {
+            Project project = Project.Create(DirectoryBox.Text, NameBox.Text);
+            project.Author = AuthorBox.Text;
+            project.Description = DescriptionBox.Text;
+            project.ScreenWidth = int.Parse(WidthBox.Text);
+            project.ScreenHeight = int.Parse(HeightBox.Text);
+            project.MainScript = "main.js";
+            project.Save();
+
+            // automatically create the starting script //
+            using (StreamWriter startscript = new StreamWriter(File.Open(project.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
+            {
+                const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
+                startscript.Write(string.Format(header, project.Author, DateTime.Today.ToShortDateString()));
+            }
+
+            Core.Project = project;
         }
 
         private void FillDirectory(object sender, KeyEventArgs e)
@@ -42,21 +70,19 @@ namespace SphereStudio.Forms
         
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+            e.Handled = (!char.IsDigit(e.KeyChar) && e.KeyChar != '\t' && e.KeyChar != '\b');
         }
 
         private void ResoComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (ResoComboBox.SelectedIndex)
+            if (ResoComboBox.SelectedIndex > 0)
             {
-                case 0: WidthBox.Text = @"320"; HeightBox.Text = @"240";
-                    break;
-                case 1: WidthBox.Text = @"640"; HeightBox.Text = @"480";
-                    break;
-                case 2: WidthBox.Text = @"800"; HeightBox.Text = @"600";
-                    break;
-                case 3: WidthBox.Text = @"1024"; HeightBox.Text = @"768";
-                    break;
+                _resoChanging = true;
+                Regex regex = new Regex(@"(\d+)x(\d+)");
+                Match match = regex.Match(ResoComboBox.Text);
+                WidthBox.Text = match.Groups[1].Value;
+                HeightBox.Text = match.Groups[2].Value;
+                _resoChanging = false;
             }
         }
 
@@ -90,7 +116,7 @@ namespace SphereStudio.Forms
                 if (directory.Exists && text.Length > 0)
                 {
                     OKButton.Enabled = false;
-                    StatusLabel.Text = @"Project Name Already Exists!";
+                    StatusLabel.Text = @"Project name already exists!";
                 }
             }
         }
@@ -99,27 +125,15 @@ namespace SphereStudio.Forms
         {
             StyleSettings.ApplyStyle(ButtonPanel);
             StyleSettings.ApplyStyle(OKButton);
-            StyleSettings.ApplyStyle(cancelButton);
+            StyleSettings.ApplyStyle(CloseButton);
         }
 
-        private void OKButton_Click(object sender, EventArgs e)
+        private void ResoText_Changed(object sender, EventArgs e)
         {
-            Project project = Project.Create(DirectoryBox.Text, NameBox.Text);
-            project.Author = AuthorBox.Text;
-            project.Description = DescriptionBox.Text;
-            project.ScreenWidth = int.Parse(WidthBox.Text);
-            project.ScreenHeight = int.Parse(HeightBox.Text);
-            project.MainScript = "main.js";
-            project.Save();
-
-            // automatically create the starting script //
-            using (StreamWriter startscript = new StreamWriter(File.Open(project.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
+            if (!_resoChanging)
             {
-                const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
-                startscript.Write(string.Format(header, project.Author, DateTime.Today.ToShortDateString()));
+                ResoComboBox.SelectedIndex = 0;
             }
-
-            Core.Project = project;
         }
     }
 }

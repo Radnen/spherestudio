@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
+using SphereStudio.Vanilla.Plugins;
+using SphereStudio.Vanilla.SettingsPages;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.Vanilla
 {
     public class PluginMain : IPluginMain
     {

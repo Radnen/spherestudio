@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.Vanilla.Plugins
 {
     class SphereCompiler : ICompiler
     {

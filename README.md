@@ -20,12 +20,14 @@ Features
  - Spriteset Editor
  - Windowstyle Editor
  - Modern Dockable Design
- - Plugin Subsystem
+ - Single-Step Debugging
+ - Multi-Engine Support
+ - Powerful Plugin Subsystem
 
 Authors
 =======
  - Andrew "Radnen" Helenius - Creator & Developer
- - Bruce "Fatcerberus" Pascoe - Developer
+ - Bruce "Fat Cerberus" Pascoe - Developer
 
 Credits
 =======

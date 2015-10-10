@@ -49,14 +49,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SphereCompiler.cs" />
-    <Compile Include="SettingsPage.cs">
+    <Compile Include="Plugins\SphereCompiler.cs" />
+    <Compile Include="SettingsPages\SettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SettingsPage.Designer.cs">
+    <Compile Include="SettingsPages\SettingsPage.Designer.cs">
       <DependentUpon>SettingsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="SphereStarter.cs" />
+    <Compile Include="Plugins\SphereStarter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
@@ -73,13 +73,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPage.resx">
+    <EmbeddedResource Include="SettingsPages\SettingsPage.resx">
       <DependentUpon>SettingsPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\folder.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

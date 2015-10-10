@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Plugins
+﻿namespace SphereStudio.Vanilla.SettingsPages
 {
     partial class SettingsPage
     {

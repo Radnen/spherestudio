@@ -45,40 +45,39 @@
             // 
             this.logoPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.logoPictureBox.Image = global::SphereStudio.Properties.Resources.AboutSphere;
-            this.logoPictureBox.Location = new System.Drawing.Point(12, 36);
-            this.logoPictureBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logoPictureBox.Location = new System.Drawing.Point(12, 33);
             this.logoPictureBox.Name = "logoPictureBox";
-            this.logoPictureBox.Size = new System.Drawing.Size(154, 318);
+            this.logoPictureBox.Size = new System.Drawing.Size(154, 299);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
             // 
             // labelProductName
             // 
-            this.labelProductName.Location = new System.Drawing.Point(214, 36);
+            this.labelProductName.Location = new System.Drawing.Point(213, 33);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(151, 21);
+            this.labelProductName.Size = new System.Drawing.Size(150, 20);
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "Product Name";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCopyright
             // 
-            this.labelCopyright.Location = new System.Drawing.Point(214, 78);
+            this.labelCopyright.Location = new System.Drawing.Point(213, 73);
             this.labelCopyright.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(251, 21);
+            this.labelCopyright.Size = new System.Drawing.Size(251, 20);
             this.labelCopyright.TabIndex = 21;
             this.labelCopyright.Text = "Copyright";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCompanyName
             // 
-            this.labelCompanyName.Location = new System.Drawing.Point(214, 57);
+            this.labelCompanyName.Location = new System.Drawing.Point(213, 53);
             this.labelCompanyName.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
             this.labelCompanyName.Name = "labelCompanyName";
-            this.labelCompanyName.Size = new System.Drawing.Size(151, 21);
+            this.labelCompanyName.Size = new System.Drawing.Size(150, 20);
             this.labelCompanyName.TabIndex = 22;
             this.labelCompanyName.Text = "Company Name";
             this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -88,25 +87,24 @@
             this.textBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDescription.Location = new System.Drawing.Point(176, 146);
-            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(7, 4, 3, 4);
+            this.textBoxDescription.Location = new System.Drawing.Point(176, 136);
+            this.textBoxDescription.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.textBoxDescription.Multiline = true;
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.ReadOnly = true;
             this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDescription.Size = new System.Drawing.Size(318, 208);
+            this.textBoxDescription.Size = new System.Drawing.Size(325, 196);
             this.textBoxDescription.TabIndex = 23;
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = "Description";
             // 
             // okButton
             // 
-            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(500, 36);
-            this.okButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.okButton.Location = new System.Drawing.Point(507, 33);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(87, 27);
+            this.okButton.Size = new System.Drawing.Size(80, 25);
             this.okButton.TabIndex = 24;
             this.okButton.Text = "&OK";
             // 
@@ -118,7 +116,7 @@
             this.headerLabel.ForeColor = System.Drawing.Color.White;
             this.headerLabel.Location = new System.Drawing.Point(0, 0);
             this.headerLabel.Name = "headerLabel";
-            this.headerLabel.Size = new System.Drawing.Size(599, 23);
+            this.headerLabel.Size = new System.Drawing.Size(598, 22);
             this.headerLabel.TabIndex = 2;
             this.headerLabel.Text = "Information about the Sphere Studio IDE";
             this.headerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -127,20 +125,22 @@
             // 
             this.websiteUrlLink.LinkArea = new System.Windows.Forms.LinkArea(12, 25);
             this.websiteUrlLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.websiteUrlLink.Location = new System.Drawing.Point(217, 114);
+            this.websiteUrlLink.Location = new System.Drawing.Point(217, 107);
             this.websiteUrlLink.Name = "websiteUrlLink";
-            this.websiteUrlLink.Size = new System.Drawing.Size(248, 18);
+            this.websiteUrlLink.Size = new System.Drawing.Size(248, 17);
             this.websiteUrlLink.TabIndex = 25;
             this.websiteUrlLink.TabStop = true;
             this.websiteUrlLink.Text = "Visit us at http://www.spheredev.org/";
             this.websiteUrlLink.UseCompatibleTextRendering = true;
             this.websiteUrlLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.websiteUrlLink_LinkClicked);
             // 
-            // labelBits
+            // labelPlatform
             // 
-            this.labelPlatform.Location = new System.Drawing.Point(371, 37);
-            this.labelPlatform.Name = "labelBits";
-            this.labelPlatform.Size = new System.Drawing.Size(94, 62);
+            this.labelPlatform.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelPlatform.Location = new System.Drawing.Point(371, 35);
+            this.labelPlatform.Name = "labelPlatform";
+            this.labelPlatform.Size = new System.Drawing.Size(94, 58);
             this.labelPlatform.TabIndex = 26;
             this.labelPlatform.Text = "Platform";
             this.labelPlatform.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -148,20 +148,21 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SphereStudio.Properties.Resources.SphereEditor;
-            this.pictureBox1.Location = new System.Drawing.Point(176, 36);
+            this.pictureBox1.Location = new System.Drawing.Point(176, 33);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(32, 32);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 27;
             this.pictureBox1.TabStop = false;
             // 
-            // AboutBoxForm
+            // AboutBox
             // 
             this.AcceptButton = this.okButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.okButton;
-            this.ClientSize = new System.Drawing.Size(599, 367);
+            this.ClientSize = new System.Drawing.Size(598, 344);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labelPlatform);
             this.Controls.Add(this.websiteUrlLink);
@@ -172,12 +173,11 @@
             this.Controls.Add(this.headerLabel);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.labelCopyright);
-            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AboutBoxForm";
+            this.Name = "AboutBox";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
