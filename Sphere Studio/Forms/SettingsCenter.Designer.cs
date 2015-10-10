@@ -76,11 +76,13 @@
             this.PageTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PageTree.FullRowSelect = true;
             this.PageTree.HideSelection = false;
+            this.PageTree.HotTracking = true;
             this.PageTree.Location = new System.Drawing.Point(0, 0);
             this.PageTree.Name = "PageTree";
             this.PageTree.Size = new System.Drawing.Size(183, 415);
             this.PageTree.TabIndex = 1;
             this.PageTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.PageTree_AfterSelect);
+            this.PageTree.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PageTree_MouseMove);
             // 
             // ButtonBar
             // 

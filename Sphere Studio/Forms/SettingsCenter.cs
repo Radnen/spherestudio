@@ -48,10 +48,11 @@ namespace SphereStudio.Forms
             _currentPage = page.Control;
         }
 
-        private void ApplyButton_Click(object sender, EventArgs e)
+        private void PageTree_MouseMove(object sender, MouseEventArgs e)
         {
-            foreach (ISettingsPage page in _applyList)
-                page.Apply();
+            var ht = PageTree.HitTest(e.Location);
+            PageTree.Cursor = ht.Node != null && ht.Node.Bounds.Contains(e.Location)
+                ? Cursors.Hand : Cursors.Default;
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -61,6 +62,12 @@ namespace SphereStudio.Forms
                 canClose &= page.Apply();
             if (!canClose)
                 DialogResult = DialogResult.None;
+        }
+
+        private void ApplyButton_Click(object sender, EventArgs e)
+        {
+            foreach (ISettingsPage page in _applyList)
+                page.Apply();
         }
     }
 }
