@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace minisphere.GDK.Debugger
+namespace minisphere.GDK.Utility
 {
     enum DValue
     {

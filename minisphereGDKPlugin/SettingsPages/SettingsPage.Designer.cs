@@ -1,4 +1,4 @@
-﻿namespace minisphere.GDK.Plugin
+﻿namespace minisphere.GDK.SettingsPages
 {
     partial class SettingsPage
     {
@@ -149,7 +149,7 @@
             // BrowseButton
             // 
             this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Image = global::minisphere.GDK.Properties.Resources.folder;
+            this.BrowseButton.Image = global::minisphere.GDK.Properties.Resources.FolderIcon;
             this.BrowseButton.Location = new System.Drawing.Point(499, 39);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(80, 25);

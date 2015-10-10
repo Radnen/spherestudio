@@ -47,45 +47,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugin\CellCompiler.cs" />
-    <Compile Include="Plugin\SettingsPage.cs">
+    <Compile Include="Plugins\CellCompiler.cs" />
+    <Compile Include="SettingsPages\SettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Plugin\SettingsPage.Designer.cs">
+    <Compile Include="SettingsPages\SettingsPage.Designer.cs">
       <DependentUpon>SettingsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Debugger\UI\ConsolePane.cs">
+    <Compile Include="DockPanes\ConsolePane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Debugger\UI\ConsolePane.Designer.cs">
+    <Compile Include="DockPanes\ConsolePane.Designer.cs">
       <DependentUpon>ConsolePane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Debugger\UI\DebugPane.cs">
+    <Compile Include="DockPanes\ErrorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Debugger\UI\DebugPane.Designer.cs">
-      <DependentUpon>DebugPane.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Debugger\UI\ErrorPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Debugger\UI\ErrorPane.Designer.cs">
+    <Compile Include="DockPanes\ErrorPane.Designer.cs">
       <DependentUpon>ErrorPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Debugger\UI\InspectorPane.cs">
+    <Compile Include="DockPanes\InspectorPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Debugger\UI\InspectorPane.Designer.cs">
+    <Compile Include="DockPanes\InspectorPane.Designer.cs">
       <DependentUpon>InspectorPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Debugger\UI\StackPane.cs">
+    <Compile Include="DockPanes\StackPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Debugger\UI\StackPane.Designer.cs">
+    <Compile Include="DockPanes\StackPane.Designer.cs">
       <DependentUpon>StackPane.cs</DependentUpon>
     </Compile>
     <Compile Include="Debugger\DebugSession.cs" />
-    <Compile Include="Debugger\DuktapeClient.cs" />
+    <Compile Include="Utility\DuktapeClient.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="PluginMain.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -95,23 +89,23 @@
     </Compile>
     <Compile Include="SocketExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Plugin\minisphereStarter.cs" />
+    <Compile Include="Plugins\minisphereStarter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Plugin\SettingsPage.resx">
+    <EmbeddedResource Include="SettingsPages\SettingsPage.resx">
       <DependentUpon>SettingsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Debugger\UI\ConsolePane.resx">
+    <EmbeddedResource Include="DockPanes\ConsolePane.resx">
       <DependentUpon>ConsolePane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Debugger\UI\ErrorPane.resx">
+    <EmbeddedResource Include="DockPanes\ErrorPane.resx">
       <DependentUpon>ErrorPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Debugger\UI\InspectorPane.resx">
+    <EmbeddedResource Include="DockPanes\InspectorPane.resx">
       <DependentUpon>InspectorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Debugger\UI\StackPane.resx">
+    <EmbeddedResource Include="DockPanes\StackPane.resx">
       <DependentUpon>StackPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

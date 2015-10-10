@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using minisphere.GDK.Debugger;
+using minisphere.GDK.Properties;
 
-namespace minisphere.GDK.Debugger.UI
+namespace minisphere.GDK.DockPanes
 {
-    partial class InspectorPane : DebugPane
+    partial class InspectorPane : UserControl, IDockPane
     {
         private const string ValueBoxHint = "Select a variable from the list above to see what it contains.";
 
@@ -15,8 +19,7 @@ namespace minisphere.GDK.Debugger.UI
         private string lastVarName = null;
         private IReadOnlyDictionary<string, string> variables;
 
-        public InspectorPane() :
-            base(Properties.Resources.Inspector)
+        public InspectorPane()
         {
             InitializeComponent();
             Enabled = false;
@@ -24,6 +27,11 @@ namespace minisphere.GDK.Debugger.UI
             textValue.Text = ValueBoxHint;
             textValue.WordWrap = true;
         }
+
+        public bool ShowInViewMenu { get { return false; } }
+        public Control Control { get { return this; } }
+        public DockHint DockHint { get { return DockHint.Right; } }
+        public Bitmap DockIcon { get { return Resources.InspectorIcon; } }
 
         public DebugSession CurrentSession { get; set; }
 

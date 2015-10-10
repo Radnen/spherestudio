@@ -1,21 +1,28 @@
 ﻿using System;
+using System.Drawing;
 using System.Media;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
+using minisphere.GDK.Debugger;
+using minisphere.GDK.Properties;
 
-namespace minisphere.GDK.Debugger.UI
+namespace minisphere.GDK.DockPanes
 {
-    partial class StackPane : DebugPane
+    partial class StackPane : UserControl, IDockPane
     {
-        public StackPane() :
-            base(Properties.Resources.CallStack)
+        public StackPane()
         {
             InitializeComponent();
             Enabled = false;
         }
+
+        public bool ShowInViewMenu { get { return false; } }
+        public Control Control { get { return this; } }
+        public DockHint DockHint { get { return DockHint.Right; } }
+        public Bitmap DockIcon { get { return Resources.StackIcon; } }
 
         public DebugSession CurrentSession { get; set; }
 

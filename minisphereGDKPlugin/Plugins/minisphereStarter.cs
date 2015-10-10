@@ -10,7 +10,7 @@ using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using minisphere.GDK.Debugger;
 
-namespace minisphere.GDK.Plugin
+namespace minisphere.GDK.Plugins
 {
     class minisphereStarter : IDebugStarter
     {

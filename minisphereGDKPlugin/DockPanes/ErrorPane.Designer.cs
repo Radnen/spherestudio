@@ -1,4 +1,4 @@
-﻿namespace minisphere.GDK.Debugger.UI
+﻿namespace minisphere.GDK.DockPanes
 {
     partial class ErrorPane
     {

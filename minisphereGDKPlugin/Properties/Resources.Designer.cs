@@ -63,9 +63,9 @@ namespace minisphere.GDK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap CallStack {
+        internal static System.Drawing.Bitmap ConsoleIcon {
             get {
-                object obj = ResourceManager.GetObject("CallStack", resourceCulture);
+                object obj = ResourceManager.GetObject("ConsoleIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace minisphere.GDK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Console {
+        internal static System.Drawing.Bitmap ErrorIcon {
             get {
-                object obj = ResourceManager.GetObject("Console", resourceCulture);
+                object obj = ResourceManager.GetObject("ErrorIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace minisphere.GDK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Errors {
+        internal static System.Drawing.Bitmap EvalIcon {
             get {
-                object obj = ResourceManager.GetObject("Errors", resourceCulture);
+                object obj = ResourceManager.GetObject("EvalIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace minisphere.GDK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Eval {
+        internal static System.Drawing.Bitmap FolderIcon {
             get {
-                object obj = ResourceManager.GetObject("Eval", resourceCulture);
+                object obj = ResourceManager.GetObject("FolderIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace minisphere.GDK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap folder {
+        internal static System.Drawing.Bitmap InspectorIcon {
             get {
-                object obj = ResourceManager.GetObject("folder", resourceCulture);
+                object obj = ResourceManager.GetObject("InspectorIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace minisphere.GDK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Inspector {
+        internal static System.Drawing.Bitmap StackIcon {
             get {
-                object obj = ResourceManager.GetObject("Inspector", resourceCulture);
+                object obj = ResourceManager.GetObject("StackIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

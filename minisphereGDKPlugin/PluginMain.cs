@@ -6,8 +6,9 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using minisphere.GDK.Debugger.UI;
-using minisphere.GDK.Plugin;
+using minisphere.GDK.DockPanes;
+using minisphere.GDK.Plugins;
+using minisphere.GDK.SettingsPages;
 
 namespace minisphere.GDK
 {
@@ -18,50 +19,47 @@ namespace minisphere.GDK
         public string Description { get { return "Provides support for the minisphere GDK toolchain."; } }
         public string Version { get { return "2.0b1"; } }
 
+        internal ISettings Settings { get; private set; }
+
         public void Initialize(ISettings conf)
         {
+            Settings = conf;
+
             PluginManager.Register(this, new CellCompiler(conf), "Cell");
             PluginManager.Register(this, new minisphereStarter(conf), "minisphere");
             PluginManager.Register(this, new SettingsPage(conf), "minisphere GDK");
+
+            Panes.Initialize(this);
+
             PluginManager.Core.UnloadProject += on_UnloadProject;
-            Views.Initialize(this, conf);
         }
 
         public void ShutDown()
         {
-            PluginManager.UnregisterAll(this);
             PluginManager.Core.UnloadProject -= on_UnloadProject;
-            Views.ShutDown();
+            PluginManager.UnregisterAll(this);
         }
 
         private void on_UnloadProject(object sender, EventArgs e)
         {
-            Views.Errors.Clear();
-            Views.Console.Clear();
+            Panes.Errors.Clear();
+            Panes.Console.Clear();
         }
     }
 
-    static class Views
+    static class Panes
     {
-        public static void Initialize(IPluginMain main, ISettings conf)
+        public static void Initialize(PluginMain main)
         {
             PluginManager.Register(main, Inspector = new InspectorPane(), "Variables");
             PluginManager.Register(main, Stack = new StackPane(), "Call Stack");
             PluginManager.Register(main, Console = new ConsolePane(), "Debug Output");
             PluginManager.Register(main, Errors = new ErrorPane(), "Error View");
 
-            if (conf.GetBoolean("keepConsoleOutput", true))
+            if (main.Settings.GetBoolean("keepConsoleOutput", true))
             {
                 PluginManager.Core.Docking.Show(Console);
             }
-        }
-
-        public static void ShutDown()
-        {
-            PluginManager.Unregister(Console);
-            PluginManager.Unregister(Errors);
-            PluginManager.Unregister(Inspector);
-            PluginManager.Unregister(Stack);
         }
 
         public static ConsolePane Console { get; private set; }

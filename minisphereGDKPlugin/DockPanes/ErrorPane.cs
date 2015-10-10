@@ -6,16 +6,22 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
+using minisphere.GDK.Debugger;
+using minisphere.GDK.Properties;
 
-namespace minisphere.GDK.Debugger.UI
+namespace minisphere.GDK.DockPanes
 {
-    partial class ErrorPane : DebugPane
+    partial class ErrorPane : UserControl, IDockPane
     {
         public ErrorPane()
-            : base(Properties.Resources.Errors, DockHint.Bottom)
         {
             InitializeComponent();
         }
+
+        public bool ShowInViewMenu { get { return true; } }
+        public Control Control { get { return this; } }
+        public DockHint DockHint { get { return DockHint.Bottom; } }
+        public Bitmap DockIcon { get { return Resources.ErrorIcon; } }
 
         public DebugSession CurrentSession { get; set; }
 

@@ -281,7 +281,7 @@ namespace SphereStudio.DockPanes
             }
             else
             {
-                node.ImageIndex = 2;
+                node.ImageIndex = 3;
                 node.SelectedImageIndex = node.ImageIndex;
             }
         }

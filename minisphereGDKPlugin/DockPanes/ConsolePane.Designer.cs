@@ -1,4 +1,4 @@
-﻿namespace minisphere.GDK.Debugger.UI
+﻿namespace minisphere.GDK.DockPanes
 {
     partial class ConsolePane
     {
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.textOutput = new System.Windows.Forms.TextBox();
-            this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.PrintTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // textOutput
@@ -50,8 +50,8 @@
             // 
             // updateTimer
             // 
-            this.updateTimer.Interval = 250;
-            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            this.PrintTimer.Interval = 250;
+            this.PrintTimer.Tick += new System.EventHandler(this.PrintTimer_Tick);
             // 
             // ConsolePane
             // 
@@ -69,6 +69,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox textOutput;
-        private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.Timer PrintTimer;
     }
 }
