@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.Settings;
+using SphereStudio.Forms;
+using SphereStudio.Properties;
 using Sphere.Core.Editor;
-using System.Linq;
+using Sphere.Plugins.Views;
 
-namespace SphereStudio.UI
+namespace SphereStudio.Views
 {
     [ToolboxItem(false)]
-    partial class StartPage : UserControl, IStyleable
+    partial class StartPageView : DocumentView, IStyleable
     {
         private Project _proj;
         private ListViewItem _currentItem;
@@ -28,10 +30,12 @@ namespace SphereStudio.UI
         private readonly ImageList _listIcons = new ImageList();
         private readonly ImageList _listIconsSmall = new ImageList();
 
-        public StartPage(IDEForm mainEditor)
+        public StartPageView(IDEForm mainEditor)
         {
             InitializeComponent();
             InitializeDocking();
+
+            Icon = Icon.FromHandle(Resources.SphereEditor.GetHicon());
 
             _mainEditor = mainEditor;
 
@@ -46,6 +50,8 @@ namespace SphereStudio.UI
 
             InitializeView();
         }
+
+        public override bool CanSave { get { return false; } }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -136,6 +142,8 @@ namespace SphereStudio.UI
         /// <param name="baseDir">Directory to start looking from.</param>
         private void Populate(DirectoryInfo baseDir)
         {
+            if (baseDir.Attributes.HasFlag(FileAttributes.Hidden))
+                return;
             DirectoryInfo[] dirInfos = baseDir.GetDirectories();
             var q = from dirInfo in dirInfos
                     where !dirInfo.Attributes.HasFlag(FileAttributes.Hidden)

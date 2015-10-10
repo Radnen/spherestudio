@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 
 using SphereStudio;
-using SphereStudio.Settings;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
@@ -46,7 +45,7 @@ namespace SphereStudio
         {
             if (!_isEnabled)
             {
-                ISettings conf = new INISettings(Core.MainIniFile, Handle);
+                ISettings conf = new IniSettings(Core.MainIniFile, Handle);
                 Main.Initialize(conf);
                 _isEnabled = true;
             }

@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.UI
+﻿namespace SphereStudio.Forms
 {
     partial class SettingsCenter
     {

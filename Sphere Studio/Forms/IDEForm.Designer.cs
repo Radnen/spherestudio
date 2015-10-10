@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.UI
+﻿namespace SphereStudio.Forms
 {
     partial class IDEForm
     {
@@ -116,7 +116,6 @@
             this.menuClosePane = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStartPage = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuProjectTree = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAPI = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -780,8 +779,7 @@
             this.menuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuClosePane,
             this.toolStripSeparator3,
-            this.menuStartPage,
-            this.menuProjectTree});
+            this.menuStartPage});
             this.menuView.Name = "menuView";
             this.menuView.Size = new System.Drawing.Size(44, 20);
             this.menuView.Text = "&View";
@@ -808,14 +806,6 @@
             this.menuStartPage.Size = new System.Drawing.Size(213, 22);
             this.menuStartPage.Text = "&Start Page";
             this.menuStartPage.Click += new System.EventHandler(this.menuStartPage_Click);
-            // 
-            // menuProjectTree
-            // 
-            this.menuProjectTree.Image = global::SphereStudio.Properties.Resources.bullet_toggle_plus;
-            this.menuProjectTree.Name = "menuProjectTree";
-            this.menuProjectTree.Size = new System.Drawing.Size(213, 22);
-            this.menuProjectTree.Text = "Project &Explorer";
-            this.menuProjectTree.Click += new System.EventHandler(this.menuProjectTree_Click);
             // 
             // menuHelp
             // 
@@ -1122,7 +1112,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuClosePane;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem menuStartPage;
-        private System.Windows.Forms.ToolStripMenuItem menuProjectTree;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
         private System.Windows.Forms.ToolStripMenuItem menuAPI;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;

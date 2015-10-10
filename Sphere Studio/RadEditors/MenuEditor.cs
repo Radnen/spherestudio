@@ -6,7 +6,6 @@ using System.Text;
 using System.Windows.Forms;
 using Sphere.Core.Editor;
 using Sphere.Plugins.EditShims;
-using SphereStudio.UI;
 
 namespace SphereStudio.RadEditors
 {

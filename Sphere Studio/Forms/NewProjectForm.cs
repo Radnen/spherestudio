@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows.Forms;
 
-using SphereStudio.Settings;
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
@@ -118,7 +117,6 @@ namespace SphereStudio.Forms
             {
                 const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
                 startscript.Write(string.Format(header, project.Author, DateTime.Today.ToShortDateString()));
-                startscript.Close();
             }
 
             Core.Project = project;

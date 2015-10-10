@@ -37,7 +37,7 @@ namespace minisphere.GDK.Plugin
         {
             GDKPath.Text = config.GetString("gdkPath", "");
             MakeDebugPackage.Checked = config.GetBoolean("debuggablePackages", false);
-            KeepConsoleOpen.Checked = config.GetBoolean("keepConsoleOutput", false);
+            KeepConsoleOpen.Checked = config.GetBoolean("keepConsoleOutput", true);
             TestWithConsole.Checked = config.GetBoolean("testWithConsole", false);
 
             base.OnLoad(e);

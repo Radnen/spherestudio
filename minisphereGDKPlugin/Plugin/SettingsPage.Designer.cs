@@ -97,9 +97,9 @@
             this.KeepConsoleOpen.AutoSize = true;
             this.KeepConsoleOpen.Location = new System.Drawing.Point(12, 35);
             this.KeepConsoleOpen.Name = "KeepConsoleOpen";
-            this.KeepConsoleOpen.Size = new System.Drawing.Size(299, 17);
+            this.KeepConsoleOpen.Size = new System.Drawing.Size(330, 17);
             this.KeepConsoleOpen.TabIndex = 1;
-            this.KeepConsoleOpen.Text = "Keep debug output visible after a debugging session ends";
+            this.KeepConsoleOpen.Text = "Keep Debug Output pane visible after a debugging session ends";
             this.KeepConsoleOpen.UseVisualStyleBackColor = true;
             // 
             // TestWithConsole

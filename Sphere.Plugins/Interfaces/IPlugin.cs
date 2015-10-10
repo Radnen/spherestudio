@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
-    /// Specifies the base interface for a Sphere Studio plugin. A single
-    /// plugin module can host multiple plugins.
+    /// Specifies the base interface for a Sphere Studio plugin.
     /// </summary>
     public interface IPlugin
     {

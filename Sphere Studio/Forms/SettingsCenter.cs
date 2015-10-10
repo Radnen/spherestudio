@@ -10,9 +10,8 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using SphereStudio.UI;
 
-namespace SphereStudio.UI
+namespace SphereStudio.Forms
 {
     partial class SettingsCenter : Form
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace SphereStudio.UI
+namespace SphereStudio.Forms
 {
     partial class AboutBox : Form
     {
@@ -22,7 +22,7 @@ namespace SphereStudio.UI
                 : os.Major == 6 && os.Minor == 3 ? "8.1"
                 : os.Major == 10 && os.Minor == 0 ? "10"
                 : string.Format("{0}.{1}", os.Major, os.Minor);
-            this.labelPlatform.Text = string.Format("Windows {0}\n{1}",
+            this.labelPlatform.Text = string.Format("Windows\x2122 {0}\n{1}",
                 windowsVersion, Environment.Is64BitProcess ? "x64" : "x86");
             this.textBoxDescription.Text = AssemblyDescription;
         }

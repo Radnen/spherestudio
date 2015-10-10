@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.UI;
+using SphereStudio.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
 
@@ -19,7 +19,7 @@ namespace SphereStudio
     /// <summary>
     /// Represents an open document in the IDE.
     /// </summary>
-    class DocumentTab
+    class DocumentTab : IDisposable
     {
         private static uint _unsavedID = 1;
         
@@ -32,16 +32,16 @@ namespace SphereStudio
         /// </summary>
         /// <param name="ide">The IDE form that the tab will be created in.</param>
         /// <param name="view">The IDocumentView the tab is hosting.</param>
-        /// <param name="filename">The fully-qualified filename of the document, or null if untitled.</param>
+        /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(IDEForm ide, DocumentView view, string filename = null, bool restoreView = false)
+        public DocumentTab(IDEForm ide, DocumentView view, string fileName = null, bool restoreView = false)
         {
-            FileName = filename;
+            FileName = fileName;
             View = view;
 
             View.Dock = DockStyle.Fill;
             
-            _tabText = filename != null ? Path.GetFileName(filename)
+            _tabText = fileName != null ? Path.GetFileName(fileName)
                 : string.Format("Untitled{0}", _unsavedID++);
             _ide = ide;
             _content = new DockContent();
@@ -54,21 +54,6 @@ namespace SphereStudio
             _content.Controls.Add(View);
             _content.Show(ide.MainDock, DockState.Document);
             View.DirtyChanged += on_DirtyChanged;
-
-            // is the file writable?
-            if (filename != null)
-            {
-                try
-                {
-                    FileIOPermission fp = new FileIOPermission(
-                        FileIOPermissionAccess.Write, filename);
-                    fp.Demand();
-                }
-                catch (SecurityException)
-                {
-                    View.ReadOnly = true;
-                }
-            }
 
             UpdateTabText();
 

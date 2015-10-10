@@ -16,6 +16,11 @@ namespace Sphere.Plugins.Views
     public class DocumentView : UserControl
     {
         private bool _isDirty = false;
+
+        /// <summary>
+        /// Gets whether the DocumentView contains saveable content.
+        /// </summary>
+        public virtual bool CanSave { get { return true; } }
         
         /// <summary>
         /// Gets whether the document has been edited since the last save.
@@ -48,6 +53,9 @@ namespace Sphere.Plugins.Views
         /// </summary>
         public Icon Icon { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets whether the document contents are read-only.
+        /// </summary>
         public virtual bool ReadOnly { get; set; }
         
         /// <summary>

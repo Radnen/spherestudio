@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
-using SphereStudio.UI;
+using SphereStudio.Forms;
 
 namespace SphereStudio
 {

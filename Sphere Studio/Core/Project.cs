@@ -7,19 +7,17 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using SphereStudio.UI;
-using SphereStudio.Settings;
+using SphereStudio.DockPanes;
 using Sphere.Core;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio
 {
-    class Project : IProject, IDisposable
+    class Project : IProject
     {
         private Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
-        private BuildConsole _buildView;
-        private INISettings _ini;
+        private IniSettings _ini;
         private string _path;
 
         public static Project Create(string rootPath, string name)
@@ -61,7 +59,7 @@ namespace SphereStudio
             {
                 // auto-convert game.sgm to .ssproj
                 _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
-                _ini = new INISettings(new IniFile(_path, false), ".ssproj");
+                _ini = new IniSettings(new IniFile(_path, false), ".ssproj");
                 Name = "Untitled";
                 Author = "";
                 Description = "";
@@ -97,7 +95,6 @@ namespace SphereStudio
                             }
                         }
                     }
-                    file.Close();
                 }
                 _path = Path.Combine(Path.GetDirectoryName(_path), MakeFileName(Name));
                 _ini.Save();
@@ -106,18 +103,8 @@ namespace SphereStudio
             {
                 // loading .ssproj directly
                 _path = filepath;
-                _ini = new INISettings(new IniFile(_path, false), ".ssproj");
+                _ini = new IniSettings(new IniFile(_path, false), ".ssproj");
             }
-            if (allowBuilding)
-            {
-                _buildView = new BuildConsole();
-                PluginManager.Core.Docking.Hide(_buildView);
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_buildView != null) _buildView.Dispose();
         }
 
         public UserSettings User { get; private set; }
@@ -262,5 +249,41 @@ namespace SphereStudio
             string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
             return Regex.Replace(name, pattern, "_") + ".ssproj";
         }
+    }
+
+    class UserSettings : IniSettings
+    {
+        public UserSettings(string filepath) :
+            base(new IniFile(filepath, false), ".ssuser")
+        {
+        }
+
+        /// <summary>
+        /// Stores as a comma-separated list the opened files in the editor.
+        /// </summary>
+        public string[] Documents
+        {
+            get { return GetStringArray("openDocuments"); }
+            set { SetValue("openDocuments", value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the filepath of the last opened document you viewed.
+        /// </summary>
+        public string ActiveDocument
+        {
+            get { return GetString("currentDocument", ""); }
+            set { SetValue("currentDocument", value); }
+        }
+
+        /// <summary>
+        /// Gets or sets if the Start Page is hidden for this user.
+        /// </summary>
+        public bool StartHidden
+        {
+            get { return GetBoolean("hideStart", false); }
+            set { SetValue("hideStart", value); }
+        }
+
     }
 }

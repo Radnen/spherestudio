@@ -10,14 +10,14 @@ using Sphere.Core;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.Settings
+namespace SphereStudio
 {
-    class INISettings : ISettings
+    class IniSettings : ISettings
     {
         private IniFile _ini;
         private string _section;
 
-        public INISettings(IniFile ini, string section)
+        public IniSettings(IniFile ini, string section)
         {
             _ini = ini;
             _section = section;

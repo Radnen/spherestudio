@@ -9,9 +9,8 @@ using System.Windows.Forms;
 
 using Sphere.Core.Editor;
 using Sphere.Plugins.Interfaces;
-using SphereStudio.UI;
 
-namespace SphereStudio.UI
+namespace SphereStudio.SettingsPages
 {
     [ToolboxItem(false)]
     partial class SettingsPage : UserControl, ISettingsPage

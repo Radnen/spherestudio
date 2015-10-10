@@ -11,74 +11,54 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using Sphere.Core;
-using SphereStudio.Forms;
-using SphereStudio.Settings;
+using SphereStudio.DockPanes;
+using SphereStudio.SettingsPages;
+using SphereStudio.Views;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 using System.Text;
 
-namespace SphereStudio.UI
+namespace SphereStudio.Forms
 {
+    /// <summary>
+    /// Represents an instance of the Sphere Studio IDE.
+    /// </summary>
     partial class IDEForm : Form, ICore, IStyleable
     {
-        // uninitialized data:
-        private DockContent _treeContent;
-        private DockContent _startContent;
-        private readonly StartPage _startPage;
-        private readonly ProjectTree _tree;
-        private bool _firsttime;
-        private string _default_active;
-        private bool _loadingPresets = false;
-
         private DocumentTab _activeTab;
+        private string _defaultActiveName;
         private DockManager _dock = null;
-        private bool _first_debug_pause;
+        private bool _isFirstDebugStop;
+        private bool _loadingPresets = false;
+        private ProjectTree _projectTree;
+        private StartPageView _startPage;
+        private DocumentTab _startTab;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
-        /// <summary>
-        /// Represents the main window for the Sphere Studio IDE.
-        /// </summary>
         public IDEForm()
         {
             InitializeComponent();
+            InitializeDocking();
 
-            PluginManager.Core = this;
-
-            _firsttime = !Core.Settings.GetBoolean("setupComplete", false);
-
-
-            _tree = new ProjectTree(this) { Dock = DockStyle.Fill };
-
-            _startPage = new StartPage(this) { Dock = DockStyle.Fill, HelpLabel = HelpLabel };
-            _startPage.PopulateGameList();
-
+            Text = string.Format("{0} {1} ({2})", Application.ProductName,
+                Application.ProductVersion,
+                Environment.Is64BitProcess ? "x64" : "x86");
             toolNew.DropDown = menuNew.DropDown;
             toolOpen.DropDown = menuOpen.DropDown;
 
-            InitializeDocking();
             BuildEngine.Initialize();
 
+            PluginManager.Core = this;
             PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
-
-            //Global.LoadAllPlugins();
+            PluginManager.Register(null, _projectTree, "Project Tree");
             Core.Settings.Apply();
-
-            SuspendLayout();
-            UpdateStyle();
-            Invalidate(true);
-            ResumeLayout();
+            Docking.Show(_projectTree);
 
             UpdatePresetList();
             UpdateControls();
-
-            // make sure this is active only when we use it.
-            if (_treeContent != null) _treeContent.Activate();
-
-            Text = string.Format("{0} {1} ({2})", Application.ProductName,
-                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
-
-            ConfigSelectTool.SelectedIndexChanged += ConfigSelectTool_SelectedIndexChanged;
+            UpdateStyle();
+            Invalidate(true);
 
             if (Core.Settings.AutoOpenLastProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
@@ -93,6 +73,36 @@ namespace SphereStudio.UI
         public IDock Docking { get { return _dock; } }
         public IProject Project { get { return Core.Project; } }
         public ICoreSettings Settings { get { return Core.Settings; } }
+
+        protected bool StartVisible
+        {
+            // This is kind of hacky, but it beats working with the Weifen Luo controls
+            // directly.
+            get
+            {
+                if (_startTab != null && !_tabs.Contains(_startTab))
+                {
+                    _startTab.Dispose();
+                    _startTab = null;
+                }
+                return _startTab != null;
+            }
+            set
+            {
+                if (value && !StartVisible)
+                {
+                    _startPage = new StartPageView(this) { HelpLabel = HelpLabel };
+                    _startPage.PopulateGameList();
+                    _startTab = AddDocument(_startPage, "Start Page");
+                }
+                else if (!value && StartVisible)
+                {
+                    _startTab.Close(true);
+                    _startTab.Dispose();
+                    _startTab = null;
+                }
+            }
+        }
 
         /// <summary>
         /// Adds a new top-level menu to the IDE menu bar.
@@ -113,7 +123,7 @@ namespace SphereStudio.UI
         }
 
         /// <summary>
-        /// Adds a subitem to an existing menu
+        /// Adds a subitem to an existing menu.
         /// </summary>
         /// <param name="location">The menu to add the item to. Use dots to drill down, e.g. "File.New"</param>
         /// <param name="newItem">The ToolStripItem of the menu item to add.</param>
@@ -196,7 +206,7 @@ namespace SphereStudio.UI
                     view = opener.Open(filePath);
                 else
                 {
-                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is currently set.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
+                    MessageBox.Show(string.Format("Sphere Studio doesn't know how to open that type of file and no default file opener is available.  Tip: Open Configuration Manager and check your plugins.\n\nFile Type: {0}\n\nPath to File:\n{1}", fileExtension.ToLower(), filePath),
                         @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -211,29 +221,28 @@ namespace SphereStudio.UI
         }
 
         /// <summary>
-        /// Opens a Sphere project for editor use.
+        /// Loads a Sphere Studio project into the IDE.
         /// </summary>
-        /// <param name="filename">The filename of the project.</param>
-        public void OpenProject(string filename)
+        /// <param name="fileName">The filename of the project.</param>
+        public void OpenProject(string fileName)
         {
-            if (string.IsNullOrEmpty(filename)) return;
+            if (string.IsNullOrEmpty(fileName)) return;
             if (!CloseCurrentProject()) return;
 
-            Core.Project = SphereStudio.Project.Open(filename);
+            Core.Project = SphereStudio.Project.Open(fileName);
 
             RefreshProject();
 
             if (LoadProject != null) LoadProject(null, EventArgs.Empty);
-            if (_treeContent != null) _treeContent.Activate();
 
             HelpLabel.Text = @"Game project loaded successfully!";
 
-            _startContent.Show();
+            StartVisible = true;
 
             string[] docs = Core.Project.User.Documents;
             foreach (string s in docs)
             {
-                if (String.IsNullOrWhiteSpace(s)) continue;
+                if (string.IsNullOrWhiteSpace(s)) continue;
                 try { OpenFile(s, true); }
                 catch (Exception) { }
             }
@@ -243,13 +252,11 @@ namespace SphereStudio.UI
             if (Visible)
             {
                 if (Core.Project.User.StartHidden)
-                    _startContent.Hide();
+                    StartVisible = false;
 
-                DocumentTab tab = GetDocument(Core.Project.User.CurrentDocument);
+                DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
-                else
-                    _startContent.Show();
             }
 
             Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
@@ -262,7 +269,7 @@ namespace SphereStudio.UI
         {
             foreach (DocumentTab tab in _tabs)
                 tab.Restyle();
-
+            _projectTree.UpdateStyle();
             base.Refresh();
         }
 
@@ -282,30 +289,28 @@ namespace SphereStudio.UI
             if (Core.Settings.AutoOpenLastProject && Core.Project != null)
             {
                 if (Core.Project.User.StartHidden)
-                    _startContent.Hide();
-                DocumentTab tab = GetDocument(Core.Project.User.CurrentDocument);
+                    StartVisible = false;
+                DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
-                else
-                    _startContent.Show();
             }
         }
 
         private void IDEForm_Shown(object sender, EventArgs e)
         {
-            if (_firsttime)
+            bool isFirstRun = !Core.Settings.GetBoolean("setupComplete", false);
+            if (isFirstRun)
             {
                 MessageBox.Show(@"Hello! It's your first time here! I would love to help you " +
                                 @"set a few things up!", @"Welcome First Timer", MessageBoxButtons.OK,
                                 MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 Core.Settings.SetValue("setupComplete", true);
                 menuConfigManager_Click(null, EventArgs.Empty);
-                _firsttime = false;
             }
 
-            if (!String.IsNullOrWhiteSpace(_default_active))
+            if (!String.IsNullOrWhiteSpace(_defaultActiveName))
             {
-                DocumentTab tab = GetDocument(_default_active);
+                DocumentTab tab = GetDocument(_defaultActiveName);
                 if (tab != null) tab.Activate();
             }
         }
@@ -532,31 +537,35 @@ namespace SphereStudio.UI
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
                 menuView.DropDownItems.Add(ts);
-            }
-            foreach (string title in panelNames)
-            {
-                var plugin = PluginManager.Get<IDockPane>(title);
-                ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
-                item.Image = plugin.DockIcon;
-                item.Checked = _dock.IsVisible(plugin);
-                item.Click += (o, ev) => _dock.Toggle(plugin);
-                menuView.DropDownItems.Add(item);
+                foreach (string title in panelNames)
+                {
+                    var plugin = PluginManager.Get<IDockPane>(title);
+                    ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
+                    item.Image = plugin.DockIcon;
+                    item.Checked = _dock.IsVisible(plugin);
+                    item.Click += (o, ev) => _dock.Toggle(plugin);
+                    menuView.DropDownItems.Add(item);
+                }
             }
 
-            if (_tabs.Count > 0)
+            menuStartPage.Checked = _activeTab == _startTab;
+            var tabList = from tab in _tabs where tab != _startTab
+                          select tab;
+            if (tabList.Count() > 0)
             {
                 ToolStripSeparator ts = new ToolStripSeparator { Name = "zz_v" };
                 menuView.DropDownItems.Add(ts);
+                foreach (DocumentTab tab in tabList)
+                {
+                    ToolStripMenuItem item = new ToolStripMenuItem(tab.Title) { Name = "zz_v" };
+                    item.Click += menuDocumentItem_Click;
+                    item.Image = tab.View.Icon.ToBitmap();
+                    item.Tag = tab.FileName;
+                    item.Checked = tab == _activeTab;
+                    menuView.DropDownItems.Add(item);
+                }
             }
-            foreach (DocumentTab tab in _tabs)
-            {
-                ToolStripMenuItem item = new ToolStripMenuItem(tab.Title) { Name = "zz_v" };
-                item.Click += menuDocumentItem_Click;
-                item.Image = tab.View.Icon.ToBitmap();
-                item.Tag = tab.FileName;
-                item.Checked = tab == _activeTab;
-                menuView.DropDownItems.Add(item);
-            }
+
             menu_DropDownOpening(sender, e);
         }
 
@@ -587,23 +596,17 @@ namespace SphereStudio.UI
             if (MainDock.ActiveDocument == null) return;
 
             if (MainDock.ActiveDocument is DockContent &&
-                ((DockContent) MainDock.ActiveDocument).Controls[0] is StartPage)
+                ((DockContent) MainDock.ActiveDocument).Controls[0] is StartPageView)
             {
                 menuStartPage_Click(null, EventArgs.Empty);
             }
             else MainDock.ActiveDocument.DockHandler.Close();
         }
 
-        private void menuProjectTree_Click(object sender, EventArgs e)
-        {
-            if (_treeContent.IsHidden) _treeContent.Show(MainDock, DockState.DockLeft);
-            else _treeContent.Hide();
-        }
-
         private void menuStartPage_Click(object sender, EventArgs e)
         {
-            if (_startContent.IsHidden) _startContent.Show();
-            else _startContent.Hide();
+            StartVisible = true;
+            _startTab.Activate();
         }
         #endregion
 
@@ -709,23 +712,7 @@ namespace SphereStudio.UI
         #region Private IDE routines
         private void InitializeDocking()
         {
-            _treeContent = new DockContent();
-            _treeContent.Controls.Add(_tree);
-            _treeContent.Text = @"Project Explorer";
-            _treeContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
-            _treeContent.HideOnClose = true;
-            _treeContent.Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon());
-            _treeContent.Show(MainDock, DockState.DockLeft);
-
-            _startContent = new DockContent
-            {
-                Icon = Icon.FromHandle(Properties.Resources.SphereEditor.GetHicon()),
-                Text = @"Start Page",
-                HideOnClose = true
-            };
-            _startContent.Controls.Add(_startPage);
-            _startContent.Show(MainDock);
-
+            _projectTree = new ProjectTree(this);
             _dock = new DockManager(MainDock);
         }
 
@@ -779,7 +766,7 @@ namespace SphereStudio.UI
         /// <param name="name">File path of the document to set.</param>
         internal void SetDefaultActive(string name)
         {
-            _default_active = name;
+            _defaultActiveName = name;
         }
 
         private bool IsProjectOpen
@@ -787,12 +774,13 @@ namespace SphereStudio.UI
             get { return Core.Project != null; }
         }
 
-        internal void AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
+        internal DocumentTab AddDocument(DocumentView view, string filepath = null, bool restoreView = false)
         {
             DocumentTab tab = new DocumentTab(this, view, filepath, restoreView);
             tab.Closed += (sender, e) => _tabs.Remove(tab);
             tab.Activate();
             _tabs.Add(tab);
+            return tab;
         }
 
         /// <summary>
@@ -828,7 +816,7 @@ namespace SphereStudio.UI
             foreach (DocumentTab tab in toClose)
                 tab.Close(true);
 
-            _startContent.Hide();
+            StartVisible = false;
             return true;
         }
 
@@ -852,11 +840,11 @@ namespace SphereStudio.UI
             }
 
             // user values will be lost if we don't record them now.
-            Core.Project.User.StartHidden = !_startContent.Visible;
+            Core.Project.User.StartHidden = !StartVisible;
             Core.Project.User.Documents = _tabs
                 .Where(tab => tab.FileName != null)
                 .Select(tab => tab.FileName).ToArray();
-            Core.Project.User.CurrentDocument = _activeTab != null
+            Core.Project.User.ActiveDocument = _activeTab != null
                 ? _activeTab.FileName : "";
 
             // close all open document tabs
@@ -872,12 +860,11 @@ namespace SphereStudio.UI
             }
 
             // clear the project tree
-            _tree.Close();
-            _tree.ProjectName = "Project Name";
+            _projectTree.Close();
+            _projectTree.ProjectName = "Project Name";
             menuOpenLastProject.Enabled = (Core.Settings.LastProject.Length > 0);
 
             // all clear!
-            Core.Project.Dispose();
             Core.Project = null;
             Text = string.Format("{0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
@@ -918,12 +905,12 @@ namespace SphereStudio.UI
 
         private void RefreshProject()
         {
-            _tree.Open();
-            _tree.Refresh();
+            _projectTree.Open();
+            _projectTree.Refresh();
             if (Core.Project.RootPath != null)
                 Core.Settings.LastProject = Core.Project.RootPath;
             UpdateControls();
-            _tree.ProjectName = "Project: " + Core.Project.Name;
+            _projectTree.ProjectName = "Project: " + Core.Project.Name;
         }
 
         private void SaveAllDocuments()
@@ -969,7 +956,7 @@ namespace SphereStudio.UI
                 Debugger.Resumed += debugger_Resumed;
                 menuTestGame.Enabled = false;
                 toolTestGame.Enabled = false;
-                _first_debug_pause = true;
+                _isFirstDebugStop = true;
                 if (await Debugger.Attach())
                 {
                     menuDebug.Text = "&Resume";
@@ -1016,7 +1003,7 @@ namespace SphereStudio.UI
             menuGameSettings.Enabled = GameToolButton.Enabled = IsProjectOpen;
             menuOpenGameDir.Enabled = menuRefreshProject.Enabled = IsProjectOpen;
 
-            SaveToolButton.Enabled = _activeTab != null;
+            SaveToolButton.Enabled = _activeTab != null && _activeTab.View.CanSave;
             CutToolButton.Enabled = _activeTab != null;
             CopyToolButton.Enabled = _activeTab != null;
 
@@ -1078,10 +1065,10 @@ namespace SphereStudio.UI
 
         private async void debugger_Paused(object sender, EventArgs e)
         {
-            if (_first_debug_pause)
+            if (_isFirstDebugStop)
             {
                 // ignore first pause
-                _first_debug_pause = false;
+                _isFirstDebugStop = false;
                 return;
             }
 

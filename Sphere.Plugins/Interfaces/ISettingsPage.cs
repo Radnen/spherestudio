@@ -8,8 +8,7 @@ using System.Windows.Forms;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
-    /// Specifies an interface for a settings page. Tip: ISettingsPage should
-    /// be directly implemented by the page's UserControl when possible.
+    /// Specifies the interface for a Settings Center page.
     /// </summary>
     public interface ISettingsPage : IPlugin
     {

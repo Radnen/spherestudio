@@ -8,7 +8,7 @@ using Sphere.Plugins.Views;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
-    /// Specifies the interface for the Sphere Studio IDE.
+    /// Specifies an interface for communication with the Sphere Studio IDE.
     /// </summary>
     public interface ICore : ISynchronizeInvoke
     {
@@ -128,20 +128,20 @@ namespace Sphere.Plugins.Interfaces
     public interface IDock
     {
         /// <summary>
-        /// Updates the IDE dock container with new and removed panes.
+        /// Refreshes the dock and updates it with any new and removed panes.
         /// </summary>
         void Refresh();
 
         /// <summary>
         /// Hides a registered dock pane. If it is already hidden, does nothing.
         /// </summary>
-        /// <param name="pane"></param>
+        /// <param name="pane">The dock pane to hide.</param>
         void Hide(IDockPane pane);
 
         /// <summary>
         /// Shows a registered dock pane. If it is already visible, does nothing.
         /// </summary>
-        /// <param name="pane"></param>
+        /// <param name="pane">The dock pane to show.</param>
         void Show(IDockPane pane);
     }
 }

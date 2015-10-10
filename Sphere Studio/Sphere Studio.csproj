@@ -101,28 +101,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\PluginShim.cs" />
-    <Compile Include="UI\SettingsCenter.cs">
+    <Compile Include="Forms\SettingsCenter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\SettingsCenter.Designer.cs">
+    <Compile Include="Forms\SettingsCenter.Designer.cs">
       <DependentUpon>SettingsCenter.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\BuildConsole.cs">
+    <Compile Include="DockPanes\BuildConsole.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\BuildConsole.Designer.cs">
+    <Compile Include="DockPanes\BuildConsole.Designer.cs">
       <DependentUpon>BuildConsole.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\AboutBox.cs">
+    <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\AboutBox.Designer.cs">
+    <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ConfigManager.cs">
+    <Compile Include="Forms\ConfigManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ConfigManager.Designer.cs">
+    <Compile Include="Forms\ConfigManager.Designer.cs">
       <DependentUpon>ConfigManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SavePresetForm.cs">
@@ -140,7 +140,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings\INISettings.cs" />
+    <Compile Include="Core\IniSettings.cs" />
     <Compile Include="RadEditors\MenuEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,28 +148,28 @@
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="RadEditors\RadObjects.cs" />
-    <Compile Include="UI\ProjectTree.cs">
+    <Compile Include="DockPanes\ProjectTree.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ProjectTree.Designer.cs">
+    <Compile Include="DockPanes\ProjectTree.Designer.cs">
       <DependentUpon>ProjectTree.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\SettingsPage.cs">
+    <Compile Include="SettingsPages\SettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\SettingsPage.Designer.cs">
+    <Compile Include="SettingsPages\SettingsPage.Designer.cs">
       <DependentUpon>SettingsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\StartPage.cs">
+    <Compile Include="Views\StartPageView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\StartPage.Designer.cs">
-      <DependentUpon>StartPage.cs</DependentUpon>
+    <Compile Include="Views\StartPageView.Designer.cs">
+      <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\IDEForm.cs">
+    <Compile Include="Forms\IDEForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\IDEForm.Designer.cs">
+    <Compile Include="Forms\IDEForm.Designer.cs">
       <DependentUpon>IDEForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ColorPicker\ColorPicker.cs">
@@ -198,19 +198,17 @@
       <DependentUpon>NewProjectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\CoreSettings.cs" />
     <Compile Include="Core\Project.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
-    <EmbeddedResource Include="UI\SettingsCenter.resx">
+    <EmbeddedResource Include="Forms\SettingsCenter.resx">
       <DependentUpon>SettingsCenter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\BuildConsole.resx">
+    <EmbeddedResource Include="DockPanes\BuildConsole.resx">
       <DependentUpon>BuildConsole.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\AboutBox.resx">
+    <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ConfigManager.resx">
+    <EmbeddedResource Include="Forms\ConfigManager.resx">
       <DependentUpon>ConfigManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SavePresetForm.resx">
@@ -219,18 +217,18 @@
     <EmbeddedResource Include="RadEditors\MenuEditor.resx">
       <DependentUpon>MenuEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ProjectTree.resx">
+    <EmbeddedResource Include="DockPanes\ProjectTree.resx">
       <DependentUpon>ProjectTree.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\SettingsPage.resx">
+    <EmbeddedResource Include="SettingsPages\SettingsPage.resx">
       <DependentUpon>SettingsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\StartPage.resx">
-      <DependentUpon>StartPage.cs</DependentUpon>
+    <EmbeddedResource Include="Views\StartPageView.resx">
+      <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\IDEForm.resx">
+    <EmbeddedResource Include="Forms\IDEForm.resx">
       <DependentUpon>IDEForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker\ColorPicker.resx">

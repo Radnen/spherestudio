@@ -8,18 +8,16 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 
-using WeifenLuo.WinFormsUI.Docking;
-
 using Sphere.Core.Editor;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using SphereStudio.Forms;
 using SphereStudio.Properties;
 
-namespace SphereStudio.UI
+namespace SphereStudio.DockPanes
 {
     [ToolboxItem(false)]
-    partial class ProjectTree : UserControl, IStyleable
+    partial class ProjectTree : UserControl, IDockPane, IStyleable
     {
         private readonly IDEForm _hostForm;
         private readonly ImageList _iconlist = new ImageList();
@@ -43,6 +41,11 @@ namespace SphereStudio.UI
             ProjectTreeView.ImageList = _iconlist;
             _iconlist.ColorDepth = ColorDepth.Depth32Bit;
         }
+
+        public Control Control { get { return this; } }
+        public bool ShowInViewMenu { get { return true; } }
+        public DockHint DockHint { get { return DockHint.Left; } }
+        public Bitmap DockIcon { get { return Resources.SphereEditor; } }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -140,7 +143,7 @@ namespace SphereStudio.UI
         }
 
         /// <summary>
-        ///     Resumes the filesystem watcher, enabling it to modify this control.
+        /// Resumes the filesystem watcher, enabling it to modify this control.
         /// </summary>
         public void Resume()
         {
@@ -150,12 +153,20 @@ namespace SphereStudio.UI
 
         private void ProjectTreeView_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            if (e.Node.ImageIndex > 0) e.Node.ImageIndex = 1;
+            if (e.Node.ImageIndex == 1)
+            {
+                e.Node.ImageIndex = 2;
+                e.Node.SelectedImageIndex = 2;
+            }
         }
 
         private void ProjectTreeView_AfterCollapse(object sender, TreeViewEventArgs e)
         {
-            if (e.Node.ImageIndex > 0) e.Node.ImageIndex = 2;
+            if (e.Node.ImageIndex == 2)
+            {
+                e.Node.ImageIndex = 1;
+                e.Node.SelectedImageIndex = 1;
+            }
         }
 
         /// <summary>
@@ -170,6 +181,7 @@ namespace SphereStudio.UI
 
             // update the icons
             _iconlist.Images.Clear();
+            _iconlist.Images.Add(Resources.SphereEditor);
             _iconlist.Images.Add(Resources.folder_closed);
             _iconlist.Images.Add(Resources.folder);
             _iconlist.Images.Add(Resources.new_item);
@@ -246,7 +258,7 @@ namespace SphereStudio.UI
 
             foreach (DirectoryInfo d in (from d in dirs orderby d.Name select d))
             {
-                subNode = new TreeNode(d.Name, 0, 1) { Tag = "directory-node" };
+                subNode = new TreeNode(d.Name, 1, 1) { Tag = "directory-node" };
                 baseNode.Nodes.Add(subNode);
                 PopulateDirectoryNode(subNode, d);
             }

@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.UI
+﻿namespace SphereStudio.Views
 {
-    partial class StartPage
+    partial class StartPageView
     {
         /// <summary> 
         /// Required designer variable.

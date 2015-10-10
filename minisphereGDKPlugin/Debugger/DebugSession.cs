@@ -143,7 +143,7 @@ namespace minisphere.GDK.Debugger
                 PluginManager.Core.Docking.Show(Views.Console);
                 Views.Console.Print("");
                 Views.Console.Print(duktape.TargetID + " detached.");
-                if (!config.GetBoolean("keepConsoleOutput", false))
+                if (!config.GetBoolean("keepConsoleOutput", true))
                     PluginManager.Core.Docking.Hide(Views.Console);
             }), null);
         }

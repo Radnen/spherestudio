@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using SphereStudio.UI;
+using SphereStudio.DockPanes;
 
 namespace SphereStudio
 {

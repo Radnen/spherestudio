@@ -17,17 +17,17 @@ namespace SphereStudio
     {
         public string Name;
         public DockContent Content;
-        public IDockPane Panel;
+        public IDockPane Pane;
     }
 
     class DockManager : IDock
     {
         List<DockForm> _dockForms = new List<DockForm>();
-        DockPanel _panel;
+        DockPanel _mainPanel;
 
-        public DockManager(DockPanel panel)
+        public DockManager(DockPanel mainPanel)
         {
-            _panel = panel;
+            _mainPanel = mainPanel;
         }
 
         public void Refresh()
@@ -46,7 +46,7 @@ namespace SphereStudio
             foreach (string name in newPanels)
             {
                 IDockPane plugin = PluginManager.Get<IDockPane>(name);
-                DockForm form = new DockForm() { Name = name, Panel = plugin };
+                DockForm form = new DockForm() { Name = name, Pane = plugin };
                 form.Content = new DockContent() { Name = name, TabText = name };
                 form.Content.Controls.Add(plugin.Control);
                 form.Content.Icon = plugin.DockIcon != null
@@ -62,7 +62,7 @@ namespace SphereStudio
                     : plugin.DockHint == DockHint.Bottom ? DockState.DockBottom
                     : DockState.Float;
                 plugin.Control.Dock = DockStyle.Fill;
-                form.Content.Show(_panel, state);
+                form.Content.Show(_mainPanel, state);
                 form.Content.Hide();
                 _dockForms.Add(form);
             }
@@ -70,17 +70,17 @@ namespace SphereStudio
 
         public bool IsVisible(IDockPane panel)
         {
-            DockForm form = _dockForms.Find(x => x.Panel == panel);
-            return form.Panel != null && form.Content.Visible;
+            DockForm form = _dockForms.Find(x => x.Pane == panel);
+            return form.Pane != null && !form.Content.IsHidden;
         }
 
-        public void Show(IDockPane panel)
+        public void Show(IDockPane pane)
         {
             Refresh();
-            DockForm form = _dockForms.Find(x => x.Panel == panel);
-            if (form.Panel != null)
+            DockForm form = _dockForms.Find(x => x.Pane == pane);
+            if (form.Pane != null)
             {
-                Control oldFocus = _panel.Parent;
+                Control oldFocus = _mainPanel.Parent;
                 while (oldFocus is ContainerControl)
                     oldFocus = ((ContainerControl)oldFocus).ActiveControl;
                 form.Content.Show();
@@ -88,20 +88,26 @@ namespace SphereStudio
             }
         }
 
-        public void Hide(IDockPane panel)
+        public void Hide(IDockPane pane)
         {
             Refresh();
-            DockForm form = _dockForms.Find(x => x.Panel == panel);
-            if (form.Panel != null)
+            DockForm form = _dockForms.Find(x => x.Pane == pane);
+            if (form.Pane != null)
             {
                 form.Content.Hide();
             }
         }
 
-        public void Toggle(IDockPane panel)
+        public void Toggle(IDockPane pane)
         {
-            DockForm form = _dockForms.Find(x => x.Panel == panel);
-            if (form.Content.Visible) Hide(panel); else Show(panel);
+            DockForm form = _dockForms.Find(x => x.Pane == pane);
+            if (form.Pane != null)
+            {
+                if (!IsVisible(form.Pane))
+                    Show(pane);
+                else
+                    Hide(pane);
+            }
         }
     }
 }

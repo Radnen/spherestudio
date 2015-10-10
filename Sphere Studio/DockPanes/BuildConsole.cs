@@ -14,7 +14,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace SphereStudio.UI
+namespace SphereStudio.DockPanes
 {
     [ToolboxItem(false)]
     partial class BuildConsole : UserControl, IConsole, IDockPane
