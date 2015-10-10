@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditPlugin", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "SpritesetEditPlugin\SpritesetEditPlugin.csproj", "{9FEA4A11-754F-4F4B-8A85-B0E780F15159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minisphereGDKPlugin", "minisphereGDKPlugin\minisphereGDKPlugin.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minisphereGdkPlugin", "minisphereGdkPlugin\minisphereGdkPlugin.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereClassicPlugin", "SphereClassicPlugin\SphereClassicPlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
 EndProject

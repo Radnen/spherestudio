@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace minisphere.GDK
+namespace minisphere.Gdk
 {
     static class SocketExtensions
     {

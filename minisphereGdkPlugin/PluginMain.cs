@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using minisphere.GDK.DockPanes;
-using minisphere.GDK.Plugins;
-using minisphere.GDK.SettingsPages;
+using minisphere.Gdk.DockPanes;
+using minisphere.Gdk.Plugins;
+using minisphere.Gdk.SettingsPages;
 
-namespace minisphere.GDK
+namespace minisphere.Gdk
 {
     public class PluginMain : IPluginMain
     {

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using minisphere.GDK.Debugger;
+using minisphere.Gdk.Debugger;
 
-namespace minisphere.GDK.Plugins
+namespace minisphere.Gdk.Plugins
 {
     class minisphereStarter : IDebugStarter
     {

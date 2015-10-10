@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
-namespace minisphere.GDK.Plugins
+namespace minisphere.Gdk.Plugins
 {
     class CellCompiler : IPackager
     {

@@ -55,9 +55,9 @@ namespace SphereStudio
         {
             if (_isEnabled)
             {
+                _isEnabled = false;
                 Main.ShutDown();
                 PluginManager.UnregisterAll(Main);
-                _isEnabled = false;
             }
         }
     }

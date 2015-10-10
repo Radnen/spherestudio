@@ -91,7 +91,7 @@
             // BrowseButton
             // 
             this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Image = global::SphereStudio.Plugins.Properties.Resources.BrowseIcon;
+            this.BrowseButton.Image = global::SphereStudio.Vanilla.Properties.Resources.BrowseIcon;
             this.BrowseButton.Location = new System.Drawing.Point(472, 13);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(25, 20);

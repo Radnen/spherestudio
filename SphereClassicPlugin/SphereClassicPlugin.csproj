@@ -7,7 +7,7 @@
     <ProjectGuid>{DA72D708-3F08-4804-B5BB-5A1A78B16605}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
+    <RootNamespace>SphereStudio.Vanilla</RootNamespace>
     <AssemblyName>SphereClassicPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -8,24 +8,23 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using minisphere.GDK.Utility;
+using minisphere.Gdk.Utility;
 
-namespace minisphere.GDK.Debugger
+namespace minisphere.Gdk.Debugger
 {
-    class DebugSession : IDebugger
+    class DebugSession : IDebugger, IDisposable
     {
         private string sgmPath;
         private DuktapeClient duktape;
         private Process engineProcess;
         private string engineDir;
         private ConcurrentQueue<dynamic[]> replies = new ConcurrentQueue<dynamic[]>();
-        private System.Threading.Timer focusTimer;
+        private Timer focusTimer;
         private string sourcePath;
-        private System.Threading.Timer updateTimer;
+        private Timer updateTimer;
         private ISettings config;
 
         public DebugSession(string gamePath, string enginePath, Process engine, IProject project, ISettings conf)
@@ -35,14 +34,15 @@ namespace minisphere.GDK.Debugger
             sourcePath = project.RootPath;
             engineProcess = engine;
             engineDir = Path.GetDirectoryName(enginePath);
-            focusTimer = new System.Threading.Timer(
-                FocusEngine, this,
-                Timeout.Infinite,
-                Timeout.Infinite);
-            updateTimer = new System.Threading.Timer(
-                UpdateDebugViews, this,
-                Timeout.Infinite,
-                Timeout.Infinite);
+            focusTimer = new Timer(FocusEngine, this, Timeout.Infinite, Timeout.Infinite);
+            updateTimer = new Timer(UpdateDebugViews, this, Timeout.Infinite, Timeout.Infinite);
+        }
+
+        public void Dispose()
+        {
+            duktape.Dispose();
+            focusTimer.Dispose();
+            updateTimer.Dispose();
         }
 
         public string FileName { get; private set; }
@@ -76,7 +76,7 @@ namespace minisphere.GDK.Debugger
         {
             focusTimer.Change(Timeout.Infinite, Timeout.Infinite);
             await duktape.Detach();
-            duktape.Dispose();
+            Dispose();
         }
 
         private async Task Connect(string hostname, int port, uint timeout = 5000)

@@ -1,4 +1,4 @@
-﻿namespace minisphere.GDK.DockPanes
+﻿namespace minisphere.Gdk.DockPanes
 {
     partial class ErrorPane
     {
