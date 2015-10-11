@@ -70,11 +70,9 @@
             this.ProjectBox.Controls.Add(this.DirectoryLabel);
             this.ProjectBox.Controls.Add(this.FolderLabel);
             this.ProjectBox.Controls.Add(this.NameLabel);
-            this.ProjectBox.Location = new System.Drawing.Point(12, 26);
-            this.ProjectBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ProjectBox.Location = new System.Drawing.Point(13, 33);
             this.ProjectBox.Name = "ProjectBox";
-            this.ProjectBox.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ProjectBox.Size = new System.Drawing.Size(412, 124);
+            this.ProjectBox.Size = new System.Drawing.Size(351, 112);
             this.ProjectBox.TabIndex = 1;
             this.ProjectBox.TabStop = false;
             this.ProjectBox.Text = "Project";
@@ -83,10 +81,9 @@
             // 
             this.FolderBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FolderBrowseButton.Image = global::SphereStudio.Properties.Resources.folder;
-            this.FolderBrowseButton.Location = new System.Drawing.Point(370, 54);
-            this.FolderBrowseButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.FolderBrowseButton.Location = new System.Drawing.Point(316, 48);
             this.FolderBrowseButton.Name = "FolderBrowseButton";
-            this.FolderBrowseButton.Size = new System.Drawing.Size(32, 23);
+            this.FolderBrowseButton.Size = new System.Drawing.Size(27, 22);
             this.FolderBrowseButton.TabIndex = 4;
             this.FolderBrowseButton.UseVisualStyleBackColor = true;
             this.FolderBrowseButton.Click += new System.EventHandler(this.FolderBrowseButton_Click);
@@ -95,21 +92,19 @@
             // 
             this.DirectoryBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DirectoryBox.Location = new System.Drawing.Point(76, 84);
-            this.DirectoryBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.DirectoryBox.Location = new System.Drawing.Point(72, 76);
             this.DirectoryBox.Name = "DirectoryBox";
             this.DirectoryBox.ReadOnly = true;
-            this.DirectoryBox.Size = new System.Drawing.Size(326, 23);
+            this.DirectoryBox.Size = new System.Drawing.Size(271, 22);
             this.DirectoryBox.TabIndex = 6;
             // 
             // FolderBox
             // 
             this.FolderBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.FolderBox.Location = new System.Drawing.Point(76, 54);
-            this.FolderBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.FolderBox.Location = new System.Drawing.Point(72, 48);
             this.FolderBox.Name = "FolderBox";
-            this.FolderBox.Size = new System.Drawing.Size(288, 23);
+            this.FolderBox.Size = new System.Drawing.Size(238, 22);
             this.FolderBox.TabIndex = 3;
             this.FolderBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FillDirectory);
             // 
@@ -117,37 +112,36 @@
             // 
             this.NameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.NameBox.Location = new System.Drawing.Point(76, 23);
-            this.NameBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.NameBox.Location = new System.Drawing.Point(72, 20);
             this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(326, 23);
+            this.NameBox.Size = new System.Drawing.Size(271, 22);
             this.NameBox.TabIndex = 1;
             this.NameBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FillDirectory);
             // 
             // DirectoryLabel
             // 
             this.DirectoryLabel.AutoSize = true;
-            this.DirectoryLabel.Location = new System.Drawing.Point(17, 87);
+            this.DirectoryLabel.Location = new System.Drawing.Point(14, 79);
             this.DirectoryLabel.Name = "DirectoryLabel";
-            this.DirectoryLabel.Size = new System.Drawing.Size(53, 15);
+            this.DirectoryLabel.Size = new System.Drawing.Size(52, 13);
             this.DirectoryLabel.TabIndex = 5;
             this.DirectoryLabel.Text = "Full Path";
             // 
             // FolderLabel
             // 
             this.FolderLabel.AutoSize = true;
-            this.FolderLabel.Location = new System.Drawing.Point(25, 57);
+            this.FolderLabel.Location = new System.Drawing.Point(21, 51);
             this.FolderLabel.Name = "FolderLabel";
-            this.FolderLabel.Size = new System.Drawing.Size(45, 15);
+            this.FolderLabel.Size = new System.Drawing.Size(45, 13);
             this.FolderLabel.TabIndex = 2;
             this.FolderLabel.Text = "*Folder";
             // 
             // NameLabel
             // 
             this.NameLabel.AutoSize = true;
-            this.NameLabel.Location = new System.Drawing.Point(26, 26);
+            this.NameLabel.Location = new System.Drawing.Point(25, 23);
             this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(44, 15);
+            this.NameLabel.Size = new System.Drawing.Size(41, 13);
             this.NameLabel.TabIndex = 0;
             this.NameLabel.Text = "*Name";
             // 
@@ -155,10 +149,9 @@
             // 
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(337, 5);
-            this.CloseButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.CloseButton.Location = new System.Drawing.Point(284, 3);
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(87, 26);
+            this.CloseButton.Size = new System.Drawing.Size(80, 25);
             this.CloseButton.TabIndex = 1;
             this.CloseButton.Text = "Cancel";
             this.CloseButton.UseVisualStyleBackColor = true;
@@ -168,10 +161,9 @@
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKButton.Enabled = false;
-            this.OKButton.Location = new System.Drawing.Point(244, 5);
-            this.OKButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.OKButton.Location = new System.Drawing.Point(198, 3);
             this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(87, 26);
+            this.OKButton.Size = new System.Drawing.Size(80, 25);
             this.OKButton.TabIndex = 0;
             this.OKButton.Text = "&Create!";
             this.OKButton.UseVisualStyleBackColor = true;
@@ -190,11 +182,9 @@
             this.PropertiesBox.Controls.Add(this.ResoLabel);
             this.PropertiesBox.Controls.Add(this.AuthorLabel);
             this.PropertiesBox.Controls.Add(this.AuthorBox);
-            this.PropertiesBox.Location = new System.Drawing.Point(14, 173);
-            this.PropertiesBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.PropertiesBox.Location = new System.Drawing.Point(13, 166);
             this.PropertiesBox.Name = "PropertiesBox";
-            this.PropertiesBox.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.PropertiesBox.Size = new System.Drawing.Size(410, 373);
+            this.PropertiesBox.Size = new System.Drawing.Size(351, 307);
             this.PropertiesBox.TabIndex = 3;
             this.PropertiesBox.TabStop = false;
             this.PropertiesBox.Text = "Properties";
@@ -202,9 +192,9 @@
             // DescLabel
             // 
             this.DescLabel.AutoSize = true;
-            this.DescLabel.Location = new System.Drawing.Point(13, 101);
+            this.DescLabel.Location = new System.Drawing.Point(11, 88);
             this.DescLabel.Name = "DescLabel";
-            this.DescLabel.Size = new System.Drawing.Size(92, 15);
+            this.DescLabel.Size = new System.Drawing.Size(85, 13);
             this.DescLabel.TabIndex = 6;
             this.DescLabel.Text = "Game Summary";
             // 
@@ -213,11 +203,10 @@
             this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DescriptionBox.Location = new System.Drawing.Point(16, 120);
-            this.DescriptionBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.DescriptionBox.Location = new System.Drawing.Point(14, 104);
             this.DescriptionBox.Multiline = true;
             this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(380, 234);
+            this.DescriptionBox.Size = new System.Drawing.Size(326, 187);
             this.DescriptionBox.TabIndex = 7;
             // 
             // ResoComboBox
@@ -234,20 +223,18 @@
             "1024x768",
             "1280x720",
             "1920x1080"});
-            this.ResoComboBox.Location = new System.Drawing.Point(82, 53);
-            this.ResoComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ResoComboBox.Location = new System.Drawing.Point(80, 46);
             this.ResoComboBox.Name = "ResoComboBox";
-            this.ResoComboBox.Size = new System.Drawing.Size(218, 23);
+            this.ResoComboBox.Size = new System.Drawing.Size(175, 21);
             this.ResoComboBox.TabIndex = 3;
             this.ResoComboBox.SelectedIndexChanged += new System.EventHandler(this.ResoComboBox_SelectedIndexChanged);
             // 
             // HeightBox
             // 
             this.HeightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.HeightBox.Location = new System.Drawing.Point(356, 53);
-            this.HeightBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.HeightBox.Location = new System.Drawing.Point(305, 46);
             this.HeightBox.Name = "HeightBox";
-            this.HeightBox.Size = new System.Drawing.Size(44, 23);
+            this.HeightBox.Size = new System.Drawing.Size(38, 22);
             this.HeightBox.TabIndex = 5;
             this.HeightBox.Text = "240";
             this.HeightBox.TextChanged += new System.EventHandler(this.ResoText_Changed);
@@ -256,10 +243,9 @@
             // WidthBox
             // 
             this.WidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.WidthBox.Location = new System.Drawing.Point(306, 53);
-            this.WidthBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.WidthBox.Location = new System.Drawing.Point(261, 46);
             this.WidthBox.Name = "WidthBox";
-            this.WidthBox.Size = new System.Drawing.Size(44, 23);
+            this.WidthBox.Size = new System.Drawing.Size(38, 22);
             this.WidthBox.TabIndex = 4;
             this.WidthBox.Text = "320";
             this.WidthBox.TextChanged += new System.EventHandler(this.ResoText_Changed);
@@ -268,18 +254,18 @@
             // ResoLabel
             // 
             this.ResoLabel.AutoSize = true;
-            this.ResoLabel.Location = new System.Drawing.Point(13, 56);
+            this.ResoLabel.Location = new System.Drawing.Point(11, 49);
             this.ResoLabel.Name = "ResoLabel";
-            this.ResoLabel.Size = new System.Drawing.Size(63, 15);
+            this.ResoLabel.Size = new System.Drawing.Size(63, 13);
             this.ResoLabel.TabIndex = 2;
             this.ResoLabel.Text = "Resolution";
             // 
             // AuthorLabel
             // 
             this.AuthorLabel.AutoSize = true;
-            this.AuthorLabel.Location = new System.Drawing.Point(32, 25);
+            this.AuthorLabel.Location = new System.Drawing.Point(31, 22);
             this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(44, 15);
+            this.AuthorLabel.Size = new System.Drawing.Size(43, 13);
             this.AuthorLabel.TabIndex = 0;
             this.AuthorLabel.Text = "Author";
             // 
@@ -287,10 +273,9 @@
             // 
             this.AuthorBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AuthorBox.Location = new System.Drawing.Point(82, 22);
-            this.AuthorBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.AuthorBox.Location = new System.Drawing.Point(80, 19);
             this.AuthorBox.Name = "AuthorBox";
-            this.AuthorBox.Size = new System.Drawing.Size(318, 23);
+            this.AuthorBox.Size = new System.Drawing.Size(263, 22);
             this.AuthorBox.TabIndex = 1;
             this.AuthorBox.Text = "Unknown";
             // 
@@ -298,9 +283,9 @@
             // 
             this.RequiredLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.RequiredLabel.AutoSize = true;
-            this.RequiredLabel.Location = new System.Drawing.Point(284, 154);
+            this.RequiredLabel.Location = new System.Drawing.Point(224, 148);
             this.RequiredLabel.Name = "RequiredLabel";
-            this.RequiredLabel.Size = new System.Drawing.Size(140, 15);
+            this.RequiredLabel.Size = new System.Drawing.Size(140, 13);
             this.RequiredLabel.TabIndex = 2;
             this.RequiredLabel.Text = "* Denotes a required field";
             // 
@@ -309,10 +294,9 @@
             this.NewProjectStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.NewProjectStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel});
-            this.NewProjectStatus.Location = new System.Drawing.Point(0, 601);
+            this.NewProjectStatus.Location = new System.Drawing.Point(0, 518);
             this.NewProjectStatus.Name = "NewProjectStatus";
-            this.NewProjectStatus.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.NewProjectStatus.Size = new System.Drawing.Size(436, 22);
+            this.NewProjectStatus.Size = new System.Drawing.Size(374, 22);
             this.NewProjectStatus.SizingGrip = false;
             this.NewProjectStatus.TabIndex = 5;
             this.NewProjectStatus.Text = "statusStrip1";
@@ -329,9 +313,9 @@
             this.ButtonPanel.Controls.Add(this.OKButton);
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 566);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 488);
             this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(436, 35);
+            this.ButtonPanel.Size = new System.Drawing.Size(374, 30);
             this.ButtonPanel.TabIndex = 4;
             // 
             // editorLabel1
@@ -342,7 +326,7 @@
             this.editorLabel1.ForeColor = System.Drawing.Color.White;
             this.editorLabel1.Location = new System.Drawing.Point(0, 0);
             this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(436, 23);
+            this.editorLabel1.Size = new System.Drawing.Size(374, 20);
             this.editorLabel1.TabIndex = 0;
             this.editorLabel1.Text = "Create a new Sphere Studio project";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -350,19 +334,18 @@
             // NewProjectForm
             // 
             this.AcceptButton = this.OKButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(436, 623);
+            this.ClientSize = new System.Drawing.Size(374, 540);
             this.Controls.Add(this.editorLabel1);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectStatus);
             this.Controls.Add(this.RequiredLabel);
             this.Controls.Add(this.PropertiesBox);
             this.Controls.Add(this.ProjectBox);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewProjectForm";
