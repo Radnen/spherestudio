@@ -56,20 +56,11 @@ namespace Sphere.Core.Editor
             orangegroup.ToolBarStyle = orangegroup.PanelStyle;
             orangegroup.SecondaryStyle = new Style(Color.LightYellow, null, mainUIFont);
 
-            StyleGroup lesgroup = new StyleGroup();
-            lesgroup.MenuBarStyle = new Style(Color.DarkGreen, Color.Black, mainUIFont);
-            lesgroup.ToolBarStyle = new Style(Color.Green, Color.Black, mainUIFont);
-            lesgroup.LabelStyle = new Style(Color.Goldenrod, Color.Black, mainUIFont);
-            lesgroup.PanelStyle = new Style(Color.DarkGoldenrod, Color.Black, mainUIFont);
-            lesgroup.WindowStyle = new Style(Color.DarkGreen, Color.White, mainUIFont);
-            lesgroup.SecondaryStyle = new Style(Color.Purple, Color.White, mainUIFont);
-
             AddStyle("Dark", darkgroup);
             AddStyle("Light", lightgroup);
             AddStyle("Blue", bluegroup);
             AddStyle("Green", greengroup);
             AddStyle("Orange", orangegroup);
-            AddStyle("Lord English Special", lesgroup);
         }
 
         /// <summary>
