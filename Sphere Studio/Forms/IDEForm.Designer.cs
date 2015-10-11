@@ -108,10 +108,10 @@
             this.menuZoomIn = new System.Windows.Forms.ToolStripMenuItem();
             this.menuZoomOut = new System.Windows.Forms.ToolStripMenuItem();
             this.menuProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuGameSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpenGameDir = new System.Windows.Forms.ToolStripMenuItem();
-            this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
             this.menuRefreshProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuProjectProps = new System.Windows.Forms.ToolStripMenuItem();
             this.menuView = new System.Windows.Forms.ToolStripMenuItem();
             this.menuClosePane = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -307,7 +307,7 @@
             this.GameToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GameToolButton.Name = "GameToolButton";
             this.GameToolButton.Size = new System.Drawing.Size(23, 25);
-            this.GameToolButton.Text = "Game Settings";
+            this.GameToolButton.Text = "Project Properties";
             this.GameToolButton.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
             // toolConfigEngine
@@ -732,24 +732,15 @@
             // menuProject
             // 
             this.menuProject.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuGameSettings,
             this.menuOpenGameDir,
+            this.menuRefreshProject,
             this.Separator7,
-            this.menuRefreshProject});
+            this.menuProjectProps});
             this.menuProject.Name = "menuProject";
             this.menuProject.Size = new System.Drawing.Size(56, 20);
             this.menuProject.Text = "&Project";
             this.menuProject.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.menuProject.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
-            // 
-            // menuGameSettings
-            // 
-            this.menuGameSettings.Enabled = false;
-            this.menuGameSettings.Image = global::SphereStudio.Properties.Resources.SphereEditor;
-            this.menuGameSettings.Name = "menuGameSettings";
-            this.menuGameSettings.Size = new System.Drawing.Size(188, 22);
-            this.menuGameSettings.Text = "&Game Settings...";
-            this.menuGameSettings.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
             // menuOpenGameDir
             // 
@@ -760,11 +751,6 @@
             this.menuOpenGameDir.Text = "Open Game &Directory";
             this.menuOpenGameDir.Click += new System.EventHandler(this.menuOpenGameDir_Click);
             // 
-            // Separator7
-            // 
-            this.Separator7.Name = "Separator7";
-            this.Separator7.Size = new System.Drawing.Size(185, 6);
-            // 
             // menuRefreshProject
             // 
             this.menuRefreshProject.Enabled = false;
@@ -773,6 +759,20 @@
             this.menuRefreshProject.Size = new System.Drawing.Size(188, 22);
             this.menuRefreshProject.Text = "&Refresh";
             this.menuRefreshProject.Click += new System.EventHandler(this.menuRefreshProject_Click);
+            // 
+            // Separator7
+            // 
+            this.Separator7.Name = "Separator7";
+            this.Separator7.Size = new System.Drawing.Size(185, 6);
+            // 
+            // menuProjectProps
+            // 
+            this.menuProjectProps.Enabled = false;
+            this.menuProjectProps.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.menuProjectProps.Name = "menuProjectProps";
+            this.menuProjectProps.Size = new System.Drawing.Size(188, 22);
+            this.menuProjectProps.Text = "Project P&roperties...";
+            this.menuProjectProps.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
             // menuView
             // 
@@ -1104,7 +1104,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuZoomIn;
         private System.Windows.Forms.ToolStripMenuItem menuZoomOut;
         private System.Windows.Forms.ToolStripMenuItem menuProject;
-        private System.Windows.Forms.ToolStripMenuItem menuGameSettings;
+        private System.Windows.Forms.ToolStripMenuItem menuProjectProps;
         private System.Windows.Forms.ToolStripMenuItem menuOpenGameDir;
         private System.Windows.Forms.ToolStripSeparator Separator7;
         private System.Windows.Forms.ToolStripMenuItem menuRefreshProject;

@@ -184,11 +184,11 @@
     <Compile Include="Forms\ColorPicker\ColorRectangle.Designer.cs">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GameSettings.cs">
+    <Compile Include="Forms\ProjectPropForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GameSettings.designer.cs">
-      <DependentUpon>GameSettings.cs</DependentUpon>
+    <Compile Include="Forms\ProjectPropForm.designer.cs">
+      <DependentUpon>ProjectPropForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Forms\NewProjectForm.cs">
@@ -237,8 +237,8 @@
     <EmbeddedResource Include="Forms\ColorPicker\ColorRectangle.resx">
       <DependentUpon>ColorRectangle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GameSettings.resx">
-      <DependentUpon>GameSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ProjectPropForm.resx">
+      <DependentUpon>ProjectPropForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewProjectForm.resx">
       <DependentUpon>NewProjectForm.cs</DependentUpon>

@@ -385,7 +385,7 @@ namespace SphereStudio.DockPanes
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (var settings = new GameSettings(Core.Project))
+            using (var settings = new ProjectPropForm(Core.Project))
             {
                 settings.ShowDialog();
             }

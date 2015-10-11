@@ -613,7 +613,7 @@ namespace SphereStudio.Forms
         #region Project menu Click handlers
         private void menuGameSettings_Click(object sender, EventArgs e)
         {
-            OpenGameSettings();
+            OpenProjectProps();
         }
 
         private void menuOpenGameDir_Click(object sender, EventArgs e)
@@ -895,9 +895,9 @@ namespace SphereStudio.Forms
             }
         }
 
-        private void OpenGameSettings()
+        private void OpenProjectProps()
         {
-            using (GameSettings settings = new GameSettings(Core.Project))
+            using (ProjectPropForm settings = new ProjectPropForm(Core.Project))
             {
                 settings.ShowDialog();
             }
@@ -1000,7 +1000,7 @@ namespace SphereStudio.Forms
 
             menuOpenLastProject.Enabled = haveLastProject;
 
-            menuGameSettings.Enabled = GameToolButton.Enabled = IsProjectOpen;
+            menuProjectProps.Enabled = GameToolButton.Enabled = IsProjectOpen;
             menuOpenGameDir.Enabled = menuRefreshProject.Enabled = IsProjectOpen;
 
             SaveToolButton.Enabled = _activeTab != null && _activeTab.View.CanSave;
