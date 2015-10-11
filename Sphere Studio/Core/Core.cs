@@ -26,13 +26,14 @@ namespace SphereStudio
 
             // load plugin modules (user-installed plugins first)
             Plugins = new Dictionary<string, PluginShim>();
+            var programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             string[] paths =
             {
                 Path.Combine(sphereDir, "Plugins"),
-                Path.Combine(Application.StartupPath, "Plugins")
+                Path.Combine(programDataPath, "Sphere Studio", "Plugins"),
+                Path.Combine(Application.StartupPath, "Plugins"),
             };
-            foreach (string path in
-                from path in paths
+            foreach (string path in from path in paths
                 where Directory.Exists(path)
                 select path)
             {

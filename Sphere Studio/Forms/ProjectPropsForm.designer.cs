@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Forms
 {
-    partial class ProjectPropForm
+    partial class ProjectPropsForm
     {
         /// <summary>
         /// Required designer variable.

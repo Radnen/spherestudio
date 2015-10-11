@@ -11,11 +11,11 @@ using System.Media;
 
 namespace SphereStudio.Forms
 {
-    partial class ProjectPropForm : Form, IStyleable
+    partial class ProjectPropsForm : Form, IStyleable
     {
         private Project _project;
         
-        public ProjectPropForm(Project someProject)
+        public ProjectPropsForm(Project someProject)
         {
             InitializeComponent();
             UpdateStyle();

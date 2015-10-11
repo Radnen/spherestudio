@@ -897,7 +897,7 @@ namespace SphereStudio.Forms
 
         private void OpenProjectProps()
         {
-            using (ProjectPropForm settings = new ProjectPropForm(Core.Project))
+            using (ProjectPropsForm settings = new ProjectPropsForm(Core.Project))
             {
                 settings.ShowDialog();
             }
