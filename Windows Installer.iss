@@ -27,6 +27,7 @@ AppUpdatesURL=http://forums.spheredev.org/index.php/topic,24.0.html
 LicenseFile=LICENSE.txt
 DefaultDirName={pf}\{#AppName}
 DisableProgramGroupPage=yes
+ChangesAssociations=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -38,8 +39,10 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "spherestudio"; Description: "{#AppName} {#AppVersion}"; Types: full minimal custom; Flags: fixed
-Name: "engines"; Description: "Engine Support"
-Name: "engines/sphere1x"; Description: "Sphere 1.x Support"; Types: full minimal
+Name: "classic"; Description: "Sphere 1.x Engine Support"; Types: full minimal
+Name: "plugins"; Description: "Additional Plugins"
+Name: "plugins/soundtest"; Description: "Sound Test"; Types: full
+Name: "plugins/tasklist"; Description: "Task List"; Types: full
 
 [Tasks]
 Name: "desktop"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -52,15 +55,21 @@ Source: "Sphere Studio\bin\Release\Sphere Studio.exe.manifest"; DestDir: "{app}"
 Source: "Sphere Studio\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\SphereLexer.xml"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\Docs\*"; DestDir: "{app}\Docs"; Flags: ignoreversion; Components: spherestudio
+Source: "Sphere Studio\bin\Release\Plugins\ClassicSpherePlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: classic
 Source: "Sphere Studio\bin\Release\Plugins\FontEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\Plugins\ImageEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\Plugins\MapEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\Plugins\ScriptEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\Plugins\SoundTestPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
+Source: "Sphere Studio\bin\Release\Plugins\SoundTestPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugins/soundtest
 Source: "Sphere Studio\bin\Release\Plugins\SpritesetEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\Plugins\TaskListPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
+Source: "Sphere Studio\bin\Release\Plugins\TaskListPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugins/tasklist
 Source: "Sphere Studio\bin\Release\Plugins\WindowstyleEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\Plugins\SphereClassicPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: engines/sphere1x
+
+[Registry]
+Root: HKCR; Subkey: ".ssproj"; ValueType: string; ValueName: ""; ValueData: "SphereStudio.SSPROJ"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "SphereStudio.SSPROJ"; ValueType: string; ValueName: ""; ValueData: "Sphere Studio Project"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "SphereStudio.SSPROJ\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\Sphere Studio.exe,0"
+Root: HKCR; Subkey: "SphereStudio.SSPROJ\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Sphere Studio.exe"" ""%1"""
 
 [Icons]
 Name: "{commonprograms}\{#AppName}"; Filename: "{app}\Sphere Studio.exe"
