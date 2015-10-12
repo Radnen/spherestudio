@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
@@ -33,7 +34,13 @@ namespace SphereStudio.Vanilla.Plugins
         {
             string enginePath = Path.Combine(_conf.GetString("spherePath", ""), "engine.exe");
             string options = string.Format(@"-game ""{0}""", gamePath);
-            Process.Start(enginePath, options);
+            if (File.Exists(enginePath))
+                Process.Start(enginePath, options);
+            else
+            {
+                MessageBox.Show("Sphere 1.x or compatible engine was not found. Please check your Sphere installation path under Settings Center -> Classic Sphere.",
+                    "Unable to Start Engine", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void Configure()

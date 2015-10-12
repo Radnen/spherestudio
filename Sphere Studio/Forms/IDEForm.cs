@@ -964,7 +964,7 @@ namespace SphereStudio.Forms
                     var breaks = Core.Project.GetAllBreakpoints();
                     foreach (string filename in breaks.Keys)
                         foreach (int lineNumber in breaks[filename])
-                            await Debugger.SetBreakpoint(filename, lineNumber, true);
+                            await Debugger.SetBreakpoint(filename, lineNumber);
                     await Debugger.Resume();
                 }
                 else

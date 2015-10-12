@@ -111,6 +111,7 @@
             this.PluginsList.Name = "PluginsList";
             this.PluginsList.ShowItemToolTips = true;
             this.PluginsList.Size = new System.Drawing.Size(630, 221);
+            this.PluginsList.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.PluginsList.TabIndex = 3;
             this.PluginsList.UseCompatibleStateImageBehavior = false;
             this.PluginsList.View = System.Windows.Forms.View.Details;

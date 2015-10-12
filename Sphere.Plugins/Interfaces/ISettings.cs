@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
-    /// Specifies an interface for reading and writing user settings.
+    /// Specifies an interface for reading and writing configuration settings.
     /// </summary>
     public interface ISettings
     {

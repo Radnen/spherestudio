@@ -23,7 +23,7 @@ namespace Sphere.Plugins.Interfaces
         int LineNumber { get; }
 
         /// <summary>
-        /// Gets whether the debug target is currently executing.
+        /// Gets whether the debuggee is currently executing.
         /// </summary>
         bool Running { get; }
 
@@ -36,16 +36,16 @@ namespace Sphere.Plugins.Interfaces
         /// Fires when the debugger is detached.
         /// </summary>
         event EventHandler Detached;
-        
-        /// <summary>
-        /// Fires when execution pauses (e.g. at a breakpoint).
-        /// </summary>
-        event EventHandler Paused;
 
         /// <summary>
         /// Fires when execution resumes.
         /// </summary>
         event EventHandler Resumed;
+
+        /// <summary>
+        /// Fires when execution pauses (e.g. at a breakpoint).
+        /// </summary>
+        event EventHandler Paused;
 
         /// <summary>
         /// Attaches the debugger.
@@ -59,10 +59,19 @@ namespace Sphere.Plugins.Interfaces
         Task Detach();
 
         /// <summary>
-        /// Pauses execution and breaks into the debugger.
+        /// Sets a breakpoint on a line of code.
         /// </summary>
-        Task Pause();
+        /// <param name="fileName">The name of the source file containing the breakpoint.</param>
+        /// <param name="lineNumber">The line number of the breakpoint.</param>
+        Task SetBreakpoint(string fileName, int lineNumber);
 
+        /// <summary>
+        /// Clears an existing breakpoint on a line of code.
+        /// </summary>
+        /// <param name="fileName">The name of the source file containing the breakpoint.</param>
+        /// <param name="lineNumber">The line number of the breakpoint.</param>
+        Task ClearBreakpoint(string fileName, int lineNumber);
+        
         /// <summary>
         /// Runs until the next breakpoint is hit or the target terminates,
         /// whichever comes first.
@@ -70,12 +79,9 @@ namespace Sphere.Plugins.Interfaces
         Task Resume();
 
         /// <summary>
-        /// Sets or clears a breakpoint at a specified location.
+        /// Pauses execution and breaks into the debugger.
         /// </summary>
-        /// <param name="fileName">The filename containing the breakpoint.</param>
-        /// <param name="lineNumber">The line number of the breakpoint.</param>
-        /// <param name="isSet">If true, a breakpoint is set. Otherwise, the existing one is cleared.</param>
-        Task SetBreakpoint(string fileName, int lineNumber, bool isSet);
+        Task Pause();
 
         /// <summary>
         /// Executes the next line of code, stepping into function calls.

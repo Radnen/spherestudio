@@ -38,6 +38,9 @@ namespace Sphere.Plugins.Interfaces
         DocumentView Open(string fileName);
     }
 
+    /// <summary>
+    /// Specifies the interface for a file opener supporting new document creation.
+    /// </summary>
     public interface INewFileOpener : IFileOpener
     {
         /// <summary>

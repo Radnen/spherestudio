@@ -14,16 +14,16 @@ namespace SphereStudio.Vanilla
 {
     public class PluginMain : IPluginMain
     {
-        public string Name { get { return "Sphere Classic"; } }
+        public string Name { get { return "Classic Sphere"; } }
         public string Author { get { return "Spherical"; } }
         public string Description { get { return "Provides support for classic vanilla Sphere 1.x."; } }
         public string Version { get { return "1.2.0"; } }
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.Register(this, new SphereCompiler(), "Sphere Classic");
+            PluginManager.Register(this, new SphereCompiler(), "Classic Sphere");
             PluginManager.Register(this, new SphereStarter(conf), "Sphere 1.x");
-            PluginManager.Register(this, new SettingsPage(conf), "Sphere Classic");
+            PluginManager.Register(this, new SettingsPage(conf), "Classic Sphere");
         }
 
         public void ShutDown()

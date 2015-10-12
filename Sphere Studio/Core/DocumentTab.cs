@@ -325,7 +325,10 @@ namespace SphereStudio
             Core.Project.SetBreakpoints(FileName, view.Breakpoints);
             if (_ide.Debugger != null)
             {
-                await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber, e.Active);
+                if (e.Active)
+                    await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber);
+                else
+                    await _ide.Debugger.ClearBreakpoint(FileName, e.LineNumber);
             }
         }
 
