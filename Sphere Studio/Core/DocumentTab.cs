@@ -297,7 +297,7 @@ namespace SphereStudio
 
         private void SaveViewState()
         {
-            if (FileName == null || View.IsDirty)
+            if (FileName == null || Core.Project == null || View.IsDirty)
                 return;  // save view only if clean
 
             // record breakpoints if script tab

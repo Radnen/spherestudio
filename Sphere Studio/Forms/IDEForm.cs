@@ -32,8 +32,8 @@ namespace SphereStudio.Forms
         private bool _isFirstDebugStop;
         private bool _loadingPresets = false;
         private ProjectTree _projectTree;
-        private StartPageView _startPage;
-        private DocumentTab _startTab;
+        private StartPageView _startPage = null;
+        private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
         public IDEForm()
@@ -94,6 +94,7 @@ namespace SphereStudio.Forms
                     _startPage = new StartPageView(this) { HelpLabel = HelpLabel };
                     _startPage.PopulateGameList();
                     _startTab = AddDocument(_startPage, "Start Page");
+                    _startTab.Restyle();
                 }
                 else if (!value && StartVisible)
                 {
@@ -288,11 +289,14 @@ namespace SphereStudio.Forms
             // visibility before the form loads.
             if (Core.Settings.AutoOpenLastProject && Core.Project != null)
             {
-                if (Core.Project.User.StartHidden)
-                    StartVisible = false;
+                StartVisible = !Core.Project.User.StartHidden;
                 DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
+            }
+            else
+            {
+                StartVisible = Core.Settings.UseStartPage;
             }
         }
 
