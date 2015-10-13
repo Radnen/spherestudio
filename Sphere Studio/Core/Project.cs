@@ -123,7 +123,7 @@ namespace SphereStudio
         /// </summary>
         public string BuildPath
         {
-            get { return _ini.GetString("buildDir", "./"); }
+            get { return _ini.GetString("buildDir", "dist/"); }
             set
             {
                 value = string.IsNullOrWhiteSpace(value) ? "./" : value;
