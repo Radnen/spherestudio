@@ -61,7 +61,7 @@ namespace SphereStudio
             {
                 ScriptView scriptView = View as ScriptView;
                 scriptView.Breakpoints = Core.Project.GetBreakpoints(FileName);
-                scriptView.BreakpointSet += on_BreakpointSet;
+                scriptView.BreakpointChanged += on_BreakpointSet;
             }
 
             if (restoreView && FileName != null)
@@ -318,7 +318,7 @@ namespace SphereStudio
             _content.ToolTipText = FileName;
         }
 
-        private async void on_BreakpointSet(object sender, BreakpointSetEventArgs e)
+        private async void on_BreakpointSet(object sender, BreakpointChangedEventArgs e)
         {
             if (FileName == null) return;
             ScriptView view = View as ScriptView;

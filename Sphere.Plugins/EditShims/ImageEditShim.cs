@@ -14,10 +14,16 @@ using Sphere.Plugins.Views;
 
 namespace Sphere.Plugins.EditShims
 {
+    /// <summary>
+    /// Defers image editing functionality to the active Image plugin.
+    /// </summary>
     public partial class ImageEditShim : UserControl
     {
         private ImageView _view;
 
+        /// <summary>
+        /// Constructs an Image Editor control.
+        /// </summary>
         public ImageEditShim()
         {
             InitializeComponent();
@@ -40,25 +46,43 @@ namespace Sphere.Plugins.EditShims
             }
         }
 
+        /// <summary>
+        /// Fires when the image is modified.
+        /// </summary>
         public event EventHandler ImageChanged;
 
+        /// <summary>
+        /// Gets the image contents as a Bitmap.
+        /// </summary>
         public Bitmap Content
         {
             get { return _view != null ? _view.Content : null; }
             set { if (_view != null) _view.Content = value; }
         }
 
-        public IList<Bitmap> GetImages(short tileWidth, short tileHeight)
+        /// <summary>
+        /// Splits the image into tiles and returns the tile bitmaps.
+        /// </summary>
+        /// <param name="tileWidth">Tile width.</param>
+        /// <param name="tileHeight">Tile height.</param>
+        /// <returns>An array of tile bitmaps.</returns>
+        public Bitmap[] GetImages(short tileWidth, short tileHeight)
         {
             if (_view == null) return null;
             return _view.GetImages(tileWidth, tileHeight);
         }
 
+        /// <summary>
+        /// Zooms in the image by one level.
+        /// </summary>
         public void ZoomIn()
         {
             if (_view != null) _view.ZoomIn();
         }
-        
+
+        /// <summary>
+        /// Zooms out the image by one level.
+        /// </summary>
         public void ZoomOut()
         {
             if (_view != null) _view.ZoomOut();

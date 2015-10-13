@@ -8,7 +8,7 @@
     <ProjectGuid>{2DA2A233-7DA5-44C6-82CE-045B310A19F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.Plugins</RootNamespace>
+    <RootNamespace>SphereStudio.ScriptEditor</RootNamespace>
     <AssemblyName>ScriptEditPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -95,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\Scintilla.NET\ScintillaNET.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

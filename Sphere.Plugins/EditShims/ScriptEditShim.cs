@@ -14,10 +14,16 @@ using Sphere.Plugins.Views;
 
 namespace Sphere.Plugins.EditShims
 {
+    /// <summary>
+    /// Defers code editing functionality to the active Script plugin.
+    /// </summary>
     public partial class ScriptEditShim : UserControl
     {
         private ScriptView _view;
 
+        /// <summary>
+        /// Constructs a Script Editor control.
+        /// </summary>
         public ScriptEditShim()
         {
             InitializeComponent();
@@ -33,6 +39,9 @@ namespace Sphere.Plugins.EditShims
             }
         }
 
+        /// <summary>
+        /// Gets or sets the contents of the script.
+        /// </summary>
         public override string Text
         {
             get

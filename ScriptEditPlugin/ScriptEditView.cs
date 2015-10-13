@@ -10,13 +10,15 @@ using ScintillaNET;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
+using SphereStudio.ScriptEditor.Properties;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.ScriptEditor
 {
     partial class ScriptEditView : ScriptView
     {
         private Scintilla _codeBox = new Scintilla();
         private int _activeLine = 0;
+        private int _errorLine = 0;
 
         // We should technically be using ISO-8859-1 or Windows-1252 for compatibility with the old editor.
         // However, UTF-8 works mostly fine in Sphere and some JS engines (e.g. Duktape) won't accept
@@ -32,7 +34,7 @@ namespace SphereStudio.Plugins
         {
             _main = main;
 
-            Icon = Icon.FromHandle(Properties.Resources.script_edit.GetHicon());
+            Icon = Icon.FromHandle(Properties.Resources.ScriptIcon.GetHicon());
 
             string configPath = Application.StartupPath + "\\SphereLexer.xml";
             if (File.Exists(configPath))
@@ -80,9 +82,11 @@ namespace SphereStudio.Plugins
             _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint
             _codeBox.Markers[0].BackColor = Color.Red;
             _codeBox.Markers[0].ForeColor = Color.DarkRed;
-            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // current line highlight
+            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // next line to execute
             _codeBox.Markers[1].BackColor = Color.Yellow;
             _codeBox.Markers[1].ForeColor = Color.Black;
+            _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
+            _codeBox.Markers[2].BackColor = Color.FromArgb(255, 160, 128);
 
             Controls.Add(_codeBox);
             Restyle();
@@ -100,6 +104,27 @@ namespace SphereStudio.Plugins
                 {
                     _codeBox.Lines[_activeLine - 1].AddMarker(1);
                     _codeBox.GoTo.Line(_activeLine - 1);
+                    var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
+                    if (parent != null && !parent.FoldExpanded)
+                    {
+                        parent.ToggleFoldExpanded();
+                    }
+                }
+            }
+        }
+
+        public override int ErrorLine
+        {
+            get { return _errorLine; }
+            set
+            {
+                if (_errorLine > 0)
+                    _codeBox.Lines[_errorLine - 1].DeleteMarker(2);
+                _errorLine = value;
+                if (_errorLine > 0)
+                {
+                    _codeBox.Lines[_errorLine - 1].AddMarker(2);
+                    _codeBox.GoTo.Line(value - 1);
                     var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
                     if (parent != null && !parent.FoldExpanded)
                     {
@@ -340,7 +365,7 @@ namespace SphereStudio.Plugins
                 var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
                 var markers = line.GetMarkers();
                 bool isSet = !markers.Contains(_codeBox.Markers[0]);
-                OnBreakpointSet(new BreakpointSetEventArgs(line.Number + 1, isSet));
+                OnBreakpointChanged(new BreakpointChangedEventArgs(line.Number + 1, isSet));
                 if (isSet)
                     line.AddMarker(0);
                 else
@@ -353,7 +378,7 @@ namespace SphereStudio.Plugins
             if (e.Margin == _codeBox.Margins.Margin1)
             {
                 bool isSet = !e.Line.GetMarkers().Contains(_codeBox.Markers[0]);
-                OnBreakpointSet(new BreakpointSetEventArgs(e.Line.Number + 1, isSet));
+                OnBreakpointChanged(new BreakpointChangedEventArgs(e.Line.Number + 1, isSet));
                 if (isSet)
                     e.Line.AddMarker(0);
                 else

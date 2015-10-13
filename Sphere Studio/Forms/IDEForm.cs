@@ -1060,14 +1060,17 @@ namespace SphereStudio.Forms
                               where tab.View is ScriptView
                               select tab.View;
             foreach (ScriptView view in scriptViews)
+            {
                 view.ActiveLine = 0;
+                view.ErrorLine = 0;
+            }
             Debugger = null;
             menuDebug.Text = "Start &Debugging";
             toolDebug.Text = "Debug";
             UpdateControls();
         }
 
-        private async void debugger_Paused(object sender, EventArgs e)
+        private async void debugger_Paused(object sender, PausedEventArgs e)
         {
             if (_isFirstDebugStop)
             {
@@ -1079,10 +1082,16 @@ namespace SphereStudio.Forms
             ScriptView view = null;
             view = OpenFile(Debugger.FileName) as ScriptView;
             if (view != null)
+            {
                 view.ActiveLine = Debugger.LineNumber;
+                if (e.Reason == PauseReason.Exception)
+                    view.ErrorLine = Debugger.LineNumber;
+            }
             else
+            {
                 // if no source is available, step through.
                 await Debugger.StepOut();
+            }
             if (!Debugger.Running)
                 Activate();
             UpdateControls();
@@ -1094,7 +1103,10 @@ namespace SphereStudio.Forms
                               where tab.View is ScriptView
                               select tab.View;
             foreach (ScriptView view in scriptViews)
+            {
                 view.ActiveLine = 0;
+                view.ErrorLine = 0;
+            }
             UpdateControls();
         }
 

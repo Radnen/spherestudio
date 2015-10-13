@@ -158,7 +158,7 @@ namespace SphereStudio.Plugins
         /// <param name="tileWidth">Width of sub-image.</param>
         /// <param name="tileHeight">Height of sub-image.</param>
         /// <returns></returns>
-        public override IList<Bitmap> GetImages(short tileWidth, short tileHeight)
+        public override Bitmap[] GetImages(short tileWidth, short tileHeight)
         {
             List<Bitmap> images = new List<Bitmap>();
             Bitmap source = (Bitmap)ImageEditor.EditImage;
@@ -174,7 +174,7 @@ namespace SphereStudio.Plugins
                     images.Add(source.Clone(sourceRect, System.Drawing.Imaging.PixelFormat.Format32bppPArgb));
                 }
             }
-            return images;
+            return images.ToArray();
         }
 
         /// <summary>

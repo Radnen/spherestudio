@@ -343,12 +343,12 @@ namespace SphereStudio.Plugins.Components
         }
 
         /// <summary>
-        /// Sets the images of the selected tiles;
+        /// Sets the images of the selected tiles.
         /// </summary>
         /// <param name="images">A list of images to use for the tiles.</param>
-        public void SetImages(IList<Bitmap> images)
+        public void SetImages(Bitmap[] images)
         {
-            for (int i = 0; i < images.Count; ++i)
+            for (int i = 0; i < images.Length; ++i)
             {
                 if (i >= Selected.Count || Selected[i] < 0) continue;
                 _tileset.Tiles[Selected[i]].Graphic = images[i];

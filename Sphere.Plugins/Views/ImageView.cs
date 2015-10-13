@@ -14,6 +14,9 @@ namespace Sphere.Plugins.Views
     [ToolboxItem(false)]
     public class ImageView : DocumentView
     {
+        /// <summary>
+        /// Gets or sets whether the image has been modified.
+        /// </summary>
         public override bool IsDirty
         {
             get { return base.IsDirty; }
@@ -40,12 +43,13 @@ namespace Sphere.Plugins.Views
         }
 
         /// <summary>
-        /// Splits the image being edited into tiles and returns the images for each of those tiles.
+        /// Splits the image editor content into tiles and returns the tile bitmaps
+        /// in an array.
         /// </summary>
         /// <param name="tileWidth">The width of the tiles.</param>
         /// <param name="tileHeight">The height of the tiles.</param>
-        /// <returns>A list of images representing the individual tiles.</returns>
-        public virtual IList<Bitmap> GetImages(short tileWidth, short tileHeight)
+        /// <returns>An array of tile bitmaps.</returns>
+        public virtual Bitmap[] GetImages(short tileWidth, short tileHeight)
         {
             throw new NotImplementedException();
         }

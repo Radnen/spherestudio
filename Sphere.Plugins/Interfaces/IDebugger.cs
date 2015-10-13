@@ -7,6 +7,42 @@ using System.Threading.Tasks;
 namespace Sphere.Plugins.Interfaces
 {
     /// <summary>
+    /// Specifies the reason debug execution was halted.
+    /// </summary>
+    public enum PauseReason
+    {
+        /// <summary>
+        /// A breakpoint was triggered.
+        /// </summary>
+        Breakpoint,
+
+        /// <summary>
+        /// An exception is about to be thrown.
+        /// </summary>
+        Exception,
+    }
+
+    /// <summary>
+    /// Specifies data for a Paused debugger event.
+    /// </summary>
+    public class PausedEventArgs
+    {
+        /// <summary>
+        /// Constructs data for a Paused debugger event.
+        /// </summary>
+        /// <param name="reason"></param>
+        public PausedEventArgs(PauseReason reason)
+        {
+            Reason = reason;
+        }
+
+        /// <summary>
+        /// Gets the reason execution was halted.
+        /// </summary>
+        public PauseReason Reason { get; private set; }
+    }
+    
+    /// <summary>
     /// Specifies the interface for a single-step debugger.
     /// </summary>
     public interface IDebugger
@@ -45,7 +81,7 @@ namespace Sphere.Plugins.Interfaces
         /// <summary>
         /// Fires when execution pauses (e.g. at a breakpoint).
         /// </summary>
-        event EventHandler Paused;
+        event EventHandler<PausedEventArgs> Paused;
 
         /// <summary>
         /// Attaches the debugger.

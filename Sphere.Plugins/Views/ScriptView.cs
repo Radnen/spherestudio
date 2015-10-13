@@ -16,12 +16,22 @@ namespace Sphere.Plugins.Views
         /// <summary>
         /// Fires when a breakpoint is added or removed.
         /// </summary>
-        public event EventHandler<BreakpointSetEventArgs> BreakpointSet;
+        public event EventHandler<BreakpointChangedEventArgs> BreakpointChanged;
         
         /// <summary>
         /// Gets or sets the active line, used while debugging.
         /// </summary>
         public virtual int ActiveLine
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Gets or sets  the error line, used to point out script errors
+        /// during debugging.
+        /// </summary>
+        public virtual int ErrorLine
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
@@ -46,30 +56,43 @@ namespace Sphere.Plugins.Views
             set { throw new NotImplementedException(); }
         }
 
+        /// <summary>
+        /// Moves the cursor to a specified line number, used when debugging.
+        /// </summary>
+        /// <param name="lineNumber">The line number to navigate to.</param>
         public virtual void GoToLine(int lineNumber)
         {
             throw new NotImplementedException();
         }
 
-        protected void OnBreakpointSet(BreakpointSetEventArgs e)
+        /// <summary>
+        /// Fires a BreakpointChanged event for this ScriptView.
+        /// </summary>
+        /// <param name="e"></param>
+        protected void OnBreakpointChanged(BreakpointChangedEventArgs e)
         {
-            if (BreakpointSet != null) BreakpointSet(this, e);
+            if (BreakpointChanged != null) BreakpointChanged(this, e);
         }
     }
 
     /// <summary>
-    /// Contains data for a BreakpointSet event.
+    /// Contains data for a BreakpointChanged event.
     /// </summary>
-    public class BreakpointSetEventArgs : EventArgs
+    public class BreakpointChangedEventArgs : EventArgs
     {
-        public BreakpointSetEventArgs(int lineNumber, bool isActive)
+        /// <summary>
+        /// Initializes data for a BreakpointSet event.
+        /// </summary>
+        /// <param name="lineNumber"></param>
+        /// <param name="isActive"></param>
+        public BreakpointChangedEventArgs(int lineNumber, bool isActive)
         {
             LineNumber = lineNumber;
             Active = isActive;
         }
 
         /// <summary>
-        /// If Active is true, the breakpoint was set. Otherwise it was cleared.
+        /// If Active is true, the breakpoint is set. Otherwise it is cleared.
         /// </summary>
         public bool Active { get; private set; }
 

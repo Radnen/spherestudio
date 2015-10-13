@@ -10,7 +10,7 @@ using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.ScriptEditor
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
     {
@@ -30,7 +30,7 @@ namespace SphereStudio.Plugins
         {
             FileTypeName = "JS Script";
             FileExtensions = new[] { "js", "coffee" };
-            FileIcon = Properties.Resources.script_edit;
+            FileIcon = Properties.Resources.ScriptIcon;
 
             InitializeAutoComplete();
             InitializeMenuItems();
@@ -137,7 +137,7 @@ namespace SphereStudio.Plugins
             _eightUnitItem = new ToolStripMenuItem("8 units");
             _eightUnitItem.Click += menuTabStop8_Click;
 
-            _changeFontItem = new ToolStripMenuItem("Change Font...", Properties.Resources.style);
+            _changeFontItem = new ToolStripMenuItem("Change Font...", Properties.Resources.FontIcon);
             _changeFontItem.Click += menuFont_Click;
             _changeFontItem.Enabled = false;
 
