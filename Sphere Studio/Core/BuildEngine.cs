@@ -133,7 +133,10 @@ namespace SphereStudio
 
             var starter = PluginManager.Get<IDebugStarter>(Core.Settings.Engine);
             string outPath = await Build(project);
-            return starter.Debug(outPath, false, project);
+            if (outPath != null)
+                return starter.Debug(outPath, false, project);
+            else
+                return null;
         }
 
         /// <summary>
