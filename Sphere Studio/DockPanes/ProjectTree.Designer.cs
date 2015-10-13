@@ -39,9 +39,9 @@
             this.DeleteFolderItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenameFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyPathItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFolderItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ProjectNameLabel = new Sphere.Core.Editor.EditorLabel();
             this.SystemWatcher = new Sphere.Core.Editor.DeferredFileSystemWatcher();
             this.ProjectFileContextMenu.SuspendLayout();
@@ -82,7 +82,7 @@
             this.OpenFolderItem,
             this.GameSettingsItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(191, 268);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(191, 246);
             this.ProjectFileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ProjectFileContextMenu_Opening);
             // 
             // NewFileItem
@@ -150,14 +150,6 @@
             this.CopyPathItem.Text = "&Copy Path";
             this.CopyPathItem.Click += new System.EventHandler(this.CopyPathItem_Click);
             // 
-            // GameSettingsItem
-            // 
-            this.GameSettingsItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
-            this.GameSettingsItem.Name = "GameSettingsItem";
-            this.GameSettingsItem.Size = new System.Drawing.Size(190, 22);
-            this.GameSettingsItem.Text = "Project P&roperties...";
-            this.GameSettingsItem.Click += new System.EventHandler(this.GameSettingsItem_Click);
-            // 
             // EngineSettingsItem
             // 
             this.EngineSettingsItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
@@ -173,6 +165,14 @@
             this.OpenFolderItem.Size = new System.Drawing.Size(190, 22);
             this.OpenFolderItem.Text = "Open in Explorer";
             this.OpenFolderItem.Click += new System.EventHandler(this.OpenFolderItem_Click);
+            // 
+            // GameSettingsItem
+            // 
+            this.GameSettingsItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.GameSettingsItem.Name = "GameSettingsItem";
+            this.GameSettingsItem.Size = new System.Drawing.Size(190, 22);
+            this.GameSettingsItem.Text = "Project P&roperties...";
+            this.GameSettingsItem.Click += new System.EventHandler(this.GameSettingsItem_Click);
             // 
             // ProjectNameLabel
             // 
@@ -193,7 +193,7 @@
             this.SystemWatcher.EnableRaisingEvents = true;
             this.SystemWatcher.IncludeSubdirectories = true;
             this.SystemWatcher.SynchronizingObject = this;
-            this.SystemWatcher.Changed += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Changed);
+            this.SystemWatcher.Created += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Created);
             this.SystemWatcher.Deleted += new Sphere.Core.Editor.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Deleted);
             this.SystemWatcher.Renamed += new Sphere.Core.Editor.BatchEventHandler<System.IO.RenamedEventArgs>(this.SystemWatcher_Renamed);
             // 

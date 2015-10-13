@@ -476,11 +476,11 @@ namespace SphereStudio.DockPanes
             if (e.KeyChar == '\r') e.Handled = true;
         }
 
-        private void SystemWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
+        private void SystemWatcher_Created(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
         }
-
+        
         private void SystemWatcher_Deleted(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
@@ -507,7 +507,7 @@ namespace SphereStudio.DockPanes
             else
                 path = ResolvePath(node);
 
-            System.Diagnostics.Process.Start("explorer.exe", path);
+            Process.Start("explorer.exe", path);
         }
 
         private void ProjectFileContextMenu_Opening(object sender, CancelEventArgs e)
