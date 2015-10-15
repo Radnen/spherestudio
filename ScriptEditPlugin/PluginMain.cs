@@ -46,7 +46,7 @@ namespace SphereStudio.ScriptEditor
             _highlightBracesItem.Checked = Settings.GetBoolean("script-hibraces", true);
             _useTabsItem.Checked = Settings.GetBoolean("script-tabs", true);
 
-            int spaces = Settings.GetInteger("script-spaces", 2);
+            int spaces = Settings.GetInteger("script-spaces", 4);
             _twoUnitItem.Checked = spaces == 2;
             _fourUnitItem.Checked = spaces == 4;
             _eightUnitItem.Checked = spaces == 8;
@@ -170,7 +170,7 @@ namespace SphereStudio.ScriptEditor
         {
             _twoUnitItem.Checked = true;
             _fourUnitItem.Checked = _eightUnitItem.Checked = false;
-            Settings.SetValue("script-spaces", 2);
+            Settings.SetValue("script-spaces", 4);
             UpdateScriptControls();
         }
 

@@ -25,7 +25,6 @@ namespace SphereStudio
         {
             Directory.CreateDirectory(rootPath);
             var project = new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
-            project.Save();
             return project;
         }
 

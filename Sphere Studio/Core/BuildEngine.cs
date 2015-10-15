@@ -60,27 +60,44 @@ namespace SphereStudio
             }
         }
 
+        public static bool Prep(Project project)
+        {
+            _buildView.Clear();
+            PluginManager.Core.Docking.Show(_buildView);
+            _buildView.Print(string.Format("-------------------- Prep started: {0} -------------------\n", project.Name));
+            ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
+            if (compiler.Prep(project, _buildView))
+            {
+                _buildView.Print(string.Format("================ Successfully prepped: {0} ===============\n", project.Name));
+                return true;
+            }
+            else
+            {
+                _buildView.Print(string.Format("=================== Failed to prep: {0} ==================\n", project.Name));
+                return false;
+            }
+        }
+
         /// <summary>
         /// Builds a game distribution from a project using the current compiler.
         /// </summary>
         /// <param name="project">The project to build.</param>
         /// <returns>The full path of the compiled distribution.</returns>
-        public static async Task<string> Build(IProject project, bool forceVisible = false)
+        public static async Task<string> Build(Project project, bool forceVisible = false)
         {
-            _buildView.Clear();
-            PluginManager.Core.Docking.Show(_buildView);
-            _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
-            var compiler = PluginManager.Get<ICompiler>(Core.Project.Compiler);
-            string outPath = Path.Combine(project.RootPath, project.BuildPath);
-            bool isOK = false;
-            if (compiler != null)
-                isOK = await compiler.Build(project, outPath, _buildView);
-            else
+            ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
+            if (compiler == null)
             {
                 _buildView.Print("ERROR: Compiler missing. Open Configuration Manager and check your plugins.\n\n");
                 _buildView.Print(string.Format("(Toolchain: {0}/{1})\n", Core.Project.Engine, Core.Project.Compiler));
+                return null;
             }
-            if (isOK)
+
+            _buildView.Clear();
+            PluginManager.Core.Docking.Show(_buildView);
+            _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
+            string outPath = Path.Combine(project.RootPath, project.BuildPath);
+            if (await compiler.Build(project, outPath, _buildView))
             {
                 _buildView.Print(string.Format("================= Successfully built: {0} ================\n", project.Name));
                 if (Core.Settings.AutoHideBuild && !forceVisible)
@@ -101,7 +118,7 @@ namespace SphereStudio
         /// <param name="project">The project to build.</param>
         /// <param name="fileName">The full path of the package to build. If the file exists, it will be overwritten.</param>
         /// <returns>'true' if packaging succeeded, false if not.</returns>
-        public static async Task<bool> Package(IProject project, string fileName)
+        public static async Task<bool> Package(Project project, string fileName)
         {
             if (!CanPackage)
                 throw new NotSupportedException("The current compiler doesn't support packaging.");
@@ -109,7 +126,7 @@ namespace SphereStudio
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
             _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n", project.Name));
-            var packager = PluginManager.Get<IPackager>(Core.Project.Compiler);
+            var packager = PluginManager.Get<IPackager>(project.Compiler);
             bool isOK = await packager.Package(project, fileName, _buildView);
             if (isOK)
                 _buildView.Print(string.Format("=============== Successfully packaged: {0} ===============\n", project.Name));
@@ -126,12 +143,12 @@ namespace SphereStudio
         /// </summary>
         /// <param name="project">The project to debug.</param>
         /// <returns>An IDebugger used to manage the debugging session.</returns>
-        public static async Task<IDebugger> Debug(IProject project)
+        public static async Task<IDebugger> Debug(Project project)
         {
             if (!CanDebug)
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
-            var starter = PluginManager.Get<IDebugStarter>(Core.Project.Engine);
+            var starter = PluginManager.Get<IDebugStarter>(project.Engine);
             string outPath = await Build(project);
             if (outPath != null)
                 return starter.Debug(outPath, false, project);
@@ -143,9 +160,9 @@ namespace SphereStudio
         /// Tests the game with the current engine.
         /// </summary>
         /// <param name="project">The project to test.</param>
-        public static async Task Test(IProject project)
+        public static async Task Test(Project project)
         {
-            var starter = PluginManager.Get<IStarter>(Core.Project.Engine);
+            var starter = PluginManager.Get<IStarter>(project.Engine);
             if (starter != null)
             {
                 string outPath = await Build(project);

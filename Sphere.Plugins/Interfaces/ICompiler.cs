@@ -13,6 +13,14 @@ namespace Sphere.Plugins.Interfaces
     public interface ICompiler : IPlugin
     {
         /// <summary>
+        /// Prepare a new project for use with this compiler.
+        /// </summary>
+        /// <param name="project">The project to prepare.</param>
+        /// <param name="con">An IConsole where project prep progress can be printed.</param>
+        /// <returns>true if the project was successfully prepared.</returns>
+        bool Prep(IProject project, IConsole con);
+        
+        /// <summary>
         /// Builds a game distribution from a Sphere Studio project.
         /// </summary>
         /// <param name="project">The project to build.</param>

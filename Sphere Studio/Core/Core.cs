@@ -42,7 +42,8 @@ namespace SphereStudio
                 {
                     string handle = Path.GetFileNameWithoutExtension(file.Name);
                     if (!Plugins.Keys.Contains(handle))  // only the first by that name is used
-                        Plugins[handle] = new PluginShim(file.FullName, handle);
+                        try { Plugins[handle] = new PluginShim(file.FullName, handle); }
+                        catch { /* TODO: log plugin load failure */ }
                 }
             }
         }

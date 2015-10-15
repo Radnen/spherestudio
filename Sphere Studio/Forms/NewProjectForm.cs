@@ -29,6 +29,8 @@ namespace SphereStudio.Forms
             }
         }
 
+        public Project NewProject { get; private set; }
+
         private void NewProjectForm_Load(object sender, EventArgs e)
         {
             ResoComboBox.SelectedIndex = 0;
@@ -40,24 +42,14 @@ namespace SphereStudio.Forms
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            Project project = Project.Create(DirectoryBox.Text, NameBox.Text);
-            project.Author = AuthorBox.Text;
-            project.Description = DescriptionBox.Text;
-            project.ScreenWidth = int.Parse(WidthBox.Text);
-            project.ScreenHeight = int.Parse(HeightBox.Text);
-            project.MainScript = "main.js";
-            project.Engine = EngineComboBox.Text;
-            project.Compiler = CompilerComboBox.Text;
-            project.Save();
-
-            // automatically create the starting script //
-            using (StreamWriter startscript = new StreamWriter(File.Open(project.RootPath + "\\scripts\\main.js", FileMode.CreateNew)))
-            {
-                const string header = "/**\n* Script: main.js\n* Written by: {0}\n* Updated: {1}\n**/\n\nfunction game()\n{{\n\t\n}}";
-                startscript.Write(string.Format(header, project.Author, DateTime.Today.ToShortDateString()));
-            }
-
-            Core.Project = project;
+            NewProject = Project.Create(DirectoryBox.Text, NameBox.Text);
+            NewProject.Author = AuthorBox.Text;
+            NewProject.Description = DescriptionBox.Text;
+            NewProject.ScreenWidth = int.Parse(WidthBox.Text);
+            NewProject.ScreenHeight = int.Parse(HeightBox.Text);
+            NewProject.MainScript = "main.js";
+            NewProject.Engine = EngineComboBox.Text;
+            NewProject.Compiler = CompilerComboBox.Text;
         }
 
         private void FillDirectory(object sender, KeyEventArgs e)

@@ -259,7 +259,7 @@ namespace SphereStudio.ScriptEditor
 
         public override void Restyle()
         {
-            _codeBox.Indentation.TabWidth = _main.Settings.GetInteger("script-spaces", 2);
+            _codeBox.Indentation.TabWidth = _main.Settings.GetInteger("script-spaces", 4);
             _codeBox.Indentation.UseTabs = _main.Settings.GetBoolean("script-tabs", true);
             _codeBox.Caret.HighlightCurrentLine = _main.Settings.GetBoolean("script-hiline", true);
             _codeBox.IsBraceMatching = _main.Settings.GetBoolean("script-hibraces", true);

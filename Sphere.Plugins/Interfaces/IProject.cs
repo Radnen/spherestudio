@@ -51,7 +51,7 @@ namespace Sphere.Plugins.Interfaces
         /// Gets the filename of the game's startup script, relative to
         /// 'scripts'.
         /// </summary>
-        string MainScript { get; }
+        string MainScript { get; set; }
 
         /// <summary>
         /// Gets a dictionary of all breakpoints set for this project.

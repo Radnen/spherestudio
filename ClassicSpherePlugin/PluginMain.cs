@@ -23,7 +23,7 @@ namespace SphereStudio.Vanilla
         {
             PluginManager.Register(this, new SphereCompiler(), "Vanilla");
             PluginManager.Register(this, new SphereStarter(conf), "Sphere 1.x");
-            PluginManager.Register(this, new SettingsPage(conf), "Classic Sphere");
+            PluginManager.Register(this, new SettingsPage(conf), "Sphere Setup");
         }
 
         public void ShutDown()

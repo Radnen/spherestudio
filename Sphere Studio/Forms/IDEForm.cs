@@ -417,7 +417,7 @@ namespace SphereStudio.Forms
         {
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string rootPath = Path.Combine(sphereDir, "Projects");
-            NewProjectForm myProject = new NewProjectForm() { RootFolder = rootPath };
+            NewProjectForm npf = new NewProjectForm() { RootFolder = rootPath };
 
             var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
             var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
@@ -429,12 +429,19 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            if (myProject.ShowDialog() == DialogResult.OK)
+            if (npf.ShowDialog() == DialogResult.OK)
             {
                 if (!CloseCurrentProject()) return;
-                menuRefreshProject_Click(null, EventArgs.Empty);
-                _startPage.PopulateGameList();
-                OpenFile(Core.Project.RootPath + "\\scripts\\main.js");
+                if (BuildEngine.Prep(npf.NewProject))
+                {
+                    npf.NewProject.Save();
+                    OpenProject(npf.NewProject.FileName);
+                    _startPage.PopulateGameList();
+                }
+                else
+                {
+                    Directory.Delete(npf.NewProject.RootPath, true);
+                }
             }
         }
 
