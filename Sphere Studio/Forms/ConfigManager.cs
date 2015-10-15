@@ -105,7 +105,7 @@ namespace SphereStudio.Forms
                 item.SubItems.Add(pair.Value.Main.Version);
                 item.SubItems.Add(pair.Value.Main.Description);
                 item.Tag = pair.Key;
-                item.Checked = Core.Settings.Plugins.Contains(pair.Value.Handle);
+                item.Checked = !Core.Settings.OffPlugins.Contains(pair.Value.Handle);
                 PluginsList.Items.Add(item);
             }
             
@@ -120,14 +120,15 @@ namespace SphereStudio.Forms
             string lastItem = Core.Settings.Preset;
             
             PresetsList.Items.Clear();
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
-            if (!Directory.Exists(path))
-                return;
-            var presets = from filename in Directory.GetFiles(path, "*.preset")
-                        orderby filename ascending
-                        select Path.GetFileNameWithoutExtension(filename);
-            foreach (string name in presets)
-                PresetsList.Items.Add(name);
+            string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
+            if (Directory.Exists(presetPath))
+            {
+                var presets = from filename in Directory.GetFiles(presetPath, "*.preset")
+                              orderby filename ascending
+                              select Path.GetFileNameWithoutExtension(filename);
+                foreach (string name in presets)
+                    PresetsList.Items.Add(name);
+            }
 
             if (PresetsList.Items.Contains(Core.Settings.Preset ?? ""))
             {
@@ -146,11 +147,11 @@ namespace SphereStudio.Forms
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            bool haveAllPlugins = !string.IsNullOrEmpty(Core.Settings.Engine)
-                && !string.IsNullOrEmpty(Core.Settings.Compiler)
-                && !string.IsNullOrEmpty(Core.Settings.FileOpener)
-                && !string.IsNullOrEmpty(Core.Settings.ScriptEditor)
-                && !string.IsNullOrEmpty(Core.Settings.ImageEditor);
+            bool haveAllPlugins = PluginManager.Get<IStarter>(Core.Settings.Engine) != null
+                && PluginManager.Get<ICompiler>(Core.Settings.Compiler) != null
+                && PluginManager.Get<IFileOpener>(Core.Settings.FileOpener) != null
+                && PluginManager.Get<IEditor<ScriptView>>(Core.Settings.ScriptEditor) != null
+                && PluginManager.Get<IEditor<ImageView>>(Core.Settings.ImageEditor) != null;
             if (!haveAllPlugins)
             {
                 DialogResult result = MessageBox.Show(
@@ -195,7 +196,7 @@ namespace SphereStudio.Forms
                     preset.Write("Preset", "defaultFileOpener", GetPluginName(FilePluginList));
                     preset.Write("Preset", "scriptEditor", GetPluginName(ScriptPluginList));
                     preset.Write("Preset", "imageEditor", GetPluginName(ImagePluginList));
-                    preset.Write("Preset", "plugins", string.Join("|", Core.Settings.Plugins));
+                    preset.Write("Preset", "disabledPlugins", string.Join("|", Core.Settings.OffPlugins));
                 }
                 Core.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
                 Core.Settings.Apply();
@@ -223,9 +224,9 @@ namespace SphereStudio.Forms
         {
             if (_updatingPlugins) return;
 
-            Core.Settings.Plugins = (from ListViewItem item in PluginsList.Items
-                                       where item.Checked
-                                       select item.Tag as string).ToArray();
+            Core.Settings.OffPlugins = (from ListViewItem item in PluginsList.Items
+                                        where !item.Checked
+                                        select item.Tag as string).ToArray();
             Core.Settings.Apply();
             UpdateDefaultsLists();
             UpdatePresetsList();

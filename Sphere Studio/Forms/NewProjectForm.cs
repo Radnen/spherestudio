@@ -3,6 +3,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 using Sphere.Core.Editor;
 
 namespace SphereStudio.Forms
@@ -30,6 +32,10 @@ namespace SphereStudio.Forms
         private void NewProjectForm_Load(object sender, EventArgs e)
         {
             ResoComboBox.SelectedIndex = 0;
+            EngineComboBox.Items.AddRange(PluginManager.GetNames<IStarter>());
+            CompilerComboBox.Items.AddRange(PluginManager.GetNames<ICompiler>());
+            EngineComboBox.Text = Core.Settings.Engine;
+            CompilerComboBox.Text = Core.Settings.Compiler;
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -40,6 +46,8 @@ namespace SphereStudio.Forms
             project.ScreenWidth = int.Parse(WidthBox.Text);
             project.ScreenHeight = int.Parse(HeightBox.Text);
             project.MainScript = "main.js";
+            project.Engine = EngineComboBox.Text;
+            project.Compiler = CompilerComboBox.Text;
             project.Save();
 
             // automatically create the starting script //

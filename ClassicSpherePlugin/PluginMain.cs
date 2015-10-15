@@ -21,7 +21,7 @@ namespace SphereStudio.Vanilla
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.Register(this, new SphereCompiler(), "Classic Sphere");
+            PluginManager.Register(this, new SphereCompiler(), "Vanilla");
             PluginManager.Register(this, new SphereStarter(conf), "Sphere 1.x");
             PluginManager.Register(this, new SettingsPage(conf), "Classic Sphere");
         }

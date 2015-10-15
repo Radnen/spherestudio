@@ -417,7 +417,18 @@ namespace SphereStudio.Forms
         {
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             string rootPath = Path.Combine(sphereDir, "Projects");
-            NewProjectForm myProject = new NewProjectForm { RootFolder = rootPath };
+            NewProjectForm myProject = new NewProjectForm() { RootFolder = rootPath };
+
+            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
+            if (starter == null || compiler == null)
+            {
+                MessageBox.Show(
+                    "Unable to create a new Sphere Studio project.\n\nDefault engine and/or compiler plugins have not yet been selected.  Please open Configuration Manager and select a default engine and compiler plugin, then try again.",
+                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (myProject.ShowDialog() == DialogResult.OK)
             {
                 if (!CloseCurrentProject()) return;
@@ -451,12 +462,10 @@ namespace SphereStudio.Forms
 
         private void menuOpenLastProject_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Core.Settings.LastProject) &&
-                Directory.Exists(Core.Settings.LastProject))
-            {
-                OpenProject(Core.Settings.LastProject + "\\game.sgm");
-            }
-            else UpdateControls();
+            if (File.Exists(Core.Settings.LastProject))
+                OpenProject(Core.Settings.LastProject);
+            else
+                UpdateControls();
         }
 
         private void menuSave_Click(object sender, EventArgs e)
@@ -901,9 +910,20 @@ namespace SphereStudio.Forms
 
         private void OpenProjectProps()
         {
-            using (ProjectPropsForm settings = new ProjectPropsForm(Core.Project))
+            var compiler = PluginManager.Get<ICompiler>(Core.Project.Compiler);
+            var starter = PluginManager.Get<IStarter>(Core.Project.Engine);
+            if (compiler != null && starter != null)
             {
-                settings.ShowDialog();
+                if (new ProjectPropsForm(Core.Project).ShowDialog(this) == DialogResult.OK)
+                    UpdateControls();
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Unable to open Project Properties.  Plugins for this project's toolchain are either missing or disabled; continuing with this operation would result in a loss of data."
+                    + string.Format("\n\nProject: {0}", Core.Project.Name)
+                    + string.Format("\n\nToolchain:\n{0}/{1}", Core.Project.Engine, Core.Project.Compiler),
+                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -911,8 +931,8 @@ namespace SphereStudio.Forms
         {
             _projectTree.Open();
             _projectTree.Refresh();
-            if (Core.Project.RootPath != null)
-                Core.Settings.LastProject = Core.Project.RootPath;
+            if (Core.Project != null)
+                Core.Settings.LastProject = Core.Project.FileName;
             UpdateControls();
             _projectTree.ProjectName = "Project: " + Core.Project.Name;
         }
@@ -1149,7 +1169,7 @@ namespace SphereStudio.Forms
             {
                 Title = "Build Game Package",
                 InitialDirectory = Core.Project.RootPath,
-                Filter = BuildEngine.SavePackageFilters,
+                Filter = BuildEngine.SaveFileFilters,
                 DefaultExt = "spk",
                 AddExtension = true,
             };

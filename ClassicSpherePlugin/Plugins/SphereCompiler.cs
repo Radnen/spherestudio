@@ -22,8 +22,7 @@ namespace SphereStudio.Vanilla.Plugins
 
         public async Task<bool> Build(IProject project, string outPath, IConsole con)
         {
-            con.Print(string.Format("{0} {1} built-in Sphere 1.x compiler\n", Application.ProductName, Application.ProductVersion));
-            con.Print("(c) 2015 Spherical\n\n");
+            con.Print("Compiling project for Sphere 1.x or compatible engine.\n");
 
             Directory.CreateDirectory(outPath);
 

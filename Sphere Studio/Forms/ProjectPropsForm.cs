@@ -1,13 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
-using System.IO;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
 
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 using Sphere.Core.Editor;
-using System.Drawing;
-using System.Media;
 
 namespace SphereStudio.Forms
 {
@@ -26,56 +22,34 @@ namespace SphereStudio.Forms
         public void UpdateStyle()
         {
             StyleSettings.ApplyStyle(ButtonPanel);
-            StyleSettings.ApplyStyle(buttonOK);
-            StyleSettings.ApplyStyle(buttonCancel);
+            StyleSettings.ApplyStyle(OKButton);
+            StyleSettings.ApplyStyle(CloseButton);
         }
 
-        private void GameSettings_Load(object sender, EventArgs e)
+        private void ProjectPropsForm_Load(object sender, EventArgs e)
         {
-            PathTextBox.Text = _project.RootPath;
-            nameBox.Text = _project.Name;
-            authorBox.Text = _project.Author;
-            descriptionBox.Text = _project.Description;
-            widthBox.Text = _project.ScreenWidth.ToString();
-            heightBox.Text = _project.ScreenHeight.ToString();
-            buildDirBox.Text = _project.BuildPath;
+            EngineComboBox.Items.AddRange(PluginManager.GetNames<IStarter>());
+            CompilerComboBox.Items.AddRange(PluginManager.GetNames<ICompiler>());
 
-            // I'll need to populate the script combo box.
-            DirectoryInfo dir = new DirectoryInfo(PathTextBox.Text + "\\scripts");
+            PathTextBox.Text = _project.FileName;
+            NameTextBox.Text = _project.Name;
+            AuthorTextBox.Text = _project.Author;
+            SummaryTextBox.Text = _project.Description;
+            BuildDirTextBox.Text = _project.BuildPath;
+            EngineComboBox.Text = _project.Engine;
+            CompilerComboBox.Text = _project.Compiler;
 
-            var scriptList = from FileInfo file in dir.EnumerateFiles("*")
-                             where file.Extension == ".js" || file.Extension == ".coffee"
-                             orderby file.Name ascending
-                             select file.Name;
-            foreach (string filename in scriptList)
-            {
-                mainScriptBox.Items.Add(filename);
-            }
-            mainScriptBox.Text = _project.MainScript;
+            ActiveControl = NameTextBox;
         }
 
-        private void resolutionBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void OKButton_Click(object sender, EventArgs e)
         {
-            e.Handled = (!Char.IsDigit(e.KeyChar) && e.KeyChar != '\t');
-        }
-
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-            if (nameBox.Text == "" ||
-                widthBox.Text == "" || heightBox.Text == "")
-            {
-                MessageBox.Show("Some required fields are missing or incorrect.", Text);
-                return;
-            }
-
-            DialogResult = DialogResult.OK;
-            _project.Name = nameBox.Text;
-            _project.Author = authorBox.Text;
-            _project.Description = descriptionBox.Text;
-            _project.ScreenWidth = int.Parse(widthBox.Text);
-            _project.ScreenHeight = int.Parse(heightBox.Text);
-            _project.MainScript = mainScriptBox.Text;
-            _project.BuildPath = buildDirBox.Text;
+            _project.Name = NameTextBox.Text;
+            _project.Author = AuthorTextBox.Text;
+            _project.Description = SummaryTextBox.Text;
+            _project.Engine = EngineComboBox.Text;
+            _project.Compiler = CompilerComboBox.Text;
+            _project.BuildPath = BuildDirTextBox.Text;
             _project.Save();
         }
     }

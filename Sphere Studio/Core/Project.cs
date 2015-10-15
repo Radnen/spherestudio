@@ -17,13 +17,14 @@ namespace SphereStudio
     class Project : IProject
     {
         private Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
-        private IniSettings _ini;
-        private string _path;
+        private IniSettings _ssproj;
+        private string _projFileName;
+        private string _userFileName;
 
         public static Project Create(string rootPath, string name)
         {
             Directory.CreateDirectory(rootPath);
-            var project = new Project(Path.Combine(rootPath, MakeFileName(name)), true) { Name = name };
+            var project = new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
             project.Save();
             return project;
         }
@@ -32,89 +33,39 @@ namespace SphereStudio
         /// Loads an existing project.
         /// </summary>
         /// <param name="rootPath">The full path of the directory containing the project.</param>
-        /// <param name="allowBuild">Whether to initialize a build pipeline for this project.</param>
-        /// <returns></returns>
-        public static Project Open(string rootPath, bool allowBuild = true)
+        /// <returns>A Project object used to manage the loaded project.</returns>
+        public static Project Open(string fileName)
         {
-            if (!Directory.Exists(rootPath))
-                rootPath = Path.GetDirectoryName(rootPath);
-
-            string[] ssprojs = Directory.GetFiles(rootPath, "*.ssproj");
-            string[] sgms = Directory.GetFiles(rootPath, "game.sgm");
-            if (ssprojs.Length > 0)
-                return new Project(ssprojs[0], allowBuild);
-            else if (sgms.Length > 0)
-                return new Project(sgms[0], allowBuild);
-            else
-                return null;
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException();
+            return new Project(fileName);
         }
 
-        private Project(string filepath, bool allowBuilding)
+        private Project(string fileName)
         {
-            filepath = Path.GetFullPath(filepath);  // canonize
-            var userpath = GetUserFilePath(filepath);
-            User = new UserSettings(userpath);
-
-            if (Path.GetExtension(filepath) == ".sgm")
-            {
-                // auto-convert game.sgm to .ssproj
-                _path = Path.Combine(Path.GetDirectoryName(filepath), "game.ssproj");
-                _ini = new IniSettings(new IniFile(_path, false), ".ssproj");
-                Name = "Untitled";
-                Author = "";
-                Description = "";
-                ScreenWidth = 320;
-                ScreenHeight = 240;
-                MainScript = "main.js";
-                BuildPath = "./";
-                using (StreamReader file = new StreamReader(filepath))
-                {
-                    Regex regex = new Regex("^(.*)=(.*)$");
-                    while (!file.EndOfStream)
-                    {
-                        Match match = regex.Match(file.ReadLine());
-                        if (match.Success)
-                        {
-                            string key = match.Groups[1].Value;
-                            string value = match.Groups[2].Value;
-                            int intValue;
-                            switch (key.ToLower())
-                            {
-                                case "name": Name = value; break;
-                                case "author": Author = value; break;
-                                case "description": Description = value; break;
-                                case "screen_width":
-                                    if (int.TryParse(value, out intValue))
-                                        ScreenWidth = intValue;
-                                    break;
-                                case "screen_height":
-                                    if (int.TryParse(value, out intValue))
-                                        ScreenHeight = intValue;
-                                    break;
-                                case "script": MainScript = value; break;
-                            }
-                        }
-                    }
-                }
-                _path = Path.Combine(Path.GetDirectoryName(_path), MakeFileName(Name));
-                _ini.Save();
-            }
-            else
-            {
-                // loading .ssproj directly
-                _path = filepath;
-                _ini = new IniSettings(new IniFile(_path, false), ".ssproj");
-            }
+            fileName = Path.GetFullPath(fileName);
+            _projFileName = fileName;
+            _userFileName = Path.ChangeExtension(fileName, ".ssuser");
+            _ssproj = new IniSettings(new IniFile(_projFileName, false), ".ssproj");
+            User = new UserSettings(_userFileName);
         }
 
         public UserSettings User { get; private set; }
 
         /// <summary>
+        /// Gets the path and filename of the .ssproj file.
+        /// </summary>
+        public string FileName
+        {
+            get { return _projFileName; }
+        }
+        
+        /// <summary>
         /// Gets the full path of the project's root directory.
         /// </summary>
         public string RootPath
         {
-            get { return Path.GetDirectoryName(_path); }
+            get { return Path.GetDirectoryName(_projFileName); }
         }
 
         /// <summary>
@@ -123,14 +74,26 @@ namespace SphereStudio
         /// </summary>
         public string BuildPath
         {
-            get { return _ini.GetString("buildDir", "dist/"); }
+            get { return _ssproj.GetString("buildDir", "dist/"); }
             set
             {
                 value = string.IsNullOrWhiteSpace(value) ? "./" : value;
                 value = value.Replace(Path.DirectorySeparatorChar, '/');
                 if (!value.EndsWith("/")) value += "/";
-                _ini.SetValue("buildDir", value);
+                _ssproj.SetValue("buildDir", value);
             }
+        }
+
+        public string Engine
+        {
+            get { return _ssproj.GetString("engine", ""); }
+            set { _ssproj.SetValue("engine", value); }
+        }
+
+        public string Compiler
+        {
+            get { return _ssproj.GetString("compiler", ""); }
+            set { _ssproj.SetValue("compiler", value); }
         }
 
         /// <summary>
@@ -138,8 +101,8 @@ namespace SphereStudio
         /// </summary>
         public string Name
         {
-            get { return _ini.GetString("name", "Untitled"); }
-            set { _ini.SetValue("name", value); }
+            get { return _ssproj.GetString("name", "Untitled"); }
+            set { _ssproj.SetValue("name", value); }
         }
 
         /// <summary>
@@ -147,8 +110,8 @@ namespace SphereStudio
         /// </summary>
         public string Author
         {
-            get { return _ini.GetString("author", ""); }
-            set { _ini.SetValue("author", value); }
+            get { return _ssproj.GetString("author", ""); }
+            set { _ssproj.SetValue("author", value); }
         }
 
         /// <summary>
@@ -156,8 +119,8 @@ namespace SphereStudio
         /// </summary>
         public string Description
         {
-            get { return _ini.GetString("description", ""); }
-            set { _ini.SetValue("description", value); }
+            get { return _ssproj.GetString("description", ""); }
+            set { _ssproj.SetValue("description", value); }
         }
 
         /// <summary>
@@ -166,8 +129,8 @@ namespace SphereStudio
         /// </summary>
         public string MainScript
         {
-            get { return _ini.GetString("mainScript", ""); }
-            set { _ini.SetValue("mainScript", value); }
+            get { return _ssproj.GetString("mainScript", ""); }
+            set { _ssproj.SetValue("mainScript", value); }
         }
 
         /// <summary>
@@ -175,8 +138,8 @@ namespace SphereStudio
         /// </summary>
         public int ScreenWidth
         {
-            get { return _ini.GetInteger("screenWidth", 320); }
-            set { _ini.SetValue("screenWidth", value); }
+            get { return _ssproj.GetInteger("screenWidth", 320); }
+            set { _ssproj.SetValue("screenWidth", value); }
         }
 
         /// <summary>
@@ -184,8 +147,8 @@ namespace SphereStudio
         /// </summary>
         public int ScreenHeight
         {
-            get { return _ini.GetInteger("screenHeight", 240); }
-            set { _ini.SetValue("screenHeight", value); }
+            get { return _ssproj.GetInteger("screenHeight", 240); }
+            set { _ssproj.SetValue("screenHeight", value); }
         }
 
         /// <summary>
@@ -193,8 +156,8 @@ namespace SphereStudio
         /// </summary>
         public void Save()
         {
-            User.SaveAs(GetUserFilePath(_path));
-            _ini.SaveAs(_path);
+            User.SaveAs(_userFileName);
+            _ssproj.SaveAs(_projFileName);
         }
 
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
@@ -236,11 +199,6 @@ namespace SphereStudio
                 User.SetValue(string.Format("breakpointsSet:{0:X8}", k.GetHashCode()),
                     string.Join(",", _breakpoints[k]));
             }
-        }
-
-        private string GetUserFilePath(string projectPath)
-        {
-            return Path.ChangeExtension(projectPath, ".ssuser");
         }
         
         private static string MakeFileName(string name)

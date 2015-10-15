@@ -52,9 +52,9 @@
             // 
             this.ProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProjectTreeView.LabelEdit = true;
-            this.ProjectTreeView.Location = new System.Drawing.Point(0, 23);
+            this.ProjectTreeView.Location = new System.Drawing.Point(0, 27);
             this.ProjectTreeView.Name = "ProjectTreeView";
-            this.ProjectTreeView.Size = new System.Drawing.Size(191, 364);
+            this.ProjectTreeView.Size = new System.Drawing.Size(223, 420);
             this.ProjectTreeView.TabIndex = 3;
             this.ProjectTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTreeView_BeforeLabelEdit);
             this.ProjectTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTreeView_AfterLabelEdit);
@@ -182,7 +182,7 @@
             this.ProjectNameLabel.ForeColor = System.Drawing.Color.White;
             this.ProjectNameLabel.Location = new System.Drawing.Point(0, 0);
             this.ProjectNameLabel.Name = "ProjectNameLabel";
-            this.ProjectNameLabel.Size = new System.Drawing.Size(191, 23);
+            this.ProjectNameLabel.Size = new System.Drawing.Size(223, 27);
             this.ProjectNameLabel.TabIndex = 4;
             this.ProjectNameLabel.Text = "Project Name";
             this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -199,12 +199,13 @@
             // 
             // ProjectTree
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ProjectTreeView);
             this.Controls.Add(this.ProjectNameLabel);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ProjectTree";
-            this.Size = new System.Drawing.Size(191, 387);
+            this.Size = new System.Drawing.Size(223, 447);
             this.ProjectFileContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).EndInit();
             this.ResumeLayout(false);

@@ -34,7 +34,7 @@ namespace SphereStudio
         /// </summary>
         public static bool CanDebug
         {
-            get { return PluginManager.Get<IDebugStarter>(Core.Settings.Engine) != null; }
+            get { return Core.Project != null && PluginManager.Get<IDebugStarter>(Core.Project.Engine) != null; }
         }
 
         /// <summary>
@@ -42,20 +42,20 @@ namespace SphereStudio
         /// </summary>
         public static bool CanPackage
         {
-            get { return PluginManager.Get<IPackager>(Core.Settings.Compiler) != null; }
+            get { return Core.Project != null && PluginManager.Get<IPackager>(Core.Project.Compiler) != null; }
         }
 
         /// <summary>
         /// Gets the SaveFileDialog filter for the current packaging compiler. Throws an
         /// exception if the compiler doesn't support packages.
         /// </summary>
-        public static string SavePackageFilters
+        public static string SaveFileFilters
         {
             get
             {
                 if (!CanPackage)
-                    throw new NotSupportedException("The current compiler doesn't support packaging.");
-                var packager = PluginManager.Get<IPackager>(Core.Settings.Compiler);
+                    throw new NotSupportedException("The active compiler doesn't support packaging.");
+                var packager = PluginManager.Get<IPackager>(Core.Project.Compiler);
                 return packager.SaveFileFilters;
             }
         }
@@ -69,27 +69,27 @@ namespace SphereStudio
         {
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
-            _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n\n", project.Name));
-            var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
+            _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
+            var compiler = PluginManager.Get<ICompiler>(Core.Project.Compiler);
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
             bool isOK = false;
             if (compiler != null)
                 isOK = await compiler.Build(project, outPath, _buildView);
             else
             {
-                _buildView.Print("[error] no compiler available to build project\n\n");
-                _buildView.Print("Please open Configuration Manager to select a compiler.\n");
+                _buildView.Print("ERROR: Compiler missing. Open Configuration Manager and check your plugins.\n\n");
+                _buildView.Print(string.Format("(Toolchain: {0}/{1})\n", Core.Project.Engine, Core.Project.Compiler));
             }
             if (isOK)
             {
-                _buildView.Print(string.Format("\n================= Successfully built: {0} ================\n", project.Name));
+                _buildView.Print(string.Format("================= Successfully built: {0} ================\n", project.Name));
                 if (Core.Settings.AutoHideBuild && !forceVisible)
                     PluginManager.Core.Docking.Hide(_buildView);
                 return outPath;
             }
             else
             {
-                _buildView.Print(string.Format("\n================== Failed to build: {0} ==================\n", project.Name));
+                _buildView.Print(string.Format("================== Failed to build: {0} ==================\n", project.Name));
                 SystemSounds.Exclamation.Play();
                 return null;
             }
@@ -108,14 +108,14 @@ namespace SphereStudio
 
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
-            _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n\n", project.Name));
-            var packager = PluginManager.Get<IPackager>(Core.Settings.Compiler);
+            _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n", project.Name));
+            var packager = PluginManager.Get<IPackager>(Core.Project.Compiler);
             bool isOK = await packager.Package(project, fileName, _buildView);
             if (isOK)
-                _buildView.Print(string.Format("\n=============== Successfully packaged: {0} ===============\n", project.Name));
+                _buildView.Print(string.Format("=============== Successfully packaged: {0} ===============\n", project.Name));
             else
             {
-                _buildView.Print(string.Format("\n================= Failed to package: {0} =================\n", project.Name));
+                _buildView.Print(string.Format("================= Failed to package: {0} =================\n", project.Name));
                 SystemSounds.Exclamation.Play();
             }
             return isOK;
@@ -131,7 +131,7 @@ namespace SphereStudio
             if (!CanDebug)
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
-            var starter = PluginManager.Get<IDebugStarter>(Core.Settings.Engine);
+            var starter = PluginManager.Get<IDebugStarter>(Core.Project.Engine);
             string outPath = await Build(project);
             if (outPath != null)
                 return starter.Debug(outPath, false, project);
@@ -145,7 +145,7 @@ namespace SphereStudio
         /// <param name="project">The project to test.</param>
         public static async Task Test(IProject project)
         {
-            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var starter = PluginManager.Get<IStarter>(Core.Project.Engine);
             if (starter != null)
             {
                 string outPath = await Build(project);
@@ -157,8 +157,8 @@ namespace SphereStudio
             else
             {
                 MessageBox.Show(
-                    "No engine is available to test play this project. Open Configuration Manager and select an engine, then try again.",
-                    "Unable to Test Game", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string.Format("Unable to test project.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nProject: {0}\n\nToolchain:\n{1}/{2}", Core.Project.Name, Core.Project.Engine, Core.Project.Compiler),
+                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

@@ -98,7 +98,7 @@ namespace SphereStudio.Views
         public ToolStripLabel HelpLabel { get; set; }
 
         /// <summary>
-        /// Adds sphere games to the games panel for start-up use.
+        /// Adds Sphere games to the games panel for start-up use.
         /// </summary>
         public void PopulateGameList()
         {
@@ -113,54 +113,28 @@ namespace SphereStudio.Views
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             var paths = new List<string>(Core.Settings.ProjectPaths);
             paths.Insert(0, Path.Combine(sphereDir, @"Projects"));
-            foreach (string s in paths)
+            foreach (string path in paths)
             {
-                if (string.IsNullOrEmpty(s)) continue;
-                if (!Directory.Exists(s)) continue;
-                DirectoryInfo d = new DirectoryInfo(s);
-                Populate(d);
-
-                // search this folder for game:
-                Project proj = Project.Open(d.FullName, false);
-                if (proj != null)
+                if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+                    continue;
+                var baseDir = new DirectoryInfo(path);
+                var fileInfos = baseDir.GetFiles("*.ssproj", SearchOption.AllDirectories);
+                foreach (var fileInfo in fileInfos)
                 {
-                    int img = CheckForIcon(d.FullName);
-                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = d.FullName };
-                    item.SubItems.Add(proj.Author);
-                    item.SubItems.Add(d.FullName);
-                    GameFolders.Items.Add(item);
+                    var dirPath = Path.GetDirectoryName(fileInfo.FullName);
+                    int img = CheckForIcon(dirPath);
+                    Project proj = Project.Open(fileInfo.FullName);
+                    if (proj != null)
+                    {
+                        ListViewItem item = new ListViewItem(proj.Name, img) { Tag = fileInfo.FullName };
+                        item.SubItems.Add(proj.Author);
+                        item.SubItems.Add(fileInfo.FullName);
+                        GameFolders.Items.Add(item);
+                    }
                 }
             }
             GameFolders.EndUpdate();
             GameFolders.Invalidate();
-        }
-
-        /// <summary>
-        /// Recursively searches the subfolders of /baseDir/ for games
-        /// to add to the games panel.
-        /// </summary>
-        /// <param name="baseDir">Directory to start looking from.</param>
-        private void Populate(DirectoryInfo baseDir)
-        {
-            if (baseDir.Attributes.HasFlag(FileAttributes.Hidden))
-                return;
-            DirectoryInfo[] dirInfos = baseDir.GetDirectories();
-            var q = from dirInfo in dirInfos
-                    where !dirInfo.Attributes.HasFlag(FileAttributes.Hidden)
-                    select dirInfo;
-            foreach (var dirInfo in q)
-            {
-                int img = CheckForIcon(dirInfo.FullName);
-                Project proj = Project.Open(dirInfo.FullName, false);
-                if (proj != null) {
-                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = dirInfo.FullName };
-                    item.SubItems.Add(proj.Author);
-                    item.SubItems.Add(dirInfo.FullName);
-                    GameFolders.Items.Add(item);
-                }
-                else
-                    Populate(dirInfo);
-            }
         }
 
         private int CheckForIcon(string fullpath)
@@ -191,7 +165,7 @@ namespace SphereStudio.Views
         {
             _currentItem = GameFolders.GetItemAt(e.X, e.Y);
             if (_currentItem == null) return;
-            _proj = Project.Open((string)_currentItem.Tag, false);
+            _proj = Project.Open((string)_currentItem.Tag);
             SetProjData();
         }
 
@@ -320,7 +294,7 @@ namespace SphereStudio.Views
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
             string path = Path.GetDirectoryName((string)_currentItem.Tag);
-            Process p = Process.Start("explorer.exe", string.Format("/select,\"{0}\\game.sgm\"", path));
+            Process p = Process.Start("explorer.exe", string.Format(@"/select,""{0}\game.sgm""", path));
             if (p != null) p.Dispose();
         }
 

@@ -40,6 +40,10 @@
             this.OKButton = new System.Windows.Forms.Button();
             this.FolderFinder = new System.Windows.Forms.FolderBrowserDialog();
             this.PropertiesBox = new System.Windows.Forms.GroupBox();
+            this.CompilerComboBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.EngineComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.DescLabel = new System.Windows.Forms.Label();
             this.DescriptionBox = new System.Windows.Forms.TextBox();
             this.ResoComboBox = new System.Windows.Forms.ComboBox();
@@ -72,7 +76,7 @@
             this.ProjectBox.Controls.Add(this.NameLabel);
             this.ProjectBox.Location = new System.Drawing.Point(13, 33);
             this.ProjectBox.Name = "ProjectBox";
-            this.ProjectBox.Size = new System.Drawing.Size(351, 112);
+            this.ProjectBox.Size = new System.Drawing.Size(421, 112);
             this.ProjectBox.TabIndex = 1;
             this.ProjectBox.TabStop = false;
             this.ProjectBox.Text = "Project";
@@ -81,7 +85,7 @@
             // 
             this.FolderBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.FolderBrowseButton.Image = global::SphereStudio.Properties.Resources.folder;
-            this.FolderBrowseButton.Location = new System.Drawing.Point(316, 48);
+            this.FolderBrowseButton.Location = new System.Drawing.Point(386, 48);
             this.FolderBrowseButton.Name = "FolderBrowseButton";
             this.FolderBrowseButton.Size = new System.Drawing.Size(27, 22);
             this.FolderBrowseButton.TabIndex = 4;
@@ -95,7 +99,7 @@
             this.DirectoryBox.Location = new System.Drawing.Point(72, 76);
             this.DirectoryBox.Name = "DirectoryBox";
             this.DirectoryBox.ReadOnly = true;
-            this.DirectoryBox.Size = new System.Drawing.Size(271, 22);
+            this.DirectoryBox.Size = new System.Drawing.Size(341, 22);
             this.DirectoryBox.TabIndex = 6;
             // 
             // FolderBox
@@ -104,7 +108,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FolderBox.Location = new System.Drawing.Point(72, 48);
             this.FolderBox.Name = "FolderBox";
-            this.FolderBox.Size = new System.Drawing.Size(238, 22);
+            this.FolderBox.Size = new System.Drawing.Size(308, 22);
             this.FolderBox.TabIndex = 3;
             this.FolderBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FillDirectory);
             // 
@@ -114,7 +118,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.NameBox.Location = new System.Drawing.Point(72, 20);
             this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(271, 22);
+            this.NameBox.Size = new System.Drawing.Size(341, 22);
             this.NameBox.TabIndex = 1;
             this.NameBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FillDirectory);
             // 
@@ -149,7 +153,7 @@
             // 
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(284, 3);
+            this.CloseButton.Location = new System.Drawing.Point(354, 3);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(80, 25);
             this.CloseButton.TabIndex = 1;
@@ -161,7 +165,7 @@
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKButton.Enabled = false;
-            this.OKButton.Location = new System.Drawing.Point(198, 3);
+            this.OKButton.Location = new System.Drawing.Point(268, 3);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(80, 25);
             this.OKButton.TabIndex = 0;
@@ -174,6 +178,10 @@
             this.PropertiesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.PropertiesBox.Controls.Add(this.CompilerComboBox);
+            this.PropertiesBox.Controls.Add(this.label2);
+            this.PropertiesBox.Controls.Add(this.EngineComboBox);
+            this.PropertiesBox.Controls.Add(this.label1);
             this.PropertiesBox.Controls.Add(this.DescLabel);
             this.PropertiesBox.Controls.Add(this.DescriptionBox);
             this.PropertiesBox.Controls.Add(this.ResoComboBox);
@@ -184,15 +192,55 @@
             this.PropertiesBox.Controls.Add(this.AuthorBox);
             this.PropertiesBox.Location = new System.Drawing.Point(13, 166);
             this.PropertiesBox.Name = "PropertiesBox";
-            this.PropertiesBox.Size = new System.Drawing.Size(351, 307);
+            this.PropertiesBox.Size = new System.Drawing.Size(421, 355);
             this.PropertiesBox.TabIndex = 3;
             this.PropertiesBox.TabStop = false;
             this.PropertiesBox.Text = "Properties";
             // 
+            // CompilerComboBox
+            // 
+            this.CompilerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CompilerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CompilerComboBox.FormattingEnabled = true;
+            this.CompilerComboBox.Location = new System.Drawing.Point(80, 101);
+            this.CompilerComboBox.Name = "CompilerComboBox";
+            this.CompilerComboBox.Size = new System.Drawing.Size(330, 21);
+            this.CompilerComboBox.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(21, 104);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Compiler";
+            // 
+            // EngineComboBox
+            // 
+            this.EngineComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.EngineComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.EngineComboBox.FormattingEnabled = true;
+            this.EngineComboBox.Location = new System.Drawing.Point(80, 74);
+            this.EngineComboBox.Name = "EngineComboBox";
+            this.EngineComboBox.Size = new System.Drawing.Size(330, 21);
+            this.EngineComboBox.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(31, 77);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Engine";
+            // 
             // DescLabel
             // 
             this.DescLabel.AutoSize = true;
-            this.DescLabel.Location = new System.Drawing.Point(11, 88);
+            this.DescLabel.Location = new System.Drawing.Point(11, 143);
             this.DescLabel.Name = "DescLabel";
             this.DescLabel.Size = new System.Drawing.Size(85, 13);
             this.DescLabel.TabIndex = 6;
@@ -203,10 +251,10 @@
             this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DescriptionBox.Location = new System.Drawing.Point(14, 104);
+            this.DescriptionBox.Location = new System.Drawing.Point(14, 159);
             this.DescriptionBox.Multiline = true;
             this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(326, 187);
+            this.DescriptionBox.Size = new System.Drawing.Size(396, 180);
             this.DescriptionBox.TabIndex = 7;
             // 
             // ResoComboBox
@@ -223,16 +271,16 @@
             "1024x768",
             "1280x720",
             "1920x1080"});
-            this.ResoComboBox.Location = new System.Drawing.Point(80, 46);
+            this.ResoComboBox.Location = new System.Drawing.Point(80, 47);
             this.ResoComboBox.Name = "ResoComboBox";
-            this.ResoComboBox.Size = new System.Drawing.Size(175, 21);
+            this.ResoComboBox.Size = new System.Drawing.Size(242, 21);
             this.ResoComboBox.TabIndex = 3;
             this.ResoComboBox.SelectedIndexChanged += new System.EventHandler(this.ResoComboBox_SelectedIndexChanged);
             // 
             // HeightBox
             // 
             this.HeightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.HeightBox.Location = new System.Drawing.Point(305, 46);
+            this.HeightBox.Location = new System.Drawing.Point(372, 47);
             this.HeightBox.Name = "HeightBox";
             this.HeightBox.Size = new System.Drawing.Size(38, 22);
             this.HeightBox.TabIndex = 5;
@@ -243,7 +291,7 @@
             // WidthBox
             // 
             this.WidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.WidthBox.Location = new System.Drawing.Point(261, 46);
+            this.WidthBox.Location = new System.Drawing.Point(328, 47);
             this.WidthBox.Name = "WidthBox";
             this.WidthBox.Size = new System.Drawing.Size(38, 22);
             this.WidthBox.TabIndex = 4;
@@ -275,7 +323,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AuthorBox.Location = new System.Drawing.Point(80, 19);
             this.AuthorBox.Name = "AuthorBox";
-            this.AuthorBox.Size = new System.Drawing.Size(263, 22);
+            this.AuthorBox.Size = new System.Drawing.Size(330, 22);
             this.AuthorBox.TabIndex = 1;
             this.AuthorBox.Text = "Unknown";
             // 
@@ -283,7 +331,7 @@
             // 
             this.RequiredLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.RequiredLabel.AutoSize = true;
-            this.RequiredLabel.Location = new System.Drawing.Point(224, 148);
+            this.RequiredLabel.Location = new System.Drawing.Point(294, 148);
             this.RequiredLabel.Name = "RequiredLabel";
             this.RequiredLabel.Size = new System.Drawing.Size(140, 13);
             this.RequiredLabel.TabIndex = 2;
@@ -294,9 +342,9 @@
             this.NewProjectStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.NewProjectStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel});
-            this.NewProjectStatus.Location = new System.Drawing.Point(0, 518);
+            this.NewProjectStatus.Location = new System.Drawing.Point(0, 566);
             this.NewProjectStatus.Name = "NewProjectStatus";
-            this.NewProjectStatus.Size = new System.Drawing.Size(374, 22);
+            this.NewProjectStatus.Size = new System.Drawing.Size(444, 22);
             this.NewProjectStatus.SizingGrip = false;
             this.NewProjectStatus.TabIndex = 5;
             this.NewProjectStatus.Text = "statusStrip1";
@@ -313,9 +361,9 @@
             this.ButtonPanel.Controls.Add(this.OKButton);
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 488);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 536);
             this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(374, 30);
+            this.ButtonPanel.Size = new System.Drawing.Size(444, 30);
             this.ButtonPanel.TabIndex = 4;
             // 
             // editorLabel1
@@ -326,7 +374,7 @@
             this.editorLabel1.ForeColor = System.Drawing.Color.White;
             this.editorLabel1.Location = new System.Drawing.Point(0, 0);
             this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(374, 20);
+            this.editorLabel1.Size = new System.Drawing.Size(444, 23);
             this.editorLabel1.TabIndex = 0;
             this.editorLabel1.Text = "Create a new Sphere Studio project";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -337,7 +385,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(374, 540);
+            this.ClientSize = new System.Drawing.Size(444, 588);
             this.Controls.Add(this.editorLabel1);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectStatus);
@@ -392,5 +440,9 @@
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
         private System.Windows.Forms.Panel ButtonPanel;
         private Sphere.Core.Editor.EditorLabel editorLabel1;
+        private System.Windows.Forms.ComboBox CompilerComboBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox EngineComboBox;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -120,14 +120,14 @@ namespace SphereStudio
 
         public string Compiler
         {
-            get { return GetString("compiler", ""); }
-            set { Preset = null; SetValue("compiler", value); }
+            get { return GetString("defaultCompiler", ""); }
+            set { Preset = null; SetValue("defaultCompiler", value); }
         }
 
         public string Engine
         {
-            get { return GetString("engine", ""); }
-            set { Preset = null; SetValue("engine", value); }
+            get { return GetString("defaultEngine", ""); }
+            set { Preset = null; SetValue("defaultEngine", value); }
         }
 
         public string FileOpener
@@ -154,10 +154,10 @@ namespace SphereStudio
             set { SetValue("lastProject", value); }
         }
 
-        public string[] Plugins
+        public string[] OffPlugins
         {
-            get { return GetStringArray("plugins"); }
-            set { Preset = ""; SetValue("plugins", value); }
+            get { return GetStringArray("disabledPlugins"); }
+            set { Preset = ""; SetValue("disabledPlugins", value); }
         }
 
         public string Preset
@@ -180,7 +180,7 @@ namespace SphereStudio
                         FileOpener = preset.Read("Preset", "defaultFileOpener", "");
                         ImageEditor = preset.Read("Preset", "imageEditor", "");
                         ScriptEditor = preset.Read("Preset", "scriptEditor", "");
-                        Plugins = preset.Read("Preset", "plugins", "").Split('|');
+                        OffPlugins = preset.Read("Preset", "disabledPlugins", "").Split('|');
                     }
                     SetValue("preset", value);
                 }
@@ -220,7 +220,7 @@ namespace SphereStudio
         {
             StyleSettings.CurrentStyle = UIStyle;
             foreach (var plugin in Core.Plugins)
-                plugin.Value.Enabled = Plugins.Contains(plugin.Key);
+                plugin.Value.Enabled = !OffPlugins.Contains(plugin.Key);
             PluginManager.Core.Docking.Refresh();
         }
     }
