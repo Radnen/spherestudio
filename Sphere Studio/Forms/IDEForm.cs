@@ -1019,10 +1019,13 @@ namespace SphereStudio.Forms
 
             toolConfigEngine.Enabled = menuConfigEngine.Enabled = haveConfig;
 
-            menuBuildPackage.Enabled = BuildEngine.CanPackage;
+            menuBuildPackage.Enabled = Core.Project != null
+                && BuildEngine.CanPackage(Core.Project);
 
             menuTestGame.Enabled = toolTestGame.Enabled = Debugger == null;
-            menuDebug.Enabled = toolDebug.Enabled = BuildEngine.CanDebug && (Debugger == null || !Debugger.Running);
+            menuDebug.Enabled = toolDebug.Enabled = Core.Project != null
+                && BuildEngine.CanDebug(Core.Project)
+                && (Debugger == null || !Debugger.Running);
             menuBreakNow.Enabled = Debugger != null && Debugger.Running;
             menuStopDebug.Enabled = Debugger != null;
             menuStepInto.Enabled = Debugger != null && !Debugger.Running;
@@ -1176,7 +1179,7 @@ namespace SphereStudio.Forms
             {
                 Title = "Build Game Package",
                 InitialDirectory = Core.Project.RootPath,
-                Filter = BuildEngine.SaveFileFilters,
+                Filter = BuildEngine.GetSaveFileFilters(Core.Project),
                 DefaultExt = "spk",
                 AddExtension = true,
             };

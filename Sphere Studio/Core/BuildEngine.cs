@@ -30,34 +30,31 @@ namespace SphereStudio
         }
 
         /// <summary>
-        /// 'true' if the current engine supports single-step debugging.
+        /// Returns whether a project's engine supports single-step debugging.
         /// </summary>
-        public static bool CanDebug
+        public static bool CanDebug(Project project)
         {
-            get { return Core.Project != null && PluginManager.Get<IDebugStarter>(Core.Project.Engine) != null; }
+            return PluginManager.Get<IDebugStarter>(project.Engine) != null;
         }
 
         /// <summary>
-        /// 'true' if the current compiler supports packaging.
+        /// Returns whether a project's toolchain supports packaging.
         /// </summary>
-        public static bool CanPackage
+        public static bool CanPackage(Project project)
         {
-            get { return Core.Project != null && PluginManager.Get<IPackager>(Core.Project.Compiler) != null; }
+            return PluginManager.Get<IPackager>(project.Compiler) != null;
         }
 
         /// <summary>
         /// Gets the SaveFileDialog filter for the current packaging compiler. Throws an
         /// exception if the compiler doesn't support packages.
         /// </summary>
-        public static string SaveFileFilters
+        public static string GetSaveFileFilters(Project project)
         {
-            get
-            {
-                if (!CanPackage)
-                    throw new NotSupportedException("The active compiler doesn't support packaging.");
-                var packager = PluginManager.Get<IPackager>(Core.Project.Compiler);
-                return packager.SaveFileFilters;
-            }
+            if (!CanPackage(project))
+                throw new NotSupportedException("The active compiler doesn't support packaging.");
+            var packager = PluginManager.Get<IPackager>(Core.Project.Compiler);
+            return packager.SaveFileFilters;
         }
 
         public static bool Prep(Project project)
@@ -120,7 +117,7 @@ namespace SphereStudio
         /// <returns>'true' if packaging succeeded, false if not.</returns>
         public static async Task<bool> Package(Project project, string fileName)
         {
-            if (!CanPackage)
+            if (!CanPackage(project))
                 throw new NotSupportedException("The current compiler doesn't support packaging.");
 
             _buildView.Clear();
@@ -145,7 +142,7 @@ namespace SphereStudio
         /// <returns>An IDebugger used to manage the debugging session.</returns>
         public static async Task<IDebugger> Debug(Project project)
         {
-            if (!CanDebug)
+            if (!CanDebug(project))
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
             var starter = PluginManager.Get<IDebugStarter>(project.Engine);
