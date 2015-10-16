@@ -50,12 +50,14 @@ namespace SphereStudio
 
         public string GetString(string key, string defValue)
         {
-            return _ini.Read(_section, key, defValue);
+            return _ini.Read(_section, key, defValue ?? "");
         }
         
-        public string[] GetStringArray(string key)
+        public string[] GetStringArray(string key, string[] defValues)
         {
-            string values = GetString(key, "");
+            string values = _ini.Read(_section, key, null);
+            if (values == null && defValues != null)
+                return defValues;
             return !string.IsNullOrEmpty(values)
                 ? values.Split('|') : new string[0];
         }

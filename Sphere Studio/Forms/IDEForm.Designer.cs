@@ -85,6 +85,8 @@
             this.OpenProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuCloseProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpenLastProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuImportSgm = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.sphereProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -488,6 +490,8 @@
             this.OpenProjectMenuItem,
             this.menuCloseProject,
             this.menuOpenLastProject,
+            this.toolStripSeparator7,
+            this.menuImportSgm,
             this.Separator1,
             this.menuNew,
             this.menuOpen,
@@ -538,6 +542,18 @@
             this.menuOpenLastProject.Size = new System.Drawing.Size(187, 22);
             this.menuOpenLastProject.Text = "Open &Last Project";
             this.menuOpenLastProject.Click += new System.EventHandler(this.menuOpenLastProject_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(184, 6);
+            // 
+            // menuImportSgm
+            // 
+            this.menuImportSgm.Name = "menuImportSgm";
+            this.menuImportSgm.Size = new System.Drawing.Size(187, 22);
+            this.menuImportSgm.Text = "Upgrade SGM...";
+            this.menuImportSgm.Click += new System.EventHandler(this.menuImportSgm_Click);
             // 
             // Separator1
             // 
@@ -1142,6 +1158,8 @@
         private System.Windows.Forms.ToolStripMenuItem buildToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuBuildPackage;
         internal System.Windows.Forms.ToolStripMenuItem menuNew;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem menuImportSgm;
     }
 }
 

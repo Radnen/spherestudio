@@ -34,7 +34,7 @@ namespace SphereStudio.Forms
             PathTextBox.Text = _project.FileName;
             NameTextBox.Text = _project.Name;
             AuthorTextBox.Text = _project.Author;
-            SummaryTextBox.Text = _project.Description;
+            SummaryTextBox.Text = _project.Summary;
             BuildDirTextBox.Text = _project.BuildPath;
             EngineComboBox.Text = _project.Engine;
             CompilerComboBox.Text = _project.Compiler;
@@ -46,7 +46,7 @@ namespace SphereStudio.Forms
         {
             _project.Name = NameTextBox.Text;
             _project.Author = AuthorTextBox.Text;
-            _project.Description = SummaryTextBox.Text;
+            _project.Summary = SummaryTextBox.Text;
             _project.Engine = EngineComboBox.Text;
             _project.Compiler = CompilerComboBox.Text;
             _project.BuildPath = BuildDirTextBox.Text;

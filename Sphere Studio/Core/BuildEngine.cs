@@ -30,16 +30,18 @@ namespace SphereStudio
         }
 
         /// <summary>
-        /// Returns whether a project's engine supports single-step debugging.
+        /// Checks whether a project's engine supports single-step debugging.
         /// </summary>
+        /// <returns>true iff the engine supports single-step debugging.</returns>
         public static bool CanDebug(Project project)
         {
             return PluginManager.Get<IDebugStarter>(project.Engine) != null;
         }
 
         /// <summary>
-        /// Returns whether a project's toolchain supports packaging.
+        /// Checks whether a project's compiler supports packaging.
         /// </summary>
+        /// <returns>true iff the compiler supports packaging.</returns>
         public static bool CanPackage(Project project)
         {
             return PluginManager.Get<IPackager>(project.Compiler) != null;

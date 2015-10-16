@@ -175,7 +175,7 @@ namespace SphereStudio.Forms
             string extension = Path.GetExtension(filePath);
 
             // is it a project?
-            if ((new[] { ".sgm", ".ssproj" }).Contains(extension))
+            if (extension.ToUpper() == ".SSPROJ")
             {
                 OpenProject(filePath);
                 return null;
@@ -457,10 +457,10 @@ namespace SphereStudio.Forms
             using (OpenFileDialog projDiag = new OpenFileDialog())
             {
                 projDiag.Title = @"Open Project";
-                projDiag.Filter = @"Game Files|*.sgm|All Files|*.*";
+                projDiag.Filter = @"Sphere Studio Projects|*.ssproj";
                 projDiag.InitialDirectory = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    @"Sphere Studio\Projects");
+                    "Sphere Studio", "Projects");
 
                 if (projDiag.ShowDialog() == DialogResult.OK)
                     OpenProject(projDiag.FileName);
@@ -1058,7 +1058,7 @@ namespace SphereStudio.Forms
             ConfigSelectTool.Items.Clear();
 
             string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                @"Sphere Studio/Presets");
+                "Sphere Studio", "Presets");
             if (Directory.Exists(presetPath))
             {
                 var presetFiles = from filename in Directory.GetFiles(presetPath, "*.preset")
@@ -1186,6 +1186,29 @@ namespace SphereStudio.Forms
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 await BuildEngine.Package(Core.Project, sfd.FileName);
+            }
+        }
+
+        private void menuImportSgm_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog projDiag = new OpenFileDialog())
+            {
+                projDiag.Title = @"Open Project";
+                projDiag.Filter = @"Sphere Game Manifest|game.sgm";
+                projDiag.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                if (projDiag.ShowDialog() == DialogResult.OK)
+                {
+                    DialogResult answer = MessageBox.Show("The project will be created in the same directory as the original SGM file.  Continue?",
+                        "Create Project from SGM", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (answer == DialogResult.Yes)
+                    {
+                        Project np = SphereStudio.Project.FromSgm(projDiag.FileName);
+                        np.Save();
+                        File.Delete(projDiag.FileName);
+                        OpenProject(np.FileName);
+                    }
+                }
             }
         }
     }

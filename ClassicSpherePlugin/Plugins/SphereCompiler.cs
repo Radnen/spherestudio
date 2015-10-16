@@ -90,7 +90,7 @@ namespace SphereStudio.Vanilla.Plugins
             using (StreamWriter sw = new StreamWriter(sgmPath)) {
                 sw.WriteLine(string.Format("name={0}", project.Name));
                 sw.WriteLine(string.Format("author={0}", project.Author));
-                sw.WriteLine(string.Format("description={0}", project.Description));
+                sw.WriteLine(string.Format("description={0}", project.Summary));
                 sw.WriteLine(string.Format("screen_width={0}", project.ScreenWidth));
                 sw.WriteLine(string.Format("screen_height={0}", project.ScreenHeight));
                 sw.WriteLine(string.Format("script={0}", project.MainScript));

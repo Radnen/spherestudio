@@ -105,7 +105,7 @@ namespace SphereStudio.Forms
                 item.SubItems.Add(pair.Value.Main.Version);
                 item.SubItems.Add(pair.Value.Main.Description);
                 item.Tag = pair.Key;
-                item.Checked = !Core.Settings.OffPlugins.Contains(pair.Value.Handle);
+                item.Checked = !Core.Settings.DisabledPlugins.Contains(pair.Value.Handle);
                 PluginsList.Items.Add(item);
             }
             
@@ -120,7 +120,7 @@ namespace SphereStudio.Forms
             string lastItem = Core.Settings.Preset;
             
             PresetsList.Items.Clear();
-            string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
+            string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
             if (Directory.Exists(presetPath))
             {
                 var presets = from filename in Directory.GetFiles(presetPath, "*.preset")
@@ -187,7 +187,7 @@ namespace SphereStudio.Forms
                 string fileName = diag.PresetName + ".preset";
                 string path = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    @"Sphere Studio\Presets", fileName);
+                    "Sphere Studio", "Presets", fileName);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 using (IniFile preset = new IniFile(path))
                 {
@@ -196,7 +196,7 @@ namespace SphereStudio.Forms
                     preset.Write("Preset", "defaultFileOpener", GetPluginName(FilePluginList));
                     preset.Write("Preset", "scriptEditor", GetPluginName(ScriptPluginList));
                     preset.Write("Preset", "imageEditor", GetPluginName(ImagePluginList));
-                    preset.Write("Preset", "disabledPlugins", string.Join("|", Core.Settings.OffPlugins));
+                    preset.Write("Preset", "disabledPlugins", string.Join("|", Core.Settings.DisabledPlugins));
                 }
                 Core.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
                 Core.Settings.Apply();
@@ -209,7 +209,7 @@ namespace SphereStudio.Forms
             string filename = string.Format("{0}.preset", PresetsList.Text);
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                @"Sphere Studio\Presets", filename);
+                "Sphere Studio", "Presets", filename);
             DialogResult result = MessageBox.Show(
                 String.Format("Are you sure you want to delete the preset file \"{0}\"?", filename),
                 "Delete Preset", MessageBoxButtons.YesNo);
@@ -224,7 +224,7 @@ namespace SphereStudio.Forms
         {
             if (_updatingPlugins) return;
 
-            Core.Settings.OffPlugins = (from ListViewItem item in PluginsList.Items
+            Core.Settings.DisabledPlugins = (from ListViewItem item in PluginsList.Items
                                         where !item.Checked
                                         select item.Tag as string).ToArray();
             Core.Settings.Apply();

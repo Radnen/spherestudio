@@ -47,7 +47,8 @@ namespace Sphere.Plugins.Interfaces
         /// Reads a list of comma-separated strings from the settings.
         /// </summary>
         /// <param name="key">The name of the setting.</param>
-        string[] GetStringArray(string key);
+        /// <param name="defValues">A default array to return if the setting doesn't exist.</param>
+        string[] GetStringArray(string key, string[] defValues);
 
         /// <summary>
         /// Writes a value to the settings.

@@ -35,7 +35,7 @@ namespace Sphere.Plugins.Interfaces
         /// <summary>
         /// Gets or sets a short summary/description of the game.
         /// </summary>
-        string Description { get; set; }
+        string Summary { get; set; }
         
         /// <summary>
         /// Gets or sets the game's default horizontal resolution.

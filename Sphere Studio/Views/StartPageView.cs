@@ -112,7 +112,7 @@ namespace SphereStudio.Views
             // Search through a list of supplied directories.
             string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
             var paths = new List<string>(Core.Settings.ProjectPaths);
-            paths.Insert(0, Path.Combine(sphereDir, @"Projects"));
+            paths.Insert(0, Path.Combine(sphereDir, "Projects"));
             foreach (string path in paths)
             {
                 if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
@@ -174,7 +174,7 @@ namespace SphereStudio.Views
             NameLabel.Text = @"Name: " + _proj.Name;
             AuthorLabel.Text = @"Author: " + _proj.Author;
             SizeLabel.Text = string.Format(@"Resolution: {0}x{1}", _proj.ScreenWidth, _proj.ScreenHeight);
-            DescTextLabel.Text = _proj.Description;
+            DescTextLabel.Text = _proj.Summary;
         }
 
         private async void PlayMenuItem_Click(object sender, EventArgs e)

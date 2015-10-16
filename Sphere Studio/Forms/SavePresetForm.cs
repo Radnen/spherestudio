@@ -32,7 +32,7 @@ namespace SphereStudio.Forms
         {
             const string defaultName = "Untitled Preset";
             
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
             string name = defaultName;
             int ordinal = 1;
             while (File.Exists(Path.Combine(path, name + ".preset")))
@@ -44,7 +44,7 @@ namespace SphereStudio.Forms
         {
             presetBox.Items.Clear();
             presetBox.Items.Add("new preset (enter name below)");
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio\Presets");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
             if (Directory.Exists(path))
             {
                 var presets = from filename in Directory.GetFiles(path, "*.preset")
@@ -76,7 +76,7 @@ namespace SphereStudio.Forms
             string filename = customNameBox.Text + ".preset";
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                @"Sphere Studio\Presets", filename);
+                "Sphere Studio", "Presets", filename);
             bool isSaveAllowed = true;
             if (File.Exists(path))
             {

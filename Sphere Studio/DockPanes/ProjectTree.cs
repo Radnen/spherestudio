@@ -29,7 +29,7 @@ namespace SphereStudio.DockPanes
 
             _hostForm = hostForm;
 
-            // TODO: fix this ugly hack!
+            // TODO: Fix this ugly hack! (ProjectTree New submenu)
             NewFileItem.DropDown = _hostForm.menuNew.DropDown;
             NewFileItem.DropDownOpening += _hostForm.menuNew_DropDownOpening;
             NewFileItem.DropDownClosed += _hostForm.menuNew_DropDownClosed;

@@ -43,7 +43,7 @@ namespace SphereStudio
                     string handle = Path.GetFileNameWithoutExtension(file.Name);
                     if (!Plugins.Keys.Contains(handle))  // only the first by that name is used
                         try { Plugins[handle] = new PluginShim(file.FullName, handle); }
-                        catch { /* TODO: log plugin load failure */ }
+                        catch { /* TODO: Log plugin load failure */ }
                 }
             }
         }
@@ -119,16 +119,16 @@ namespace SphereStudio
             set { SetValue("autoStartPage", value); }
         }
 
-        public string Compiler
-        {
-            get { return GetString("defaultCompiler", ""); }
-            set { Preset = null; SetValue("defaultCompiler", value); }
-        }
-
         public string Engine
         {
             get { return GetString("defaultEngine", ""); }
             set { Preset = null; SetValue("defaultEngine", value); }
+        }
+
+        public string Compiler
+        {
+            get { return GetString("defaultCompiler", ""); }
+            set { Preset = null; SetValue("defaultCompiler", value); }
         }
 
         public string FileOpener
@@ -155,9 +155,9 @@ namespace SphereStudio
             set { SetValue("lastProject", value); }
         }
 
-        public string[] OffPlugins
+        public string[] DisabledPlugins
         {
-            get { return GetStringArray("disabledPlugins"); }
+            get { return GetStringArray("disabledPlugins", new string[0]); }
             set { Preset = ""; SetValue("disabledPlugins", value); }
         }
 
@@ -181,7 +181,7 @@ namespace SphereStudio
                         FileOpener = preset.Read("Preset", "defaultFileOpener", "");
                         ImageEditor = preset.Read("Preset", "imageEditor", "");
                         ScriptEditor = preset.Read("Preset", "scriptEditor", "");
-                        OffPlugins = preset.Read("Preset", "disabledPlugins", "").Split('|');
+                        DisabledPlugins = preset.Read("Preset", "disabledPlugins", "").Split('|');
                     }
                     SetValue("preset", value);
                 }
@@ -194,7 +194,10 @@ namespace SphereStudio
 
         public string[] ProjectPaths
         {
-            get { return GetStringArray("gamePaths"); }
+            get
+            {
+                return GetStringArray("gamePaths", new string[0]);
+            }
             set { SetValue("gamePaths", value); }
         }
 
@@ -221,7 +224,7 @@ namespace SphereStudio
         {
             StyleSettings.CurrentStyle = UIStyle;
             foreach (var plugin in Core.Plugins)
-                plugin.Value.Enabled = !OffPlugins.Contains(plugin.Key);
+                plugin.Value.Enabled = !DisabledPlugins.Contains(plugin.Key);
             PluginManager.Core.Docking.Refresh();
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,17 +15,30 @@ using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio
 {
+    /// <summary>
+    /// Represents a Sphere Studio project.
+    /// </summary>
     class Project : IProject
     {
         private Dictionary<string, HashSet<int>> _breakpoints = new Dictionary<string, HashSet<int>>();
         private IniSettings _ssproj;
-        private string _projFileName;
-        private string _userFileName;
 
+        /// <summary>
+        /// Creates a new, empty Sphere Studio project.
+        /// </summary>
+        /// <param name="rootPath">Path of the directory where the project will reside. Must be empty.</param>
+        /// <param name="name">The name of the project to create.</param>
+        /// <returns>A Project object representing the new project.</returns>
         public static Project Create(string rootPath, string name)
         {
-            Directory.CreateDirectory(rootPath);
-            var project = new Project(Path.Combine(rootPath, MakeFileName(name))) { Name = name };
+            DirectoryInfo dirInfo = new DirectoryInfo(rootPath);
+            if (dirInfo.Exists && dirInfo.GetFileSystemInfos().Length > 0)
+                throw new ArgumentException("Root directory for a new project must be empty.");
+            dirInfo.Create();
+            var project = new Project(Path.Combine(dirInfo.FullName, MakeFileName(name)))
+            {
+                Name = name
+            };
             return project;
         }
 
@@ -37,39 +51,89 @@ namespace SphereStudio
         {
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
+
             return new Project(fileName);
+        }
+
+        /// <summary>
+        /// Creates a new Sphere Studio project from a Sphere 1.x game.sgm file.
+        /// </summary>
+        /// <param name="fileName">The fully qualified filename of the game.sgm to import.</param>
+        /// <returns>A Project object representing the new project.</returns>
+        public static Project FromSgm(string fileName)
+        {
+            // TODO: Move SGM import functionality into a plugin?
+
+            if (!File.Exists(fileName))
+                throw new FileNotFoundException();
+
+            var rootPath = Path.GetDirectoryName(fileName);
+            Project project = new Project(Path.Combine(rootPath, "game.ssproj"))
+            {
+                Name = "Untitled",
+                Author = "Author Unknown",
+                Summary = "",
+                ScreenWidth = 320,
+                ScreenHeight = 240,
+                MainScript = "main.js",
+            };
+
+            string[] sgmText = File.ReadAllLines(fileName);
+            foreach (string line in sgmText)
+            {
+                try
+                {
+                    Match match = new Regex("(.+)=(.*)").Match(line);
+                    if (match.Success)
+                    {
+                        string key = match.Groups[1].Value;
+                        string value = match.Groups[2].Value;
+                        switch (key)
+                        {
+                            case "name": project.Name = value; break;
+                            case "author": project.Author = value; break;
+                            case "description": project.Summary = value; break;
+                            case "script": project.MainScript = value; break;
+                            case "screen_width": project.ScreenWidth = int.Parse(value); break;
+                            case "screen_height": project.ScreenHeight = int.Parse(value); break;
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            project.FileName = Path.Combine(rootPath, MakeFileName(project.Name));
+            project.Engine = "Sphere 1.x";
+            project.Compiler = "Vanilla";
+            return project;
         }
 
         private Project(string fileName)
         {
             fileName = Path.GetFullPath(fileName);
-            _projFileName = fileName;
-            _userFileName = Path.ChangeExtension(fileName, ".ssuser");
-            _ssproj = new IniSettings(new IniFile(_projFileName, false), ".ssproj");
-            User = new UserSettings(_userFileName);
+            FileName = fileName;
+            _ssproj = new IniSettings(new IniFile(FileName, false), ".ssproj");
+            User = new UserSettings(Path.ChangeExtension(FileName, ".ssuser"));
         }
 
         public UserSettings User { get; private set; }
 
         /// <summary>
-        /// Gets the path and filename of the .ssproj file.
+        /// Gets the fully qualified filename of the .ssproj file.
         /// </summary>
-        public string FileName
-        {
-            get { return _projFileName; }
-        }
+        public string FileName { get; private set; }
         
         /// <summary>
         /// Gets the full path of the project's root directory.
         /// </summary>
         public string RootPath
         {
-            get { return Path.GetDirectoryName(_projFileName); }
+            get { return Path.GetDirectoryName(FileName); }
         }
 
         /// <summary>
         /// Gets or sets the name of the directory where the project
-        /// is built. May be relative.
+        /// is built. Relative to project root.
         /// </summary>
         public string BuildPath
         {
@@ -116,7 +180,7 @@ namespace SphereStudio
         /// <summary>
         /// Gets or sets a short description of the game.
         /// </summary>
-        public string Description
+        public string Summary
         {
             get { return _ssproj.GetString("description", ""); }
             set { _ssproj.SetValue("description", value); }
@@ -155,8 +219,8 @@ namespace SphereStudio
         /// </summary>
         public void Save()
         {
-            User.SaveAs(_userFileName);
-            _ssproj.SaveAs(_projFileName);
+            User.SaveAs(Path.ChangeExtension(FileName, ".ssuser"));
+            _ssproj.SaveAs(FileName);
         }
 
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()
@@ -220,7 +284,7 @@ namespace SphereStudio
         /// </summary>
         public string[] Documents
         {
-            get { return GetStringArray("openDocuments"); }
+            get { return GetStringArray("openDocuments", new string[0]); }
             set { SetValue("openDocuments", value); }
         }
 

@@ -44,7 +44,7 @@ namespace SphereStudio.Forms
         {
             NewProject = Project.Create(DirectoryBox.Text, NameBox.Text);
             NewProject.Author = AuthorBox.Text;
-            NewProject.Description = DescriptionBox.Text;
+            NewProject.Summary = DescriptionBox.Text;
             NewProject.ScreenWidth = int.Parse(WidthBox.Text);
             NewProject.ScreenHeight = int.Parse(HeightBox.Text);
             NewProject.MainScript = "main.js";
