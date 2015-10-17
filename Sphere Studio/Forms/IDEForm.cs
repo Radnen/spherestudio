@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
-using Sphere.Core;
 using SphereStudio.DockPanes;
 using SphereStudio.SettingsPages;
 using SphereStudio.Views;
@@ -55,7 +54,7 @@ namespace SphereStudio.Forms
             Core.Settings.Apply();
             Docking.Show(_projectTree);
 
-            UpdatePresetList();
+            UpdateEngineList();
             UpdateControls();
             UpdateStyle();
             Invalidate(true);
@@ -230,12 +229,12 @@ namespace SphereStudio.Forms
         {
             if (string.IsNullOrEmpty(fileName)) return;
             Project pj = SphereStudio.Project.Open(fileName);
-            IStarter starter = PluginManager.Get<IStarter>(pj.Engine);
+            IStarter starter = PluginManager.Get<IStarter>(pj.ActiveEngine);
             ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
             {
                 var answer = MessageBox.Show(
-                    string.Format("One or more plugins required to work on '{0}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}\n\nIf you continue, data may be lost.  Open this project anyway?", pj.Name, pj.Engine, pj.Compiler),
+                    string.Format("One or more plugins required to work on '{0}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{1}\n\nSupported engines:\n{2}\n\nIf you continue, data may be lost.  Open this project anyway?", pj.Name, pj.Compiler, string.Join("\r\n", pj.Engines)),
                     "Proceed with Caution", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (answer == DialogResult.No)
                     return;
@@ -275,6 +274,8 @@ namespace SphereStudio.Forms
             Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
                 Project.Name);
+
+            UpdateEngineList();
             UpdateControls();
         }
 
@@ -695,7 +696,7 @@ namespace SphereStudio.Forms
         private void menuConfigManager_Click(object sender, EventArgs e)
         {
             new ConfigManager().ShowDialog(this);
-            UpdatePresetList();
+            UpdateEngineList();
             UpdateControls();
         }
 
@@ -721,24 +722,21 @@ namespace SphereStudio.Forms
         #endregion
 
         #region Configuration Selector handlers
-        private void ConfigSelectTool_SelectedIndexChanged(object sender, EventArgs e)
+        private void toolEngineCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_loadingPresets) return;
 
-            if (ConfigSelectTool.SelectedIndex == 0 && Core.Settings.Preset == null)
-                return;
-
-            // user selected Configuration Manager (always at bottom)
-            if (ConfigSelectTool.SelectedIndex == ConfigSelectTool.Items.Count - 1)
+            // user selected Configure (always at bottom)
+            if (toolEngineCombo.SelectedIndex == toolEngineCombo.Items.Count - 1)
             {
-                menuConfigManager_Click(null, EventArgs.Empty);
+                OpenProjectProps(true);
+                UpdateEngineList();
                 return;
             }
 
-            Core.Settings.Preset = ConfigSelectTool.Text;
-            Core.Settings.Apply();
+            Core.Project.ActiveEngine = toolEngineCombo.Text;
             UpdateControls();
-            UpdatePresetList();
+            UpdateEngineList();
         }
         #endregion
 
@@ -822,7 +820,7 @@ namespace SphereStudio.Forms
         private void ApplyRefresh(bool ignore_presets = false)
         {
             if (!ignore_presets)
-                UpdatePresetList();
+                UpdateEngineList();
 
             UpdateControls();
             SuspendLayout();
@@ -928,10 +926,16 @@ namespace SphereStudio.Forms
             }
         }
 
-        private void OpenProjectProps()
+        private void OpenProjectProps(bool editBuild = false)
         {
-            if (new ProjectPropsForm(Core.Project).ShowDialog(this) == DialogResult.OK)
-                UpdateControls();
+            using (var form = new ProjectPropsForm(Core.Project, editBuild))
+            {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    UpdateEngineList();
+                    UpdateControls();
+                }
+            }
         }
 
         private void RefreshProject()
@@ -1017,6 +1021,7 @@ namespace SphereStudio.Forms
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
 
+            toolEngineCombo.Enabled = IsProjectOpen;
             toolConfigEngine.Enabled = menuConfigEngine.Enabled = haveConfig;
 
             menuBuildPackage.Enabled = Core.Project != null
@@ -1051,34 +1056,27 @@ namespace SphereStudio.Forms
                 menu_DropDownClosed(item, null);
         }
 
-        private void UpdatePresetList()
+        private void UpdateEngineList()
         {
             bool wasLoadingPresets = _loadingPresets;
             _loadingPresets = true;
 
-            ConfigSelectTool.Items.Clear();
-
-            string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "Sphere Studio", "Presets");
-            if (Directory.Exists(presetPath))
+            toolEngineCombo.Items.Clear();
+            if (IsProjectOpen)
             {
-                var presetFiles = from filename in Directory.GetFiles(presetPath, "*.preset")
-                                  orderby filename ascending
-                                  select filename;
-                foreach (string s in presetFiles)
-                {
-                    ConfigSelectTool.Items.Add(Path.GetFileNameWithoutExtension(s));
-                }
-                if (Core.Settings.Preset != null)
-                    ConfigSelectTool.SelectedItem = Core.Settings.Preset;
+                var engines = from name in Core.Project.Engines
+                              where PluginManager.Get<IStarter>(name) != null
+                              select name;
+                
+                foreach (string name in engines)
+                    toolEngineCombo.Items.Add(name);
+                toolEngineCombo.Items.Add("Configure Engines...");
+                toolEngineCombo.Text = Core.Project.ActiveEngine;
             }
-            ConfigSelectTool.Items.Add("Configuration Manager...");
-
-            // if no active preset selected, settings were edited manually
-            if (ConfigSelectTool.SelectedIndex == -1)
+            else
             {
-                ConfigSelectTool.Items.Insert(0, "Custom Settings");
-                ConfigSelectTool.SelectedIndex = 0;
+                toolEngineCombo.Items.Add("No Project Open");
+                toolEngineCombo.SelectedIndex = 0;
             }
 
             _loadingPresets = wasLoadingPresets;

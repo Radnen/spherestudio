@@ -35,7 +35,7 @@ namespace SphereStudio
         /// <returns>true iff the engine supports single-step debugging.</returns>
         public static bool CanDebug(Project project)
         {
-            return PluginManager.Get<IDebugStarter>(project.Engine) != null;
+            return PluginManager.Get<IDebugStarter>(project.ActiveEngine) != null;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace SphereStudio
         /// <returns></returns>
         public static bool CanTest(Project project)
         {
-            return PluginManager.Get<IStarter>(project.Engine) != null
+            return PluginManager.Get<IStarter>(project.ActiveEngine) != null
                 && PluginManager.Get<ICompiler>(project.Compiler) != null;
         }
 
@@ -99,7 +99,7 @@ namespace SphereStudio
             if (compiler == null)
             {
                 MessageBox.Show(
-                    string.Format("Unable to build '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.Engine, project.Compiler),
+                    string.Format("Unable to build '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.ActiveEngine, project.Compiler),
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
@@ -160,7 +160,7 @@ namespace SphereStudio
             if (!CanDebug(project))
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
-            var starter = PluginManager.Get<IDebugStarter>(project.Engine);
+            var starter = PluginManager.Get<IDebugStarter>(project.ActiveEngine);
             string outPath = await Build(project);
             if (outPath != null)
                 return starter.Debug(outPath, false, project);
@@ -174,7 +174,7 @@ namespace SphereStudio
         /// <param name="project">The project to test.</param>
         public static async Task Test(Project project)
         {
-            var starter = PluginManager.Get<IStarter>(project.Engine);
+            var starter = PluginManager.Get<IStarter>(project.ActiveEngine);
             if (starter != null)
             {
                 string outPath = await Build(project);
@@ -186,7 +186,7 @@ namespace SphereStudio
             else
             {
                 MessageBox.Show(
-                    string.Format("Unable to test '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.Engine, project.Compiler),
+                    string.Format("Unable to test '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.ActiveEngine, project.Compiler),
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

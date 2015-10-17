@@ -65,7 +65,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTestGame = new System.Windows.Forms.ToolStripButton();
             this.toolDebug = new System.Windows.Forms.ToolStripButton();
-            this.ConfigSelectTool = new System.Windows.Forms.ToolStripComboBox();
+            this.toolEngineCombo = new System.Windows.Forms.ToolStripComboBox();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -256,7 +256,7 @@
             this.toolStripSeparator2,
             this.toolTestGame,
             this.toolDebug,
-            this.ConfigSelectTool});
+            this.toolEngineCombo});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
@@ -396,14 +396,14 @@
             this.toolDebug.Text = "&Debug";
             this.toolDebug.Click += new System.EventHandler(this.menuDebug_Click);
             // 
-            // ConfigSelectTool
+            // toolEngineCombo
             // 
-            this.ConfigSelectTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ConfigSelectTool.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.ConfigSelectTool.Name = "ConfigSelectTool";
-            this.ConfigSelectTool.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.ConfigSelectTool.Size = new System.Drawing.Size(155, 28);
-            this.ConfigSelectTool.SelectedIndexChanged += new System.EventHandler(this.ConfigSelectTool_SelectedIndexChanged);
+            this.toolEngineCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toolEngineCombo.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.toolEngineCombo.Name = "toolEngineCombo";
+            this.toolEngineCombo.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.toolEngineCombo.Size = new System.Drawing.Size(155, 28);
+            this.toolEngineCombo.SelectedIndexChanged += new System.EventHandler(this.toolEngineCombo_SelectedIndexChanged);
             // 
             // EditorStatus
             // 
@@ -1134,7 +1134,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuAbout;
         private System.Windows.Forms.ToolStripMenuItem menuVisitSite;
         private System.Windows.Forms.MenuStrip EditorMenu;
-        private System.Windows.Forms.ToolStripComboBox ConfigSelectTool;
+        private System.Windows.Forms.ToolStripComboBox toolEngineCombo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuTools;

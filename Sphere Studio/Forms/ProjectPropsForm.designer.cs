@@ -42,11 +42,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.SummaryTextBox = new System.Windows.Forms.TextBox();
             this.BuildPage = new System.Windows.Forms.TabPage();
+            this.EngineList = new System.Windows.Forms.ListView();
+            this.NameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.DebugHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.BuildDirTextBox = new System.Windows.Forms.TextBox();
-            this.EngineComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.CompilerComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -159,7 +161,7 @@
             this.tabControl1.Location = new System.Drawing.Point(14, 38);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(445, 401);
+            this.tabControl1.Size = new System.Drawing.Size(445, 427);
             this.tabControl1.TabIndex = 1;
             // 
             // GeneralPage
@@ -175,7 +177,7 @@
             this.GeneralPage.Location = new System.Drawing.Point(4, 24);
             this.GeneralPage.Name = "GeneralPage";
             this.GeneralPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralPage.Size = new System.Drawing.Size(437, 373);
+            this.GeneralPage.Size = new System.Drawing.Size(437, 399);
             this.GeneralPage.TabIndex = 0;
             this.GeneralPage.Text = "General";
             this.GeneralPage.UseVisualStyleBackColor = true;
@@ -197,25 +199,52 @@
             this.SummaryTextBox.Location = new System.Drawing.Point(15, 137);
             this.SummaryTextBox.Multiline = true;
             this.SummaryTextBox.Name = "SummaryTextBox";
-            this.SummaryTextBox.Size = new System.Drawing.Size(404, 217);
+            this.SummaryTextBox.Size = new System.Drawing.Size(404, 243);
             this.SummaryTextBox.TabIndex = 7;
             // 
             // BuildPage
             // 
+            this.BuildPage.Controls.Add(this.EngineList);
             this.BuildPage.Controls.Add(this.groupBox1);
             this.BuildPage.Controls.Add(this.label4);
             this.BuildPage.Controls.Add(this.BuildDirTextBox);
-            this.BuildPage.Controls.Add(this.EngineComboBox);
             this.BuildPage.Controls.Add(this.label2);
             this.BuildPage.Controls.Add(this.CompilerComboBox);
             this.BuildPage.Controls.Add(this.label1);
             this.BuildPage.Location = new System.Drawing.Point(4, 24);
             this.BuildPage.Name = "BuildPage";
             this.BuildPage.Padding = new System.Windows.Forms.Padding(3);
-            this.BuildPage.Size = new System.Drawing.Size(437, 373);
+            this.BuildPage.Size = new System.Drawing.Size(437, 399);
             this.BuildPage.TabIndex = 1;
             this.BuildPage.Text = "Toolchain";
             this.BuildPage.UseVisualStyleBackColor = true;
+            // 
+            // EngineList
+            // 
+            this.EngineList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.EngineList.CheckBoxes = true;
+            this.EngineList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.NameColumn,
+            this.DebugHeader});
+            this.EngineList.Location = new System.Drawing.Point(83, 180);
+            this.EngineList.Name = "EngineList";
+            this.EngineList.Size = new System.Drawing.Size(335, 200);
+            this.EngineList.TabIndex = 7;
+            this.EngineList.UseCompatibleStateImageBehavior = false;
+            this.EngineList.View = System.Windows.Forms.View.Details;
+            this.EngineList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.EngineList_ItemChecked);
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.Text = "Name";
+            this.NameColumn.Width = 225;
+            // 
+            // DebugHeader
+            // 
+            this.DebugHeader.Text = "Debugger";
+            this.DebugHeader.Width = 70;
             // 
             // groupBox1
             // 
@@ -260,25 +289,14 @@
             this.BuildDirTextBox.Size = new System.Drawing.Size(335, 23);
             this.BuildDirTextBox.TabIndex = 2;
             // 
-            // EngineComboBox
-            // 
-            this.EngineComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.EngineComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.EngineComboBox.FormattingEnabled = true;
-            this.EngineComboBox.Location = new System.Drawing.Point(83, 151);
-            this.EngineComboBox.Name = "EngineComboBox";
-            this.EngineComboBox.Size = new System.Drawing.Size(335, 23);
-            this.EngineComboBox.TabIndex = 4;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 154);
+            this.label2.Location = new System.Drawing.Point(29, 180);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 15);
+            this.label2.Size = new System.Drawing.Size(48, 15);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Engine";
+            this.label2.Text = "Engines";
             // 
             // CompilerComboBox
             // 
@@ -286,7 +304,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CompilerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CompilerComboBox.FormattingEnabled = true;
-            this.CompilerComboBox.Location = new System.Drawing.Point(83, 180);
+            this.CompilerComboBox.Location = new System.Drawing.Point(83, 151);
             this.CompilerComboBox.Name = "CompilerComboBox";
             this.CompilerComboBox.Size = new System.Drawing.Size(335, 23);
             this.CompilerComboBox.TabIndex = 6;
@@ -294,7 +312,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 183);
+            this.label1.Location = new System.Drawing.Point(21, 154);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 15);
             this.label1.TabIndex = 5;
@@ -305,7 +323,7 @@
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Controls.Add(this.OKButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 454);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 480);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(473, 38);
             this.ButtonPanel.TabIndex = 2;
@@ -316,7 +334,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(473, 492);
+            this.ClientSize = new System.Drawing.Size(473, 518);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.editorLabel1);
@@ -356,7 +374,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox SummaryTextBox;
         private System.Windows.Forms.TextBox BuildDirTextBox;
-        private System.Windows.Forms.ComboBox EngineComboBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox CompilerComboBox;
         private System.Windows.Forms.Label label1;
@@ -364,5 +381,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel ButtonPanel;
+        private System.Windows.Forms.ListView EngineList;
+        private System.Windows.Forms.ColumnHeader NameColumn;
+        private System.Windows.Forms.ColumnHeader DebugHeader;
     }
 }

@@ -37,6 +37,8 @@ namespace Sphere.Plugins
         /// <param name="name">The friendly name of the compiler, used in the UI.</param>
         public static void Register(IPluginMain main, IPlugin plugin, string name)
         {
+            if (name.Contains('|'))
+                throw new ArgumentException("Registered name of plugin cannot contain pipe characters.");
             _plugins.Add(new PluginEntry(main, plugin, name));
         }
 

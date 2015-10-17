@@ -325,7 +325,7 @@
             this.MainHeader.Name = "MainHeader";
             this.MainHeader.Size = new System.Drawing.Size(668, 23);
             this.MainHeader.TabIndex = 0;
-            this.MainHeader.Text = "Manage your Sphere Studio developer configurations";
+            this.MainHeader.Text = "Manage your Sphere Studio plugin configurations";
             this.MainHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ConfigManager
