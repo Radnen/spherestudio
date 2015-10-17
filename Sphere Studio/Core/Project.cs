@@ -147,13 +147,13 @@ namespace SphereStudio
 
         public string Engine
         {
-            get { return _ssproj.GetString("engine", ""); }
+            get { return _ssproj.GetString("engine", "Sphere 1.x"); }
             set { _ssproj.SetValue("engine", value); }
         }
 
         public string Compiler
         {
-            get { return _ssproj.GetString("compiler", ""); }
+            get { return _ssproj.GetString("compiler", "Vanilla"); }
             set { _ssproj.SetValue("compiler", value); }
         }
 
