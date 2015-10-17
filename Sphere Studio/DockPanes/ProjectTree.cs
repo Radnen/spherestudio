@@ -189,7 +189,7 @@ namespace SphereStudio.DockPanes
             foreach (string name in pluginNames)
             {
                 var plugin = PluginManager.Get<IFileOpener>(name);
-                _iconlist.Images.Add(name, plugin.FileIcon);
+                _iconlist.Images.Add(name, plugin.FileIcon ?? Resources.new_item);
             }
 
             Cursor.Current = Cursors.WaitCursor;
