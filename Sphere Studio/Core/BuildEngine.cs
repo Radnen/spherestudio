@@ -66,7 +66,7 @@ namespace SphereStudio
         {
             if (!CanPackage(project))
                 throw new NotSupportedException("The active compiler doesn't support packaging.");
-            var packager = PluginManager.Get<IPackager>(Core.Project.Compiler);
+            var packager = PluginManager.Get<IPackager>(project.Compiler);
             return packager.SaveFileFilters;
         }
 
@@ -98,13 +98,15 @@ namespace SphereStudio
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler == null)
             {
-                _buildView.Print("ERROR: Compiler missing. Open Configuration Manager and check your plugins.\n\n");
-                _buildView.Print(string.Format("(Toolchain: {0}/{1})\n", Core.Project.Engine, Core.Project.Compiler));
+                MessageBox.Show(
+                    string.Format("Unable to build '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.Engine, project.Compiler),
+                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
 
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
+
             _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
             if (await compiler.Build(project, outPath, _buildView))
@@ -184,7 +186,7 @@ namespace SphereStudio
             else
             {
                 MessageBox.Show(
-                    string.Format("Unable to test project.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nProject: {0}\n\nToolchain:\n{1}/{2}", Core.Project.Name, Core.Project.Engine, Core.Project.Compiler),
+                    string.Format("Unable to test '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.Engine, project.Compiler),
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
