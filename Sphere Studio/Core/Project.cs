@@ -62,8 +62,6 @@ namespace SphereStudio
         /// <returns>A Project object representing the new project.</returns>
         public static Project FromSgm(string fileName)
         {
-            // TODO: Move SGM import functionality into a plugin?
-
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
 

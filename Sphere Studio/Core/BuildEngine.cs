@@ -48,6 +48,17 @@ namespace SphereStudio
         }
 
         /// <summary>
+        /// Checks whether a project can be run with the current configuration.
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
+        public static bool CanTest(Project project)
+        {
+            return PluginManager.Get<IStarter>(project.Engine) != null
+                && PluginManager.Get<ICompiler>(project.Compiler) != null;
+        }
+
+        /// <summary>
         /// Gets the SaveFileDialog filter for the current packaging compiler. Throws an
         /// exception if the compiler doesn't support packages.
         /// </summary>

@@ -17,7 +17,7 @@ namespace Sphere.Core
         private Dictionary<string, Dictionary<string, string>> _sections;
 
         /// <summary>
-        /// Constructs an INI object referencing the specified .ini file.
+        /// Constructs an IniFile object referencing the specified .ini file.
         /// </summary>
         /// <param name="filepath">The fully qualified .ini file path.</param>
         /// <param name="autoSave">

@@ -225,12 +225,24 @@ namespace SphereStudio.Forms
         /// Loads a Sphere Studio project into the IDE.
         /// </summary>
         /// <param name="fileName">The filename of the project.</param>
-        public void OpenProject(string fileName)
+        /// <param name="usePluginWarning">Whether to show a warning if required plugins are missing.</param>
+        public void OpenProject(string fileName, bool usePluginWarning = true)
         {
             if (string.IsNullOrEmpty(fileName)) return;
-            if (!CloseCurrentProject()) return;
+            Project pj = SphereStudio.Project.Open(fileName);
+            IStarter starter = PluginManager.Get<IStarter>(pj.Engine);
+            ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
+            if (usePluginWarning && (starter == null || compiler == null))
+            {
+                var answer = MessageBox.Show(
+                    string.Format("One or more plugins required to work on '{0}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}\n\nIf you continue, data may be lost.  Open this project anyway?", pj.Name, pj.Engine, pj.Compiler),
+                    "Proceed with Caution", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (answer == DialogResult.No)
+                    return;
+            }
 
-            Core.Project = SphereStudio.Project.Open(fileName);
+            if (!CloseCurrentProject()) return;
+            Core.Project = pj;
 
             RefreshProject();
 
@@ -435,7 +447,7 @@ namespace SphereStudio.Forms
                 if (BuildEngine.Prep(npf.NewProject))
                 {
                     npf.NewProject.Save();
-                    OpenProject(npf.NewProject.FileName);
+                    OpenProject(npf.NewProject.FileName, false);
                     _startPage.PopulateGameList();
                 }
                 else
@@ -470,7 +482,7 @@ namespace SphereStudio.Forms
         private void menuOpenLastProject_Click(object sender, EventArgs e)
         {
             if (File.Exists(Core.Settings.LastProject))
-                OpenProject(Core.Settings.LastProject);
+                OpenProject(Core.Settings.LastProject, false);
             else
                 UpdateControls();
         }
@@ -684,6 +696,7 @@ namespace SphereStudio.Forms
         {
             new ConfigManager().ShowDialog(this);
             UpdatePresetList();
+            UpdateControls();
         }
 
         private void menuEditorSettings_Click(object sender, EventArgs e)
@@ -917,21 +930,8 @@ namespace SphereStudio.Forms
 
         private void OpenProjectProps()
         {
-            var compiler = PluginManager.Get<ICompiler>(Core.Project.Compiler);
-            var starter = PluginManager.Get<IStarter>(Core.Project.Engine);
-            if (compiler != null && starter != null)
-            {
-                if (new ProjectPropsForm(Core.Project).ShowDialog(this) == DialogResult.OK)
-                    UpdateControls();
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Unable to open Project Properties.  Plugins for this project's toolchain are either missing or disabled; continuing with this operation would result in a loss of data."
-                    + string.Format("\n\nProject: {0}", Core.Project.Name)
-                    + string.Format("\n\nToolchain:\n{0}/{1}", Core.Project.Engine, Core.Project.Compiler),
-                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            if (new ProjectPropsForm(Core.Project).ShowDialog(this) == DialogResult.OK)
+                UpdateControls();
         }
 
         private void RefreshProject()
@@ -1022,7 +1022,8 @@ namespace SphereStudio.Forms
             menuBuildPackage.Enabled = Core.Project != null
                 && BuildEngine.CanPackage(Core.Project);
 
-            menuTestGame.Enabled = toolTestGame.Enabled = Debugger == null;
+            menuTestGame.Enabled = toolTestGame.Enabled = Core.Project != null
+                && BuildEngine.CanTest(Core.Project) && Debugger == null;
             menuDebug.Enabled = toolDebug.Enabled = Core.Project != null
                 && BuildEngine.CanDebug(Core.Project)
                 && (Debugger == null || !Debugger.Running);
@@ -1206,7 +1207,7 @@ namespace SphereStudio.Forms
                         Project np = SphereStudio.Project.FromSgm(projDiag.FileName);
                         np.Save();
                         File.Delete(projDiag.FileName);
-                        OpenProject(np.FileName);
+                        OpenProject(np.FileName, false);
                     }
                 }
             }

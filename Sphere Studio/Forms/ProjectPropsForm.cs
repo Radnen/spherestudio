@@ -29,7 +29,12 @@ namespace SphereStudio.Forms
         private void ProjectPropsForm_Load(object sender, EventArgs e)
         {
             EngineComboBox.Items.AddRange(PluginManager.GetNames<IStarter>());
+            if (!EngineComboBox.Items.Contains(_project.Engine))
+                EngineComboBox.Items.Insert(0, _project.Engine);
+
             CompilerComboBox.Items.AddRange(PluginManager.GetNames<ICompiler>());
+            if (!CompilerComboBox.Items.Contains(_project.Compiler))
+                CompilerComboBox.Items.Insert(0, _project.Compiler);
 
             PathTextBox.Text = _project.FileName;
             NameTextBox.Text = _project.Name;
@@ -44,6 +49,18 @@ namespace SphereStudio.Forms
 
         private void OKButton_Click(object sender, EventArgs e)
         {
+            if (EngineComboBox.Text != _project.Engine || CompilerComboBox.Text != _project.Compiler)
+            {
+                var answer = MessageBox.Show(
+                    "You've changed the toolchain for this project.  This may prevent Sphere Studio from building and/or running the project.  Are you sure you want to continue?",
+                    "Changing Toolchain", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (answer == DialogResult.No)
+                {
+                    DialogResult = DialogResult.None;
+                    return;
+                }
+            }
+
             _project.Name = NameTextBox.Text;
             _project.Author = AuthorTextBox.Text;
             _project.Summary = SummaryTextBox.Text;
