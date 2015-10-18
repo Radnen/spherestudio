@@ -30,7 +30,6 @@ namespace SphereStudio.SettingsPages
             Core.Settings.UIStyle = StylePicker.Text;
             Core.Settings.UseStartPage = UseStartPage.Checked;
             Core.Settings.AutoOpenLastProject = OpenLastProject.Checked;
-            Core.Settings.AutoHideBuild = AutoHideBuild.Checked;
             Core.Settings.UseScriptHeaders = UseScriptHeader.Checked;
             Core.Settings.ProjectPaths = paths;
             return true;
@@ -50,7 +49,6 @@ namespace SphereStudio.SettingsPages
             StylePicker.Text = Core.Settings.UIStyle;
             UseStartPage.Checked = Core.Settings.UseStartPage;
             OpenLastProject.Checked = Core.Settings.AutoOpenLastProject;
-            AutoHideBuild.Checked = Core.Settings.AutoHideBuild;
             UseScriptHeader.Checked = Core.Settings.UseScriptHeaders;
             PathList.Items.AddRange(Core.Settings.ProjectPaths);
 

@@ -31,7 +31,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.AutoHideBuild = new System.Windows.Forms.CheckBox();
             this.UseStartPage = new System.Windows.Forms.CheckBox();
             this.OpenLastProject = new System.Windows.Forms.CheckBox();
             this.PropLabel = new Sphere.Core.Editor.EditorLabel();
@@ -91,25 +90,14 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.AutoHideBuild);
             this.panel1.Controls.Add(this.UseStartPage);
             this.panel1.Controls.Add(this.OpenLastProject);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 97);
             this.panel1.Margin = new System.Windows.Forms.Padding(5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(424, 92);
+            this.panel1.Size = new System.Drawing.Size(424, 68);
             this.panel1.TabIndex = 3;
-            // 
-            // AutoHideBuild
-            // 
-            this.AutoHideBuild.AutoSize = true;
-            this.AutoHideBuild.Location = new System.Drawing.Point(14, 36);
-            this.AutoHideBuild.Name = "AutoHideBuild";
-            this.AutoHideBuild.Size = new System.Drawing.Size(385, 17);
-            this.AutoHideBuild.TabIndex = 1;
-            this.AutoHideBuild.Text = "Hide the build log after a successful build when testing or debugging a game";
-            this.AutoHideBuild.UseVisualStyleBackColor = true;
             // 
             // UseStartPage
             // 
@@ -124,7 +112,7 @@
             // OpenLastProject
             // 
             this.OpenLastProject.AutoSize = true;
-            this.OpenLastProject.Location = new System.Drawing.Point(14, 59);
+            this.OpenLastProject.Location = new System.Drawing.Point(14, 36);
             this.OpenLastProject.Name = "OpenLastProject";
             this.OpenLastProject.Size = new System.Drawing.Size(227, 17);
             this.OpenLastProject.TabIndex = 2;
@@ -156,7 +144,7 @@
             // 
             // StylePicker
             // 
-            this.StylePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.StylePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StylePicker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.StylePicker.FormattingEnabled = true;
@@ -278,7 +266,7 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Name = "label1";
@@ -340,8 +328,8 @@
             // 
             // PathList
             // 
-            this.PathList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.PathList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PathList.FormattingEnabled = true;
             this.PathList.IntegralHeight = false;
@@ -365,10 +353,10 @@
             this.editorLabel4.Text = "Choose directories to be searched for Sphere Studio projects";
             this.editorLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // MainPage
+            // SettingsPage
             // 
             this.Controls.Add(this.tabControl1);
-            this.Name = "MainPage";
+            this.Name = "SettingsPage";
             this.Size = new System.Drawing.Size(438, 400);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -410,6 +398,5 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.CheckBox UseScriptHeader;
         private Sphere.Core.Editor.EditorLabel editorLabel3;
-        private System.Windows.Forms.CheckBox AutoHideBuild;
     }
 }

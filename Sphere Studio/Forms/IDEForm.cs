@@ -337,6 +337,10 @@ namespace SphereStudio.Forms
             if (e.Cancel) return;
             if (!CloseCurrentProject(true))
                 e.Cancel = true;
+            else
+            {
+                _dock.Persist();
+            }
         }
 
         void menu_DropDownOpening(object sender, EventArgs e)

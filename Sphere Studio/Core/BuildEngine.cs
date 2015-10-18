@@ -93,7 +93,7 @@ namespace SphereStudio
         /// </summary>
         /// <param name="project">The project to build.</param>
         /// <returns>The full path of the compiled distribution.</returns>
-        public static async Task<string> Build(Project project, bool forceVisible = false)
+        public static async Task<string> Build(Project project)
         {
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler == null)
@@ -112,8 +112,6 @@ namespace SphereStudio
             if (await compiler.Build(project, outPath, _buildView))
             {
                 _buildView.Print(string.Format("================= Successfully built: {0} ================\n", project.Name));
-                if (Core.Settings.AutoHideBuild && !forceVisible)
-                    PluginManager.Core.Docking.Hide(_buildView);
                 return outPath;
             }
             else

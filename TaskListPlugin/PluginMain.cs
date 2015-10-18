@@ -22,10 +22,8 @@ namespace SphereStudio.Plugins
             _list = new TaskList { Dock = DockStyle.Fill };
 
             // Register the task list as a plugin. Since TaskList implements
-            // IDockPane, this also adds an entry for it to the View menu, but for
-            // convenience we'll show it by default anyway.
+            // IDockPane, this also automatically adds an entry for it to the View menu.
             PluginManager.Register(this, _list, "Task List");
-            PluginManager.Core.Docking.Show(_list);
 
             // You can add special event listeners, if you want. A task list must
             // be able to, well, load a task list, so in this case we can use these

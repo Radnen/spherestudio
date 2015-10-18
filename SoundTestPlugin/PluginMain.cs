@@ -53,7 +53,6 @@ namespace SphereStudio.Plugins
             PluginManager.Core.LoadProject += IDE_LoadProject;
             PluginManager.Core.UnloadProject += IDE_UnloadProject;
             PluginManager.Core.TestGame += IDE_TestGame;
-            PluginManager.Core.Docking.Show(this);
         }
 
         public void ShutDown()

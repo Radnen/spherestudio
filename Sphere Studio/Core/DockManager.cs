@@ -13,7 +13,7 @@ using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio
 {
-    struct DockForm
+    struct DockPaneShim
     {
         public string Name;
         public DockContent Content;
@@ -22,7 +22,7 @@ namespace SphereStudio
 
     class DockManager : IDock
     {
-        List<DockForm> _dockForms = new List<DockForm>();
+        List<DockPaneShim> _activePanes = new List<DockPaneShim>();
         DockPanel _mainPanel;
 
         public DockManager(DockPanel mainPanel)
@@ -32,59 +32,74 @@ namespace SphereStudio
 
         public void Refresh()
         {
-            DockForm[] removedForms = _dockForms
+            DockPaneShim[] removedForms = _activePanes
                 .Where(x => PluginManager.Get<IDockPane>(x.Name) == null)
                 .ToArray();
-            foreach (DockForm form in removedForms)
+            foreach (DockPaneShim form in removedForms)
             {
                 form.Content.Dispose();
-                _dockForms.Remove(form);
+                _activePanes.Remove(form);
             }
             var newPanels = from name in PluginManager.GetNames<IDockPane>()
-                            where _dockForms.All(form => form.Name != name)
+                            where _activePanes.All(form => form.Name != name)
                             select name;
             foreach (string name in newPanels)
             {
                 IDockPane plugin = PluginManager.Get<IDockPane>(name);
-                DockForm form = new DockForm() { Name = name, Pane = plugin };
-                form.Content = new DockContent() { Name = name, TabText = name };
-                form.Content.Controls.Add(plugin.Control);
-                form.Content.Icon = plugin.DockIcon != null
+                DockPaneShim shim = new DockPaneShim() { Name = name, Pane = plugin };
+                shim.Content = new DockContent() { Name = name, TabText = name };
+                shim.Content.Controls.Add(plugin.Control);
+                shim.Content.Icon = plugin.DockIcon != null
                     ? Icon.FromHandle(plugin.DockIcon.GetHicon())
                     : null;
-                form.Content.HideOnClose = true;
-                form.Content.DockAreas = DockAreas.Float
+                shim.Content.HideOnClose = true;
+                shim.Content.DockAreas = DockAreas.Float
                     | DockAreas.DockLeft | DockAreas.DockRight
                     | DockAreas.DockTop | DockAreas.DockBottom;
+                bool autoHide = Core.Settings.AutoHidePanes.Contains(name);
                 DockState state = plugin.DockHint == DockHint.Float ? DockState.Float
-                    : plugin.DockHint == DockHint.Left ? DockState.DockLeft
-                    : plugin.DockHint == DockHint.Right ? DockState.DockRight
-                    : plugin.DockHint == DockHint.Top ? DockState.DockTop
-                    : plugin.DockHint == DockHint.Bottom ? DockState.DockBottom
-                    : DockState.Float;
+                    : plugin.DockHint == DockHint.Left ? (autoHide ? DockState.DockLeftAutoHide : DockState.DockLeft)
+                    : plugin.DockHint == DockHint.Right ? (autoHide ? DockState.DockRightAutoHide : DockState.DockRight)
+                    : plugin.DockHint == DockHint.Top ? (autoHide ? DockState.DockTopAutoHide : DockState.DockTop)
+                    : plugin.DockHint == DockHint.Bottom ? (autoHide ? DockState.DockBottomAutoHide : DockState.DockBottom)
+                    : DockState.Float;  // this is the ugliest thing ever
                 plugin.Control.Dock = DockStyle.Fill;
-                form.Content.Show(_mainPanel, state);
-                form.Content.Hide();
-                _dockForms.Add(form);
+                shim.Content.Show(_mainPanel, state);
+                if (!plugin.ShowInViewMenu || Core.Settings.HiddenPanes.Contains(name))
+                    shim.Content.Hide();
+                _activePanes.Add(shim);
             }
         }
 
-        public bool IsVisible(IDockPane panel)
+        public bool IsVisible(IDockPane pane)
         {
-            DockForm form = _dockForms.Find(x => x.Pane == panel);
-            return form.Pane != null && !form.Content.IsHidden;
+            DockPaneShim shim = _activePanes.Find(x => x.Pane == pane);
+            return shim.Pane != null && !shim.Content.IsHidden;
+        }
+
+        public void Persist()
+        {
+            Core.Settings.AutoHidePanes = _activePanes
+                .Where(form => IsAutoHidden(form))
+                .Select(form => form.Name).ToArray();
+            Core.Settings.HiddenPanes = _activePanes
+                .Where(x => x.Pane.ShowInViewMenu)
+                .Where(x => !IsVisible(x.Pane))
+                .Select(x => x.Name).ToArray();
         }
 
         public void Show(IDockPane pane)
         {
             Refresh();
-            DockForm form = _dockForms.Find(x => x.Pane == pane);
+            DockPaneShim form = _activePanes.Find(x => x.Pane == pane);
             if (form.Pane != null)
             {
                 Control oldFocus = _mainPanel.Parent;
                 while (oldFocus is ContainerControl)
                     oldFocus = ((ContainerControl)oldFocus).ActiveControl;
                 form.Content.Show();
+                if (IsAutoHidden(form))
+                    _mainPanel.ActiveAutoHideContent = form.Content;
                 if (oldFocus != null) oldFocus.Focus();
             }
         }
@@ -92,7 +107,7 @@ namespace SphereStudio
         public void Hide(IDockPane pane)
         {
             Refresh();
-            DockForm form = _dockForms.Find(x => x.Pane == pane);
+            DockPaneShim form = _activePanes.Find(x => x.Pane == pane);
             if (form.Pane != null)
             {
                 form.Content.Hide();
@@ -101,7 +116,7 @@ namespace SphereStudio
 
         public void Toggle(IDockPane pane)
         {
-            DockForm form = _dockForms.Find(x => x.Pane == pane);
+            DockPaneShim form = _activePanes.Find(x => x.Pane == pane);
             if (form.Pane != null)
             {
                 if (!IsVisible(form.Pane))
@@ -109,6 +124,15 @@ namespace SphereStudio
                 else
                     Hide(pane);
             }
+        }
+
+        private static bool IsAutoHidden(DockPaneShim form)
+        {
+            DockState state = form.Content.DockState;
+            return state == DockState.DockLeftAutoHide
+                || state == DockState.DockRightAutoHide
+                || state == DockState.DockTopAutoHide
+                || state == DockState.DockBottomAutoHide;
         }
     }
 }

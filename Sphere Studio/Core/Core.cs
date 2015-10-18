@@ -101,6 +101,18 @@ namespace SphereStudio
             set { SetValue("autoHideBuild", value); }
         }
 
+        public string[] HiddenPanes
+        {
+            get { return GetStringArray("hiddenPanes", new string[0]); }
+            set { SetValue("hiddenPanes", value); }
+        }
+
+        public string[] AutoHidePanes
+        {
+            get { return GetStringArray("autoHidePanes", new string[0]); }
+            set { SetValue("autoHidePanes", value); }
+        }
+
         public bool AutoOpenLastProject
         {
             get { return GetBoolean("autoOpenProject", false); }
