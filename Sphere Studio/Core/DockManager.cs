@@ -52,6 +52,7 @@ namespace SphereStudio
                 form.Content.Icon = plugin.DockIcon != null
                     ? Icon.FromHandle(plugin.DockIcon.GetHicon())
                     : null;
+                form.Content.HideOnClose = true;
                 form.Content.DockAreas = DockAreas.Float
                     | DockAreas.DockLeft | DockAreas.DockRight
                     | DockAreas.DockTop | DockAreas.DockBottom;
