@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsPage));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ConfigButton = new System.Windows.Forms.Button();
-            this.BrowseButton = new System.Windows.Forms.Button();
             this.SpherePathEdit = new System.Windows.Forms.TextBox();
             this.PathLabel = new System.Windows.Forms.Label();
             this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.BrowseButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -79,26 +80,13 @@
             // 
             this.ConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ConfigButton.Enabled = false;
-            this.ConfigButton.Location = new System.Drawing.Point(372, 39);
+            this.ConfigButton.Image = global::SphereStudio.Vanilla.Properties.Resources.ConfigIcon;
+            this.ConfigButton.Location = new System.Drawing.Point(385, 39);
             this.ConfigButton.Name = "ConfigButton";
-            this.ConfigButton.Size = new System.Drawing.Size(94, 25);
+            this.ConfigButton.Size = new System.Drawing.Size(25, 25);
             this.ConfigButton.TabIndex = 0;
-            this.ConfigButton.Text = "&Configure...";
-            this.ConfigButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.ConfigButton.UseVisualStyleBackColor = true;
             this.ConfigButton.Click += new System.EventHandler(this.ConfigButton_Click);
-            // 
-            // BrowseButton
-            // 
-            this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Image = global::SphereStudio.Vanilla.Properties.Resources.BrowseIcon;
-            this.BrowseButton.Location = new System.Drawing.Point(472, 13);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(25, 20);
-            this.BrowseButton.TabIndex = 4;
-            this.BrowseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.BrowseButton.UseVisualStyleBackColor = true;
-            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // SpherePathEdit
             // 
@@ -107,7 +95,7 @@
             this.SpherePathEdit.Location = new System.Drawing.Point(51, 13);
             this.SpherePathEdit.Name = "SpherePathEdit";
             this.SpherePathEdit.ReadOnly = true;
-            this.SpherePathEdit.Size = new System.Drawing.Size(415, 20);
+            this.SpherePathEdit.Size = new System.Drawing.Size(445, 20);
             this.SpherePathEdit.TabIndex = 2;
             this.SpherePathEdit.TextChanged += new System.EventHandler(this.SpherePath_TextChanged);
             // 
@@ -132,6 +120,19 @@
             this.editorLabel1.TabIndex = 4;
             this.editorLabel1.Text = "Where is Sphere 1.x installed?";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // BrowseButton
+            // 
+            this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BrowseButton.Image = ((System.Drawing.Image)(resources.GetObject("BrowseButton.Image")));
+            this.BrowseButton.Location = new System.Drawing.Point(416, 39);
+            this.BrowseButton.Name = "BrowseButton";
+            this.BrowseButton.Size = new System.Drawing.Size(80, 25);
+            this.BrowseButton.TabIndex = 4;
+            this.BrowseButton.Text = "Browse...";
+            this.BrowseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BrowseButton.UseVisualStyleBackColor = true;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // SettingsPage
             // 

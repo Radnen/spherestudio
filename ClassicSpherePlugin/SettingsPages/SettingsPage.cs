@@ -53,9 +53,13 @@ namespace SphereStudio.Vanilla.SettingsPages
 
         private void ConfigButton_Click(object sender, EventArgs e)
         {
-            Directory.SetCurrentDirectory(SpherePathEdit.Text);
-            Process.Start(Path.Combine(SpherePathEdit.Text, "config.exe"));
-            Directory.SetCurrentDirectory(Application.StartupPath);
+            var configAppPath = Path.Combine(SpherePathEdit.Text, "config.exe");
+            if (File.Exists(configAppPath))
+            {
+                Directory.SetCurrentDirectory(SpherePathEdit.Text);
+                Process.Start(configAppPath);
+                Directory.SetCurrentDirectory(Application.StartupPath);
+            }
         }
 
         private void SpherePath_TextChanged(object sender, EventArgs e)

@@ -52,12 +52,10 @@ namespace SphereStudio.Forms
             PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
             PluginManager.Register(null, _projectTree, "Project Tree");
             Core.Settings.Apply();
-            Docking.Show(_projectTree);
 
-            UpdateEngineList();
-            UpdateControls();
-            UpdateStyle();
-            Invalidate(true);
+            Docking.Show(_projectTree);
+            Docking.Activate(_projectTree);
+            Refresh();
 
             if (Core.Settings.AutoOpenLastProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
@@ -281,10 +279,15 @@ namespace SphereStudio.Forms
 
         public override void Refresh()
         {
+            base.Refresh();
+
             foreach (DocumentTab tab in _tabs)
                 tab.Restyle();
             _projectTree.UpdateStyle();
-            base.Refresh();
+            _dock.Refresh();
+            UpdateStyle();
+            UpdateEngineList();
+            UpdateControls();
         }
 
         public void UpdateStyle()

@@ -74,6 +74,7 @@ namespace SphereStudio
         {
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
+            PluginManager.Core.Docking.Activate(_buildView);
             _buildView.Print(string.Format("-------------------- Prep started: {0} -------------------\n", project.Name));
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler.Prep(project, _buildView))
@@ -106,6 +107,7 @@ namespace SphereStudio
 
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
+            PluginManager.Core.Docking.Activate(_buildView);
 
             _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
             string outPath = Path.Combine(project.RootPath, project.BuildPath);

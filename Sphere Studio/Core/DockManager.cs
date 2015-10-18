@@ -62,19 +62,13 @@ namespace SphereStudio
                     : plugin.DockHint == DockHint.Right ? (autoHide ? DockState.DockRightAutoHide : DockState.DockRight)
                     : plugin.DockHint == DockHint.Top ? (autoHide ? DockState.DockTopAutoHide : DockState.DockTop)
                     : plugin.DockHint == DockHint.Bottom ? (autoHide ? DockState.DockBottomAutoHide : DockState.DockBottom)
-                    : DockState.Float;  // this is the ugliest thing ever
+                    : DockState.Float;  // stacked and nested ternary = awesome
                 plugin.Control.Dock = DockStyle.Fill;
                 shim.Content.Show(_mainPanel, state);
                 if (!plugin.ShowInViewMenu || Core.Settings.HiddenPanes.Contains(name))
                     shim.Content.Hide();
                 _activePanes.Add(shim);
             }
-        }
-
-        public bool IsVisible(IDockPane pane)
-        {
-            DockPaneShim shim = _activePanes.Find(x => x.Pane == pane);
-            return shim.Pane != null && !shim.Content.IsHidden;
         }
 
         public void Persist()
@@ -88,18 +82,38 @@ namespace SphereStudio
                 .Select(x => x.Name).ToArray();
         }
 
-        public void Show(IDockPane pane)
+        public bool IsVisible(IDockPane pane)
+        {
+            DockPaneShim shim = _activePanes.Find(x => x.Pane == pane);
+            return shim.Pane != null && !shim.Content.IsHidden;
+        }
+
+        public void Activate(IDockPane pane)
         {
             Refresh();
-            DockPaneShim form = _activePanes.Find(x => x.Pane == pane);
-            if (form.Pane != null)
+            DockPaneShim shim = _activePanes.Find(x => x.Pane == pane);
+            if (shim.Pane != null && IsVisible(shim.Pane))
             {
                 Control oldFocus = _mainPanel.Parent;
                 while (oldFocus is ContainerControl)
                     oldFocus = ((ContainerControl)oldFocus).ActiveControl;
-                form.Content.Show();
-                if (IsAutoHidden(form))
-                    _mainPanel.ActiveAutoHideContent = form.Content;
+                shim.Content.Show();
+                if (IsAutoHidden(shim))
+                    _mainPanel.ActiveAutoHideContent = shim.Content;
+                if (oldFocus != null) oldFocus.Focus();
+            }
+        }
+
+        public void Show(IDockPane pane)
+        {
+            Refresh();
+            DockPaneShim shim = _activePanes.Find(x => x.Pane == pane);
+            if (shim.Pane != null && !IsVisible(shim.Pane))
+            {
+                Control oldFocus = _mainPanel.Parent;
+                while (oldFocus is ContainerControl)
+                    oldFocus = ((ContainerControl)oldFocus).ActiveControl;
+                shim.Content.Show();
                 if (oldFocus != null) oldFocus.Focus();
             }
         }

@@ -133,15 +133,21 @@ namespace Sphere.Plugins.Interfaces
         void Refresh();
 
         /// <summary>
-        /// Hides a registered dock pane. If it is already hidden, does nothing.
+        /// Activates a dock pane, giving it focus. Has no effect if the pane is hidden.
         /// </summary>
-        /// <param name="pane">The dock pane to hide.</param>
-        void Hide(IDockPane pane);
-
+        /// <param name="pane"></param>
+        void Activate(IDockPane pane);
+        
         /// <summary>
         /// Shows a registered dock pane. If it is already visible, does nothing.
         /// </summary>
         /// <param name="pane">The dock pane to show.</param>
         void Show(IDockPane pane);
+
+        /// <summary>
+        /// Hides a registered dock pane. If it is already hidden, does nothing.
+        /// </summary>
+        /// <param name="pane">The dock pane to hide.</param>
+        void Hide(IDockPane pane);
     }
 }
