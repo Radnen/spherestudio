@@ -10,7 +10,6 @@ namespace SphereStudio.Forms
 {
     partial class ProjectPropsForm : Form, IStyleable
     {
-        private bool _isRefreshing = false;
         private Project _project;
         
         public ProjectPropsForm(Project someProject, bool editBuild = false)
@@ -27,21 +26,6 @@ namespace SphereStudio.Forms
             }
         }
 
-        public override void Refresh()
-        {
-            base.Refresh();
-
-            if (_isRefreshing) return;
-            _isRefreshing = true;
-
-            var selectedEngines = from ListViewItem item in EngineList.Items
-                                  where item.Checked
-                                  select item.Text;
-            OKButton.Enabled = selectedEngines.Count() > 0;
-
-            _isRefreshing = false;
-        }
-
         public void UpdateStyle()
         {
             StyleSettings.ApplyStyle(ButtonPanel);
@@ -55,23 +39,12 @@ namespace SphereStudio.Forms
             if (!CompilerComboBox.Items.Contains(_project.Compiler))
                 CompilerComboBox.Items.Insert(0, _project.Compiler);
 
-            var engines = _project.Engines;
-            foreach (string name in PluginManager.GetNames<IStarter>())
-            {
-                var plugin = PluginManager.Get<IStarter>(name);
-                var item = EngineList.Items.Add(name);
-                item.SubItems.Add(plugin is IDebugStarter ? "Yes" : "No");
-                item.Checked = engines.Contains(name);
-            }
-
             PathTextBox.Text = _project.FileName;
             NameTextBox.Text = _project.Name;
             AuthorTextBox.Text = _project.Author;
             SummaryTextBox.Text = _project.Summary;
             BuildDirTextBox.Text = _project.BuildPath;
             CompilerComboBox.Text = _project.Compiler;
-
-            Refresh();
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -89,14 +62,9 @@ namespace SphereStudio.Forms
                 }
             }
 
-            var selectedEngines = from ListViewItem item in EngineList.Items
-                                  where item.Checked
-                                  select item.Text;
-
             _project.Name = NameTextBox.Text;
             _project.Author = AuthorTextBox.Text;
             _project.Summary = SummaryTextBox.Text;
-            _project.Engines = selectedEngines.ToArray();
             _project.Compiler = CompilerComboBox.Text;
             _project.BuildPath = BuildDirTextBox.Text;
             _project.Save();

@@ -101,7 +101,6 @@ namespace SphereStudio
             }
 
             project.FileName = Path.Combine(rootPath, MakeFileName(project.Name));
-            project.Engines = new[] { "Sphere 1.x" };
             project.Compiler = "Vanilla";
             return project;
         }
@@ -149,21 +148,15 @@ namespace SphereStudio
         {
             get
             {
-                var engines = (from name in Engines
-                               where PluginManager.Get<IStarter>(name) != null
-                               select name).ToArray();
-
-                string value = User.GetString("activeEngine", "");
-                string defaultEngine = engines.Length > 0 ? engines[0] : "";
-                return engines.Contains(value) ? value : defaultEngine;
+                string[] engines = PluginManager.GetNames<IStarter>();
+                string defaultEngine =
+                    engines.Contains(Core.Settings.Engine) ? Core.Settings.Engine
+                    : engines.Length > 0 ? engines[0]
+                    : "";
+                string value = User.GetString("activeEngine", defaultEngine);
+                return engines.Contains(value) ? value : Core.Settings.Engine;
             }
             set { User.SetValue("activeEngine", value); }
-        }
-
-        public string[] Engines
-        {
-            get { return _ssproj.GetStringArray("engines", new[] { "Sphere 1.x" }); }
-            set { _ssproj.SetValue("engines", value); }
         }
 
         public string Compiler

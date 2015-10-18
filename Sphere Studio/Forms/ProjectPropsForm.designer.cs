@@ -42,14 +42,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.SummaryTextBox = new System.Windows.Forms.TextBox();
             this.BuildPage = new System.Windows.Forms.TabPage();
-            this.EngineList = new System.Windows.Forms.ListView();
-            this.NameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.DebugHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.BuildDirTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.CompilerComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ButtonPanel = new System.Windows.Forms.Panel();
@@ -204,11 +200,9 @@
             // 
             // BuildPage
             // 
-            this.BuildPage.Controls.Add(this.EngineList);
             this.BuildPage.Controls.Add(this.groupBox1);
             this.BuildPage.Controls.Add(this.label4);
             this.BuildPage.Controls.Add(this.BuildDirTextBox);
-            this.BuildPage.Controls.Add(this.label2);
             this.BuildPage.Controls.Add(this.CompilerComboBox);
             this.BuildPage.Controls.Add(this.label1);
             this.BuildPage.Location = new System.Drawing.Point(4, 24);
@@ -216,35 +210,8 @@
             this.BuildPage.Padding = new System.Windows.Forms.Padding(3);
             this.BuildPage.Size = new System.Drawing.Size(437, 399);
             this.BuildPage.TabIndex = 1;
-            this.BuildPage.Text = "Toolchain";
+            this.BuildPage.Text = "Build";
             this.BuildPage.UseVisualStyleBackColor = true;
-            // 
-            // EngineList
-            // 
-            this.EngineList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.EngineList.CheckBoxes = true;
-            this.EngineList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.NameColumn,
-            this.DebugHeader});
-            this.EngineList.Location = new System.Drawing.Point(83, 180);
-            this.EngineList.Name = "EngineList";
-            this.EngineList.Size = new System.Drawing.Size(335, 200);
-            this.EngineList.TabIndex = 7;
-            this.EngineList.UseCompatibleStateImageBehavior = false;
-            this.EngineList.View = System.Windows.Forms.View.Details;
-            this.EngineList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.EngineList_ItemChecked);
-            // 
-            // NameColumn
-            // 
-            this.NameColumn.Text = "Name";
-            this.NameColumn.Width = 225;
-            // 
-            // DebugHeader
-            // 
-            this.DebugHeader.Text = "Debugger";
-            this.DebugHeader.Width = 70;
             // 
             // groupBox1
             // 
@@ -288,15 +255,6 @@
             this.BuildDirTextBox.Name = "BuildDirTextBox";
             this.BuildDirTextBox.Size = new System.Drawing.Size(335, 23);
             this.BuildDirTextBox.TabIndex = 2;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(29, 180);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 15);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Engines";
             // 
             // CompilerComboBox
             // 
@@ -374,15 +332,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox SummaryTextBox;
         private System.Windows.Forms.TextBox BuildDirTextBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox CompilerComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel ButtonPanel;
-        private System.Windows.Forms.ListView EngineList;
-        private System.Windows.Forms.ColumnHeader NameColumn;
-        private System.Windows.Forms.ColumnHeader DebugHeader;
     }
 }

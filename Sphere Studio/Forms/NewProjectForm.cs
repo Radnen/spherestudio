@@ -48,7 +48,6 @@ namespace SphereStudio.Forms
             NewProject.ScreenWidth = int.Parse(WidthBox.Text);
             NewProject.ScreenHeight = int.Parse(HeightBox.Text);
             NewProject.MainScript = "main.js";
-            NewProject.Engines = new[] { EngineComboBox.Text };
             NewProject.Compiler = CompilerComboBox.Text;
         }
 

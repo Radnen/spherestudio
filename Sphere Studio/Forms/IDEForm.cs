@@ -234,7 +234,7 @@ namespace SphereStudio.Forms
             if (usePluginWarning && (starter == null || compiler == null))
             {
                 var answer = MessageBox.Show(
-                    string.Format("One or more plugins required to work on '{0}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{1}\n\nSupported engines:\n{2}\n\nIf you continue, data may be lost.  Open this project anyway?", pj.Name, pj.Compiler, string.Join("\r\n", pj.Engines)),
+                    string.Format("One or more plugins required to work on '{0}' are either disabled or not installed.  Please open Configuration Manager and check your plugins.\n\nCompiler required:\n{1}\n\nIf you continue, data may be lost.  Open this project anyway?", pj.Name, pj.Compiler),
                     "Proceed with Caution", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (answer == DialogResult.No)
                     return;
@@ -689,7 +689,7 @@ namespace SphereStudio.Forms
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            PluginManager.Get<IStarter>(Core.Settings.Engine)
+            PluginManager.Get<IStarter>(Core.Project.ActiveEngine)
                 .Configure();
         }
 
@@ -729,7 +729,7 @@ namespace SphereStudio.Forms
             // user selected Configure (always at bottom)
             if (toolEngineCombo.SelectedIndex == toolEngineCombo.Items.Count - 1)
             {
-                OpenProjectProps(true);
+                menuConfigManager_Click(null, EventArgs.Empty);
                 UpdateEngineList();
                 return;
             }
@@ -899,6 +899,7 @@ namespace SphereStudio.Forms
             Core.Project = null;
             Text = string.Format("{0} {1} ({2})", Application.ProductName,
                 Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
+            UpdateEngineList();
             UpdateControls();
             return true;
         }
@@ -1017,11 +1018,12 @@ namespace SphereStudio.Forms
 
         private void UpdateControls()
         {
-            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var starter = IsProjectOpen
+                ? PluginManager.Get<IStarter>(Core.Project.ActiveEngine)
+                : null;
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
 
-            toolEngineCombo.Enabled = IsProjectOpen;
             toolConfigEngine.Enabled = menuConfigEngine.Enabled = haveConfig;
 
             menuBuildPackage.Enabled = Core.Project != null
@@ -1062,21 +1064,18 @@ namespace SphereStudio.Forms
             _loadingPresets = true;
 
             toolEngineCombo.Items.Clear();
-            if (IsProjectOpen)
+            string[] engines = PluginManager.GetNames<IStarter>();
+            if (IsProjectOpen && engines.Length > 0)
             {
-                var engines = from name in Core.Project.Engines
-                              where PluginManager.Get<IStarter>(name) != null
-                              select name;
-                
                 foreach (string name in engines)
                     toolEngineCombo.Items.Add(name);
-                toolEngineCombo.Items.Add("Configure Engines...");
+                toolEngineCombo.Items.Add("Configuration Manager...");
                 toolEngineCombo.Text = Core.Project.ActiveEngine;
+                toolEngineCombo.Enabled = true;
             }
             else
             {
-                toolEngineCombo.Items.Add("No Project Open");
-                toolEngineCombo.SelectedIndex = 0;
+                toolEngineCombo.Enabled = false;
             }
 
             _loadingPresets = wasLoadingPresets;
