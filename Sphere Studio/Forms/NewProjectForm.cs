@@ -34,9 +34,7 @@ namespace SphereStudio.Forms
         private void NewProjectForm_Load(object sender, EventArgs e)
         {
             ResoComboBox.SelectedIndex = 0;
-            EngineComboBox.Items.AddRange(PluginManager.GetNames<IStarter>());
             CompilerComboBox.Items.AddRange(PluginManager.GetNames<ICompiler>());
-            EngineComboBox.Text = Core.Settings.Engine;
             CompilerComboBox.Text = Core.Settings.Compiler;
         }
 

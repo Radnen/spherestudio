@@ -141,7 +141,6 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -248,17 +247,16 @@
             this.SaveToolButton,
             this.ToolSeperator1,
             this.GameToolButton,
-            this.toolConfigEngine,
             this.toolEditorSettings,
             this.ToolSeperator2,
             this.CutToolButton,
             this.CopyToolButton,
             this.PasteToolButton,
             this.toolStripSeparator2,
-            this.toolEngineCombo,
+            this.toolTestGame,
             this.toolDebug,
-            this.toolStripSeparator8,
-            this.toolTestGame});
+            this.toolEngineCombo,
+            this.toolConfigEngine});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
@@ -385,8 +383,8 @@
             this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolTestGame.Name = "toolTestGame";
             this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolTestGame.Size = new System.Drawing.Size(82, 25);
-            this.toolTestGame.Text = "Test Game";
+            this.toolTestGame.Size = new System.Drawing.Size(48, 25);
+            this.toolTestGame.Text = "Test";
             this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // toolDebug
@@ -1031,11 +1029,6 @@
             this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 28);
-            // 
             // IDEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1168,7 +1161,6 @@
         internal System.Windows.Forms.ToolStripMenuItem menuNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem menuImportSgm;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
     }
 }
 

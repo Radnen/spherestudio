@@ -99,7 +99,7 @@ namespace SphereStudio
             if (compiler == null)
             {
                 MessageBox.Show(
-                    string.Format("Unable to build '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.ActiveEngine, project.Compiler),
+                    string.Format("Unable to build '{0}'.\n\nA required plugin is missing.  You may not have the necessary compiler installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nCompiler required:\n{1}/{2}", project.Name, project.ActiveEngine, project.Compiler),
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
@@ -186,7 +186,7 @@ namespace SphereStudio
             else
             {
                 MessageBox.Show(
-                    string.Format("Unable to test '{0}'.\n\nA required toolchain plugin is missing.  You may not have the necessary toolchain installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nToolchain Required:\n{1}/{2}", project.Name, project.ActiveEngine, project.Compiler),
+                    string.Format("Unable to test '{0}'.\n\nEither no engines are installed, or all engine plugins are disabled.  Open Configuration Manager and check your plugins.", project.Name),
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

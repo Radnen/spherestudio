@@ -42,8 +42,6 @@
             this.PropertiesBox = new System.Windows.Forms.GroupBox();
             this.CompilerComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.EngineComboBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.DescLabel = new System.Windows.Forms.Label();
             this.DescriptionBox = new System.Windows.Forms.TextBox();
             this.ResoComboBox = new System.Windows.Forms.ComboBox();
@@ -180,8 +178,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PropertiesBox.Controls.Add(this.CompilerComboBox);
             this.PropertiesBox.Controls.Add(this.label2);
-            this.PropertiesBox.Controls.Add(this.EngineComboBox);
-            this.PropertiesBox.Controls.Add(this.label1);
             this.PropertiesBox.Controls.Add(this.DescLabel);
             this.PropertiesBox.Controls.Add(this.DescriptionBox);
             this.PropertiesBox.Controls.Add(this.ResoComboBox);
@@ -192,7 +188,7 @@
             this.PropertiesBox.Controls.Add(this.AuthorBox);
             this.PropertiesBox.Location = new System.Drawing.Point(13, 166);
             this.PropertiesBox.Name = "PropertiesBox";
-            this.PropertiesBox.Size = new System.Drawing.Size(421, 355);
+            this.PropertiesBox.Size = new System.Drawing.Size(421, 349);
             this.PropertiesBox.TabIndex = 3;
             this.PropertiesBox.TabStop = false;
             this.PropertiesBox.Text = "Properties";
@@ -203,7 +199,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CompilerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CompilerComboBox.FormattingEnabled = true;
-            this.CompilerComboBox.Location = new System.Drawing.Point(80, 101);
+            this.CompilerComboBox.Location = new System.Drawing.Point(80, 74);
             this.CompilerComboBox.Name = "CompilerComboBox";
             this.CompilerComboBox.Size = new System.Drawing.Size(330, 21);
             this.CompilerComboBox.TabIndex = 11;
@@ -211,36 +207,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(21, 104);
+            this.label2.Location = new System.Drawing.Point(21, 77);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 10;
             this.label2.Text = "Compiler";
             // 
-            // EngineComboBox
-            // 
-            this.EngineComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.EngineComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.EngineComboBox.FormattingEnabled = true;
-            this.EngineComboBox.Location = new System.Drawing.Point(80, 74);
-            this.EngineComboBox.Name = "EngineComboBox";
-            this.EngineComboBox.Size = new System.Drawing.Size(330, 21);
-            this.EngineComboBox.TabIndex = 9;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 77);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Engine";
-            // 
             // DescLabel
             // 
             this.DescLabel.AutoSize = true;
-            this.DescLabel.Location = new System.Drawing.Point(11, 143);
+            this.DescLabel.Location = new System.Drawing.Point(11, 114);
             this.DescLabel.Name = "DescLabel";
             this.DescLabel.Size = new System.Drawing.Size(85, 13);
             this.DescLabel.TabIndex = 6;
@@ -251,10 +227,10 @@
             this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DescriptionBox.Location = new System.Drawing.Point(14, 159);
+            this.DescriptionBox.Location = new System.Drawing.Point(14, 130);
             this.DescriptionBox.Multiline = true;
             this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(396, 180);
+            this.DescriptionBox.Size = new System.Drawing.Size(396, 202);
             this.DescriptionBox.TabIndex = 7;
             // 
             // ResoComboBox
@@ -342,7 +318,7 @@
             this.NewProjectStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.NewProjectStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel});
-            this.NewProjectStatus.Location = new System.Drawing.Point(0, 566);
+            this.NewProjectStatus.Location = new System.Drawing.Point(0, 560);
             this.NewProjectStatus.Name = "NewProjectStatus";
             this.NewProjectStatus.Size = new System.Drawing.Size(444, 22);
             this.NewProjectStatus.SizingGrip = false;
@@ -361,7 +337,7 @@
             this.ButtonPanel.Controls.Add(this.OKButton);
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 536);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 530);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(444, 30);
             this.ButtonPanel.TabIndex = 4;
@@ -385,7 +361,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(444, 588);
+            this.ClientSize = new System.Drawing.Size(444, 582);
             this.Controls.Add(this.editorLabel1);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.NewProjectStatus);
@@ -442,7 +418,5 @@
         private Sphere.Core.Editor.EditorLabel editorLabel1;
         private System.Windows.Forms.ComboBox CompilerComboBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox EngineComboBox;
-        private System.Windows.Forms.Label label1;
     }
 }
