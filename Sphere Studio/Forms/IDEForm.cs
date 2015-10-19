@@ -227,7 +227,7 @@ namespace SphereStudio.Forms
         {
             if (string.IsNullOrEmpty(fileName)) return;
             Project pj = SphereStudio.Project.Open(fileName);
-            IStarter starter = PluginManager.Get<IStarter>(pj.ActiveEngine);
+            IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
             ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
             {
@@ -696,7 +696,7 @@ namespace SphereStudio.Forms
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            PluginManager.Get<IStarter>(Core.Project.ActiveEngine)
+            PluginManager.Get<IStarter>(Core.Project.User.Engine)
                 .Configure();
         }
 
@@ -741,7 +741,7 @@ namespace SphereStudio.Forms
                 return;
             }
 
-            Core.Project.ActiveEngine = toolEngineCombo.Text;
+            Core.Project.User.Engine = toolEngineCombo.Text;
             UpdateControls();
             UpdateEngineList();
         }
@@ -1026,7 +1026,7 @@ namespace SphereStudio.Forms
         private void UpdateControls()
         {
             var starter = IsProjectOpen
-                ? PluginManager.Get<IStarter>(Core.Project.ActiveEngine)
+                ? PluginManager.Get<IStarter>(Core.Project.User.Engine)
                 : null;
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
@@ -1077,7 +1077,7 @@ namespace SphereStudio.Forms
                 foreach (string name in engines)
                     toolEngineCombo.Items.Add(name);
                 toolEngineCombo.Items.Add("Configuration Manager...");
-                toolEngineCombo.Text = Core.Project.ActiveEngine;
+                toolEngineCombo.Text = Core.Project.User.Engine;
                 toolEngineCombo.Enabled = true;
             }
             else

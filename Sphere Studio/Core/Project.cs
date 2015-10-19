@@ -102,6 +102,7 @@ namespace SphereStudio
 
             project.FileName = Path.Combine(rootPath, MakeFileName(project.Name));
             project.Compiler = "Vanilla";
+            project.User.Engine = "Sphere 1.x";
             return project;
         }
 
@@ -144,21 +145,10 @@ namespace SphereStudio
             }
         }
 
-        public string ActiveEngine
-        {
-            get
-            {
-                string[] engines = PluginManager.GetNames<IStarter>();
-                string defaultEngine =
-                    engines.Contains(Core.Settings.Engine) ? Core.Settings.Engine
-                    : engines.Length > 0 ? engines[0]
-                    : "";
-                string value = User.GetString("activeEngine", defaultEngine);
-                return engines.Contains(value) ? value : Core.Settings.Engine;
-            }
-            set { User.SetValue("activeEngine", value); }
-        }
-
+        /// <summary>
+        /// Gets or sets the registered name of the compiler to use when building
+        /// this project.
+        /// </summary>
         public string Compiler
         {
             get { return _ssproj.GetString("compiler", "Vanilla"); }
@@ -301,6 +291,25 @@ namespace SphereStudio
         {
             get { return GetString("currentDocument", ""); }
             set { SetValue("currentDocument", value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the registered name of the engine starter to use when
+        /// testing or debugging this project.
+        /// </summary>
+        public string Engine
+        {
+            get
+            {
+                string[] engines = PluginManager.GetNames<IStarter>();
+                string defaultEngine =
+                    engines.Contains(Core.Settings.Engine) ? Core.Settings.Engine
+                    : engines.Length > 0 ? engines[0]
+                    : "";
+                string value = GetString("engine", defaultEngine);
+                return engines.Contains(value) ? value : Core.Settings.Engine;
+            }
+            set { SetValue("engine", value); }
         }
 
         /// <summary>
