@@ -380,7 +380,10 @@ namespace SphereStudio.DockPanes
 
         private void ProjectTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if (e.Node.ImageIndex < 3) e.CancelEdit = true;
+            if ((string)e.Node.Tag != "file-node")
+            {
+                e.CancelEdit = true;
+            }
         }
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
