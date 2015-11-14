@@ -56,7 +56,6 @@
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
-            this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
             this.toolEditorSettings = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.CutToolButton = new System.Windows.Forms.ToolStripButton();
@@ -66,6 +65,7 @@
             this.toolTestGame = new System.Windows.Forms.ToolStripButton();
             this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.toolEngineCombo = new System.Windows.Forms.ToolStripComboBox();
+            this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,8 +119,6 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStartPage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuAPI = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuVisitSite = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
@@ -141,6 +139,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -312,17 +311,6 @@
             this.GameToolButton.Text = "Project Properties";
             this.GameToolButton.Click += new System.EventHandler(this.menuGameSettings_Click);
             // 
-            // toolConfigEngine
-            // 
-            this.toolConfigEngine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolConfigEngine.Enabled = false;
-            this.toolConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
-            this.toolConfigEngine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolConfigEngine.Name = "toolConfigEngine";
-            this.toolConfigEngine.Size = new System.Drawing.Size(23, 25);
-            this.toolConfigEngine.Text = "Configure Engine";
-            this.toolConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
-            // 
             // toolEditorSettings
             // 
             this.toolEditorSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -405,6 +393,17 @@
             this.toolEngineCombo.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolEngineCombo.Size = new System.Drawing.Size(150, 28);
             this.toolEngineCombo.SelectedIndexChanged += new System.EventHandler(this.toolEngineCombo_SelectedIndexChanged);
+            // 
+            // toolConfigEngine
+            // 
+            this.toolConfigEngine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolConfigEngine.Enabled = false;
+            this.toolConfigEngine.Image = global::SphereStudio.Properties.Resources.cog;
+            this.toolConfigEngine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolConfigEngine.Name = "toolConfigEngine";
+            this.toolConfigEngine.Size = new System.Drawing.Size(23, 25);
+            this.toolConfigEngine.Text = "Configure Engine";
+            this.toolConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // EditorStatus
             // 
@@ -827,41 +826,27 @@
             // menuHelp
             // 
             this.menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuAPI,
-            this.toolStripSeparator1,
+            this.menuVisitSite,
             this.menuAbout,
-            this.menuVisitSite});
+            this.toolStripSeparator8});
             this.menuHelp.Name = "menuHelp";
             this.menuHelp.Size = new System.Drawing.Size(44, 20);
             this.menuHelp.Text = "&Help";
             this.menuHelp.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.menuHelp.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
-            // menuAPI
-            // 
-            this.menuAPI.Image = global::SphereStudio.Properties.Resources.help;
-            this.menuAPI.Name = "menuAPI";
-            this.menuAPI.Size = new System.Drawing.Size(186, 22);
-            this.menuAPI.Text = "Sphere &API Reference";
-            this.menuAPI.Click += new System.EventHandler(this.menuAPI_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
-            // 
             // menuAbout
             // 
             this.menuAbout.Image = global::SphereStudio.Properties.Resources.information;
             this.menuAbout.Name = "menuAbout";
-            this.menuAbout.Size = new System.Drawing.Size(186, 22);
-            this.menuAbout.Text = "&About";
+            this.menuAbout.Size = new System.Drawing.Size(183, 22);
+            this.menuAbout.Text = "&About Sphere Studio";
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // menuVisitSite
             // 
             this.menuVisitSite.Name = "menuVisitSite";
-            this.menuVisitSite.Size = new System.Drawing.Size(186, 22);
+            this.menuVisitSite.Size = new System.Drawing.Size(183, 22);
             this.menuVisitSite.Text = "Visit Website!";
             this.menuVisitSite.Visible = false;
             // 
@@ -1029,6 +1014,11 @@
             this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(180, 6);
+            // 
             // IDEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1130,8 +1120,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem menuStartPage;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
-        private System.Windows.Forms.ToolStripMenuItem menuAPI;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuAbout;
         private System.Windows.Forms.ToolStripMenuItem menuVisitSite;
         private System.Windows.Forms.MenuStrip EditorMenu;
@@ -1161,6 +1149,7 @@
         internal System.Windows.Forms.ToolStripMenuItem menuNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem menuImportSgm;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
     }
 }
 

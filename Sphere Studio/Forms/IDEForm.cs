@@ -721,11 +721,6 @@ namespace SphereStudio.Forms
                 about.ShowDialog();
             }
         }
-
-        private void menuAPI_Click(object sender, EventArgs e)
-        {
-            OpenFile(Path.Combine(Application.StartupPath, "Docs/api.txt"));
-        }
         #endregion
 
         #region Configuration Selector handlers
