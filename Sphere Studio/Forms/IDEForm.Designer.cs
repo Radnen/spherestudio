@@ -119,8 +119,9 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStartPage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuVisitSite = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorMenu = new System.Windows.Forms.MenuStrip();
             this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBuildPackage = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,7 +140,6 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -835,6 +835,13 @@
             this.menuHelp.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.menuHelp.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
+            // menuVisitSite
+            // 
+            this.menuVisitSite.Name = "menuVisitSite";
+            this.menuVisitSite.Size = new System.Drawing.Size(183, 22);
+            this.menuVisitSite.Text = "Visit Website!";
+            this.menuVisitSite.Visible = false;
+            // 
             // menuAbout
             // 
             this.menuAbout.Image = global::SphereStudio.Properties.Resources.information;
@@ -843,12 +850,10 @@
             this.menuAbout.Text = "&About Sphere Studio";
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
-            // menuVisitSite
+            // toolStripSeparator8
             // 
-            this.menuVisitSite.Name = "menuVisitSite";
-            this.menuVisitSite.Size = new System.Drawing.Size(183, 22);
-            this.menuVisitSite.Text = "Visit Website!";
-            this.menuVisitSite.Visible = false;
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(180, 6);
             // 
             // EditorMenu
             // 
@@ -1014,11 +1019,6 @@
             this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(180, 6);
-            // 
             // IDEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1037,7 +1037,6 @@
             this.Name = "IDEForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IDEForm_FormClosing);
             this.Load += new System.EventHandler(this.IDEForm_Load);
             this.Shown += new System.EventHandler(this.IDEForm_Shown);

@@ -11,6 +11,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using SphereStudio.DockPanes;
+using SphereStudio.Properties;
 using SphereStudio.SettingsPages;
 using SphereStudio.Views;
 using Sphere.Plugins;
@@ -70,7 +71,7 @@ namespace SphereStudio.Forms
         public IDock Docking { get { return _dock; } }
         public IProject Project { get { return Core.Project; } }
         public ICoreSettings Settings { get { return Core.Settings; } }
-
+        
         protected bool StartVisible
         {
             // This is kind of hacky, but it beats working with the Weifen Luo controls
@@ -301,6 +302,10 @@ namespace SphereStudio.Forms
         #region Main IDE form event handlers
         private void IDEForm_Load(object sender, EventArgs e)
         {
+            Location = new Point(Properties.Settings.Default.WindowX, Properties.Settings.Default.WindowY);
+            Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
+            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
+
             // this works around glitchy WeifenLuo behavior when messing with panel
             // visibility before the form loads.
             if (Core.Settings.AutoOpenLastProject && Core.Project != null)
@@ -338,6 +343,18 @@ namespace SphereStudio.Forms
         private void IDEForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.Cancel) return;
+
+            Rectangle savedBounds = WindowState != FormWindowState.Normal ? RestoreBounds : Bounds;
+            Properties.Settings.Default.WindowX = savedBounds.X;
+            Properties.Settings.Default.WindowY = savedBounds.Y;
+            Properties.Settings.Default.WindowWidth = savedBounds.Width;
+            Properties.Settings.Default.WindowHeight = savedBounds.Height;
+            Properties.Settings.Default.WindowMaxed = WindowState == FormWindowState.Maximized;
+            Properties.Settings.Default.Save();
+
+            Size = new Size(Properties.Settings.Default.WindowWidth, Properties.Settings.Default.WindowHeight);
+            WindowState = Properties.Settings.Default.WindowMaxed ? FormWindowState.Maximized : FormWindowState.Normal;
+
             if (!CloseCurrentProject(true))
                 e.Cancel = true;
             else
