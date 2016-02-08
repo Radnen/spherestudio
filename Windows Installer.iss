@@ -5,6 +5,7 @@
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
 #define AppVersion "1.2.0"
+#define AppFullVersion "1.2.0.460"
 
 [Setup]
 OutputBaseFilename=SphereStudio-{#AppVersion}
@@ -18,8 +19,8 @@ SolidCompression=yes
 UninstallDisplayIcon={app}\Sphere Studio.ico,0
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
 AppName={#AppName}
-AppVersion={#AppVersion}
 AppVerName={#AppName} {#AppVersion}
+AppVersion={#AppFullVersion}
 AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/
 AppSupportURL=http://forums.spheredev.org/
