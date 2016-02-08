@@ -33,7 +33,7 @@
             this.EditorToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DrawerPanel = new System.Windows.Forms.Panel();
             this.ImagePanel = new Sphere.Core.Editor.EditorPanel();
-            this.ImageEditor = new Components.ImageEditControl2();
+            this.ImageEditor = new Components.ImageEditControl();
             this.LocationLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.DrawToolStrip = new System.Windows.Forms.ToolStrip();
             this.PencilButton = new System.Windows.Forms.ToolStripButton();
@@ -116,7 +116,7 @@
             this.ImageEditor.Outlined = false;
             this.ImageEditor.Size = new System.Drawing.Size(148, 148);
             this.ImageEditor.TabIndex = 0;
-            this.ImageEditor.Tool = Components.ImageEditControl2.ImageTool.Pen;
+            this.ImageEditor.Tool = Components.ImageEditControl.ImageTool.Pen;
             this.ImageEditor.UseGrid = false;
             this.ImageEditor.ImageChanged += new System.EventHandler(this.ImageEditor_ImageChanged);
             this.ImageEditor.ColorChanged += new System.EventHandler(this.ImageEditor_ColorChanged);
@@ -443,7 +443,7 @@
         private System.Windows.Forms.ToolStripButton OutlineButton;
         private System.Windows.Forms.FlowLayoutPanel ColorFlow;
         private Sphere.Core.Editor.EditorLabel ColorLabel;
-        private Components.ImageEditControl2 ImageEditor;
+        private Components.ImageEditControl ImageEditor;
         private System.Windows.Forms.ToolStripButton MirrorButton;
         private System.Windows.Forms.ToolStripButton MirrorHButton;
     }

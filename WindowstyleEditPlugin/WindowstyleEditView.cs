@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Sphere.Core;
+using Sphere.Plugins.Views;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -34,11 +31,9 @@ namespace SphereStudio.Plugins
             Icon = Icon.FromHandle(Properties.Resources.GridToolIcon.GetHicon());
         }
 
-        public override string[] FileExtensions
-        {
-            get { return new[] { "rws" }; }
-        }
-        
+        public override string[] FileExtensions { get; } = new[] { "rws" };
+
+
         public override bool NewDocument()
         {
             _style = new Windowstyle { Grid = true };
@@ -62,20 +57,11 @@ namespace SphereStudio.Plugins
             IsDirty = false;
         }
 
-        public override void ZoomIn()
-        {
-            ZoomInItem_Click(null, EventArgs.Empty);
-        }
+        public override void ZoomIn() => ZoomInItem_Click(null, EventArgs.Empty);
 
-        public override void ZoomOut()
-        {
-            ZoomOutItem_Click(null, EventArgs.Empty);
-        }
+        public override void ZoomOut() => ZoomOutItem_Click(null, EventArgs.Empty);
 
-        public void SaveLayout()
-        {
-            _styleDockPanel.SaveAsXml("WindowEditor.xml");
-        }
+        public void SaveLayout() => _styleDockPanel.SaveAsXml("WindowEditor.xml");
 
         public IDockContent GetContent(string persist)
         {
@@ -156,8 +142,7 @@ namespace SphereStudio.Plugins
 
         private void TestPanel_Paint(object sender, PaintEventArgs e)
         {
-            if (_style == null) return;
-            _style.DrawWindow(e.Graphics);
+            _style?.DrawWindow(e.Graphics);
         }
 
         private void TestPanel_MouseMove(object sender, MouseEventArgs e)
@@ -221,7 +206,7 @@ namespace SphereStudio.Plugins
             }
             WindowPanel.Width = _windW * _style.Zoom;
             WindowPanel.Height = _windH * _style.Zoom;
-            ZoomLabel.Text = @"Zoom: " + _style.Zoom;
+            ZoomLabel.Text = $"Zoom: {_style.Zoom}";
             CenterInContainer();
             WindowPanel.Refresh();
         }
@@ -236,7 +221,7 @@ namespace SphereStudio.Plugins
             }
             WindowPanel.Width = _windW * _style.Zoom;
             WindowPanel.Height = _windH * _style.Zoom;
-            ZoomLabel.Text = @"Zoom: " + _style.Zoom;
+            ZoomLabel.Text = $"Zoom: {_style.Zoom}";
             CenterInContainer();
             WindowPanel.Refresh();
         }
@@ -252,7 +237,7 @@ namespace SphereStudio.Plugins
         {
             if (_style.Selected > 0) _style.Selected--;
             SelectImage(_style.Selected);
-            ImgLabel.Text = @"Image: " + _style.Selected;
+            ImgLabel.Text = $"Image: {_style.Selected}";
             LeftButton.Enabled = _style.Selected > 0;
             if (!LeftButton.Enabled && HelpText != null) HelpText = "";
             RightButton.Enabled = true;
@@ -262,7 +247,7 @@ namespace SphereStudio.Plugins
         {
             if (_style.Selected < 8) _style.Selected++;
             SelectImage(_style.Selected);
-            ImgLabel.Text = @"Image: " + _style.Selected;
+            ImgLabel.Text = $"Image: {_style.Selected}";
             RightButton.Enabled = _style.Selected < 8;
             if (!RightButton.Enabled && HelpText != null) HelpText = "";
             LeftButton.Enabled = true;

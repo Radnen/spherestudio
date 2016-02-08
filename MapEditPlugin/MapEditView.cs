@@ -1,19 +1,15 @@
-﻿using System;
+﻿using Sphere.Core;
+using Sphere.Plugins;
+using Sphere.Plugins.Views;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.UndoRedo;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
 using WeifenLuo.WinFormsUI.Docking;
-
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.Forms;
-using SphereStudio.Plugins.UndoRedo;
 
 namespace SphereStudio.Plugins
 {
@@ -39,20 +35,17 @@ namespace SphereStudio.Plugins
             TilesetControl.MultiSelect = true;
         }
 
-        public override string[] FileExtensions
-        {
-            get { return new[] { "rmp" }; }
-        }
+        public override string[] FileExtensions { get; } = new[] { "rmp" };
 
         public override string ViewState
         {
             get
             {
-                return string.Format("{0}|{1}|{2}|{3}",
-                    MapControl.vScrollBar.Value,
-                    MapControl.hScrollBar.Value,
-                    TilesetControl.Selected[0],
-                    MapControl.CurrentLayer);
+                var vScroll = MapControl.vScrollBar.Value;
+                var hScroll = MapControl.hScrollBar.Value;
+                var tile = TilesetControl.Selected[0];
+                var layer = MapControl.CurrentLayer;
+                return $"{vScroll}|{hScroll}|{tile}|{layer}";
             }
             set
             {
@@ -123,7 +116,7 @@ namespace SphereStudio.Plugins
         {
             PluginMain.ShowMenus(false);
         }
-        
+
         public override void ZoomIn()
         {
             MapControl.ZoomIn();
@@ -183,7 +176,7 @@ namespace SphereStudio.Plugins
             _layerContent.DockAreas = DockAreas.DockLeft | DockAreas.DockRight;
             _layerContent.DockHandler.CloseButtonVisible = false;
 
-            _mainPanel = new DockPanel {Dock = DockStyle.Fill, DocumentStyle = DocumentStyle.DockingWindow};
+            _mainPanel = new DockPanel { Dock = DockStyle.Fill, DocumentStyle = DocumentStyle.DockingWindow };
             if (System.IO.File.Exists("MapEditor.xml"))
             {
                 DeserializeDockContent dc = GetContent;
@@ -321,7 +314,10 @@ namespace SphereStudio.Plugins
         {
             List<Layer> layers = sender.Items.Select(li => li.Layer).ToList();
             byte start = (byte)((layer.Start) ? layer.Index : sender.StartLayer);
-            if (layer.State == ListViewItemStates.Selected) MapControl.CurrentLayer = (short)layer.Index;
+
+            if (layer.State == ListViewItemStates.Selected)
+                MapControl.CurrentLayer = (short)layer.Index;
+
             MapControl.SetLayers(layers, start);
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
@@ -437,8 +433,8 @@ namespace SphereStudio.Plugins
 
         private void MapControl_Paint(object sender, PaintEventArgs e)
         {
-            map_pos_label.Text = MapControl.MouseTile.ToString();
-            map_pos_label.Text += @" Start: " + Map.StartLayer;
+            var tile = MapControl.MouseTile.ToString();
+            map_pos_label.Text = $"{tile} Start: {Map.StartLayer}";
             zoomInButton.Enabled = MapControl.CanZoomIn;
             zoomOutButton.Enabled = MapControl.CanZoomOut;
         }
@@ -463,7 +459,7 @@ namespace SphereStudio.Plugins
         private void Layers_LayerAdded(object sender, EventArgs e)
         {
             Layer lay = MapControl.AddLayer();
-            LayerItem item = new LayerItem(lay) {Text = "Untitled", Visible = true};
+            LayerItem item = new LayerItem(lay) { Text = "Untitled", Visible = true };
             LayerEditor.Layers.AddItem(item);
             MapControl.RefreshLayers();
             IsDirty = true;
@@ -472,7 +468,7 @@ namespace SphereStudio.Plugins
         private void Layers_LayerRemoved(object sender, EventArgs e)
         {
             Layer target = LayerEditor.Layers.Items[LayerEditor.Layers.SelectedIndex].Layer;
-            
+
             for (int i = 0; i < MapControl.GraphicLayers.Count; ++i)
             {
                 if (MapControl.GraphicLayers[i].TargetLayer == target)
@@ -500,7 +496,7 @@ namespace SphereStudio.Plugins
 
             foreach (Layer lay in Map.Layers) lay.AdjustTiles(tile, (short)-tiles.Count);
             MapControl.RefreshLayers();
-            
+
             redoButton.Enabled = MapControl.CanRedo;
             undoButton.Enabled = MapControl.CanUndo;
             TilesetControl.Select(tile);

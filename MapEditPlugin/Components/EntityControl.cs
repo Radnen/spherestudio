@@ -43,7 +43,7 @@ namespace SphereStudio.Plugins.Components
                 if (entity.Type == Entity.EntityType.Trigger)
                 {
                     triggers++;
-                    name = "Trigger: " + triggers;
+                    name = $"Trigger: {triggers}";
                     type = "Trigger";
                 }
                 else if (entity.Type == Entity.EntityType.Person)
@@ -68,27 +68,24 @@ namespace SphereStudio.Plugins.Components
             if (EntityListView.SelectedItems.Count > 0)
             {
                 var entity = EntityListView.SelectedItems[0].Tag as Entity;
-                if (entity != null)
+                if (entity?.Type == Entity.EntityType.Person)
                 {
-                    if (entity.Type == Entity.EntityType.Person)
+                    var form = new Forms.PersonForm(entity, _entities);
+                    form.AddLayers(_layers);
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
-                        var form = new Forms.PersonForm(entity, _entities);
-                        form.AddLayers(_layers);
-                        if (form.ShowDialog() == DialogResult.OK)
-                        {
-                            // write the new entity
-                            _entities[_entities.IndexOf(entity)] = form.Person;
-                        }
+                        // write the new entity
+                        _entities[_entities.IndexOf(entity)] = form.Person;
                     }
-                    else if (entity.Type == Entity.EntityType.Trigger)
+                }
+                else if (entity?.Type == Entity.EntityType.Trigger)
+                {
+                    var form = new Forms.TriggerForm(entity);
+                    form.AddLayers(_layers);
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
-                        var form = new Forms.TriggerForm(entity);
-                        form.AddLayers(_layers);
-                        if (form.ShowDialog() == DialogResult.OK)
-                        {
-                            // write the new entity
-                            _entities[_entities.IndexOf(entity)] = form.Trigger;
-                        }
+                        // write the new entity
+                        _entities[_entities.IndexOf(entity)] = form.Trigger;
                     }
                 }
             }

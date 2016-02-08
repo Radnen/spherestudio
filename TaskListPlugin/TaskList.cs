@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Sphere.Plugins.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
-using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins
 {
@@ -29,7 +28,7 @@ namespace SphereStudio.Plugins
             _imagelist.Images.Add("done", Properties.Resources.lightbulb_off);
             ObjectTaskList.SmallImageList = _imagelist;
 
-            olvColumn1.ImageGetter = delegate(object rowObject)
+            olvColumn1.ImageGetter = delegate (object rowObject)
             {
                 Task t = (Task)rowObject;
                 return t.Finished ? "done" : "not";
@@ -88,10 +87,7 @@ namespace SphereStudio.Plugins
         /// <summary>
         /// Clears the list out
         /// </summary>
-        public void Clear()
-        {
-            ObjectTaskList.ClearObjects();
-        }
+        public void Clear() => ObjectTaskList.ClearObjects();
 
         /// <summary>
         /// Tasks are saved as follows:
@@ -133,27 +129,25 @@ namespace SphereStudio.Plugins
                 while (amt-- > 0)
                 {
                     Task t = new Task
-                        {
-                            Finished = reader.ReadBoolean(),
-                            Name = reader.ReadString(),
-                            Priority = (TaskPriority) reader.ReadInt32(),
-                            Type = (TaskType) reader.ReadInt32()
-                        };
+                    {
+                        Finished = reader.ReadBoolean(),
+                        Name = reader.ReadString(),
+                        Priority = (TaskPriority)reader.ReadInt32(),
+                        Type = (TaskType)reader.ReadInt32()
+                    };
                     tasks.Add(t);
                 }
                 ObjectTaskList.SetObjects(tasks);
             }
         }
 
-        private void ClearAllItem_Click(object sender, EventArgs e)
-        {
-            Clear();
-        }
+        private void ClearAllItem_Click(object sender, EventArgs e) => Clear();
 
         private void priorityUpButton_Click(object sender, EventArgs e)
         {
             foreach (Task task in ObjectTaskList.SelectedObjects)
                 task.IncreasePriority();
+
             ObjectTaskList.RefreshSelectedObjects();
         }
 
@@ -161,6 +155,7 @@ namespace SphereStudio.Plugins
         {
             foreach (Task task in ObjectTaskList.SelectedObjects)
                 task.DecreasePriority();
+
             ObjectTaskList.RefreshSelectedObjects();
         }
 

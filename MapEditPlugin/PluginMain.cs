@@ -1,23 +1,19 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using System.IO;
-
-using Sphere.Core.Editor;
-using SphereStudio.Plugins.Forms;
-using Sphere.Plugins;
+﻿using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
+using SphereStudio.Plugins.Forms;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get { return "Map Editor"; } }
-        public string Author { get { return "Spherical"; } }
-        public string Description { get { return "Sphere Studio default map editor"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Name { get; } = "Map Editor";
+        public string Author { get; } = "Spherical";
+        public string Description { get; } = "Sphere Studio default map editor";
+        public string Version { get; } = "1.2.0";
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }
@@ -83,7 +79,7 @@ namespace SphereStudio.Plugins
         private static void menuRecenter_Click(object sender, EventArgs e)
         {
             MapEditView editor = PluginManager.Core.ActiveDocument as MapEditView;
-            if (editor != null) editor.MapControl.CenterMap();
+            editor?.MapControl.CenterMap();
         }
 
         private static void menuImportTileset_Click(object sender, EventArgs e)

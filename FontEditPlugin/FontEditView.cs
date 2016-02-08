@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Sphere.Core.Editor;
+using Sphere.Plugins.Views;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {

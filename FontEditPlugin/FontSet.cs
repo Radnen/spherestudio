@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Sphere.Core.Utility;
+using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using Sphere.Core.Utility;
 
 namespace SphereStudio.Plugins
 {
@@ -17,7 +17,7 @@ namespace SphereStudio.Plugins
         int _zoom = 1;
         Font draw_font = new Font(FontFamily.GenericMonospace, (float)8, FontStyle.Bold);
 
-        Character[] characters;
+        public Character[] Characters { get; set; }
 
         public delegate void EventHandler(object sender, EventArgs e);
         public event EventHandler CharSelected;
@@ -26,8 +26,8 @@ namespace SphereStudio.Plugins
         public FontSet()
         {
             num_chars = 256;
-            characters = new Character[num_chars];
-            for (int i = 0; i < num_chars; ++i) characters[i] = new Character();
+            Characters = new Character[num_chars];
+            for (int i = 0; i < num_chars; ++i) Characters[i] = new Character();
             InitializeComponent();
             UpdateWidth();
         }
@@ -43,7 +43,7 @@ namespace SphereStudio.Plugins
             InitializeComponent();
 
             for (short i = 0; i < num_chars; ++i)
-                characters[i] = new Character(reader, version);
+                Characters[i] = new Character(reader, version);
 
             reader.Close();
             UpdateWidth();
@@ -57,7 +57,7 @@ namespace SphereStudio.Plugins
             writer.Write(num_chars);
             writer.Write(new byte[248]);
 
-            for (short i = 0; i < num_chars; ++i) characters[i].Save(writer, version);
+            for (short i = 0; i < num_chars; ++i) Characters[i].Save(writer, version);
             writer.Flush();
             writer.Close();
         }
@@ -69,21 +69,15 @@ namespace SphereStudio.Plugins
             {
                 selection = value;
                 Refresh();
-                if (CharSelected != null) CharSelected(this, new EventArgs());
+                CharSelected?.Invoke(this, new EventArgs());
             }
-        }
-
-        public Character[] Characters
-        {
-            get { return characters; }
-            set { characters = value; }
         }
 
         public int GetStringWidth(string text)
         {
             int w = 0;
             for (int i = 0; i < text.Length; ++i)
-                w += this.characters[text[i]].Width;
+                w += Characters[text[i]].Width;
             return w;
         }
 
@@ -95,10 +89,10 @@ namespace SphereStudio.Plugins
             int x = 0;
             for (int i = 0; i < num_chars; ++i)
             {
-                if (characters[i] == null) continue;
-                image = characters[i].Image;
-                int w = characters[i].Width * _zoom;
-                int h = characters[i].Height * _zoom;
+                if (Characters[i] == null) continue;
+                image = Characters[i].Image;
+                int w = Characters[i].Width * _zoom;
+                int h = Characters[i].Height * _zoom;
                 if (image.Width > 0) w = image.Width * _zoom;
                 if (image.Height > 0) h = image.Height * _zoom;
                 e.Graphics.DrawString(new string((char)i, 1), draw_font, Brushes.Black, x, 0);
@@ -121,8 +115,8 @@ namespace SphereStudio.Plugins
             {
                 string str = new string((char)i, 1);
                 
-                c = characters[i];
-                g = this.CreateGraphics();
+                c = Characters[i];
+                g = CreateGraphics();
                 int w = (int)(g.MeasureString(str, font)).Width;
                 if (stroke) w += 2;
                 int h = stroke ? font.Height + 2 : font.Height;
@@ -170,8 +164,8 @@ namespace SphereStudio.Plugins
             int x = 0;
             for (int i = 0; i < num_chars; ++i)
             {
-                int w = characters[i].Width * _zoom;
-                int h = characters[i].Height * _zoom;
+                int w = Characters[i].Width * _zoom;
+                int h = Characters[i].Height * _zoom;
                 if (e.X > x && e.X < x + w && e.Y > 16 && e.Y < 16 + h) Selection = (short)i;
                 x += w * _zoom + 4;
             }
@@ -191,7 +185,7 @@ namespace SphereStudio.Plugins
         private void UpdateWidth()
         {
             int w = 0;
-            foreach (Character c in characters)
+            foreach (Character c in Characters)
                 w += c.Width * _zoom + 4;
             Width = w;
         }
@@ -240,53 +234,53 @@ namespace SphereStudio.Plugins
 
     public class Character
     {
-        short width = 8;
-        short height = 12;
-        Bitmap image = null;
+        short _width = 8;
+        short _height = 12;
+        Bitmap _image = null;
 
         public Character()
         {
-            image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            _image = new Bitmap(_width, _height, PixelFormat.Format32bppArgb);
         }
 
         public Character(BinaryReader stream, short version)
         {
-            width = stream.ReadInt16();
-            height = stream.ReadInt16();
+            _width = stream.ReadInt16();
+            _height = stream.ReadInt16();
             stream.ReadBytes(28);
 
-            int size = width * height * 4;
-            BitmapLoader loader = new BitmapLoader(width, height);
+            int size = _width * _height * 4;
+            BitmapLoader loader = new BitmapLoader(_width, _height);
             if (version >= 1)
             {
-                this.image = loader.LoadFromStream(stream, size);
+                _image = loader.LoadFromStream(stream, size);
             }
             loader.Close();
         }
 
         public void Save(BinaryWriter writer, short version)
         {
-            writer.Write(width);
-            writer.Write(height);
+            writer.Write(_width);
+            writer.Write(_height);
             writer.Write(new byte[28]);
-            BitmapSaver saver = new BitmapSaver(width, height);
-            if (version >= 1) saver.SaveToStream(image, writer);
+            BitmapSaver saver = new BitmapSaver(_width, _height);
+            if (version >= 1) saver.SaveToStream(_image, writer);
         }
 
         public Bitmap Image
         {
-            get { return image; }
-            set { image = value; width = (short)image.Width; height = (short)image.Height; }
+            get { return _image; }
+            set { _image = value; _width = (short)_image.Width; _height = (short)_image.Height; }
         }
 
         public short Width
         {
-            get { return width; }
+            get { return _width; }
         }
 
         public short Height
         {
-            get { return height; }
+            get { return _height; }
         }
     }
 }

@@ -16,28 +16,18 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get { return "Windowstyle Editor"; } }
-        public string Author { get { return "Spherical"; } }
-        public string Description { get { return "Sphere Studio default windowstyle editor"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Name { get; } = "Windowstyle Editor";
+        public string Author { get; } = "Spherical";
+        public string Description { get; } = "Sphere Studio default windowstyle editor";
+        public string Version { get; } = "1.2.0";
 
-        public string FileTypeName { get; private set; }
-        public string[] FileExtensions { get; private set; }
-        public Bitmap FileIcon { get; private set; }
+        public string FileTypeName { get; } = "Sphere Windowstyle";
+        public string[] FileExtensions { get; private set; } = new[] { "rws" };
+        public Bitmap FileIcon { get; } = Properties.Resources.GridToolIcon;
 
-        public void Initialize(ISettings conf)
-        {
-            FileTypeName = "Sphere Windowstyle";
-            FileExtensions = new[] { "rws" };
-            FileIcon = Properties.Resources.GridToolIcon;
+        public void Initialize(ISettings conf) => PluginManager.Register(this, this, Name);
 
-            PluginManager.Register(this, this, Name);
-        }
-
-        public void ShutDown()
-        {
-            PluginManager.UnregisterAll(this);
-        }
+        public void ShutDown() => PluginManager.UnregisterAll(this);
 
         public DocumentView New()
         {

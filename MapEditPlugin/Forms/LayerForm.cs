@@ -29,10 +29,10 @@ namespace SphereStudio.Plugins.Forms
 
         private void updateLabels()
         {
-            plxXLabel.Text = String.Format("X: {0}", (plxXSlide.Value / 10.0).ToString("F1"));
-            plxYLabel.Text = String.Format("Y: {0}", (plxYSlide.Value / 10.0).ToString("F1"));
-            scrollXLabel.Text = String.Format("X: {0}", (scrollXSlide.Value / 10.0).ToString("F1"));
-            scrollYLabel.Text = String.Format("Y: {0}", (scrollYSlide.Value / 10.0).ToString("F1"));
+            plxXLabel.Text = $"X: {(plxXSlide.Value / 10.0).ToString("F1")}";
+            plxYLabel.Text = $"Y: {(plxYSlide.Value / 10.0).ToString("F1")}";
+            scrollXLabel.Text = $"X: {(scrollXSlide.Value / 10.0).ToString("F1")}";
+            scrollYLabel.Text = $"Y: {(scrollYSlide.Value / 10.0).ToString("F1")}";
         }
 
         private void LayerForm_Load(object sender, EventArgs e)

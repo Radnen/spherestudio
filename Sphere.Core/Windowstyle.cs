@@ -105,9 +105,9 @@ namespace Sphere.Core
                 if (disposing)
                 {
                     foreach (Bitmap b in _images) b.Dispose();
-                    if (_preview != null) _preview.Dispose();
-                    _gridPen.Dispose();
-                    _selPen.Dispose();
+                    _preview?.Dispose();
+                    _gridPen?.Dispose();
+                    _selPen?.Dispose();
                 }
 
                 _preview = null;

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Sphere.Core;
+using Sphere.Plugins.EditShims;
+using System;
 using System.Globalization;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins.EditShims;
-using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins.Forms
 {
@@ -24,10 +22,10 @@ namespace SphereStudio.Plugins.Forms
             InitializeComponent();
             ScriptPanel.Controls.Add(_scriptBox);
             StepTextBox.Text = zone.NumSteps.ToString(CultureInfo.InvariantCulture);
-            LayerComboBox.Text = @"Layer: " + zone.Layer;
+            LayerComboBox.Text = $"Layer: {zone.Layer}";
             _scriptBox.Text = zone.Function;
             _scriptBox.Dock = DockStyle.Fill;
-            PositionLabel.Text = string.Format(@"(X: {0}, Y: {1})", zone.X, zone.Y);
+            PositionLabel.Text = $"(X: {zone.X}, Y: {zone.Y})";
         }
 
         public void AddString(string text)
@@ -53,7 +51,7 @@ namespace SphereStudio.Plugins.Forms
       
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+            e.Handled = (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
         }
     }
 }

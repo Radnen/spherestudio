@@ -1,36 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Sphere.Core.Editor;
+using SphereStudio.Plugins.Components;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sphere.Core.Editor;
-using SphereStudio.Plugins.Components;
 
 namespace SphereStudio.Plugins.UndoRedo
 {
     internal class ImageResizePage : HistoryPage
     {
         Bitmap _before, _after;
-        ImageEditControl2 _parent;
+        ImageEditControl _parent;
 
-        public ImageResizePage(ImageEditControl2 parent, Image before, Image after)
+        public ImageResizePage(ImageEditControl parent, Image before, Image after)
         {
             _parent = parent;
             _before = new Bitmap(before);
             _after = new Bitmap(after);
         }
 
-        public override void Undo()
-        {
-            _parent.SetImage(_before);
-        }
+        public override void Undo() => _parent.SetImage(_before);
 
-        public override void Redo()
-        {
-            _parent.SetImage(_after);
-        }
+        public override void Redo() => _parent.SetImage(_after);
 
         public override void Dispose()
         {
@@ -43,9 +32,9 @@ namespace SphereStudio.Plugins.UndoRedo
     {
         Point _pos;
         Image _before, _after;
-        ImageEditControl2 _parent;
+        ImageEditControl _parent;
 
-        public ImagePage(ImageEditControl2 parent, Point pos, Image before, Image after)
+        public ImagePage(ImageEditControl parent, Point pos, Image before, Image after)
         {
             _pos = pos;
             _before = before;
@@ -79,8 +68,11 @@ namespace SphereStudio.Plugins.UndoRedo
 
         public override void Dispose()
         {
-            _after.Dispose();
-            _before.Dispose();
+            _after?.Dispose();
+            _after = null;
+
+            _before?.Dispose();
+            _before = null;
         }
     }
 }

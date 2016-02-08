@@ -22,21 +22,25 @@ namespace SphereStudio.Plugins.Forms
         {
             Trigger = trigger;
             InitializeComponent();
-            LayerComboBox.Text = @"Layer: " + trigger.Layer;
+            LayerComboBox.Text = $"Layer: {trigger.Layer}";
         }
 
         public int SelectedIndex
         {
-            set { LayerComboBox.SelectedIndex = value; Trigger.Layer = (short)value; }
+            set
+            {
+                LayerComboBox.SelectedIndex = value;
+                Trigger.Layer = (short)value;
+            }
         }
 
         public void AddLayers(List<Layer> layers)
         {
             LayerComboBox.BeginUpdate();
+
             foreach (Layer layer in layers)
-            {
                 LayerComboBox.Items.Add(LayerComboBox.Items.Count + ": " + layer.Name);
-            }
+
             LayerComboBox.EndUpdate();
         }
 

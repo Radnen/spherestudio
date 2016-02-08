@@ -10,10 +10,10 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get { return "Spriteset Editor"; } }
-        public string Author { get { return "Spherical"; } }
-        public string Description { get { return "Sphere Studio default spriteset editor"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Name { get; } = "Spriteset Editor";
+        public string Author { get; } = "Spherical";
+        public string Description { get; } = "Sphere Studio default spriteset editor";
+        public string Version { get; } = "1.2.0";
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }
@@ -21,10 +21,7 @@ namespace SphereStudio.Plugins
 
         internal ISettings Settings { get; private set; }
 
-        internal static void ShowMenus(bool show)
-        {
-            _spritesetMenu.Visible = show;
-        }
+        internal static void ShowMenus(bool show) => _spritesetMenu.Visible = show;
         
         public void Initialize(ISettings conf)
         {
@@ -38,10 +35,7 @@ namespace SphereStudio.Plugins
             PluginManager.Core.AddMenuItem(_spritesetMenu, "View");
         }
 
-        public void ShutDown()
-        {
-            PluginManager.UnregisterAll(this);
-        }
+        public void ShutDown() => PluginManager.UnregisterAll(this);
 
         public DocumentView New()
         {
@@ -93,12 +87,14 @@ namespace SphereStudio.Plugins
 
         private static void menuRescale_Click(object sender, EventArgs e)
         {
-            (PluginManager.Core.ActiveDocument as SpritesetEditView).RescaleAll();
+            var editor = (PluginManager.Core.ActiveDocument as SpritesetEditView);
+            editor?.RescaleAll();
         }
 
         private static void menuResize_Click(object sender, EventArgs e)
         {
-            (PluginManager.Core.ActiveDocument as SpritesetEditView).ResizeAll();
+            var editor = (PluginManager.Core.ActiveDocument as SpritesetEditView);
+            editor?.ResizeAll();
         }
         #endregion
     }

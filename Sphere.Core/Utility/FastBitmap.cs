@@ -268,11 +268,8 @@ namespace Sphere.Core.Utility
         /// <param name="col1">The color to compare.</param>
         /// <param name="col2">The color to compare against.</param>
         /// <returns>True if they field-wise match.</returns>
-        public static bool ColorsEqual(Color col1, Color col2)
-        {
-            return (col1.A == col2.A && col1.R == col2.R &&
-                    col1.G == col2.G && col1.B == col2.B);
-        }
+        public static bool ColorsEqual(Color col1, Color col2) =>
+            (col1.A == col2.A && col1.R == col2.R && col1.G == col2.G && col1.B == col2.B);
 
         /// <summary>
         /// Draws another bitmap into this image using straight-up pixel data.

@@ -8,8 +8,8 @@ namespace SphereStudio.Plugins.Forms
 {
     partial class MapPropertiesForm : Form
     {
-        private ScriptEditShim ScriptBox = new ScriptEditShim();
         public Map Map { get; private set; }
+        private ScriptEditShim ScriptBox = new ScriptEditShim();
         private int last = 3;
         private List<string> scripts = new List<string>();
 
@@ -36,19 +36,29 @@ namespace SphereStudio.Plugins.Forms
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+            e.Handled = (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
         }
 
         private void CheckCustomSize()
         {
             int tw = 0, th = 0;
             int lw = 0, lh = 0;
-            if (TileWidthBox.Text != String.Empty) tw = int.Parse(TileWidthBox.Text);
-            if (TileHeightBox.Text != String.Empty) th = int.Parse(TileHeightBox.Text);
-            if (LayerWidthBox.Text != String.Empty) lw = int.Parse(LayerWidthBox.Text);
-            if (LayerHeightBox.Text != String.Empty) lh = int.Parse(LayerHeightBox.Text);
+
+            if (string.IsNullOrWhiteSpace(TileWidthBox.Text))
+                tw = int.Parse(TileWidthBox.Text);
+
+            if (string.IsNullOrWhiteSpace(TileHeightBox.Text))
+                th = int.Parse(TileHeightBox.Text);
+
+            if (string.IsNullOrWhiteSpace(LayerWidthBox.Text))
+                lw = int.Parse(LayerWidthBox.Text);
+
+            if (string.IsNullOrWhiteSpace(LayerHeightBox.Text))
+                lh = int.Parse(LayerHeightBox.Text);
+
             OkayButton.Enabled = (tw != 0 && th != 0 && lw != 0 && lh != 0);
-            if (tw != th) TileSizeComboBox.Text = "Custom";
+            if (tw != th)
+                TileSizeComboBox.Text = "Custom";
             else
             {
                 switch (tw)
@@ -90,23 +100,25 @@ namespace SphereStudio.Plugins.Forms
         private void OkayButton_Click(object sender, EventArgs e)
         {
             Map.WrapAround = RepeatMapCheckBox.Checked;
-            
-            short tw = 0, th = 0;
-            short lw = 0, lh = 0;
-            if (TileWidthBox.Text != String.Empty) tw = short.Parse(TileWidthBox.Text);
-            if (TileHeightBox.Text != String.Empty) th = short.Parse(TileHeightBox.Text);
-            if (LayerWidthBox.Text != String.Empty) lw = short.Parse(LayerWidthBox.Text);
-            if (LayerHeightBox.Text != String.Empty) lh = short.Parse(LayerHeightBox.Text);
+            short tw = 0, th = 0, lw = 0, lh = 0;
+
+            if (string.IsNullOrWhiteSpace(TileWidthBox.Text))
+                tw = short.Parse(TileWidthBox.Text);
+
+            if (string.IsNullOrWhiteSpace(TileHeightBox.Text))
+                th = short.Parse(TileHeightBox.Text);
+
+            if (string.IsNullOrWhiteSpace(LayerWidthBox.Text))
+                lw = short.Parse(LayerWidthBox.Text);
+
+            if (string.IsNullOrWhiteSpace(LayerHeightBox.Text))
+                lh = short.Parse(LayerHeightBox.Text);
 
             if (tw != Map.Tileset.TileWidth || th != Map.Tileset.TileHeight)
-            {
                 Map.Tileset.ResizeTiles(tw, th, RescaleCheckBox.Checked);
-            }
 
             if (lw != Map.Layers[0].Width || lh != Map.Layers[0].Height)
-            {
                 Map.ResizeAllLayers(lw, lh);
-            }
 
             scripts[last] = ScriptBox.Text;
             Map.Scripts.Clear();

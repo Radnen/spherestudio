@@ -1,23 +1,21 @@
-﻿using System;
+﻿using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
-
 namespace SphereStudio.ScriptEditor
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
     {
-        public string Name { get { return "Script Editor"; } }
-        public string Author { get { return "Spherical"; } }
-        public string Description { get { return "Sphere Studio default JS script editor"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Name { get; } = "Script Editor";
+        public string Author { get; } = "Spherical";
+        public string Description { get; } = "Sphere Studio default JS script editor";
+        public string Version { get; } = "1.2.0";
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }
@@ -58,10 +56,7 @@ namespace SphereStudio.ScriptEditor
             Functions.Clear();
         }
 
-        public ScriptView CreateEditView()
-        {
-            return new ScriptEditView(this);
-        }
+        public ScriptView CreateEditView() => new ScriptEditView(this);
 
         public DocumentView New()
         {
@@ -76,10 +71,7 @@ namespace SphereStudio.ScriptEditor
             return view;
         }
 
-        internal void ShowMenus(bool show)
-        {
-            _rootMenu.Visible = show;
-        }
+        internal void ShowMenus(bool show) => _rootMenu.Visible = show;
 
         private void InitializeAutoComplete()
         {
@@ -94,11 +86,8 @@ namespace SphereStudio.ScriptEditor
             }
         }
 
-        private void UpdateScriptControls()
-        {
-            // restyle all script controls that changed.
-            PluginManager.Core.Refresh();
-        }
+        // restyle all script controls that changed.
+        private void UpdateScriptControls() => PluginManager.Core.Refresh();
 
         #region initialize the script menu
         private ToolStripMenuItem _rootMenu, _indentMenu;
@@ -197,7 +186,7 @@ namespace SphereStudio.ScriptEditor
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
                 string fontstring = Settings.GetString("script-font", "");
 
-                if (!String.IsNullOrEmpty(fontstring))
+                if (!string.IsNullOrEmpty(fontstring))
                     diag.Font = (Font)converter.ConvertFromString(fontstring);
 
                 try

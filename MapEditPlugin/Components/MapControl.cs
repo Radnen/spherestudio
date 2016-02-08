@@ -30,10 +30,10 @@ namespace SphereStudio.Plugins.Components
         public List<GraphicalLayer> GraphicLayers { get; private set; }
         private Zone _temp_zone = new Zone();
 
-        public Point MapPixel { get; set; }
-        public short Zoom { get; private set; }
+        public Point MapPixel { get; set; } = new Point(0, 0);
+        public short Zoom { get; private set; } = 1;
         public List<short> Tiles { get; set; }
-        public int SelWidth { get; set; }
+        public int SelWidth { get; set; } = 1;
         public short CurrentTile { get; set; }
         public short CurrentLayer { get; set; }
         public bool ShowCameraBounds { get; set; }
@@ -116,9 +116,6 @@ namespace SphereStudio.Plugins.Components
 
         public MapControl()
         {
-            Zoom = 1;
-            SelWidth = 1;
-            MapPixel = new Point(0, 0);
             InitializeComponent();
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);

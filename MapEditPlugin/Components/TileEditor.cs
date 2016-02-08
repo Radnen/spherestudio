@@ -34,7 +34,7 @@ namespace SphereStudio.Plugins.Components
 
         public Tile Tile
         {
-            get { return this._tile; }
+            get { return _tile; }
             set
             {
                 if (_tile != null)

@@ -17,7 +17,7 @@ namespace SphereStudio.Plugins.Components
         private bool do_drag, draw_drag;
         private Point DragStart = Point.Empty;
 
-        public List<LayerItem> Items { get; private set; }
+        public List<LayerItem> Items { get; private set; } = new List<LayerItem>();
         public LayerItem SelectedItem { get; private set; }
         public int MovedIndex { get; private set; }
         public int HomeIndex { get; private set; }
@@ -25,7 +25,7 @@ namespace SphereStudio.Plugins.Components
         /// <summary>
         /// The type of layer the control holds. Helps to distinguish between image and map layers.
         /// </summary>
-        public string Type { get; set; }
+        public string Type { get; set; } = "MapLayer";
 
         public DragDropEffects drag;
         #endregion
@@ -39,8 +39,6 @@ namespace SphereStudio.Plugins.Components
         public LayerControl()
         {
             InitializeComponent();
-            Items = new List<LayerItem>();
-            Type = "MapLayer";
             Height = 1;
         }
 
@@ -207,14 +205,17 @@ namespace SphereStudio.Plugins.Components
             if (e.Data.GetDataPresent(Type))
             {
                 SelectedItem.CanUpdate = true;
-                LayerItem li = (LayerItem)e.Data.GetData(Type);
-                HomeIndex = Items.IndexOf(li);
-                MovedIndex = Items.IndexOf(hovered_item);
-                if (MovedIndex == -1) return;
-                Items.Remove(li);
-                Height -= 20;
-                InsertItem(MovedIndex, li);
-                if (LayerChanged != null) LayerChanged(this, li);
+                LayerItem li = e.Data.GetData(Type) as LayerItem;
+                if (li != null)
+                {
+                    HomeIndex = Items.IndexOf(li);
+                    MovedIndex = Items.IndexOf(hovered_item);
+                    if (MovedIndex == -1) return;
+                    Items.Remove(li);
+                    Height -= 20;
+                    InsertItem(MovedIndex, li);
+                    if (LayerChanged != null) LayerChanged(this, li);
+                }
             }
         }
 
@@ -249,8 +250,8 @@ namespace SphereStudio.Plugins.Components
         private void LayerControl_DoubleClick(object sender, EventArgs e)
         {
             var localMouseX = PointToClient(MousePosition).X;
-            if (this.SelectedItem != null && localMouseX > 18)
-                new LayerForm(this.SelectedItem.Layer).ShowDialog();
+            if (SelectedItem != null && localMouseX > 18)
+                new LayerForm(SelectedItem.Layer).ShowDialog();
             Refresh();
         }
     }
@@ -300,10 +301,7 @@ namespace SphereStudio.Plugins.Components
         public LayerItem() { Layer = new Layer(); Visible = true; }
         public LayerItem(Layer lay) { Layer = lay; }
 
-        public bool IsInEye(Point p)
-        {
-            return (p.X > bounds.X + 2 && p.Y > bounds.Y + 2 && p.X < bounds.X + 18 && p.Y < bounds.Y + 18);
-        }
+        public bool IsInEye(Point p) => p.X > bounds.X + 2 && p.Y > bounds.Y + 2 && p.X < bounds.X + 18 && p.Y < bounds.Y + 18;
 
         public void PaintItem(Graphics g, int x, int y, int width)
         {
@@ -342,7 +340,8 @@ namespace SphereStudio.Plugins.Components
 
             g.DrawRectangle(Pens.DarkGray, bounds.X, bounds.Y, bounds.Width, bounds.Height - 1);
 
-            if (brush != null) { brush.Dispose(); brush = null; }
+            brush?.Dispose();
+            brush = null;
         }
 
         public void Dispose()
@@ -355,11 +354,7 @@ namespace SphereStudio.Plugins.Components
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    if (font != null) font.Dispose();
-                }
-
+                if (disposing) font?.Dispose();
                 font = null;
             }
             _disposed = true;

@@ -235,28 +235,28 @@ namespace SphereStudio.Plugins
             UnselectButtons();
             PencilButton.Checked = true;
             MirrorButton.Enabled = MirrorHButton.Enabled = true;
-            ImageEditor.Tool = ImageEditControl2.ImageTool.Pen;
+            ImageEditor.Tool = ImageEditControl.ImageTool.Pen;
         }
 
         private void LineButton_Click(object sender, EventArgs e)
         {
             UnselectButtons();
             LineButton.Checked = true;
-            ImageEditor.Tool = ImageEditControl2.ImageTool.Line;
+            ImageEditor.Tool = ImageEditControl.ImageTool.Line;
         }
 
         private void RectangleButton_Click(object sender, EventArgs e)
         {
             UnselectButtons();
             RectangleButton.Checked = true;
-            ImageEditor.Tool = ImageEditControl2.ImageTool.Rectangle;
+            ImageEditor.Tool = ImageEditControl.ImageTool.Rectangle;
         }
 
         private void FillButton_Click(object sender, EventArgs e)
         {
             UnselectButtons();
             FillButton.Checked = true;
-            ImageEditor.Tool = ImageEditControl2.ImageTool.Floodfill;
+            ImageEditor.Tool = ImageEditControl.ImageTool.Floodfill;
         }
 
         // ellipse()
@@ -265,7 +265,7 @@ namespace SphereStudio.Plugins
         {
             UnselectButtons();
             PanButton.Checked = true;
-            ImageEditor.Tool = ImageEditControl2.ImageTool.Pan;
+            ImageEditor.Tool = ImageEditControl.ImageTool.Pan;
         }
 
         private void UndoButton_Click(object sender, EventArgs e)

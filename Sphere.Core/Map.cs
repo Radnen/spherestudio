@@ -39,22 +39,22 @@ namespace Sphere.Core
         /// <summary>
         /// Gets a list of string used by this Map.
         /// </summary>
-        public List<string> Scripts { get; private set; }
+        public List<string> Scripts { get; private set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets a list of layers used by this Map.
         /// </summary>
-        public List<Layer> Layers { get; set; }
+        public List<Layer> Layers { get; set; } = new List<Layer>();
 
         /// <summary>
         /// Gets a list of entities used by this Map.
         /// </summary>
-        public List<Entity> Entities { get; private set; }
+        public List<Entity> Entities { get; private set; } = new List<Entity>();
 
         /// <summary>
         /// Gets a list of zones used by this map.
         /// </summary>
-        public List<Zone> Zones { get; private set; }
+        public List<Zone> Zones { get; private set; } = new List<Zone>();
 
         /// <summary>
         /// Gets the width of the zero'th layer in the map.
@@ -86,13 +86,7 @@ namespace Sphere.Core
         /// <summary>
         /// Creates a new, empty map.
         /// </summary>
-        public Map()
-        {
-            Scripts = new List<string>();
-            Layers = new List<Layer>();
-            Entities = new List<Entity>();
-            Zones = new List<Zone>();
-        }
+        public Map() { }
 
         /// <summary>
         /// Creates a new map with values.

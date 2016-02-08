@@ -5,9 +5,9 @@ A .NET based editor for your Sphere RPG games.
 
 Download
 ========
-*Latest*: v1.1.7.0
+*Latest*: v1.2.0
 
-You can download the latest version: [Here](https://www.dropbox.com/s/sl8af7flknll4mp/SphereStudio1.1.7.0.zip?dl=0)
+You can download the latest version: [Here](https://github.com/Radnen/spherestudio/releases)
 
 Features
 ========
@@ -23,6 +23,7 @@ Features
  - Single-Step Debugging
  - Multi-Engine Support
  - Powerful Plugin Subsystem
+ - Sphere & minisphere Compatible
 
 Authors
 =======
@@ -32,10 +33,12 @@ Authors
 Credits
 =======
 
- - ObjectListView Library
  - WeifenLuo DockPanelSuite Docking Library
- - IrrKlang Sound Library
  - Scintilla.NET Code Highlighting Library
+ - IrrKlang Sound Library
+ - ObjectListView Library
  - Sphere RPG Engine
 
 Thanks to all of those who tested the project!
+
+Make sure to visit us on the [Spheredev Forums](http://www.spheredev.org/forums)!

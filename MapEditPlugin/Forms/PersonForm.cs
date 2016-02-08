@@ -54,7 +54,11 @@ namespace SphereStudio.Plugins.Forms
 
         public int SelectedIndex
         {
-            set { LayerComboBox.SelectedIndex = value; Person.Layer = (short)value; }
+            set
+            {
+                LayerComboBox.SelectedIndex = value;
+                Person.Layer = (short)value;
+            }
         }
 
         private void PersonForm_Load(object sender, EventArgs e)
@@ -70,7 +74,7 @@ namespace SphereStudio.Plugins.Forms
             string[] dirs = Person.GetSpriteDirections(PluginManager.Core.Project.RootPath);
             if (dirs != null) DirectionBox.Items.AddRange(dirs);
             
-            PositionLabel.Text = string.Format("(X: {0}, Y: {1})", Person.X, Person.Y);
+            PositionLabel.Text = $"(X: {Person.X}, Y: {Person.Y})";
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -94,7 +98,7 @@ namespace SphereStudio.Plugins.Forms
 
         private void SpritesetButton_Click(object sender, EventArgs e)
         {
-            String path = PluginManager.Core.Project.RootPath + "\\spritesets";
+            string path = PluginManager.Core.Project.RootPath + "\\spritesets";
             using (OpenFileDialog spriteDiag = new OpenFileDialog())
             {
                 spriteDiag.Filter = @"Sprite Files (*.rss)|*.rss";
@@ -103,7 +107,7 @@ namespace SphereStudio.Plugins.Forms
                 if (spriteDiag.ShowDialog() == DialogResult.OK)
                 {
                     // Figure out its relative path:
-                    String spritePath = spriteDiag.FileName;
+                    string spritePath = spriteDiag.FileName;
                     spritePath = spritePath.Substring(spritePath.LastIndexOf("spritesets", StringComparison.Ordinal));
                     spritePath = spritePath.Substring(spritePath.IndexOf("\\", StringComparison.Ordinal) + 1);
                     SpritesetBox.Text = spritePath.Replace("\\", "/");
@@ -123,8 +127,7 @@ namespace SphereStudio.Plugins.Forms
         {
             string dir = (string)DirectionBox.SelectedItem;
             string script = Person.Scripts[0];
-            string format = "SetPersonDirection(\"{0}\", \"{1}\");\n{2}";
-            _scriptBox.Text = string.Format(format, NameTextBox.Text, dir, script);
+            _scriptBox.Text = $"SetPersonDirection(\"{NameTextBox.Text}\", \"{dir}\");\n{script}";
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)

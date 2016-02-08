@@ -119,11 +119,11 @@ namespace Sphere.Core
         public static Layer FromBinary(BinaryReader reader)
         {
             Layer layer = new Layer
-                {
-                    Width = reader.ReadInt16(),
-                    Height = reader.ReadInt16(),
-                    Flags = reader.ReadInt16()
-                };
+            {
+                Width = reader.ReadInt16(),
+                Height = reader.ReadInt16(),
+                Flags = reader.ReadInt16()
+            };
 
             layer.Visible = (~layer.Flags & 1) == 1;
             layer.Parallax = (layer.Flags & 2) == 2;
@@ -138,7 +138,7 @@ namespace Sphere.Core
             short length = reader.ReadInt16();
             layer.Name = new string(reader.ReadChars(length));
 
-            layer._tiles = new short[layer.Width,layer.Height];
+            layer._tiles = new short[layer.Width, layer.Height];
             for (int y = 0; y < layer.Height; ++y)
                 for (int x = 0; x < layer.Width; ++x)
                     layer._tiles[x, y] = reader.ReadInt16();
@@ -172,10 +172,7 @@ namespace Sphere.Core
         /// <returns>True if the tile had been set.</returns>
         public bool SetTile(int x, int y, short index)
         {
-            if (index < 0) return false;
-            if (x < 0 || x >= Width) return false;
-            if (y < 0 || y >= Height) return false;
-
+            if (index < 0 || x < 0 || x >= Width || y < 0 || y >= Height) return false;
             _tiles[x, y] = index;
             return true;
         }
@@ -208,8 +205,7 @@ namespace Sphere.Core
         /// <param name="tiles">New array of tile indicies to use.</param>
         public void SetTiles(short[,] tiles)
         {
-            int w = _tiles.GetLength(0);
-            int h = _tiles.GetLength(1);
+            int w = _tiles.GetLength(0), h = _tiles.GetLength(1);
 
             _tiles = new short[w, h];
             for (int x = 0; x < w; ++x)
@@ -236,12 +232,16 @@ namespace Sphere.Core
         public void AdjustTiles(short startindex, short delta)
         {
             for (int y = 0; y < Height; ++y)
+            {
                 for (int x = 0; x < Width; ++x)
+                {
                     if (_tiles[x, y] > startindex)
                     {
                         _tiles[x, y] += delta;
                         if (_tiles[x, y] < 0) _tiles[x, y] = 0;
                     }
+                }
+            }
         }
 
         /// <summary>
@@ -250,11 +250,8 @@ namespace Sphere.Core
         /// <param name="x">X-coord of tile.</param>
         /// <param name="y">Y-coord of tile.</param>
         /// <returns>The zero based tile index.</returns>
-        public short GetTile(int x, int y)
-        {
-            if (x < 0 || y < 0 || x >= Width || y >= Height) return -1;
-            return _tiles[x, y];
-        }
+        public short GetTile(int x, int y) =>
+            (x < 0 || y < 0 || x >= Width || y >= Height) ? (short)-1 : _tiles[x, y];
 
         /// <summary>
         /// Resizes the field to the new size.
@@ -264,9 +261,7 @@ namespace Sphere.Core
         public void Resize(short width, short height)
         {
             short[,] newTiles = new short[width, height];
-
-            int w = Math.Min(width, Width);
-            int h = Math.Min(height, Height);
+            int w = Math.Min(width, Width), h = Math.Min(height, Height);
 
             for (int x = 0; x <  w; ++x)
                 for (int y = 0; y < h; ++y)

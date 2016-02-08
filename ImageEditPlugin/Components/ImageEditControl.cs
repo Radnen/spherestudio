@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Sphere.Core.Editor;
+using Sphere.Core.Utility;
+using SphereStudio.Plugins.UndoRedo;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-using Sphere.Core.Editor;
-using Sphere.Core.Utility;
-using SphereStudio.Plugins.UndoRedo;
 
 namespace SphereStudio.Plugins.Components
 {
-    internal partial class ImageEditControl2 : UserControl
+    internal partial class ImageEditControl : UserControl
     {
         #region attributes
         private Bitmap _image;
@@ -57,7 +57,7 @@ namespace SphereStudio.Plugins.Components
         }
         #endregion
 
-        public ImageEditControl2()
+        public ImageEditControl()
         {
             Zoom = 1;
             InitializeComponent();
@@ -66,10 +66,8 @@ namespace SphereStudio.Plugins.Components
             _h_manager = new HistoryManager();
         }
 
-        public void MakeNew(int width, int height)
-        {
+        public void MakeNew(int width, int height) =>
             SetImage(new Bitmap(width, height, PixelFormat.Format32bppPArgb));
-        }
 
         public void Destroy()
         {
@@ -96,8 +94,11 @@ namespace SphereStudio.Plugins.Components
 
             using (Graphics g = Graphics.FromImage(_grid_bg))
             {
-                for (int x = 0; x < Width; x += Zoom) g.DrawLine(Pens.Magenta, x, 0, x, Width);
-                for (int y = 0; y < Height; y += Zoom) g.DrawLine(Pens.Magenta, 0, y, Height, y);
+                for (int x = 0; x < Width; x += Zoom)
+                    g.DrawLine(Pens.Magenta, x, 0, x, Width);
+
+                for (int y = 0; y < Height; y += Zoom)
+                    g.DrawLine(Pens.Magenta, 0, y, Height, y);
             }
         }
 
@@ -131,7 +132,7 @@ namespace SphereStudio.Plugins.Components
             // here I construct a new dotted bg image. But only if we need to.
             if (_image.Width != _oldWidth || _image.Height != _oldHeight)
             {
-                if (_bg != null) _bg.Dispose();
+                _bg?.Dispose();
                 _bg = new Bitmap(_image.Width, _image.Height, PixelFormat.Format32bppPArgb);
                 FastBitmap bmap = new FastBitmap(_bg);
                 bmap.LockImage();
@@ -147,11 +148,7 @@ namespace SphereStudio.Plugins.Components
         /// <summary>
         /// Gets a copy of the current drawing image.
         /// </summary>
-        public Bitmap GetImage()
-        {
-            Bitmap copy = new Bitmap(_image);
-            return copy;
-        }
+        public Bitmap GetImage() => new Bitmap(_image);
 
         private void ImageEditControl2_MouseDown(object sender, MouseEventArgs e)
         {
@@ -184,7 +181,7 @@ namespace SphereStudio.Plugins.Components
                 }
 
                 if (LocationLabel != null)
-                    LocationLabel.Text = "Loc: " + _mouse;
+                    LocationLabel.Text = $"Loc: {_mouse}";
 
                 Invalidate(false);
                 _last_mouse = _mouse;
@@ -398,12 +395,14 @@ namespace SphereStudio.Plugins.Components
         public void ResizeToFit()
         {
             if (Parent == null || _image == null) return;
+
             Zoom = Math.Max(1, Math.Min(Parent.Height / _image.Height, Parent.Width / _image.Width));
             Width = _image.Width * Zoom;
             Height = _image.Height * Zoom;
             int x = Parent.Width / 2 - Width / 2;
             int y = Parent.Height / 2 - Height / 2;
             Location = new Point(x, y);
+
             if (Zoom != _last_zoom)
             {
                 UpdateGrid();
@@ -432,10 +431,7 @@ namespace SphereStudio.Plugins.Components
             }
         }
 
-        public void ClearHistory()
-        {
-            _h_manager.Clear();
-        }
+        public void ClearHistory() => _h_manager.Clear();
 
         public void ResizeImage(int width, int height)
         {
@@ -448,7 +444,7 @@ namespace SphereStudio.Plugins.Components
             PushResizePage(image);
             SetImage(image);
             image.Dispose();
-            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
+            ImageChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void RescaleImage(int width, int height, InterpolationMode mode)
@@ -462,7 +458,7 @@ namespace SphereStudio.Plugins.Components
             PushResizePage(image);
             SetImage(image);
             image.Dispose();
-            if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
+            ImageChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void Slide(int ox, int oy)
@@ -521,10 +517,7 @@ namespace SphereStudio.Plugins.Components
             if (ColorChanged != null) ColorChanged(this, EventArgs.Empty);
         }
 
-        public void Copy()
-        {
-            Clipboard.SetImage(_image);
-        }
+        public void Copy() => Clipboard.SetImage(_image);
 
         public void Paste()
         {
@@ -537,7 +530,7 @@ namespace SphereStudio.Plugins.Components
                     Bitmap image = (Bitmap)obj.GetData("System.Drawing.Bitmap");
                     PushResizePage(image);
                     SetImage(image);
-                    if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
+                    ImageChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -553,24 +546,15 @@ namespace SphereStudio.Plugins.Components
                 _end_anchor.X = _image.Width - 1;
                 _end_anchor.Y = _image.Height - 1;
                 PushHistory();
-                if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
+                ImageChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private void copyImageItem_Click(object sender, EventArgs e)
-        {
-            Copy();
-        }
+        private void copyImageItem_Click(object sender, EventArgs e) => Copy();
 
-        private void pasteNewItem_Click(object sender, EventArgs e)
-        {
-            Paste();
-        }
+        private void pasteNewItem_Click(object sender, EventArgs e) => Paste();
 
-        private void pasteIntoItem_Click(object sender, EventArgs e)
-        {
-            PasteInto();
-        }
+        private void pasteIntoItem_Click(object sender, EventArgs e) => PasteInto();
 
         private void replaceItem_Click(object sender, EventArgs e)
         {
@@ -595,25 +579,17 @@ namespace SphereStudio.Plugins.Components
             if (ImageChanged != null) ImageChanged(this, EventArgs.Empty);
         }
 
-        private void horizontalItem_Click(object sender, EventArgs e)
-        {
+        private void horizontalItem_Click(object sender, EventArgs e) =>
             RotateFlip(RotateFlipType.RotateNoneFlipX);
-        }
 
-        private void verticalItem_Click(object sender, EventArgs e)
-        {
+        private void verticalItem_Click(object sender, EventArgs e) =>
             RotateFlip(RotateFlipType.RotateNoneFlipY);
-        }
 
-        private void rotateLeftItem_Click(object sender, EventArgs e)
-        {
+        private void rotateLeftItem_Click(object sender, EventArgs e) =>
             RotateFlip(RotateFlipType.Rotate270FlipNone);            
-        }
 
-        private void rotateRightItem_Click(object sender, EventArgs e)
-        {
+        private void rotateRightItem_Click(object sender, EventArgs e) =>
             RotateFlip(RotateFlipType.Rotate90FlipNone);
-        }
 
         private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
         {

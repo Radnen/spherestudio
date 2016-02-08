@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-
-using Sphere.Core.Editor;
-using Sphere.Plugins;
+﻿using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, IFileOpener, IDockPane
     {
-        public string Name { get { return "Sound Test"; } }
-        public string Author { get { return "Spherical"; } }
-        public string Description { get { return "Listen to sounds from your game while you work!"; } }
-        public string Version { get { return "1.2.0"; } }
+        public string Name { get; } = "Sound Test";
+        public string Author { get; } = "Spherical";
+        public string Description { get; } = "Listen to sounds from your game while you work!";
+        public string Version { get; } = "1.2.0";
 
         public bool ShowInViewMenu { get; private set; }
         public Control Control { get; private set; }
@@ -76,19 +73,13 @@ namespace SphereStudio.Plugins
             return null;
         }
 
-        private void IDE_LoadProject(object sender, EventArgs e)
-        {
+        private void IDE_LoadProject(object sender, EventArgs e) =>
             _soundPicker.WatchProject(PluginManager.Core.Project);
-        }
 
-        private void IDE_UnloadProject(object sender, EventArgs e)
-        {
+        private void IDE_UnloadProject(object sender, EventArgs e) =>
             _soundPicker.WatchProject(null);
-        }
 
-        private void IDE_TestGame(object sender, EventArgs e)
-        {
+        private void IDE_TestGame(object sender, EventArgs e) =>
             _soundPicker.ForcePause();
-        }
     }
 }

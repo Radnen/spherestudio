@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Sphere.Core;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.Forms;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-
 using WeifenLuo.WinFormsUI.Docking;
-
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.Forms;
-using Sphere.Core;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
@@ -165,7 +163,11 @@ namespace SphereStudio.Plugins
 
         void _tileset_ctrl_TileSelected(List<short> tiles)
         {
-            _selectedFrame.Index = tiles[0];
+            if (tiles.Count > 0)
+            {
+                _selectedFrame.Index = tiles[0];
+            }
+
             DirectionHolder.Invalidate(true);
             SpriteDrawer.Content = _tilesetCtrl.Tileset.Tiles[tiles[0]].Graphic;
             IsDirty = true;
@@ -184,10 +186,7 @@ namespace SphereStudio.Plugins
             IsDirty = true;
         }
 
-        public override string[] FileExtensions
-        {
-            get { return new[] { "rss" }; }
-        }
+        public override string[] FileExtensions { get; } = new[] { "rss" };
 
         public override bool NewDocument()
         {
@@ -215,30 +214,15 @@ namespace SphereStudio.Plugins
             IsDirty = false;
         }
 
-        public override void Activate()
-        {
-            PluginMain.ShowMenus(true);
-        }
+        public override void Activate() => PluginMain.ShowMenus(true);
 
-        public override void Deactivate()
-        {
-            PluginMain.ShowMenus(false);
-        }
+        public override void Deactivate() => PluginMain.ShowMenus(false);
 
-        public void SaveLayout()
-        {
-            _mainDockPanel.SaveAsXml("SpriteEditor.xml");
-        }
+        public void SaveLayout() => _mainDockPanel.SaveAsXml("SpriteEditor.xml");
 
-        public void ResizeAll()
-        {
-            CallFormResize(false);
-        }
+        public void ResizeAll() => CallFormResize(false);
 
-        public void RescaleAll()
-        {
-            CallFormResize(true);
-        }
+        public void RescaleAll() => CallFormResize(true);
 
         private void CallFormResize(bool rescale)
         {
@@ -351,9 +335,6 @@ namespace SphereStudio.Plugins
             Invalidate(true);
         }
 
-        private void Modified(object sender, EventArgs e)
-        {
-            IsDirty = true;
-        }
+        private void Modified(object sender, EventArgs e) => IsDirty = true;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins.Components
 {
-    partial class ImageEditControl2
+    partial class ImageEditControl
     {
         /// <summary> 
         /// Required designer variable.
