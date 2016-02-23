@@ -75,8 +75,7 @@ namespace SphereStudio.Forms
             if (ResoComboBox.SelectedIndex > 0)
             {
                 _resoChanging = true;
-                Match match = new Regex(@"(\d+)x(\d+)")
-                    .Match(ResoComboBox.Text);
+                var match = new Regex(@"(\d+)x(\d+)").Match(ResoComboBox.Text);
                 WidthBox.Text = match.Groups[1].Value;
                 HeightBox.Text = match.Groups[2].Value;
                 _resoChanging = false;

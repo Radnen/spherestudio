@@ -39,6 +39,10 @@
             this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GeneralPage = new System.Windows.Forms.TabPage();
+            this.ResoComboBox = new System.Windows.Forms.ComboBox();
+            this.HeightBox = new System.Windows.Forms.TextBox();
+            this.WidthBox = new System.Windows.Forms.TextBox();
+            this.ResoLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.SummaryTextBox = new System.Windows.Forms.TextBox();
             this.BuildPage = new System.Windows.Forms.TabPage();
@@ -59,7 +63,7 @@
             // PathLabel
             // 
             this.PathLabel.AutoSize = true;
-            this.PathLabel.Location = new System.Drawing.Point(12, 20);
+            this.PathLabel.Location = new System.Drawing.Point(31, 20);
             this.PathLabel.Name = "PathLabel";
             this.PathLabel.Size = new System.Drawing.Size(44, 15);
             this.PathLabel.TabIndex = 0;
@@ -68,7 +72,7 @@
             // GameTitleLabel
             // 
             this.GameTitleLabel.AutoSize = true;
-            this.GameTitleLabel.Location = new System.Drawing.Point(17, 49);
+            this.GameTitleLabel.Location = new System.Drawing.Point(36, 49);
             this.GameTitleLabel.Name = "GameTitleLabel";
             this.GameTitleLabel.Size = new System.Drawing.Size(39, 15);
             this.GameTitleLabel.TabIndex = 2;
@@ -77,7 +81,7 @@
             // AuthorLabel
             // 
             this.AuthorLabel.AutoSize = true;
-            this.AuthorLabel.Location = new System.Drawing.Point(12, 78);
+            this.AuthorLabel.Location = new System.Drawing.Point(31, 78);
             this.AuthorLabel.Name = "AuthorLabel";
             this.AuthorLabel.Size = new System.Drawing.Size(44, 15);
             this.AuthorLabel.TabIndex = 4;
@@ -87,35 +91,35 @@
             // 
             this.PathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PathTextBox.Location = new System.Drawing.Point(62, 17);
+            this.PathTextBox.Location = new System.Drawing.Point(81, 17);
             this.PathTextBox.Name = "PathTextBox";
             this.PathTextBox.ReadOnly = true;
-            this.PathTextBox.Size = new System.Drawing.Size(357, 23);
+            this.PathTextBox.Size = new System.Drawing.Size(317, 23);
             this.PathTextBox.TabIndex = 1;
             // 
             // NameTextBox
             // 
             this.NameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.NameTextBox.Location = new System.Drawing.Point(62, 46);
+            this.NameTextBox.Location = new System.Drawing.Point(81, 46);
             this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(357, 23);
+            this.NameTextBox.Size = new System.Drawing.Size(317, 23);
             this.NameTextBox.TabIndex = 3;
             // 
             // AuthorTextBox
             // 
             this.AuthorTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AuthorTextBox.Location = new System.Drawing.Point(62, 75);
+            this.AuthorTextBox.Location = new System.Drawing.Point(81, 75);
             this.AuthorTextBox.Name = "AuthorTextBox";
-            this.AuthorTextBox.Size = new System.Drawing.Size(357, 23);
+            this.AuthorTextBox.Size = new System.Drawing.Size(317, 23);
             this.AuthorTextBox.TabIndex = 5;
             // 
             // OKButton
             // 
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Location = new System.Drawing.Point(293, 7);
+            this.OKButton.Location = new System.Drawing.Point(272, 7);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(80, 25);
             this.OKButton.TabIndex = 0;
@@ -127,7 +131,7 @@
             // 
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(379, 7);
+            this.CloseButton.Location = new System.Drawing.Point(358, 7);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(80, 25);
             this.CloseButton.TabIndex = 1;
@@ -142,7 +146,7 @@
             this.editorLabel1.ForeColor = System.Drawing.Color.White;
             this.editorLabel1.Location = new System.Drawing.Point(0, 0);
             this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(473, 23);
+            this.editorLabel1.Size = new System.Drawing.Size(452, 23);
             this.editorLabel1.TabIndex = 0;
             this.editorLabel1.Text = "Configure your Sphere Studio game project";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -157,11 +161,15 @@
             this.tabControl1.Location = new System.Drawing.Point(14, 38);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(445, 427);
+            this.tabControl1.Size = new System.Drawing.Size(424, 449);
             this.tabControl1.TabIndex = 1;
             // 
             // GeneralPage
             // 
+            this.GeneralPage.Controls.Add(this.ResoComboBox);
+            this.GeneralPage.Controls.Add(this.HeightBox);
+            this.GeneralPage.Controls.Add(this.WidthBox);
+            this.GeneralPage.Controls.Add(this.ResoLabel);
             this.GeneralPage.Controls.Add(this.label3);
             this.GeneralPage.Controls.Add(this.SummaryTextBox);
             this.GeneralPage.Controls.Add(this.PathLabel);
@@ -173,15 +181,62 @@
             this.GeneralPage.Location = new System.Drawing.Point(4, 24);
             this.GeneralPage.Name = "GeneralPage";
             this.GeneralPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralPage.Size = new System.Drawing.Size(437, 399);
+            this.GeneralPage.Size = new System.Drawing.Size(416, 421);
             this.GeneralPage.TabIndex = 0;
             this.GeneralPage.Text = "General";
             this.GeneralPage.UseVisualStyleBackColor = true;
             // 
+            // ResoComboBox
+            // 
+            this.ResoComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ResoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ResoComboBox.FormattingEnabled = true;
+            this.ResoComboBox.Items.AddRange(new object[] {
+            "Click to select a resolution",
+            "320x240",
+            "640x480",
+            "800x600",
+            "1024x768",
+            "1280x720",
+            "1920x1080"});
+            this.ResoComboBox.Location = new System.Drawing.Point(81, 104);
+            this.ResoComboBox.Name = "ResoComboBox";
+            this.ResoComboBox.Size = new System.Drawing.Size(229, 23);
+            this.ResoComboBox.TabIndex = 9;
+            this.ResoComboBox.SelectedIndexChanged += new System.EventHandler(this.ResoComboBox_SelectedIndexChanged);
+            // 
+            // HeightBox
+            // 
+            this.HeightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.HeightBox.Location = new System.Drawing.Point(360, 104);
+            this.HeightBox.Name = "HeightBox";
+            this.HeightBox.Size = new System.Drawing.Size(38, 23);
+            this.HeightBox.TabIndex = 11;
+            this.HeightBox.Text = "240";
+            // 
+            // WidthBox
+            // 
+            this.WidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.WidthBox.Location = new System.Drawing.Point(316, 104);
+            this.WidthBox.Name = "WidthBox";
+            this.WidthBox.Size = new System.Drawing.Size(38, 23);
+            this.WidthBox.TabIndex = 10;
+            this.WidthBox.Text = "320";
+            // 
+            // ResoLabel
+            // 
+            this.ResoLabel.AutoSize = true;
+            this.ResoLabel.Location = new System.Drawing.Point(12, 107);
+            this.ResoLabel.Name = "ResoLabel";
+            this.ResoLabel.Size = new System.Drawing.Size(63, 15);
+            this.ResoLabel.TabIndex = 8;
+            this.ResoLabel.Text = "Resolution";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 119);
+            this.label3.Location = new System.Drawing.Point(12, 153);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 15);
             this.label3.TabIndex = 6;
@@ -192,10 +247,10 @@
             this.SummaryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SummaryTextBox.Location = new System.Drawing.Point(15, 137);
+            this.SummaryTextBox.Location = new System.Drawing.Point(15, 171);
             this.SummaryTextBox.Multiline = true;
             this.SummaryTextBox.Name = "SummaryTextBox";
-            this.SummaryTextBox.Size = new System.Drawing.Size(404, 243);
+            this.SummaryTextBox.Size = new System.Drawing.Size(383, 231);
             this.SummaryTextBox.TabIndex = 7;
             // 
             // BuildPage
@@ -208,7 +263,7 @@
             this.BuildPage.Location = new System.Drawing.Point(4, 24);
             this.BuildPage.Name = "BuildPage";
             this.BuildPage.Padding = new System.Windows.Forms.Padding(3);
-            this.BuildPage.Size = new System.Drawing.Size(437, 399);
+            this.BuildPage.Size = new System.Drawing.Size(416, 421);
             this.BuildPage.TabIndex = 1;
             this.BuildPage.Text = "Build";
             this.BuildPage.UseVisualStyleBackColor = true;
@@ -220,7 +275,7 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(17, 21);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(401, 83);
+            this.groupBox1.Size = new System.Drawing.Size(380, 83);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "IMPORTANT";
@@ -232,7 +287,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.Location = new System.Drawing.Point(12, 21);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(382, 48);
+            this.label5.Size = new System.Drawing.Size(361, 48);
             this.label5.TabIndex = 0;
             this.label5.Text = "Changing the build settings of an established project may prevent the project fro" +
     "m being built or even lead to undesirable behavior.  Proceed with caution.";
@@ -253,7 +308,7 @@
             this.BuildDirTextBox.Location = new System.Drawing.Point(83, 123);
             this.BuildDirTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BuildDirTextBox.Name = "BuildDirTextBox";
-            this.BuildDirTextBox.Size = new System.Drawing.Size(335, 23);
+            this.BuildDirTextBox.Size = new System.Drawing.Size(314, 23);
             this.BuildDirTextBox.TabIndex = 2;
             // 
             // CompilerComboBox
@@ -264,8 +319,9 @@
             this.CompilerComboBox.FormattingEnabled = true;
             this.CompilerComboBox.Location = new System.Drawing.Point(83, 151);
             this.CompilerComboBox.Name = "CompilerComboBox";
-            this.CompilerComboBox.Size = new System.Drawing.Size(335, 23);
+            this.CompilerComboBox.Size = new System.Drawing.Size(314, 23);
             this.CompilerComboBox.TabIndex = 6;
+            this.CompilerComboBox.SelectedIndexChanged += new System.EventHandler(this.CompilerComboBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -281,9 +337,9 @@
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Controls.Add(this.OKButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 480);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 502);
             this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(473, 38);
+            this.ButtonPanel.Size = new System.Drawing.Size(452, 38);
             this.ButtonPanel.TabIndex = 2;
             // 
             // ProjectPropsForm
@@ -292,7 +348,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(473, 518);
+            this.ClientSize = new System.Drawing.Size(452, 540);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.editorLabel1);
@@ -338,5 +394,9 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel ButtonPanel;
+        private System.Windows.Forms.ComboBox ResoComboBox;
+        private System.Windows.Forms.TextBox HeightBox;
+        private System.Windows.Forms.TextBox WidthBox;
+        private System.Windows.Forms.Label ResoLabel;
     }
 }
