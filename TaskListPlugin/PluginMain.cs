@@ -10,7 +10,7 @@ namespace SphereStudio.Plugins
         public string Name { get; } = "Task List";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Keep track of game development tasks.";
-        public string Version { get; } = "1.2.0";
+        public string Version { get; } = "1.2.1";
 
         private TaskList _list;
 

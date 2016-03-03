@@ -15,7 +15,7 @@ namespace SphereStudio.ScriptEditor
         public string Name { get; } = "Script Editor";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Sphere Studio default JS script editor";
-        public string Version { get; } = "1.2.0";
+        public string Version { get; } = "1.2.1";
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }

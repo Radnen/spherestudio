@@ -10,7 +10,7 @@ namespace SphereStudio.Plugins
         public string Name { get; } = "Font Importer";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Convert TrueType fonts to Sphere .rfn format.";
-        public string Version { get; } = "1.2.0";
+        public string Version { get; } = "1.2.1";
 
         public string FileTypeName { get; } = "Sphere Font";
         public string[] FileExtensions { get; } = new[] { "rfn" };

@@ -17,7 +17,7 @@ namespace SphereStudio.Vanilla
         public string Name { get; } = "Classic Sphere";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Provides support for classic vanilla Sphere 1.x.";
-        public string Version { get; } = "1.2.0";
+        public string Version { get; } = "1.2.1";
 
         public void Initialize(ISettings conf)
         {

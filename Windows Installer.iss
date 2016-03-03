@@ -4,8 +4,8 @@
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
-#define AppVersion "1.2.0"
-#define AppFullVersion "1.2.0.460"
+#define AppVersion "1.2.1"
+#define AppFullVersion "1.2.1.464"
 
 [Setup]
 OutputBaseFilename=SphereStudio-{#AppVersion}
@@ -25,6 +25,7 @@ AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/
 AppSupportURL=http://forums.spheredev.org/
 AppUpdatesURL=http://forums.spheredev.org/index.php/topic,24.0.html
+AppCopyright=© 2015-2016 Spherical
 LicenseFile=LICENSE.txt
 DefaultDirName={pf}\{#AppName}
 DisableProgramGroupPage=yes
@@ -55,6 +56,7 @@ Source: "Sphere Studio\bin\Release\Sphere Studio.exe.config"; DestDir: "{app}"; 
 Source: "Sphere Studio\bin\Release\Sphere Studio.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\SphereLexer.xml"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
+Source: "Sphere Studio\bin\Release\Sphere.Plugins.xml"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\Docs\*"; DestDir: "{app}\Docs"; Flags: ignoreversion; Components: spherestudio
 Source: "Sphere Studio\bin\Release\Plugins\ClassicSpherePlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: classic
 Source: "Sphere Studio\bin\Release\Plugins\FontEditPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: spherestudio

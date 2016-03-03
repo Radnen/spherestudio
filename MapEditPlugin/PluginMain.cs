@@ -13,7 +13,7 @@ namespace SphereStudio.Plugins
         public string Name { get; } = "Map Editor";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Sphere Studio default map editor";
-        public string Version { get; } = "1.2.0";
+        public string Version { get; } = "1.2.1";
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }
