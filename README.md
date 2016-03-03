@@ -5,7 +5,7 @@ A .NET based editor for your Sphere RPG games.
 
 Download
 ========
-*Latest*: v1.2.0
+*Latest*: v1.2.1
 
 You can download the latest version: [Here](https://github.com/Radnen/spherestudio/releases)
 
