@@ -38,7 +38,7 @@ namespace SphereStudio.Vanilla.Plugins
                 Process.Start(enginePath, options);
             else
             {
-                MessageBox.Show("Sphere 1.x or compatible engine was not found. Please check your Sphere installation path under Settings Center -> Classic Sphere.",
+                MessageBox.Show("Sphere 1.x or compatible engine was not found. Please check your Sphere installation path under Settings Center -> Sphere 1.x Setup.",
                     "Unable to Start Engine", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
