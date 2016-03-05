@@ -52,7 +52,6 @@
             this.MainDock = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.EditorTools = new System.Windows.Forms.ToolStrip();
             this.toolNew = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolOpen = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveToolButton = new System.Windows.Forms.ToolStripButton();
             this.ToolSeperator1 = new System.Windows.Forms.ToolStripSeparator();
             this.GameToolButton = new System.Windows.Forms.ToolStripButton();
@@ -82,14 +81,12 @@
             this.RescaleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuNewProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenProjectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOpenProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuCloseProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpenLastProject = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuImportSgm = new System.Windows.Forms.ToolStripMenuItem();
-            this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.sphereProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNewProject2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,6 +137,9 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolOpen = new System.Windows.Forms.ToolStripDropDownButton();
+            this.menuOpenProject2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileOrDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -273,15 +273,6 @@
             this.toolNew.Text = "&New";
             this.toolNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
             this.toolNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
-            // 
-            // toolOpen
-            // 
-            this.toolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolOpen.Image = global::SphereStudio.Properties.Resources.open;
-            this.toolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolOpen.Name = "toolOpen";
-            this.toolOpen.Size = new System.Drawing.Size(29, 25);
-            this.toolOpen.Text = "&Open";
             // 
             // SaveToolButton
             // 
@@ -487,12 +478,10 @@
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuNewProject,
-            this.OpenProjectMenuItem,
+            this.menuOpenProject,
             this.menuCloseProject,
             this.menuOpenLastProject,
             this.toolStripSeparator7,
-            this.menuImportSgm,
-            this.Separator1,
             this.menuNew,
             this.menuOpen,
             this.Seperator2,
@@ -517,15 +506,15 @@
             this.menuNewProject.Text = "New &Project";
             this.menuNewProject.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
-            // OpenProjectMenuItem
+            // menuOpenProject
             // 
-            this.OpenProjectMenuItem.Image = global::SphereStudio.Properties.Resources.folder;
-            this.OpenProjectMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OpenProjectMenuItem.Name = "OpenProjectMenuItem";
-            this.OpenProjectMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.OpenProjectMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.OpenProjectMenuItem.Text = "&Open Project";
-            this.OpenProjectMenuItem.Click += new System.EventHandler(this.menuOpenProject_Click);
+            this.menuOpenProject.Image = global::SphereStudio.Properties.Resources.folder;
+            this.menuOpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.menuOpenProject.Name = "menuOpenProject";
+            this.menuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.menuOpenProject.Size = new System.Drawing.Size(187, 22);
+            this.menuOpenProject.Text = "&Open Project";
+            this.menuOpenProject.Click += new System.EventHandler(this.menuOpenProject_Click);
             // 
             // menuCloseProject
             // 
@@ -548,22 +537,10 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(184, 6);
             // 
-            // menuImportSgm
-            // 
-            this.menuImportSgm.Name = "menuImportSgm";
-            this.menuImportSgm.Size = new System.Drawing.Size(187, 22);
-            this.menuImportSgm.Text = "Upgrade SGM...";
-            this.menuImportSgm.Click += new System.EventHandler(this.menuImportSgm_Click);
-            // 
-            // Separator1
-            // 
-            this.Separator1.Name = "Separator1";
-            this.Separator1.Size = new System.Drawing.Size(184, 6);
-            // 
             // menuNew
             // 
             this.menuNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sphereProjectToolStripMenuItem});
+            this.menuNewProject2});
             this.menuNew.Image = global::SphereStudio.Properties.Resources.page_white_edit;
             this.menuNew.Name = "menuNew";
             this.menuNew.Size = new System.Drawing.Size(187, 22);
@@ -571,13 +548,13 @@
             this.menuNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
             this.menuNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
             // 
-            // sphereProjectToolStripMenuItem
+            // menuNewProject2
             // 
-            this.sphereProjectToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.SphereEditor;
-            this.sphereProjectToolStripMenuItem.Name = "sphereProjectToolStripMenuItem";
-            this.sphereProjectToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.sphereProjectToolStripMenuItem.Text = "Sphere Studio &Project";
-            this.sphereProjectToolStripMenuItem.Click += new System.EventHandler(this.menuNewProject_Click);
+            this.menuNewProject2.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.menuNewProject2.Name = "menuNewProject2";
+            this.menuNewProject2.Size = new System.Drawing.Size(187, 22);
+            this.menuNewProject2.Text = "Sphere Studio &Project";
+            this.menuNewProject2.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
             // menuOpen
             // 
@@ -1019,6 +996,34 @@
             this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
+            // toolOpen
+            // 
+            this.toolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolOpen.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuOpenProject2,
+            this.fileOrDocumentToolStripMenuItem});
+            this.toolOpen.Image = global::SphereStudio.Properties.Resources.open;
+            this.toolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolOpen.Name = "toolOpen";
+            this.toolOpen.Size = new System.Drawing.Size(29, 25);
+            this.toolOpen.Text = "&Open";
+            // 
+            // menuOpenProject2
+            // 
+            this.menuOpenProject2.Image = global::SphereStudio.Properties.Resources.SphereEditor;
+            this.menuOpenProject2.Name = "menuOpenProject2";
+            this.menuOpenProject2.Size = new System.Drawing.Size(196, 22);
+            this.menuOpenProject2.Text = "Sphere Studio &Project...";
+            this.menuOpenProject2.Click += new System.EventHandler(this.menuOpenProject_Click);
+            // 
+            // fileOrDocumentToolStripMenuItem
+            // 
+            this.fileOrDocumentToolStripMenuItem.Image = global::SphereStudio.Properties.Resources.page_white_edit;
+            this.fileOrDocumentToolStripMenuItem.Name = "fileOrDocumentToolStripMenuItem";
+            this.fileOrDocumentToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.fileOrDocumentToolStripMenuItem.Text = "&File/Document...";
+            this.fileOrDocumentToolStripMenuItem.Click += new System.EventHandler(this.menuOpen_Click);
+            // 
             // IDEForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1083,13 +1088,11 @@
         private System.Windows.Forms.ToolStripMenuItem ImportSsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recenterMapItem;
         private System.Windows.Forms.ToolStripDropDownButton toolNew;
-        private System.Windows.Forms.ToolStripDropDownButton toolOpen;
         private System.Windows.Forms.ToolStripMenuItem menuFile;
         private System.Windows.Forms.ToolStripMenuItem menuNewProject;
-        private System.Windows.Forms.ToolStripMenuItem OpenProjectMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuOpenProject;
         private System.Windows.Forms.ToolStripMenuItem menuCloseProject;
         private System.Windows.Forms.ToolStripMenuItem menuOpenLastProject;
-        private System.Windows.Forms.ToolStripSeparator Separator1;
         private System.Windows.Forms.ToolStripMenuItem menuOpen;
         private System.Windows.Forms.ToolStripSeparator Seperator2;
         private System.Windows.Forms.ToolStripMenuItem menuSave;
@@ -1124,7 +1127,7 @@
         private System.Windows.Forms.MenuStrip EditorMenu;
         private System.Windows.Forms.ToolStripComboBox toolEngineCombo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem sphereProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuNewProject2;
         private System.Windows.Forms.ToolStripMenuItem menuTools;
         private System.Windows.Forms.ToolStripMenuItem menuConfigEngine;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
@@ -1147,8 +1150,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuBuildPackage;
         internal System.Windows.Forms.ToolStripMenuItem menuNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem menuImportSgm;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripDropDownButton toolOpen;
+        private System.Windows.Forms.ToolStripMenuItem menuOpenProject2;
+        private System.Windows.Forms.ToolStripMenuItem fileOrDocumentToolStripMenuItem;
     }
 }
 

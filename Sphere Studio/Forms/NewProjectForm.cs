@@ -25,7 +25,7 @@ namespace SphereStudio.Forms
             set
             {
                 FolderBox.Text = value;
-                DirectoryBox.Text = value + @"\";
+                DirectoryBox.Text = value + Path.DirectorySeparatorChar;
             }
         }
 
@@ -51,7 +51,7 @@ namespace SphereStudio.Forms
 
         private void FillDirectory(object sender, KeyEventArgs e)
         {
-            DirectoryBox.Text = FolderBox.Text + @"\" + NameBox.Text;
+            DirectoryBox.Text = FolderBox.Text + Path.DirectorySeparatorChar + NameBox.Text;
             CheckForOk();
         }
 
@@ -60,7 +60,7 @@ namespace SphereStudio.Forms
             if (FolderFinder.ShowDialog() == DialogResult.OK)
             {
                 FolderBox.Text = FolderFinder.SelectedPath;
-                DirectoryBox.Text = FolderBox.Text + @"\" + NameBox.Text;
+                DirectoryBox.Text = FolderBox.Text + Path.DirectorySeparatorChar + NameBox.Text;
                 CheckForOk();
             }
         }
@@ -99,9 +99,11 @@ namespace SphereStudio.Forms
                 StatusLabel.Text = @"The directory must be more than 2 letters.";
             }
 
-            if (path.Contains("|") || text.Contains("\\") || path.Contains("?") || path.Contains("<") ||
-                path.Contains("/") || path.Contains("\"") || path.Contains("*") || path.Contains(">") ||
-                path.LastIndexOf(':') > 1 || path.Contains("\'"))
+            char[] invalidChars = Path.GetInvalidPathChars();
+            bool isPathInvalid = false;
+            foreach (char ch in invalidChars)
+                isPathInvalid |= path.Contains(ch.ToString());
+            if (isPathInvalid)
             {
                 OKButton.Enabled = false;
                 StatusLabel.Text = @"Path or name contains invalid characters.";

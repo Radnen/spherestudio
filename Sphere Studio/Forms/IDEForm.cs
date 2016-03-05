@@ -45,7 +45,6 @@ namespace SphereStudio.Forms
                 Application.ProductVersion,
                 Environment.Is64BitProcess ? "x64" : "x86");
             toolNew.DropDown = menuNew.DropDown;
-            toolOpen.DropDown = menuOpen.DropDown;
 
             BuildEngine.Initialize();
 
@@ -227,6 +226,24 @@ namespace SphereStudio.Forms
         public void OpenProject(string fileName, bool usePluginWarning = true)
         {
             if (string.IsNullOrEmpty(fileName)) return;
+
+            // check if we're upgrading a legacy game
+            if (Path.GetFileName(fileName).ToUpperInvariant() == "GAME.SGM")
+            {
+                DialogResult answer = MessageBox.Show(
+                    "This is a Sphere 1.x game manifest file (game.sgm).  If you continue, a Sphere Studio project file (.ssproj) will be created in its place and the manifest file will be deleted.\n\nAre you sure?",
+                    "New Project from game.sgm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (answer == DialogResult.Yes)
+                {
+                    Project np = SphereStudio.Project.FromSgm(fileName);
+                    np.Save();
+                    File.Delete(fileName);
+                    OpenProject(np.FileName, false);
+                }
+                return;
+            }
+
+            // otherwise, open the project as usual
             Project pj = SphereStudio.Project.Open(fileName);
             IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
             ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
@@ -494,7 +511,7 @@ namespace SphereStudio.Forms
             using (OpenFileDialog projDiag = new OpenFileDialog())
             {
                 projDiag.Title = @"Open Project";
-                projDiag.Filter = @"Sphere Studio Projects|*.ssproj";
+                projDiag.Filter = @"All Supported Projects|*.ssproj;game.sgm|Sphere Studio Projects|*.ssproj|Sphere 1.x Game Manifest|game.sgm";
                 projDiag.InitialDirectory = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "Sphere Studio", "Projects");
@@ -1203,29 +1220,6 @@ namespace SphereStudio.Forms
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 await BuildEngine.Package(Core.Project, sfd.FileName);
-            }
-        }
-
-        private void menuImportSgm_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog projDiag = new OpenFileDialog())
-            {
-                projDiag.Title = @"Open Project";
-                projDiag.Filter = @"Sphere Game Manifest|game.sgm";
-                projDiag.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-                if (projDiag.ShowDialog() == DialogResult.OK)
-                {
-                    DialogResult answer = MessageBox.Show("The project will be created in the same directory as the original SGM file.  Continue?",
-                        "Create Project from SGM", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (answer == DialogResult.Yes)
-                    {
-                        Project np = SphereStudio.Project.FromSgm(projDiag.FileName);
-                        np.Save();
-                        File.Delete(projDiag.FileName);
-                        OpenProject(np.FileName, false);
-                    }
-                }
             }
         }
     }

@@ -97,7 +97,12 @@ namespace SphereStudio
                         }
                     }
                 }
-                catch { }
+                catch
+                {
+                    // ignore any parsing errors. if an error occurs parsing the manifest,
+                    // we'll just use the default values. this ensures it is always possible
+                    // to upgrade a Sphere 1.x project even if the game.sgm is damaged.
+                }
             }
 
             project.FileName = Path.Combine(rootPath, MakeFileName(project.Name));
