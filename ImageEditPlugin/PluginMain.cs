@@ -13,7 +13,7 @@ namespace SphereStudio.Plugins
         public string Name { get; } = "Image Editor";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Sphere Studio default image editor";
-        public string Version { get; } = "1.2.1";
+        public string Version { get; } = "1.2.2";
 
         public string FileTypeName { get; } = "Bitmap Image";
         public string[] FileExtensions { get; } = new[] { "bmp", "gif", "jpg", "png", "tif", "tiff" };
