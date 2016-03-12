@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sphere Studio 1.2.2")]
+[assembly: AssemblyTitle("Sphere Studio IDE")]
 
 [assembly: AssemblyDescription("A modern Sphere development environment written in C# for .NET 4.5 or higher.\r\n\r\n"+
     "Special Thanks:\r\n\r\n"+
