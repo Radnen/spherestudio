@@ -9,10 +9,10 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio</RootNamespace>
-    <AssemblyName>Sphere Studio</AssemblyName>
+    <AssemblyName>SphereStudioIDE</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>Sphere Studio.ico</ApplicationIcon>
+    <ApplicationIcon>SphereDev.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,7 +49,7 @@
     <ManifestKeyFile>Sphere Editor_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -84,6 +84,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
@@ -295,7 +298,7 @@
   <ItemGroup>
     <Content Include="license.txt" />
     <None Include="SphericalLogo.png" />
-    <Content Include="Sphere Studio.ico" />
+    <Content Include="SphereDev.ico" />
     <Content Include="SphereLexer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -325,17 +328,17 @@
       <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
       <Name>SoundTestPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
-      <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
-      <Name>Sphere.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
-      <Name>Sphere.Plugins</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ClassicSpherePlugin\ClassicSpherePlugin.csproj">
       <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
       <Name>ClassicSpherePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+      <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
+      <Name>Sphere.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
+      <Project>{5d04ed42-d252-4fd2-be00-df4a2d122be3}</Project>
+      <Name>Sphere.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditPlugin.csproj">
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>

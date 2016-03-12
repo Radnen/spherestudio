@@ -27,7 +27,7 @@ namespace SphereStudio.ScriptEditor
         public void Initialize(ISettings conf)
         {
             FileTypeName = "JS Script";
-            FileExtensions = new[] { "js", "coffee" };
+            FileExtensions = new[] { "js", "coffee", "ts" };
             FileIcon = Properties.Resources.ScriptIcon;
 
             InitializeAutoComplete();
