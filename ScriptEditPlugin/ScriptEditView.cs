@@ -1,95 +1,130 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
-using ScintillaNET;
 
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
+
 using SphereStudio.ScriptEditor.Properties;
+using ScintillaNET;
 
 namespace SphereStudio.ScriptEditor
 {
-    partial class ScriptEditView : ScriptView
+    public partial class ScriptEditView : ScriptView
     {
         private Scintilla _codeBox = new Scintilla();
         private int _activeLine = 0;
         private int _errorLine = 0;
-
-        // We should technically be using ISO-8859-1 or Windows-1252 for compatibility with the old editor.
-        // However, UTF-8 works mostly fine in Sphere and some JS engines (e.g. Duktape) won't accept
-        // 8-bit encodings if they contain extended characters, so we'll use UTF-8 and compromise
-        // by not including a byte order mark.
-        private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
-        private readonly Encoding ISO_8859_1 = Encoding.GetEncoding("iso-8859-1");
-
-        private bool _autocomplete;
+        private int _lastCaretPos = Scintilla.InvalidPosition;
+        private bool _highlightLine = true;
         private PluginMain _main;
+        private bool _useAutoComplete;
+
+        // use UTF-8, but don't include a byte order mark because the legacy engine won't
+        // be able to interpret it.
+        private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
 
         public ScriptEditView(PluginMain main)
         {
+            InitializeComponent();
             _main = main;
 
-            Icon = Icon.FromHandle(Properties.Resources.ScriptIcon.GetHicon());
+            Icon = Icon.FromHandle(Resources.ScriptIcon.GetHicon());
 
-            string configPath = Application.StartupPath + "\\SphereLexer.xml";
-            if (File.Exists(configPath))
-                _codeBox.ConfigurationManager.CustomLocation = configPath;
-
-            _codeBox.Encoding = Encoding.UTF8;
-            _codeBox.ConfigurationManager.Language = "js";
-            _codeBox.AutoComplete.SingleLineAccept = false;
-            _codeBox.AutoComplete.FillUpCharacters = "";
-            _codeBox.AutoComplete.StopCharacters = "(";
-            _codeBox.AutoComplete.ListSeparator = ';';
-            _codeBox.AutoComplete.IsCaseSensitive = false;
-            _codeBox.SupressControlCharacters = true;
-
-            _codeBox.Folding.MarkerScheme = FoldMarkerScheme.Custom;
-            _codeBox.Folding.Flags = FoldFlag.LineAfterContracted;
-            _codeBox.Folding.UseCompactFolding = false;
-            _codeBox.Styles.LineNumber.BackColor = Color.FromArgb(235, 235, 255);
-
-            _codeBox.Margins.Margin1.IsClickable = true;
-            _codeBox.Margins.Margin1.IsFoldMargin = false;
-            _codeBox.Margins.Margin1.IsMarkerMargin = true;
-            _codeBox.Margins.Margin1.Type = MarginType.Symbol;
-            _codeBox.Margins.Margin1.Width = 16;
-            _codeBox.Margins.Margin2.IsClickable = true;
-            _codeBox.Margins.Margin2.IsFoldMargin = true;
-            _codeBox.Margins.Margin2.IsMarkerMargin = false;
-            _codeBox.Margins.Margin2.Width = 16;
-            _codeBox.Margins.FoldMarginColor = Color.FromArgb(235, 235, 255);
-
-            _codeBox.Indentation.SmartIndentType = SmartIndent.CPP;
-            _codeBox.Styles.BraceLight.ForeColor = Color.Black;
-            _codeBox.Styles.BraceLight.BackColor = Color.LightGray;
-
-            _codeBox.Caret.CurrentLineBackgroundColor = Color.LightGoldenrodYellow;
-
-            _codeBox.CharAdded += codeBox_CharAdded;
-            _codeBox.KeyDown += codebox_KeyDown;
-            _codeBox.MarginClick += codeBox_MarginClick;
-            _codeBox.ModifiedChanged += codeBox_ModifiedChanged;
-            _codeBox.TextDeleted += codeBox_TextChanged;
-            _codeBox.TextInserted += codeBox_TextChanged;
             _codeBox.Dock = DockStyle.Fill;
-
-            _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint
-            _codeBox.Markers[0].BackColor = Color.Red;
-            _codeBox.Markers[0].ForeColor = Color.DarkRed;
-            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // next line to execute
-            _codeBox.Markers[1].BackColor = Color.Yellow;
-            _codeBox.Markers[1].ForeColor = Color.Black;
-            _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
-            _codeBox.Markers[2].BackColor = Color.FromArgb(255, 160, 128);
-
+            _codeBox.FontQuality = FontQuality.LcdOptimized;
             Controls.Add(_codeBox);
             Restyle();
+
+            // set up syntax highlighting for JavaScript
+            _codeBox.Lexer = Lexer.Cpp;  // the C++ lexer handles all C-like languages
+            _codeBox.StyleResetDefault();
+            _codeBox.Styles[Style.Default].Font = "Consolas";
+            _codeBox.Styles[Style.Default].Size = 10;
+            _codeBox.Styles[Style.BraceLight].BackColor = Color.LightGray;
+            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
+            _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
+            _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Magenta;
+            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
+            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DarkBlue;
+            _codeBox.SetKeywords(0, "case catch class const default delete do else export false for function if import in instanceof interface of new null return switch this throw true try typeof var void while");
+            _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
+                + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
+                + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
+            try
+            {
+                string[] apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, "Dictionary/SphereAPI.txt"));
+                var keywords = from line in apiList let keyword = line.Trim()
+                               where keyword != "" && !keyword.StartsWith("#")
+                               select keyword;
+                _codeBox.SetKeywords(3, string.Join(" ", keywords));
+            }
+            catch { }
+
+            // set up folding and AutoComplete
+            _codeBox.SetProperty("fold", "1");
+            _codeBox.SetProperty("fold.compact", "1");
+            _codeBox.SetFoldFlags(FoldFlags.LineAfterContracted);
+            _codeBox.AutoCCancelAtStart = true;
+            _codeBox.AutoCChooseSingle = false;
+            _codeBox.AutoCIgnoreCase = true;
+            _codeBox.AutoCSeparator = ';';
+            _codeBox.AutoCSetFillUps("");
+            _codeBox.AutoCStops("(");
+
+            // set up clickable folding margin
+            _codeBox.AutomaticFold = AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change;
+            for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++)
+            {
+                _codeBox.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                _codeBox.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+            _codeBox.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            _codeBox.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            _codeBox.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            _codeBox.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            _codeBox.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            _codeBox.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            _codeBox.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+            _codeBox.Margins[2].Type = MarginType.Symbol;
+            _codeBox.Margins[2].Mask = Marker.MaskFolders;
+            _codeBox.Margins[2].Sensitive = true;
+            _codeBox.Margins[2].Width = 16;
+
+            // set up symbol margin (for breakpoints, etc.)
+            _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint
+            _codeBox.Markers[0].SetBackColor(Color.Red);
+            _codeBox.Markers[0].SetForeColor(Color.DarkRed);
+            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // next line to execute
+            _codeBox.Markers[1].SetBackColor(Color.Yellow);
+            _codeBox.Markers[1].SetForeColor(Color.Black);
+            _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
+            _codeBox.Markers[2].SetBackColor(Color.OrangeRed);
+            _codeBox.Markers[3].Symbol = MarkerSymbol.Background;  // current line highlight
+            _codeBox.Markers[3].SetBackColor(Color.LightGoldenrodYellow);
+
+            _codeBox.Margins[1].Type = MarginType.Symbol;
+            _codeBox.Margins[1].Sensitive = true;
+            _codeBox.Margins[1].Mask = Marker.MaskAll & ~Marker.MaskFolders;
+            _codeBox.Margins[1].Width = 16;
+
+            // event handlers
+            _codeBox.CharAdded += codeBox_CharAdded;
+            _codeBox.InsertCheck += codeBox_InsertCheck;
+            _codeBox.KeyDown += codebox_KeyDown;
+            _codeBox.MarginClick += codeBox_MarginClick;
+            _codeBox.TextChanged += codeBox_TextChanged;
+            _codeBox.UpdateUI += codeBox_UpdateUI;
         }
 
         public override int ActiveLine
@@ -98,16 +133,16 @@ namespace SphereStudio.ScriptEditor
             set
             {
                 if (_activeLine > 0)
-                    _codeBox.Lines[_activeLine - 1].DeleteMarker(1);
+                    _codeBox.Lines[_activeLine - 1].MarkerDelete(1);
                 _activeLine = value;
                 if (_activeLine > 0)
                 {
-                    _codeBox.Lines[_activeLine - 1].AddMarker(1);
-                    _codeBox.GoTo.Line(_activeLine - 1);
+                    _codeBox.Lines[_activeLine - 1].MarkerAdd(1);
+                    _codeBox.GotoPosition(_codeBox.Lines[_activeLine - 1].Position);
                     var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
-                    if (parent != null && !parent.FoldExpanded)
+                    if (parent >= 0 && !_codeBox.Lines[parent].Expanded)
                     {
-                        parent.ToggleFoldExpanded();
+                        _codeBox.Lines[parent].ToggleFold();
                     }
                 }
             }
@@ -119,16 +154,16 @@ namespace SphereStudio.ScriptEditor
             set
             {
                 if (_errorLine > 0)
-                    _codeBox.Lines[_errorLine - 1].DeleteMarker(2);
+                    _codeBox.Lines[_errorLine - 1].MarkerDelete(2);
                 _errorLine = value;
                 if (_errorLine > 0)
                 {
-                    _codeBox.Lines[_errorLine - 1].AddMarker(2);
-                    _codeBox.GoTo.Line(value - 1);
+                    _codeBox.Lines[_errorLine - 1].MarkerAdd(2);
+                    _codeBox.GotoPosition(_codeBox.Lines[_errorLine - 1].Position);
                     var parent = _codeBox.Lines[_activeLine - 1].FoldParent;
-                    if (parent != null && !parent.FoldExpanded)
+                    if (parent >= 0 && !_codeBox.Lines[parent].Expanded)
                     {
-                        parent.ToggleFoldExpanded();
+                        _codeBox.Lines[parent].ToggleFold();
                     }
                 }
             }
@@ -139,16 +174,16 @@ namespace SphereStudio.ScriptEditor
             get
             {
                 var q = from Line line in _codeBox.Lines
-                        where line.GetMarkers().Contains(_codeBox.Markers[0])
-                        select line.Number + 1;
+                        where (line.MarkerGet() & 0x01) != 0
+                        select line.Index + 1;
                 return q.ToArray();
             }
             set
             {
-                _codeBox.Markers.DeleteAll(0);
+                _codeBox.MarkerDeleteAll(0);
                 foreach (int line in value)
                 {
-                    _codeBox.Lines[line - 1].AddMarker(0);
+                    _codeBox.Lines[line - 1].MarkerAdd(0);
                 }
             }
         }
@@ -160,8 +195,8 @@ namespace SphereStudio.ScriptEditor
 
         public override bool ReadOnly
         {
-            get { return _codeBox.IsReadOnly; }
-            set { _codeBox.IsReadOnly = value; }
+            get { return _codeBox.ReadOnly; }
+            set { _codeBox.ReadOnly = value; }
         }
 
         public override string Text
@@ -173,7 +208,7 @@ namespace SphereStudio.ScriptEditor
             set
             {
                 _codeBox.Text = value;
-                _codeBox.UndoRedo.EmptyUndoBuffer();
+                _codeBox.EmptyUndoBuffer();
             }
         }
 
@@ -182,16 +217,16 @@ namespace SphereStudio.ScriptEditor
             get
             {
                 return string.Format("{0}|{1}|{2}",
-                    _codeBox.Caret.Position,
-                    _codeBox.Caret.Anchor,
-                    _codeBox.Lines.FirstVisibleIndex);
+                    _codeBox.CurrentPosition,
+                    _codeBox.AnchorPosition,
+                    _codeBox.FirstVisibleLine);
             }
             set
             {
                 string[] parse = value.Split('|');
-                _codeBox.Caret.Position = Convert.ToInt32(parse[0]);
-                _codeBox.Caret.Anchor = Convert.ToInt32(parse[1]);
-                _codeBox.Lines.FirstVisibleIndex = Convert.ToInt32(parse[2]);
+                _codeBox.CurrentPosition = Convert.ToInt32(parse[0]);
+                _codeBox.AnchorPosition = Convert.ToInt32(parse[1]);
+                _codeBox.FirstVisibleLine = Convert.ToInt32(parse[2]);
             }
         }
 
@@ -204,8 +239,8 @@ namespace SphereStudio.ScriptEditor
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
             }
-            _codeBox.UndoRedo.EmptyUndoBuffer();
-            _codeBox.Modified = false;
+            _codeBox.EmptyUndoBuffer();
+            IsDirty = false;
             return true;
         }
 
@@ -213,63 +248,52 @@ namespace SphereStudio.ScriptEditor
         {
             using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), true))
             {
-                var extSansDot = Path.GetExtension(filename);
-                extSansDot = extSansDot.StartsWith(".") ? extSansDot.Substring(1) : extSansDot;
+                var extSansDot = Path.GetExtension(filename).StartsWith(".")
+                    ? Path.GetExtension(filename).Substring(1) : "";
                 if (!FileExtensions.Contains(extSansDot))
                 {
-                    _codeBox.ConfigurationManager.Language = "default";
+                    _codeBox.Lexer = Lexer.Null;
                 }
                 
                 _codeBox.Text = fileReader.ReadToEnd();
-                _codeBox.UndoRedo.EmptyUndoBuffer();
-                _codeBox.Modified = false;
-                
-                SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
+                _codeBox.EmptyUndoBuffer();
+
+                SetMarginSize(_codeBox.Styles[Style.LineNumber].Size);
 
                 int[] breaks = new int[0];
                 if (PluginManager.Core.Project != null)
                     breaks = PluginManager.Core.Project.GetBreakpoints(filename);
                 Breakpoints = breaks;
             }
+
+            IsDirty = false;
         }
 
         public override void Save(string filename)
         {
             using (StreamWriter writer = new StreamWriter(filename, false, UTF_8_NOBOM))
             {
-                if (_main.Settings.GetBoolean("autoScriptUpdate", false))
-                {
-                    _codeBox.UndoRedo.IsUndoEnabled = false;
-                    if (_codeBox.Lines.Count > 1 && _codeBox.Lines[1].Text[0] == '*')
-                        _codeBox.Lines[1].Text = "* Script: " + Path.GetFileName(filename);
-                    if (_codeBox.Lines.Count > 2 && _codeBox.Lines[2].Text[0] == '*')
-                        _codeBox.Lines[2].Text = "* Written by: " + PluginManager.Core.Project.Author;
-                    if (_codeBox.Lines.Count > 3 && _codeBox.Lines[3].Text[0] == '*')
-                        _codeBox.Lines[3].Text = "* Updated: " + DateTime.Today.ToShortDateString();
-                    _codeBox.UndoRedo.IsUndoEnabled = true;
-                }
-
                 writer.Write(_codeBox.Text);
             }
-            _codeBox.Modified = false;
+            IsDirty = false;
         }
 
         public override void GoToLine(int lineNumber)
         {
-            _codeBox.GoTo.Line(lineNumber - 1);
+            _codeBox.GotoPosition(_codeBox.Lines[lineNumber - 1].Position);
         }
 
         public override void Restyle()
         {
-            _codeBox.Indentation.TabWidth = _main.Settings.GetInteger("script-spaces", 4);
-            _codeBox.Indentation.UseTabs = _main.Settings.GetBoolean("script-tabs", true);
-            _codeBox.Caret.HighlightCurrentLine = _main.Settings.GetBoolean("script-hiline", true);
-            _codeBox.IsBraceMatching = _main.Settings.GetBoolean("script-hibraces", true);
+            _codeBox.TabWidth = _main.Settings.GetInteger("script-spaces", 4);
+            _codeBox.IndentWidth = _codeBox.TabWidth;
+            _codeBox.UseTabs = _main.Settings.GetBoolean("script-tabs", true);
 
-            _autocomplete = _main.Settings.GetBoolean("script-autocomplete", true);
+            _useAutoComplete = _main.Settings.GetBoolean("script-autocomplete", true);
+            _highlightLine = _main.Settings.GetBoolean("script-hiline", true);
 
-            bool fold = _main.Settings.GetBoolean("script-fold", true);
-            _codeBox.Margins.Margin1.Width = fold ? 16 : 0;
+            bool useFolding = _main.Settings.GetBoolean("script-fold", true);
+            _codeBox.Margins[2].Width = useFolding ? 16 : 0;
 
             /*string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
             if (!String.IsNullOrEmpty(fontstring))
@@ -291,36 +315,30 @@ namespace SphereStudio.ScriptEditor
 
         public override void Cut()
         {
-            if (_codeBox.Clipboard.CanCut)
-                _codeBox.Clipboard.Cut();
+            _codeBox.Cut();
         }
 
         public override void Copy()
         {
-            if (_codeBox.Clipboard.CanCopy)
-                _codeBox.Clipboard.Copy();
+            _codeBox.Copy();
         }
 
         public override void Paste()
         {
-            if (_codeBox.Clipboard.CanPaste)
-                _codeBox.Clipboard.Paste();
+            if (_codeBox.CanPaste)
+                _codeBox.Paste();
         }
 
         public override void Undo()
         {
-            if (_codeBox.UndoRedo.CanUndo)
-            {
-                _codeBox.UndoRedo.Undo();
-            }
+            if (_codeBox.CanUndo)
+                _codeBox.Undo();
         }
 
         public override void Redo()
         {
-            if (_codeBox.UndoRedo.CanRedo)
-            {
-                _codeBox.UndoRedo.Redo();
-            }
+            if (_codeBox.CanRedo)
+                _codeBox.Redo();
         }
 
         public override void ZoomIn()
@@ -333,28 +351,51 @@ namespace SphereStudio.ScriptEditor
             _codeBox.ZoomOut();
         }
 
-        private void SetMarginSize(Font font)
+        private void SetMarginSize(int fontSize)
         {
             int spaces = (int)Math.Log10(_codeBox.Lines.Count) + 1;
-            _codeBox.Margins[0].Width = 2 + spaces * (int)font.SizeInPoints;
+            _codeBox.Margins[0].Width = 2 + spaces * fontSize;
         }
 
         private void codeBox_CharAdded(object sender, CharAddedEventArgs e)
         {
-            if (!_autocomplete) return;
-
-            if (char.IsLetter(e.Ch))
+            if (char.IsLetter((char)e.Char) && _useAutoComplete)
             {
-                string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPos).ToLower();
+                string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPosition).ToLower();
                 var q = from s in _main.Functions
                         where s.ToLower().Contains(word)
                         select s.Replace(";", "");
-                List<string> filter = q.ToList();
+                string filter = string.Join(";", q);
 
-                if (filter.Count != 0)
+                if (filter.Length > 0)
                 {
-                    _codeBox.AutoComplete.List = filter;
-                    _codeBox.AutoComplete.Show(word.Length);
+                    _codeBox.AutoCShow(word.Length, filter);
+                }
+            }
+            else if (e.Char == '}')
+            {
+                int curLine = _codeBox.LineFromPosition(_codeBox.CurrentPosition);
+
+                if (_codeBox.Lines[curLine].Text.Trim() == "}")
+                {
+                    _codeBox.Lines[curLine].Indentation -= _codeBox.IndentWidth;
+                }
+            }
+        }
+
+        private void codeBox_InsertCheck(object sender, InsertCheckEventArgs e)
+        {
+            if (e.Text.EndsWith("\r") || e.Text.EndsWith("\n"))
+            {
+                int startPos = _codeBox.Lines[_codeBox.LineFromPosition(_codeBox.CurrentPosition)].Position;
+                int endPos = e.Position;
+                string curLineText = _codeBox.GetTextRange(startPos, (endPos - startPos));
+
+                Match indent = Regex.Match(curLineText, "^[ \\t]*");
+                e.Text = (e.Text + indent.Value);
+                if (Regex.IsMatch(curLineText, "{\\s*$"))
+                {
+                    e.Text = (e.Text + "\t");
                 }
             }
         }
@@ -364,38 +405,70 @@ namespace SphereStudio.ScriptEditor
             if (e.KeyCode == Keys.F9 && e.Modifiers == 0x0)
             {
                 e.Handled = true;
-                var line = _codeBox.Lines[_codeBox.Caret.LineNumber];
-                var markers = line.GetMarkers();
-                bool isSet = !markers.Contains(_codeBox.Markers[0]);
-                OnBreakpointChanged(new BreakpointChangedEventArgs(line.Number + 1, isSet));
+                var line = _codeBox.Lines[_codeBox.CurrentLine];
+                var markers = line.MarkerGet();
+                bool isSet = (markers & 0x01) == 0;
+                OnBreakpointChanged(new BreakpointChangedEventArgs(line.Index + 1, isSet));
                 if (isSet)
-                    line.AddMarker(0);
+                    line.MarkerAdd(0);
                 else
-                    line.DeleteMarker(0);
+                    line.MarkerDelete(0);
             }
         }
 
         private void codeBox_MarginClick(object sender, MarginClickEventArgs e)
         {
-            if (e.Margin == _codeBox.Margins.Margin1)
+            if (e.Margin == 1)
             {
-                bool isSet = !e.Line.GetMarkers().Contains(_codeBox.Markers[0]);
-                OnBreakpointChanged(new BreakpointChangedEventArgs(e.Line.Number + 1, isSet));
+                var line = _codeBox.Lines[_codeBox.LineFromPosition(e.Position)];
+                bool isSet = (line.MarkerGet() & 0x01) == 0;
+                OnBreakpointChanged(new BreakpointChangedEventArgs(line.Index + 1, isSet));
                 if (isSet)
-                    e.Line.AddMarker(0);
+                    line.MarkerAdd(0);
                 else
-                    e.Line.DeleteMarker(0);
+                    line.MarkerDelete(0);
             }
-        }
-
-        private void codeBox_ModifiedChanged(object sender, EventArgs e)
-        {
-            IsDirty = _codeBox.Modified;
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)
         {
-            SetMarginSize(_codeBox.Styles[StylesCommon.LineNumber].Font);
+            SetMarginSize(_codeBox.Styles[Style.LineNumber].Size);
+            IsDirty = true;
+        }
+
+        private void codeBox_UpdateUI(object sender, UpdateUIEventArgs e)
+        {
+            const string braceChars = "()[]{}<>";
+
+            var caretPos = _codeBox.CurrentPosition;
+            if (caretPos != _lastCaretPos)
+            {
+                int lastLine = _codeBox.LineFromPosition(_lastCaretPos);
+                int currentLine = _codeBox.LineFromPosition(caretPos);
+                _codeBox.MarkerDeleteAll(3);
+                if (_highlightLine)
+                    _codeBox.Lines[currentLine].MarkerAdd(3);
+                char charBefore = (char)_codeBox.GetCharAt(caretPos - 1);
+                char charAtPos = (char)_codeBox.GetCharAt(caretPos);
+                int brace1Pos = Scintilla.InvalidPosition;
+                if (braceChars.Contains(charAtPos))
+                    brace1Pos = caretPos;
+                else if (braceChars.Contains(charBefore))
+                    brace1Pos = caretPos - 1;
+                if (brace1Pos != Scintilla.InvalidPosition)
+                {
+                    int brace2Pos = _codeBox.BraceMatch(brace1Pos);
+                    if (brace2Pos != Scintilla.InvalidPosition)
+                        _codeBox.BraceHighlight(brace1Pos, brace2Pos);
+                    else
+                        _codeBox.BraceBadLight(brace1Pos);
+                }
+                else
+                {
+                    _codeBox.BraceHighlight(Scintilla.InvalidPosition, Scintilla.InvalidPosition);
+                }
+                _lastCaretPos = caretPos;
+            }
         }
     }
 }

@@ -299,13 +299,7 @@
     <Content Include="license.txt" />
     <None Include="SphericalLogo.png" />
     <Content Include="SphereDev.ico" />
-    <Content Include="SphereLexer.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="BarImage.png" />
-    <Content Include="Docs\functions.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
@@ -353,7 +347,9 @@
       <Name>WindowstyleEditPlugin</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Docs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist ".\Plugins" mkdir ".\Plugins"
