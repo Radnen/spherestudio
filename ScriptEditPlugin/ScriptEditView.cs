@@ -155,7 +155,7 @@ namespace SphereStudio.ScriptEditor
 
         public override string[] FileExtensions
         {
-            get { return new[] { "js", "coffee" }; }
+            get { return new[] { "js", "ts", "coffee" }; }
         }
 
         public override bool ReadOnly
@@ -213,7 +213,9 @@ namespace SphereStudio.ScriptEditor
         {
             using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), true))
             {
-                if (Path.GetExtension(filename) != ".js")
+                var extSansDot = Path.GetExtension(filename);
+                extSansDot = extSansDot.StartsWith(".") ? extSansDot.Substring(1) : extSansDot;
+                if (!FileExtensions.Contains(extSansDot))
                 {
                     _codeBox.ConfigurationManager.Language = "default";
                 }
