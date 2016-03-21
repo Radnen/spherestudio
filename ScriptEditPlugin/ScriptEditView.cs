@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Views;
 
+using SphereStudio.ScriptEditor.Components;
 using SphereStudio.ScriptEditor.Properties;
 using ScintillaNET;
 
@@ -17,114 +18,72 @@ namespace SphereStudio.ScriptEditor
     public partial class ScriptEditView : ScriptView
     {
         private Scintilla _codeBox = new Scintilla();
+
         private int _activeLine = 0;
         private int _errorLine = 0;
         private int _lastCaretPos = Scintilla.InvalidPosition;
         private bool _highlightLine = true;
         private PluginMain _main;
+        private SearchBox _searchBox;
         private bool _useAutoComplete;
 
-        // use UTF-8, but don't include a byte order mark because the legacy engine won't
-        // be able to interpret it.
+        // save scripts as UTF-8 without a byte order mark.
         private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
 
         public ScriptEditView(PluginMain main)
         {
             InitializeComponent();
-            _main = main;
+
+            InitializeMargins();
+            InitializeAutoComplete();
 
             Icon = Icon.FromHandle(Resources.ScriptIcon.GetHicon());
 
+            _main = main;
+            _searchBox = new SearchBox(this);
+
             _codeBox.Dock = DockStyle.Fill;
             _codeBox.FontQuality = FontQuality.LcdOptimized;
-            Controls.Add(_codeBox);
-            Restyle();
-
-            // set up syntax highlighting for JavaScript
-            _codeBox.Lexer = Lexer.Cpp;  // the C++ lexer handles all C-like languages
-            _codeBox.StyleResetDefault();
             _codeBox.Styles[Style.Default].Font = "Consolas";
             _codeBox.Styles[Style.Default].Size = 10;
-            _codeBox.Styles[Style.BraceLight].BackColor = Color.LightGray;
-            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
-            _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
-            _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Magenta;
-            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
-            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DarkBlue;
-            _codeBox.SetKeywords(0, "case catch class const default delete do else export false for function if import in instanceof interface of new null return switch this throw true try typeof var void while");
-            _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
-                + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
-                + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
-            try
-            {
-                string[] apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, "Dictionary/SphereAPI.txt"));
-                var keywords = from line in apiList let keyword = line.Trim()
-                               where keyword != "" && !keyword.StartsWith("#")
-                               select keyword;
-                _codeBox.SetKeywords(3, string.Join(" ", keywords));
-            }
-            catch { }
-
-            // set up folding and AutoComplete
-            _codeBox.SetProperty("fold", "1");
-            _codeBox.SetProperty("fold.compact", "1");
-            _codeBox.SetFoldFlags(FoldFlags.LineAfterContracted);
-            _codeBox.AutoCCancelAtStart = true;
-            _codeBox.AutoCChooseSingle = false;
-            _codeBox.AutoCIgnoreCase = true;
-            _codeBox.AutoCSeparator = ';';
-            _codeBox.AutoCSetFillUps("");
-            _codeBox.AutoCStops("(");
-
-            // set up clickable folding margin
-            _codeBox.AutomaticFold = AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change;
-            for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++)
-            {
-                _codeBox.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                _codeBox.Markers[i].SetBackColor(SystemColors.ControlDark);
-            }
-            _codeBox.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
-            _codeBox.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
-            _codeBox.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
-            _codeBox.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
-            _codeBox.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
-            _codeBox.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
-            _codeBox.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
-            _codeBox.Margins[2].Type = MarginType.Symbol;
-            _codeBox.Margins[2].Mask = Marker.MaskFolders;
-            _codeBox.Margins[2].Sensitive = true;
-            _codeBox.Margins[2].Width = 16;
-
-            // set up symbol margin (for breakpoints, etc.)
-            _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint
-            _codeBox.Markers[0].SetBackColor(Color.Red);
-            _codeBox.Markers[0].SetForeColor(Color.DarkRed);
-            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // next line to execute
-            _codeBox.Markers[1].SetBackColor(Color.Yellow);
-            _codeBox.Markers[1].SetForeColor(Color.Black);
-            _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
-            _codeBox.Markers[2].SetBackColor(Color.OrangeRed);
-            _codeBox.Markers[3].Symbol = MarkerSymbol.Background;  // current line highlight
-            _codeBox.Markers[3].SetBackColor(Color.LightGoldenrodYellow);
-
-            _codeBox.Margins[1].Type = MarginType.Symbol;
-            _codeBox.Margins[1].Sensitive = true;
-            _codeBox.Margins[1].Mask = Marker.MaskAll & ~Marker.MaskFolders;
-            _codeBox.Margins[1].Width = 16;
-
-            // event handlers
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;
             _codeBox.MarginClick += codeBox_MarginClick;
-            _codeBox.TextChanged += codeBox_TextChanged;
+            _codeBox.SavePointLeft += codeBox_SavePointLeft;
+            _codeBox.SavePointReached += codeBox_SavePointReached;
             _codeBox.UpdateUI += codeBox_UpdateUI;
+            Controls.Add(_codeBox);
+
+            Restyle();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Control | Keys.A:
+                    _codeBox.SelectAll();
+                    return true;
+                case Keys.Control | Keys.F:
+                    _searchBox.Open(_codeBox);
+                    return true;
+                case Keys.Control | Keys.H:
+                    _searchBox.Open(_codeBox, true);
+                    return true;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+        }
+
+        private void codeBox_SavePointReached(object sender, EventArgs e)
+        {
+            IsDirty = false;
+        }
+
+        private void codeBox_SavePointLeft(object sender, EventArgs e)
+        {
+            IsDirty = true;
         }
 
         public override int ActiveLine
@@ -240,7 +199,7 @@ namespace SphereStudio.ScriptEditor
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
             }
             _codeBox.EmptyUndoBuffer();
-            IsDirty = false;
+            _codeBox.SetSavePoint();
             return true;
         }
 
@@ -248,17 +207,17 @@ namespace SphereStudio.ScriptEditor
         {
             using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), true))
             {
-                var extSansDot = Path.GetExtension(filename).StartsWith(".")
-                    ? Path.GetExtension(filename).Substring(1) : "";
-                if (!FileExtensions.Contains(extSansDot))
-                {
-                    _codeBox.Lexer = Lexer.Null;
-                }
-                
                 _codeBox.Text = fileReader.ReadToEnd();
                 _codeBox.EmptyUndoBuffer();
 
-                SetMarginSize(_codeBox.Styles[Style.LineNumber].Size);
+                var extSansDot = Path.GetExtension(filename).StartsWith(".")
+                    ? Path.GetExtension(filename).Substring(1) : "";
+                _codeBox.Lexer = FileExtensions.Contains(extSansDot) ? Lexer.Cpp : Lexer.Null;
+                if (_codeBox.Lexer == Lexer.Cpp)
+                {
+                    InitializeHighlighting();
+                    InitializeFolding();
+                }
 
                 int[] breaks = new int[0];
                 if (PluginManager.Core.Project != null)
@@ -266,7 +225,7 @@ namespace SphereStudio.ScriptEditor
                 Breakpoints = breaks;
             }
 
-            IsDirty = false;
+            _codeBox.SetSavePoint();
         }
 
         public override void Save(string filename)
@@ -275,7 +234,7 @@ namespace SphereStudio.ScriptEditor
             {
                 writer.Write(_codeBox.Text);
             }
-            IsDirty = false;
+            _codeBox.SetSavePoint();
         }
 
         public override void GoToLine(int lineNumber)
@@ -351,15 +310,107 @@ namespace SphereStudio.ScriptEditor
             _codeBox.ZoomOut();
         }
 
-        private void SetMarginSize(int fontSize)
+        private void InitializeAutoComplete()
         {
-            int spaces = (int)Math.Log10(_codeBox.Lines.Count) + 1;
-            _codeBox.Margins[0].Width = 2 + spaces * fontSize;
+            _codeBox.AutoCCancelAtStart = true;
+            _codeBox.AutoCChooseSingle = false;
+            _codeBox.AutoCIgnoreCase = true;
+            _codeBox.AutoCSeparator = ';';
+            _codeBox.AutoCSetFillUps("");
+            _codeBox.AutoCStops("(");
+        }
+
+        private void InitializeFolding()
+        {
+            _codeBox.SetProperty("fold", "1");
+            _codeBox.SetProperty("fold.compact", "1");
+            _codeBox.AutomaticFold = AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change;
+            _codeBox.SetFoldFlags(FoldFlags.LineAfterContracted);
+        }
+
+        private void InitializeMargins()
+        {
+            // define folding icons.  why this isn't done for us is completely beyond me.
+            for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++)
+            {
+                _codeBox.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                _codeBox.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+            _codeBox.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            _codeBox.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            _codeBox.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            _codeBox.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            _codeBox.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            _codeBox.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            _codeBox.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+            // code folding margin
+            _codeBox.Margins[1].Type = MarginType.Symbol;
+            _codeBox.Margins[1].Mask = Marker.MaskAll & ~Marker.MaskFolders;
+            _codeBox.Margins[1].Width = 20;
+            _codeBox.Margins[1].Sensitive = true;
+
+            // debugging margin
+            _codeBox.Margins[2].Type = MarginType.Symbol;
+            _codeBox.Margins[2].Mask = Marker.MaskFolders;
+            _codeBox.Margins[2].Width = 20;
+            _codeBox.Margins[2].Sensitive = true;
+            _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint marker
+            _codeBox.Markers[0].SetBackColor(Color.Red);
+            _codeBox.Markers[0].SetForeColor(Color.DarkRed);
+            _codeBox.Markers[1].Symbol = MarkerSymbol.ShortArrow;  // next line to execute
+            _codeBox.Markers[1].SetBackColor(Color.Yellow);
+            _codeBox.Markers[1].SetForeColor(Color.Black);
+            _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
+            _codeBox.Markers[2].SetBackColor(Color.OrangeRed);
+            _codeBox.Markers[3].Symbol = MarkerSymbol.Background;  // current line highlight
+            _codeBox.Markers[3].SetBackColor(Color.LightGoldenrodYellow);
+        }
+
+        private void InitializeHighlighting()
+        {
+            // define colors for syntax highlighting.  the colors below were chosen to be very
+            // similar to the Sphere 1.x editor.
+            _codeBox.Styles[Style.BraceLight].BackColor = Color.LightGray;
+            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
+            _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
+            _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Magenta;
+            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
+            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DarkBlue;
+
+            // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
+            // so this unfortunately isn't done for us.
+            _codeBox.SetKeywords(0, "case catch class const default delete do else export false for function if import in instanceof interface of new null return switch this throw true try typeof var void while");
+            _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
+                + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
+                + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
+
+            // load Sphere API keywords
+            try
+            {
+                string[] apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, "Dictionary/SphereAPI.txt"));
+                var keywords = from line in apiList
+                               let keyword = line.Trim()
+                               where keyword != "" && !keyword.StartsWith("#")
+                               select keyword;
+                _codeBox.SetKeywords(3, string.Join(" ", keywords));
+            }
+            catch
+            {
+                // no harm done if an error occurs, we just won't get custom coloring
+                // for Sphere API calls.
+            }
         }
 
         private void codeBox_CharAdded(object sender, CharAddedEventArgs e)
         {
-            if (char.IsLetter((char)e.Char) && _useAutoComplete)
+            if (char.IsLetter((char)e.Char) && _useAutoComplete && _codeBox.Lexer == Lexer.Cpp)
             {
                 string word = _codeBox.GetWordFromPosition(_codeBox.CurrentPosition).ToLower();
                 var q = from s in _main.Functions
@@ -430,15 +481,9 @@ namespace SphereStudio.ScriptEditor
             }
         }
 
-        private void codeBox_TextChanged(object sender, EventArgs e)
-        {
-            SetMarginSize(_codeBox.Styles[Style.LineNumber].Size);
-            IsDirty = true;
-        }
-
         private void codeBox_UpdateUI(object sender, UpdateUIEventArgs e)
         {
-            const string braceChars = "()[]{}<>";
+            const string braceChars = "()[]{}";
 
             var caretPos = _codeBox.CurrentPosition;
             if (caretPos != _lastCaretPos)
