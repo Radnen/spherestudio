@@ -8,13 +8,14 @@ Download
 *Latest*: v1.2.1
 
 You can download the latest version: [Here](https://github.com/Radnen/spherestudio/releases)
+.NET 4.5.2 or later is required.
 
 Features
 ========
  - Game Start Page
  - Project Tree Management
  - Efficient Map Editor (Undo/Redo Support!)
- - Code Editor
+ - Code Editor with QuickFind
  - Font Importer
  - Image Editor
  - Spriteset Editor

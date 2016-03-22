@@ -13,10 +13,10 @@ using ScintillaNET;
 namespace SphereStudio.ScriptEditor.Components
 {
     /// <summary>
-    /// Implements the Search box (Find and Replace UI).
+    /// Implements the QuickFind box (fast Search and Replace).
     /// </summary>
     [ToolboxItem(false)]
-    public partial class SearchBox : UserControl
+    public partial class QuickFindBox : UserControl
     {
         // some of the logic here may seem a bit hard to follow.  unfortunately most
         // of the spaghetti is necessary, to keep the UI usable.  notes:
@@ -42,10 +42,10 @@ namespace SphereStudio.ScriptEditor.Components
         private Control _parent;
 
         /// <summary>
-        /// Constructs a new Search box.  Initially the box is invisible.
+        /// Constructs a new QuickFind control.  Initially it's invisible.
         /// </summary>
-        /// <param name="parent">The parent control.  The Search box will display in the top-right corner of this control.</param>
-        public SearchBox(Control parent)
+        /// <param name="parent">The parent control.  QuickFind will show in the top-right corner.</param>
+        public QuickFindBox(Control parent)
         {
             InitializeComponent();
 
@@ -57,21 +57,11 @@ namespace SphereStudio.ScriptEditor.Components
             Visible = false;
         }
 
-        public override string Text
-        {
-            get { return FindTextBox.Text; }
-            set
-            {
-                FindTextBox.Text = value;
-                FindTextBox.SelectAll();
-            }
-        }
-
         /// <summary>
-        /// Opens the Search box.  The word under the cursor is automatically
+        /// Opens the QuickFind box.  The word under the cursor is automatically
         /// filled into the Find field.
         /// </summary>
-        /// <param name="codeBox">The Scintilla control being searched.</param>
+        /// <param name="codeBox">The Scintilla control whose content is being searched.</param>
         /// <param name="replace">A boolean value specifying whether we want Replace functionality.</param>
         public void Open(Scintilla codeBox, bool replace = false)
         {
@@ -103,7 +93,7 @@ namespace SphereStudio.ScriptEditor.Components
         }
 
         /// <summary>
-        /// Closes the Search box.
+        /// Closes the QuickFind box.
         /// </summary>
         public void Close()
         {
@@ -141,7 +131,7 @@ namespace SphereStudio.ScriptEditor.Components
             }
             else
             {
-                FindTextBox.BackColor = Color.LightPink;
+                FindTextBox.BackColor = Color.Pink;
                 FindButton.Enabled = false;
                 ReplaceButton.Enabled = false;
                 ReplaceAllButton.Enabled = false;
@@ -165,11 +155,14 @@ namespace SphereStudio.ScriptEditor.Components
             _codeBox.TargetStart = 0;
             _codeBox.TargetEnd = _codeBox.TextLength;
             _codeBox.BeginUndoAction();
+            int numChanges = 0;
             while (PerformFind())
             {
                 PerformReplace();
+                ++numChanges;
             }
             _codeBox.EndUndoAction();
+            MessageBox.Show(this, string.Format("{0} replacement(s) were made.", numChanges), "QuickFind");
         }
 
         private void parent_Resize(object sender, EventArgs e)

@@ -24,7 +24,7 @@ namespace SphereStudio.ScriptEditor
         private int _lastCaretPos = Scintilla.InvalidPosition;
         private bool _highlightLine = true;
         private PluginMain _main;
-        private SearchBox _searchBox;
+        private QuickFindBox _quickFind;
         private bool _useAutoComplete;
 
         // save scripts as UTF-8 without a byte order mark.
@@ -40,7 +40,7 @@ namespace SphereStudio.ScriptEditor
             Icon = Icon.FromHandle(Resources.ScriptIcon.GetHicon());
 
             _main = main;
-            _searchBox = new SearchBox(this);
+            _quickFind = new QuickFindBox(this);
 
             _codeBox.Dock = DockStyle.Fill;
             _codeBox.FontQuality = FontQuality.LcdOptimized;
@@ -63,17 +63,19 @@ namespace SphereStudio.ScriptEditor
             switch (keyData)
             {
                 case Keys.Control | Keys.A:
+                    if (!_codeBox.ContainsFocus)
+                        break;
                     _codeBox.SelectAll();
                     return true;
                 case Keys.Control | Keys.F:
-                    _searchBox.Open(_codeBox);
+                    _quickFind.Open(_codeBox);
                     return true;
                 case Keys.Control | Keys.H:
-                    _searchBox.Open(_codeBox, true);
+                    _quickFind.Open(_codeBox, true);
                     return true;
-                default:
-                    return base.ProcessCmdKey(ref msg, keyData);
             }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void codeBox_SavePointReached(object sender, EventArgs e)
@@ -386,7 +388,7 @@ namespace SphereStudio.ScriptEditor
 
             // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
             // so this unfortunately isn't done for us.
-            _codeBox.SetKeywords(0, "case catch class const default delete do else export false for function if import in instanceof interface of new null return switch this throw true try typeof var void while");
+            _codeBox.SetKeywords(0, "await break case catch class const continue debugger default delete do else enum export extends false finally for function if implements import in instanceof interface let of new null package private protected public return static super switch this throw true try typeof var void while with yield");
             _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
                 + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
                 + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
