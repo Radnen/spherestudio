@@ -2,6 +2,7 @@ Abort(message);
 ApplyColorMask(color);
 AreKeysLeft();
 AreZonesAt(x, y, layer);
+Assert(expr, error_msg);
 AttachCamera(name);
 AttachInput(name);
 break
@@ -42,6 +43,7 @@ CreateDirectory(directory);
 CreatePerson(name, spriteset, destroy_with_map);
 CreateStringFromByteArray(byte_array);
 CreateStringFromCode(key_code);
+DebugPrint(text);
 default
 do
 DestroyPerson(name);
@@ -308,6 +310,7 @@ PLAYER_Y;
 Point(x, y, color);
 PointSeries(array, color);
 Polygon(array, color, invert);
+Print(text);
 QueuePersonCommand(name, command, immediate);
 QueuePersonScript(name, script, immediate);
 return

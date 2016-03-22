@@ -58,7 +58,7 @@
             this.FindButton.Size = new System.Drawing.Size(43, 22);
             this.FindButton.TabIndex = 4;
             this.FindButton.TabStop = false;
-            this.FindButton.Text = "&Next";
+            this.FindButton.Text = "&Find";
             this.FindButton.UseVisualStyleBackColor = true;
             this.FindButton.Click += new System.EventHandler(this.FindButton_Click);
             // 
@@ -97,7 +97,7 @@
             this.RegexCheckBox.Size = new System.Drawing.Size(64, 17);
             this.RegexCheckBox.TabIndex = 3;
             this.RegexCheckBox.TabStop = false;
-            this.RegexCheckBox.Text = "&RegExp";
+            this.RegexCheckBox.Text = "Reg&Exp";
             this.RegexCheckBox.UseVisualStyleBackColor = true;
             this.RegexCheckBox.CheckedChanged += new System.EventHandler(this.RegexCheckBox_CheckedChanged);
             // 

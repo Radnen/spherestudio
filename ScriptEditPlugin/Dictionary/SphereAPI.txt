@@ -49,7 +49,6 @@ CallDefaultPersonScript
 CallMapScript
 CallPersonScript
 ChangeMap
-ClearCommandQueue
 ClearKeyQueue
 ClearPersonCommands
 CreateByteArray
