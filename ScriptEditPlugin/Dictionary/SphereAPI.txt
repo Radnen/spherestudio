@@ -204,6 +204,7 @@ IsTriggerAt
 Line
 LineSeries
 ListenOnPort
+LoadAnimation
 LoadFont
 LoadImage
 LoadSound

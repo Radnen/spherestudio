@@ -174,7 +174,6 @@ namespace SphereStudio.ScriptEditor.Components
 
         private void parent_Resize(object sender, EventArgs e)
         {
-            Width = _parent.ClientSize.Width / 3;
             Left = _parent.ClientSize.Width - Width - SystemInformation.VerticalScrollBarWidth - SystemInformation.BorderSize.Width;
             Top = SystemInformation.BorderSize.Height;
         }

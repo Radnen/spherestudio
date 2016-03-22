@@ -44,7 +44,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FindTextBox.Location = new System.Drawing.Point(5, 5);
             this.FindTextBox.Name = "FindTextBox";
-            this.FindTextBox.Size = new System.Drawing.Size(303, 20);
+            this.FindTextBox.Size = new System.Drawing.Size(240, 20);
             this.FindTextBox.TabIndex = 0;
             this.FindTextBox.TextChanged += new System.EventHandler(this.FindTextBox_TextChanged);
             this.FindTextBox.Enter += new System.EventHandler(this.FindTextBox_Enter);
@@ -53,7 +53,7 @@
             // FindButton
             // 
             this.FindButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FindButton.Location = new System.Drawing.Point(308, 4);
+            this.FindButton.Location = new System.Drawing.Point(245, 4);
             this.FindButton.Name = "FindButton";
             this.FindButton.Size = new System.Drawing.Size(43, 22);
             this.FindButton.TabIndex = 4;
@@ -92,7 +92,7 @@
             // 
             this.RegexCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RegexCheckBox.AutoSize = true;
-            this.RegexCheckBox.Location = new System.Drawing.Point(287, 53);
+            this.RegexCheckBox.Location = new System.Drawing.Point(224, 53);
             this.RegexCheckBox.Name = "RegexCheckBox";
             this.RegexCheckBox.Size = new System.Drawing.Size(64, 17);
             this.RegexCheckBox.TabIndex = 3;
@@ -104,7 +104,7 @@
             // ReplaceButton
             // 
             this.ReplaceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ReplaceButton.Location = new System.Drawing.Point(260, 25);
+            this.ReplaceButton.Location = new System.Drawing.Point(197, 25);
             this.ReplaceButton.Name = "ReplaceButton";
             this.ReplaceButton.Size = new System.Drawing.Size(55, 22);
             this.ReplaceButton.TabIndex = 6;
@@ -119,7 +119,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ReplaceTextBox.Location = new System.Drawing.Point(5, 26);
             this.ReplaceTextBox.Name = "ReplaceTextBox";
-            this.ReplaceTextBox.Size = new System.Drawing.Size(255, 20);
+            this.ReplaceTextBox.Size = new System.Drawing.Size(192, 20);
             this.ReplaceTextBox.TabIndex = 5;
             this.ReplaceTextBox.Enter += new System.EventHandler(this.ReplaceTextBox_Enter);
             this.ReplaceTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ReplaceTextBox_KeyPress);
@@ -127,7 +127,7 @@
             // ReplaceAllButton
             // 
             this.ReplaceAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ReplaceAllButton.Location = new System.Drawing.Point(314, 25);
+            this.ReplaceAllButton.Location = new System.Drawing.Point(251, 25);
             this.ReplaceAllButton.Name = "ReplaceAllButton";
             this.ReplaceAllButton.Size = new System.Drawing.Size(37, 22);
             this.ReplaceAllButton.TabIndex = 7;
@@ -151,7 +151,7 @@
             this.Controls.Add(this.FindButton);
             this.Controls.Add(this.FindTextBox);
             this.Name = "SearchBox";
-            this.Size = new System.Drawing.Size(354, 75);
+            this.Size = new System.Drawing.Size(291, 75);
             this.ResumeLayout(false);
             this.PerformLayout();
 
