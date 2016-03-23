@@ -23,6 +23,7 @@ namespace SphereStudio.ScriptEditor
         private int _errorLine = 0;
         private int _lastCaretPos = Scintilla.InvalidPosition;
         private bool _highlightLine = true;
+        private int _lineMarginWidth = -1;
         private PluginMain _main;
         private QuickFindBox _quickFinder;
         private bool _useAutoComplete;
@@ -46,16 +47,30 @@ namespace SphereStudio.ScriptEditor
             _codeBox.FontQuality = FontQuality.LcdOptimized;
             _codeBox.Styles[Style.Default].Font = "Consolas";
             _codeBox.Styles[Style.Default].Size = 10;
+            _codeBox.Styles[Style.LineNumber].ForeColor = Color.Teal;
+            _codeBox.Styles[Style.LineNumber].BackColor = Color.White;
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;
             _codeBox.MarginClick += codeBox_MarginClick;
             _codeBox.SavePointLeft += codeBox_SavePointLeft;
             _codeBox.SavePointReached += codeBox_SavePointReached;
+            _codeBox.TextChanged += codeBox_TextChanged;
             _codeBox.UpdateUI += codeBox_UpdateUI;
             Controls.Add(_codeBox);
 
             Restyle();
+        }
+
+        private void codeBox_TextChanged(object sender, EventArgs e)
+        {
+            int lastLineNum = _codeBox.Lines.Count - 1;
+            int newMarginWidth = _codeBox.TextWidth(Style.LineNumber, lastLineNum.ToString()) + 8;
+            if (_codeBox.Lexer == Lexer.Null)
+                newMarginWidth = 0;
+            if (newMarginWidth != _lineMarginWidth)
+                _codeBox.Margins[1].Width = newMarginWidth;
+            _lineMarginWidth = newMarginWidth;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -212,12 +227,11 @@ namespace SphereStudio.ScriptEditor
         {
             using (StreamReader fileReader = new StreamReader(File.OpenRead(filename), true))
             {
-                _codeBox.Text = fileReader.ReadToEnd();
-                _codeBox.EmptyUndoBuffer();
-
                 var extSansDot = Path.GetExtension(filename).StartsWith(".")
                     ? Path.GetExtension(filename).Substring(1) : "";
                 _codeBox.Lexer = FileExtensions.Contains(extSansDot) ? Lexer.Cpp : Lexer.Null;
+                _codeBox.Text = fileReader.ReadToEnd();
+                _codeBox.EmptyUndoBuffer();
                 if (_codeBox.Lexer == Lexer.Cpp)
                 {
                     InitializeHighlighting();
@@ -349,17 +363,11 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
             _codeBox.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
 
-            // code folding margin
-            _codeBox.Margins[1].Type = MarginType.Symbol;
-            _codeBox.Margins[1].Mask = Marker.MaskAll & ~Marker.MaskFolders;
-            _codeBox.Margins[1].Width = 20;
-            _codeBox.Margins[1].Sensitive = true;
-
             // debugging margin
-            _codeBox.Margins[2].Type = MarginType.Symbol;
-            _codeBox.Margins[2].Mask = Marker.MaskFolders;
-            _codeBox.Margins[2].Width = 20;
-            _codeBox.Margins[2].Sensitive = true;
+            _codeBox.Margins[0].Type = MarginType.Symbol;
+            _codeBox.Margins[0].Mask = Marker.MaskAll & ~Marker.MaskFolders;
+            _codeBox.Margins[0].Width = 20;
+            _codeBox.Margins[0].Sensitive = true;
             _codeBox.Markers[0].Symbol = MarkerSymbol.Circle;  // breakpoint marker
             _codeBox.Markers[0].SetBackColor(Color.Red);
             _codeBox.Markers[0].SetForeColor(Color.DarkRed);
@@ -370,6 +378,17 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Markers[2].SetBackColor(Color.OrangeRed);
             _codeBox.Markers[3].Symbol = MarkerSymbol.Background;  // current line highlight
             _codeBox.Markers[3].SetBackColor(Color.LightGoldenrodYellow);
+
+            // line number margin.  dynamically resized as content changes.
+            _codeBox.Margins[1].Type = MarginType.Number;
+            _codeBox.Margins[1].Mask = 0x0;
+
+            // code folding margin
+            _codeBox.Margins[2].Type = MarginType.Symbol;
+            _codeBox.Margins[2].Mask = Marker.MaskFolders;
+            _codeBox.Margins[2].Width = 20;
+            _codeBox.Margins[2].Sensitive = true;
+
         }
 
         private void InitializeHighlighting()
@@ -474,7 +493,7 @@ namespace SphereStudio.ScriptEditor
 
         private void codeBox_MarginClick(object sender, MarginClickEventArgs e)
         {
-            if (e.Margin == 1)
+            if (e.Margin == 0)
             {
                 var line = _codeBox.Lines[_codeBox.LineFromPosition(e.Position)];
                 bool isSet = (line.MarkerGet() & 0x01) == 0;

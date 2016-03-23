@@ -93,7 +93,8 @@ namespace SphereStudio.ScriptEditor.Components
                     _codeBox.TargetStart = _codeBox.SelectionStart;
                     FindTextBox.Text = _codeBox.SelectedText;
                 }
-                PerformFind();
+                if (!string.IsNullOrEmpty(FindTextBox.Text))
+                    PerformFind();
             }
 
             FindTextBox.Focus();
@@ -125,7 +126,7 @@ namespace SphereStudio.ScriptEditor.Components
         {
             _codeBox.TargetStart = _codeBox.CurrentPosition;
             _codeBox.TargetEnd = _codeBox.TextLength;
-            if (FindTextBox.Text != string.Empty)
+            if (!string.IsNullOrEmpty(FindTextBox.Text))
                 PerformFind();
             else
                 Open();
@@ -207,8 +208,9 @@ namespace SphereStudio.ScriptEditor.Components
             if (_codeBox == null)
                 return;
 
-            PerformFind();
-            if (FindTextBox.Text == string.Empty)
+            if (!string.IsNullOrEmpty(FindTextBox.Text))
+                PerformFind();
+            else
             {
                 FindButton.Enabled = false;
                 ReplaceButton.Enabled = false;
