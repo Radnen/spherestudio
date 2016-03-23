@@ -24,7 +24,7 @@ namespace SphereStudio.ScriptEditor
         private int _lastCaretPos = Scintilla.InvalidPosition;
         private bool _highlightLine = true;
         private PluginMain _main;
-        private QuickFindBox _quickFind;
+        private QuickFindBox _quickFinder;
         private bool _useAutoComplete;
 
         // save scripts as UTF-8 without a byte order mark.
@@ -40,7 +40,7 @@ namespace SphereStudio.ScriptEditor
             Icon = Icon.FromHandle(Resources.ScriptIcon.GetHicon());
 
             _main = main;
-            _quickFind = new QuickFindBox(this);
+            _quickFinder = new QuickFindBox(this, _codeBox);
 
             _codeBox.Dock = DockStyle.Fill;
             _codeBox.FontQuality = FontQuality.LcdOptimized;
@@ -62,16 +62,19 @@ namespace SphereStudio.ScriptEditor
         {
             switch (keyData)
             {
+                case Keys.F3:
+                    _quickFinder.FindNext();
+                    return true;
                 case Keys.Control | Keys.A:
                     if (!_codeBox.ContainsFocus)
                         break;
                     _codeBox.SelectAll();
                     return true;
                 case Keys.Control | Keys.F:
-                    _quickFind.Open(_codeBox);
+                    _quickFinder.Open();
                     return true;
                 case Keys.Control | Keys.H:
-                    _quickFind.Open(_codeBox, true);
+                    _quickFinder.Open(true);
                     return true;
             }
 

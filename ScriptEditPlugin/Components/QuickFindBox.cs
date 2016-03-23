@@ -45,11 +45,13 @@ namespace SphereStudio.ScriptEditor.Components
         /// Constructs a new QuickFind control.  Initially it's invisible.
         /// </summary>
         /// <param name="parent">The parent control.  QuickFind will show in the top-right corner.</param>
-        public QuickFindBox(Control parent)
+        /// <param name="codeBox">The Scintilla control whose contents will be searched.</param>
+        public QuickFindBox(Control parent, Scintilla codeBox)
         {
             InitializeComponent();
 
             _fullHeight = Height;
+            _codeBox = codeBox;
             _parent = parent;
             _parent.Resize += parent_Resize;
             _parent.Controls.Add(this);
@@ -61,35 +63,50 @@ namespace SphereStudio.ScriptEditor.Components
         /// Opens the QuickFind box.  The word under the cursor is automatically
         /// filled into the Find field.
         /// </summary>
-        /// <param name="codeBox">The Scintilla control whose content is being searched.</param>
         /// <param name="replace">A boolean value specifying whether we want Replace functionality.</param>
-        public void Open(Scintilla codeBox, bool replace = false)
+        public void Open(bool replace = false)
         {
-            _codeBox = codeBox;
+            bool wasVisibleBefore = Visible;
 
-            bool wasVisible = Visible;
-            Show();
+            SuspendLayout();
+
             BringToFront();
+            Show();
 
-            int wordStart = _codeBox.WordStartPosition(_codeBox.CurrentPosition, false);
-            int wordEnd = _codeBox.WordEndPosition(_codeBox.CurrentPosition, false);
-            if (!wasVisible)
+            // populate the Find term from the current selection
+            if (!wasVisibleBefore)
             {
-                _codeBox.TargetStart = wordStart;
-                FindTextBox.Text = _codeBox.GetWordFromPosition(_codeBox.CurrentPosition);
+                if (string.IsNullOrEmpty(_codeBox.SelectedText))
+                {
+                    // if no selection, use word under cursor
+                    int wordStart = _codeBox.WordStartPosition(_codeBox.CurrentPosition, false);
+                    int wordEnd = _codeBox.WordEndPosition(_codeBox.CurrentPosition, false);
+                    if (!wasVisibleBefore)
+                    {
+                        _codeBox.TargetStart = wordStart;
+                        FindTextBox.Text = _codeBox.GetWordFromPosition(_codeBox.CurrentPosition);
+                    }
+                }
+                else if (!_codeBox.SelectedText.Contains('\r') && !_codeBox.SelectedText.Contains('\n'))
+                {
+                    // if there is a selection, use it as the search term unless it contains newlines
+                    _codeBox.TargetStart = _codeBox.SelectionStart;
+                    FindTextBox.Text = _codeBox.SelectedText;
+                }
+                PerformFind();
             }
-            FindTextBox.SelectAll();
+
             FindTextBox.Focus();
-
-            PerformFind();
-
-            ReplaceTextBox.Visible = ReplaceButton.Visible = ReplaceAllButton.Visible
-                = replace;
-
+            FindTextBox.SelectAll();
+            ReplaceTextBox.Visible = replace;
+            ReplaceButton.Visible = replace;
+            ReplaceAllButton.Visible = replace;
             if (replace)
                 Height = _fullHeight;
             else
                 Height = _fullHeight - ReplaceTextBox.Height;
+
+            ResumeLayout();
         }
 
         /// <summary>
@@ -97,8 +114,21 @@ namespace SphereStudio.ScriptEditor.Components
         /// </summary>
         public void Close()
         {
-            _codeBox = null;
             Hide();
+        }
+
+        /// <summary>
+        /// Searches for the next occurrence of the most recently used search term.
+        /// The search begins from the current cursor position.
+        /// </summary>
+        public void FindNext()
+        {
+            _codeBox.TargetStart = _codeBox.CurrentPosition;
+            _codeBox.TargetEnd = _codeBox.TextLength;
+            if (FindTextBox.Text != string.Empty)
+                PerformFind();
+            else
+                Open();
         }
 
         private bool PerformFind()
@@ -124,8 +154,9 @@ namespace SphereStudio.ScriptEditor.Components
                 FindButton.Enabled = true;
                 ReplaceButton.Enabled = true;
                 ReplaceAllButton.Enabled = true;
-                _codeBox.FirstVisibleLine = _codeBox.LineFromPosition(_codeBox.TargetStart)
-                    - _codeBox.LinesOnScreen / 2;
+                int line = _codeBox.LineFromPosition(_codeBox.TargetStart);
+                if (line < _codeBox.FirstVisibleLine || line >= _codeBox.FirstVisibleLine + _codeBox.LinesOnScreen)
+                    _codeBox.FirstVisibleLine = line - _codeBox.LinesOnScreen / 2;
                 _codeBox.SelectionStart = _codeBox.TargetStart;
                 _codeBox.SelectionEnd = _codeBox.TargetEnd;
             }
