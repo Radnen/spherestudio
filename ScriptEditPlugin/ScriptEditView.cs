@@ -44,10 +44,8 @@ namespace SphereStudio.ScriptEditor
             _quickFinder = new QuickFindBox(this, _codeBox);
 
             _codeBox.Dock = DockStyle.Fill;
-            _codeBox.FontQuality = FontQuality.LcdOptimized;
             _codeBox.Styles[Style.Default].Font = "Consolas";
-            _codeBox.Styles[Style.Default].Size = 10;
-            _codeBox.Styles[Style.LineNumber].ForeColor = Color.Teal;
+            _codeBox.Styles[Style.Default].SizeF = 10.25F;
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;
@@ -77,8 +75,11 @@ namespace SphereStudio.ScriptEditor
             switch (keyData)
             {
                 case Keys.Escape:
-                    _quickFinder.Close();
-                    return true;
+                    if (_quickFinder.Visible) {
+                        _quickFinder.Close();
+                        return true;
+                    }
+                    break;
                 case Keys.F3:
                     _quickFinder.FindNext();
                     return true;
@@ -347,6 +348,51 @@ namespace SphereStudio.ScriptEditor
             _codeBox.SetProperty("fold.compact", "1");
             _codeBox.AutomaticFold = AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change;
             _codeBox.SetFoldFlags(FoldFlags.LineAfterContracted);
+            _codeBox.SetFoldMarginColor(true, Color.White);
+        }
+
+        private void InitializeHighlighting()
+        {
+            // define colors for syntax highlighting.  the colors below were chosen to be very
+            // similar to the Sphere 1.x editor.
+            _codeBox.Styles[Style.BraceLight].BackColor = Color.Pink;
+            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
+            _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
+            _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.DimGray;
+            _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.Teal;
+            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
+            _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+            _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
+            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DarkBlue;
+
+            // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
+            // so this unfortunately isn't done for us.
+            _codeBox.SetKeywords(0, "await break case catch class const continue debugger default delete do else enum export extends false finally for function if implements import in instanceof interface let of new null package private protected public return static super switch this throw true try typeof var void while with yield");
+            _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
+                + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
+                + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
+
+            // load Sphere API keywords
+            try
+            {
+                string[] apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, "Dictionary/SphereAPI.txt"));
+                var keywords = from line in apiList
+                               let keyword = line.Trim()
+                               where keyword != "" && !keyword.StartsWith("#")
+                               select keyword;
+                _codeBox.SetKeywords(3, string.Join(" ", keywords));
+            }
+            catch
+            {
+                // no harm done if an error occurs, we just won't get custom coloring
+                // for Sphere API calls.
+            }
         }
 
         private void InitializeMargins()
@@ -384,6 +430,8 @@ namespace SphereStudio.ScriptEditor
             // line number margin.  dynamically resized as content changes.
             _codeBox.Margins[1].Type = MarginType.Number;
             _codeBox.Margins[1].Mask = 0x0;
+            _codeBox.Styles[Style.LineNumber].ForeColor = Color.DimGray;
+            _codeBox.Styles[Style.LineNumber].BackColor = Color.White;
 
             // code folding margin
             _codeBox.Margins[2].Type = MarginType.Symbol;
@@ -391,47 +439,6 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Margins[2].Width = 20;
             _codeBox.Margins[2].Sensitive = true;
 
-        }
-
-        private void InitializeHighlighting()
-        {
-            // define colors for syntax highlighting.  the colors below were chosen to be very
-            // similar to the Sphere 1.x editor.
-            _codeBox.Styles[Style.BraceLight].BackColor = Color.LightGray;
-            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
-            _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
-            _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Magenta;
-            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
-            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DarkBlue;
-
-            // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
-            // so this unfortunately isn't done for us.
-            _codeBox.SetKeywords(0, "await break case catch class const continue debugger default delete do else enum export extends false finally for function if implements import in instanceof interface let of new null package private protected public return static super switch this throw true try typeof var void while with yield");
-            _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
-                + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
-                + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
-
-            // load Sphere API keywords
-            try
-            {
-                string[] apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, "Dictionary/SphereAPI.txt"));
-                var keywords = from line in apiList
-                               let keyword = line.Trim()
-                               where keyword != "" && !keyword.StartsWith("#")
-                               select keyword;
-                _codeBox.SetKeywords(3, string.Join(" ", keywords));
-            }
-            catch
-            {
-                // no harm done if an error occurs, we just won't get custom coloring
-                // for Sphere API calls.
-            }
         }
 
         private void codeBox_CharAdded(object sender, CharAddedEventArgs e)
