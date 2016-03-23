@@ -223,8 +223,6 @@ namespace SphereStudio.ScriptEditor.Components
             e.Handled = true;
             if (e.KeyChar == '\r')
                 FindButton.PerformClick();
-            else if (e.KeyChar == '\x1B')
-                Close();
             else
                 e.Handled = false;
         }
@@ -232,9 +230,7 @@ namespace SphereStudio.ScriptEditor.Components
         private void ReplaceTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
-            if (e.KeyChar == '\x1B')
-                Close();
-            else if (e.KeyChar == '\r')
+            if (e.KeyChar == '\r')
                 ReplaceButton.PerformClick();
             else
                 e.Handled = false;

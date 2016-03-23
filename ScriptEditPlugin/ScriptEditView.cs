@@ -77,6 +77,9 @@ namespace SphereStudio.ScriptEditor
         {
             switch (keyData)
             {
+                case Keys.Escape:
+                    _quickFinder.Close();
+                    return true;
                 case Keys.F3:
                     _quickFinder.FindNext();
                     return true;
