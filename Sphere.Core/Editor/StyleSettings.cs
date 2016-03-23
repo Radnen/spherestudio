@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,7 +13,7 @@ namespace Sphere.Core.Editor
         /// <summary>
         /// The current style being deployed to all forms affected by styling.
         /// </summary>
-        public static string CurrentStyle = "Dark";
+        public static string _activeStyle = "Dark";
 
         private static Dictionary<string, StyleGroup> _styles = new Dictionary<string, StyleGroup>();
 
@@ -64,6 +65,24 @@ namespace Sphere.Core.Editor
         }
 
         /// <summary>
+        /// Fires when the active style is changed.
+        /// </summary>
+        public static event EventHandler StyleChanged;
+
+        /// <summary>
+        /// Gets or sets the name of the active style.
+        /// </summary>
+        public static string ActiveStyle
+        {
+            get { return _activeStyle; }
+            set
+            {
+                _activeStyle = value;
+                StyleChanged?.Invoke(null, EventArgs.Empty);
+            }
+        }
+        
+        /// <summary>
         /// Gets a readonly version of the installed styles.
         /// </summary>
         public static IReadOnlyDictionary<string, StyleGroup> Styles
@@ -77,7 +96,7 @@ namespace Sphere.Core.Editor
         /// <param name="target">The .NET Form or Control to style.</param>
         public static void ApplyStyle(Control target)
         {
-            _styles[CurrentStyle].ApplyPrimary(target);
+            _styles[_activeStyle].ApplyPrimary(target);
         }
 
         /// <summary>
@@ -86,7 +105,7 @@ namespace Sphere.Core.Editor
         /// <param name="target">The .NET Form or Control to style.</param>
         public static void ApplySecondaryStyle(Control target)
         {
-            _styles[CurrentStyle].ApplySecondary(target);
+            _styles[_activeStyle].ApplySecondary(target);
         }
 
         /// <summary>

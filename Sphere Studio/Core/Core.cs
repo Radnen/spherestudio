@@ -234,7 +234,7 @@ namespace SphereStudio
 
         public void Apply()
         {
-            StyleSettings.CurrentStyle = UIStyle;
+            StyleSettings.ActiveStyle = UIStyle;
             foreach (var plugin in Core.Plugins)
                 plugin.Value.Enabled = !DisabledPlugins.Contains(plugin.Key);
             PluginManager.Core.Docking.Refresh();

@@ -11,16 +11,20 @@ namespace Sphere.Core.Editor
         private static readonly Brush BgBrush = new TextureBrush(Properties.Resources.BarImage);
 
         /// <summary>
-        /// Initializes a new instance of an EditorLabel.
+        /// Constructs a new instance of an EditorLabel.
         /// </summary>
-        protected override void OnCreateControl()
+        public EditorLabel()
         {
-            base.OnCreateControl();
             Font = new Font("Verdana", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             TextAlign = ContentAlignment.MiddleLeft;
             Height = 23;
             AutoSize = false;
             Dock = DockStyle.Top;
+        }
+
+        protected override void OnCreateControl()
+        {
+            base.OnCreateControl();
             UpdateStyle();
         }
 

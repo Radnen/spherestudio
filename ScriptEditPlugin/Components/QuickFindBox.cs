@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Sphere.Core.Editor;
+
 using ScintillaNET;
 
 namespace SphereStudio.ScriptEditor.Components
 {
     /// <summary>
-    /// Implements the QuickFind box (fast Search and Replace).
+    /// Implements the Quick Find box (fast Search and Replace).
     /// </summary>
     [ToolboxItem(false)]
     public partial class QuickFindBox : UserControl
@@ -42,13 +44,14 @@ namespace SphereStudio.ScriptEditor.Components
         private Control _parent;
 
         /// <summary>
-        /// Constructs a new QuickFind control.  Initially it's invisible.
+        /// Constructs a new Quick Find control.  Initially it's invisible.
         /// </summary>
-        /// <param name="parent">The parent control.  QuickFind will show in the top-right corner.</param>
+        /// <param name="parent">The parent control.  Quick Find will show in the top-right corner.</param>
         /// <param name="codeBox">The Scintilla control whose contents will be searched.</param>
         public QuickFindBox(Control parent, Scintilla codeBox)
         {
             InitializeComponent();
+            Visible = false;
 
             _fullHeight = Height;
             _codeBox = codeBox;
@@ -56,11 +59,18 @@ namespace SphereStudio.ScriptEditor.Components
             _parent.Resize += parent_Resize;
             _parent.Controls.Add(this);
 
-            Visible = false;
+            StyleSettings.StyleChanged += StyleSettings_StyleChanged;
+            Disposed += (sender, e) => StyleSettings.StyleChanged -= StyleSettings_StyleChanged;
+            ApplyStyle();
+        }
+
+        private void StyleSettings_StyleChanged(object sender, EventArgs e)
+        {
+            ApplyStyle();
         }
 
         /// <summary>
-        /// Opens the QuickFind box.  The word under the cursor is automatically
+        /// Opens the Quick Find box.  The word under the cursor is automatically
         /// filled into the Find field.
         /// </summary>
         /// <param name="replace">A boolean value specifying whether we want Replace functionality.</param>
@@ -111,7 +121,7 @@ namespace SphereStudio.ScriptEditor.Components
         }
 
         /// <summary>
-        /// Closes the QuickFind box.
+        /// Closes the Quick Find box.
         /// </summary>
         public void Close()
         {
@@ -130,6 +140,24 @@ namespace SphereStudio.ScriptEditor.Components
                 PerformFind();
             else
                 Open();
+        }
+
+        private void ApplyStyle()
+        {
+            StyleSettings.ApplyStyle(FindButton);
+            StyleSettings.ApplyStyle(ReplaceButton);
+            StyleSettings.ApplyStyle(ReplaceAllButton);
+            StyleSettings.ApplyStyle(FindTextBox);
+            StyleSettings.ApplyStyle(ReplaceTextBox);
+            StyleSettings.ApplyStyle(MatchCaseCheckBox);
+            StyleSettings.ApplyStyle(WholeWordCheckBox);
+            StyleSettings.ApplyStyle(RegexCheckBox);
+            StyleSettings.ApplySecondaryStyle(OptionsPanel);
+
+            Left = _parent.ClientSize.Width - Width
+                - SystemInformation.VerticalScrollBarWidth
+                - SystemInformation.BorderSize.Width;
+            Top = SystemInformation.BorderSize.Height;
         }
 
         private bool PerformFind()
@@ -194,13 +222,12 @@ namespace SphereStudio.ScriptEditor.Components
                 ++numChanges;
             }
             _codeBox.EndUndoAction();
-            MessageBox.Show(this, string.Format("{0} replacement(s) were made.", numChanges), "QuickFind");
+            MessageBox.Show(this, string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace");
         }
 
         private void parent_Resize(object sender, EventArgs e)
         {
-            Left = _parent.ClientSize.Width - Width - SystemInformation.VerticalScrollBarWidth - SystemInformation.BorderSize.Width;
-            Top = SystemInformation.BorderSize.Height;
+            ApplyStyle();
         }
 
         private void FindTextBox_TextChanged(object sender, EventArgs e)

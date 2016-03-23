@@ -48,7 +48,6 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Styles[Style.Default].Font = "Consolas";
             _codeBox.Styles[Style.Default].Size = 10;
             _codeBox.Styles[Style.LineNumber].ForeColor = Color.Teal;
-            _codeBox.Styles[Style.LineNumber].BackColor = Color.White;
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;
