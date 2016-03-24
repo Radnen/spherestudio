@@ -79,6 +79,7 @@ namespace SphereStudio.ScriptEditor.Components
             bool wasVisibleBefore = Visible;
 
             SuspendLayout();
+            TitleLabel.Text = replace ? "Quick Replace" : "Quick Find";
 
             BringToFront();
             Show();
@@ -102,6 +103,10 @@ namespace SphereStudio.ScriptEditor.Components
                     // if there is a selection, use it as the search term unless it contains newlines
                     _codeBox.TargetStart = _codeBox.SelectionStart;
                     FindTextBox.Text = _codeBox.SelectedText;
+                }
+                else
+                {
+                    FindTextBox.Text = "";
                 }
                 if (!string.IsNullOrEmpty(FindTextBox.Text))
                     PerformFind();
