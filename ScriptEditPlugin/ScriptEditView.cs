@@ -516,7 +516,8 @@ namespace SphereStudio.ScriptEditor
 
         private void codeBox_UpdateUI(object sender, UpdateUIEventArgs e)
         {
-            const string braceChars = "()[]{}";
+            const string openBraces = "([{";
+            const string closeBraces = ")]}";
 
             var caretPos = _codeBox.CurrentPosition;
             if (caretPos != _lastCaretPos)
@@ -527,12 +528,12 @@ namespace SphereStudio.ScriptEditor
                 if (_highlightLine)
                     _codeBox.Lines[currentLine].MarkerAdd(3);
                 char charBefore = (char)_codeBox.GetCharAt(caretPos - 1);
-                char charAtPos = (char)_codeBox.GetCharAt(caretPos);
+                char charAfter = (char)_codeBox.GetCharAt(caretPos);
                 int brace1Pos = Scintilla.InvalidPosition;
-                if (braceChars.Contains(charAtPos))
-                    brace1Pos = caretPos;
-                else if (braceChars.Contains(charBefore))
+                if (closeBraces.Contains(charBefore))
                     brace1Pos = caretPos - 1;
+                else if (openBraces.Contains(charAfter))
+                    brace1Pos = caretPos;
                 if (brace1Pos != Scintilla.InvalidPosition)
                 {
                     int brace2Pos = _codeBox.BraceMatch(brace1Pos);
