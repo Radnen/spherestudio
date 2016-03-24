@@ -142,7 +142,14 @@ namespace SphereStudio.ScriptEditor.Components
             _codeBox.TargetStart = _codeBox.CurrentPosition;
             _codeBox.TargetEnd = _codeBox.TextLength;
             if (!string.IsNullOrEmpty(FindTextBox.Text))
-                PerformFind();
+            {
+                if (!PerformFind())
+                {
+                    string message = string.Format("No matches were found for the following {1}:\n\n{0}",
+                        FindTextBox.Text, RegexCheckBox.Checked ? "regular expression" : "text");
+                    MessageBox.Show(this, message, "Quick Find", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             else
                 Open();
         }
@@ -185,7 +192,6 @@ namespace SphereStudio.ScriptEditor.Components
             if (pos != Scintilla.InvalidPosition)
             {
                 FindTextBox.BackColor = SystemColors.Window;
-                FindButton.Enabled = true;
                 ReplaceButton.Enabled = true;
                 ReplaceAllButton.Enabled = true;
                 int line = _codeBox.LineFromPosition(_codeBox.TargetStart);
@@ -196,8 +202,7 @@ namespace SphereStudio.ScriptEditor.Components
             }
             else
             {
-                FindTextBox.BackColor = Color.Pink;
-                FindButton.Enabled = false;
+                FindTextBox.BackColor = Color.MistyRose;
                 ReplaceButton.Enabled = false;
                 ReplaceAllButton.Enabled = false;
             }
@@ -227,7 +232,9 @@ namespace SphereStudio.ScriptEditor.Components
                 ++numChanges;
             }
             _codeBox.EndUndoAction();
-            MessageBox.Show(this, string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace");
+            MessageBox.Show(this,
+                string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void parent_Resize(object sender, EventArgs e)
@@ -240,13 +247,16 @@ namespace SphereStudio.ScriptEditor.Components
             if (_codeBox == null)
                 return;
 
-            if (!string.IsNullOrEmpty(FindTextBox.Text))
+            FindButton.Enabled = !string.IsNullOrEmpty(FindTextBox.Text);
+            ReplaceButton.Enabled = FindButton.Enabled;
+            ReplaceAllButton.Enabled = FindButton.Enabled;
+            if (FindButton.Enabled)
+            {
                 PerformFind();
+            }
             else
             {
-                FindButton.Enabled = false;
-                ReplaceButton.Enabled = false;
-                ReplaceAllButton.Enabled = false;
+                FindTextBox.BackColor = SystemColors.Window;
             }
         }
 
@@ -276,6 +286,9 @@ namespace SphereStudio.ScriptEditor.Components
 
         private void RegexCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            WholeWordCheckBox.Enabled = !RegexCheckBox.Checked;
+            if (RegexCheckBox.Checked)
+                WholeWordCheckBox.Checked = false;
             PerformFind();
             _lastTextBox.Focus();
         }
@@ -288,8 +301,7 @@ namespace SphereStudio.ScriptEditor.Components
 
         private void FindButton_Click(object sender, EventArgs e)
         {
-            _codeBox.TargetStart = _codeBox.TargetEnd;
-            PerformFind();
+            FindNext();
             _lastTextBox.Focus();
         }
 

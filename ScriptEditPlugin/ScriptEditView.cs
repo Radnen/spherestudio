@@ -364,7 +364,7 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
             _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
             _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.DimGray;
-            _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.Teal;
+            _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.DarkCyan;
             _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
             _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
             _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
@@ -375,8 +375,8 @@ namespace SphereStudio.ScriptEditor
             // so this unfortunately isn't done for us.
             _codeBox.SetKeywords(0, "await break case catch class const continue debugger default delete do else enum export extends false finally for function if implements import in instanceof interface let of new null package private protected public return static super switch this throw true try typeof var void while with yield");
             _codeBox.SetKeywords(1, "arguments eval exports get global module require set undefined Infinity NaN"
-                + "Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
-                + "decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
+                + " Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Math Number Object Proxy RangeError ReferenceError RegExp String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError"
+                + " decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
 
             // load Sphere API keywords
             try
