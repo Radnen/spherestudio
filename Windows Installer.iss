@@ -4,11 +4,10 @@
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Spherical"
-#define AppVersion3 "1.2.2"
-#define AppVersion4 "1.2.2.2016"
+#define AppVersion "1.2.2"
 
 [Setup]
-OutputBaseFilename=SphereStudio-{#AppVersion3}
+OutputBaseFilename=SphereStudio-{#AppVersion}
 SetupIconFile=Sphere Studio\SphereDev.ico
 OutputDir=.
 ArchitecturesInstallIn64BitMode=x64 ia64
@@ -16,11 +15,11 @@ Compression=lzma
 LZMAUseSeparateProcess=yes
 SolidCompression=yes
 
-UninstallDisplayIcon={app}\SphereDev.ico,0
+UninstallDisplayIcon={app}\Icons\SphereDev.ico,0
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
 AppName={#AppName}
-AppVerName={#AppName} {#AppVersion3}
-AppVersion={#AppVersion4}
+AppVerName={#AppName} {#AppVersion}
+AppVersion={#AppVersion}
 AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/
 AppSupportURL=http://forums.spheredev.org/
@@ -34,30 +33,19 @@ ChangesAssociations=yes
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
-[Types]
-Name: "full"; Description: "Full Installation"
-Name: "minimal"; Description: "Minimal Installation"
-Name: "custom"; Description: "Custom Installation"; Flags: iscustom
-
-[Components]
-Name: "spherestudio"; Description: "{#AppName} {#AppVersion3} IDE"; Types: full minimal custom; Flags: fixed
-Name: "classic"; Description: "Sphere 1.x Engine Support"; Types: full minimal
-Name: "plugins"; Description: "Additional Plugins"
-Name: "plugins/soundtest"; Description: "Sound Test"; Types: full
-Name: "plugins/tasklist"; Description: "Task List"; Types: full
-
 [Tasks]
-Name: "desktop"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktop"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "desktop/user"; Description: "only for the current user ({username})"; GroupDescription: "{cm:AdditionalIcons}"; Flags: exclusive
+Name: "desktop/all"; Description: "for all users of this PC"; GroupDescription: "{cm:AdditionalIcons}"; Flags: exclusive
 
 [Files]
-Source: "Sphere Studio\bin\Release\SphereStudioIDE.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\SphereDev.ico"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\SphereStudioIDE.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\SphereLexer.xml"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\Sphere.Plugins.xml"; DestDir: "{app}"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\Docs\*"; DestDir: "{app}\Docs"; Flags: ignoreversion; Components: spherestudio
-Source: "Sphere Studio\bin\Release\Plugins\*.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: classic
+Source: "Sphere Studio\bin\Release\SphereStudioIDE.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\SphereDev.ico"; DestDir: "{app}\Icons"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\SphereStudioIDE.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\Sphere.Plugins.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\Dictionary\*"; DestDir: "{app}\Dictionary"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\Plugins\*.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 
 [Registry]
 Root: HKCR; Subkey: ".ssproj"; ValueType: string; ValueName: ""; ValueData: "SphereStudio.SSPROJ"; Flags: uninsdeletevalue
@@ -67,7 +55,8 @@ Root: HKCR; Subkey: "SphereStudio.SSPROJ\shell\open\command"; ValueType: string;
 
 [Icons]
 Name: "{commonprograms}\{#AppName} IDE"; Filename: "{app}\SphereStudioIDE.exe"
-Name: "{commondesktop}\{#AppName} IDE"; Filename: "{app}\SphereStudioIDE.exe"; Tasks: desktop
+Name: "{userdesktop}\{#AppName}"; Filename: "{app}\SphereStudioIDE.exe"; Tasks: desktop/user
+Name: "{commondesktop}\{#AppName}"; Filename: "{app}\SphereStudioIDE.exe"; Tasks: desktop/all
 
 [Run]
 Filename: "{app}\SphereStudioIDE.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
