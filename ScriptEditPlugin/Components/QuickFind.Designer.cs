@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.ScriptEditor.Components
 {
-    partial class QuickFindBox
+    partial class QuickFind
     {
         /// <summary> 
         /// Required designer variable.

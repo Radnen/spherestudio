@@ -37,7 +37,7 @@ Features
  - Game Start Page
  - Project Tree Management
  - Efficient Map Editor (Undo/Redo Support!)
- - Code Editor with Quick Find
+ - Code Editor with Quick Find and Replace
  - Font Importer
  - Image Editor
  - Spriteset Editor

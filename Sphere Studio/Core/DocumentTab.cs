@@ -24,7 +24,7 @@ namespace SphereStudio
         private static uint _unsavedID = 1;
         
         private DockContent _content;
-        private IDEForm _ide;
+        private MainWindow _ide;
         private string _tabText;
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace SphereStudio
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(IDEForm ide, DocumentView view, string fileName = null, bool restoreView = false)
+        public DocumentTab(MainWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
         {
             FileName = fileName;
             View = view;

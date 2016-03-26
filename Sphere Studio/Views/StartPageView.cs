@@ -25,12 +25,12 @@ namespace SphereStudio.Views
         private readonly DockPanel _startDock = new DockPanel();
         private readonly DockContent _gameContent = new DockContent();
         private readonly DockContent _infoContent = new DockContent();
-        private readonly IDEForm _mainEditor;
+        private readonly MainWindow _mainEditor;
 
         private readonly ImageList _listIcons = new ImageList();
         private readonly ImageList _listIconsSmall = new ImageList();
 
-        public StartPageView(IDEForm mainEditor)
+        public StartPageView(MainWindow mainEditor)
         {
             InitializeComponent();
             InitializeDocking();

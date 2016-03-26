@@ -7,17 +7,12 @@ using System.Windows.Forms;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener, IDockPane
+    public class PluginMain : IPluginMain, IFileOpener
     {
         public string Name { get; } = "Sound Test";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Listen to sounds from your game while you work!";
         public string Version { get; } = "1.2.2";
-
-        public bool ShowInViewMenu { get; private set; }
-        public Control Control { get; private set; }
-        public DockHint DockHint { get; private set; }
-        public Bitmap DockIcon { get; private set; }
 
         public string FileTypeName { get; private set; }
         public Bitmap FileIcon { get; private set; }
@@ -40,12 +35,7 @@ namespace SphereStudio.Plugins
                 "wav"                  // uncompressed/PCM formats
             };
 
-            Control = _soundPicker;
-            DockHint = DockHint.Left;
-            DockIcon = Properties.Resources.Icon;
-            ShowInViewMenu = true;
-
-            PluginManager.Register(this, this, "Sound Test");
+            PluginManager.Register(this, _soundPicker, "Sound Test");
 
             PluginManager.Core.LoadProject += IDE_LoadProject;
             PluginManager.Core.UnloadProject += IDE_UnloadProject;

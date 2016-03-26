@@ -58,13 +58,11 @@ namespace SphereStudio.Plugins
             _trackForeColor = new SolidBrush(_labelColor);
         }
 
-        public Control Control { get { return this; } }
+        public bool ShowInViewMenu => true;
+        public Control Control => this;
+        public DockHint DockHint => DockHint.Right;
+        public Bitmap DockIcon => Properties.Resources.Icon;
 
-        public DockHint DockHint { get { return DockHint.Left; } }
-
-        public Bitmap DockIcon { get { return Properties.Resources.Icon; } }
-
-        public bool ShowInViewMenu { get { return true; } }
 
         private void fileWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
@@ -220,7 +218,16 @@ namespace SphereStudio.Plugins
         private void UpdateTrackList()
         {
             string gamePath = PluginManager.Core.Project.RootPath;
-            if (string.IsNullOrEmpty(gamePath)) return;
+            if (string.IsNullOrEmpty(gamePath))
+                return;
+
+            // if the project is set to build out-of-source, avoid enumerating the build directory.
+            string buildPath = Path.Combine(gamePath, PluginManager.Core.Project.BuildPath)
+                .Replace('/', Path.DirectorySeparatorChar)
+                .Replace('\\', Path.DirectorySeparatorChar);
+            if (buildPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                buildPath = buildPath.Substring(0, buildPath.Length - 1);
+            bool haveBuildDir = Path.GetFullPath(buildPath) != Path.GetFullPath(gamePath);
 
             trackList.BeginUpdate();
             foreach (string filterInfo in _fileTypes)
@@ -234,12 +241,17 @@ namespace SphereStudio.Plugins
                 DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
                 FileInfo[] fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
 
-                foreach (FileInfo f in from f in fileInfos orderby f.Name select f)
+                foreach (FileInfo fi in from x in fileInfos
+                                        where !x.FullName.StartsWith(buildPath) || !haveBuildDir
+                                        orderby x.Name select x)
                 {
-                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(f.FullName), 0);
-                    listItem.Tag = (object)f.FullName;
+                    var relativePath = fi.FullName
+                        .Replace(gamePath + Path.DirectorySeparatorChar, string.Empty)
+                        .Replace(Path.DirectorySeparatorChar, '/');
+                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fi.FullName), 0);
+                    listItem.Tag = (object)fi.FullName;
                     listItem.Group = trackList.Groups[groupName];
-                    listItem.SubItems.Add(f.FullName.Replace(gamePath + "\\", ""));
+                    listItem.SubItems.Add(relativePath);
                 }
             }
             trackList.EndUpdate();

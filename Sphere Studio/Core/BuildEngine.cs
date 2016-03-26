@@ -79,12 +79,12 @@ namespace SphereStudio
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler.Prep(project, _buildView))
             {
-                _buildView.Print(string.Format("================ Successfully prepped: {0} ===============\n", project.Name));
+                _buildView.Print(string.Format("================ Successfully prepped: {0} ===============", project.Name));
                 return true;
             }
             else
             {
-                _buildView.Print(string.Format("=================== Failed to prep: {0} ==================\n", project.Name));
+                _buildView.Print(string.Format("=================== Failed to prep: {0} ==================", project.Name));
                 return false;
             }
         }
@@ -113,12 +113,12 @@ namespace SphereStudio
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
             if (await compiler.Build(project, outPath, _buildView))
             {
-                _buildView.Print(string.Format("================= Successfully built: {0} ================\n", project.Name));
+                _buildView.Print(string.Format("================= Successfully built: {0} ================", project.Name));
                 return outPath;
             }
             else
             {
-                _buildView.Print(string.Format("================== Failed to build: {0} ==================\n", project.Name));
+                _buildView.Print(string.Format("================== Failed to build: {0} ==================", project.Name));
                 SystemSounds.Exclamation.Play();
                 return null;
             }
@@ -141,10 +141,10 @@ namespace SphereStudio
             var packager = PluginManager.Get<IPackager>(project.Compiler);
             bool isOK = await packager.Package(project, fileName, _buildView);
             if (isOK)
-                _buildView.Print(string.Format("=============== Successfully packaged: {0} ===============\n", project.Name));
+                _buildView.Print(string.Format("=============== Successfully packaged: {0} ===============", project.Name));
             else
             {
-                _buildView.Print(string.Format("================= Failed to package: {0} =================\n", project.Name));
+                _buildView.Print(string.Format("================= Failed to package: {0} =================", project.Name));
                 SystemSounds.Exclamation.Play();
             }
             return isOK;

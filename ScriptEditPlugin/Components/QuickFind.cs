@@ -18,7 +18,7 @@ namespace SphereStudio.ScriptEditor.Components
     /// Implements the Quick Find box (fast Search and Replace).
     /// </summary>
     [ToolboxItem(false)]
-    public partial class QuickFindBox : UserControl
+    public partial class QuickFind : UserControl
     {
         // some of the logic here may seem a bit hard to follow.  unfortunately most
         // of the spaghetti is necessary, to keep the UI usable.  notes:
@@ -48,7 +48,7 @@ namespace SphereStudio.ScriptEditor.Components
         /// </summary>
         /// <param name="parent">The parent control.  Quick Find will show in the top-right corner.</param>
         /// <param name="codeBox">The Scintilla control whose contents will be searched.</param>
-        public QuickFindBox(Control parent, Scintilla codeBox)
+        public QuickFind(Control parent, Scintilla codeBox)
         {
             InitializeComponent();
             Visible = false;
@@ -61,11 +61,6 @@ namespace SphereStudio.ScriptEditor.Components
 
             StyleSettings.StyleChanged += StyleSettings_StyleChanged;
             Disposed += (sender, e) => StyleSettings.StyleChanged -= StyleSettings_StyleChanged;
-            ApplyStyle();
-        }
-
-        private void StyleSettings_StyleChanged(object sender, EventArgs e)
-        {
             ApplyStyle();
         }
 
@@ -235,6 +230,11 @@ namespace SphereStudio.ScriptEditor.Components
             MessageBox.Show(this,
                 string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void StyleSettings_StyleChanged(object sender, EventArgs e)
+        {
+            ApplyStyle();
         }
 
         private void parent_Resize(object sender, EventArgs e)

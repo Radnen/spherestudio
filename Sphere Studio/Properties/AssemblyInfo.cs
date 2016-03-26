@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2015-2016 Spherical")]
+[assembly: AssemblyCopyright("© 2016 Spherical")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

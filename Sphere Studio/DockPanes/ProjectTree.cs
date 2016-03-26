@@ -19,11 +19,11 @@ namespace SphereStudio.DockPanes
     [ToolboxItem(false)]
     partial class ProjectTree : UserControl, IDockPane, IStyleable
     {
-        private readonly IDEForm _hostForm;
+        private readonly MainWindow _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public ProjectTree(IDEForm hostForm)
+        public ProjectTree(MainWindow hostForm)
         {
             InitializeComponent();
 
@@ -42,10 +42,10 @@ namespace SphereStudio.DockPanes
             _iconlist.ColorDepth = ColorDepth.Depth32Bit;
         }
 
-        public Control Control { get { return this; } }
-        public bool ShowInViewMenu { get { return true; } }
-        public DockHint DockHint { get { return DockHint.Left; } }
-        public Bitmap DockIcon { get { return Resources.SphereEditor; } }
+        public bool ShowInViewMenu => true;
+        public Control Control => this;
+        public DockHint DockHint => DockHint.Right;
+        public Bitmap DockIcon => Resources.SphereEditor;
 
         protected override void OnPaint(PaintEventArgs e)
         {

@@ -49,10 +49,10 @@ namespace SphereStudio.Plugins
             }
         }
 
-        public bool ShowInViewMenu { get { return true; } }
-        public Control Control { get { return this; } }
-        public DockHint DockHint { get { return DockHint.Left; } }
-        public Bitmap DockIcon { get { return Properties.Resources.lightbulb; } }
+        public bool ShowInViewMenu => true;
+        public Control Control => this;
+        public DockHint DockHint => DockHint.Right;
+        public Bitmap DockIcon => Properties.Resources.lightbulb;
 
         private void AddTaskItem_Click(object sender, EventArgs e)
         {

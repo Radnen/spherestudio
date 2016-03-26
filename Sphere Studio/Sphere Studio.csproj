@@ -9,10 +9,10 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio</RootNamespace>
-    <AssemblyName>SphereStudioIDE</AssemblyName>
+    <AssemblyName>Sphere Studio</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>SphereDev.ico</ApplicationIcon>
+    <ApplicationIcon>Sphere Studio.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -70,17 +70,19 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <WarningLevel>1</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
@@ -170,11 +172,11 @@
     <Compile Include="Views\StartPageView.Designer.cs">
       <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\IDEForm.cs">
+    <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\IDEForm.Designer.cs">
-      <DependentUpon>IDEForm.cs</DependentUpon>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ColorPicker\ColorPicker.cs">
       <SubType>Form</SubType>
@@ -232,8 +234,9 @@
       <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\IDEForm.resx">
-      <DependentUpon>IDEForm.cs</DependentUpon>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorPicker\ColorPicker.resx">
       <DependentUpon>ColorPicker.cs</DependentUpon>
@@ -296,12 +299,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="license.txt" />
-    <None Include="SphericalLogo.png" />
-    <Content Include="SphereDev.ico" />
-    <None Include="BarImage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontEditPlugin</Name>
@@ -347,8 +344,10 @@
       <Name>WindowstyleEditPlugin</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Docs\" />
+    <Content Include="Sphere Studio.ico" />
+    <None Include="Spherical.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

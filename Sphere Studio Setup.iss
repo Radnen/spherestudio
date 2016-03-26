@@ -7,15 +7,15 @@
 #define AppVersion "1.2.2"
 
 [Setup]
-OutputBaseFilename=SphereStudio-{#AppVersion}
-SetupIconFile=Sphere Studio\SphereDev.ico
+OutputBaseFilename=SphereStudioSetup-{#AppVersion}
+SetupIconFile=Sphere Studio\Sphere Studio.ico
 OutputDir=.
 ArchitecturesInstallIn64BitMode=x64 ia64
 Compression=lzma
 LZMAUseSeparateProcess=yes
 SolidCompression=yes
 
-UninstallDisplayIcon={app}\Icons\SphereDev.ico,0
+UninstallDisplayIcon={app}\Sphere Studio.exe,0
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
 AppName={#AppName}
 AppVerName={#AppName} {#AppVersion}
@@ -39,24 +39,23 @@ Name: "desktop/user"; Description: "only for the current user ({username})"; Gro
 Name: "desktop/all"; Description: "for all users of this PC"; GroupDescription: "{cm:AdditionalIcons}"; Flags: exclusive
 
 [Files]
-Source: "Sphere Studio\bin\Release\SphereStudioIDE.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Sphere Studio\SphereDev.ico"; DestDir: "{app}\Icons"; Flags: ignoreversion
-Source: "Sphere Studio\bin\Release\SphereStudioIDE.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\Sphere Studio.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\Sphere Studio.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Sphere Studio\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Sphere Studio\bin\Release\Sphere.Plugins.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Sphere Studio\bin\Release\*.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Sphere Studio\bin\Release\Dictionary\*"; DestDir: "{app}\Dictionary"; Flags: ignoreversion
 Source: "Sphere Studio\bin\Release\Plugins\*.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 
 [Registry]
 Root: HKCR; Subkey: ".ssproj"; ValueType: string; ValueName: ""; ValueData: "SphereStudio.SSPROJ"; Flags: uninsdeletevalue
 Root: HKCR; Subkey: "SphereStudio.SSPROJ"; ValueType: string; ValueName: ""; ValueData: "Sphere Studio Project"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "SphereStudio.SSPROJ\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\SphereStudioIDE.exe,0"
-Root: HKCR; Subkey: "SphereStudio.SSPROJ\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\SphereStudioIDE.exe"" ""%1"""
+Root: HKCR; Subkey: "SphereStudio.SSPROJ\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\Sphere Studio.exe,0"
+Root: HKCR; Subkey: "SphereStudio.SSPROJ\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Sphere Studio.exe"" ""%1"""
 
 [Icons]
-Name: "{commonprograms}\{#AppName} IDE"; Filename: "{app}\SphereStudioIDE.exe"
-Name: "{userdesktop}\{#AppName}"; Filename: "{app}\SphereStudioIDE.exe"; Tasks: desktop/user
-Name: "{commondesktop}\{#AppName}"; Filename: "{app}\SphereStudioIDE.exe"; Tasks: desktop/all
+Name: "{commonprograms}\{#AppName}"; Filename: "{app}\Sphere Studio.exe"
+Name: "{userdesktop}\{#AppName}"; Filename: "{app}\Sphere Studio.exe"; Tasks: desktop/user
+Name: "{commondesktop}\{#AppName}"; Filename: "{app}\Sphere Studio.exe"; Tasks: desktop/all
 
 [Run]
-Filename: "{app}\SphereStudioIDE.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Sphere Studio.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

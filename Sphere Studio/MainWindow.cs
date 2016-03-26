@@ -11,6 +11,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 using Sphere.Core.Editor;
 using SphereStudio.DockPanes;
+using SphereStudio.Forms;
 using SphereStudio.Properties;
 using SphereStudio.SettingsPages;
 using SphereStudio.Views;
@@ -19,12 +20,12 @@ using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 using System.Text;
 
-namespace SphereStudio.Forms
+namespace SphereStudio
 {
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
     /// </summary>
-    partial class IDEForm : Form, ICore, IStyleable
+    partial class MainWindow : Form, ICore, IStyleable
     {
         private DocumentTab _activeTab;
         private string _defaultActiveName;
@@ -36,7 +37,7 @@ namespace SphereStudio.Forms
         private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
-        public IDEForm()
+        public MainWindow()
         {
             InitializeComponent();
             InitializeDocking();
@@ -208,7 +209,7 @@ namespace SphereStudio.Forms
                         @"Unable to Open File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (FileNotFoundException)
+            catch (IOException)
             {
                 return null;
             }
@@ -901,8 +902,8 @@ namespace SphereStudio.Forms
             if (Debugger != null)
             {
                 MessageBox.Show(this,
-                    "There is an ongoing debug session. Please stop the debugger before closing the project.",
-                    "Debugging in Progress");
+                    "There is an active debugging session.  Please stop the debugger before closing the project or IDE.",
+                    "Debugging in Progress", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1070,8 +1071,8 @@ namespace SphereStudio.Forms
             menuDebug.Enabled = toolDebug.Enabled = Core.Project != null
                 && BuildEngine.CanDebug(Core.Project)
                 && (Debugger == null || !Debugger.Running);
-            menuBreakNow.Enabled = Debugger != null && Debugger.Running;
-            menuStopDebug.Enabled = Debugger != null;
+            menuBreakNow.Enabled = toolPauseDebug.Enabled = Debugger != null && Debugger.Running;
+            menuStopDebug.Enabled = toolStopDebug.Enabled = Debugger != null;
             menuStepInto.Enabled = Debugger != null && !Debugger.Running;
             menuStepOut.Enabled = Debugger != null && !Debugger.Running;
             menuStepOver.Enabled = Debugger != null && !Debugger.Running;
@@ -1134,7 +1135,7 @@ namespace SphereStudio.Forms
             UpdateControls();
         }
 
-        private async void debugger_Paused(object sender, PausedEventArgs e)
+        private void debugger_Paused(object sender, PausedEventArgs e)
         {
             if (_isFirstDebugStop)
             {
@@ -1150,11 +1151,6 @@ namespace SphereStudio.Forms
                 view.ActiveLine = Debugger.LineNumber;
                 if (e.Reason == PauseReason.Exception)
                     view.ErrorLine = Debugger.LineNumber;
-            }
-            else
-            {
-                // if no source is available, step through.
-                await Debugger.StepOut();
             }
             if (!Debugger.Running)
                 Activate();

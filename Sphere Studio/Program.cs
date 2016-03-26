@@ -17,7 +17,7 @@ namespace SphereStudio
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var form = new IDEForm();
+            var form = new MainWindow();
 
             // check for and open files dragged onto it.
             foreach (string s in args)

@@ -25,10 +25,10 @@ namespace SphereStudio.ScriptEditor
         private bool _highlightLine = true;
         private int _lineMarginWidth = -1;
         private PluginMain _main;
-        private QuickFindBox _quickFinder;
+        private QuickFind _quickFind;
         private bool _useAutoComplete;
 
-        // save scripts as UTF-8 without a byte order mark.
+        // avoid an automatic byte-order mark being added to saved scripts.
         private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
 
         public ScriptEditView(PluginMain main)
@@ -41,11 +41,11 @@ namespace SphereStudio.ScriptEditor
             Icon = Icon.FromHandle(Resources.ScriptIcon.GetHicon());
 
             _main = main;
-            _quickFinder = new QuickFindBox(this, _codeBox);
+            _quickFind = new QuickFind(this, _codeBox);
 
             _codeBox.Dock = DockStyle.Fill;
             _codeBox.Styles[Style.Default].Font = "Consolas";
-            _codeBox.Styles[Style.Default].SizeF = 10.25F;
+            _codeBox.Styles[Style.Default].Size = 11;
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;
@@ -75,13 +75,13 @@ namespace SphereStudio.ScriptEditor
             switch (keyData)
             {
                 case Keys.Escape:
-                    if (_quickFinder.Visible) {
-                        _quickFinder.Close();
+                    if (_quickFind.Visible) {
+                        _quickFind.Close();
                         return true;
                     }
                     break;
                 case Keys.F3:
-                    _quickFinder.FindNext();
+                    _quickFind.FindNext();
                     return true;
                 case Keys.Control | Keys.A:
                     if (!_codeBox.ContainsFocus)
@@ -89,10 +89,10 @@ namespace SphereStudio.ScriptEditor
                     _codeBox.SelectAll();
                     return true;
                 case Keys.Control | Keys.F:
-                    _quickFinder.Open();
+                    _quickFind.Open();
                     return true;
                 case Keys.Control | Keys.H:
-                    _quickFinder.Open(true);
+                    _quickFind.Open(true);
                     return true;
             }
 
