@@ -45,7 +45,7 @@ namespace SphereStudio.ScriptEditor
 
             _codeBox.Dock = DockStyle.Fill;
             _codeBox.Styles[Style.Default].Font = "Consolas";
-            _codeBox.Styles[Style.Default].Size = 11;
+            _codeBox.Styles[Style.Default].SizeF = 10.25F;
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;

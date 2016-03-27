@@ -7,16 +7,12 @@ using System.Windows.Forms;
 
 namespace SphereStudio.Plugins
 {
-    public class PluginMain : IPluginMain, IFileOpener
+    public class PluginMain : IPluginMain
     {
         public string Name { get; } = "Sound Test";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Listen to sounds from your game while you work!";
         public string Version { get; } = "1.2.2";
-
-        public string FileTypeName { get; private set; }
-        public Bitmap FileIcon { get; private set; }
-        public string[] FileExtensions { get; private set; }
 
         private SoundPicker _soundPicker;
 
@@ -25,15 +21,6 @@ namespace SphereStudio.Plugins
             _soundPicker = new SoundPicker(this);
             _soundPicker.WatchProject(PluginManager.Core.Project);
             _soundPicker.Refresh();
-
-            FileTypeName = "Audio File";
-            FileIcon = Properties.Resources.Icon;
-            FileExtensions = new[]
-            {
-                "mp3", "ogg", "flac",  // compressed audio formats
-                "mod", "it", "s3d",    // tracker formats
-                "wav"                  // uncompressed/PCM formats
-            };
 
             PluginManager.Register(this, _soundPicker, "Sound Test");
 
@@ -50,17 +37,6 @@ namespace SphereStudio.Plugins
             PluginManager.Core.TestGame -= IDE_TestGame;
             PluginManager.Core.LoadProject -= IDE_LoadProject;
             PluginManager.Core.UnloadProject -= IDE_UnloadProject;
-        }
-
-        public DocumentView New()
-        {
-            throw new NotSupportedException();
-        }
-
-        public DocumentView Open(string fileName)
-        {
-            _soundPicker.PlayFile(fileName);
-            return null;
         }
 
         private void IDE_LoadProject(object sender, EventArgs e) =>

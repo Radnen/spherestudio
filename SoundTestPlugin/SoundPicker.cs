@@ -13,7 +13,7 @@ using Sphere.Plugins.Views;
 
 namespace SphereStudio.Plugins
 {
-    partial class SoundPicker : UserControl, IDockPane, IStyleable
+    partial class SoundPicker : UserControl, IDockPane, IFileOpener, IStyleable
     {
         private readonly string[] _fileTypes = new[] 
         {
@@ -41,6 +41,13 @@ namespace SphereStudio.Plugins
         {
             InitializeComponent();
 
+            FileExtensions = new[]
+            {
+                "mp3", "ogg", "flac",  // compressed audio formats
+                "mod", "it", "s3d",    // tracker formats
+                "wav"                  // uncompressed/PCM formats
+            };
+
             _playIcons.ColorDepth = ColorDepth.Depth32Bit;
             _playIcons.Images.Add("play", Properties.Resources.play_tool);
             _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
@@ -63,6 +70,15 @@ namespace SphereStudio.Plugins
         public DockHint DockHint => DockHint.Right;
         public Bitmap DockIcon => Properties.Resources.Icon;
 
+        public string FileTypeName => "Audio File";
+        public Bitmap FileIcon => Properties.Resources.Icon;
+        public string[] FileExtensions { get; private set; }
+
+        public DocumentView Open(string fileName)
+        {
+            PlayFile(fileName);
+            return null;
+        }
 
         private void fileWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
