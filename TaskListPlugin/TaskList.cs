@@ -51,7 +51,7 @@ namespace SphereStudio.Plugins
 
         public bool ShowInViewMenu => true;
         public Control Control => this;
-        public DockHint DockHint => DockHint.Right;
+        public DockHint DockHint => DockHint.Left;
         public Bitmap DockIcon => Properties.Resources.lightbulb;
 
         private void AddTaskItem_Click(object sender, EventArgs e)

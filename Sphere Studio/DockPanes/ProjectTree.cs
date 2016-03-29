@@ -44,7 +44,7 @@ namespace SphereStudio.DockPanes
 
         public bool ShowInViewMenu => true;
         public Control Control => this;
-        public DockHint DockHint => DockHint.Right;
+        public DockHint DockHint => DockHint.Left;
         public Bitmap DockIcon => Resources.SphereEditor;
 
         protected override void OnPaint(PaintEventArgs e)
