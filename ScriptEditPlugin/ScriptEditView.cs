@@ -172,7 +172,7 @@ namespace SphereStudio.ScriptEditor
 
         public override string[] FileExtensions
         {
-            get { return new[] { "js", "ts", "coffee" }; }
+            get { return new[] { "js", "ts", "coffee", "json" }; }
         }
 
         public override bool ReadOnly
@@ -361,6 +361,7 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
             _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
             _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
+            _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
             _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
             _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
             _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.DimGray;
@@ -430,7 +431,7 @@ namespace SphereStudio.ScriptEditor
             // line number margin.  dynamically resized as content changes.
             _codeBox.Margins[1].Type = MarginType.Number;
             _codeBox.Margins[1].Mask = 0x0;
-            _codeBox.Styles[Style.LineNumber].ForeColor = Color.DimGray;
+            _codeBox.Styles[Style.LineNumber].ForeColor = Color.DarkCyan;
             _codeBox.Styles[Style.LineNumber].BackColor = Color.White;
 
             // code folding margin

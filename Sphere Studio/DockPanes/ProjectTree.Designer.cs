@@ -51,7 +51,7 @@
             // ProjectTreeView
             // 
             this.ProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProjectTreeView.ItemHeight = 20;
+            this.ProjectTreeView.ItemHeight = 19;
             this.ProjectTreeView.LabelEdit = true;
             this.ProjectTreeView.Location = new System.Drawing.Point(0, 27);
             this.ProjectTreeView.Name = "ProjectTreeView";
