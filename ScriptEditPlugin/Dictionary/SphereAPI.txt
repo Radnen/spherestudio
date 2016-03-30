@@ -248,10 +248,13 @@ SetDefaultMapScript
 SetDefaultPersonScript
 SetDelayScript
 SetFrameRate
+SetLayerHeight
 SetLayerMask
 SetLayerReflective
 SetLayerRenderer
+SetLayerSize
 SetLayerVisible
+SetLayerWidth
 SetMapEngineFrameRate
 SetMaxFrameSkips
 SetMousePosition
