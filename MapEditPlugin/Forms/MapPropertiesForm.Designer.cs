@@ -148,7 +148,7 @@
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(75, 23);
             this.OkayButton.TabIndex = 11;
-            this.OkayButton.Text = "Okay";
+            this.OkayButton.Text = "&Save";
             this.OkayButton.UseVisualStyleBackColor = true;
             this.OkayButton.Click += new System.EventHandler(this.OkayButton_Click);
             // 
@@ -195,7 +195,7 @@
             this.LeaveTab.Location = new System.Drawing.Point(4, 22);
             this.LeaveTab.Name = "LeaveTab";
             this.LeaveTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LeaveTab.Size = new System.Drawing.Size(450, 0);
+            this.LeaveTab.Size = new System.Drawing.Size(590, 0);
             this.LeaveTab.TabIndex = 1;
             this.LeaveTab.Text = "On Leave Map";
             this.LeaveTab.UseVisualStyleBackColor = true;
@@ -204,7 +204,7 @@
             // 
             this.LeaveNorth.Location = new System.Drawing.Point(4, 22);
             this.LeaveNorth.Name = "LeaveNorth";
-            this.LeaveNorth.Size = new System.Drawing.Size(450, 0);
+            this.LeaveNorth.Size = new System.Drawing.Size(590, 0);
             this.LeaveNorth.TabIndex = 2;
             this.LeaveNorth.Text = "Leave North";
             this.LeaveNorth.UseVisualStyleBackColor = true;
@@ -213,7 +213,7 @@
             // 
             this.LeaveEast.Location = new System.Drawing.Point(4, 22);
             this.LeaveEast.Name = "LeaveEast";
-            this.LeaveEast.Size = new System.Drawing.Size(450, 0);
+            this.LeaveEast.Size = new System.Drawing.Size(590, 0);
             this.LeaveEast.TabIndex = 3;
             this.LeaveEast.Text = "Leave East";
             this.LeaveEast.UseVisualStyleBackColor = true;
@@ -222,7 +222,7 @@
             // 
             this.LeaveSouth.Location = new System.Drawing.Point(4, 22);
             this.LeaveSouth.Name = "LeaveSouth";
-            this.LeaveSouth.Size = new System.Drawing.Size(450, 0);
+            this.LeaveSouth.Size = new System.Drawing.Size(590, 0);
             this.LeaveSouth.TabIndex = 4;
             this.LeaveSouth.Text = "Leave South";
             this.LeaveSouth.UseVisualStyleBackColor = true;
@@ -231,7 +231,7 @@
             // 
             this.LeaveWest.Location = new System.Drawing.Point(4, 22);
             this.LeaveWest.Name = "LeaveWest";
-            this.LeaveWest.Size = new System.Drawing.Size(450, 0);
+            this.LeaveWest.Size = new System.Drawing.Size(590, 0);
             this.LeaveWest.TabIndex = 5;
             this.LeaveWest.Text = "Leave West";
             this.LeaveWest.UseVisualStyleBackColor = true;
@@ -386,6 +386,7 @@
             this.LayerHeightBox.Size = new System.Drawing.Size(48, 20);
             this.LayerHeightBox.TabIndex = 10;
             this.LayerHeightBox.Text = "15";
+            this.LayerHeightBox.TextChanged += new System.EventHandler(this.TileWidthBox_TextChanged);
             this.LayerHeightBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // XLabel2
@@ -406,6 +407,7 @@
             this.LayerWidthBox.Size = new System.Drawing.Size(48, 20);
             this.LayerWidthBox.TabIndex = 9;
             this.LayerWidthBox.Text = "20";
+            this.LayerWidthBox.TextChanged += new System.EventHandler(this.TileWidthBox_TextChanged);
             this.LayerWidthBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             // 
             // LayerSizeLabel

@@ -44,16 +44,16 @@ namespace SphereStudio.Plugins.Forms
             int tw = 0, th = 0;
             int lw = 0, lh = 0;
 
-            if (string.IsNullOrWhiteSpace(TileWidthBox.Text))
+            if (!string.IsNullOrWhiteSpace(TileWidthBox.Text))
                 tw = int.Parse(TileWidthBox.Text);
 
-            if (string.IsNullOrWhiteSpace(TileHeightBox.Text))
+            if (!string.IsNullOrWhiteSpace(TileHeightBox.Text))
                 th = int.Parse(TileHeightBox.Text);
 
-            if (string.IsNullOrWhiteSpace(LayerWidthBox.Text))
+            if (!string.IsNullOrWhiteSpace(LayerWidthBox.Text))
                 lw = int.Parse(LayerWidthBox.Text);
 
-            if (string.IsNullOrWhiteSpace(LayerHeightBox.Text))
+            if (!string.IsNullOrWhiteSpace(LayerHeightBox.Text))
                 lh = int.Parse(LayerHeightBox.Text);
 
             OkayButton.Enabled = (tw != 0 && th != 0 && lw != 0 && lh != 0);
@@ -102,16 +102,16 @@ namespace SphereStudio.Plugins.Forms
             Map.WrapAround = RepeatMapCheckBox.Checked;
             short tw = 0, th = 0, lw = 0, lh = 0;
 
-            if (string.IsNullOrWhiteSpace(TileWidthBox.Text))
+            if (!string.IsNullOrWhiteSpace(TileWidthBox.Text))
                 tw = short.Parse(TileWidthBox.Text);
 
-            if (string.IsNullOrWhiteSpace(TileHeightBox.Text))
+            if (!string.IsNullOrWhiteSpace(TileHeightBox.Text))
                 th = short.Parse(TileHeightBox.Text);
 
-            if (string.IsNullOrWhiteSpace(LayerWidthBox.Text))
+            if (!string.IsNullOrWhiteSpace(LayerWidthBox.Text))
                 lw = short.Parse(LayerWidthBox.Text);
 
-            if (string.IsNullOrWhiteSpace(LayerHeightBox.Text))
+            if (!string.IsNullOrWhiteSpace(LayerHeightBox.Text))
                 lh = short.Parse(LayerHeightBox.Text);
 
             if (tw != Map.Tileset.TileWidth || th != Map.Tileset.TileHeight)
