@@ -221,6 +221,11 @@ namespace SphereStudio.ScriptEditor
                 const string header = "/**\n* Script: Untitled.js\n* Written by: {0}\n* Updated: {1}\n**/";
                 _codeBox.Text = string.Format(header, author, DateTime.Today.ToShortDateString());
             }
+
+            _codeBox.Lexer = Lexer.Cpp;
+            InitializeHighlighting();
+            InitializeFolding();
+
             _codeBox.EmptyUndoBuffer();
             _codeBox.SetSavePoint();
             return true;

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Core.Editor;
+using System.IO;
 
 namespace SphereStudio.Forms
 {
@@ -55,6 +56,11 @@ namespace SphereStudio.Forms
                 HeightBox.Text = _project.ScreenHeight.ToString();
                 ResoComboBox.SelectedIndex = 0;
             }
+
+            BuildDirTextBox.Enabled = !_project.BackCompatible;
+            CompilerComboBox.Enabled = !_project.BackCompatible;
+            UpgradeButton.Visible = _project.BackCompatible;
+            CompatModeLabel.Visible = _project.BackCompatible;
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -116,6 +122,20 @@ namespace SphereStudio.Forms
         {
             ResoLabel.Visible = ResoComboBox.Visible = WidthBox.Visible = HeightBox.Visible =
                 CompilerComboBox.Text == "Vanilla";
+        }
+
+        private void UpgradeButton_Click(object sender, EventArgs e)
+        {
+            File.Delete(Path.Combine(Path.GetDirectoryName(_project.FileName), "game.sgm"));
+            _project.BackCompatible = false;
+            _project.BuildPath = "./";
+            _project.Compiler = "Vanilla";
+            BuildDirTextBox.Enabled = true;
+            CompilerComboBox.Enabled = true;
+            BuildDirTextBox.Text = _project.BuildPath;
+            CompilerComboBox.Text = _project.Compiler;
+            UpgradeButton.Visible = false;
+            CompatModeLabel.Visible = false;
         }
     }
 }

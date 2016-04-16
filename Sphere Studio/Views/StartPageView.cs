@@ -119,18 +119,30 @@ namespace SphereStudio.Views
                     continue;
                 var baseDir = new DirectoryInfo(path);
                 var fileInfos = baseDir.GetFiles("*.ssproj", SearchOption.AllDirectories);
+                var ssprojDirs = from fi in fileInfos
+                                 select fi.DirectoryName + @"\";
                 foreach (var fileInfo in fileInfos)
                 {
                     var dirPath = Path.GetDirectoryName(fileInfo.FullName);
                     int img = CheckForIcon(dirPath);
                     Project proj = Project.Open(fileInfo.FullName);
-                    if (proj != null)
-                    {
-                        ListViewItem item = new ListViewItem(proj.Name, img) { Tag = fileInfo.FullName };
-                        item.SubItems.Add(proj.Author);
-                        item.SubItems.Add(fileInfo.FullName);
-                        GameFolders.Items.Add(item);
-                    }
+                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = fileInfo.FullName };
+                    item.SubItems.Add(proj.Author);
+                    item.SubItems.Add(fileInfo.FullName);
+                    GameFolders.Items.Add(item);
+                }
+                var sgmFileInfos = from fi in baseDir.GetFiles("game.sgm", SearchOption.AllDirectories)
+                                   where !ssprojDirs.Any(x => fi.FullName.StartsWith(x))
+                                   select fi;
+                foreach (var fileInfo in sgmFileInfos)
+                {
+                    var dirPath = Path.GetDirectoryName(fileInfo.FullName);
+                    int img = CheckForIcon(dirPath);
+                    Project proj = Project.Open(fileInfo.FullName);
+                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = fileInfo.FullName };
+                    item.SubItems.Add(proj.Author);
+                    item.SubItems.Add(fileInfo.FullName);
+                    GameFolders.Items.Add(item);
                 }
             }
             GameFolders.EndUpdate();

@@ -52,7 +52,9 @@ namespace SphereStudio
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
 
-            return new Project(fileName);
+            return Path.GetFileName(fileName).ToUpperInvariant() == "GAME.SGM"
+                ? Project.FromSgm(fileName)
+                : new Project(fileName);
         }
 
         /// <summary>
@@ -68,6 +70,7 @@ namespace SphereStudio
             var rootPath = Path.GetDirectoryName(fileName);
             Project project = new Project(Path.Combine(rootPath, "game.ssproj"))
             {
+                BackCompatible = true,
                 Name = "Untitled",
                 Author = "Author Unknown",
                 Summary = "",
@@ -140,7 +143,12 @@ namespace SphereStudio
         /// </summary>
         public string BuildPath
         {
-            get { return _ssproj.GetString("buildDir", "dist/"); }
+            get
+            {
+                return !BackCompatible
+                    ? _ssproj.GetString("buildDir", "dist/")
+                    : "./";
+            }
             set
             {
                 value = string.IsNullOrWhiteSpace(value) ? "./" : value;
@@ -156,7 +164,7 @@ namespace SphereStudio
         /// </summary>
         public string Compiler
         {
-            get { return _ssproj.GetString("compiler", "Vanilla"); }
+            get { return !BackCompatible ? _ssproj.GetString("compiler", "Vanilla") : "Vanilla"; }
             set { _ssproj.SetValue("compiler", value); }
         }
 
@@ -215,6 +223,12 @@ namespace SphereStudio
             set { _ssproj.SetValue("screenHeight", value); }
         }
 
+        public bool BackCompatible
+        {
+            get { return _ssproj.GetBoolean("backCompatible", false); }
+            set { _ssproj.SetValue("backCompatible", value); }
+        }
+
         /// <summary>
         /// Saves any changes made to the project.
         /// </summary>
@@ -222,6 +236,19 @@ namespace SphereStudio
         {
             User.SaveAs(Path.ChangeExtension(FileName, ".ssuser"));
             _ssproj.SaveAs(FileName);
+            if (BackCompatible)
+            {
+                string fileName = Path.Combine(Path.GetDirectoryName(FileName), "game.sgm");
+                using (var writer = new StreamWriter(fileName, false, new UTF8Encoding(false)))
+                {
+                    writer.WriteLine(string.Format("name={0}", Name));
+                    writer.WriteLine(string.Format("author={0}", Author));
+                    writer.WriteLine(string.Format("description={0}", Summary));
+                    writer.WriteLine(string.Format("script={0}", MainScript));
+                    writer.WriteLine(string.Format("screen_width={0}", ScreenWidth));
+                    writer.WriteLine(string.Format("screen_height={0}", ScreenHeight));
+                }
+            }
         }
 
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()

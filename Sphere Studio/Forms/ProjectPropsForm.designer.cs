@@ -53,6 +53,8 @@
             this.CompilerComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.ButtonPanel = new System.Windows.Forms.Panel();
+            this.UpgradeButton = new System.Windows.Forms.Button();
+            this.CompatModeLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.GeneralPage.SuspendLayout();
             this.BuildPage.SuspendLayout();
@@ -161,7 +163,7 @@
             this.tabControl1.Location = new System.Drawing.Point(14, 38);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(424, 449);
+            this.tabControl1.Size = new System.Drawing.Size(424, 444);
             this.tabControl1.TabIndex = 1;
             // 
             // GeneralPage
@@ -181,7 +183,7 @@
             this.GeneralPage.Location = new System.Drawing.Point(4, 24);
             this.GeneralPage.Name = "GeneralPage";
             this.GeneralPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralPage.Size = new System.Drawing.Size(416, 421);
+            this.GeneralPage.Size = new System.Drawing.Size(416, 416);
             this.GeneralPage.TabIndex = 0;
             this.GeneralPage.Text = "General";
             this.GeneralPage.UseVisualStyleBackColor = true;
@@ -263,7 +265,7 @@
             this.BuildPage.Location = new System.Drawing.Point(4, 24);
             this.BuildPage.Name = "BuildPage";
             this.BuildPage.Padding = new System.Windows.Forms.Padding(3);
-            this.BuildPage.Size = new System.Drawing.Size(416, 421);
+            this.BuildPage.Size = new System.Drawing.Size(416, 416);
             this.BuildPage.TabIndex = 1;
             this.BuildPage.Text = "Build";
             this.BuildPage.UseVisualStyleBackColor = true;
@@ -334,13 +336,37 @@
             // 
             // ButtonPanel
             // 
+            this.ButtonPanel.Controls.Add(this.UpgradeButton);
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Controls.Add(this.OKButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonPanel.Location = new System.Drawing.Point(0, 502);
+            this.ButtonPanel.Location = new System.Drawing.Point(0, 533);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(452, 38);
             this.ButtonPanel.TabIndex = 2;
+            // 
+            // UpgradeButton
+            // 
+            this.UpgradeButton.Location = new System.Drawing.Point(12, 7);
+            this.UpgradeButton.Name = "UpgradeButton";
+            this.UpgradeButton.Size = new System.Drawing.Size(75, 25);
+            this.UpgradeButton.TabIndex = 2;
+            this.UpgradeButton.Text = "&Upgrade";
+            this.UpgradeButton.UseVisualStyleBackColor = true;
+            this.UpgradeButton.Visible = false;
+            this.UpgradeButton.Click += new System.EventHandler(this.UpgradeButton_Click);
+            // 
+            // CompatModeLabel
+            // 
+            this.CompatModeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CompatModeLabel.Location = new System.Drawing.Point(14, 490);
+            this.CompatModeLabel.Name = "CompatModeLabel";
+            this.CompatModeLabel.Size = new System.Drawing.Size(420, 33);
+            this.CompatModeLabel.TabIndex = 7;
+            this.CompatModeLabel.Text = "This project is in Sphere 1.x backwards compatibility mode.  To upgrade it and en" +
+    "able all Sphere Studio features, click Upgrade.  This cannot be undone.";
+            this.CompatModeLabel.Visible = false;
             // 
             // ProjectPropsForm
             // 
@@ -348,7 +374,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(452, 540);
+            this.ClientSize = new System.Drawing.Size(452, 571);
+            this.Controls.Add(this.CompatModeLabel);
             this.Controls.Add(this.ButtonPanel);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.editorLabel1);
@@ -398,5 +425,7 @@
         private System.Windows.Forms.TextBox HeightBox;
         private System.Windows.Forms.TextBox WidthBox;
         private System.Windows.Forms.Label ResoLabel;
+        private System.Windows.Forms.Button UpgradeButton;
+        private System.Windows.Forms.Label CompatModeLabel;
     }
 }

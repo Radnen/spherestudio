@@ -226,25 +226,9 @@ namespace SphereStudio
         /// <param name="usePluginWarning">Whether to show a warning if required plugins are missing.</param>
         public void OpenProject(string fileName, bool usePluginWarning = true)
         {
-            if (string.IsNullOrEmpty(fileName)) return;
-
-            // check if we're upgrading a legacy game
-            if (Path.GetFileName(fileName).ToUpperInvariant() == "GAME.SGM")
-            {
-                DialogResult answer = MessageBox.Show(
-                    "This is a Sphere 1.x game manifest file (game.sgm).  If you continue, a Sphere Studio project file (.ssproj) will be created in its place and the manifest file will be deleted.\n\nAre you sure?",
-                    "New Project from game.sgm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (answer == DialogResult.Yes)
-                {
-                    Project np = SphereStudio.Project.FromSgm(fileName);
-                    np.Save();
-                    File.Delete(fileName);
-                    OpenProject(np.FileName, false);
-                }
+            if (string.IsNullOrEmpty(fileName))
                 return;
-            }
 
-            // otherwise, open the project as usual
             Project pj = SphereStudio.Project.Open(fileName);
             IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
             ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
