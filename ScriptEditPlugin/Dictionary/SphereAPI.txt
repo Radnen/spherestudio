@@ -14,17 +14,18 @@ Group
 Image
 IOSocket
 KevFile
-ListeningSocket
 Logger
 Mixer
 RNG
 RawFile
+Server
 ShaderProgram
 Shape
 Sound
 SoundStream
 Spriteset
 Surface
+Transform
 Vertex
 WindowStyle
 
@@ -36,7 +37,6 @@ ApplyColorMask
 AreKeysLeft
 AreZonesAt
 Assert
-Async
 AttachCamera
 AttachInput
 AttachPlayerInput
@@ -68,6 +68,7 @@ DestroyPerson
 DetachCamera
 DetachInput
 DetachPlayerInput
+DispatchScript
 DoEvents
 DoesFileExist
 DoesPersonExist
