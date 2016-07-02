@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Sphere Studio IDE")]
 
-[assembly: AssemblyDescription("A modern Sphere development environment written in C# for .NET 4.5 or higher.\r\n\r\n"+
+[assembly: AssemblyDescription("A modern Sphere game development environment programmed in C# for .NET v4.6 and later.\r\n\r\n"+
     "Special Thanks:\r\n\r\n"+
     "Developers:\r\n"+
     "Andrew 'Radnen' Helenius\r\n"+
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2016 Spherical")]
+[assembly: AssemblyCopyright("© 2013-2016 Spherical")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
