@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio</RootNamespace>
     <AssemblyName>Sphere Studio</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Sphere Studio.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>

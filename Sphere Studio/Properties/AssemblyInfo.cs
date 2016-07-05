@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Sphere Studio IDE")]
 
-[assembly: AssemblyDescription("A modern Sphere game development environment programmed in C# for .NET v4.6 and later.\r\n\r\n"+
+[assembly: AssemblyDescription("A modern Sphere game development environment programmed in C# for .NET v4.5 and later.\r\n\r\n"+
     "Special Thanks:\r\n\r\n"+
     "Developers:\r\n"+
     "Andrew 'Radnen' Helenius\r\n"+
