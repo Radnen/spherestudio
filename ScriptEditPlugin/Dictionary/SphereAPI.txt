@@ -5,29 +5,31 @@
 # the names of Sphere API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
-ByteArray
+system
+console
+fs
+kb
+mouse
+screen
+ssj
+
 Color
-ColorMatrix
-FileStream
 Font
-Group
 Image
-IOSocket
-KevFile
-Logger
+Key
 Mixer
+MouseKey
 RNG
-RawFile
 Server
-ShaderProgram
+Shader
 Shape
+ShapeGroup
+ShapeType
+Socket
 Sound
 SoundStream
-Spriteset
 Surface
 Transform
-Vertex
-WindowStyle
 
 Abort
 AddTrigger
