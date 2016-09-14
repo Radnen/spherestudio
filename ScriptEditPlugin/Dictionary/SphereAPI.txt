@@ -8,7 +8,7 @@
 system
 console
 fs
-kb
+keyboard
 mouse
 screen
 ssj
@@ -16,6 +16,7 @@ ssj
 Color
 Font
 Image
+Joystick
 Key
 Mixer
 MouseKey
@@ -29,6 +30,8 @@ Socket
 Sound
 SoundStream
 Surface
+TextDecoder
+TextEncoder
 Transform
 
 Abort

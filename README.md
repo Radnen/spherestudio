@@ -1,5 +1,5 @@
-Sphere Studio v1.2
-==================
+Sphere Studio
+=============
 
 Sphere Studio is a powerful .NET-based integrated development environment for
 Sphere game development with an interface inspired by Visual Studio.  It sports
@@ -26,7 +26,7 @@ latest release from GitHub here:
 
 - <https://github.com/Radnen/spherestudio/releases>
 
-*note:* .NET 4.5.2 or later is required to run Sphere Studio.  On modern Windows
+*note:* .NET 4.5 or later is required to run Sphere Studio.  On modern Windows
 systems this is usually included, but if not, the latest framework can be
 downloaded from Microsoft by
 [clicking here](https://www.microsoft.com/en-us/download/details.aspx?id=49981).
