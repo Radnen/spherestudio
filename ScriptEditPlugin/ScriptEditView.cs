@@ -369,13 +369,13 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
             _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
             _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.DimGray;
+            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Gray;
             _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.SteelBlue;
-            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkRed;
+            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.Teal;
             _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
             _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
             _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
-            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DarkCyan;
+            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DimGray;
 
             // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
             // so this unfortunately isn't done for us.
