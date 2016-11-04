@@ -7,20 +7,20 @@
 
 system
 console
-fs
 keyboard
 mouse
 screen
 
 Color
+Dispatch
 Font
+FS
 Image
 Joystick
 Key
 Mixer
 MouseKey
 RNG
-SSJ
 Server
 Shader
 Shape
@@ -30,6 +30,8 @@ Socket
 Sound
 SoundStream
 Surface
+TextDecoder
+TextEncoder
 Transform
 
 Abort
@@ -184,6 +186,7 @@ GrabImage
 GrabSurface
 GradientCircle
 GradientRectangle
+GradientTriangle
 HashByteArray
 HashRawFile
 IgnorePersonObstructions
