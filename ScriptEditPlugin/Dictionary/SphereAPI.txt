@@ -7,8 +7,6 @@
 
 system
 console
-keyboard
-mouse
 screen
 
 Color
@@ -18,13 +16,15 @@ FS
 Image
 Joystick
 Key
+Keyboard
 Mixer
+Model
+Mouse
 MouseKey
 RNG
 Server
 Shader
 Shape
-ShapeGroup
 ShapeType
 Socket
 Sound
