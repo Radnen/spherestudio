@@ -358,6 +358,8 @@ namespace SphereStudio.ScriptEditor
 
         private void InitializeHighlighting()
         {
+            _codeBox.SetProperty("lexer.cpp.backquoted.strings", "1");
+
             // define colors for syntax highlighting.  the colors below were chosen to be very
             // similar to the Sphere 1.x editor.
             _codeBox.Styles[Style.BraceLight].BackColor = Color.Pink;
@@ -374,6 +376,7 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Styles[Style.Cpp.String].ForeColor = Color.Teal;
             _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
             _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+            _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.DarkOrchid;
             _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
             _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DimGray;
 
