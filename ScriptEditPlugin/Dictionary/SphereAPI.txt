@@ -1,18 +1,18 @@
-﻿# Sphere API keyword dictionary for Sphere Studio
-# (c) 2016 Spherical
+﻿# Sphere API dictionary for Sphere Studio
+# (c) 2016-2017 Spherical
 
 # this file is used by the Sphere Studio default script editor to highlight
 # the names of Sphere API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
-system
 console
 screen
 
 Color
 Dispatch
-Font
 FS
+FileStream
+Font
 Image
 Joystick
 Key
@@ -29,6 +29,7 @@ ShapeType
 Socket
 Sound
 SoundStream
+Sphere
 Surface
 TextDecoder
 TextEncoder
