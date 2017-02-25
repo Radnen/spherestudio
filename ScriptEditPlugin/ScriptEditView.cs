@@ -172,7 +172,7 @@ namespace SphereStudio.ScriptEditor
 
         public override string[] FileExtensions
         {
-            get { return new[] { "js", "ts", "coffee", "json" }; }
+            get { return new[] { "js", "mjs", "ts", "json" }; }
         }
 
         public override bool ReadOnly
