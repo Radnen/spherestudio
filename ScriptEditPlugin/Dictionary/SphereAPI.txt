@@ -13,7 +13,6 @@ Dispatch
 FS
 FileStream
 Font
-Image
 Joystick
 Key
 Keyboard
@@ -33,6 +32,7 @@ Sphere
 Surface
 TextDecoder
 TextEncoder
+Texture
 Transform
 
 Abort
