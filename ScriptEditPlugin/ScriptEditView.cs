@@ -382,7 +382,7 @@ namespace SphereStudio.ScriptEditor
 
             // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
             // so this unfortunately isn't done for us.
-            _codeBox.SetKeywords(0, "as async await break case catch class const continue debugger default delete do else enum export extends false finally for from function get if implements import in instanceof interface let of new null package private protected public return set static super switch this throw true try typeof var void while with yield");
+            _codeBox.SetKeywords(0, "as async await break case catch class const continue declare debugger default delete do else enum export extends false finally for from function get if implements import in instanceof interface let of namespace new null package private protected public return set static super switch symbol this throw true try type typeof var void while with yield");
             _codeBox.SetKeywords(1, "arguments eval exports global module require undefined Infinity NaN"
                 + " Array ArrayBuffer Boolean DataView Date Error EvalError Float32Array Float64Array Function Int8Array Int16Array Int32Array JSON Map Math Number Object Promise Proxy RangeError ReferenceError Reflect RegExp Set String Symbol SyntaxError TypeError Uint8Array Uint8ClampedArray Uint16Array Uint32Array URIError WeakMap WeakSet"
                 + " decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
