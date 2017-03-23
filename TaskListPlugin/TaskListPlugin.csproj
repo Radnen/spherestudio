@@ -83,6 +83,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Resources\resultset_down.png" />
   </ItemGroup>
   <ItemGroup>
