@@ -63,16 +63,15 @@ namespace Sphere.Core
         /// </summary>
         /// <param name="fileName">The filename of the transpiled target file.</param>
         /// <param name="lineNumber">A line number in the transpiled code.</param>
-        /// <returns>The corresponding line number in the original source file.</returns>
+        /// <returns>The corresponding line number in the original source code.</returns>
         public int LineInSource(string fileName, int lineNumber)
         {
             if (!(this.sourceMaps.ContainsKey(fileName)))
                 return lineNumber;
 
-            var q = from map in sourceMaps.Values
-                    from entry in map.ParsedMappings
-                    where entry.GeneratedSourcePosition.ZeroBasedLineNumber == lineNumber - 1
-                    select entry;
+            var q = from item in sourceMaps[fileName].ParsedMappings
+                    where item.GeneratedSourcePosition.ZeroBasedLineNumber == lineNumber - 1
+                    select item;
             var mapping = q.FirstOrDefault();
             if (mapping == null)
                 return lineNumber;
@@ -83,17 +82,16 @@ namespace Sphere.Core
         /// Maps a source line number back to its line number in the transpiled code.
         /// </summary>
         /// <param name="fileName">The filename of the transpiled target file.</param>
-        /// <param name="lineNumber">A line number in the original source file.</param>
+        /// <param name="lineNumber">A line number in the original source code.</param>
         /// <returns>The corresponding line number in the transpiled code.</returns>
         public int LineInTarget(string fileName, int lineNumber)
         {
             if (!(this.sourceMaps.ContainsKey(fileName)))
                 return lineNumber;
 
-            var q = from map in sourceMaps.Values
-                    from entry in map.ParsedMappings
-                    where entry.OriginalSourcePosition.ZeroBasedLineNumber == lineNumber - 1
-                    select entry;
+            var q = from item in sourceMaps[fileName].ParsedMappings
+                    where item.OriginalSourcePosition.ZeroBasedLineNumber == lineNumber - 1
+                    select item;
             var mapping = q.FirstOrDefault();
             if (mapping == null)
                 return lineNumber;
