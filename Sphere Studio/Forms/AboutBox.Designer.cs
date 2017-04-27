@@ -140,7 +140,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPlatform.Location = new System.Drawing.Point(371, 35);
             this.labelPlatform.Name = "labelPlatform";
-            this.labelPlatform.Size = new System.Drawing.Size(94, 58);
+            this.labelPlatform.Size = new System.Drawing.Size(120, 58);
             this.labelPlatform.TabIndex = 26;
             this.labelPlatform.Text = "Platform";
             this.labelPlatform.TextAlign = System.Drawing.ContentAlignment.TopRight;

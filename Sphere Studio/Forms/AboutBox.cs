@@ -14,16 +14,29 @@ namespace SphereStudio.Forms
             this.labelProductName.Text = string.Format("{0} {1}", AssemblyProduct, AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = "By: " + AssemblyCompany;
-            Version os = Environment.OSVersion.Version;
-            string windowsVersion = os.Major == 5 && os.Minor == 1 ? "XP"
-                : os.Major == 6 && os.Minor == 0 ? "Vista"
-                : os.Major == 6 && os.Minor == 1 ? "7"
-                : os.Major == 6 && os.Minor == 2 ? "8"
-                : os.Major == 6 && os.Minor == 3 ? "8.1"
-                : os.Major == 10 && os.Minor == 0 ? "10"
-                : string.Format("{0}.{1}", os.Major, os.Minor);
+            var os = Environment.OSVersion;
+            var windowsVersion = os.Version.Major == 5 && os.Version.Minor == 1 ? "XP"
+                : os.Version.Major == 6 && os.Version.Minor == 0 ? "Vista"
+                : os.Version.Major == 6 && os.Version.Minor == 1 ? "7"
+                : os.Version.Major == 6 && os.Version.Minor == 2 ? "8"
+                : os.Version.Major == 6 && os.Version.Minor == 3 ? "8.1"
+                : os.Version.Major == 10 && os.Version.Minor == 0 ? "10"
+                : string.Format("{0}.{1}", os.Version.Major, os.Version.Minor);
+            string updateName;
+            if (os.Version.Major == 10 && os.Version.Minor == 0)
+            {
+                updateName = os.Version.Build == 10240 ? "RTM"
+                    : os.Version.Build == 10586 ? "November Update"
+                    : os.Version.Build == 14393 ? "Anniversary Update"
+                    : os.Version.Build == 15063 ? "Creators Update"
+                    : string.Format("{0}.{1}.{2}", os.Version.Major, os.Version.Minor, os.Version.Build);
+            }
+            else
+            {
+                updateName = os.ServicePack;
+            }
             this.labelPlatform.Text = string.Format("Windows\x2122 {0}\n{1}",
-                windowsVersion, Environment.Is64BitProcess ? "x64" : "x86");
+                windowsVersion, updateName);
             this.textBoxDescription.Text = AssemblyDescription;
         }
 
