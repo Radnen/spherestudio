@@ -22,7 +22,7 @@ namespace SphereStudio.Forms
                 : os.Version.Major == 6 && os.Version.Minor == 3 ? "8.1"
                 : os.Version.Major == 10 && os.Version.Minor == 0 ? "10"
                 : string.Format("{0}.{1}", os.Version.Major, os.Version.Minor);
-            string updateName;
+            string updateName = os.ServicePack;
             if (os.Version.Major == 10 && os.Version.Minor == 0)
             {
                 updateName = os.Version.Build == 10240 ? "RTM"
@@ -30,10 +30,6 @@ namespace SphereStudio.Forms
                     : os.Version.Build == 14393 ? "Anniversary Update"
                     : os.Version.Build == 15063 ? "Creators Update"
                     : string.Format("{0}.{1}.{2}", os.Version.Major, os.Version.Minor, os.Version.Build);
-            }
-            else
-            {
-                updateName = os.ServicePack;
             }
             this.labelPlatform.Text = string.Format("Windows\x2122 {0}\n{1}",
                 windowsVersion, updateName);

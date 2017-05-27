@@ -21,6 +21,7 @@ Model
 Mouse
 MouseKey
 RNG
+Sample
 Server
 Shader
 Shape
@@ -61,6 +62,8 @@ CreateByteArray
 CreateByteArrayFromString
 CreateColor
 CreateColorMatrix
+CreateSound
+CreateSoundEffect
 CreateStringFromByteArray
 CreateStringFromCode
 CreateSurface
@@ -216,6 +219,7 @@ LoadAnimation
 LoadFont
 LoadImage
 LoadSound
+LoadSoundEffect
 LoadSpriteset
 LoadSurface
 LoadWindowStyle
@@ -470,6 +474,8 @@ SCRIPT_ON_LEAVE_MAP_EAST
 SCRIPT_ON_LEAVE_MAP_NORTH
 SCRIPT_ON_LEAVE_MAP_SOUTH
 SCRIPT_ON_LEAVE_MAP_WEST
+SE_MULTIPLE
+SE_SINGLE
 SHAPE_AUTO
 SHAPE_LINE_LIST
 SHAPE_POINT_LIST
