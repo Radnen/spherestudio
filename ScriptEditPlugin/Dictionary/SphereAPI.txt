@@ -5,12 +5,12 @@
 # the names of Sphere API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
-console
 screen
 
 Color
 Dispatch
 FS
+FileOp
 FileStream
 Font
 Joystick
@@ -21,6 +21,7 @@ Model
 Mouse
 MouseKey
 RNG
+SSJ
 Sample
 Server
 Shader
@@ -47,6 +48,7 @@ Assert
 AttachCamera
 AttachInput
 AttachPlayerInput
+BezierCurve
 BindJoystickButton
 BindKey
 BlendColors
@@ -69,8 +71,8 @@ CreateStringFromCode
 CreateSurface
 CreateDirectory
 CreatePerson
+CreateSpriteset
 CreateStringFromByteArray
-DebugPrint
 DeflateByteArray
 Delay
 DestroyPerson
@@ -85,9 +87,11 @@ EvaluateScript
 EvaluateSystemScript
 ExecuteGame
 ExecuteTrigger
+ExecuteZoneScript
 ExecuteZones
 Exit
 ExitMapEngine
+FilledComplex
 FlipScreen
 FollowPerson
 GarbageCollect
@@ -110,6 +114,7 @@ GetGameList
 GetGameManifest
 GetInputPerson
 GetJoystickAxis
+GetLayerAngle
 GetLayerHeight
 GetLayerMask
 GetLayerWidth
@@ -189,6 +194,8 @@ GetZoneY
 GrabImage
 GrabSurface
 GradientCircle
+GradientComplex
+GradientLine
 GradientRectangle
 GradientTriangle
 HashByteArray
@@ -231,6 +238,7 @@ OpenFile
 OpenLog
 OpenRawFile
 OutlinedCircle
+OutlinedComplex
 OutlinedRectangle
 OutlinedRoundRectangle
 QueuePersonCommand
@@ -260,10 +268,13 @@ SetDefaultMapScript
 SetDefaultPersonScript
 SetDelayScript
 SetFrameRate
+SetLayerAngle
 SetLayerHeight
 SetLayerMask
 SetLayerReflective
 SetLayerRenderer
+SetLayerScaleFactorX
+SetLayerScaleFactorY
 SetLayerSize
 SetLayerVisible
 SetLayerWidth
