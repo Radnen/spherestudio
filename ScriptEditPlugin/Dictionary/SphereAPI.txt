@@ -21,7 +21,7 @@ Model
 Mouse
 MouseKey
 RNG
-SSJ
+SSj
 Sample
 Server
 Shader

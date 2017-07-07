@@ -162,10 +162,20 @@ namespace SphereStudio
 
             var starter = PluginManager.Get<IDebugStarter>(project.User.Engine);
             string outPath = await Build(project);
-            if (outPath != null)
-                return starter.Debug(outPath, false, project);
-            else
+            try
+            {
+                if (outPath != null)
+                    return starter.Debug(outPath, false, project);
+                else
+                    return null;
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(
+                    string.Format("An error occurred while starting '{0}'.\n\nexception: \"{1}\"\n{2}", project.Name, exc.Message, exc.StackTrace),
+                    "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
+            }
         }
 
         /// <summary>
@@ -180,7 +190,16 @@ namespace SphereStudio
                 string outPath = await Build(project);
                 if (outPath != null)
                 {
-                    starter.Start(outPath, false);
+                    try
+                    {
+                        starter.Start(outPath, false);
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(
+                            string.Format("An error occurred while starting '{0}'.\n\nexception: \"{1}\"\n{2}", project.Name, exc.Message, exc.StackTrace),
+                            "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else
@@ -188,9 +207,7 @@ namespace SphereStudio
                 MessageBox.Show(
                     string.Format("Unable to test '{0}'.\n\nEither no engines are installed, or all engine plugins are disabled.  Open Configuration Manager and check your plugins.", project.Name),
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
-
         }
     }
 }
