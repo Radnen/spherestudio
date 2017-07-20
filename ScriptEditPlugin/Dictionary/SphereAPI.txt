@@ -13,6 +13,7 @@ FS
 FileOp
 FileStream
 Font
+IndexList
 Joystick
 Key
 Keyboard
@@ -36,6 +37,7 @@ TextDecoder
 TextEncoder
 Texture
 Transform
+VertexList
 
 Abort
 AddTrigger
@@ -64,15 +66,14 @@ CreateByteArray
 CreateByteArrayFromString
 CreateColor
 CreateColorMatrix
+CreateDirectory
 CreateSound
+CreatePerson
 CreateSoundEffect
+CreateSpriteset
 CreateStringFromByteArray
 CreateStringFromCode
 CreateSurface
-CreateDirectory
-CreatePerson
-CreateSpriteset
-CreateStringFromByteArray
 DeflateByteArray
 Delay
 DestroyPerson
@@ -245,6 +246,7 @@ QueuePersonCommand
 QueuePersonScript
 Point
 PointSeries
+Polygon
 Print
 Rectangle
 RemoveDirectory
