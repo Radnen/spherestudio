@@ -24,7 +24,6 @@ namespace SphereStudio
         private static uint _unsavedID = 1;
         
         private DockContent _content;
-        private MainWindow _ide;
         private string _tabText;
         
         /// <summary>
@@ -43,7 +42,6 @@ namespace SphereStudio
             
             _tabText = fileName != null ? Path.GetFileName(fileName)
                 : string.Format("Untitled{0}", _unsavedID++);
-            _ide = ide;
             _content = new DockContent();
             _content.FormClosing += on_FormClosing;
             _content.FormClosed += on_FormClosed;
@@ -323,12 +321,13 @@ namespace SphereStudio
             if (FileName == null) return;
             ScriptView view = View as ScriptView;
             Core.Project.SetBreakpoints(FileName, view.Breakpoints);
-            if (_ide.Debugger != null)
+            var debugger = Program.Form.Debugger;
+            if (Program.Form.Debugger != null)
             {
                 if (e.Active)
-                    await _ide.Debugger.SetBreakpoint(FileName, e.LineNumber);
+                    await debugger.SetBreakpoint(FileName, e.LineNumber);
                 else
-                    await _ide.Debugger.ClearBreakpoint(FileName, e.LineNumber);
+                    await debugger.ClearBreakpoint(FileName, e.LineNumber);
             }
         }
 

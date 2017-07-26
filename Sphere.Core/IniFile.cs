@@ -9,32 +9,32 @@ using System.Threading.Tasks;
 namespace Sphere.Core
 {
     /// <summary>
-    /// Represents an .ini format settings file.
+    /// Represents an INI format settings file.
     /// </summary>
     public class IniFile : IDisposable
     {
-        private string _filepath;
-        private Dictionary<string, Dictionary<string, string>> _sections;
+        private string m_fileName;
+        private Dictionary<string, Dictionary<string, string>> m_sections;
 
         /// <summary>
         /// Constructs an IniFile object referencing the specified .ini file.
         /// </summary>
-        /// <param name="filepath">The fully qualified .ini file path.</param>
+        /// <param name="fileName">The fully qualified .ini file path.</param>
         /// <param name="autoSave">
         /// Whether to save the file automatically after a value is written. If this is false,
         /// Save() must be called to persist the changes.
         /// </param>
-        public IniFile(string filepath, bool autoSave = true)
+        public IniFile(string fileName, bool autoSave = true)
         {
-            _filepath = filepath;
+            m_fileName = fileName;
             AutoSave = autoSave;
 
-            _sections = new Dictionary<string, Dictionary<string, string>>();
-            _sections.Add("", new Dictionary<string, string>());
-            Dictionary<string, string> section = _sections[""];
-            if (File.Exists(_filepath))
+            m_sections = new Dictionary<string, Dictionary<string, string>>();
+            m_sections.Add("", new Dictionary<string, string>());
+            Dictionary<string, string> section = m_sections[""];
+            if (File.Exists(m_fileName))
             {
-                using (StreamReader file = File.OpenText(_filepath))
+                using (StreamReader file = File.OpenText(m_fileName))
                 {
                     Regex sectionRegex = new Regex(@"^\[(.*)\]$");
                     Regex itemRegex = new Regex(@"^(.*)=(.*)$");
@@ -46,9 +46,9 @@ namespace Sphere.Core
                         if (isSection.Success)
                         {
                             string name = isSection.Groups[1].Value;
-                            if (!(_sections.ContainsKey(name)))
-                                _sections.Add(name, new Dictionary<string, string>());
-                            section = _sections[name];
+                            if (!(m_sections.ContainsKey(name)))
+                                m_sections.Add(name, new Dictionary<string, string>());
+                            section = m_sections[name];
                         }
                         else if (isItem.Success)
                         {
@@ -84,36 +84,19 @@ namespace Sphere.Core
         /// <returns>The value read from the INI file, or `defValue` if the key doesn't exist.</returns>
         public string Read(string section, string key, string defValue)
         {
-            if (_sections.ContainsKey(section) && _sections[section].ContainsKey(key))
-                return _sections[section][key];
+            if (m_sections.ContainsKey(section) && m_sections[section].ContainsKey(key))
+                return m_sections[section][key];
             else
                 return defValue;
         }
         
-        /// <summary>
-        /// Writes a string to the INI file.
-        /// </summary>
-        /// <param name="section">The [section] to write.</param>
-        /// <param name="key">The name of the setting to write.</param>
-        /// <param name="value">The value of the setting.</param>
-        public void Write(string section, string key, string value)
-        {
-            value = value ?? "";
-            if (!_sections.ContainsKey(section))
-            {
-                _sections.Add(section, new Dictionary<string, string>());
-            }
-            _sections[section][key] = value;
-            if (AutoSave) Save();
-        }
-
         /// <summary>
         /// Saves the current values to the INI file.
         /// </summary>
         /// <returns>true if the save succeeded, otherwise false.</returns>
         public bool Save()
         {
-            return SaveAs(_filepath);
+            return SaveAs(m_fileName);
         }
 
         /// <summary>
@@ -128,20 +111,20 @@ namespace Sphere.Core
                 Directory.CreateDirectory(Path.GetDirectoryName(filepath));
                 using (StreamWriter file = new StreamWriter(filepath))
                 {
-                    var sections = from section in _sections
+                    var sections = from section in m_sections
                                    where section.Value.Count > 0
                                    select section.Key;
                     foreach (string name in sections)
                     {
                         file.WriteLine(string.Format("[{0}]", name));
-                        var itemNames = from itemName in _sections[name].Keys
+                        var itemNames = from itemName in m_sections[name].Keys
                                         orderby itemName ascending
                                         select itemName;
                         foreach (string itemName in itemNames)
                         {
                             file.WriteLine(string.Format("{0}={1}",
                                 itemName,
-                                _sections[name][itemName]));
+                                m_sections[name][itemName]));
                         }
                         file.WriteLine();
                     }
@@ -151,6 +134,26 @@ namespace Sphere.Core
             catch (IOException)
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Writes a string to the INI file.
+        /// </summary>
+        /// <param name="section">The [section] to write.</param>
+        /// <param name="key">The name of the setting to write.</param>
+        /// <param name="value">The value of the setting.</param>
+        public void Write(string section, string key, string value)
+        {
+            value = value ?? "";
+            if (!m_sections.ContainsKey(section))
+            {
+                m_sections.Add(section, new Dictionary<string, string>());
+            }
+            m_sections[section][key] = value;
+            if (AutoSave)
+            {
+                Save();
             }
         }
     }
