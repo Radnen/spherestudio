@@ -12,7 +12,7 @@ namespace SphereStudio.Plugins
         public string Name { get; } = "Sound Test";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Listen to sounds from your game while you work!";
-        public string Version { get; } = "1.3 a0";
+        public string Version { get; } = "X.X.X";
 
         private SoundPicker _soundPicker;
 

@@ -364,8 +364,8 @@
             this.CompatModeLabel.Name = "CompatModeLabel";
             this.CompatModeLabel.Size = new System.Drawing.Size(420, 33);
             this.CompatModeLabel.TabIndex = 7;
-            this.CompatModeLabel.Text = "This project is in Sphere 1.x backwards compatibility mode.  To upgrade it and en" +
-    "able all Sphere Studio features, click Upgrade.  This cannot be undone.";
+            this.CompatModeLabel.Text = "This project is in Sphere 1.x backward compatibility mode.  To upgrade it and ena" +
+    "ble all Sphere Studio features, click Upgrade.  This cannot be undone.";
             this.CompatModeLabel.Visible = false;
             // 
             // ProjectPropsForm

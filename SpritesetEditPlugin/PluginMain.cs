@@ -13,7 +13,7 @@ namespace SphereStudio.Plugins
         public string Name { get; } = "Spriteset Editor";
         public string Author { get; } = "Spherical";
         public string Description { get; } = "Sphere Studio default spriteset editor";
-        public string Version { get; } = "1.3 a0";
+        public string Version { get; } = "X.X.X";
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }

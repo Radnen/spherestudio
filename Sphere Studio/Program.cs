@@ -10,7 +10,7 @@ namespace SphereStudio
     {
         public const string Name = "Sphere Studio";
         public const string Author = "Spherical Community";
-        public const string Version = "1.3 a0";
+        public const string Version = "X.X.X";
         public const string Copyright = "2013-2017 S.E.G.";
         
         /// <summary>
@@ -24,10 +24,11 @@ namespace SphereStudio
 
             var form = new MainWindow();
 
-            // check for and open files dragged onto it.
+            // check for and open files dragged onto the app.
             foreach (string s in args)
             {
-                if (!File.Exists(s)) continue;
+                if (!File.Exists(s))
+                    continue;
                 form.OpenFile(s);
             }
 
