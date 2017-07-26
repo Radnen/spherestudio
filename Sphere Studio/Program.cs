@@ -11,20 +11,6 @@ namespace SphereStudio
     /// </summary>
     static class Program
     {
-        public const string Name = "Sphere Studio";
-        public const string Author = "Spherical Community";
-        public const string Version = "X.X.X";
-        public const string Copyright = "2013-2017 S.E.G.";
-
-        public const string Credits = "A modern game development environment for Sphere, coded in C# and sporting many useful features like debugging, support for compilers, plugins, and more.\r\n\r\n"
-                                    + "DEVELOPERS\r\n"
-                                    + "  Andrew Helenius ('Radnen')\r\n"
-                                    + "  Bruce Pascoe ('Fat Cerberus')\r\n\r\n"
-                                    + "TESTERS\r\n"
-                                    + "  DaVince\r\n"
-                                    + "  Eggbert\r\n"
-                                    + "  Flying Jester";
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

@@ -125,7 +125,7 @@
             // AuthorColumn
             // 
             this.AuthorColumn.Text = "Author";
-            this.AuthorColumn.Width = 91;
+            this.AuthorColumn.Width = 100;
             // 
             // VersionColumn
             // 
@@ -135,7 +135,7 @@
             // DescriptionColumn
             // 
             this.DescriptionColumn.Text = "Description";
-            this.DescriptionColumn.Width = 300;
+            this.DescriptionColumn.Width = 291;
             // 
             // pluginHeader
             // 

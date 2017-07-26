@@ -1,18 +1,17 @@
-﻿using Sphere.Plugins;
+﻿using System;
+
+using Sphere.Core;
+using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
         public string Name { get; } = "Sound Test";
-        public string Author { get; } = "Spherical";
         public string Description { get; } = "Listen to sounds from your game while you work!";
-        public string Version { get; } = "X.X.X";
+        public string Version { get; } = Versioning.Version;
+        public string Author { get; } = Versioning.Author;
 
         private SoundPicker _soundPicker;
 

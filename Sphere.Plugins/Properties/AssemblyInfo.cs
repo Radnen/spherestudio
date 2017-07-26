@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Sphere Studio Plugin Layer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Spherical")]
+[assembly: AssemblyCompany("Spherical Community")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2015-2016 Spherical")]
+[assembly: AssemblyCopyright("© 2013-2017 Spherical Community")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

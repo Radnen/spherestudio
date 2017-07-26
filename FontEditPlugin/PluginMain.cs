@@ -3,14 +3,16 @@ using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
 using System.Drawing;
 
+using Sphere.Core;
+
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get; } = "Font Importer";
-        public string Author { get; } = "Spherical";
         public string Description { get; } = "Convert TrueType fonts to Sphere .rfn format.";
-        public string Version { get; } = "X.X.X";
+        public string Version { get; } = Versioning.Version;
+        public string Author { get; } = Versioning.Author;
 
         public string FileTypeName { get; } = "Sphere Font";
         public string[] FileExtensions { get; } = new[] { "rfn" };

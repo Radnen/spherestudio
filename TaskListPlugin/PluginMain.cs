@@ -1,16 +1,18 @@
-﻿using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using System;
+﻿using System;
 using System.Windows.Forms;
+
+using Sphere.Core;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
         public string Name { get; } = "Task List";
-        public string Author { get; } = "Spherical";
         public string Description { get; } = "Keep track of game development tasks.";
-        public string Version { get; } = "X.X.X";
+        public string Version { get; } = Versioning.Version;
+        public string Author { get; } = Versioning.Author;
 
         private TaskList _list;
 

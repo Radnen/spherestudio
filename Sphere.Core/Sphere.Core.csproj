@@ -108,6 +108,7 @@
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\FastBitmap.cs" />
     <Compile Include="Utility\Line.cs" />
+    <Compile Include="Versioning.cs" />
     <Compile Include="Windowstyle.cs" />
     <Compile Include="Zone.cs" />
   </ItemGroup>

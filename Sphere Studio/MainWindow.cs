@@ -4,21 +4,22 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
+using Sphere.Core;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
+using Sphere.Plugins.Interfaces;
+using Sphere.Plugins.Views;
 using SphereStudio.DockPanes;
 using SphereStudio.Forms;
 using SphereStudio.Properties;
 using SphereStudio.SettingsPages;
 using SphereStudio.Views;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
-using System.Text;
 
 namespace SphereStudio
 {
@@ -42,7 +43,7 @@ namespace SphereStudio
             InitializeComponent();
             InitializeDocking();
 
-            Text = string.Format("{0} {1} {2}", Program.Name, Program.Version,
+            Text = string.Format("{0} {1} {2}", Versioning.Name, Versioning.Version,
                 Environment.Is64BitProcess ? "x64" : "x86");
             toolNew.DropDown = menuNew.DropDown;
 
@@ -272,7 +273,7 @@ namespace SphereStudio
             }
 
             Text = string.Format("{3} - {0} {1} {2}",
-                Program.Name, Program.Version, Environment.Is64BitProcess ? "x64" : "x86",
+                Versioning.Name, Versioning.Version, Environment.Is64BitProcess ? "x64" : "x86",
                 Project.Name);
 
             UpdateEngineList();
@@ -917,7 +918,7 @@ namespace SphereStudio
 
             // all clear!
             Core.Project = null;
-            Text = string.Format("{0} {1} {2}", Program.Name, Program.Version,
+            Text = string.Format("{0} {1} {2}", Versioning.Name, Versioning.Version,
                 Environment.Is64BitProcess ? "x64" : "x86");
             UpdateEngineList();
             UpdateControls();

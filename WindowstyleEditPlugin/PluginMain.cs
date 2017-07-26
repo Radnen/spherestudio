@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
+﻿using System.Drawing;
 
-using Sphere.Core.Editor;
+using Sphere.Core;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 using Sphere.Plugins.Views;
@@ -17,9 +10,9 @@ namespace SphereStudio.Plugins
     public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get; } = "Windowstyle Editor";
-        public string Author { get; } = "Spherical";
         public string Description { get; } = "Sphere Studio default windowstyle editor";
-        public string Version { get; } = "X.X.X";
+        public string Version { get; } = Versioning.Version;
+        public string Author { get; } = Versioning.Author;
 
         public string FileTypeName { get; } = "Sphere Windowstyle";
         public string[] FileExtensions { get; private set; } = new[] { "rws" };

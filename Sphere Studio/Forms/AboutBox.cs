@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
+using Sphere.Core;
+
 namespace SphereStudio.Forms
 {
     partial class AboutBox : Form
@@ -11,10 +13,10 @@ namespace SphereStudio.Forms
         {
             InitializeComponent();
 
-            this.Text = String.Format("About {0}", Program.Name);
-            this.labelProductName.Text = string.Format("{0} {1}", Program.Name, Program.Version);
-            this.labelCopyright.Text = string.Format("\xA9 {0}", Program.Copyright);
-            this.labelCompanyName.Text = "By: " + Program.Author;
+            this.Text = String.Format("About {0}", Versioning.Name);
+            this.labelProductName.Text = string.Format("{0} {1}", Versioning.Name, Versioning.Version);
+            this.labelCopyright.Text = string.Format("\xA9 {0}", Versioning.Copyright);
+            this.labelCompanyName.Text = "By: " + Versioning.Author;
 
             // get the installed Windows version
             var os = Environment.OSVersion;
@@ -37,7 +39,7 @@ namespace SphereStudio.Forms
                     : string.Format("v{0}.{1}.{2}", os.Version.Major, os.Version.Minor, os.Version.Build);
             }
             this.labelPlatform.Text = string.Format("Windows\x2122 {0}\n{1}", windowsVersion, updateName);
-            this.textBoxDescription.Text = Program.Credits;
+            this.textBoxDescription.Text = Versioning.Credits;
         }
 
         private void websiteUrlLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
