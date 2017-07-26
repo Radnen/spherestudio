@@ -53,12 +53,12 @@
             this.NameLabel = new System.Windows.Forms.Label();
             this.AuthorLabel = new System.Windows.Forms.Label();
             this.SizeLabel = new System.Windows.Forms.Label();
-            this.DescTextLabel = new System.Windows.Forms.Label();
-            this.GamesPanel = new System.Windows.Forms.Panel();
-            this.MainSplitter = new System.Windows.Forms.SplitContainer();
-            this.GameProjectLabel = new Sphere.Core.Editor.EditorLabel();
             this.InfoLabel = new Sphere.Core.Editor.EditorLabel();
+            this.DescTextLabel = new System.Windows.Forms.Label();
             this.DescLabel = new Sphere.Core.Editor.EditorLabel();
+            this.GamesPanel = new System.Windows.Forms.Panel();
+            this.GameProjectLabel = new Sphere.Core.Editor.EditorLabel();
+            this.MainSplitter = new System.Windows.Forms.SplitContainer();
             this.ItemContextStrip.SuspendLayout();
             this.InfoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InfoSplitter)).BeginInit();
@@ -93,6 +93,7 @@
             this.GameFolders.Name = "GameFolders";
             this.GameFolders.ShowItemToolTips = true;
             this.GameFolders.Size = new System.Drawing.Size(418, 155);
+            this.GameFolders.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.GameFolders.TabIndex = 0;
             this.GameFolders.TileSize = new System.Drawing.Size(256, 48);
             this.GameFolders.UseCompatibleStateImageBehavior = false;
@@ -323,6 +324,19 @@
             this.SizeLabel.TabIndex = 2;
             this.SizeLabel.Text = "Resolution: ";
             // 
+            // InfoLabel
+            // 
+            this.InfoLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.InfoLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.InfoLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.InfoLabel.ForeColor = System.Drawing.Color.White;
+            this.InfoLabel.Location = new System.Drawing.Point(0, 0);
+            this.InfoLabel.Name = "InfoLabel";
+            this.InfoLabel.Size = new System.Drawing.Size(101, 23);
+            this.InfoLabel.TabIndex = 11;
+            this.InfoLabel.Text = "Game Info";
+            this.InfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // DescTextLabel
             // 
             this.DescTextLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -337,6 +351,19 @@
             this.DescTextLabel.Size = new System.Drawing.Size(311, 103);
             this.DescTextLabel.TabIndex = 4;
             // 
+            // DescLabel
+            // 
+            this.DescLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DescLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DescLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.DescLabel.ForeColor = System.Drawing.Color.White;
+            this.DescLabel.Location = new System.Drawing.Point(0, 0);
+            this.DescLabel.Name = "DescLabel";
+            this.DescLabel.Size = new System.Drawing.Size(319, 23);
+            this.DescLabel.TabIndex = 11;
+            this.DescLabel.Text = "Description";
+            this.DescLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // GamesPanel
             // 
             this.GamesPanel.Controls.Add(this.GameFolders);
@@ -347,6 +374,19 @@
             this.GamesPanel.Name = "GamesPanel";
             this.GamesPanel.Size = new System.Drawing.Size(424, 186);
             this.GamesPanel.TabIndex = 3;
+            // 
+            // GameProjectLabel
+            // 
+            this.GameProjectLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.GameProjectLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.GameProjectLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.GameProjectLabel.ForeColor = System.Drawing.Color.White;
+            this.GameProjectLabel.Location = new System.Drawing.Point(0, 0);
+            this.GameProjectLabel.Name = "GameProjectLabel";
+            this.GameProjectLabel.Size = new System.Drawing.Size(424, 23);
+            this.GameProjectLabel.TabIndex = 1;
+            this.GameProjectLabel.Text = "Game Projects";
+            this.GameProjectLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainSplitter
             // 
@@ -368,53 +408,14 @@
             this.MainSplitter.SplitterDistance = 186;
             this.MainSplitter.TabIndex = 10;
             // 
-            // GameProjectLabel
-            // 
-            this.GameProjectLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.GameProjectLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GameProjectLabel.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.GameProjectLabel.ForeColor = System.Drawing.Color.White;
-            this.GameProjectLabel.Location = new System.Drawing.Point(0, 0);
-            this.GameProjectLabel.Name = "GameProjectLabel";
-            this.GameProjectLabel.Size = new System.Drawing.Size(424, 23);
-            this.GameProjectLabel.TabIndex = 1;
-            this.GameProjectLabel.Text = "Game Projects";
-            this.GameProjectLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // InfoLabel
-            // 
-            this.InfoLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.InfoLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.InfoLabel.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.InfoLabel.ForeColor = System.Drawing.Color.White;
-            this.InfoLabel.Location = new System.Drawing.Point(0, 0);
-            this.InfoLabel.Name = "InfoLabel";
-            this.InfoLabel.Size = new System.Drawing.Size(101, 23);
-            this.InfoLabel.TabIndex = 11;
-            this.InfoLabel.Text = "Game Info";
-            this.InfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // DescLabel
-            // 
-            this.DescLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DescLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DescLabel.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.DescLabel.ForeColor = System.Drawing.Color.White;
-            this.DescLabel.Location = new System.Drawing.Point(0, 0);
-            this.DescLabel.Name = "DescLabel";
-            this.DescLabel.Size = new System.Drawing.Size(319, 23);
-            this.DescLabel.TabIndex = 11;
-            this.DescLabel.Text = "Description";
-            this.DescLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // StartPage
+            // StartPageView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.MainSplitter);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "StartPage";
+            this.Name = "StartPageView";
             this.Size = new System.Drawing.Size(424, 324);
             this.ItemContextStrip.ResumeLayout(false);
             this.InfoPanel.ResumeLayout(false);

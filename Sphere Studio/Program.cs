@@ -6,13 +6,18 @@ using SphereStudio.Forms;
 
 namespace SphereStudio
 {
-    public static class Program
+    static class Program
     {
+        public const string Name = "Sphere Studio";
+        public const string Author = "Spherical Community";
+        public const string Version = "1.3 a0";
+        public const string Copyright = "2013-2017 S.E.G.";
+        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

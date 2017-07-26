@@ -13,8 +13,19 @@ namespace Sphere.Core
     /// </summary>
     public struct CodeLocation
     {
+        /// <summary>
+        /// The file name of the source file.
+        /// </summary>
         public string FileName;
+
+        /// <summary>
+        /// The line number within the code.
+        /// </summary>
         public int    Line;
+
+        /// <summary>
+        /// The column number within the line.
+        /// </summary>
         public int    Column;
     }
     

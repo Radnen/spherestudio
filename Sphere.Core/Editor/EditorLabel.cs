@@ -22,6 +22,9 @@ namespace Sphere.Core.Editor
             Dock = DockStyle.Top;
         }
 
+        /// <summary>
+        /// Ensures the EditorLabel is styled properly upon creation.
+        /// </summary>
         protected override void OnCreateControl()
         {
             base.OnCreateControl();

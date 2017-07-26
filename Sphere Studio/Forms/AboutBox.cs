@@ -10,10 +10,10 @@ namespace SphereStudio.Forms
         public AboutBox()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = string.Format("{0} {1}", AssemblyProduct, AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = "By: " + AssemblyCompany;
+            this.Text = String.Format("About {0}", Program.Name);
+            this.labelProductName.Text = string.Format("{0} {1}", Program.Name, Program.Version);
+            this.labelCopyright.Text = string.Format("\xA9 {0}", Program.Copyright);
+            this.labelCompanyName.Text = "By: " + Program.Author;
             var os = Environment.OSVersion;
             var windowsVersion = os.Version.Major == 5 && os.Version.Minor == 1 ? "XP"
                 : os.Version.Major == 6 && os.Version.Minor == 0 ? "Vista"
@@ -36,34 +36,7 @@ namespace SphereStudio.Forms
             this.textBoxDescription.Text = AssemblyDescription;
         }
 
-        #region Assembly Attribute Accessors
-
-        public string AssemblyTitle
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    if (titleAttribute.Title != "")
-                    {
-                        return titleAttribute.Title;
-                    }
-                }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
-            }
-        }
-
-        public string AssemblyVersion
-        {
-            get
-            {
-                return Application.ProductVersion;
-            }
-        }
-
-        public string AssemblyDescription
+        private string AssemblyDescription
         {
             get
             {
@@ -75,46 +48,6 @@ namespace SphereStudio.Forms
                 return ((AssemblyDescriptionAttribute)attributes[0]).Description;
             }
         }
-
-        public string AssemblyProduct
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyProductAttribute)attributes[0]).Product;
-            }
-        }
-
-        public string AssemblyCopyright
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-            }
-        }
-
-        public string AssemblyCompany
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
-            }
-        }
-        #endregion
 
         private void websiteUrlLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

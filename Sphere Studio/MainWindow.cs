@@ -42,8 +42,7 @@ namespace SphereStudio
             InitializeComponent();
             InitializeDocking();
 
-            Text = string.Format("{0} {1} ({2})", Application.ProductName,
-                Application.ProductVersion,
+            Text = string.Format("{0} {1} {2}", Program.Name, Program.Version,
                 Environment.Is64BitProcess ? "x64" : "x86");
             toolNew.DropDown = menuNew.DropDown;
 
@@ -272,8 +271,8 @@ namespace SphereStudio
                     tab.Activate();
             }
 
-            Text = string.Format("{3} - {0} {1} ({2})", Application.ProductName,
-                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86",
+            Text = string.Format("{3} - {0} {1} {2}",
+                Program.Name, Program.Version, Environment.Is64BitProcess ? "x64" : "x86",
                 Project.Name);
 
             UpdateEngineList();
@@ -918,8 +917,8 @@ namespace SphereStudio
 
             // all clear!
             Core.Project = null;
-            Text = string.Format("{0} {1} ({2})", Application.ProductName,
-                Application.ProductVersion, Environment.Is64BitProcess ? "x64" : "x86");
+            Text = string.Format("{0} {1} {2}", Program.Name, Program.Version,
+                Environment.Is64BitProcess ? "x64" : "x86");
             UpdateEngineList();
             UpdateControls();
             return true;
