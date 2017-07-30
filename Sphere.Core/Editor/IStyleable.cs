@@ -1,14 +1,13 @@
-﻿
-namespace Sphere.Core.Editor
+﻿namespace Sphere.Core.Editor
 {
     /// <summary>
-    /// Defines the interface for styleable IDE controls
+    /// Specifies the interface for a style-aware component.
     /// </summary>
     public interface IStyleable
     {
         /// <summary>
-        /// Applies the current style to the control.
+        /// Sphere Studio calls this to restyle the component.
         /// </summary>
-        void UpdateStyle();
+        void ApplyStyle(UIStyle style);
     }
 }

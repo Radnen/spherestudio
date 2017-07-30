@@ -17,7 +17,6 @@ namespace SphereStudio.Forms
         public ProjectPropsForm(Project someProject, bool editBuild = false)
         {
             InitializeComponent();
-            UpdateStyle();
             _project = someProject;
 
             ActiveControl = NameTextBox;
@@ -28,11 +27,11 @@ namespace SphereStudio.Forms
             }
         }
 
-        public void UpdateStyle()
+        public void ApplyStyle(UIStyle theme)
         {
-            StyleSettings.ApplyStyle(ButtonPanel);
-            StyleSettings.ApplyStyle(OKButton);
-            StyleSettings.ApplyStyle(CloseButton);
+            theme.AsUIElement(ButtonPanel);
+            theme.AsUIElement(OKButton);
+            theme.AsUIElement(CloseButton);
         }
 
         private void ProjectPropsForm_Load(object sender, EventArgs e)

@@ -88,6 +88,7 @@
             // 
             // trackList
             // 
+            this.trackList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.trackList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -120,7 +121,6 @@
             // trackNameLabel
             // 
             this.trackNameLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(32)))), ((int)(((byte)(48)))));
-            this.trackNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.trackNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.trackNameLabel.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.trackNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));

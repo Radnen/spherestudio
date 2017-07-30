@@ -12,10 +12,11 @@ using Sphere.Plugins.Views;
 using SphereStudio.ScriptEditor.Components;
 using SphereStudio.ScriptEditor.Properties;
 using ScintillaNET;
+using Sphere.Core.Editor;
 
 namespace SphereStudio.ScriptEditor
 {
-    public partial class ScriptEditView : ScriptView
+    public partial class ScriptEditView : ScriptView, IStyleable
     {
         private Scintilla _codeBox = new Scintilla();
 
@@ -35,7 +36,6 @@ namespace SphereStudio.ScriptEditor
         {
             InitializeComponent();
 
-            InitializeMargins();
             InitializeAutoComplete();
 
             Icon = Icon.FromHandle(Resources.ScriptIcon.GetHicon());
@@ -43,9 +43,14 @@ namespace SphereStudio.ScriptEditor
             _main = main;
             _quickFind = new QuickFind(this, _codeBox);
 
+            _codeBox.BorderStyle = BorderStyle.None;
             _codeBox.Dock = DockStyle.Fill;
-            _codeBox.Styles[Style.Default].Font = "Consolas";
-            _codeBox.Styles[Style.Default].SizeF = 10.25F;
+            _codeBox.CaretForeColor = Styler.Style.TextColor;
+            _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
+            _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
+            _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
+            _codeBox.Styles[Style.Default].BackColor = Styler.Style.BackColor;
+            _codeBox.StyleClearAll();
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
             _codeBox.KeyDown += codebox_KeyDown;
@@ -56,7 +61,9 @@ namespace SphereStudio.ScriptEditor
             _codeBox.UpdateUI += codeBox_UpdateUI;
             Controls.Add(_codeBox);
 
-            Restyle();
+            InitializeMargins();
+
+            Styler.AutoStyle(this);
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)
@@ -269,7 +276,7 @@ namespace SphereStudio.ScriptEditor
             _codeBox.GotoPosition(_codeBox.Lines[lineNumber - 1].Position);
         }
 
-        public override void Restyle()
+        public void ApplyStyle(UIStyle style)
         {
             _codeBox.TabWidth = _main.Settings.GetInteger("script-spaces", 4);
             _codeBox.IndentWidth = _codeBox.TabWidth;
@@ -287,6 +294,15 @@ namespace SphereStudio.ScriptEditor
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
                 SetFont((Font)converter.ConvertFromString(fontstring));
             }*/
+
+            _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
+            _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
+            _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
+            _codeBox.Styles[Style.Default].BackColor = Styler.Style.BackColor;
+            _codeBox.StyleClearAll();
+            InitializeFolding();
+            InitializeHighlighting();
+            InitializeMargins();
         }
 
         public override void Activate()
@@ -353,7 +369,8 @@ namespace SphereStudio.ScriptEditor
             _codeBox.SetProperty("fold.compact", "1");
             _codeBox.AutomaticFold = AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change;
             _codeBox.SetFoldFlags(FoldFlags.LineAfterContracted);
-            _codeBox.SetFoldMarginColor(true, Color.White);
+            _codeBox.SetFoldMarginColor(true, Styler.Style.BackColor);
+            _codeBox.SetFoldMarginHighlightColor(true, Styler.Style.BackColor);
         }
 
         private void InitializeHighlighting()
@@ -362,23 +379,46 @@ namespace SphereStudio.ScriptEditor
 
             // define colors for syntax highlighting.  the colors below were chosen to be very
             // similar to the Sphere 1.x editor.
-            _codeBox.Styles[Style.BraceLight].BackColor = Color.Pink;
-            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
-            _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
-            _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
-            _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
-            _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
-            _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Gray;
-            _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.SteelBlue;
-            _codeBox.Styles[Style.Cpp.String].ForeColor = Color.Teal;
-            _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
-            _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
-            _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.DarkOrchid;
-            _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
-            _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DimGray;
+            if (Styler.Style.BackColor.GetBrightness() < 0.5)
+            {
+                _codeBox.Styles[Style.BraceLight].BackColor = Color.DimGray;
+                _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
+                _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkSalmon;
+                _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.OliveDrab;
+                _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.OliveDrab;
+                _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.OliveDrab;
+                _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
+                _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.LightSeaGreen;
+                _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkSalmon;
+                _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Plum;
+                _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.SteelBlue;
+                _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkSalmon;
+                _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
+                _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+                _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.DarkOrchid;
+                _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.CornflowerBlue;
+                _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.Khaki;
+            }
+            else
+            {
+                _codeBox.Styles[Style.BraceLight].BackColor = Color.Pink;
+                _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
+                _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
+                _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
+                _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
+                _codeBox.Styles[Style.Cpp.CommentLine].ForeColor = Color.Green;
+                _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
+                _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.DarkMagenta;
+                _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkRed;
+                _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Gray;
+                _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.SteelBlue;
+                _codeBox.Styles[Style.Cpp.String].ForeColor = Color.Teal;
+                _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
+                _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+                _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.DarkOrchid;
+                _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
+                _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DimGray;
+            }
 
             // tell Scintilla about JS keywords.  a generic lexer is used for C-like languages
             // so this unfortunately isn't done for us.
@@ -409,8 +449,8 @@ namespace SphereStudio.ScriptEditor
             // define folding icons.  why this isn't done for us is completely beyond me.
             for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++)
             {
-                _codeBox.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                _codeBox.Markers[i].SetBackColor(SystemColors.ControlDark);
+                _codeBox.Markers[i].SetForeColor(Styler.Style.BackColor);
+                _codeBox.Markers[i].SetBackColor(Styler.Style.TextColor);
             }
             _codeBox.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
             _codeBox.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
@@ -432,15 +472,15 @@ namespace SphereStudio.ScriptEditor
             _codeBox.Markers[1].SetBackColor(Color.Yellow);
             _codeBox.Markers[1].SetForeColor(Color.Black);
             _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
-            _codeBox.Markers[2].SetBackColor(Color.OrangeRed);
+            _codeBox.Markers[2].SetBackColor(Color.FromArgb(96, 48, 48));
             _codeBox.Markers[3].Symbol = MarkerSymbol.Background;  // current line highlight
-            _codeBox.Markers[3].SetBackColor(Color.LightGoldenrodYellow);
+            _codeBox.Markers[3].SetBackColor(Styler.Style.AccentColor);
 
             // line number margin.  dynamically resized as content changes.
             _codeBox.Margins[1].Type = MarginType.Number;
             _codeBox.Margins[1].Mask = 0x0;
-            _codeBox.Styles[Style.LineNumber].ForeColor = Color.DarkCyan;
-            _codeBox.Styles[Style.LineNumber].BackColor = Color.White;
+            _codeBox.Styles[Style.LineNumber].ForeColor = Styler.Style.ToolColor;
+            _codeBox.Styles[Style.LineNumber].BackColor = Styler.Style.BackColor;
 
             // code folding margin
             _codeBox.Margins[2].Type = MarginType.Symbol;

@@ -40,6 +40,7 @@ namespace SphereStudio.Plugins
         public SoundPicker(IPluginMain plugin)
         {
             InitializeComponent();
+            Styler.AutoStyle(this);
 
             FileExtensions = new[]
             {
@@ -109,19 +110,17 @@ namespace SphereStudio.Plugins
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            UpdateStyle();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            UpdateStyle();
         }
 
-        public void UpdateStyle()
+        public void ApplyStyle(UIStyle style)
         {
-            StyleSettings.ApplyStyle(toolbar);
-            StyleSettings.ApplySecondaryStyle(trackList);
+            style.AsUIElement(toolbar);
+            style.AsTextView(trackList);
         }
 
         /// <summary>

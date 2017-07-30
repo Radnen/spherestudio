@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.SettingsPages
@@ -27,11 +28,12 @@ namespace SphereStudio.SettingsPages
             string[] paths = new string[PathList.Items.Count];
             PathList.Items.CopyTo(paths, 0);
 
-            Core.Settings.UIStyle = StylePicker.Text;
+            Core.Settings.StyleName = StylePicker.Text;
             Core.Settings.UseStartPage = UseStartPage.Checked;
             Core.Settings.AutoOpenLastProject = OpenLastProject.Checked;
             Core.Settings.UseScriptHeaders = UseScriptHeader.Checked;
             Core.Settings.ProjectPaths = paths;
+            Core.Settings.Apply();
             return true;
         }
 
@@ -41,12 +43,17 @@ namespace SphereStudio.SettingsPages
             PathList.Items.Clear();
 
             // populate lists, combo boxes, etc.
-            foreach (var item in StyleSettings.Styles)
-                StylePicker.Items.Add(item.Key);
+            var themeNames = from name in PluginManager.GetNames<IStyleProvider>()
+                             let plugin = PluginManager.Get<IStyleProvider>(name)
+                             from theme in plugin.Styles
+                             orderby name + ": " + theme.Name
+                             select name + ": " + theme.Name;
+            foreach (var name in themeNames)
+                StylePicker.Items.Add(name);
             StylePicker.SelectedIndex = 0;
 
             // fill in current settings
-            StylePicker.Text = Core.Settings.UIStyle;
+            StylePicker.Text = Core.Settings.StyleName;
             UseStartPage.Checked = Core.Settings.UseStartPage;
             OpenLastProject.Checked = Core.Settings.AutoOpenLastProject;
             UseScriptHeader.Checked = Core.Settings.UseScriptHeaders;

@@ -16,7 +16,6 @@ namespace SphereStudio.Forms
         public NewProjectForm()
         {
             InitializeComponent();
-            UpdateStyle();
         }
 
         public string RootFolder
@@ -119,11 +118,11 @@ namespace SphereStudio.Forms
             }
         }
 
-        public void UpdateStyle()
+        public void ApplyStyle(UIStyle theme)
         {
-            StyleSettings.ApplyStyle(ButtonPanel);
-            StyleSettings.ApplyStyle(OKButton);
-            StyleSettings.ApplyStyle(CloseButton);
+            theme.AsUIElement(ButtonPanel);
+            theme.AsUIElement(OKButton);
+            theme.AsUIElement(CloseButton);
         }
 
         private void ResoText_Changed(object sender, EventArgs e)

@@ -1,14 +1,16 @@
-﻿using Sphere.Plugins.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Sphere.Core.Editor;
+using Sphere.Plugins.Interfaces;
+
 namespace SphereStudio.Plugins
 {
-    internal partial class TaskList : UserControl, IDockPane
+    internal partial class TaskList : UserControl, IDockPane, IStyleable
     {
         private readonly ImageList _imagelist = new ImageList();
 
@@ -47,6 +49,8 @@ namespace SphereStudio.Plugins
                 EventHandler eh = SetPriorityItem_Click;
                 SetPriorityItem.DropDownItems.Add(s, Properties.Resources.resultset_none, eh);
             }
+
+            Styler.AutoStyle(this);
         }
 
         public bool ShowInViewMenu => true;
@@ -204,6 +208,12 @@ namespace SphereStudio.Plugins
 
             FontStyle style = task.Finished ? FontStyle.Strikeout : FontStyle.Regular;
             e.SubItem.Font = new Font(e.SubItem.Font, style);
+        }
+
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsTextView(ObjectTaskList);
+            style.AsUIElement(toolStrip1);
         }
     }
 }

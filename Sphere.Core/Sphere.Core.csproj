@@ -79,15 +79,14 @@
     </Compile>
     <Compile Include="Editor\HistoryManager.cs" />
     <Compile Include="Editor\IStyleable.cs" />
-    <Compile Include="Editor\StyleSettings.cs" />
     <Compile Include="Editor\StringInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor\StringInputForm.Designer.cs">
       <DependentUpon>StringInputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\Style.cs" />
-    <Compile Include="Editor\StyleGroup.cs" />
+    <Compile Include="Editor\Styler.cs" />
+    <Compile Include="Editor\UIStyle.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Layer.cs" />

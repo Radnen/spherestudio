@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Sphere.Core.Editor;
 using Sphere.Plugins;
 using Sphere.Plugins.Interfaces;
 
 namespace SphereStudio.DockPanes
 {
     [ToolboxItem(false)]
-    partial class BuildConsole : UserControl, IConsole, IDockPane
+    partial class BuildConsole : UserControl, IConsole, IDockPane, IStyleable
     {
         private string output = "";
 
         public BuildConsole()
         {
             InitializeComponent();
+            Styler.AutoStyle(this);
         }
 
         public Control Control { get { return this; } }
@@ -50,6 +45,11 @@ namespace SphereStudio.DockPanes
             {
                 printTimer.Enabled = true;
             }), null);
+        }
+
+        public void ApplyStyle(UIStyle theme)
+        {
+            theme.AsCodeView(textbox);
         }
 
         private void printTimer_Tick(object sender, EventArgs e)

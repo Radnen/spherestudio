@@ -50,6 +50,7 @@
             // 
             // ProjectTreeView
             // 
+            this.ProjectTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProjectTreeView.ItemHeight = 19;
             this.ProjectTreeView.LabelEdit = true;

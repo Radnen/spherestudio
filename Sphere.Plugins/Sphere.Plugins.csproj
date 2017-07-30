@@ -52,6 +52,7 @@
     <Compile Include="Interfaces\IPlugin.cs" />
     <Compile Include="Interfaces\ISettingsPage.cs" />
     <Compile Include="Interfaces\IStarter.cs" />
+    <Compile Include="Interfaces\IStyleProvider.cs" />
     <Compile Include="Views\DocumentView.cs">
       <SubType>UserControl</SubType>
     </Compile>

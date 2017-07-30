@@ -12,6 +12,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using SphereStudio.Forms;
 using SphereStudio.Properties;
 using Sphere.Core.Editor;
+using Sphere.Plugins;
 using Sphere.Plugins.Views;
 
 namespace SphereStudio.Views
@@ -49,13 +50,13 @@ namespace SphereStudio.Views
             GameFolders.SmallImageList = _listIconsSmall;
 
             InitializeView();
+            Styler.AutoStyle(this);
         }
 
         public override bool CanSave { get { return false; } }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            UpdateStyle();
             base.OnPaint(e);
         }
 
@@ -344,14 +345,14 @@ namespace SphereStudio.Views
             _mainEditor.OpenProject((string)_currentItem.Tag);
         }
 
-        public void UpdateStyle()
+        public void ApplyStyle(UIStyle theme)
         {
-            StyleSettings.ApplyStyle(GamesPanel);
-            StyleSettings.ApplyStyle(InfoSplitter.Panel1);
-            StyleSettings.ApplyStyle(InfoSplitter.Panel2);
-            StyleSettings.ApplySecondaryStyle(GamePanel);
-            StyleSettings.ApplySecondaryStyle(DescTextLabel);
-            StyleSettings.ApplySecondaryStyle(GameFolders);
+            theme.AsUIElement(GamesPanel);
+            theme.AsUIElement(InfoSplitter.Panel1);
+            theme.AsUIElement(InfoSplitter.Panel2);
+            theme.AsUIElement(GamePanel);
+            theme.AsUIElement(DescTextLabel);
+            theme.AsTextView(GameFolders);
         }
     }
 }

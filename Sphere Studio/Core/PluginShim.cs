@@ -10,7 +10,7 @@ namespace SphereStudio
 {
     class PluginShim
     {
-        private bool _isEnabled = false;
+        private bool m_isEnabled = false;
 
         public PluginShim(string fileName, string handle)
         {
@@ -37,25 +37,25 @@ namespace SphereStudio
 
         public bool Enabled
         {
-            get { return _isEnabled; }
+            get { return m_isEnabled; }
             set { if (value) Activate(); else Deactivate(); }
         }
 
         public void Activate()
         {
-            if (!_isEnabled)
+            if (!m_isEnabled)
             {
                 ISettings conf = new IniSettings(Core.MainIniFile, Handle);
                 Main.Initialize(conf);
-                _isEnabled = true;
+                m_isEnabled = true;
             }
         }
 
         public void Deactivate()
         {
-            if (_isEnabled)
+            if (m_isEnabled)
             {
-                _isEnabled = false;
+                m_isEnabled = false;
                 Main.ShutDown();
                 PluginManager.UnregisterAll(Main);
             }

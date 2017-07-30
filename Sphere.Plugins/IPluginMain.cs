@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-using Sphere.Plugins.Interfaces;
+﻿using Sphere.Plugins.Interfaces;
 
 namespace Sphere.Plugins
 {

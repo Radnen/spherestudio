@@ -41,17 +41,19 @@ namespace SphereStudio
         public MainWindow()
         {
             InitializeComponent();
+
+            PluginManager.Core = this;
+            PluginManager.Register(null, new DefaultStyles(), "Sphere Studio");
+            PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
+
             InitializeDocking();
+            PluginManager.Register(null, _projectTree, "Project Tree");
 
             Text = string.Format("{0} {1} {2}", Versioning.Name, Versioning.Version,
                 Environment.Is64BitProcess ? "x64" : "x86");
             toolNew.DropDown = menuNew.DropDown;
 
             BuildEngine.Initialize();
-
-            PluginManager.Core = this;
-            PluginManager.Register(null, new SettingsPage(), "Sphere Studio IDE");
-            PluginManager.Register(null, _projectTree, "Project Tree");
             Core.Settings.Apply();
 
             Docking.Show(_projectTree);
@@ -60,6 +62,8 @@ namespace SphereStudio
 
             if (Core.Settings.AutoOpenLastProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
+
+            Styler.AutoStyle(this);
         }
 
         public event EventHandler LoadProject;
@@ -71,7 +75,7 @@ namespace SphereStudio
         public IDock Docking { get { return _dock; } }
         public IProject Project { get { return Core.Project; } }
         public ICoreSettings Settings { get { return Core.Settings; } }
-        
+
         protected bool StartVisible
         {
             // This is kind of hacky, but it beats working with the Weifen Luo controls
@@ -286,18 +290,16 @@ namespace SphereStudio
 
             foreach (DocumentTab tab in _tabs)
                 tab.Restyle();
-            _projectTree.UpdateStyle();
             _dock.Refresh();
-            UpdateStyle();
             UpdateEngineList();
             UpdateControls();
         }
 
-        public void UpdateStyle()
+        public void ApplyStyle(UIStyle style)
         {
-            StyleSettings.ApplyStyle(MainMenuStrip);
-            StyleSettings.ApplyStyle(EditorTools);
-            StyleSettings.ApplyStyle(EditorStatus);
+            style.AsHeading(MainMenuStrip);
+            style.AsUIElement(EditorTools);
+            style.AsHeading(EditorStatus);
             UpdateMenuItems();
         }
 
@@ -847,7 +849,6 @@ namespace SphereStudio
             SuspendLayout();
             _startPage.PopulateGameList();
             UpdateMenuItems();
-            UpdateStyle();
             Invalidate(true);
             ResumeLayout();
         }

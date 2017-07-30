@@ -26,6 +26,7 @@ namespace SphereStudio.DockPanes
         public ProjectTree(MainWindow hostForm)
         {
             InitializeComponent();
+            Styler.AutoStyle(this);
 
             _hostForm = hostForm;
 
@@ -50,7 +51,6 @@ namespace SphereStudio.DockPanes
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            UpdateStyle();
         }
 
         public string ProjectName
@@ -494,9 +494,9 @@ namespace SphereStudio.DockPanes
             Refresh();
         }
 
-        public void UpdateStyle()
+        public void ApplyStyle(UIStyle theme)
         {
-            StyleSettings.ApplySecondaryStyle(ProjectTreeView);
+            theme.AsTextView(ProjectTreeView);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)

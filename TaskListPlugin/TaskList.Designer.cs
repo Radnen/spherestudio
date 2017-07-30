@@ -66,7 +66,7 @@
             this.SetTypeItem,
             this.SetPriorityItem});
             this.TaskListMenuStrip.Name = "TaskListMenuStrip";
-            this.TaskListMenuStrip.Size = new System.Drawing.Size(180, 170);
+            this.TaskListMenuStrip.Size = new System.Drawing.Size(180, 148);
             // 
             // AddTaskItem
             // 
@@ -195,6 +195,7 @@
             this.ObjectTaskList.AllColumns.Add(this.olvColumn1);
             this.ObjectTaskList.AllColumns.Add(this.olvColumn2);
             this.ObjectTaskList.AllColumns.Add(this.olvColumn3);
+            this.ObjectTaskList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ObjectTaskList.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
             this.ObjectTaskList.CheckBoxes = true;
             this.ObjectTaskList.CheckedAspectName = "Finished";
@@ -206,7 +207,6 @@
             this.ObjectTaskList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ObjectTaskList.EmptyListMsg = "\"No Tasks Hooray!\"";
             this.ObjectTaskList.FullRowSelect = true;
-            this.ObjectTaskList.GridLines = true;
             this.ObjectTaskList.GroupWithItemCountFormat = "";
             this.ObjectTaskList.Location = new System.Drawing.Point(0, 23);
             this.ObjectTaskList.Name = "ObjectTaskList";

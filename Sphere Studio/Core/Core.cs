@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
 
-using SphereStudio.Forms;
 using Sphere.Core;
 using Sphere.Core.Editor;
 using Sphere.Plugins;
@@ -226,18 +224,33 @@ namespace SphereStudio
             }
         }
 
-        public string UIStyle
+        public string StyleName
         {
-            get { return GetString("uiStyle", "Dark"); }
+            get { return GetString("uiStyle", "Sphere Studio: Dark"); }
             set { SetValue("uiStyle", value); }
+        }
+
+        public UIStyle UIStyle
+        {
+            get
+            {
+                var styles = from name in PluginManager.GetNames<IStyleProvider>()
+                             let plugin = PluginManager.Get<IStyleProvider>(name)
+                             from style in plugin.Styles
+                             orderby name + ": " + style.Name
+                             select new { Name = name + ": " + style.Name, Style = style };
+                var uiStyle = styles.Where(it => it.Name == StyleName).Select(it => it.Style).FirstOrDefault();
+                return uiStyle;
+            }
         }
 
         public void Apply()
         {
-            StyleSettings.ActiveStyle = UIStyle;
             foreach (var plugin in Core.Plugins)
                 plugin.Value.Enabled = !DisabledPlugins.Contains(plugin.Key);
             PluginManager.Core.Docking.Refresh();
+            if (UIStyle != null)
+                Styler.Style = UIStyle;
         }
     }
 }

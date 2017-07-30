@@ -18,7 +18,7 @@ namespace SphereStudio.ScriptEditor.Components
     /// Implements the Quick Find box (fast Search and Replace).
     /// </summary>
     [ToolboxItem(false)]
-    public partial class QuickFind : UserControl
+    public partial class QuickFind : UserControl, IStyleable
     {
         // some of the logic here may seem a bit hard to follow.  unfortunately most
         // of the spaghetti is necessary, to keep the UI usable.  notes:
@@ -56,12 +56,7 @@ namespace SphereStudio.ScriptEditor.Components
             _fullHeight = Height;
             _codeBox = codeBox;
             _parent = parent;
-            _parent.Resize += parent_Resize;
             _parent.Controls.Add(this);
-
-            StyleSettings.StyleChanged += StyleSettings_StyleChanged;
-            Disposed += (sender, e) => StyleSettings.StyleChanged -= StyleSettings_StyleChanged;
-            ApplyStyle();
         }
 
         /// <summary>
@@ -149,17 +144,17 @@ namespace SphereStudio.ScriptEditor.Components
                 Open();
         }
 
-        private void ApplyStyle()
+        public void ApplyStyle(UIStyle theme)
         {
-            StyleSettings.ApplyStyle(FindButton);
-            StyleSettings.ApplyStyle(ReplaceButton);
-            StyleSettings.ApplyStyle(ReplaceAllButton);
-            StyleSettings.ApplyStyle(FindTextBox);
-            StyleSettings.ApplyStyle(ReplaceTextBox);
-            StyleSettings.ApplyStyle(MatchCaseCheckBox);
-            StyleSettings.ApplyStyle(WholeWordCheckBox);
-            StyleSettings.ApplyStyle(RegexCheckBox);
-            StyleSettings.ApplySecondaryStyle(OptionsPanel);
+            theme.AsUIElement(FindButton);
+            theme.AsUIElement(ReplaceButton);
+            theme.AsUIElement(ReplaceAllButton);
+            theme.AsUIElement(FindTextBox);
+            theme.AsUIElement(ReplaceTextBox);
+            theme.AsUIElement(MatchCaseCheckBox);
+            theme.AsUIElement(WholeWordCheckBox);
+            theme.AsUIElement(RegexCheckBox);
+            theme.AsUIElement(OptionsPanel);
 
             Left = _parent.ClientSize.Width - Width
                 - SystemInformation.VerticalScrollBarWidth
@@ -230,16 +225,6 @@ namespace SphereStudio.ScriptEditor.Components
             MessageBox.Show(this,
                 string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void StyleSettings_StyleChanged(object sender, EventArgs e)
-        {
-            ApplyStyle();
-        }
-
-        private void parent_Resize(object sender, EventArgs e)
-        {
-            ApplyStyle();
         }
 
         private void FindTextBox_TextChanged(object sender, EventArgs e)

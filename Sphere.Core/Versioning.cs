@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sphere.Core
+﻿namespace Sphere.Core
 {
     // note: `const` is resolved at compile time in the referencing assembly.  this is
     //       desirable for built-in plugins to avoid them dynamically adopting the version number
     //       of the Sphere Studio installation they're running against.
-    
+
     /// <summary>
-    /// Provides version information for the Sphere Studio IDE.
+    /// Provides versioning information for Sphere Studio.
     /// </summary>
     public static class Versioning
     {
@@ -21,14 +15,14 @@ namespace Sphere.Core
         public const string Name = "Sphere Studio";
 
         /// <summary>
-        /// The name of the program's author or supporting company.
+        /// The name of the IDE author or supporting company.
         /// </summary>
         public const string Author = "Spherical Community";
 
         /// <summary>
         /// The version number of the IDE.
         /// </summary>
-        public const string Version = "1.3.0";
+        public const string Version = "X.X.X";
 
         /// <summary>
         /// A string indicating the copyright holder and date of copyright.
