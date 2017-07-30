@@ -96,7 +96,8 @@ namespace Sphere.Core.Editor
         /// <param name="target">The .NET Form or Control to style.</param>
         public static void ApplyStyle(Control target)
         {
-            _styles[_activeStyle].ApplyPrimary(target);
+            if (_styles.ContainsKey(_activeStyle))
+                _styles[_activeStyle].ApplyPrimary(target);
         }
 
         /// <summary>
@@ -105,7 +106,8 @@ namespace Sphere.Core.Editor
         /// <param name="target">The .NET Form or Control to style.</param>
         public static void ApplySecondaryStyle(Control target)
         {
-            _styles[_activeStyle].ApplySecondary(target);
+            if (_styles.ContainsKey(_activeStyle))
+                _styles[_activeStyle].ApplySecondary(target);
         }
 
         /// <summary>
