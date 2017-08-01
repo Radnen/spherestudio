@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.ScriptEditor.Components
+﻿namespace SphereStudio.Plugins.Components
 {
     partial class QuickFind
     {
@@ -57,6 +57,7 @@
             // FindButton
             // 
             this.FindButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.FindButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FindButton.Location = new System.Drawing.Point(254, 5);
             this.FindButton.Name = "FindButton";
             this.FindButton.Size = new System.Drawing.Size(50, 25);
@@ -70,9 +71,10 @@
             // 
             this.MatchCaseCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.MatchCaseCheckBox.AutoSize = true;
-            this.MatchCaseCheckBox.Location = new System.Drawing.Point(135, 4);
+            this.MatchCaseCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MatchCaseCheckBox.Location = new System.Drawing.Point(138, 4);
             this.MatchCaseCheckBox.Name = "MatchCaseCheckBox";
-            this.MatchCaseCheckBox.Size = new System.Drawing.Size(51, 19);
+            this.MatchCaseCheckBox.Size = new System.Drawing.Size(48, 19);
             this.MatchCaseCheckBox.TabIndex = 1;
             this.MatchCaseCheckBox.TabStop = false;
             this.MatchCaseCheckBox.Text = "&Case";
@@ -83,9 +85,10 @@
             // 
             this.WholeWordCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.WholeWordCheckBox.AutoSize = true;
-            this.WholeWordCheckBox.Location = new System.Drawing.Point(189, 4);
+            this.WholeWordCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WholeWordCheckBox.Location = new System.Drawing.Point(192, 4);
             this.WholeWordCheckBox.Name = "WholeWordCheckBox";
-            this.WholeWordCheckBox.Size = new System.Drawing.Size(55, 19);
+            this.WholeWordCheckBox.Size = new System.Drawing.Size(52, 19);
             this.WholeWordCheckBox.TabIndex = 2;
             this.WholeWordCheckBox.TabStop = false;
             this.WholeWordCheckBox.Text = "&Word";
@@ -96,9 +99,10 @@
             // 
             this.RegexCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RegexCheckBox.AutoSize = true;
-            this.RegexCheckBox.Location = new System.Drawing.Point(247, 4);
+            this.RegexCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RegexCheckBox.Location = new System.Drawing.Point(250, 4);
             this.RegexCheckBox.Name = "RegexCheckBox";
-            this.RegexCheckBox.Size = new System.Drawing.Size(57, 19);
+            this.RegexCheckBox.Size = new System.Drawing.Size(54, 19);
             this.RegexCheckBox.TabIndex = 3;
             this.RegexCheckBox.TabStop = false;
             this.RegexCheckBox.Text = "Reg&Ex";
@@ -108,6 +112,7 @@
             // ReplaceButton
             // 
             this.ReplaceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ReplaceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ReplaceButton.Location = new System.Drawing.Point(214, 29);
             this.ReplaceButton.Name = "ReplaceButton";
             this.ReplaceButton.Size = new System.Drawing.Size(48, 25);
@@ -132,6 +137,7 @@
             // ReplaceAllButton
             // 
             this.ReplaceAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ReplaceAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ReplaceAllButton.Location = new System.Drawing.Point(261, 29);
             this.ReplaceAllButton.Name = "ReplaceAllButton";
             this.ReplaceAllButton.Size = new System.Drawing.Size(43, 25);
@@ -163,7 +169,7 @@
             this.TitleLabel.TabIndex = 4;
             this.TitleLabel.Text = "Quick Find";
             // 
-            // QuickFindBox
+            // QuickFind
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -175,7 +181,7 @@
             this.Controls.Add(this.FindButton);
             this.Controls.Add(this.FindTextBox);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "QuickFindBox";
+            this.Name = "QuickFind";
             this.Size = new System.Drawing.Size(310, 88);
             this.OptionsPanel.ResumeLayout(false);
             this.OptionsPanel.PerformLayout();

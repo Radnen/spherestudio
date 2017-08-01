@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Utility;
+
+using SphereStudio.Utility;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {

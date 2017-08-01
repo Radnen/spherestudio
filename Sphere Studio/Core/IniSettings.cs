@@ -6,11 +6,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio;
+using SphereStudio.Base;
+using SphereStudio.Ide.Utility;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     class IniSettings : ISettings
     {

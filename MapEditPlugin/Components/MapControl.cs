@@ -4,12 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Core.Utility;
-using Sphere.Plugins;
+
 using SphereStudio.Plugins.Forms;
 using SphereStudio.Plugins.UndoRedo;
+using SphereStudio.Utility;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {

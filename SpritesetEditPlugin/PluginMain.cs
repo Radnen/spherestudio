@@ -2,10 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
 namespace SphereStudio.Plugins
 {

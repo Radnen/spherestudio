@@ -1,15 +1,16 @@
-﻿using Sphere.Core;
-using Sphere.Plugins.EditShims;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
+
+using SphereStudio.UI;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Forms
 {
     partial class ZoneForm : Form
     {
         public Zone Zone { get; private set; }
-        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
+        readonly ScriptEditor _scriptBox = new ScriptEditor();
 
         public ZoneForm()
         {

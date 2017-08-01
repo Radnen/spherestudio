@@ -1,4 +1,4 @@
-﻿using Sphere.Core.Utility;
+﻿using SphereStudio.Utility;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;

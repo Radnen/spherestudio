@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Sphere.Core.Editor;
+
 using SphereStudio.Plugins.Forms;
+using SphereStudio.UI;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -48,7 +49,7 @@ namespace SphereStudio.Plugins.Components
 
         private void RenameLayerMenuItem_Click(object sender, EventArgs e)
         {
-            using (var form = new StringInputForm())
+            using (var form = new StringInputForm("Rename Map Layer"))
             {
                 form.Input = Layers.SelectedItem.Text;
                 if (form.ShowDialog() == DialogResult.OK)

@@ -1,15 +1,16 @@
-﻿using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.UndoRedo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using WeifenLuo.WinFormsUI.Docking;
+
+using SphereStudio.Base;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.UndoRedo;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins
 {

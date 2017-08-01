@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SphereStudio</RootNamespace>
+    <AssemblyName>SphereStudio.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\SphereStudio.Base.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxMin, Version=5.14.5506.26196, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxMin.5.14.5506.26202\lib\net40\AjaxMin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SourcemapToolkit.CallstackDeminifier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=edaffc704fd886c0, processorArchitecture=MSIL">
+      <HintPath>..\packages\SourceMapToolkit.1.1.4\lib\net40\SourcemapToolkit.CallstackDeminifier.dll</HintPath>
+    </Reference>
+    <Reference Include="SourcemapToolkit.SourcemapParser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=edaffc704fd886c0, processorArchitecture=MSIL">
+      <HintPath>..\packages\SourceMapToolkit.1.1.4\lib\net40\SourcemapToolkit.SourcemapParser.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\ColorBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ColorBox.Designer.cs">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ICompiler.cs" />
+    <Compile Include="Base\IConsole.cs" />
+    <Compile Include="Base\ICore.cs" />
+    <Compile Include="Base\IDebugger.cs" />
+    <Compile Include="Base\IDockPane.cs" />
+    <Compile Include="Base\IEditor.cs" />
+    <Compile Include="Base\IFileOpener.cs" />
+    <Compile Include="Base\IPlugin.cs" />
+    <Compile Include="Base\IPluginMain.cs" />
+    <Compile Include="Base\IProject.cs" />
+    <Compile Include="Base\ISettings.cs" />
+    <Compile Include="Base\ISettingsPage.cs" />
+    <Compile Include="Base\IStarter.cs" />
+    <Compile Include="Base\IStyleProvider.cs" />
+    <Compile Include="PluginManager.cs" />
+    <Compile Include="Base\DocumentView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ImageEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ImageEditor.Designer.cs">
+      <DependentUpon>ImageEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ImageView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ScriptEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ScriptEditor.Designer.cs">
+      <DependentUpon>ScriptEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\ScriptView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utility\DeferredFileSystemWatcher.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\DialogHeading.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\SnapPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\HistoryManager.cs" />
+    <Compile Include="UI\IStyleable.cs" />
+    <Compile Include="UI\StringInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\StringInputForm.Designer.cs">
+      <DependentUpon>StringInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Styler.cs" />
+    <Compile Include="UI\UIStyle.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Debugging\SourceMapper.cs" />
+    <Compile Include="Utility\BitmapLoader.cs" />
+    <Compile Include="Utility\BitmapSaver.cs" />
+    <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="Utility\FastBitmap.cs" />
+    <Compile Include="Utility\Line.cs" />
+    <Compile Include="Versioning.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\ColorBox.resx">
+      <DependentUpon>ColorBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DialogHeading.resx">
+      <DependentUpon>DialogHeading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\StringInputForm.resx">
+      <DependentUpon>StringInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ImageEditor.resx">
+      <DependentUpon>ImageEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ScriptEditor.resx">
+      <DependentUpon>ScriptEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Resources\person.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\trigger.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\editbg2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BarImage.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

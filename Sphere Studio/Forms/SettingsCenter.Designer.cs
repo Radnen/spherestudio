@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Forms
+﻿namespace SphereStudio.Ide.Forms
 {
     partial class SettingsCenter
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.HeaderBar = new Sphere.Core.Editor.EditorLabel();
+            this.HeaderBar = new SphereStudio.UI.DialogHeader();
             this.SplitBox = new System.Windows.Forms.SplitContainer();
             this.PageTree = new System.Windows.Forms.TreeView();
             this.ButtonBar = new System.Windows.Forms.Panel();
@@ -43,10 +43,8 @@
             // 
             // HeaderBar
             // 
-            this.HeaderBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.HeaderBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderBar.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.HeaderBar.ForeColor = System.Drawing.Color.White;
             this.HeaderBar.Location = new System.Drawing.Point(0, 0);
             this.HeaderBar.Name = "HeaderBar";
             this.HeaderBar.Size = new System.Drawing.Size(682, 23);
@@ -99,6 +97,7 @@
             // 
             this.ApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ApplyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ApplyButton.Location = new System.Drawing.Point(590, 3);
             this.ApplyButton.Name = "ApplyButton";
             this.ApplyButton.Size = new System.Drawing.Size(80, 25);
@@ -112,6 +111,7 @@
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseButton.Location = new System.Drawing.Point(504, 3);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(80, 25);
@@ -124,6 +124,7 @@
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.OKButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OKButton.Location = new System.Drawing.Point(418, 3);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(80, 25);
@@ -158,7 +159,7 @@
         }
 
         #endregion
-        private Sphere.Core.Editor.EditorLabel HeaderBar;
+        private SphereStudio.UI.DialogHeader HeaderBar;
         private System.Windows.Forms.SplitContainer SplitBox;
         private System.Windows.Forms.TreeView PageTree;
         private System.Windows.Forms.Panel ButtonBar;

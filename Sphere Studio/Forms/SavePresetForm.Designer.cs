@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Forms
+﻿namespace SphereStudio.Ide.Forms
 {
     partial class SavePresetForm
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.presetBox = new System.Windows.Forms.ComboBox();
-            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.editorLabel1 = new SphereStudio.UI.DialogHeader();
             this.nameLabel = new System.Windows.Forms.Label();
             this.customNameBox = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
@@ -130,7 +130,7 @@
         #endregion
 
         private System.Windows.Forms.ComboBox presetBox;
-        private Sphere.Core.Editor.EditorLabel editorLabel1;
+        private SphereStudio.UI.DialogHeader editorLabel1;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox customNameBox;
         private System.Windows.Forms.Button okButton;

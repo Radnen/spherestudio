@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
-namespace SphereStudio.Forms
+namespace SphereStudio.Ide.Forms
 {
-    partial class SettingsCenter : Form
+    partial class SettingsCenter : Form, IStyleable
     {
         private List<ISettingsPage> _applyList = new List<ISettingsPage>();
         private Control _currentPage = null;
@@ -21,6 +21,18 @@ namespace SphereStudio.Forms
         public SettingsCenter()
         {
             InitializeComponent();
+            Styler.AutoStyle(this);
+        }
+
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsUIElement(this);
+            style.AsUIElement(SplitBox);
+            style.AsUIElement(ButtonBar);
+            style.AsTextView(PageTree);
+            style.AsAccent(OKButton);
+            style.AsAccent(CloseButton);
+            style.AsAccent(ApplyButton);
         }
 
         protected override void OnLoad(EventArgs e)

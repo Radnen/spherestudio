@@ -8,12 +8,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using SphereStudio.DockPanes;
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio;
+using SphereStudio.Ide.BuiltIns;
+using SphereStudio.Ide.Utility;
+using SphereStudio.Base;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     /// <summary>
     /// Represents a Sphere Studio project.

@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Core.Utility;
+
+using SphereStudio.UI;
+using SphereStudio.Utility;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -239,7 +240,7 @@ namespace SphereStudio.Plugins.Components
 
         private void appendTilesItem_Click(object sender, EventArgs e)
         {
-            using (StringInputForm form = new StringInputForm())
+            using (StringInputForm form = new StringInputForm("Append Tiles", "Add how many tiles?"))
             {
                 form.NumOnly = true;
                 if (form.ShowDialog() == DialogResult.OK)
@@ -254,7 +255,7 @@ namespace SphereStudio.Plugins.Components
 
         private void removeTilesItem_Click(object sender, EventArgs e)
         {
-            using (StringInputForm form = new StringInputForm())
+            using (StringInputForm form = new StringInputForm("Remove Tiles", "Remove how many tiles?"))
             {
                 form.NumOnly = true;
                 if (form.ShowDialog() == DialogResult.OK)

@@ -32,7 +32,7 @@
             this.NameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.LayerHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TypeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.EntityListLabel = new Sphere.Core.Editor.EditorLabel();
+            this.EntityListLabel = new SphereStudio.UI.DialogHeader();
             this.SuspendLayout();
             // 
             // EntityListView
@@ -96,7 +96,7 @@
         #endregion
 
         private System.Windows.Forms.ListView EntityListView;
-        private Sphere.Core.Editor.EditorLabel EntityListLabel;
+        private SphereStudio.UI.DialogHeader EntityListLabel;
         private System.Windows.Forms.ColumnHeader NameHeader;
         private System.Windows.Forms.ColumnHeader LayerHeader;
         private System.Windows.Forms.ColumnHeader TypeHeader;

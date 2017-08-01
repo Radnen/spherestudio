@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Plugins.EditShims;
-using SphereStudio.Plugins.Components;
+
+using SphereStudio.UI;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Forms
 {
     partial class TriggerForm : Form
     {
         public Entity Trigger { get; private set; }
-        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
+        readonly ScriptEditor _scriptBox = new ScriptEditor();
 
         public TriggerForm()
         {

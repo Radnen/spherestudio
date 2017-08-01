@@ -5,12 +5,12 @@ using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio;
+using SphereStudio.Ide.Utility;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     static class Core
     {
@@ -237,8 +237,10 @@ namespace SphereStudio
                 var styles = from name in PluginManager.GetNames<IStyleProvider>()
                              let plugin = PluginManager.Get<IStyleProvider>(name)
                              from style in plugin.Styles
-                             orderby name + ": " + style.Name
-                             select new { Name = name + ": " + style.Name, Style = style };
+                             select new {
+                                 Name = name != "" ? name + ": " + style.Name : style.Name,
+                                 Style = style
+                             };
                 var uiStyle = styles.Where(it => it.Name == StyleName).Select(it => it.Style).FirstOrDefault();
                 return uiStyle;
             }

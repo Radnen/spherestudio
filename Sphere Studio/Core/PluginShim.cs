@@ -3,10 +3,10 @@ using System.IO;
 using System.Reflection;
 
 using SphereStudio;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Ide;
+using SphereStudio.Base;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     class PluginShim
     {
@@ -46,8 +46,11 @@ namespace SphereStudio
             if (!m_isEnabled)
             {
                 ISettings conf = new IniSettings(Core.MainIniFile, Handle);
-                Main.Initialize(conf);
-                m_isEnabled = true;
+                try {
+                    Main.Initialize(conf);
+                    m_isEnabled = true;
+                }
+                catch { }
             }
         }
 

@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using Sphere.Core;
+
+using SphereStudio;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {

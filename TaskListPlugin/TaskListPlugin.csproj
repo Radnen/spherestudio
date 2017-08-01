@@ -36,9 +36,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ObjectListView, Version=2.5.1.42131, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Sphere Editor\Libs\objectlistview\ObjectListView.dll</HintPath>
+    <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
+      <HintPath>..\packages\ObjectListView.Official.2.9.1\lib\net20\ObjectListView.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -64,13 +63,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
       <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
-      <Name>Sphere.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
-      <Name>Sphere.Plugins</Name>
+      <Name>SphereStudio.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Resources\resultset_down.png" />
   </ItemGroup>
   <ItemGroup>
@@ -118,12 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\page_white_edit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lib\ObjectListView\ObjectListView.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lib\ObjectListView\ObjectListView.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

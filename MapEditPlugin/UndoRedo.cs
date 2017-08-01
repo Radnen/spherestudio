@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using SphereStudio.Plugins.Components;
+﻿using System.Collections.Generic;
 
+using SphereStudio.Plugins.Components;
+using SphereStudio.Vanilla;
+using SphereStudio.Utility;
 
 namespace SphereStudio.Plugins.UndoRedo
 {

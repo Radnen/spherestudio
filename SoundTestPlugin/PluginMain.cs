@@ -1,8 +1,6 @@
 ﻿using System;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Base;
 
 namespace SphereStudio.Plugins
 {

@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Forms
+﻿namespace SphereStudio.Ide.Forms
 {
     partial class NewProjectForm
     {
@@ -54,7 +54,7 @@
             this.NewProjectStatus = new System.Windows.Forms.StatusStrip();
             this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.ButtonPanel = new System.Windows.Forms.Panel();
-            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.editorLabel1 = new SphereStudio.UI.DialogHeader();
             this.ProjectBox.SuspendLayout();
             this.PropertiesBox.SuspendLayout();
             this.NewProjectStatus.SuspendLayout();
@@ -82,7 +82,7 @@
             // FolderBrowseButton
             // 
             this.FolderBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.FolderBrowseButton.Image = global::SphereStudio.Properties.Resources.folder;
+            this.FolderBrowseButton.Image = global::SphereStudio.Ide.Properties.Resources.folder;
             this.FolderBrowseButton.Location = new System.Drawing.Point(386, 48);
             this.FolderBrowseButton.Name = "FolderBrowseButton";
             this.FolderBrowseButton.Size = new System.Drawing.Size(27, 22);
@@ -415,7 +415,7 @@
         private System.Windows.Forms.StatusStrip NewProjectStatus;
         private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
         private System.Windows.Forms.Panel ButtonPanel;
-        private Sphere.Core.Editor.EditorLabel editorLabel1;
+        private SphereStudio.UI.DialogHeader editorLabel1;
         private System.Windows.Forms.ComboBox CompilerComboBox;
         private System.Windows.Forms.Label label2;
     }

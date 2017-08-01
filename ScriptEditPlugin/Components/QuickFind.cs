@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Sphere.Core.Editor;
+using SphereStudio;
+using SphereStudio.UI;
 
 using ScintillaNET;
 
-namespace SphereStudio.ScriptEditor.Components
+namespace SphereStudio.Plugins.Components
 {
     /// <summary>
     /// Implements the Quick Find box (fast Search and Replace).
@@ -38,10 +39,10 @@ namespace SphereStudio.ScriptEditor.Components
         //       should NOT change the text in the Find box nor trigger a search, but SHOULD
         //       select the text.  this matches MSVC behavior.
 
-        private Scintilla _codeBox = null;
-        private int _fullHeight;
-        private TextBox _lastTextBox;
-        private Control _parent;
+        private Scintilla m_codeBox = null;
+        private int m_fullHeight;
+        private TextBox m_lastTextBox;
+        private Control m_parent;
 
         /// <summary>
         /// Constructs a new Quick Find control.  Initially it's invisible.
@@ -53,10 +54,12 @@ namespace SphereStudio.ScriptEditor.Components
             InitializeComponent();
             Visible = false;
 
-            _fullHeight = Height;
-            _codeBox = codeBox;
-            _parent = parent;
-            _parent.Controls.Add(this);
+            m_fullHeight = Height;
+            m_codeBox = codeBox;
+            m_parent = parent;
+            m_parent.Controls.Add(this);
+
+            Styler.AutoStyle(this);
         }
 
         /// <summary>
@@ -68,6 +71,8 @@ namespace SphereStudio.ScriptEditor.Components
         {
             bool wasVisibleBefore = Visible;
 
+            ApplyStyle(Styler.Style);
+
             SuspendLayout();
             TitleLabel.Text = replace ? "Quick Replace" : "Quick Find";
 
@@ -77,22 +82,22 @@ namespace SphereStudio.ScriptEditor.Components
             // populate the Find term from the current selection
             if (!wasVisibleBefore)
             {
-                if (string.IsNullOrEmpty(_codeBox.SelectedText))
+                if (string.IsNullOrEmpty(m_codeBox.SelectedText))
                 {
                     // if no selection, use word under cursor
-                    int wordStart = _codeBox.WordStartPosition(_codeBox.CurrentPosition, false);
-                    int wordEnd = _codeBox.WordEndPosition(_codeBox.CurrentPosition, false);
+                    int wordStart = m_codeBox.WordStartPosition(m_codeBox.CurrentPosition, false);
+                    int wordEnd = m_codeBox.WordEndPosition(m_codeBox.CurrentPosition, false);
                     if (!wasVisibleBefore)
                     {
-                        _codeBox.TargetStart = wordStart;
-                        FindTextBox.Text = _codeBox.GetWordFromPosition(_codeBox.CurrentPosition);
+                        m_codeBox.TargetStart = wordStart;
+                        FindTextBox.Text = m_codeBox.GetWordFromPosition(m_codeBox.CurrentPosition);
                     }
                 }
-                else if (!_codeBox.SelectedText.Contains('\r') && !_codeBox.SelectedText.Contains('\n'))
+                else if (!m_codeBox.SelectedText.Contains('\r') && !m_codeBox.SelectedText.Contains('\n'))
                 {
                     // if there is a selection, use it as the search term unless it contains newlines
-                    _codeBox.TargetStart = _codeBox.SelectionStart;
-                    FindTextBox.Text = _codeBox.SelectedText;
+                    m_codeBox.TargetStart = m_codeBox.SelectionStart;
+                    FindTextBox.Text = m_codeBox.SelectedText;
                 }
                 else
                 {
@@ -108,9 +113,9 @@ namespace SphereStudio.ScriptEditor.Components
             ReplaceButton.Visible = replace;
             ReplaceAllButton.Visible = replace;
             if (replace)
-                Height = _fullHeight;
+                Height = m_fullHeight;
             else
-                Height = _fullHeight - ReplaceTextBox.Height;
+                Height = m_fullHeight - ReplaceTextBox.Height;
 
             ResumeLayout();
         }
@@ -129,8 +134,8 @@ namespace SphereStudio.ScriptEditor.Components
         /// </summary>
         public void FindNext()
         {
-            _codeBox.TargetStart = _codeBox.CurrentPosition;
-            _codeBox.TargetEnd = _codeBox.TextLength;
+            m_codeBox.TargetStart = m_codeBox.CurrentPosition;
+            m_codeBox.TargetEnd = m_codeBox.TextLength;
             if (!string.IsNullOrEmpty(FindTextBox.Text))
             {
                 if (!PerformFind())
@@ -144,19 +149,20 @@ namespace SphereStudio.ScriptEditor.Components
                 Open();
         }
 
-        public void ApplyStyle(UIStyle theme)
+        public void ApplyStyle(UIStyle style)
         {
-            theme.AsUIElement(FindButton);
-            theme.AsUIElement(ReplaceButton);
-            theme.AsUIElement(ReplaceAllButton);
-            theme.AsUIElement(FindTextBox);
-            theme.AsUIElement(ReplaceTextBox);
-            theme.AsUIElement(MatchCaseCheckBox);
-            theme.AsUIElement(WholeWordCheckBox);
-            theme.AsUIElement(RegexCheckBox);
-            theme.AsUIElement(OptionsPanel);
+            style.AsUIElement(this);
+            style.AsTextView(FindTextBox);
+            style.AsTextView(ReplaceTextBox);
+            style.AsAccent(FindButton);
+            style.AsAccent(ReplaceButton);
+            style.AsAccent(ReplaceAllButton);
+            style.AsUIElement(MatchCaseCheckBox);
+            style.AsUIElement(WholeWordCheckBox);
+            style.AsUIElement(RegexCheckBox);
+            style.AsUIElement(OptionsPanel);
 
-            Left = _parent.ClientSize.Width - Width
+            Left = m_parent.ClientSize.Width - Width
                 - SystemInformation.VerticalScrollBarWidth
                 - SystemInformation.BorderSize.Width;
             Top = SystemInformation.BorderSize.Height;
@@ -164,34 +170,36 @@ namespace SphereStudio.ScriptEditor.Components
 
         private bool PerformFind()
         {
-            _codeBox.SearchFlags = SearchFlags.None;
+            m_codeBox.SearchFlags = SearchFlags.None;
             if (MatchCaseCheckBox.Checked)
-                _codeBox.SearchFlags |= SearchFlags.MatchCase;
+                m_codeBox.SearchFlags |= SearchFlags.MatchCase;
             if (WholeWordCheckBox.Checked)
-                _codeBox.SearchFlags |= SearchFlags.WholeWord;
+                m_codeBox.SearchFlags |= SearchFlags.WholeWord;
             if (RegexCheckBox.Checked)
-                _codeBox.SearchFlags |= SearchFlags.Regex | SearchFlags.Posix;
+                m_codeBox.SearchFlags |= SearchFlags.Regex | SearchFlags.Posix;
 
-            _codeBox.TargetEnd = _codeBox.TextLength;
-            int pos = _codeBox.SearchInTarget(FindTextBox.Text);
+            m_codeBox.TargetEnd = m_codeBox.TextLength;
+            int pos = m_codeBox.SearchInTarget(FindTextBox.Text);
             if (pos == Scintilla.InvalidPosition)
             {
-                _codeBox.TargetStart = 0;
-                pos = _codeBox.SearchInTarget(FindTextBox.Text);
+                m_codeBox.TargetStart = 0;
+                pos = m_codeBox.SearchInTarget(FindTextBox.Text);
             }
             if (pos != Scintilla.InvalidPosition)
             {
-                FindTextBox.BackColor = SystemColors.Window;
+                FindTextBox.ForeColor = Styler.Style.TextColor;
+                FindTextBox.BackColor = Styler.Style.BackColor;
                 ReplaceButton.Enabled = true;
                 ReplaceAllButton.Enabled = true;
-                int line = _codeBox.LineFromPosition(_codeBox.TargetStart);
-                if (line < _codeBox.FirstVisibleLine || line >= _codeBox.FirstVisibleLine + _codeBox.LinesOnScreen)
-                    _codeBox.FirstVisibleLine = line - _codeBox.LinesOnScreen / 2;
-                _codeBox.SelectionStart = _codeBox.TargetStart;
-                _codeBox.SelectionEnd = _codeBox.TargetEnd;
+                int line = m_codeBox.LineFromPosition(m_codeBox.TargetStart);
+                if (line < m_codeBox.FirstVisibleLine || line >= m_codeBox.FirstVisibleLine + m_codeBox.LinesOnScreen)
+                    m_codeBox.FirstVisibleLine = line - m_codeBox.LinesOnScreen / 2;
+                m_codeBox.SelectionStart = m_codeBox.TargetStart;
+                m_codeBox.SelectionEnd = m_codeBox.TargetEnd;
             }
             else
             {
+                FindTextBox.ForeColor = Color.Black;
                 FindTextBox.BackColor = Color.MistyRose;
                 ReplaceButton.Enabled = false;
                 ReplaceAllButton.Enabled = false;
@@ -203,25 +211,25 @@ namespace SphereStudio.ScriptEditor.Components
         private void PerformReplace()
         {
             if (RegexCheckBox.Checked)
-                _codeBox.ReplaceTargetRe(ReplaceTextBox.Text);
+                m_codeBox.ReplaceTargetRe(ReplaceTextBox.Text);
             else
-                _codeBox.ReplaceTarget(ReplaceTextBox.Text);
-            _codeBox.TargetStart = _codeBox.TargetEnd;
+                m_codeBox.ReplaceTarget(ReplaceTextBox.Text);
+            m_codeBox.TargetStart = m_codeBox.TargetEnd;
             PerformFind();
         }
 
         private void PerformReplaceAll()
         {
-            _codeBox.TargetStart = 0;
-            _codeBox.TargetEnd = _codeBox.TextLength;
-            _codeBox.BeginUndoAction();
+            m_codeBox.TargetStart = 0;
+            m_codeBox.TargetEnd = m_codeBox.TextLength;
+            m_codeBox.BeginUndoAction();
             int numChanges = 0;
             while (PerformFind())
             {
                 PerformReplace();
                 ++numChanges;
             }
-            _codeBox.EndUndoAction();
+            m_codeBox.EndUndoAction();
             MessageBox.Show(this,
                 string.Format("{0} replacement(s) were made.", numChanges), "Quick Replace",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -229,7 +237,7 @@ namespace SphereStudio.ScriptEditor.Components
 
         private void FindTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (_codeBox == null)
+            if (m_codeBox == null)
                 return;
 
             FindButton.Enabled = !string.IsNullOrEmpty(FindTextBox.Text);
@@ -266,7 +274,7 @@ namespace SphereStudio.ScriptEditor.Components
         private void MatchCaseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             PerformFind();
-            _lastTextBox.Focus();
+            m_lastTextBox.Focus();
         }
 
         private void RegexCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -275,47 +283,47 @@ namespace SphereStudio.ScriptEditor.Components
             if (RegexCheckBox.Checked)
                 WholeWordCheckBox.Checked = false;
             PerformFind();
-            _lastTextBox.Focus();
+            m_lastTextBox.Focus();
         }
 
         private void WholeWordCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             PerformFind();
-            _lastTextBox.Focus();
+            m_lastTextBox.Focus();
         }
 
         private void FindButton_Click(object sender, EventArgs e)
         {
             FindNext();
-            _lastTextBox.Focus();
+            m_lastTextBox.Focus();
         }
 
         private void ReplaceButton_Click(object sender, EventArgs e)
         {
             PerformReplace();
-            _lastTextBox.Focus();
+            m_lastTextBox.Focus();
         }
 
         private void FindTextBox_Enter(object sender, EventArgs e)
         {
             // don't Select All unless we came from a different textbox
-            if (_lastTextBox != FindTextBox)
+            if (m_lastTextBox != FindTextBox)
                 FindTextBox.SelectAll();
-            _lastTextBox = FindTextBox;
+            m_lastTextBox = FindTextBox;
         }
 
         private void ReplaceTextBox_Enter(object sender, EventArgs e)
         {
             // don't Select All unless we came from a different textbox
-            if (_lastTextBox != ReplaceTextBox)
+            if (m_lastTextBox != ReplaceTextBox)
                 ReplaceTextBox.SelectAll();
-            _lastTextBox = ReplaceTextBox;
+            m_lastTextBox = ReplaceTextBox;
         }
 
         private void ReplaceAllButton_Click(object sender, EventArgs e)
         {
             PerformReplaceAll();
-            _lastTextBox.Focus();
+            m_lastTextBox.Focus();
         }
     }
 }

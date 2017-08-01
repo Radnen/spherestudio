@@ -7,25 +7,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using SphereStudio.DockPanes;
+using SphereStudio.Ide.BuiltIns;
+using SphereStudio.Base;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     /// <summary>
     /// Exposes the build engine, which manages compilation and debugging.
     /// </summary>
     static class BuildEngine
     {
-        private static BuildConsole _buildView;
+        private static BuildLogDockPane _buildView;
 
         /// <summary>
         /// Initializes the build system.
         /// </summary>
         public static void Initialize()
         {
-            _buildView = new BuildConsole();
+            _buildView = new BuildLogDockPane();
             PluginManager.Register(null, _buildView, "Build Log");
         }
 

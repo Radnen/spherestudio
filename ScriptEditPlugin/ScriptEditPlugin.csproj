@@ -8,7 +8,7 @@
     <ProjectGuid>{2DA2A233-7DA5-44C6-82CE-045B310A19F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio.ScriptEditor</RootNamespace>
+    <RootNamespace>SphereStudio.Plugins</RootNamespace>
     <AssemblyName>ScriptEditPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -68,13 +68,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
       <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
-      <Name>Sphere.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
-      <Name>Sphere.Plugins</Name>
+      <Name>SphereStudio.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +99,9 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Dictionary\AutoComplete.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dictionary\CellscriptAPI.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Dictionary\SphereAPI.txt">

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Base;
 
 namespace SphereStudio.Plugins
 {

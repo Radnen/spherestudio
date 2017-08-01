@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using Sphere.Core;
+
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins
 {

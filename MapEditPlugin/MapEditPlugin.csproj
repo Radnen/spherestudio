@@ -138,13 +138,13 @@
     <Compile Include="UndoRedo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
-      <Name>Sphere.Core</Name>
+      <Name>SphereStudio.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5d04ed42-d252-4fd2-be00-df4a2d122be3}</Project>
-      <Name>Sphere.Plugins</Name>
+    <ProjectReference Include="..\SphereStudio.Vanilla\SphereStudio.Vanilla.csproj">
+      <Project>{e7883a7f-8cdc-4dbf-bc4f-97ed9332123e}</Project>
+      <Name>SphereStudio.Vanilla</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

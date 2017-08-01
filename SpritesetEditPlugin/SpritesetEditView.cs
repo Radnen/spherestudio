@@ -1,14 +1,15 @@
-﻿using Sphere.Core;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
-using SphereStudio.Plugins.Components;
-using SphereStudio.Plugins.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 using WeifenLuo.WinFormsUI.Docking;
+
+using SphereStudio.Base;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.Forms;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins
 {
@@ -148,7 +149,7 @@ namespace SphereStudio.Plugins
             SpriteDrawer.Content = (Bitmap)_sprite.GetImage((((DirectionLayout)DirectionHolder.Controls[0]).SelectedFrame.Index));
             SpriteDrawer.ZoomIn();
             SpriteDrawer.ZoomIn();
-            _tilesetCtrl = new TilesetControl2 { Tileset = Sphere.Core.Tileset.FromSpriteset(_sprite), CanInsert = false };
+            _tilesetCtrl = new TilesetControl2 { Tileset = SphereStudio.Vanilla.Tileset.FromSpriteset(_sprite), CanInsert = false };
             _tilesetCtrl.ZoomIn();
             _tilesetCtrl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             _tilesetCtrl.TileSelected += _tileset_ctrl_TileSelected;

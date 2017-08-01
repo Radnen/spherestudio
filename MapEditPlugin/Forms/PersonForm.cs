@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.EditShims;
-using SphereStudio.Plugins.Components;
+
+using SphereStudio.UI;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Forms
 {
@@ -14,7 +11,7 @@ namespace SphereStudio.Plugins.Forms
     {
         public Entity Person { get; private set; }
         public List<Entity> EntityList { get; private set; }
-        readonly ScriptEditShim _scriptBox = new ScriptEditShim();
+        readonly ScriptEditor _scriptBox = new ScriptEditor();
         private int _last;
 
         public PersonForm(List<Entity> entities)

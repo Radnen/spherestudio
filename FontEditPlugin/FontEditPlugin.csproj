@@ -76,13 +76,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
       <Project>{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}</Project>
-      <Name>Sphere.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}</Project>
-      <Name>Sphere.Plugins</Name>
+      <Name>SphereStudio.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

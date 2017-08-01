@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageEditView));
             this.EditorToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DrawerPanel = new System.Windows.Forms.Panel();
-            this.ImagePanel = new Sphere.Core.Editor.EditorPanel();
+            this.ImagePanel = new SphereStudio.UI.SnapPanel();
             this.ImageEditor = new Components.ImageEditControl();
             this.LocationLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.DrawToolStrip = new System.Windows.Forms.ToolStrip();
@@ -57,7 +57,7 @@
             this.AlphaTracker = new System.Windows.Forms.TrackBar();
             this.PaletteStatus = new System.Windows.Forms.StatusStrip();
             this.AlphaLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ColorLabel = new Sphere.Core.Editor.EditorLabel();
+            this.ColorLabel = new SphereStudio.UI.DialogHeader();
             this.DrawerPanel.SuspendLayout();
             this.ImagePanel.SuspendLayout();
             this.DrawToolStrip.SuspendLayout();
@@ -434,7 +434,7 @@
         private System.Windows.Forms.StatusStrip EditorStatus;
         private System.Windows.Forms.ToolStripStatusLabel ZoomLabel;
         private System.Windows.Forms.ToolStripStatusLabel LocationLabel;
-        private Sphere.Core.Editor.EditorPanel ImagePanel;
+        private SphereStudio.UI.SnapPanel ImagePanel;
         private System.Windows.Forms.ToolStripButton PanButton;
         private System.Windows.Forms.StatusStrip PaletteStatus;
         private System.Windows.Forms.ToolStripStatusLabel AlphaLabel;
@@ -442,7 +442,7 @@
         private System.Windows.Forms.Panel DrawerPanel;
         private System.Windows.Forms.ToolStripButton OutlineButton;
         private System.Windows.Forms.FlowLayoutPanel ColorFlow;
-        private Sphere.Core.Editor.EditorLabel ColorLabel;
+        private SphereStudio.UI.DialogHeader ColorLabel;
         private Components.ImageEditControl ImageEditor;
         private System.Windows.Forms.ToolStripButton MirrorButton;
         private System.Windows.Forms.ToolStripButton MirrorHButton;

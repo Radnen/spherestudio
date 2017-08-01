@@ -1,12 +1,12 @@
-﻿using Sphere.Core.Editor;
-using Sphere.Core.Utility;
-using SphereStudio.Plugins.UndoRedo;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+
+using SphereStudio.Plugins.UndoRedo;
+using SphereStudio.Utility;
 
 namespace SphereStudio.Plugins.Components
 {

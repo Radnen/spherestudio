@@ -51,7 +51,7 @@
             this.ZoomLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.EditorPanel = new System.Windows.Forms.Panel();
             this.MainSplitter = new System.Windows.Forms.SplitContainer();
-            this.StyleDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
+            this.StyleDrawer = new SphereStudio.UI.ImageEditor();
             this.StyleContextStrip.SuspendLayout();
             this.WindowHolder.SuspendLayout();
             this.StyleToolStrip.SuspendLayout();
@@ -346,6 +346,6 @@
         private System.Windows.Forms.ToolStripSeparator Seperator3;
         private System.Windows.Forms.Panel EditorPanel;
         private System.Windows.Forms.SplitContainer MainSplitter;
-        private Sphere.Plugins.EditShims.ImageEditShim StyleDrawer;
+        private SphereStudio.UI.ImageEditor StyleDrawer;
     }
 }
