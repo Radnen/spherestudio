@@ -401,8 +401,8 @@ namespace SphereStudio.Plugins
                 _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
                 _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.LightSeaGreen;
                 _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkSalmon;
-                _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Plum;
-                _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.SteelBlue;
+                _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Gray;
+                _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.AntiqueWhite;
                 _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkSalmon;
                 _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
                 _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;

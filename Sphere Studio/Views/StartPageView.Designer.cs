@@ -84,8 +84,8 @@
             this.columnHeader2,
             this.columnHeader3});
             this.GameFolders.ContextMenuStrip = this.ItemContextStrip;
-            this.GameFolders.FullRowSelect = true;
             this.GameFolders.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.GameFolders.HideSelection = false;
             this.GameFolders.LabelEdit = true;
             this.GameFolders.Location = new System.Drawing.Point(3, 27);
             this.GameFolders.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -97,7 +97,6 @@
             this.GameFolders.TabIndex = 0;
             this.GameFolders.TileSize = new System.Drawing.Size(256, 48);
             this.GameFolders.UseCompatibleStateImageBehavior = false;
-            this.GameFolders.View = System.Windows.Forms.View.Tile;
             this.GameFolders.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.GameFolders_AfterLabelEdit);
             this.GameFolders.ItemActivate += new System.EventHandler(this.GameFolders_ItemActivate);
             this.GameFolders.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GameFolders_MouseClick);

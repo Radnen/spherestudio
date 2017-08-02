@@ -53,6 +53,10 @@ namespace SphereStudio.UI
             set { m_textBox.MaxLength = value; }
         }
 
+        /// <summary>
+        /// Restyles the form using a UI style.
+        /// </summary>
+        /// <param name="style"></param>
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
