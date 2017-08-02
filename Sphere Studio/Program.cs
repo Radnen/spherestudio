@@ -12,6 +12,8 @@ namespace SphereStudio.Ide
     /// </summary>
     static class Program
     {
+        public const string DefaultStyle = "Sphere Studio: Dark";
+        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

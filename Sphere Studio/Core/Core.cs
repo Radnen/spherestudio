@@ -226,7 +226,7 @@ namespace SphereStudio.Ide
 
         public string StyleName
         {
-            get { return GetString("uiStyle", "Sphere Studio: Light"); }
+            get { return GetString("uiStyle", Program.DefaultStyle); }
             set { SetValue("uiStyle", value); }
         }
 
@@ -234,7 +234,6 @@ namespace SphereStudio.Ide
         {
             get
             {
-                var defaultStyle = "Sphere Studio: Light";
                 var styles = from name in PluginManager.GetNames<IStyleProvider>()
                              let plugin = PluginManager.Get<IStyleProvider>(name)
                              from style in plugin.Styles
@@ -244,7 +243,7 @@ namespace SphereStudio.Ide
                              };
                 var uiStyle = styles.Where(it => it.Name == StyleName).Select(it => it.Style).FirstOrDefault();
                 if (uiStyle == null)
-                    uiStyle = styles.Where(it => it.Name == defaultStyle).Select(it => it.Style).FirstOrDefault();
+                    uiStyle = styles.Where(it => it.Name == Program.DefaultStyle).Select(it => it.Style).FirstOrDefault();
                 return uiStyle;
             }
         }

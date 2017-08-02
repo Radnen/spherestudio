@@ -51,7 +51,6 @@ namespace SphereStudio.Plugins
 
             _codeBox.BorderStyle = BorderStyle.None;
             _codeBox.Dock = DockStyle.Fill;
-            _codeBox.CaretForeColor = Styler.Style.TextColor;
             _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
             _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
             _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
@@ -299,6 +298,7 @@ namespace SphereStudio.Plugins
             bool useFolding = _main.Settings.GetBoolean("script-fold", true);
             _codeBox.Margins[2].Width = useFolding ? 16 : 0;
 
+            _codeBox.CaretForeColor = Styler.Style.TextColor;
             _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
             _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
             _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
@@ -388,10 +388,12 @@ namespace SphereStudio.Plugins
             // similar to the Sphere 1.x editor.
             //_codeBox.SetSelectionForeColor(true, Styler.Style.TextColor);
             _codeBox.SetSelectionBackColor(true, Styler.Style.HighlightColor);
+            _codeBox.Styles[Style.BraceLight].ForeColor = Color.Chartreuse;
+            _codeBox.Styles[Style.BraceLight].BackColor = Color.DarkGreen;
+            _codeBox.Styles[Style.BraceBad].ForeColor = Color.Orange;
+            _codeBox.Styles[Style.BraceBad].BackColor = Color.DarkRed;
             if (Styler.Style.BackColor.GetBrightness() < 0.5)
             {
-                _codeBox.Styles[Style.BraceLight].BackColor = Color.DimGray;
-                _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
                 _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkSalmon;
                 _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.OliveDrab;
                 _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.OliveDrab;
@@ -410,8 +412,6 @@ namespace SphereStudio.Plugins
             }
             else
             {
-                _codeBox.Styles[Style.BraceLight].BackColor = Color.Pink;
-                _codeBox.Styles[Style.BraceBad].ForeColor = Color.Red;
                 _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkRed;
                 _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.Green;
                 _codeBox.Styles[Style.Cpp.CommentDoc].ForeColor = Color.Green;
