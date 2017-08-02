@@ -1,7 +1,8 @@
-﻿using Sphere.Core.Editor;
-using SphereStudio.Plugins.Components;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+
+using SphereStudio.Plugins.Components;
+using SphereStudio.Utility;
 
 namespace SphereStudio.Plugins.UndoRedo
 {

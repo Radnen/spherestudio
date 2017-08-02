@@ -8,7 +8,7 @@
     <ProjectGuid>{9CAC2194-E0C8-4164-9D47-627520E79B95}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SphereStudio</RootNamespace>
+    <RootNamespace>SphereStudio.Ide</RootNamespace>
     <AssemblyName>Sphere Studio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,7 +56,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SphereStudio.Program</StartupObject>
+    <StartupObject>SphereStudio.Ide.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -113,17 +113,17 @@
     <Compile Include="Forms\SettingsCenter.Designer.cs">
       <DependentUpon>SettingsCenter.cs</DependentUpon>
     </Compile>
-    <Compile Include="DockPanes\BuildConsole.cs">
+    <Compile Include="DockPanes\BuildLogDockPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DockPanes\BuildConsole.Designer.cs">
-      <DependentUpon>BuildConsole.cs</DependentUpon>
+    <Compile Include="DockPanes\BuildLogDockPane.Designer.cs">
+      <DependentUpon>BuildLogDockPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutBox.cs">
+    <Compile Include="Forms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
+    <Compile Include="Forms\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ConfigManager.cs">
       <SubType>Form</SubType>
@@ -147,49 +147,31 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Core\IniSettings.cs" />
-    <Compile Include="RadEditors\MenuEditor.cs">
+    <Compile Include="DockPanes\ProjectDockPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RadEditors\MenuEditor.Designer.cs">
-      <DependentUpon>MenuEditor.cs</DependentUpon>
+    <Compile Include="DockPanes\ProjectDockPane.Designer.cs">
+      <DependentUpon>ProjectDockPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="RadEditors\RadObjects.cs" />
-    <Compile Include="DockPanes\ProjectTree.cs">
+    <Compile Include="SettingsPages\IdeSettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DockPanes\ProjectTree.Designer.cs">
-      <DependentUpon>ProjectTree.cs</DependentUpon>
+    <Compile Include="SettingsPages\IdeSettingsPage.Designer.cs">
+      <DependentUpon>IdeSettingsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPages\SettingsPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SettingsPages\SettingsPage.Designer.cs">
-      <DependentUpon>SettingsPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DefaultStyles.cs" />
+    <Compile Include="BuiltIns\DefaultStyleProvider.cs" />
+    <Compile Include="Utility\IniFile.cs" />
     <Compile Include="Views\StartPageView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\StartPageView.Designer.cs">
       <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.cs">
+    <Compile Include="Forms\IdeWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindow.Designer.cs">
-      <DependentUpon>MainWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\ColorPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\ColorPicker.Designer.cs">
-      <DependentUpon>ColorPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\ColorRectangle.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\ColorPicker\ColorRectangle.Designer.cs">
-      <DependentUpon>ColorRectangle.cs</DependentUpon>
+    <Compile Include="Forms\IdeWindow.Designer.cs">
+      <DependentUpon>IdeWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProjectPropsForm.cs">
       <SubType>Form</SubType>
@@ -209,11 +191,11 @@
     <EmbeddedResource Include="Forms\SettingsCenter.resx">
       <DependentUpon>SettingsCenter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DockPanes\BuildConsole.resx">
-      <DependentUpon>BuildConsole.cs</DependentUpon>
+    <EmbeddedResource Include="DockPanes\BuildLogDockPane.resx">
+      <DependentUpon>BuildLogDockPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutBox.resx">
-      <DependentUpon>AboutBox.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConfigManager.resx">
       <DependentUpon>ConfigManager.cs</DependentUpon>
@@ -221,29 +203,20 @@
     <EmbeddedResource Include="Forms\SavePresetForm.resx">
       <DependentUpon>SavePresetForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RadEditors\MenuEditor.resx">
-      <DependentUpon>MenuEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DockPanes\ProjectTree.resx">
-      <DependentUpon>ProjectTree.cs</DependentUpon>
+    <EmbeddedResource Include="DockPanes\ProjectDockPane.resx">
+      <DependentUpon>ProjectDockPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPages\SettingsPage.resx">
-      <DependentUpon>SettingsPage.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsPages\IdeSettingsPage.resx">
+      <DependentUpon>IdeSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\StartPageView.resx">
       <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindow.resx">
-      <DependentUpon>MainWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\IdeWindow.resx">
+      <DependentUpon>IdeWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ColorPicker\ColorPicker.resx">
-      <DependentUpon>ColorPicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ColorPicker\ColorRectangle.resx">
-      <DependentUpon>ColorRectangle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectPropsForm.resx">
       <DependentUpon>ProjectPropsForm.cs</DependentUpon>
@@ -320,17 +293,13 @@
       <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
       <Name>SoundTestPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClassicSpherePlugin\ClassicSpherePlugin.csproj">
+    <ProjectReference Include="..\ClassicSpherePlugin\LegacySpherePlugin.csproj">
       <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
-      <Name>ClassicSpherePlugin</Name>
+      <Name>LegacySpherePlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
-      <Name>Sphere.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5d04ed42-d252-4fd2-be00-df4a2d122be3}</Project>
-      <Name>Sphere.Plugins</Name>
+      <Name>SphereStudio.Base</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditPlugin.csproj">
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>

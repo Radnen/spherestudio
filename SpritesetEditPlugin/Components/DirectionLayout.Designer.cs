@@ -32,7 +32,7 @@
             this.InfoPanel = new System.Windows.Forms.Panel();
             this.NamePanel = new System.Windows.Forms.Panel();
             this.NameTextBox = new System.Windows.Forms.TextBox();
-            this.NameLabel = new Sphere.Core.Editor.EditorLabel();
+            this.NameLabel = new SphereStudio.UI.DialogHeader();
             this.ImagesPanel = new System.Windows.Forms.Panel();
             this.AddPanel = new System.Windows.Forms.Panel();
             this.AddFrameButton = new System.Windows.Forms.Button();
@@ -299,7 +299,7 @@
         private System.Windows.Forms.ToolStripMenuItem RemoveItem;
         private System.Windows.Forms.ToolStripSeparator Seperator1;
         private System.Windows.Forms.ToolStripMenuItem ToggleItem;
-        private Sphere.Core.Editor.EditorLabel NameLabel;
+        private SphereStudio.UI.DialogHeader NameLabel;
         private System.Windows.Forms.ToolStripMenuItem ZoomInItem;
         private System.Windows.Forms.ToolStripMenuItem ZoomOutItem;
         private System.Windows.Forms.ToolStripSeparator Separator3;

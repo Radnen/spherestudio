@@ -1,14 +1,12 @@
 ﻿using System;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Base;
 
 namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name { get; } = "Sound Test";
+        public string Name { get; } = "Audio Player";
         public string Description { get; } = "Listen to sounds from your game while you work!";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
@@ -21,7 +19,7 @@ namespace SphereStudio.Plugins
             _soundPicker.WatchProject(PluginManager.Core.Project);
             _soundPicker.Refresh();
 
-            PluginManager.Register(this, _soundPicker, "Sound Test");
+            PluginManager.Register(this, _soundPicker, "Audio Player");
 
             PluginManager.Core.LoadProject += IDE_LoadProject;
             PluginManager.Core.UnloadProject += IDE_UnloadProject;

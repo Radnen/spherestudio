@@ -2,9 +2,10 @@
 using System.IO;
 using System.Windows.Forms;
 
-using SphereStudio.Forms;
+using SphereStudio.Ide.BuiltIns;
+using SphereStudio.Ide.Forms;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     /// <summary>
     /// Represents the global state of the Sphere Studio instance.
@@ -20,7 +21,10 @@ namespace SphereStudio
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Form = new MainWindow();
+            PluginManager.Register(null, new DefaultStyleProvider(), "Sphere Studio");
+            PluginManager.Register(null, new IdeSettingsPage(), "Sphere Studio IDE");
+
+            Form = new IdeWindow();
 
             // check for and open files dragged onto the app.
             foreach (var fileName in args)
@@ -42,6 +46,6 @@ namespace SphereStudio
         /// <summary>
         /// Gets the form representing the IDE main window.
         /// </summary>
-        public static MainWindow Form { get; private set; }
+        public static IdeWindow Form { get; private set; }
     }
 }

@@ -41,7 +41,7 @@
             this.RenameLayerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.layerPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LayersPanel = new Sphere.Core.Editor.EditorPanel();
+            this.LayersPanel = new SphereStudio.UI.SnapPanel();
             this.LayerContextStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -196,7 +196,7 @@
         private System.Windows.Forms.ToolStripMenuItem MoveUpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MoveDownMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RenameLayerMenuItem;
-        private Sphere.Core.Editor.EditorPanel LayersPanel;
+        private SphereStudio.UI.SnapPanel LayersPanel;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem layerPropertiesToolStripMenuItem;
     }

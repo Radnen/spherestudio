@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\WindowStyle.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -63,13 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sphere.Core\Sphere.Core.csproj">
+    <ProjectReference Include="..\SphereStudio.Base\SphereStudio.Base.csproj">
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
-      <Name>Sphere.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sphere.Plugins\Sphere.Plugins.csproj">
-      <Project>{5d04ed42-d252-4fd2-be00-df4a2d122be3}</Project>
-      <Name>Sphere.Plugins</Name>
+      <Name>SphereStudio.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

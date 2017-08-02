@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using Sphere.Core.Editor;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
 namespace SphereStudio.Plugins
 {

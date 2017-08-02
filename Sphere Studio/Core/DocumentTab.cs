@@ -10,11 +10,12 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.Forms;
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
+using SphereStudio.Ide.Forms;
+using SphereStudio.Ide;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     /// <summary>
     /// Represents an open document in the IDE.
@@ -33,7 +34,7 @@ namespace SphereStudio
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(MainWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
+        public DocumentTab(IdeWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
         {
             FileName = fileName;
             View = view;

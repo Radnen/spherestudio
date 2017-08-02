@@ -8,10 +8,9 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+using SphereStudio.Base;
 
-namespace SphereStudio
+namespace SphereStudio.Ide
 {
     struct DockPaneShim
     {

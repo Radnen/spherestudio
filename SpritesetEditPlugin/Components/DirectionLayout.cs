@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
+
+using SphereStudio.UI;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -264,7 +264,7 @@ namespace SphereStudio.Plugins.Components
 
         private void SetDelayItem_Click(object sender, EventArgs e)
         {
-            StringInputForm frm = new StringInputForm();
+            StringInputForm frm = new StringInputForm("Set Frame Delay");
             frm.Input = SelectedFrame.Delay.ToString();
             frm.NumOnly = true;
             if (frm.ShowDialog() == DialogResult.OK) {

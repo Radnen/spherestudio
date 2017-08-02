@@ -9,13 +9,12 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio.Forms;
-using SphereStudio.Properties;
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
+using SphereStudio.Base;
+using SphereStudio.Ide.Forms;
+using SphereStudio.Ide.Properties;
+using SphereStudio.UI;
 
-namespace SphereStudio.Views
+namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
     partial class StartPageView : DocumentView, IStyleable
@@ -26,12 +25,12 @@ namespace SphereStudio.Views
         private readonly DockPanel _startDock = new DockPanel();
         private readonly DockContent _gameContent = new DockContent();
         private readonly DockContent _infoContent = new DockContent();
-        private readonly MainWindow _mainEditor;
+        private readonly IdeWindow _mainEditor;
 
         private readonly ImageList _listIcons = new ImageList();
         private readonly ImageList _listIconsSmall = new ImageList();
 
-        public StartPageView(MainWindow mainEditor)
+        public StartPageView(IdeWindow mainEditor)
         {
             InitializeComponent();
             InitializeDocking();
@@ -350,8 +349,8 @@ namespace SphereStudio.Views
             theme.AsUIElement(GamesPanel);
             theme.AsUIElement(InfoSplitter.Panel1);
             theme.AsUIElement(InfoSplitter.Panel2);
-            theme.AsUIElement(GamePanel);
-            theme.AsUIElement(DescTextLabel);
+            theme.AsTextView(GamePanel);
+            theme.AsTextView(DescTextLabel);
             theme.AsTextView(GameFolders);
         }
     }

@@ -31,17 +31,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpritesetEditView));
-            this.DirectionHolder = new Sphere.Core.Editor.EditorPanel();
-            this.SpriteDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
+            this.DirectionHolder = new SphereStudio.UI.SnapPanel();
+            this.SpriteDrawer = new SphereStudio.UI.ImageEditor();
             this.DirectionSplitter = new System.Windows.Forms.SplitContainer();
             this.ImagePanel = new System.Windows.Forms.Panel();
-            this.ImageHolder = new Sphere.Core.Editor.EditorPanel();
-            this.ImagesLabel = new Sphere.Core.Editor.EditorLabel();
+            this.ImageHolder = new SphereStudio.UI.SnapPanel();
+            this.ImagesLabel = new SphereStudio.UI.DialogHeader();
             this.BasePanel = new System.Windows.Forms.Panel();
-            this.BaseEditorLabel = new Sphere.Core.Editor.EditorLabel();
+            this.BaseEditorLabel = new SphereStudio.UI.DialogHeader();
             this.FrameBaseEditor = new Components.BaseEditor();
             this.AnimPanel = new System.Windows.Forms.Panel();
-            this.AnimLabel = new Sphere.Core.Editor.EditorLabel();
+            this.AnimLabel = new SphereStudio.UI.DialogHeader();
             this.DirectionAnim = new Components.DirectionAnimator();
             this.DirectionHolder.SuspendLayout();
             this.DirectionSplitter.Panel1.SuspendLayout();
@@ -229,17 +229,17 @@
 
         #endregion
 
-        private Sphere.Core.Editor.EditorPanel DirectionHolder;
+        private SphereStudio.UI.SnapPanel DirectionHolder;
         private System.Windows.Forms.SplitContainer DirectionSplitter;
         private Components.DirectionAnimator DirectionAnim;
         private Components.BaseEditor FrameBaseEditor;
         private System.Windows.Forms.Panel BasePanel;
-        private Sphere.Core.Editor.EditorLabel BaseEditorLabel;
+        private SphereStudio.UI.DialogHeader BaseEditorLabel;
         private System.Windows.Forms.Panel AnimPanel;
-        private Sphere.Core.Editor.EditorLabel AnimLabel;
+        private SphereStudio.UI.DialogHeader AnimLabel;
         private System.Windows.Forms.Panel ImagePanel;
-        private Sphere.Core.Editor.EditorLabel ImagesLabel;
-        private Sphere.Core.Editor.EditorPanel ImageHolder;
-        private Sphere.Plugins.EditShims.ImageEditShim SpriteDrawer;
+        private SphereStudio.UI.DialogHeader ImagesLabel;
+        private SphereStudio.UI.SnapPanel ImageHolder;
+        private SphereStudio.UI.ImageEditor SpriteDrawer;
     }
 }

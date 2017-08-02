@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Plugins.EditShims;
+
+using SphereStudio.UI;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Forms
 {
     partial class MapPropertiesForm : Form
     {
         public Map Map { get; private set; }
-        private ScriptEditShim ScriptBox = new ScriptEditShim();
+        private ScriptEditor ScriptBox = new ScriptEditor();
         private int last = 3;
         private List<string> scripts = new List<string>();
 

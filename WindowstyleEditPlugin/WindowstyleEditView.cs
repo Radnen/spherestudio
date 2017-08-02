@@ -1,17 +1,19 @@
-﻿using Sphere.Core;
-using Sphere.Plugins.Views;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 using WeifenLuo.WinFormsUI.Docking;
+
+using SphereStudio.Base;
+using SphereStudio.Plugins.Classes;
 
 namespace SphereStudio.Plugins
 {
     internal partial class WindowstyleEditView : DocumentView
     {
         #region attributes
-        private Windowstyle _style;
+        private WindowStyle _style;
         private bool _move;
         private int _tx, _ty;
         private int _windH, _windW;
@@ -36,7 +38,7 @@ namespace SphereStudio.Plugins
 
         public override bool NewDocument()
         {
-            _style = new Windowstyle { Grid = true };
+            _style = new WindowStyle { Grid = true };
             InitWindow();
             return true;
         }
@@ -45,7 +47,7 @@ namespace SphereStudio.Plugins
         {
             using (BinaryReader reader = new BinaryReader(File.OpenRead(filepath)))
             {
-                _style = new Windowstyle(reader);
+                _style = new WindowStyle(reader);
             }
             _style.Grid = true;
             InitWindow();

@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SphereStudio.Base;
+using SphereStudio.Plugins.Components;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using SphereStudio.Vanilla.Plugins;
-using SphereStudio.Vanilla.SettingsPages;
-
-namespace SphereStudio.Vanilla
+namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain
     {
-        public string Name { get; } = "Classic Sphere";
-        public string Description { get; } = "Provides support for classic vanilla Sphere 1.x.";
+        public string Name { get; } = "Sphere 1.x Support";
+        public string Description { get; } = "Provides support for Sphere 1.x, the legacy engine.";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 
@@ -27,6 +17,9 @@ namespace SphereStudio.Vanilla
             PluginManager.Register(this, new SettingsPage(conf), "Classic Sphere Setup");
         }
 
-        public void ShutDown() => PluginManager.UnregisterAll(this);
+        public void ShutDown()
+        {
+            PluginManager.UnregisterAll(this);
+        }
     }
 }

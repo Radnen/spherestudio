@@ -6,16 +6,21 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-using Sphere.Plugins;
-using Sphere.Plugins.Views;
-
-using SphereStudio.ScriptEditor.Components;
-using SphereStudio.ScriptEditor.Properties;
 using ScintillaNET;
-using Sphere.Core.Editor;
 
-namespace SphereStudio.ScriptEditor
+using SphereStudio.Base;
+using SphereStudio.Plugins.Components;
+using SphereStudio.Plugins.Properties;
+using SphereStudio.UI;
+
+namespace SphereStudio.Plugins
 {
+    enum ScriptType
+    {
+        Sphere,
+        Cellscript,
+    }
+
     public partial class ScriptEditView : ScriptView, IStyleable
     {
         private Scintilla _codeBox = new Scintilla();
@@ -23,6 +28,7 @@ namespace SphereStudio.ScriptEditor
         private int _activeLine = 0;
         private int _errorLine = 0;
         private int _lastCaretPos = Scintilla.InvalidPosition;
+        private string _lastKnownFileName = "";
         private bool _highlightLine = true;
         private int _lineMarginWidth = -1;
         private PluginMain _main;
@@ -32,7 +38,7 @@ namespace SphereStudio.ScriptEditor
         // avoid an automatic byte-order mark being added to saved scripts.
         private readonly Encoding UTF_8_NOBOM = new UTF8Encoding(false);
 
-        public ScriptEditView(PluginMain main)
+        public ScriptEditView(PluginMain main, bool highlight = false)
         {
             InitializeComponent();
 
@@ -62,6 +68,11 @@ namespace SphereStudio.ScriptEditor
             Controls.Add(_codeBox);
 
             InitializeMargins();
+            if (highlight) {
+                _codeBox.Lexer = Lexer.Cpp;
+                InitializeHighlighting("");
+                InitializeFolding();
+            }
 
             Styler.AutoStyle(this);
         }
@@ -91,7 +102,7 @@ namespace SphereStudio.ScriptEditor
                     _quickFind.FindNext();
                     return true;
                 case Keys.Control | Keys.A:
-                    if (!_codeBox.ContainsFocus)
+                    if (!_codeBox.Focused)
                         break;
                     _codeBox.SelectAll();
                     return true;
@@ -230,7 +241,7 @@ namespace SphereStudio.ScriptEditor
             }
 
             _codeBox.Lexer = Lexer.Cpp;
-            InitializeHighlighting();
+            InitializeHighlighting(string.Empty);
             InitializeFolding();
 
             _codeBox.EmptyUndoBuffer();
@@ -249,7 +260,7 @@ namespace SphereStudio.ScriptEditor
                 _codeBox.EmptyUndoBuffer();
                 if (_codeBox.Lexer == Lexer.Cpp)
                 {
-                    InitializeHighlighting();
+                    InitializeHighlighting(filename);
                     InitializeFolding();
                 }
 
@@ -288,20 +299,13 @@ namespace SphereStudio.ScriptEditor
             bool useFolding = _main.Settings.GetBoolean("script-fold", true);
             _codeBox.Margins[2].Width = useFolding ? 16 : 0;
 
-            /*string fontstring = PluginManager.IDE.EditorSettings.GetString("script-font");
-            if (!String.IsNullOrEmpty(fontstring))
-            {
-                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Font));
-                SetFont((Font)converter.ConvertFromString(fontstring));
-            }*/
-
             _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
             _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
             _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
             _codeBox.Styles[Style.Default].BackColor = Styler.Style.BackColor;
             _codeBox.StyleClearAll();
             InitializeFolding();
-            InitializeHighlighting();
+            InitializeHighlighting(_lastKnownFileName);
             InitializeMargins();
         }
 
@@ -373,12 +377,17 @@ namespace SphereStudio.ScriptEditor
             _codeBox.SetFoldMarginHighlightColor(true, Styler.Style.BackColor);
         }
 
-        private void InitializeHighlighting()
+        private void InitializeHighlighting(string fileName)
         {
+            if (fileName == null)
+                return;
+
             _codeBox.SetProperty("lexer.cpp.backquoted.strings", "1");
 
             // define colors for syntax highlighting.  the colors below were chosen to be very
             // similar to the Sphere 1.x editor.
+            //_codeBox.SetSelectionForeColor(true, Styler.Style.TextColor);
+            _codeBox.SetSelectionBackColor(true, Styler.Style.HighlightColor);
             if (Styler.Style.BackColor.GetBrightness() < 0.5)
             {
                 _codeBox.Styles[Style.BraceLight].BackColor = Color.DimGray;
@@ -395,7 +404,7 @@ namespace SphereStudio.ScriptEditor
                 _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkSalmon;
                 _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
                 _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
-                _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.DarkOrchid;
+                _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.Orchid;
                 _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.CornflowerBlue;
                 _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.Khaki;
             }
@@ -428,17 +437,19 @@ namespace SphereStudio.ScriptEditor
                 + " decodeURI decodeURIComponent encodeURI encodeURIComponent escape isFinite isNaN parseFloat parseInt unescape");
 
             // load Sphere API keywords
-            try
-            {
-                string[] apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, "Dictionary/SphereAPI.txt"));
+            try {
+                _lastKnownFileName = fileName;
+                var dictionaryName = "Dictionary/SphereAPI.txt";
+                if (Path.GetFileNameWithoutExtension(fileName) == "Cellscript")
+                    dictionaryName = "Dictionary/CellscriptAPI.txt";
+                var apiList = File.ReadAllLines(Path.Combine(Application.StartupPath, dictionaryName));
                 var keywords = from line in apiList
                                let keyword = line.Trim()
                                where keyword != "" && !keyword.StartsWith("#")
                                select keyword;
                 _codeBox.SetKeywords(3, string.Join(" ", keywords));
             }
-            catch
-            {
+            catch {
                 // no harm done if an error occurs, we just won't get custom coloring
                 // for Sphere API calls.
             }
@@ -447,8 +458,7 @@ namespace SphereStudio.ScriptEditor
         private void InitializeMargins()
         {
             // define folding icons.  why this isn't done for us is completely beyond me.
-            for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++)
-            {
+            for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++) {
                 _codeBox.Markers[i].SetForeColor(Styler.Style.BackColor);
                 _codeBox.Markers[i].SetBackColor(Styler.Style.TextColor);
             }
@@ -479,7 +489,7 @@ namespace SphereStudio.ScriptEditor
             // line number margin.  dynamically resized as content changes.
             _codeBox.Margins[1].Type = MarginType.Number;
             _codeBox.Margins[1].Mask = 0x0;
-            _codeBox.Styles[Style.LineNumber].ForeColor = Styler.Style.ToolColor;
+            _codeBox.Styles[Style.LineNumber].ForeColor = Styler.Style.LabelColor;
             _codeBox.Styles[Style.LineNumber].BackColor = Styler.Style.BackColor;
 
             // code folding margin

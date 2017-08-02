@@ -3,11 +3,11 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Core.Editor;
+using SphereStudio.Ide;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
-namespace SphereStudio.Forms
+namespace SphereStudio.Ide.Forms
 {
     partial class NewProjectForm : Form, IStyleable
     {

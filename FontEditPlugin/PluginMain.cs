@@ -1,9 +1,7 @@
-﻿using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
-using System.Drawing;
+﻿using System.Drawing;
 
-using Sphere.Core;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
 namespace SphereStudio.Plugins
 {

@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using Sphere.Core.Editor;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
+using SphereStudio.Base;
+using SphereStudio.UI;
+using SphereStudio.Utility;
 
 namespace SphereStudio.Plugins
 {
@@ -169,7 +168,7 @@ namespace SphereStudio.Plugins
             }
             catch (Exception)
             {
-                MessageBox.Show("Sound Test was unable to play the track you selected. The format may not be supported on your system.",
+                MessageBox.Show("Audio Player was unable to play the track you selected. The format may not be supported on your system.",
                     "Audio Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

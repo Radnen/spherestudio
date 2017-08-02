@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Views
+﻿namespace SphereStudio.Ide.BuiltIns
 {
     partial class StartPageView
     {
@@ -53,11 +53,11 @@
             this.NameLabel = new System.Windows.Forms.Label();
             this.AuthorLabel = new System.Windows.Forms.Label();
             this.SizeLabel = new System.Windows.Forms.Label();
-            this.InfoLabel = new Sphere.Core.Editor.EditorLabel();
+            this.InfoLabel = new SphereStudio.UI.DialogHeader();
             this.DescTextLabel = new System.Windows.Forms.Label();
-            this.DescLabel = new Sphere.Core.Editor.EditorLabel();
+            this.DescLabel = new SphereStudio.UI.DialogHeader();
             this.GamesPanel = new System.Windows.Forms.Panel();
-            this.GameProjectLabel = new Sphere.Core.Editor.EditorLabel();
+            this.GameProjectLabel = new SphereStudio.UI.DialogHeader();
             this.MainSplitter = new System.Windows.Forms.SplitContainer();
             this.ItemContextStrip.SuspendLayout();
             this.InfoPanel.SuspendLayout();
@@ -136,7 +136,7 @@
             // 
             // PlayGameItem
             // 
-            this.PlayGameItem.Image = global::SphereStudio.Properties.Resources.lightning;
+            this.PlayGameItem.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
             this.PlayGameItem.Name = "PlayGameItem";
             this.PlayGameItem.Size = new System.Drawing.Size(193, 22);
             this.PlayGameItem.Text = "&Play Game";
@@ -144,7 +144,7 @@
             // 
             // LoadMenuItem
             // 
-            this.LoadMenuItem.Image = global::SphereStudio.Properties.Resources.script_edit;
+            this.LoadMenuItem.Image = global::SphereStudio.Ide.Properties.Resources.script_edit;
             this.LoadMenuItem.Name = "LoadMenuItem";
             this.LoadMenuItem.Size = new System.Drawing.Size(193, 22);
             this.LoadMenuItem.Text = "&Load Project";
@@ -152,7 +152,7 @@
             // 
             // RenameProjectItem
             // 
-            this.RenameProjectItem.Image = global::SphereStudio.Properties.Resources.application_view_list;
+            this.RenameProjectItem.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
             this.RenameProjectItem.Name = "RenameProjectItem";
             this.RenameProjectItem.Size = new System.Drawing.Size(193, 22);
             this.RenameProjectItem.Text = "&Rename Project Folder";
@@ -160,7 +160,7 @@
             // 
             // OpenFolderItem
             // 
-            this.OpenFolderItem.Image = global::SphereStudio.Properties.Resources.folder;
+            this.OpenFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.folder;
             this.OpenFolderItem.Name = "OpenFolderItem";
             this.OpenFolderItem.Size = new System.Drawing.Size(193, 22);
             this.OpenFolderItem.Text = "Open Game Location";
@@ -168,7 +168,7 @@
             // 
             // SetIconItem
             // 
-            this.SetIconItem.Image = global::SphereStudio.Properties.Resources.palette;
+            this.SetIconItem.Image = global::SphereStudio.Ide.Properties.Resources.palette;
             this.SetIconItem.Name = "SetIconItem";
             this.SetIconItem.Size = new System.Drawing.Size(193, 22);
             this.SetIconItem.Text = "&Set Icon...";
@@ -183,7 +183,7 @@
             // 
             // RefreshItem
             // 
-            this.RefreshItem.Image = global::SphereStudio.Properties.Resources.arrow_refresh;
+            this.RefreshItem.Image = global::SphereStudio.Ide.Properties.Resources.arrow_refresh;
             this.RefreshItem.Name = "RefreshItem";
             this.RefreshItem.Size = new System.Drawing.Size(193, 22);
             this.RefreshItem.Text = "Re&fresh";
@@ -447,15 +447,15 @@
         private System.Windows.Forms.Panel GamesPanel;
         private System.Windows.Forms.Panel InfoPanel;
         private System.Windows.Forms.Label DescTextLabel;
-        private Sphere.Core.Editor.EditorLabel GameProjectLabel;
+        private SphereStudio.UI.DialogHeader GameProjectLabel;
         private System.Windows.Forms.ToolStripMenuItem SetIconItem;
         private System.Windows.Forms.ToolStripMenuItem ViewItem;
         private System.Windows.Forms.ToolStripMenuItem ListItem;
         private System.Windows.Forms.ToolStripMenuItem SmallIconItem;
         private System.Windows.Forms.ToolStripMenuItem LargeIconItem;
         private System.Windows.Forms.ToolStripMenuItem TilesItem;
-        private Sphere.Core.Editor.EditorLabel DescLabel;
-        private Sphere.Core.Editor.EditorLabel InfoLabel;
+        private SphereStudio.UI.DialogHeader DescLabel;
+        private SphereStudio.UI.DialogHeader InfoLabel;
         private System.Windows.Forms.SplitContainer MainSplitter;
         private System.Windows.Forms.Panel GamePanel;
         private System.Windows.Forms.SplitContainer InfoSplitter;

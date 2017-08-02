@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
+
+using SphereStudio.Base;
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {

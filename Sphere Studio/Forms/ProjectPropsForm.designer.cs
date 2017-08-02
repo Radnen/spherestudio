@@ -1,4 +1,4 @@
-﻿namespace SphereStudio.Forms
+﻿namespace SphereStudio.Ide.Forms
 {
     partial class ProjectPropsForm
     {
@@ -36,7 +36,7 @@
             this.AuthorTextBox = new System.Windows.Forms.TextBox();
             this.OKButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
-            this.editorLabel1 = new Sphere.Core.Editor.EditorLabel();
+            this.editorLabel1 = new SphereStudio.UI.DialogHeader();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.GeneralPage = new System.Windows.Forms.TabPage();
             this.ResoComboBox = new System.Windows.Forms.ComboBox();
@@ -408,7 +408,7 @@
         private System.Windows.Forms.TextBox AuthorTextBox;
         private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.Button CloseButton;
-        private Sphere.Core.Editor.EditorLabel editorLabel1;
+        private SphereStudio.UI.DialogHeader editorLabel1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage GeneralPage;
         private System.Windows.Forms.TabPage BuildPage;

@@ -37,7 +37,7 @@
             this.AnimStatus = new System.Windows.Forms.StatusStrip();
             this.AnimLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.DirLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.AnimPanel = new Sphere.Core.Editor.EditorPanel();
+            this.AnimPanel = new SphereStudio.UI.SnapPanel();
             ((System.ComponentModel.ISupportInitialize)(this.FrameTracker)).BeginInit();
             this.AnimContainer.SuspendLayout();
             this.AnimStatus.SuspendLayout();
@@ -173,7 +173,7 @@
 
         #endregion
 
-        private Sphere.Core.Editor.EditorPanel AnimPanel;
+        private SphereStudio.UI.SnapPanel AnimPanel;
         private System.Windows.Forms.Button PlayButton;
         private System.Windows.Forms.Button StopButton;
         private System.Windows.Forms.TrackBar FrameTracker;

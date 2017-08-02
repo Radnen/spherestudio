@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Sphere.Core;
+
+using SphereStudio.Vanilla;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -66,8 +67,10 @@ namespace SphereStudio.Plugins.Components
 
         public void UpdateAnimPanel()
         {
-            if (_sprite == null) return;
-            if (_sprite.Images.Count == 0) return;
+            if (_sprite == null || _sprite.Images == null)
+                return;
+            if (_sprite.Images.Count == 0)
+                return;
             AnimPanel.Width = _sprite.Images[0].Width << 1;
             AnimPanel.Height = _sprite.Images[0].Height << 1;
             int x = (AnimPanel.Parent.Width >> 1) - (AnimPanel.Width >> 1);

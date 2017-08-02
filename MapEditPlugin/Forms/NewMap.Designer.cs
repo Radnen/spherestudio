@@ -34,18 +34,18 @@
             this.HeightTextBox = new System.Windows.Forms.TextBox();
             this.XLabel = new System.Windows.Forms.Label();
             this.WidthTextBox = new System.Windows.Forms.TextBox();
-            this.SizeLabel = new Sphere.Core.Editor.EditorLabel();
+            this.SizeLabel = new SphereStudio.UI.DialogHeader();
             this.TilesetPanel = new System.Windows.Forms.Panel();
             this.TilesetButton = new System.Windows.Forms.Button();
             this.TilesetTextBox = new System.Windows.Forms.TextBox();
             this.UseExistingCheckBox = new System.Windows.Forms.CheckBox();
-            this.TilesetLabel = new Sphere.Core.Editor.EditorLabel();
+            this.TilesetLabel = new SphereStudio.UI.DialogHeader();
             this.ImageBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.TileHeightTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.TileWidthTextBox = new System.Windows.Forms.TextBox();
-            this.TileLabel = new Sphere.Core.Editor.EditorLabel();
+            this.TileLabel = new SphereStudio.UI.DialogHeader();
             this.SizePanel.SuspendLayout();
             this.TilesetPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ImageBox)).BeginInit();
@@ -287,9 +287,9 @@
         private System.Windows.Forms.Button OkayButton;
         private System.Windows.Forms.Button CnclButton;
         private System.Windows.Forms.Panel SizePanel;
-        private Sphere.Core.Editor.EditorLabel SizeLabel;
+        private SphereStudio.UI.DialogHeader SizeLabel;
         private System.Windows.Forms.Panel TilesetPanel;
-        private Sphere.Core.Editor.EditorLabel TilesetLabel;
+        private SphereStudio.UI.DialogHeader TilesetLabel;
         private System.Windows.Forms.Button TilesetButton;
         private System.Windows.Forms.TextBox TilesetTextBox;
         private System.Windows.Forms.CheckBox UseExistingCheckBox;
@@ -301,6 +301,6 @@
         private System.Windows.Forms.TextBox TileHeightTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TileWidthTextBox;
-        private Sphere.Core.Editor.EditorLabel TileLabel;
+        private SphereStudio.UI.DialogHeader TileLabel;
     }
 }

@@ -63,14 +63,14 @@
             this.ShowNumButton = new System.Windows.Forms.ToolStripButton();
             this.EditorTabs = new System.Windows.Forms.TabControl();
             this.imageTab = new System.Windows.Forms.TabPage();
-            this.TileDrawer = new Sphere.Plugins.EditShims.ImageEditShim();
+            this.TileDrawer = new SphereStudio.UI.ImageEditor();
             this.tileTab = new System.Windows.Forms.TabPage();
             this.TileEditor = new SphereStudio.Plugins.Components.TileEditor();
             this.layerTileSplit = new System.Windows.Forms.SplitContainer();
             this.LayerEditor = new SphereStudio.Plugins.Components.LayerPanel();
             this.entityListSplit = new System.Windows.Forms.SplitContainer();
             this.EntitiesControl = new SphereStudio.Plugins.Components.EntityControl();
-            this.TilesetPanel = new Sphere.Core.Editor.EditorPanel();
+            this.TilesetPanel = new SphereStudio.UI.SnapPanel();
             this.TilesetControl = new SphereStudio.Plugins.Components.TilesetControl2();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
@@ -610,7 +610,7 @@
         private System.Windows.Forms.ToolStripButton zoomInButton;
         private System.Windows.Forms.ToolStripButton zoomOutButton;
         private System.Windows.Forms.SplitContainer layerTileSplit;
-        private Sphere.Core.Editor.EditorPanel TilesetPanel;
+        private SphereStudio.UI.SnapPanel TilesetPanel;
         private System.Windows.Forms.ToolStripContainer MapToolContainer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton undoButton;
@@ -632,7 +632,7 @@
         public Components.TilesetControl2 TilesetControl;
         public Components.MapControl MapControl;
         private System.Windows.Forms.ToolStripButton ShowNumButton;
-        private Sphere.Plugins.EditShims.ImageEditShim TileDrawer;
+        private SphereStudio.UI.ImageEditor TileDrawer;
         private System.Windows.Forms.SplitContainer entityListSplit;
         private Components.EntityControl EntitiesControl;
 

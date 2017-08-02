@@ -1,21 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Studio\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Plugins", "Sphere.Plugins\Sphere.Plugins.csproj", "{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F58A8DB0-1879-41D2-A349-4FB8991AF3D2} = {F58A8DB0-1879-41D2-A349-4FB8991AF3D2}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListPlugin", "TaskListPlugin\TaskListPlugin.csproj", "{F7434DEC-A94A-409C-A320-7585B4083A6A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F58A8DB0-1879-41D2-A349-4FB8991AF3D2} = {F58A8DB0-1879-41D2-A349-4FB8991AF3D2}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere.Core", "Sphere.Core\Sphere.Core.csproj", "{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudio.Base", "SphereStudio.Base\SphereStudio.Base.csproj", "{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEditPlugin", "ScriptEditPlugin\ScriptEditPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
 EndProject
@@ -31,7 +26,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditPlugin", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "SpritesetEditPlugin\SpritesetEditPlugin.csproj", "{9FEA4A11-754F-4F4B-8A85-B0E780F15159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassicSpherePlugin", "ClassicSpherePlugin\ClassicSpherePlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegacySpherePlugin", "ClassicSpherePlugin\LegacySpherePlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudio.Vanilla", "SphereStudio.Vanilla\SphereStudio.Vanilla.csproj", "{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +40,6 @@ Global
 		{9CAC2194-E0C8-4164-9D47-627520E79B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CAC2194-E0C8-4164-9D47-627520E79B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CAC2194-E0C8-4164-9D47-627520E79B95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D04ED42-D252-4FD2-BE00-DF4A2D122BE3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7434DEC-A94A-409C-A320-7585B4083A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,6 +80,10 @@ Global
 		{DA72D708-3F08-4804-B5BB-5A1A78B16605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA72D708-3F08-4804-B5BB-5A1A78B16605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA72D708-3F08-4804-B5BB-5A1A78B16605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FrameImage = new Sphere.Core.Editor.EditorPanel();
+            this.FrameImage = new SphereStudio.UI.SnapPanel();
             this.BaseStatusStrip = new System.Windows.Forms.StatusStrip();
             this.XYLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.WHLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.DirectionLabel = new Sphere.Core.Editor.EditorLabel();
+            this.DirectionLabel = new SphereStudio.UI.DialogHeader();
             this.BasePanel = new System.Windows.Forms.Panel();
             this.BaseStatusStrip.SuspendLayout();
             this.BasePanel.SuspendLayout();
@@ -126,11 +126,11 @@
 
         #endregion
 
-        private Sphere.Core.Editor.EditorPanel FrameImage;
+        private SphereStudio.UI.SnapPanel FrameImage;
         private System.Windows.Forms.StatusStrip BaseStatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel XYLabel;
         private System.Windows.Forms.ToolStripStatusLabel WHLabel;
-        private Sphere.Core.Editor.EditorLabel DirectionLabel;
+        private SphereStudio.UI.DialogHeader DirectionLabel;
         private System.Windows.Forms.Panel BasePanel;
     }
 }

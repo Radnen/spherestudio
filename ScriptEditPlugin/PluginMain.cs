@@ -5,12 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using Sphere.Core;
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
+using SphereStudio.Base;
+using SphereStudio.Plugins.Properties;
+using SphereStudio.UI;
 
-namespace SphereStudio.ScriptEditor
+namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
     {
@@ -30,7 +29,7 @@ namespace SphereStudio.ScriptEditor
         {
             FileTypeName = "JavaScript Source";
             FileExtensions = new[] { "js", "mjs", "ts", "json" };
-            FileIcon = Properties.Resources.ScriptIcon;
+            FileIcon = Resources.ScriptIcon;
 
             InitializeAutoComplete();
             InitializeMenuItems();
@@ -58,7 +57,7 @@ namespace SphereStudio.ScriptEditor
             Functions.Clear();
         }
 
-        public ScriptView CreateEditView() => new ScriptEditView(this);
+        public ScriptView CreateEditView() => new ScriptEditView(this, true);
 
         public DocumentView New()
         {
@@ -89,7 +88,7 @@ namespace SphereStudio.ScriptEditor
         }
 
         // restyle all script controls that changed.
-        private void UpdateScriptControls() => PluginManager.Core.Refresh();
+        private void UpdateScriptControls() => Styler.Refresh();
 
         #region initialize the script menu
         private ToolStripMenuItem _rootMenu, _indentMenu;
@@ -128,7 +127,7 @@ namespace SphereStudio.ScriptEditor
             _eightUnitItem = new ToolStripMenuItem("8 units");
             _eightUnitItem.Click += menuTabStop8_Click;
 
-            _changeFontItem = new ToolStripMenuItem("Change Font...", Properties.Resources.FontIcon);
+            _changeFontItem = new ToolStripMenuItem("Change Font...", Resources.FontIcon);
             _changeFontItem.Click += menuFont_Click;
             _changeFontItem.Enabled = false;
 

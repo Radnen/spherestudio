@@ -33,7 +33,7 @@
             this.components = new System.ComponentModel.Container();
             this.EditorLabel = new System.Windows.Forms.Label();
             this.ImageHolder = new System.Windows.Forms.Panel();
-            this.TileImage = new Sphere.Core.Editor.EditorPanel();
+            this.TileImage = new SphereStudio.UI.SnapPanel();
             this.ZoomStatusStrip = new System.Windows.Forms.StatusStrip();
             this.ZoomLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.TileToolStrip = new System.Windows.Forms.ToolStrip();
@@ -70,11 +70,11 @@
             this.BackButton = new System.Windows.Forms.Button();
             this.NextButton = new System.Windows.Forms.Button();
             this.NamePanel = new System.Windows.Forms.Panel();
-            this.NameLabel = new Sphere.Core.Editor.EditorLabel();
+            this.NameLabel = new SphereStudio.UI.DialogHeader();
             this.AnimationPanel = new System.Windows.Forms.Panel();
             this.PropPanel = new System.Windows.Forms.Panel();
             this.AnimLabel = new System.Windows.Forms.Label();
-            this.ObstLabel = new Sphere.Core.Editor.EditorLabel();
+            this.ObstLabel = new SphereStudio.UI.DialogHeader();
             this.ImageContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ZoomInItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ZoomOutItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -657,7 +657,7 @@
 
         private System.Windows.Forms.Label EditorLabel;
         private System.Windows.Forms.Panel ImageHolder;
-        private Sphere.Core.Editor.EditorPanel TileImage;
+        private SphereStudio.UI.SnapPanel TileImage;
         private System.Windows.Forms.ToolStrip TileToolStrip;
         private System.Windows.Forms.ToolStripButton LineButton;
         private System.Windows.Forms.ToolStripButton RectangleButton;
@@ -695,7 +695,7 @@
         private System.Windows.Forms.Panel ButtonPanel;
         private System.Windows.Forms.Panel PropPanel;
         private System.Windows.Forms.Panel NamePanel;
-        private Sphere.Core.Editor.EditorLabel NameLabel;
+        private SphereStudio.UI.DialogHeader NameLabel;
         private System.Windows.Forms.Panel TileEditorPanel;
         private System.Windows.Forms.ToolStripButton ClearObstButton;
         private System.Windows.Forms.ContextMenuStrip ImageContextStrip;
@@ -703,6 +703,6 @@
         private System.Windows.Forms.ToolStripMenuItem ZoomOutItem;
         private System.Windows.Forms.ToolStripSeparator StripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ClearItem;
-        private Sphere.Core.Editor.EditorLabel ObstLabel;
+        private SphereStudio.UI.DialogHeader ObstLabel;
     }
 }

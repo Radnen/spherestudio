@@ -10,15 +10,16 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Sphere.Plugins;
-using Sphere.Plugins.Interfaces;
-using Sphere.Plugins.Views;
-using Sphere.Core;
-using Sphere.Core.Editor;
+using SphereStudio;
+using SphereStudio.Ide;
+using SphereStudio.Ide.BuiltIns;
+using SphereStudio.Ide.Utility;
+using SphereStudio.Base;
+using SphereStudio.UI;
 
-namespace SphereStudio.Forms
+namespace SphereStudio.Ide.Forms
 {
-    partial class ConfigManager : Form
+    partial class ConfigManager : Form, IStyleable
     {
         private bool _updatingDefaultsLists = false;
         private bool _updatingPresets = false;
@@ -33,6 +34,25 @@ namespace SphereStudio.Forms
             UpdateDefaultsLists();
             
             PresetsList_SelectedIndexChanged(null, EventArgs.Empty);
+
+            Styler.AutoStyle(this);
+        }
+
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsUIElement(this);
+            style.AsAccent(OKButton);
+            style.AsAccent(SavePresetButton);
+            style.AsAccent(DeletePresetButton);
+            style.AsUIElement(tabControl1);
+            style.AsUIElement(panel2);
+            style.AsTextView(EnginePluginList);
+            style.AsTextView(CompilerPluginList);
+            style.AsTextView(ScriptPluginList);
+            style.AsTextView(ImagePluginList);
+            style.AsTextView(FilePluginList);
+            style.AsTextView(PresetsList);
+            style.AsTextView(PluginsList);
         }
 
         private string GetPluginName(ComboBox comboBox)
