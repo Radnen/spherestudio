@@ -13,12 +13,12 @@ namespace SphereStudio.Plugins
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 
-        private TaskListDockPane _list;
+        private TaskListPane _list;
 
         public void Initialize(ISettings conf)
         {
             // Create a new instance of your custom widget, like so:
-            _list = new TaskListDockPane { Dock = DockStyle.Fill };
+            _list = new TaskListPane { Dock = DockStyle.Fill };
 
             // Register the task list as a plugin. Since TaskList implements
             // IDockPane, this also automatically adds an entry for it to the View menu.

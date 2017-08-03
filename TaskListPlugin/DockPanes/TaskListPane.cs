@@ -9,7 +9,7 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Plugins.UI
 {
-    internal partial class TaskListDockPane : UserControl, IDockPane, IStyleAware
+    internal partial class TaskListPane : UserControl, IDockPane, IStyleAware
     {
         private readonly ImageList _imagelist = new ImageList();
 
@@ -21,7 +21,7 @@ namespace SphereStudio.Plugins.UI
         // the location to search for a task list:
         private string RootPath { get; set; }
 
-        public TaskListDockPane()
+        public TaskListPane()
         {
             InitializeComponent();
             _imagelist.ColorDepth = ColorDepth.Depth32Bit;
@@ -211,6 +211,9 @@ namespace SphereStudio.Plugins.UI
 
         public void ApplyStyle(UIStyle style)
         {
+            ObjectTaskList.AlternateRowBackColor = style.LabelColor;
+            ObjectTaskList.SelectedBackColor = style.BackColor;
+            ObjectTaskList.UseAlternatingBackColors = true;
             style.AsTextView(ObjectTaskList);
             style.AsUIElement(toolStrip1);
         }

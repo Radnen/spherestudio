@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Plugins.UI
 {
-    partial class TaskListDockPane
+    partial class TaskListPane
     {
         /// <summary> 
         /// Required designer variable.
@@ -197,6 +197,7 @@
             this.ObjectTaskList.AllColumns.Add(this.olvColumn3);
             this.ObjectTaskList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ObjectTaskList.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
+            this.ObjectTaskList.CellEditUseWholeCell = false;
             this.ObjectTaskList.CheckBoxes = true;
             this.ObjectTaskList.CheckedAspectName = "Finished";
             this.ObjectTaskList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -204,8 +205,9 @@
             this.olvColumn2,
             this.olvColumn3});
             this.ObjectTaskList.ContextMenuStrip = this.TaskListMenuStrip;
+            this.ObjectTaskList.Cursor = System.Windows.Forms.Cursors.Default;
             this.ObjectTaskList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ObjectTaskList.EmptyListMsg = "\"No Tasks Hooray!\"";
+            this.ObjectTaskList.EmptyListMsg = "no tasks";
             this.ObjectTaskList.FullRowSelect = true;
             this.ObjectTaskList.GroupWithItemCountFormat = "";
             this.ObjectTaskList.Location = new System.Drawing.Point(0, 23);
@@ -222,30 +224,29 @@
             // olvColumn1
             // 
             this.olvColumn1.AspectName = "Name";
-            this.olvColumn1.CellPadding = null;
             this.olvColumn1.Text = "Name";
             this.olvColumn1.UseInitialLetterForGroup = true;
-            this.olvColumn1.Width = 96;
+            this.olvColumn1.Width = 200;
             // 
             // olvColumn2
             // 
             this.olvColumn2.AspectName = "Priority";
-            this.olvColumn2.CellPadding = null;
             this.olvColumn2.Text = "Priority";
+            this.olvColumn2.Width = 50;
             // 
             // olvColumn3
             // 
             this.olvColumn3.AspectName = "Type";
-            this.olvColumn3.CellPadding = null;
             this.olvColumn3.Text = "Type";
+            this.olvColumn3.Width = 100;
             // 
-            // TaskList
+            // TaskListPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ObjectTaskList);
             this.Controls.Add(this.toolStrip1);
-            this.Name = "TaskList";
+            this.Name = "TaskListPane";
             this.Size = new System.Drawing.Size(358, 324);
             this.TaskListMenuStrip.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);

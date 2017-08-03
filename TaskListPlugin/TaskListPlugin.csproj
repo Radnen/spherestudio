@@ -53,11 +53,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Task.cs" />
-    <Compile Include="DockPanes\TaskListDockPane.cs">
+    <Compile Include="DockPanes\TaskListPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DockPanes\TaskListDockPane.Designer.cs">
-      <DependentUpon>TaskListDockPane.cs</DependentUpon>
+    <Compile Include="DockPanes\TaskListPane.Designer.cs">
+      <DependentUpon>TaskListPane.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
@@ -73,8 +73,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="DockPanes\TaskListDockPane.resx">
-      <DependentUpon>TaskListDockPane.cs</DependentUpon>
+    <EmbeddedResource Include="DockPanes\TaskListPane.resx">
+      <DependentUpon>TaskListPane.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
