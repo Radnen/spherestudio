@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins
+﻿namespace SphereStudio.Plugins.UI
 {
-    partial class SoundPicker
+    partial class AudioPlayerPane
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundPicker));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AudioPlayerPane));
             this.toolbar = new System.Windows.Forms.ToolStrip();
             this.stopTool = new System.Windows.Forms.ToolStripButton();
             this.pauseTool = new System.Windows.Forms.ToolStripButton();
@@ -146,7 +146,7 @@
             this.Controls.Add(this.trackNameLabel);
             this.Controls.Add(this.toolbar);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "SoundPicker";
+            this.Name = "PlayerDockPane";
             this.Size = new System.Drawing.Size(351, 477);
             this.toolbar.ResumeLayout(false);
             this.toolbar.PerformLayout();

@@ -17,7 +17,7 @@ using SphereStudio.UI;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class StartPageView : DocumentView, IStyleable
+    partial class StartPageView : DocumentView, IStyleAware
     {
         private Project _proj;
         private ListViewItem _currentItem;
@@ -49,7 +49,7 @@ namespace SphereStudio.Ide.BuiltIns
             GameFolders.SmallImageList = _listIconsSmall;
 
             InitializeView();
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public override bool CanSave { get { return false; } }

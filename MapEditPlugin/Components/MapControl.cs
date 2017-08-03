@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
+using SphereStudio.Base;
 using SphereStudio.Plugins.Forms;
 using SphereStudio.Plugins.UndoRedo;
 using SphereStudio.Utility;

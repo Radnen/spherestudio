@@ -3,21 +3,21 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 
-using SphereStudio;
+using SphereStudio.Base;
 using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class AboutDialog : Form, IStyleable
+    partial class AboutDialog : Form, IStyleAware
     {
         public AboutDialog()
         {
             InitializeComponent();
 
-            this.Text = String.Format("About {0}", Versioning.Name);
-            this.labelProductName.Text = string.Format("{0} {1}", Versioning.Name, Versioning.Version);
-            this.labelCopyright.Text = string.Format("\xA9 {0}", Versioning.Copyright);
-            this.labelCompanyName.Text = "By: " + Versioning.Author;
+            this.Text = $"About {Versioning.Name}";
+            this.labelProductName.Text = $"{Versioning.Name} {Versioning.Version}";
+            this.labelCopyright.Text = $"\xA9 {Versioning.Copyright}";
+            this.labelCompanyName.Text = $"By: {Versioning.Author}";
 
             // get the installed Windows version
             var os = Environment.OSVersion;
@@ -27,7 +27,7 @@ namespace SphereStudio.Ide.Forms
                 : os.Version.Major == 6 && os.Version.Minor == 2 ? "8"
                 : os.Version.Major == 6 && os.Version.Minor == 3 ? "8.1"
                 : os.Version.Major == 10 && os.Version.Minor == 0 ? "10"
-                : string.Format("{0}.{1}", os.Version.Major, os.Version.Minor);
+                : $"{os.Version.Major}.{os.Version.Minor}";
             string updateName = os.ServicePack;
             if (os.Version.Major == 10 && os.Version.Minor == 0)
             {
@@ -37,12 +37,12 @@ namespace SphereStudio.Ide.Forms
                     : os.Version.Build == 10586 ? "November Update"
                     : os.Version.Build == 14393 ? "Anniversary Update"
                     : os.Version.Build == 15063 ? "Creators Update"
-                    : string.Format("v{0}.{1}.{2}", os.Version.Major, os.Version.Minor, os.Version.Build);
+                    : $"v{os.Version.Major}.{os.Version.Minor}.{os.Version.Build}";
             }
-            this.labelPlatform.Text = string.Format("Windows\x2122 {0}\n{1}", windowsVersion, updateName);
+            this.labelPlatform.Text = $"Windows\x2122 {windowsVersion}\n{updateName}";
             this.textBoxDescription.Text = Versioning.Credits;
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public void ApplyStyle(UIStyle style)

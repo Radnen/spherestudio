@@ -9,7 +9,7 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class ProjectPropsForm : Form, IStyleable
+    partial class ProjectPropsForm : Form, IStyleAware
     {
         private Project _project;
         private bool _resoChanging = false;

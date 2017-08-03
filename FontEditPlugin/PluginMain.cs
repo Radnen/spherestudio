@@ -8,7 +8,7 @@ namespace SphereStudio.Plugins
     public class PluginMain : IPluginMain, INewFileOpener
     {
         public string Name { get; } = "Font Importer";
-        public string Description { get; } = "Convert TrueType fonts to Sphere .rfn format.";
+        public string Description { get; } = "Convert TrueType fonts to Sphere RFN format.";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace SphereStudio.UI
+namespace SphereStudio.Base
 {
     /// <summary>
     /// Represents a theme used for styling the IDE's UI elements.

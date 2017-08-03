@@ -22,14 +22,14 @@ namespace SphereStudio.Ide
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
     /// </summary>
-    partial class IdeWindow : Form, ICore, IStyleable
+    partial class IdeWindow : Form, ICore, IStyleAware
     {
         private DocumentTab _activeTab;
         private string _defaultActiveName;
         private DockManager _dock = null;
         private bool _isFirstDebugStop;
         private bool _loadingPresets = false;
-        private ProjectDockPane _projectTree;
+        private ProjectTreePane _projectTree;
         private StartPageView _startPage = null;
         private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
@@ -57,7 +57,7 @@ namespace SphereStudio.Ide
             if (Core.Settings.AutoOpenLastProject)
                 menuOpenLastProject_Click(null, EventArgs.Empty);
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public event EventHandler LoadProject;
@@ -69,7 +69,7 @@ namespace SphereStudio.Ide
         public IDock Docking { get { return _dock; } }
         public IProject Project { get { return Core.Project; } }
         public ICoreSettings Settings { get { return Core.Settings; } }
-        public UIStyle Style { get { return Styler.Style; } }
+        public UIStyle Style { get { return StyleManager.Style; } }
 
         protected bool StartVisible
         {
@@ -761,7 +761,7 @@ namespace SphereStudio.Ide
         #region Private IDE routines
         private void InitializeDocking()
         {
-            _projectTree = new ProjectDockPane(this);
+            _projectTree = new ProjectTreePane(this);
             _dock = new DockManager(MainDock);
         }
 

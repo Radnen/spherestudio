@@ -7,12 +7,11 @@ using System.Text;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.UI;
 using SphereStudio.Utility;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.Plugins.UI
 {
-    partial class SoundPicker : UserControl, IDockPane, IFileOpener, IStyleable
+    partial class AudioPlayerPane : UserControl, IDockPane, IFileOpener, IStyleAware
     {
         private readonly string[] _fileTypes = new[] 
         {
@@ -36,10 +35,10 @@ namespace SphereStudio.Plugins
         private IPlayer _music;
         private string _musicName;
 
-        public SoundPicker(IPluginMain plugin)
+        public AudioPlayerPane(IPluginMain plugin)
         {
             InitializeComponent();
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
 
             FileExtensions = new[]
             {
@@ -67,7 +66,7 @@ namespace SphereStudio.Plugins
 
         public bool ShowInViewMenu => true;
         public Control Control => this;
-        public DockHint DockHint => DockHint.Left;
+        public DockHint DockHint => DockHint.Right;
         public Bitmap DockIcon => Properties.Resources.Icon;
 
         public string FileTypeName => "Audio File";

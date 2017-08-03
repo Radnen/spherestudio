@@ -16,20 +16,20 @@ using SphereStudio.UI;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class ProjectDockPane : UserControl, IDockPane, IStyleable
+    partial class ProjectTreePane : UserControl, IDockPane, IStyleAware
     {
         private readonly IdeWindow _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public ProjectDockPane(IdeWindow hostForm)
+        public ProjectTreePane(IdeWindow hostForm)
         {
             InitializeComponent();
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
 
             _hostForm = hostForm;
 
-            // TODO: Fix this ugly hack! (ProjectTree New submenu)
+            // TODO: fix this ugly hack! (ProjectTree New submenu)
             NewFileItem.DropDown = _hostForm.menuNew.DropDown;
             NewFileItem.DropDownOpening += _hostForm.menuNew_DropDownOpening;
             NewFileItem.DropDownClosed += _hostForm.menuNew_DropDownClosed;
@@ -44,7 +44,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         public bool ShowInViewMenu => true;
         public Control Control => this;
-        public DockHint DockHint => DockHint.Left;
+        public DockHint DockHint => DockHint.Right;
         public Bitmap DockIcon => Resources.SphereEditor;
 
         protected override void OnPaint(PaintEventArgs e)

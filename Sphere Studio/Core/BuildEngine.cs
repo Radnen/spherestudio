@@ -17,14 +17,14 @@ namespace SphereStudio.Ide
     /// </summary>
     static class BuildEngine
     {
-        private static BuildLogDockPane _buildView;
+        private static BuildLogPane _buildView;
 
         /// <summary>
         /// Initializes the build system.
         /// </summary>
         public static void Initialize()
         {
-            _buildView = new BuildLogDockPane();
+            _buildView = new BuildLogPane();
             PluginManager.Register(null, _buildView, "Build Log");
         }
 

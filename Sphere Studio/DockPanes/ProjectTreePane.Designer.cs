@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.BuiltIns
 {
-    partial class ProjectDockPane
+    partial class ProjectTreePane
     {
         /// <summary> 
         /// Required designer variable.

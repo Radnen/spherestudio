@@ -10,14 +10,14 @@ using SphereStudio.Base;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class BuildLogDockPane : UserControl, IConsole, IDockPane, IStyleable
+    partial class BuildLogPane : UserControl, IConsole, IDockPane, IStyleAware
     {
         private string output = "";
 
-        public BuildLogDockPane()
+        public BuildLogPane()
         {
             InitializeComponent();
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public Control Control { get { return this; } }

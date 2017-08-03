@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using SphereStudio.Base;
 using SphereStudio.UI;
 using SphereStudio.Vanilla;
 

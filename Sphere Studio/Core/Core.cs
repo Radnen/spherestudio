@@ -253,8 +253,8 @@ namespace SphereStudio.Ide
             foreach (var plugin in Core.Plugins)
                 plugin.Value.Enabled = !DisabledPlugins.Contains(plugin.Key);
             PluginManager.Core.Docking.Refresh();
-            if (UIStyle != null && Styler.Style != UIStyle)
-                Styler.Style = UIStyle;
+            if (UIStyle != null && StyleManager.Style != UIStyle)
+                StyleManager.Style = UIStyle;
         }
     }
 }

@@ -2,14 +2,14 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-using SphereStudio.UI;
+using SphereStudio.Base;
 
 namespace SphereStudio.UI
 {
     /// <summary>
     /// A dialog header which automatically adapts to the UI style.
     /// </summary>
-    public class DialogHeader : Label, IStyleable
+    public class DialogHeader : Label, IStyleAware
     {
         private static readonly Brush BgBrush = new TextureBrush(Properties.Resources.BarImage);
 
@@ -23,7 +23,7 @@ namespace SphereStudio.UI
             AutoSize = false;
             Dock = DockStyle.Top;
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         /// <summary>

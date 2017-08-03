@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEditPlugin", "ScriptE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontEditPlugin", "FontEditPlugin\FontEditPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTestPlugin", "SoundTestPlugin\SoundTestPlugin.csproj", "{F1B89568-607D-4CEC-9C11-6C516D98E2EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayerPlugin", "SoundTestPlugin\AudioPlayerPlugin.csproj", "{F1B89568-607D-4CEC-9C11-6C516D98E2EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditPlugin", "MapEditPlugin\MapEditPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
 EndProject

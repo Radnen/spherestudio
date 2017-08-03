@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.BuiltIns
 {
-    partial class BuildLogDockPane
+    partial class BuildLogPane
     {
         /// <summary> 
         /// Required designer variable.

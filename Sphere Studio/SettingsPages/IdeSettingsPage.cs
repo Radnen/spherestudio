@@ -14,12 +14,12 @@ using SphereStudio.UI;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class IdeSettingsPage : UserControl, ISettingsPage, IStyleable
+    partial class IdeSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
         public IdeSettingsPage()
         {
             InitializeComponent();
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public Control Control { get => this; }

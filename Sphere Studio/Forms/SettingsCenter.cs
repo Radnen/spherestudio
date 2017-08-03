@@ -13,7 +13,7 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class SettingsCenter : Form, IStyleable
+    partial class SettingsCenter : Form, IStyleAware
     {
         private List<ISettingsPage> _applyList = new List<ISettingsPage>();
         private Control _currentPage = null;
@@ -21,7 +21,7 @@ namespace SphereStudio.Ide.Forms
         public SettingsCenter()
         {
             InitializeComponent();
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public void ApplyStyle(UIStyle style)

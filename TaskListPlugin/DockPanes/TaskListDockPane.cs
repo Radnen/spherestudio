@@ -6,11 +6,10 @@ using System.Linq;
 using System.Windows.Forms;
 
 using SphereStudio.Base;
-using SphereStudio.UI;
 
-namespace SphereStudio.Plugins
+namespace SphereStudio.Plugins.UI
 {
-    internal partial class TaskList : UserControl, IDockPane, IStyleable
+    internal partial class TaskListDockPane : UserControl, IDockPane, IStyleAware
     {
         private readonly ImageList _imagelist = new ImageList();
 
@@ -22,7 +21,7 @@ namespace SphereStudio.Plugins
         // the location to search for a task list:
         private string RootPath { get; set; }
 
-        public TaskList()
+        public TaskListDockPane()
         {
             InitializeComponent();
             _imagelist.ColorDepth = ColorDepth.Depth32Bit;
@@ -50,7 +49,7 @@ namespace SphereStudio.Plugins
                 SetPriorityItem.DropDownItems.Add(s, Properties.Resources.resultset_none, eh);
             }
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public bool ShowInViewMenu => true;

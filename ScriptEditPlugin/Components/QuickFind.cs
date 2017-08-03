@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using SphereStudio;
-using SphereStudio.UI;
-
 using ScintillaNET;
+
+using SphereStudio.Base;
 
 namespace SphereStudio.Plugins.Components
 {
@@ -19,7 +13,7 @@ namespace SphereStudio.Plugins.Components
     /// Implements the Quick Find box (fast Search and Replace).
     /// </summary>
     [ToolboxItem(false)]
-    public partial class QuickFind : UserControl, IStyleable
+    public partial class QuickFind : UserControl, IStyleAware
     {
         // some of the logic here may seem a bit hard to follow.  unfortunately most
         // of the spaghetti is necessary, to keep the UI usable.  notes:
@@ -59,7 +53,7 @@ namespace SphereStudio.Plugins.Components
             m_parent = parent;
             m_parent.Controls.Add(this);
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         /// <summary>
@@ -71,7 +65,7 @@ namespace SphereStudio.Plugins.Components
         {
             bool wasVisibleBefore = Visible;
 
-            ApplyStyle(Styler.Style);
+            ApplyStyle(StyleManager.Style);
 
             SuspendLayout();
             TitleLabel.Text = replace ? "Quick Replace" : "Quick Find";
@@ -187,8 +181,8 @@ namespace SphereStudio.Plugins.Components
             }
             if (pos != Scintilla.InvalidPosition)
             {
-                FindTextBox.ForeColor = Styler.Style.TextColor;
-                FindTextBox.BackColor = Styler.Style.BackColor;
+                FindTextBox.ForeColor = StyleManager.Style.TextColor;
+                FindTextBox.BackColor = StyleManager.Style.BackColor;
                 ReplaceButton.Enabled = true;
                 ReplaceAllButton.Enabled = true;
                 int line = m_codeBox.LineFromPosition(m_codeBox.TargetStart);

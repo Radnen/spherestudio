@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SphereStudio.UI
+namespace SphereStudio.Base
 {
     /// <summary>
     /// Manages and applies UI styles throughout the IDE.
     /// </summary>
-    public static class Styler
+    public static class StyleManager
     {
-        static List<WeakReference<IStyleable>> m_Styleables = new List<WeakReference<IStyleable>>();
+        static List<WeakReference<IStyleAware>> m_Styleables = new List<WeakReference<IStyleAware>>();
         static UIStyle m_Style;
 
         /// <summary>
@@ -29,12 +29,12 @@ namespace SphereStudio.UI
         /// Registers an IStyleable component to be automatically styled.
         /// </summary>
         /// <param name="component">An object implementing IStyleable.</param>
-        public static void AutoStyle(IStyleable component)
+        public static void AutoStyle(IStyleAware component)
         {
             // this is a clever use of weak references I think: we only style controls
             // as long as they have active references elsewhere, without keeping them
             // alive unnecessarily with a strong reference.
-            var weakRef = new WeakReference<IStyleable>(component);
+            var weakRef = new WeakReference<IStyleAware>(component);
             m_Styleables.Add(weakRef);
             if (Style != null)
                 component.ApplyStyle(Style);
@@ -56,7 +56,7 @@ namespace SphereStudio.UI
             // restyle all registered components
             foreach (var stylableRef in m_Styleables)
             {
-                stylableRef.TryGetTarget(out IStyleable component);
+                stylableRef.TryGetTarget(out IStyleAware component);
                 if (component != null)
                 {
                     component.ApplyStyle(m_Style);

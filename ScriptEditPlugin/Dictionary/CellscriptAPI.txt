@@ -5,8 +5,10 @@
 # the names of Cellscript API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
+error
 files
 install
+warn
 
 FS
 FileOp
@@ -15,3 +17,4 @@ RNG
 Sphere
 TextDecoder
 TextEncoder
+Tool

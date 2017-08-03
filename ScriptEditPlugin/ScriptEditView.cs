@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
 using ScintillaNET;
 
 using SphereStudio.Base;
@@ -21,7 +20,7 @@ namespace SphereStudio.Plugins
         Cellscript,
     }
 
-    public partial class ScriptEditView : ScriptView, IStyleable
+    public partial class ScriptEditView : ScriptView, IStyleAware
     {
         private Scintilla _codeBox = new Scintilla();
 
@@ -51,10 +50,10 @@ namespace SphereStudio.Plugins
 
             _codeBox.BorderStyle = BorderStyle.None;
             _codeBox.Dock = DockStyle.Fill;
-            _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
-            _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
-            _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
-            _codeBox.Styles[Style.Default].BackColor = Styler.Style.BackColor;
+            _codeBox.Styles[Style.Default].Font = StyleManager.Style.FixedFont.Name;
+            _codeBox.Styles[Style.Default].SizeF = StyleManager.Style.FixedFont.Size;
+            _codeBox.Styles[Style.Default].ForeColor = StyleManager.Style.TextColor;
+            _codeBox.Styles[Style.Default].BackColor = StyleManager.Style.BackColor;
             _codeBox.StyleClearAll();
             _codeBox.CharAdded += codeBox_CharAdded;
             _codeBox.InsertCheck += codeBox_InsertCheck;
@@ -73,7 +72,7 @@ namespace SphereStudio.Plugins
                 InitializeFolding();
             }
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         private void codeBox_TextChanged(object sender, EventArgs e)
@@ -298,11 +297,11 @@ namespace SphereStudio.Plugins
             bool useFolding = _main.Settings.GetBoolean("script-fold", true);
             _codeBox.Margins[2].Width = useFolding ? 16 : 0;
 
-            _codeBox.CaretForeColor = Styler.Style.TextColor;
-            _codeBox.Styles[Style.Default].Font = Styler.Style.FixedFont.Name;
-            _codeBox.Styles[Style.Default].SizeF = Styler.Style.FixedFont.Size;
-            _codeBox.Styles[Style.Default].ForeColor = Styler.Style.TextColor;
-            _codeBox.Styles[Style.Default].BackColor = Styler.Style.BackColor;
+            _codeBox.CaretForeColor = StyleManager.Style.TextColor;
+            _codeBox.Styles[Style.Default].Font = StyleManager.Style.FixedFont.Name;
+            _codeBox.Styles[Style.Default].SizeF = StyleManager.Style.FixedFont.Size;
+            _codeBox.Styles[Style.Default].ForeColor = StyleManager.Style.TextColor;
+            _codeBox.Styles[Style.Default].BackColor = StyleManager.Style.BackColor;
             _codeBox.StyleClearAll();
             InitializeFolding();
             InitializeHighlighting(_lastKnownFileName);
@@ -373,8 +372,8 @@ namespace SphereStudio.Plugins
             _codeBox.SetProperty("fold.compact", "1");
             _codeBox.AutomaticFold = AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change;
             _codeBox.SetFoldFlags(FoldFlags.LineAfterContracted);
-            _codeBox.SetFoldMarginColor(true, Styler.Style.BackColor);
-            _codeBox.SetFoldMarginHighlightColor(true, Styler.Style.BackColor);
+            _codeBox.SetFoldMarginColor(true, StyleManager.Style.BackColor);
+            _codeBox.SetFoldMarginHighlightColor(true, StyleManager.Style.BackColor);
         }
 
         private void InitializeHighlighting(string fileName)
@@ -387,12 +386,12 @@ namespace SphereStudio.Plugins
             // define colors for syntax highlighting.  the colors below were chosen to be very
             // similar to the Sphere 1.x editor.
             //_codeBox.SetSelectionForeColor(true, Styler.Style.TextColor);
-            _codeBox.SetSelectionBackColor(true, Styler.Style.HighlightColor);
+            _codeBox.SetSelectionBackColor(true, StyleManager.Style.HighlightColor);
             _codeBox.Styles[Style.BraceLight].ForeColor = Color.Chartreuse;
             _codeBox.Styles[Style.BraceLight].BackColor = Color.DarkGreen;
             _codeBox.Styles[Style.BraceBad].ForeColor = Color.Orange;
             _codeBox.Styles[Style.BraceBad].BackColor = Color.DarkRed;
-            if (Styler.Style.BackColor.GetBrightness() < 0.5)
+            if (StyleManager.Style.BackColor.GetBrightness() < 0.5)
             {
                 _codeBox.Styles[Style.Cpp.Character].ForeColor = Color.DarkSalmon;
                 _codeBox.Styles[Style.Cpp.Comment].ForeColor = Color.OliveDrab;
@@ -401,7 +400,7 @@ namespace SphereStudio.Plugins
                 _codeBox.Styles[Style.Cpp.CommentLineDoc].ForeColor = Color.DimGray;
                 _codeBox.Styles[Style.Cpp.GlobalClass].ForeColor = Color.LightSeaGreen;
                 _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkSalmon;
-                _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Gray;
+                _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Plum;
                 _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.AntiqueWhite;
                 _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkSalmon;
                 _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
@@ -459,8 +458,8 @@ namespace SphereStudio.Plugins
         {
             // define folding icons.  why this isn't done for us is completely beyond me.
             for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++) {
-                _codeBox.Markers[i].SetForeColor(Styler.Style.BackColor);
-                _codeBox.Markers[i].SetBackColor(Styler.Style.TextColor);
+                _codeBox.Markers[i].SetForeColor(StyleManager.Style.BackColor);
+                _codeBox.Markers[i].SetBackColor(StyleManager.Style.TextColor);
             }
             _codeBox.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
             _codeBox.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
@@ -484,13 +483,13 @@ namespace SphereStudio.Plugins
             _codeBox.Markers[2].Symbol = MarkerSymbol.Background;  // error highlight
             _codeBox.Markers[2].SetBackColor(Color.FromArgb(96, 48, 48));
             _codeBox.Markers[3].Symbol = MarkerSymbol.Background;  // current line highlight
-            _codeBox.Markers[3].SetBackColor(Styler.Style.AccentColor);
+            _codeBox.Markers[3].SetBackColor(StyleManager.Style.AccentColor);
 
             // line number margin.  dynamically resized as content changes.
             _codeBox.Margins[1].Type = MarginType.Number;
             _codeBox.Margins[1].Mask = 0x0;
-            _codeBox.Styles[Style.LineNumber].ForeColor = Styler.Style.LabelColor;
-            _codeBox.Styles[Style.LineNumber].BackColor = Styler.Style.BackColor;
+            _codeBox.Styles[Style.LineNumber].ForeColor = StyleManager.Style.LabelColor;
+            _codeBox.Styles[Style.LineNumber].BackColor = StyleManager.Style.BackColor;
 
             // code folding margin
             _codeBox.Margins[2].Type = MarginType.Symbol;

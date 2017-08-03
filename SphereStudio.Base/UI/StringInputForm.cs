@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using SphereStudio.Base;
+
 namespace SphereStudio.UI
 {
     /// <summary>
     /// Represents a form that allows the user to enter a line of text.
     /// </summary>
-    public partial class StringInputForm : Form, IStyleable
+    public partial class StringInputForm : Form, IStyleAware
     {
         private bool _numOnly;
 
@@ -23,7 +25,7 @@ namespace SphereStudio.UI
                 m_heading.Text = labelText;
             NumOnly = false;
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         /// <summary>

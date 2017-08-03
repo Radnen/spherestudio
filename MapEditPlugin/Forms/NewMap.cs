@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using SphereStudio.Base;
+
 namespace SphereStudio.Plugins.Forms
 {
     partial class NewMapDialogue : Form

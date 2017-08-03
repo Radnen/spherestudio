@@ -19,7 +19,7 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class ConfigManager : Form, IStyleable
+    partial class ConfigManager : Form, IStyleAware
     {
         private bool _updatingDefaultsLists = false;
         private bool _updatingPresets = false;
@@ -35,7 +35,7 @@ namespace SphereStudio.Ide.Forms
             
             PresetsList_SelectedIndexChanged(null, EventArgs.Empty);
 
-            Styler.AutoStyle(this);
+            StyleManager.AutoStyle(this);
         }
 
         public void ApplyStyle(UIStyle style)

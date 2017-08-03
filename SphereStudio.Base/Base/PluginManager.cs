@@ -4,7 +4,7 @@ using System.Linq;
 
 using SphereStudio.Base;
 
-namespace SphereStudio
+namespace SphereStudio.Base
 {
     struct PluginEntry
     {

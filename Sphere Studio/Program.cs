@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
+using SphereStudio.Base;
 using SphereStudio.Ide.BuiltIns;
 using SphereStudio.Ide.Forms;
 

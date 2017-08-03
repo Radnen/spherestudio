@@ -88,7 +88,7 @@ namespace SphereStudio.Plugins
         }
 
         // restyle all script controls that changed.
-        private void UpdateScriptControls() => Styler.Refresh();
+        private void UpdateScriptControls() => StyleManager.Refresh();
 
         #region initialize the script menu
         private ToolStripMenuItem _rootMenu, _indentMenu;

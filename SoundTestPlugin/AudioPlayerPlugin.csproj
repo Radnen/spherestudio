@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio.Plugins</RootNamespace>
-    <AssemblyName>SoundTestPlugin</AssemblyName>
+    <AssemblyName>AudioPlayerPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -65,11 +65,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SoundPicker.cs">
+    <Compile Include="DockPanes\AudioPlayerPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SoundPicker.Designer.cs">
-      <DependentUpon>SoundPicker.cs</DependentUpon>
+    <Compile Include="DockPanes\AudioPlayerPane.Designer.cs">
+      <DependentUpon>AudioPlayerPane.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,8 +86,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SoundPicker.resx">
-      <DependentUpon>SoundPicker.cs</DependentUpon>
+    <EmbeddedResource Include="DockPanes\AudioPlayerPane.resx">
+      <DependentUpon>AudioPlayerPane.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

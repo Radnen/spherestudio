@@ -1,6 +1,6 @@
-﻿namespace SphereStudio.Plugins
+﻿namespace SphereStudio.Plugins.UI
 {
-    partial class TaskList
+    partial class TaskListDockPane
     {
         /// <summary> 
         /// Required designer variable.
