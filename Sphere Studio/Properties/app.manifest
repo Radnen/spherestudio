@@ -12,6 +12,7 @@
       </applicationRequestMinimum>
     </security>
   </trustInfo>
+
   <!-- this is needed to ensure the correct OS version is reported in About -->
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>

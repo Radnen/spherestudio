@@ -8,6 +8,7 @@
 screen
 
 Color
+DirectoryStream
 Dispatch
 FS
 FileOp

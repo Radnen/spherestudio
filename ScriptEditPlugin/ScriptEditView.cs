@@ -403,8 +403,8 @@ namespace SphereStudio.Plugins
                 _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Plum;
                 _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.AntiqueWhite;
                 _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkSalmon;
-                _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
-                _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+                _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Red;
+                _codeBox.Styles[Style.Cpp.StringEol].BackColor = StyleManager.Style.BackColor;
                 _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.Orchid;
                 _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.CornflowerBlue;
                 _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.Khaki;
@@ -421,8 +421,8 @@ namespace SphereStudio.Plugins
                 _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Gray;
                 _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.SteelBlue;
                 _codeBox.Styles[Style.Cpp.String].ForeColor = Color.Teal;
-                _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Black;
-                _codeBox.Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
+                _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Red;
+                _codeBox.Styles[Style.Cpp.StringEol].BackColor = StyleManager.Style.BackColor;
                 _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.DarkOrchid;
                 _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.Blue;
                 _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.DimGray;
