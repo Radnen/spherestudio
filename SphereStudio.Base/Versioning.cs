@@ -1,4 +1,6 @@
-﻿namespace SphereStudio
+﻿using System;
+
+namespace SphereStudio
 {
     // note: `const` is resolved at compile time in the referencing assembly.  this is
     //       desirable for built-in plugins to avoid them dynamically adopting the version number
@@ -10,27 +12,27 @@
     public static class Versioning
     {
         /// <summary>
-        /// The name of the IDE, "Sphere Studio".
+        /// The name of the IDE used for branding.
         /// </summary>
         public const string Name = "Sphere Studio";
 
         /// <summary>
-        /// The name of the IDE author or supporting company.
+        /// The name of the author used for branding.
         /// </summary>
         public const string Author = "Spherical Community";
 
         /// <summary>
-        /// The version number of the IDE.
+        /// The version number of the software.
         /// </summary>
         public const string Version = "X.X.X";
 
         /// <summary>
-        /// A string indicating the copyright holder and date of copyright.
+        /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
         public const string Copyright = "2013-2017 S.E.G.";
 
         /// <summary>
-        /// A short description of the IDE along with a list of contributors.
+        /// A short description of the software along with a list of contributors.
         /// </summary>
         public const string Credits =
             "A modern game development environment for Sphere, coded in C# and sporting many useful features like debugging, support for compilers, plugins, and more.\r\n\r\n" +
