@@ -33,10 +33,10 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ConfigButton = new System.Windows.Forms.Button();
+            this.BrowseButton = new System.Windows.Forms.Button();
             this.SpherePathEdit = new System.Windows.Forms.TextBox();
             this.PathLabel = new System.Windows.Forms.Label();
             this.editorLabel1 = new SphereStudio.UI.DialogHeader();
-            this.BrowseButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -80,6 +80,7 @@
             // 
             this.ConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ConfigButton.Enabled = false;
+            this.ConfigButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ConfigButton.Image = global::SphereStudio.Plugins.Properties.Resources.ConfigIcon;
             this.ConfigButton.Location = new System.Drawing.Point(385, 39);
             this.ConfigButton.Name = "ConfigButton";
@@ -88,10 +89,25 @@
             this.ConfigButton.UseVisualStyleBackColor = true;
             this.ConfigButton.Click += new System.EventHandler(this.ConfigButton_Click);
             // 
+            // BrowseButton
+            // 
+            this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BrowseButton.Image = ((System.Drawing.Image)(resources.GetObject("BrowseButton.Image")));
+            this.BrowseButton.Location = new System.Drawing.Point(416, 39);
+            this.BrowseButton.Name = "BrowseButton";
+            this.BrowseButton.Size = new System.Drawing.Size(80, 25);
+            this.BrowseButton.TabIndex = 4;
+            this.BrowseButton.Text = "Browse...";
+            this.BrowseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BrowseButton.UseVisualStyleBackColor = true;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
+            // 
             // SpherePathEdit
             // 
             this.SpherePathEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpherePathEdit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SpherePathEdit.Location = new System.Drawing.Point(51, 13);
             this.SpherePathEdit.Name = "SpherePathEdit";
             this.SpherePathEdit.ReadOnly = true;
@@ -120,19 +136,6 @@
             this.editorLabel1.TabIndex = 4;
             this.editorLabel1.Text = "Where is Sphere 1.x installed?";
             this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // BrowseButton
-            // 
-            this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Image = ((System.Drawing.Image)(resources.GetObject("BrowseButton.Image")));
-            this.BrowseButton.Location = new System.Drawing.Point(416, 39);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(80, 25);
-            this.BrowseButton.TabIndex = 4;
-            this.BrowseButton.Text = "Browse...";
-            this.BrowseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.BrowseButton.UseVisualStyleBackColor = true;
-            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // SettingsPage
             // 

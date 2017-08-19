@@ -7,7 +7,7 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Plugins.Components
 {
-    partial class SettingsPage : UserControl, ISettingsPage
+    partial class SettingsPage : UserControl, ISettingsPage, IStyleAware
     {
         private ISettings _conf;
 
@@ -17,6 +17,8 @@ namespace SphereStudio.Plugins.Components
             Control = this;
 
             _conf = conf;
+
+            StyleManager.AutoStyle(this);
         }
 
         public Control Control { get; private set; }
@@ -25,6 +27,14 @@ namespace SphereStudio.Plugins.Components
         {
             _conf.SetValue("spherePath", SpherePathEdit.Text);
             return true;
+        }
+
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsUIElement(tabPage2);
+            style.AsTextView(SpherePathEdit);
+            style.AsAccent(ConfigButton);
+            style.AsAccent(BrowseButton);
         }
 
         protected override void OnLoad(EventArgs e)
