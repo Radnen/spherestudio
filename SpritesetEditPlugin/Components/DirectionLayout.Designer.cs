@@ -44,12 +44,12 @@
             this.AddDirectionItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveDirectionItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SetDelayItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Separator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ZoomInItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ZoomOutItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Separator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.ToggleItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SetDelayItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Seperator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToggleItem = new System.Windows.Forms.ToolStripMenuItem();
             this.InfoPanel.SuspendLayout();
             this.NamePanel.SuspendLayout();
             this.AddPanel.SuspendLayout();
@@ -167,14 +167,14 @@
             this.Seperator4,
             this.ToggleItem});
             this.DirectionStrip.Name = "DirectionStrip";
-            this.DirectionStrip.Size = new System.Drawing.Size(176, 204);
+            this.DirectionStrip.Size = new System.Drawing.Size(172, 226);
             this.DirectionStrip.Opening += new System.ComponentModel.CancelEventHandler(this.DirectionStrip_Opening);
             // 
             // AddItem
             // 
             this.AddItem.Image = global::SphereStudio.Plugins.Properties.Resources.AddToolIcon;
             this.AddItem.Name = "AddItem";
-            this.AddItem.Size = new System.Drawing.Size(175, 22);
+            this.AddItem.Size = new System.Drawing.Size(171, 22);
             this.AddItem.Text = "&Add Frame";
             this.AddItem.Click += new System.EventHandler(this.AddItem_Click);
             // 
@@ -182,20 +182,20 @@
             // 
             this.RemoveItem.Image = global::SphereStudio.Plugins.Properties.Resources.DeleteToolIcon;
             this.RemoveItem.Name = "RemoveItem";
-            this.RemoveItem.Size = new System.Drawing.Size(175, 22);
+            this.RemoveItem.Size = new System.Drawing.Size(171, 22);
             this.RemoveItem.Text = "&Remove Frame";
             this.RemoveItem.Click += new System.EventHandler(this.RemoveItem_Click);
             // 
             // Seperator1
             // 
             this.Seperator1.Name = "Seperator1";
-            this.Seperator1.Size = new System.Drawing.Size(172, 6);
+            this.Seperator1.Size = new System.Drawing.Size(168, 6);
             // 
             // AddDirectionItem
             // 
             this.AddDirectionItem.Image = global::SphereStudio.Plugins.Properties.Resources.AddToolIcon;
             this.AddDirectionItem.Name = "AddDirectionItem";
-            this.AddDirectionItem.Size = new System.Drawing.Size(175, 22);
+            this.AddDirectionItem.Size = new System.Drawing.Size(171, 22);
             this.AddDirectionItem.Text = "Add &Direction";
             this.AddDirectionItem.Click += new System.EventHandler(this.AddDirectionItem_Click);
             // 
@@ -203,20 +203,33 @@
             // 
             this.RemoveDirectionItem.Image = global::SphereStudio.Plugins.Properties.Resources.DeleteToolIcon;
             this.RemoveDirectionItem.Name = "RemoveDirectionItem";
-            this.RemoveDirectionItem.Size = new System.Drawing.Size(175, 22);
+            this.RemoveDirectionItem.Size = new System.Drawing.Size(171, 22);
             this.RemoveDirectionItem.Text = "R&emove Direction";
             this.RemoveDirectionItem.Click += new System.EventHandler(this.RemoveDirectionItem_Click);
             // 
             // Separator2
             // 
             this.Separator2.Name = "Separator2";
-            this.Separator2.Size = new System.Drawing.Size(172, 6);
+            this.Separator2.Size = new System.Drawing.Size(168, 6);
+            // 
+            // SetDelayItem
+            // 
+            this.SetDelayItem.Image = global::SphereStudio.Plugins.Properties.Resources.page_white_edit;
+            this.SetDelayItem.Name = "SetDelayItem";
+            this.SetDelayItem.Size = new System.Drawing.Size(171, 22);
+            this.SetDelayItem.Text = "&Set Delay...";
+            this.SetDelayItem.Click += new System.EventHandler(this.SetDelayItem_Click);
+            // 
+            // Separator3
+            // 
+            this.Separator3.Name = "Separator3";
+            this.Separator3.Size = new System.Drawing.Size(168, 6);
             // 
             // ZoomInItem
             // 
             this.ZoomInItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomInToolIcon;
             this.ZoomInItem.Name = "ZoomInItem";
-            this.ZoomInItem.Size = new System.Drawing.Size(175, 22);
+            this.ZoomInItem.Size = new System.Drawing.Size(171, 22);
             this.ZoomInItem.Text = "Zoom &In";
             this.ZoomInItem.Click += new System.EventHandler(this.ZoomInItem_Click);
             // 
@@ -224,34 +237,21 @@
             // 
             this.ZoomOutItem.Image = global::SphereStudio.Plugins.Properties.Resources.ZoomOutToolIcon;
             this.ZoomOutItem.Name = "ZoomOutItem";
-            this.ZoomOutItem.Size = new System.Drawing.Size(175, 22);
+            this.ZoomOutItem.Size = new System.Drawing.Size(171, 22);
             this.ZoomOutItem.Text = "Zoom &Out";
             this.ZoomOutItem.Click += new System.EventHandler(this.ZoomOutItem_Click);
-            // 
-            // Separator3
-            // 
-            this.Separator3.Name = "Separator3";
-            this.Separator3.Size = new System.Drawing.Size(172, 6);
-            // 
-            // ToggleItem
-            // 
-            this.ToggleItem.Name = "ToggleItem";
-            this.ToggleItem.Size = new System.Drawing.Size(175, 22);
-            this.ToggleItem.Text = "&Toggle Show Delay";
-            this.ToggleItem.Click += new System.EventHandler(this.ToggleItem_Click);
-            // 
-            // SetDelayItem
-            // 
-            this.SetDelayItem.Image = global::SphereStudio.Plugins.Properties.Resources.page_white_edit;
-            this.SetDelayItem.Name = "SetDelayItem";
-            this.SetDelayItem.Size = new System.Drawing.Size(175, 22);
-            this.SetDelayItem.Text = "&Set Delay...";
-            this.SetDelayItem.Click += new System.EventHandler(this.SetDelayItem_Click);
             // 
             // Seperator4
             // 
             this.Seperator4.Name = "Seperator4";
-            this.Seperator4.Size = new System.Drawing.Size(172, 6);
+            this.Seperator4.Size = new System.Drawing.Size(168, 6);
+            // 
+            // ToggleItem
+            // 
+            this.ToggleItem.Name = "ToggleItem";
+            this.ToggleItem.Size = new System.Drawing.Size(171, 22);
+            this.ToggleItem.Text = "&Show Delay Values";
+            this.ToggleItem.Click += new System.EventHandler(this.ToggleItem_Click);
             // 
             // DirectionLayout
             // 

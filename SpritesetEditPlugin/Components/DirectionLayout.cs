@@ -152,7 +152,7 @@ namespace SphereStudio.Plugins.Components
 
                 _panel_to_add = null;
                 Invalidate(true);
-                if (Modified != null) Modified(this, new EventArgs());
+                Modified?.Invoke(this, new EventArgs());
             }
         }
 
@@ -171,8 +171,9 @@ namespace SphereStudio.Plugins.Components
 
             if (index < ImagesPanel.Controls.Count && ImagesPanel.Controls[index] is FramePanel)
                 SelectedFrame = (FramePanel)ImagesPanel.Controls[index];
-            else SelectedFrame = null;
-            if (Modified != null) Modified(this, new EventArgs());
+            else
+                SelectedFrame = null;
+            Modified?.Invoke(this, new EventArgs());
         }
 
         private void ToggleItem_Click(object sender, EventArgs e)
@@ -186,15 +187,20 @@ namespace SphereStudio.Plugins.Components
         {
             Point loc = ImagesPanel.PointToClient(Cursor.Position);
             Control ctrl = ImagesPanel.GetChildAtPoint(loc);
-            if (ctrl is FramePanel)
-            {
-                if (SelectedFrame != null) SelectedFrame.Selected = false;
+            if (ctrl is FramePanel) {
+                if (SelectedFrame != null)
+                    SelectedFrame.Selected = false;
                 SelectedFrame = (FramePanel)ctrl;
                 SelectedFrame.Selected = true;
             }
-            else SelectedFrame = null;
+            else {
+                SelectedFrame = null;
+            }
 
-            RemoveItem.Enabled = (SelectedFrame != null);
+            ToggleItem.Checked = _showDelay;
+
+            RemoveItem.Enabled = SelectedFrame != null;
+            SetDelayItem.Enabled = SelectedFrame != null;
         }
 
         private void NameLabel_MouseDown(object sender, MouseEventArgs e)
