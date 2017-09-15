@@ -41,7 +41,7 @@ namespace SphereStudio
             "  Bruce Pascoe ('Fat Cerberus')\r\n\r\n" +
             "TESTERS\r\n" +
             "  DaVince\r\n" +
-            "  Eggbert\r\n" +
+            "  Eggbertx\r\n" +
             "  Flying Jester";
 
     }
