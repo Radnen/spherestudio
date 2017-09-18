@@ -251,20 +251,24 @@ namespace SphereStudio.Plugins.UI
                 
                 trackList.Groups.Add(groupName, groupName);
 
-                DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
-                FileInfo[] fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
-
-                foreach (FileInfo fi in from x in fileInfos
-                                        where !x.FullName.StartsWith(buildPath) || !haveBuildDir
-                                        orderby x.Name select x)
-                {
-                    var relativePath = fi.FullName
-                        .Replace(gamePath + Path.DirectorySeparatorChar, string.Empty)
-                        .Replace(Path.DirectorySeparatorChar, '/');
-                    ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fi.FullName), 0);
-                    listItem.Tag = (object)fi.FullName;
-                    listItem.Group = trackList.Groups[groupName];
-                    listItem.SubItems.Add(relativePath);
+                try {
+                    DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
+                    FileInfo[] fileInfos = dirInfo.GetFiles(searchFilter, SearchOption.AllDirectories);
+                    foreach (FileInfo fi in from x in fileInfos
+                                            where !x.FullName.StartsWith(buildPath) || !haveBuildDir
+                                            orderby x.Name
+                                            select x) {
+                        var relativePath = fi.FullName
+                            .Replace(gamePath + Path.DirectorySeparatorChar, string.Empty)
+                            .Replace(Path.DirectorySeparatorChar, '/');
+                        ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fi.FullName), 0);
+                        listItem.Tag = (object)fi.FullName;
+                        listItem.Group = trackList.Groups[groupName];
+                        listItem.SubItems.Add(relativePath);
+                    }
+                }
+                catch {
+                    // just pretend like nothing happened... :o)
                 }
             }
             trackList.EndUpdate();

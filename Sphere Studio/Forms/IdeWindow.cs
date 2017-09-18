@@ -890,8 +890,9 @@ namespace SphereStudio.Ide
             // user values will be lost if we don't record them now.
             Core.Project.User.StartHidden = !StartVisible;
             Core.Project.User.Documents = _tabs
-                .Where(tab => tab.FileName != null)
-                .Select(tab => tab.FileName).ToArray();
+                .Where(it => it.FileName != null)
+                .Select(it => it.FileName)
+                .ToArray();
             Core.Project.User.ActiveDocument = _activeTab != null
                 ? _activeTab.FileName : "";
 
@@ -902,8 +903,7 @@ namespace SphereStudio.Ide
             // save and unload the project
             if (Core.Project != null)
             {
-                if (UnloadProject != null)
-                    UnloadProject(null, EventArgs.Empty);
+                UnloadProject?.Invoke(null, EventArgs.Empty);
                 Core.Project.Save();
             }
 
