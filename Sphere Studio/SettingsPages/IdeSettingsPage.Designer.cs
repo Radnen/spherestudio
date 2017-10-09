@@ -102,7 +102,6 @@
             // UseStartPage
             // 
             this.UseStartPage.AutoSize = true;
-            this.UseStartPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UseStartPage.Location = new System.Drawing.Point(14, 13);
             this.UseStartPage.Name = "UseStartPage";
             this.UseStartPage.Size = new System.Drawing.Size(299, 17);
@@ -113,7 +112,6 @@
             // OpenLastProject
             // 
             this.OpenLastProject.AutoSize = true;
-            this.OpenLastProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OpenLastProject.Location = new System.Drawing.Point(14, 36);
             this.OpenLastProject.Name = "OpenLastProject";
             this.OpenLastProject.Size = new System.Drawing.Size(224, 17);
@@ -221,7 +219,6 @@
             // UseScriptHeader
             // 
             this.UseScriptHeader.AutoSize = true;
-            this.UseScriptHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UseScriptHeader.Location = new System.Drawing.Point(16, 13);
             this.UseScriptHeader.Name = "UseScriptHeader";
             this.UseScriptHeader.Size = new System.Drawing.Size(219, 17);
@@ -290,6 +287,7 @@
             this.RemovePathButton.TabIndex = 5;
             this.RemovePathButton.Text = "Remove";
             this.RemovePathButton.UseVisualStyleBackColor = true;
+            this.RemovePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RemovePathButton.Click += new System.EventHandler(this.RemovePathButton_Click);
             // 
             // AddPathButton
@@ -302,6 +300,7 @@
             this.AddPathButton.TabIndex = 4;
             this.AddPathButton.Text = "Add...";
             this.AddPathButton.UseVisualStyleBackColor = true;
+            this.AddPathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddPathButton.Click += new System.EventHandler(this.AddPathButton_Click);
             // 
             // DownButton
@@ -315,6 +314,7 @@
             this.DownButton.Size = new System.Drawing.Size(23, 22);
             this.DownButton.TabIndex = 3;
             this.DownButton.UseVisualStyleBackColor = true;
+            this.DownButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
             // UpButton
@@ -328,6 +328,7 @@
             this.UpButton.Size = new System.Drawing.Size(23, 22);
             this.UpButton.TabIndex = 2;
             this.UpButton.UseVisualStyleBackColor = true;
+            this.UpButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
             // 
             // PathList

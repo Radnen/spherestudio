@@ -49,6 +49,10 @@ namespace SphereStudio.Ide.BuiltIns
             style.AsUIElement(UseStartPage);
             style.AsUIElement(OpenLastProject);
             style.AsUIElement(UseScriptHeader);
+            style.AsAccent(AddPathButton);
+            style.AsAccent(RemovePathButton);
+            style.AsAccent(UpButton);
+            style.AsAccent(DownButton);
         }
 
         protected override void OnLoad(EventArgs e)
