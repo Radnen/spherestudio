@@ -488,7 +488,7 @@ namespace SphereStudio.Plugins
             // line number margin.  dynamically resized as content changes.
             _codeBox.Margins[1].Type = MarginType.Number;
             _codeBox.Margins[1].Mask = 0x0;
-            _codeBox.Styles[Style.LineNumber].ForeColor = StyleManager.Style.LabelColor;
+            _codeBox.Styles[Style.LineNumber].ForeColor = StyleManager.Style.HighlightColor;
             _codeBox.Styles[Style.LineNumber].BackColor = StyleManager.Style.BackColor;
 
             // code folding margin
