@@ -16,32 +16,39 @@ namespace SphereStudio.Ide
     {
         static Core()
         {
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            var homeDirPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Studio");
-            string iniPath = Path.Combine(sphereDir, "Settings", "Sphere Studio.ini");
+            var programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var iniPath = Path.Combine(homeDirPath, "Settings", "Sphere Studio.ini");
+
             MainIniFile = new IniFile(iniPath);
             Settings = new CoreSettings(Core.MainIniFile);
 
             // load plugin modules (user-installed plugins first)
             Plugins = new Dictionary<string, PluginShim>();
-            var programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            string[] paths =
-            {
-                Path.Combine(sphereDir, "Plugins"),
+            string[] searchPaths = {
+                Path.Combine(homeDirPath, "Plugins"),
                 Path.Combine(programDataPath, "Sphere Studio", "Plugins"),
                 Path.Combine(Application.StartupPath, "Plugins"),
             };
-            foreach (string path in from path in paths
+            foreach (string path in
+                from path in searchPaths
                 where Directory.Exists(path)
                 select path)
             {
                 DirectoryInfo dir = new DirectoryInfo(path);
-                foreach (FileInfo file in dir.GetFiles("*.dll"))
-                {
+                foreach (FileInfo file in dir.GetFiles("*.dll")) {
                     string handle = Path.GetFileNameWithoutExtension(file.Name);
                     if (!Plugins.Keys.Contains(handle))  // only the first by that name is used
-                        try { Plugins[handle] = new PluginShim(file.FullName, handle); }
-                        catch { /* TODO: Log plugin load failure */ }
+                        try {
+                            Plugins[handle] = new PluginShim(file.FullName, handle);
+                        }
+                        catch (Exception e) {
+                            MessageBox.Show(
+                                $"Sphere Studio was unable to load the plugin file {file.FullName}.\n\nThe error encountered was:\n{e.Message}",
+                                "Couldn't Load Plugin Module", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                 }
             }
         }
@@ -182,10 +189,8 @@ namespace SphereStudio.Ide
             {
                 string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio");
                 string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
-                if (!string.IsNullOrWhiteSpace(value) && File.Exists(path))
-                {
-                    using (IniFile preset = new IniFile(path, false))
-                    {
+                if (!string.IsNullOrWhiteSpace(value) && File.Exists(path)) {
+                    using (IniFile preset = new IniFile(path, false)) {
                         Compiler = preset.Read("Preset", "compiler", "");
                         Engine = preset.Read("Preset", "engine", "");
                         FileOpener = preset.Read("Preset", "defaultFileOpener", "");
@@ -195,8 +200,7 @@ namespace SphereStudio.Ide
                     }
                     SetValue("preset", value);
                 }
-                else
-                {
+                else {
                     SetValue("preset", "");
                 }
             }
