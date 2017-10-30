@@ -5,8 +5,6 @@
 # the names of Sphere API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
-screen
-
 Color
 DirectoryStream
 Dispatch
