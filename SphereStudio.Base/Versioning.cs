@@ -29,7 +29,7 @@ namespace SphereStudio
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "2013-2017 S.E.G.";
+        public const string Copyright = "2013-2018 S.E.G.";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.

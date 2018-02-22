@@ -402,12 +402,12 @@ namespace SphereStudio.Plugins
                 _codeBox.Styles[Style.Cpp.Number].ForeColor = Color.DarkSalmon;
                 _codeBox.Styles[Style.Cpp.Operator].ForeColor = Color.Plum;
                 _codeBox.Styles[Style.Cpp.Regex].ForeColor = Color.AntiqueWhite;
-                _codeBox.Styles[Style.Cpp.String].ForeColor = Color.DarkSalmon;
+                _codeBox.Styles[Style.Cpp.String].ForeColor = Color.Khaki;
                 _codeBox.Styles[Style.Cpp.StringEol].ForeColor = Color.Red;
                 _codeBox.Styles[Style.Cpp.StringEol].BackColor = StyleManager.Style.BackColor;
                 _codeBox.Styles[Style.Cpp.StringRaw].ForeColor = Color.Orchid;
                 _codeBox.Styles[Style.Cpp.Word].ForeColor = Color.CornflowerBlue;
-                _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.Khaki;
+                _codeBox.Styles[Style.Cpp.Word2].ForeColor = Color.MediumSeaGreen;
             }
             else
             {
