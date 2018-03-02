@@ -13,7 +13,7 @@ namespace SphereStudio.Ide.BuiltIns
                 AccentColor = Color.FromArgb(32, 32, 48),
                 BackColor = Color.FromArgb(24, 24, 24),
                 FixedFont = new Font("Consolas", 10.25f),
-                Font = new Font("Segoe UI", 9),
+                Font = new Font("Segoe UI Semibold", 9.0f),
                 HighlightColor = Color.DarkSlateBlue,
                 LabelColor = Color.FromArgb(32, 32, 32),
                 TextColor = Color.LightGray,
@@ -24,7 +24,7 @@ namespace SphereStudio.Ide.BuiltIns
                 AccentColor = Color.LightGoldenrodYellow,
                 BackColor = Color.GhostWhite,
                 FixedFont = new Font("Consolas", 10.25f),
-                Font = new Font("Segoe UI", 9),
+                Font = new Font("Segoe UI Semibold", 9.0f),
                 HighlightColor = Color.FromArgb(155, 225, 255),  // "Purwa Blue"
                 LabelColor = Color.LightSlateGray,
                 TextColor = Color.Black,

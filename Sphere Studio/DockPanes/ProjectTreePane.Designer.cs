@@ -52,11 +52,13 @@
             // 
             this.ProjectTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProjectTreeView.HotTracking = true;
             this.ProjectTreeView.ItemHeight = 19;
             this.ProjectTreeView.LabelEdit = true;
-            this.ProjectTreeView.Location = new System.Drawing.Point(0, 27);
+            this.ProjectTreeView.Location = new System.Drawing.Point(0, 24);
+            this.ProjectTreeView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ProjectTreeView.Name = "ProjectTreeView";
-            this.ProjectTreeView.Size = new System.Drawing.Size(223, 420);
+            this.ProjectTreeView.Size = new System.Drawing.Size(191, 364);
             this.ProjectTreeView.TabIndex = 3;
             this.ProjectTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTreeView_BeforeLabelEdit);
             this.ProjectTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTreeView_AfterLabelEdit);
@@ -183,8 +185,9 @@
             this.ProjectNameLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ProjectNameLabel.ForeColor = System.Drawing.Color.White;
             this.ProjectNameLabel.Location = new System.Drawing.Point(0, 0);
+            this.ProjectNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ProjectNameLabel.Name = "ProjectNameLabel";
-            this.ProjectNameLabel.Size = new System.Drawing.Size(223, 27);
+            this.ProjectNameLabel.Size = new System.Drawing.Size(191, 24);
             this.ProjectNameLabel.TabIndex = 4;
             this.ProjectNameLabel.Text = "Project Name";
             this.ProjectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -199,15 +202,15 @@
             this.SystemWatcher.Deleted += new SphereStudio.Utility.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Deleted);
             this.SystemWatcher.Renamed += new SphereStudio.Utility.BatchEventHandler<System.IO.RenamedEventArgs>(this.SystemWatcher_Renamed);
             // 
-            // ProjectTree
+            // ProjectTreePane
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ProjectTreeView);
             this.Controls.Add(this.ProjectNameLabel);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "ProjectTree";
-            this.Size = new System.Drawing.Size(223, 447);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "ProjectTreePane";
+            this.Size = new System.Drawing.Size(191, 388);
             this.ProjectFileContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).EndInit();
             this.ResumeLayout(false);
