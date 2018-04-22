@@ -1,10 +1,13 @@
 ﻿# Sphere API dictionary for Sphere Studio
-# (c) 2016-2017 Spherical Community
+# (c) 2016-2018 Spherical Community
 
 # this file is used by the Sphere Studio default script editor to highlight
 # the names of Sphere API functions and constructors.  any blank lines and lines
 # beginning with a `#` character are ignored.
 
+print
+
+BlendOp
 Color
 DirectoryStream
 Dispatch
@@ -37,6 +40,7 @@ TextEncoder
 Texture
 Transform
 VertexList
+Z
 
 Abort
 AddTrigger
