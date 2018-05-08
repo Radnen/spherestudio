@@ -38,7 +38,8 @@ namespace SphereStudio.Ide.Forms
                     : os.Version.Build == 14393 ? "Anniversary Update"
                     : os.Version.Build == 15063 ? "Creators Update"
                     : os.Version.Build == 16299 ? "Fall Creators Update"
-                    : $"v{os.Version.Major}.{os.Version.Minor}.{os.Version.Build}";
+                    : os.Version.Build == 17134 ? "April 2018 Update"
+                    : $"build {os.Version.Build}";
             }
             var platform = Environment.Is64BitOperatingSystem ? "x64" : "x86";
             this.labelPlatform.Text = $"Windows\x2122 {windowsVersion} - {platform}\n{updateName}";
