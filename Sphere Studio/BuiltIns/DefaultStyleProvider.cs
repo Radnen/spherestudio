@@ -22,13 +22,13 @@ namespace SphereStudio.Ide.BuiltIns
 
             var lightTheme = new UIStyle("Light") {
                 AccentColor = Color.LightGoldenrodYellow,
-                BackColor = Color.GhostWhite,
+                BackColor = Color.White,
                 FixedFont = new Font("Consolas", 10.25f),
                 Font = new Font("Segoe UI Semibold", 9.0f),
-                HighlightColor = Color.FromArgb(155, 225, 255),  // "Purwa Blue"
-                LabelColor = Color.LightSlateGray,
+                HighlightColor = Color.DarkGray,
+                LabelColor = Color.FromArgb(64, 64, 64),
                 TextColor = Color.Black,
-                ToolColor = Color.LightSteelBlue,
+                ToolColor = Color.Gray,
             };
 
             this.Styles = new[] { darkTheme, lightTheme };
