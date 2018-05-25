@@ -52,11 +52,10 @@
             // 
             this.ProjectTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProjectTreeView.HotTracking = true;
             this.ProjectTreeView.ItemHeight = 19;
             this.ProjectTreeView.LabelEdit = true;
             this.ProjectTreeView.Location = new System.Drawing.Point(0, 24);
-            this.ProjectTreeView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ProjectTreeView.Margin = new System.Windows.Forms.Padding(2);
             this.ProjectTreeView.Name = "ProjectTreeView";
             this.ProjectTreeView.Size = new System.Drawing.Size(191, 364);
             this.ProjectTreeView.TabIndex = 3;
@@ -208,7 +207,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ProjectTreeView);
             this.Controls.Add(this.ProjectNameLabel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ProjectTreePane";
             this.Size = new System.Drawing.Size(191, 388);
             this.ProjectFileContextMenu.ResumeLayout(false);
