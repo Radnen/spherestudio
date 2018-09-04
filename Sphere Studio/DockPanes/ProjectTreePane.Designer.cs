@@ -52,6 +52,7 @@
             // 
             this.ProjectTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProjectTreeView.HotTracking = true;
             this.ProjectTreeView.ItemHeight = 19;
             this.ProjectTreeView.LabelEdit = true;
             this.ProjectTreeView.Location = new System.Drawing.Point(0, 24);
