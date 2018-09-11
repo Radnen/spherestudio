@@ -253,7 +253,8 @@ namespace SphereStudio.Plugins
             {
                 var extSansDot = Path.GetExtension(filename).StartsWith(".")
                     ? Path.GetExtension(filename).Substring(1) : "";
-                _codeBox.Lexer = FileExtensions.Contains(extSansDot) ? Lexer.Cpp : Lexer.Null;
+                _codeBox.Lexer = FileExtensions.Contains(extSansDot) || Path.GetFileNameWithoutExtension(filename) == "Cellscript"
+                    ? Lexer.Cpp : Lexer.Null;
                 _codeBox.Text = fileReader.ReadToEnd();
                 _codeBox.EmptyUndoBuffer();
                 if (_codeBox.Lexer == Lexer.Cpp)
