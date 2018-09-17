@@ -394,14 +394,15 @@ namespace SphereStudio.Plugins.Components
 
         private void UpdateScrollBars()
         {
-            int maxh = (_vw < Width) ? 0 : (_vw - Width) / _tile_w_zoom + 3;
-            int maxv = (_vh < Height) ? 0 : (_vh - Height) / _tile_w_zoom + 3;
-            hScrollBar.Maximum = maxh;
-            hScrollBar.Minimum = (_vw < Width) ? 0 : -2;
-            vScrollBar.Maximum = maxv;
-            vScrollBar.Minimum = (_vh < Height) ? 0 : -2;
-            hScrollBar.Value = Math.Min(Math.Max(0, -(_offset.X / _tile_w_zoom)), maxh);
-            vScrollBar.Value = Math.Min(Math.Max(0, -(_offset.Y / _tile_h_zoom)), maxv);
+            vScrollBar.SmallChange = _tile_h_zoom;
+            vScrollBar.LargeChange = Height - hScrollBar.Height;
+            vScrollBar.Maximum = _vh;
+            vScrollBar.Value = Math.Min(Math.Max(-_offset.Y, 0), _vh - vScrollBar.LargeChange + 1);
+
+            hScrollBar.SmallChange = _tile_w_zoom;
+            hScrollBar.LargeChange = Width - vScrollBar.Width;
+            hScrollBar.Maximum = _vw;
+            hScrollBar.Value = Math.Min(Math.Max(-_offset.X, 0), _vw - hScrollBar.LargeChange + 1);
         }
 
         private bool GetEntityAtMouse()
@@ -951,16 +952,18 @@ namespace SphereStudio.Plugins.Components
 
         private void hScrollBar_ValueChanged(object sender, EventArgs e)
         {
-            if (_move) return;
-            _offset.X = -hScrollBar.Value * _tile_w_zoom;
+            if (_move || _vw <= Width)
+                return;
+            _offset.X = -hScrollBar.Value;
             UpdateLayers();
             Invalidate(false);
         }
 
         private void vScrollBar_ValueChanged(object sender, EventArgs e)
         {
-            if (_move) return;
-            _offset.Y = -vScrollBar.Value * _tile_h_zoom;
+            if (_move || _vh <= Height)
+                return;
+            _offset.Y = -vScrollBar.Value;
             UpdateLayers();
             Invalidate(false);
         }
