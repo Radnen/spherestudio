@@ -76,14 +76,18 @@ namespace SphereStudio.Plugins.Components
                     _tile_w_zoom = value.Tileset.TileHeight;
                     _vw = value.Width * _tile_w_zoom;
                     _vh = value.Height * _tile_h_zoom;
-                    UpdateScrollBars();
 
                     if (GraphicLayers != null)
-                        foreach (GraphicalLayer layer in GraphicLayers) layer.Dispose();
+                    {
+                        foreach (GraphicalLayer layer in GraphicLayers)
+                            layer.Dispose();
+                    }
                     GraphicLayers = new List<GraphicalLayer>(value.Layers.Count);
 
                     for (int i = 0; i < value.Layers.Count; ++i)
                         GraphicLayers.Add(new GraphicalLayer(value.Layers[i], value.Tileset.TileWidth, value.Tileset.TileHeight));
+
+                    CenterMap();
                 }
             }
         }
@@ -179,8 +183,12 @@ namespace SphereStudio.Plugins.Components
         /// </summary>
         public void CenterMap()
         {
-            _offset.X = Width / 2 - _vw / 2;
-            _offset.Y = Height / 2 - _vh / 2;
+            int cw = Width - vScrollBar.Width;
+            int ch = Height - hScrollBar.Height;
+            if (_vw <= cw)
+                _offset.X = cw / 2 - _vw / 2;
+            if (_vh <= ch)
+                _offset.Y = ch / 2 - _vh / 2;
             UpdateScrollBars();
             UpdateLayers();
         }
@@ -208,9 +216,9 @@ namespace SphereStudio.Plugins.Components
                 _vw = BaseMap.Width * _tile_w_zoom;
                 _vh = BaseMap.Height * _tile_h_zoom;
                 UpdateScrollBars();
-                foreach (GraphicalLayer gl in GraphicLayers) gl.SetZoom(Zoom);
-                UpdateLayers();
-                UpdateScrollBars();
+                foreach (GraphicalLayer gl in GraphicLayers)
+                    gl.SetZoom(Zoom);
+                CenterMap();
                 Invalidate();
             }
             return CanZoomIn;
@@ -228,9 +236,9 @@ namespace SphereStudio.Plugins.Components
                 _tile_h_zoom = _base_map.Tileset.TileHeight * Zoom;
                 _vw = BaseMap.Width * _tile_w_zoom;
                 _vh = BaseMap.Height * _tile_h_zoom;
-                foreach (GraphicalLayer gl in GraphicLayers) gl.SetZoom(Zoom);
-                UpdateLayers();
-                UpdateScrollBars();
+                foreach (GraphicalLayer gl in GraphicLayers)
+                    gl.SetZoom(Zoom);
+                CenterMap();
                 Invalidate();
             }
             return CanZoomOut;
@@ -270,14 +278,16 @@ namespace SphereStudio.Plugins.Components
         #region Draw Logic
         private void MapControl_Paint(object sender, PaintEventArgs e)
         {
-            if (BaseMap == null) return;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            if (BaseMap == null)
+                return;
+
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
             DrawGraphicLayers(e.Graphics);
-
-            if (ShowTileNums) DrawTileNums(e.Graphics);
+            if (ShowTileNums)
+                DrawTileNums(e.Graphics);
 
             DrawZones(e.Graphics);
             
@@ -298,7 +308,8 @@ namespace SphereStudio.Plugins.Components
 
             e.Graphics.DrawImage(Properties.Resources.startpos, sx, sy, _tile_w_zoom, _tile_h_zoom);
 
-            if (ShowCameraBounds) DrawCameraBounds(e.Graphics);
+            if (ShowCameraBounds)
+                DrawCameraBounds(e.Graphics);
         }
 
         private static Font _numFont = new Font("Courier", 8.0f);
@@ -312,10 +323,13 @@ namespace SphereStudio.Plugins.Components
                 for (int x = 0; x < w; x += _tile_h_zoom)
                 {
                     var tile = _base_map.Layers[CurrentLayer].GetTile(x / _tile_w_zoom, y / _tile_h_zoom);
-                    if (tile < 0) continue;
+                    if (tile < 0)
+                        continue;
 
-                    if (x < -_offset.X || y < -_offset.Y) continue;
-                    if (x > -_offset.X + Width || y > -_offset.Y + Height) continue;
+                    if (x < -_offset.X || y < -_offset.Y)
+                        continue;
+                    if (x > -_offset.X + Width || y > -_offset.Y + Height)
+                        continue;
 
                     int tx = _offset.X + x;
                     int ty = _offset.Y + y;
@@ -332,7 +346,8 @@ namespace SphereStudio.Plugins.Components
             for (int i = 0; i < GraphicLayers.Count; ++i)
             {
                 GraphicLayers[i].Draw(g, ref _offset);
-                if (i == CurrentLayer && _paint && (Tool == MapTool.Line || Tool == MapTool.Rectangle)) DrawTool(g);
+                if (i == CurrentLayer && _paint && (Tool == MapTool.Line || Tool == MapTool.Rectangle))
+                    DrawTool(g);
             }
         }
 
@@ -396,13 +411,15 @@ namespace SphereStudio.Plugins.Components
         {
             vScrollBar.SmallChange = _tile_h_zoom;
             vScrollBar.LargeChange = Height - hScrollBar.Height;
+            vScrollBar.Minimum = 0;
             vScrollBar.Maximum = _vh;
-            vScrollBar.Value = Math.Min(Math.Max(-_offset.Y, 0), _vh - vScrollBar.LargeChange + 1);
+            vScrollBar.Value = Math.Min(Math.Max(-_offset.Y, vScrollBar.Minimum), vScrollBar.Maximum - vScrollBar.LargeChange + 1);
 
             hScrollBar.SmallChange = _tile_w_zoom;
             hScrollBar.LargeChange = Width - vScrollBar.Width;
+            hScrollBar.Minimum = 0;
             hScrollBar.Maximum = _vw;
-            hScrollBar.Value = Math.Min(Math.Max(-_offset.X, 0), _vw - hScrollBar.LargeChange + 1);
+            hScrollBar.Value = Math.Min(Math.Max(-_offset.X, hScrollBar.Minimum), hScrollBar.Maximum - hScrollBar.LargeChange + 1);
         }
 
         private bool GetEntityAtMouse()
@@ -971,9 +988,11 @@ namespace SphereStudio.Plugins.Components
         // In order to redraw regions that come into existance via form resize.
         private void MapControl_Resize(object sender, EventArgs e)
         {
-            if (_base_map == null || IsDisposed) return;
-            UpdateScrollBars();
-            UpdateLayers();
+            if (_base_map == null || IsDisposed)
+                return;
+            CenterMap();
+            /*UpdateScrollBars();
+            UpdateLayers();*/
         }
     }
 }

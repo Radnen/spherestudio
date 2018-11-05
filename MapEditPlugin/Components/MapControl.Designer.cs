@@ -123,7 +123,7 @@
             // 
             this.PersonItem.Image = global::SphereStudio.Plugins.Properties.Resources.person;
             this.PersonItem.Name = "PersonItem";
-            this.PersonItem.Size = new System.Drawing.Size(112, 22);
+            this.PersonItem.Size = new System.Drawing.Size(111, 22);
             this.PersonItem.Text = "Person";
             this.PersonItem.Click += new System.EventHandler(this.PersonItem_Click);
             // 
@@ -131,7 +131,7 @@
             // 
             this.TriggerItem.Image = global::SphereStudio.Plugins.Properties.Resources.trigger;
             this.TriggerItem.Name = "TriggerItem";
-            this.TriggerItem.Size = new System.Drawing.Size(112, 22);
+            this.TriggerItem.Size = new System.Drawing.Size(111, 22);
             this.TriggerItem.Text = "Trigger";
             this.TriggerItem.Click += new System.EventHandler(this.TriggerItem_Click);
             // 
