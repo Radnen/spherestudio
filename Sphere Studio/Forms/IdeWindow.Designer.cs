@@ -28,20 +28,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            WeifenLuo.WinFormsUI.Docking.AutoHideStripSkin autoHideStripSkin1 = new WeifenLuo.WinFormsUI.Docking.AutoHideStripSkin();
-            WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient1 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient1 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            WeifenLuo.WinFormsUI.Docking.DockPaneStripSkin dockPaneStripSkin1 = new WeifenLuo.WinFormsUI.Docking.DockPaneStripSkin();
-            WeifenLuo.WinFormsUI.Docking.DockPaneStripGradient dockPaneStripGradient1 = new WeifenLuo.WinFormsUI.Docking.DockPaneStripGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient2 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient2 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient3 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            WeifenLuo.WinFormsUI.Docking.DockPaneStripToolWindowGradient dockPaneStripToolWindowGradient1 = new WeifenLuo.WinFormsUI.Docking.DockPaneStripToolWindowGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient4 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient5 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            WeifenLuo.WinFormsUI.Docking.DockPanelGradient dockPanelGradient3 = new WeifenLuo.WinFormsUI.Docking.DockPanelGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient6 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
-            WeifenLuo.WinFormsUI.Docking.TabGradient tabGradient7 = new WeifenLuo.WinFormsUI.Docking.TabGradient();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IdeWindow));
             this.EditorTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CloseTabItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,8 +51,9 @@
             this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.toolPauseDebug = new System.Windows.Forms.ToolStripButton();
             this.toolStopDebug = new System.Windows.Forms.ToolStripButton();
-            this.toolTestGame = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolEngineCombo = new System.Windows.Forms.ToolStripComboBox();
+            this.toolTestGame = new System.Windows.Forms.ToolStripButton();
             this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -140,7 +127,7 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -186,49 +173,6 @@
             this.MainDock.Name = "MainDock";
             this.MainDock.ShowDocumentIcon = true;
             this.MainDock.Size = new System.Drawing.Size(787, 479);
-            dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
-            dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
-            autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
-            tabGradient1.EndColor = System.Drawing.SystemColors.Control;
-            tabGradient1.StartColor = System.Drawing.SystemColors.Control;
-            tabGradient1.TextColor = System.Drawing.SystemColors.ControlDarkDark;
-            autoHideStripSkin1.TabGradient = tabGradient1;
-            autoHideStripSkin1.TextFont = new System.Drawing.Font("Segoe UI", 9F);
-            tabGradient2.EndColor = System.Drawing.SystemColors.ControlLightLight;
-            tabGradient2.StartColor = System.Drawing.SystemColors.ControlLightLight;
-            tabGradient2.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripGradient1.ActiveTabGradient = tabGradient2;
-            dockPanelGradient2.EndColor = System.Drawing.SystemColors.Control;
-            dockPanelGradient2.StartColor = System.Drawing.SystemColors.Control;
-            dockPaneStripGradient1.DockStripGradient = dockPanelGradient2;
-            tabGradient3.EndColor = System.Drawing.SystemColors.ControlLight;
-            tabGradient3.StartColor = System.Drawing.SystemColors.ControlLight;
-            tabGradient3.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripGradient1.InactiveTabGradient = tabGradient3;
-            dockPaneStripSkin1.DocumentGradient = dockPaneStripGradient1;
-            dockPaneStripSkin1.TextFont = new System.Drawing.Font("Segoe UI", 9F);
-            tabGradient4.EndColor = System.Drawing.SystemColors.ActiveCaption;
-            tabGradient4.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            tabGradient4.StartColor = System.Drawing.SystemColors.GradientActiveCaption;
-            tabGradient4.TextColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dockPaneStripToolWindowGradient1.ActiveCaptionGradient = tabGradient4;
-            tabGradient5.EndColor = System.Drawing.SystemColors.Control;
-            tabGradient5.StartColor = System.Drawing.SystemColors.Control;
-            tabGradient5.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripToolWindowGradient1.ActiveTabGradient = tabGradient5;
-            dockPanelGradient3.EndColor = System.Drawing.SystemColors.ControlLight;
-            dockPanelGradient3.StartColor = System.Drawing.SystemColors.ControlLight;
-            dockPaneStripToolWindowGradient1.DockStripGradient = dockPanelGradient3;
-            tabGradient6.EndColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            tabGradient6.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            tabGradient6.StartColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            tabGradient6.TextColor = System.Drawing.SystemColors.ControlText;
-            dockPaneStripToolWindowGradient1.InactiveCaptionGradient = tabGradient6;
-            tabGradient7.EndColor = System.Drawing.Color.Transparent;
-            tabGradient7.StartColor = System.Drawing.Color.Transparent;
-            tabGradient7.TextColor = System.Drawing.SystemColors.ControlDarkDark;
-            dockPaneStripToolWindowGradient1.InactiveTabGradient = tabGradient7;
-            dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
             this.MainDock.SupportDeeplyNestedContent = true;
             this.MainDock.TabIndex = 0;
             this.MainDock.ActiveDocumentChanged += new System.EventHandler(this.MainDock_ActiveDocumentChanged);
@@ -250,13 +194,14 @@
             this.CopyToolButton,
             this.PasteToolButton,
             this.toolStripSeparator2,
+            this.toolTestGame,
+            this.toolConfigEngine,
+            this.toolStripSeparator9,
             this.toolDebug,
             this.toolPauseDebug,
             this.toolStopDebug,
             this.toolStripSeparator1,
-            this.toolTestGame,
-            this.toolEngineCombo,
-            this.toolConfigEngine});
+            this.toolEngineCombo});
             this.EditorTools.Location = new System.Drawing.Point(0, 24);
             this.EditorTools.Name = "EditorTools";
             this.EditorTools.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
@@ -389,8 +334,8 @@
             this.toolDebug.Image = global::SphereStudio.Ide.Properties.Resources.play;
             this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolDebug.Name = "toolDebug";
-            this.toolDebug.Size = new System.Drawing.Size(62, 25);
-            this.toolDebug.Text = "&Debug";
+            this.toolDebug.Size = new System.Drawing.Size(48, 25);
+            this.toolDebug.Text = "&Test";
             this.toolDebug.Click += new System.EventHandler(this.menuDebug_Click);
             // 
             // toolPauseDebug
@@ -413,16 +358,10 @@
             this.toolStopDebug.Text = "Stop Debugging";
             this.toolStopDebug.Click += new System.EventHandler(this.menuStopDebug_Click);
             // 
-            // toolTestGame
+            // toolStripSeparator1
             // 
-            this.toolTestGame.Enabled = false;
-            this.toolTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
-            this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolTestGame.Name = "toolTestGame";
-            this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolTestGame.Size = new System.Drawing.Size(48, 25);
-            this.toolTestGame.Text = "Test";
-            this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
             // 
             // toolEngineCombo
             // 
@@ -431,8 +370,20 @@
             this.toolEngineCombo.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
             this.toolEngineCombo.Name = "toolEngineCombo";
             this.toolEngineCombo.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolEngineCombo.Size = new System.Drawing.Size(150, 28);
+            this.toolEngineCombo.Size = new System.Drawing.Size(160, 28);
             this.toolEngineCombo.SelectedIndexChanged += new System.EventHandler(this.toolEngineCombo_SelectedIndexChanged);
+            // 
+            // toolTestGame
+            // 
+            this.toolTestGame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolTestGame.Enabled = false;
+            this.toolTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
+            this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolTestGame.Name = "toolTestGame";
+            this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.toolTestGame.Size = new System.Drawing.Size(23, 25);
+            this.toolTestGame.Text = "Test Game in Production";
+            this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
             // 
             // toolConfigEngine
             // 
@@ -640,7 +591,7 @@
             // 
             this.menuSaveAll.Image = global::SphereStudio.Ide.Properties.Resources.disk_multiple;
             this.menuSaveAll.Name = "menuSaveAll";
-            this.menuSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            this.menuSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
             this.menuSaveAll.Size = new System.Drawing.Size(187, 22);
             this.menuSaveAll.Text = "Save &All";
@@ -1045,12 +996,12 @@
             this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
-            // toolStripSeparator1
+            // toolStripSeparator9
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 28);
             // 
-            // MainWindow
+            // IdeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1065,7 +1016,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.EditorMenu;
             this.MinimumSize = new System.Drawing.Size(480, 360);
-            this.Name = "MainWindow";
+            this.Name = "IdeWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IDEForm_FormClosing);
@@ -1183,6 +1134,7 @@
         private System.Windows.Forms.ToolStripButton toolStopDebug;
         private System.Windows.Forms.ToolStripButton toolPauseDebug;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
     }
 }
 
