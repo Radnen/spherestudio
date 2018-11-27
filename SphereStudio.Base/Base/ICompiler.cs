@@ -14,15 +14,16 @@ namespace SphereStudio.Base
         /// <param name="con">An IConsole where project prep progress can be printed.</param>
         /// <returns>true if the project was successfully prepared.</returns>
         bool Prep(IProject project, IConsole con);
-        
+
         /// <summary>
         /// Builds a game distribution from a Sphere Studio project.
         /// </summary>
         /// <param name="project">The project to build.</param>
         /// <param name="outPath">The pathname of the directory where the distribution will be created.</param>
+        /// <param name="debuggable">'true' the project should be built with debugging information.</param>
         /// <param name="con">An IConsole where compiler output will be sent.</param>
         /// <returns>'true' if compilation succeeded, false if not.</returns>
-        Task<bool> Build(IProject project, string outPath, IConsole con);
+        Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole con);
     }
 
     /// <summary>
@@ -41,8 +42,9 @@ namespace SphereStudio.Base
         /// </summary>
         /// <param name="project">The project to build.</param>
         /// <param name="fileName">The pathname of the package. If this file exists, it will be overwritten.</param>
+        /// <param name="debuggable">'true' if debugging info should be included in the package.</param>
         /// <param name="con">An IConsole where compiler output will be sent.</param>
         /// <returns>'true' if packaging succeeded, false if not.</returns>
-        Task<bool> Package(IProject project, string fileName, IConsole con);
+        Task<bool> Package(IProject project, string fileName, bool debuggable, IConsole con);
     }
 }

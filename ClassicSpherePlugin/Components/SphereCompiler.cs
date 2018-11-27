@@ -42,7 +42,7 @@ namespace SphereStudio.Plugins.Components
             return true;
         }
 
-        public async Task<bool> Build(IProject project, string outPath, IConsole con)
+        public async Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole con)
         {
             con.Print("Compiling project for Sphere 1.x or compatible engine.\n");
 

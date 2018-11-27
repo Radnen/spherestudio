@@ -92,8 +92,9 @@ namespace SphereStudio.Ide
         /// Builds a game distribution from a project using the current compiler.
         /// </summary>
         /// <param name="project">The project to build.</param>
+        /// <param name="debuggable">Whether the project should be built with debugging info.</param>
         /// <returns>The full path of the compiled distribution.</returns>
-        public static async Task<string> Build(Project project)
+        public static async Task<string> Build(Project project, bool debuggable)
         {
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler == null)
@@ -110,7 +111,7 @@ namespace SphereStudio.Ide
 
             _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
-            if (await compiler.Build(project, outPath, _buildView))
+            if (await compiler.Build(project, outPath, debuggable, _buildView))
             {
                 _buildView.Print(string.Format("================= Successfully built: {0} ================", project.Name));
                 return outPath;
@@ -128,8 +129,9 @@ namespace SphereStudio.Ide
         /// </summary>
         /// <param name="project">The project to build.</param>
         /// <param name="fileName">The full path of the package to build. If the file exists, it will be overwritten.</param>
+        /// <param name="debuggable">'true' if debugging info should be included in the package.</param>
         /// <returns>'true' if packaging succeeded, false if not.</returns>
-        public static async Task<bool> Package(Project project, string fileName)
+        public static async Task<bool> Package(Project project, string fileName, bool debuggable)
         {
             if (!CanPackage(project))
                 throw new NotSupportedException("The current compiler doesn't support packaging.");
@@ -138,7 +140,7 @@ namespace SphereStudio.Ide
             PluginManager.Core.Docking.Show(_buildView);
             _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n", project.Name));
             var packager = PluginManager.Get<IPackager>(project.Compiler);
-            bool isOK = await packager.Package(project, fileName, _buildView);
+            bool isOK = await packager.Package(project, fileName, debuggable, _buildView);
             if (isOK)
                 _buildView.Print(string.Format("=============== Successfully packaged: {0} ===============", project.Name));
             else
@@ -160,7 +162,7 @@ namespace SphereStudio.Ide
                 throw new NotSupportedException("The current engine starter doesn't support debugging.");
 
             var starter = PluginManager.Get<IDebugStarter>(project.User.Engine);
-            string outPath = await Build(project);
+            string outPath = await Build(project, true);
             try
             {
                 if (outPath != null)
@@ -186,7 +188,7 @@ namespace SphereStudio.Ide
             var starter = PluginManager.Get<IStarter>(project.User.Engine);
             if (starter != null)
             {
-                string outPath = await Build(project);
+                string outPath = await Build(project, false);
                 if (outPath != null)
                 {
                     try

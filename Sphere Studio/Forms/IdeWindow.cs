@@ -1195,7 +1195,7 @@ namespace SphereStudio.Ide
             };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                await BuildEngine.Package(Core.Project, sfd.FileName);
+                await BuildEngine.Package(Core.Project, sfd.FileName, false);
             }
         }
     }
