@@ -1111,7 +1111,7 @@ namespace SphereStudio.Ide
             }
             Debugger = null;
             menuDebug.Text = "Start &Debugging";
-            toolDebug.Text = "&Test";
+            toolDebug.Text = "&Run Game";
             UpdateControls();
         }
 

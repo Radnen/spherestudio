@@ -48,13 +48,14 @@
             this.CopyToolButton = new System.Windows.Forms.ToolStripButton();
             this.PasteToolButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolTestGame = new System.Windows.Forms.ToolStripButton();
+            this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolDebug = new System.Windows.Forms.ToolStripButton();
             this.toolPauseDebug = new System.Windows.Forms.ToolStripButton();
             this.toolStopDebug = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolEngineCombo = new System.Windows.Forms.ToolStripComboBox();
-            this.toolTestGame = new System.Windows.Forms.ToolStripButton();
-            this.toolConfigEngine = new System.Windows.Forms.ToolStripButton();
             this.EditorStatus = new System.Windows.Forms.StatusStrip();
             this.HelpLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SsResizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,7 +128,6 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuConfigManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditorSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.EditorTabContextMenu.SuspendLayout();
             this.EditorTools.SuspendLayout();
             this.EditorStatus.SuspendLayout();
@@ -329,13 +329,41 @@
             this.toolStripSeparator2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 28);
             // 
+            // toolTestGame
+            // 
+            this.toolTestGame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolTestGame.Enabled = false;
+            this.toolTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
+            this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolTestGame.Name = "toolTestGame";
+            this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.toolTestGame.Size = new System.Drawing.Size(23, 25);
+            this.toolTestGame.Text = "Test Game in Production";
+            this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
+            // 
+            // toolConfigEngine
+            // 
+            this.toolConfigEngine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolConfigEngine.Enabled = false;
+            this.toolConfigEngine.Image = global::SphereStudio.Ide.Properties.Resources.cog;
+            this.toolConfigEngine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolConfigEngine.Name = "toolConfigEngine";
+            this.toolConfigEngine.Size = new System.Drawing.Size(23, 25);
+            this.toolConfigEngine.Text = "Configure Engine";
+            this.toolConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 28);
+            // 
             // toolDebug
             // 
             this.toolDebug.Image = global::SphereStudio.Ide.Properties.Resources.play;
             this.toolDebug.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolDebug.Name = "toolDebug";
-            this.toolDebug.Size = new System.Drawing.Size(48, 25);
-            this.toolDebug.Text = "&Test";
+            this.toolDebug.Size = new System.Drawing.Size(82, 25);
+            this.toolDebug.Text = "&Run Game";
             this.toolDebug.Click += new System.EventHandler(this.menuDebug_Click);
             // 
             // toolPauseDebug
@@ -372,29 +400,6 @@
             this.toolEngineCombo.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.toolEngineCombo.Size = new System.Drawing.Size(160, 28);
             this.toolEngineCombo.SelectedIndexChanged += new System.EventHandler(this.toolEngineCombo_SelectedIndexChanged);
-            // 
-            // toolTestGame
-            // 
-            this.toolTestGame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolTestGame.Enabled = false;
-            this.toolTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
-            this.toolTestGame.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolTestGame.Name = "toolTestGame";
-            this.toolTestGame.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.toolTestGame.Size = new System.Drawing.Size(23, 25);
-            this.toolTestGame.Text = "Test Game in Production";
-            this.toolTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
-            // 
-            // toolConfigEngine
-            // 
-            this.toolConfigEngine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolConfigEngine.Enabled = false;
-            this.toolConfigEngine.Image = global::SphereStudio.Ide.Properties.Resources.cog;
-            this.toolConfigEngine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolConfigEngine.Name = "toolConfigEngine";
-            this.toolConfigEngine.Size = new System.Drawing.Size(23, 25);
-            this.toolConfigEngine.Text = "Configure Engine";
-            this.toolConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // EditorStatus
             // 
@@ -995,11 +1000,6 @@
             this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
             this.menuEditorSettings.Text = "&Settings Center...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 28);
             // 
             // IdeWindow
             // 

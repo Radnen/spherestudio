@@ -7,7 +7,9 @@
 
 print
 
+Blend
 BlendOp
+BlendType
 Color
 DirectoryStream
 Dispatch
