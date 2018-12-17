@@ -11,6 +11,7 @@ Blend
 BlendOp
 BlendType
 Color
+DataType
 DirectoryStream
 Dispatch
 FS

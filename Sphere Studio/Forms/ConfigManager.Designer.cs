@@ -125,7 +125,7 @@
             // 
             // AuthorColumn
             // 
-            this.AuthorColumn.Text = "Author";
+            this.AuthorColumn.Text = "Publisher";
             this.AuthorColumn.Width = 136;
             // 
             // VersionColumn
