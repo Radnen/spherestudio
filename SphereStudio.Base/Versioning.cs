@@ -19,17 +19,17 @@ namespace SphereStudio
         /// <summary>
         /// The name of the author used for branding.
         /// </summary>
-        public const string Author = "Fat Cerberus";
+        public const string Author = "Spherical";
 
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "X.X.X";
+        public const string Version = "1.3.0";
 
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "2018 Sphere Engine Group";
+        public const string Copyright = "2020 Sphere Engine Group";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.
