@@ -19,12 +19,12 @@ namespace SphereStudio
         /// <summary>
         /// The name of the author used for branding.
         /// </summary>
-        public const string Author = "Spherical";
+        public const string Author = "Fat Cerberus";
 
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "1.3.0";
+        public const string Version = "X.X.X";
 
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.

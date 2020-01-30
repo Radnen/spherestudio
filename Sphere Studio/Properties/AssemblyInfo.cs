@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sphere Engine Group")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("© 2013-2020 S.E.G.")]
+[assembly: AssemblyCopyright("© 2012-2020 Sphere Engine Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
