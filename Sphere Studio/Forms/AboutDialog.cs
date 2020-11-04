@@ -43,6 +43,7 @@ namespace SphereStudio.Ide.Forms
                     : os.Version.Build == 18362 ? "May 2019 Update"
                     : os.Version.Build == 18363 ? "Nov. 2019 Update"
                     : os.Version.Build == 19041 ? "May 2020 Update"
+                    : os.Version.Build == 19042 ? "Oct. 2020 Update"
                     : $"Build {os.Version.Build}";
             }
             var platform = Environment.Is64BitOperatingSystem ? "x64" : "x86";
