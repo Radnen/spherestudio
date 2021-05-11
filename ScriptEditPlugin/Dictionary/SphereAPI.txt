@@ -1,5 +1,5 @@
 ﻿# Sphere API dictionary for Sphere Studio
-# (c) 2016-2020 Spherical Community
+# (c) 2016-2021 Spherical Community
 
 # this file is used by the Sphere Studio default script editor to highlight
 # the names of Sphere API functions and constructors.  any blank lines and lines
