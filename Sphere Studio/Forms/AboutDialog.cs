@@ -31,6 +31,10 @@ namespace SphereStudio.Ide.Forms
             string updateName = os.ServicePack;
             if (os.Version.Major == 10 && os.Version.Minor == 0)
             {
+                // Windows 11 is still v10.0, have to detect via build number
+                if (os.Version.Build >= 22000)
+                    windowsVersion = "11";
+                
                 // for Windows 10, there are multiple releases.  figure out which one is in use
                 // based on the build number.
                 updateName = os.Version.Build == 10240 ? "RTM"
@@ -44,7 +48,9 @@ namespace SphereStudio.Ide.Forms
                     : os.Version.Build == 18363 ? "Nov. 2019 Update"
                     : os.Version.Build == 19041 ? "May 2020 Update"
                     : os.Version.Build == 19042 ? "Oct. 2020 Update"
-                    : $"Build {os.Version.Build}";
+                    : os.Version.Build == 19043 ? "May 2021 Update"
+                    : os.Version.Build == 22000 ? "Version 21H2"
+                    : $"v{os.Version.Build}";
             }
             var platform = Environment.Is64BitOperatingSystem ? "x64" : "x86";
             this.labelPlatform.Text = $"Windows\x2122 {windowsVersion} - {platform}\n{updateName}";
