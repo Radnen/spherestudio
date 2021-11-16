@@ -5,9 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sphere Studio 2022")]
-
-[assembly: AssemblyDescription("Sphere Studio integrated development environment")]
+[assembly: AssemblyTitle("neoSphere Support for Sphere Studio")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fat Cerberus")]
 [assembly: AssemblyProduct("Sphere: the JavaScript game platform")]
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("589cd9aa-a76d-493c-a575-1d60b1838b89")]
+[assembly: Guid("d242f8ef-7d85-4b6b-9446-6758b68a7f54")]
 
 // Version information for an assembly consists of the following four values:
 //

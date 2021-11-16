@@ -15,7 +15,7 @@ namespace SphereStudio.Ide.Forms
             InitializeComponent();
 
             this.Text = $"About {Versioning.Name}";
-            this.labelProductName.Text = $"{Versioning.Name} {Versioning.Version}";
+            this.labelProductName.Text = $"{Versioning.Name} v{Versioning.Version}";
             this.labelCopyright.Text = $"\xA9 {Versioning.Copyright}";
             this.labelCompanyName.Text = Versioning.Author;
 

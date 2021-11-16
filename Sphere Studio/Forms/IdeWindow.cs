@@ -271,9 +271,7 @@ namespace SphereStudio.Ide
                     tab.Activate();
             }
 
-            Text = string.Format("{3} - {0} {1} {2}",
-                Versioning.Name, Versioning.Version, Environment.Is64BitProcess ? "x64" : "x86",
-                Project.Name);
+            Text = $"{Project.Name} - {Versioning.Name}";
 
             UpdateEngineList();
             UpdateControls();

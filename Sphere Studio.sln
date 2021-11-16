@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio", "Sphere Studio\Sphere Studio.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
@@ -26,9 +26,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditPlugin", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "SpritesetEditPlugin\SpritesetEditPlugin.csproj", "{9FEA4A11-754F-4F4B-8A85-B0E780F15159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegacySpherePlugin", "ClassicSpherePlugin\LegacySpherePlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegacySphereSupportPlugin", "LegacySphereSupportPlugin\LegacySphereSupportPlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudio.Vanilla", "SphereStudio.Vanilla\SphereStudio.Vanilla.csproj", "{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neoSphereSupportPlugin", "neoSphereSupportPlugin\neoSphereSupportPlugin.csproj", "{D242F8EF-7D85-4B6B-9446-6758B68A7F54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,8 +86,15 @@ Global
 		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D242F8EF-7D85-4B6B-9446-6758B68A7F54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9CDF307D-914C-4FD3-8B97-057946FD396A}
 	EndGlobalSection
 EndGlobal

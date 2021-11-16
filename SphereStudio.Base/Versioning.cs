@@ -14,7 +14,7 @@ namespace SphereStudio
         /// <summary>
         /// The name of the IDE used for branding.
         /// </summary>
-        public const string Name = "Sphere Studio";
+        public const string Name = "Sphere Studio 2022";
 
         /// <summary>
         /// The name of the author used for branding.
@@ -24,25 +24,25 @@ namespace SphereStudio
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "5.6.3+";
+        public const string Version = "2.0.0";
 
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "2021 Sphere Engine Group";
+        public const string Copyright = "2021 Fat Cerberus";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.
         /// </summary>
         public const string Credits =
-            "A modern game development environment for Sphere, coded in C# and sporting many useful features like debugging, support for compilers, plugins, and more.\r\n\r\n" +
-            "DEVELOPERS\r\n" +
+            "A modern game development environment for Sphere, coded in C# and sporting many useful features like debugging, support for compilers, plugins, and more.\r\n" +
+            "\r\nDEVELOPERS\r\n" +
+            "  Bruce Pascoe ('Fat Cerberus')\r\n" +
             "  Andrew Helenius ('Radnen')\r\n" +
-            "  Bruce Pascoe ('Fat Cerberus')\r\n\r\n" +
-            "TESTERS\r\n" +
+            "\r\nTESTERS\r\n" +
             "  DaVince\r\n" +
             "  Eggbertx\r\n" +
-            "  Flying Jester";
+            "  Flying Jester\r\n";
 
     }
 }
