@@ -4,10 +4,11 @@
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Fat Cerberus"
-#define AppVersion "2.0.0"
+#define AppVersion3 "2.0.0"
+#define AppVersion4 "2.0.0.573"
 
 [Setup]
-OutputBaseFilename=sphereStudioSetup-{#AppVersion}-msw
+OutputBaseFilename=sphereStudioSetup-{#AppVersion3}-msw
 OutputDir=.
 AppId={{F40892B0-C96E-48B7-B1E9-8C2BFB6C167D}
 AppCopyright=© 2021 Fat Cerberus
@@ -16,8 +17,8 @@ AppPublisher={#AppPublisher}
 AppPublisherURL=http://www.spheredev.org/
 AppSupportURL=http://forums.spheredev.org/
 AppUpdatesURL=http://forums.spheredev.org/index.php/topic,24.0.html
-AppVerName={#AppName} {#AppVersion}
-AppVersion={#AppVersion}
+AppVerName={#AppName} {#AppVersion3}
+AppVersion={#AppVersion4}
 ArchitecturesInstallIn64BitMode=x64 ia64
 ChangesAssociations=yes
 Compression=lzma2
@@ -26,8 +27,10 @@ DisableProgramGroupPage=yes
 LicenseFile=LICENSE.txt
 SetupIconFile=SphereStudioIDE\Sphere Studio.ico
 SolidCompression=yes
+UninstallDisplayName={#AppName}
 UninstallDisplayIcon={app}\SphereStudioIDE.exe,0
-VersionInfoDescription={#AppName} {#AppVersion} Setup for Windows
+VersionInfoDescription={#AppName} {#AppVersion3} Setup for Windows
+VersionInfoVersion={#AppVersion4}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -52,3 +55,9 @@ Name: "{commonprograms}\{#AppName}"; Filename: "{app}\SphereStudioIDE.exe"
 
 [Run]
 Filename: "{app}\SphereStudioIDE.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+procedure InitializeWizard;
+begin
+  WizardForm.LicenseAcceptedRadio.Checked := True;
+end;
