@@ -14,7 +14,7 @@ namespace SphereStudio
         /// <summary>
         /// The name of the IDE used for branding.
         /// </summary>
-        public const string Name = "Sphere Studio 2022";
+        public const string Name = "Sphere Studio";
 
         /// <summary>
         /// The name of the author used for branding.
@@ -29,7 +29,7 @@ namespace SphereStudio
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
-        public const string Copyright = "2021 Fat Cerberus";
+        public const string Copyright = "2021 Sphere Engine Group";
 
         /// <summary>
         /// A short description of the software along with a list of contributors.

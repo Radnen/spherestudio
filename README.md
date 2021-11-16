@@ -26,9 +26,8 @@ latest release from GitHub here:
 
 - <https://github.com/Radnen/spherestudio/releases>
 
-*note:* .NET 4.5 or later is required to run Sphere Studio.  On modern Windows
-systems this is usually included, but if not, the latest framework can be
-downloaded from Microsoft by
+*note:* .NET 4.8 or later is required to run Sphere Studio.  The latest
+framework can be downloaded from Microsoft by
 [clicking here](https://www.microsoft.com/en-us/download/details.aspx?id=49981).
 
 Features

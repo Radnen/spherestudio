@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sphere Studio 2022")]
+[assembly: AssemblyTitle("Sphere Studio IDE")]
 
-[assembly: AssemblyDescription("Sphere Studio integrated development environment")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fat Cerberus")]
 [assembly: AssemblyProduct("Sphere: the JavaScript game platform")]

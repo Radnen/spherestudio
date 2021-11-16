@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio.Ide</RootNamespace>
-    <AssemblyName>Sphere Studio</AssemblyName>
+    <AssemblyName>SphereStudioIDE</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Sphere Studio.ico</ApplicationIcon>
