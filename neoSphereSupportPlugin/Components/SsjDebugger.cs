@@ -119,9 +119,9 @@ namespace SphereStudio.Plugins.Components
                 Panes.Inspector.Enabled = false;
                 Panes.Inspector.Clear();
 
-                Panes.Console.Print(string.Format("SSj Blue " + m_plugin.Version + " Sphere JavaScript debugger"));
-                Panes.Console.Print(string.Format("the graphical symbolic JS debugger for Sphere"));
-                Panes.Console.Print(string.Format("(c) 2015-2021 Fat Cerberus"));
+                Panes.Console.Print($"Sphere Studio {m_plugin.Version} JavaScript debugger");
+                Panes.Console.Print("the graphical symbolic JS debugger for neoSphere");
+                Panes.Console.Print("(c) 2015-2021 Fat Cerberus");
                 Panes.Console.Print("");
             }), null);
         }

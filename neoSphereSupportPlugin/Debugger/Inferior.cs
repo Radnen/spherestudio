@@ -170,7 +170,7 @@ namespace SphereStudio.Plugins.Debugger
             // start the communication thread
             messenger = new Thread(ProcessMessages) { IsBackground = true };
             messenger.Start();
-            await DoRequest(KiTag.REQ, KiRequest.Watermark, "SSj Blue", 0, 255, 255);
+            await DoRequest(KiTag.REQ, KiRequest.Watermark, "Sphere Studio", 128, 255, 255);
             Attached?.Invoke(this, EventArgs.Empty);
         }
 

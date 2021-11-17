@@ -74,16 +74,16 @@ namespace SphereStudio.Ide
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
             PluginManager.Core.Docking.Activate(_buildView);
-            _buildView.Print(string.Format("-------------------- Prep started: {0} -------------------\n", project.Name));
+            _buildView.Print($"-------------------- Prep started: {project.Name} -------------------\n");
             ICompiler compiler = PluginManager.Get<ICompiler>(project.Compiler);
             if (compiler.Prep(project, _buildView))
             {
-                _buildView.Print(string.Format("================ Successfully prepped: {0} ===============", project.Name));
+                _buildView.Print($"================ Successfully prepped: {project.Name} ===============");
                 return true;
             }
             else
             {
-                _buildView.Print(string.Format("=================== Failed to prep: {0} ==================", project.Name));
+                _buildView.Print($"=================== Failed to prep: {project.Name} ==================");
                 return false;
             }
         }
@@ -100,7 +100,7 @@ namespace SphereStudio.Ide
             if (compiler == null)
             {
                 MessageBox.Show(
-                    string.Format("Unable to build '{0}'.\n\nA required plugin is missing.  You may not have the necessary compiler installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nCompiler required:\n{1}", project.Name, project.Compiler),
+                    $"Unable to build '{project.Name}'.\n\nA required plugin is missing.  You may not have the necessary compiler installed, or the plugin may be disabled.  Open Configuration Manager and check your plugins.\n\nCompiler required:\n{project.Compiler}",
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
@@ -109,16 +109,16 @@ namespace SphereStudio.Ide
             PluginManager.Core.Docking.Show(_buildView);
             PluginManager.Core.Docking.Activate(_buildView);
 
-            _buildView.Print(string.Format("------------------- Build started: {0} -------------------\n", project.Name));
+            _buildView.Print($"------------------- Build started: {project.Name} -------------------\n");
             string outPath = Path.Combine(project.RootPath, project.BuildPath);
             if (await compiler.Build(project, outPath, debuggable, _buildView))
             {
-                _buildView.Print(string.Format("================= Successfully built: {0} ================", project.Name));
+                _buildView.Print($"================= Successfully built: {project.Name} ================");
                 return outPath;
             }
             else
             {
-                _buildView.Print(string.Format("================== Failed to build: {0} ==================", project.Name));
+                _buildView.Print($"================== Failed to build: {project.Name} ==================");
                 SystemSounds.Exclamation.Play();
                 return null;
             }
@@ -138,14 +138,14 @@ namespace SphereStudio.Ide
 
             _buildView.Clear();
             PluginManager.Core.Docking.Show(_buildView);
-            _buildView.Print(string.Format("----------------- Packaging started: {0} -----------------\n", project.Name));
+            _buildView.Print($"----------------- Packaging started: {project.Name} -----------------\n");
             var packager = PluginManager.Get<IPackager>(project.Compiler);
             bool isOK = await packager.Package(project, fileName, debuggable, _buildView);
             if (isOK)
-                _buildView.Print(string.Format("=============== Successfully packaged: {0} ===============", project.Name));
+                _buildView.Print($"=============== Successfully packaged: {project.Name} ===============");
             else
             {
-                _buildView.Print(string.Format("================= Failed to package: {0} =================", project.Name));
+                _buildView.Print($"================= Failed to package: {project.Name} =================");
                 SystemSounds.Exclamation.Play();
             }
             return isOK;
@@ -173,7 +173,7 @@ namespace SphereStudio.Ide
             catch (Exception exc)
             {
                 MessageBox.Show(
-                    string.Format("An error occurred while starting '{0}'.\n\nexception: \"{1}\"\n{2}", project.Name, exc.Message, exc.StackTrace),
+                    $"An error occurred while starting '{project.Name}'.\n\nexception: \"{exc.Message}\"\n{exc.StackTrace}",
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
@@ -198,7 +198,7 @@ namespace SphereStudio.Ide
                     catch (Exception exc)
                     {
                         MessageBox.Show(
-                            string.Format("An error occurred while starting '{0}'.\n\nexception: \"{1}\"\n{2}", project.Name, exc.Message, exc.StackTrace),
+                            $"An error occurred while starting '{project.Name}'.\n\nexception: \"{exc.Message}\"\n{exc.StackTrace}",
                             "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -206,7 +206,7 @@ namespace SphereStudio.Ide
             else
             {
                 MessageBox.Show(
-                    string.Format("Unable to test '{0}'.\n\nEither no engines are installed, or all engine plugins are disabled.  Open Configuration Manager and check your plugins.", project.Name),
+                    $"Unable to test '{project.Name}'.\n\nEither no engines are installed, or all engine plugins are disabled.  Open Configuration Manager and check your plugins.",
                     "Operation Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

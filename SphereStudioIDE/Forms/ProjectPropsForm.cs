@@ -120,7 +120,7 @@ namespace SphereStudio.Ide.Forms
         private void CompilerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResoLabel.Visible = ResoComboBox.Visible = WidthBox.Visible = HeightBox.Visible =
-                CompilerComboBox.Text == "Vanilla";
+                CompilerComboBox.Text == "Legacy Build";
         }
 
         private void UpgradeButton_Click(object sender, EventArgs e)
@@ -128,7 +128,7 @@ namespace SphereStudio.Ide.Forms
             File.Delete(Path.Combine(Path.GetDirectoryName(_project.FileName), "game.sgm"));
             _project.BackCompatible = false;
             _project.BuildPath = "./";
-            _project.Compiler = "Vanilla";
+            _project.Compiler = "Legacy Build";
             BuildDirTextBox.Enabled = true;
             CompilerComboBox.Enabled = true;
             BuildDirTextBox.Text = _project.BuildPath;
