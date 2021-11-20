@@ -109,8 +109,7 @@ namespace SphereStudio.Ide
             }
 
             project.FileName = Path.Combine(rootPath, MakeFileName(project.Name));
-            project.Compiler = "Vanilla";
-            project.User.Engine = "Sphere 1.x";
+            project.Compiler = "Classic";
             return project;
         }
 
