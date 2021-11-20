@@ -16,11 +16,10 @@ namespace SphereStudio.Ide
     {
         static Core()
         {
-            var homeDirPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            var appDataPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Sphere Studio");
-            var programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            var iniPath = Path.Combine(homeDirPath, "Settings", "Sphere Studio.ini");
+            var iniPath = Path.Combine(appDataPath, "userSettings.ini");
 
             MainIniFile = new IniFile(iniPath);
             Settings = new CoreSettings(Core.MainIniFile);
@@ -28,8 +27,7 @@ namespace SphereStudio.Ide
             // load plugin modules (user-installed plugins first)
             Plugins = new Dictionary<string, PluginShim>();
             string[] searchPaths = {
-                Path.Combine(homeDirPath, "Plugins"),
-                Path.Combine(programDataPath, "Sphere Studio", "Plugins"),
+                Path.Combine(appDataPath, "Plugins"),
                 Path.Combine(Application.StartupPath, "Plugins"),
             };
             foreach (string path in
@@ -187,8 +185,10 @@ namespace SphereStudio.Ide
             }
             set
             {
-                string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Sphere Studio");
-                string path = Path.Combine(sphereDir, @"Presets", value + ".preset");
+                string sphereDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    "Sphere Projects");
+                string path = Path.Combine(sphereDir, "Presets", $"{value}.preset");
                 if (!string.IsNullOrWhiteSpace(value) && File.Exists(path)) {
                     using (IniFile preset = new IniFile(path, false)) {
                         Compiler = preset.Read("Preset", "compiler", "");

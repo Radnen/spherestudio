@@ -110,9 +110,12 @@ namespace SphereStudio.Ide.BuiltIns
             _listIcons.Images.Add(holdOnToMe);
 
             // Search through a list of supplied directories.
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
+            string projectsDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Sphere Projects");
+            Directory.CreateDirectory(projectsDir);
             var paths = new List<string>(Core.Settings.ProjectPaths);
-            paths.Insert(0, Path.Combine(sphereDir, "Projects"));
+            paths.Insert(0, projectsDir);
             foreach (string path in paths)
             {
                 if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))

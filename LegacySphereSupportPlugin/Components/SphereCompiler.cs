@@ -81,7 +81,8 @@ namespace SphereStudio.Plugins.Components
                 });
                 if (installCount > 0)
                     con.Print(string.Format("  {0} asset(s) installed\n", installCount));
-                else con.Print("Up to date.\n");
+                else
+                    con.Print("Up to date.\n");
             }
 
             con.Print("Writing game manifest... ");

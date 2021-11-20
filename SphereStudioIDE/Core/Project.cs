@@ -164,7 +164,7 @@ namespace SphereStudio.Ide
         /// </summary>
         public string Compiler
         {
-            get { return !BackCompatible ? _ssproj.GetString("compiler", "Legacy Build") : "Legacy Build"; }
+            get { return !BackCompatible ? _ssproj.GetString("compiler", "Classic") : "Classic"; }
             set { _ssproj.SetValue("compiler", value); }
         }
 

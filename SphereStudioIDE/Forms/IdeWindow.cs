@@ -449,8 +449,9 @@ namespace SphereStudio.Ide
 
         private void menuNewProject_Click(object sender, EventArgs e)
         {
-            string sphereDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio");
-            string rootPath = Path.Combine(sphereDir, "Projects");
+            string rootPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Sphere Projects");
             NewProjectForm npf = new NewProjectForm() { RootFolder = rootPath };
 
             var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
@@ -494,7 +495,7 @@ namespace SphereStudio.Ide
                 projDiag.Filter = @"All Supported Projects|*.ssproj;game.sgm|Sphere Studio Projects|*.ssproj|Sphere 1.x Game Manifest|game.sgm";
                 projDiag.InitialDirectory = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "Sphere Studio", "Projects");
+                    "Sphere Projects");
 
                 if (projDiag.ShowDialog() == DialogResult.OK)
                     OpenProject(projDiag.FileName);
@@ -679,26 +680,7 @@ namespace SphereStudio.Ide
 
         private async void menuTestGame_Click(object sender, EventArgs e)
         {
-            if (IsProjectOpen)
-            {
-                menuTestGame.Enabled = toolTestGame.Enabled = false;
-                menuDebug.Enabled = toolDebug.Enabled = false;
-
-                // save all non-untitled documents
-                foreach (DocumentTab tab in
-                    from tab in _tabs where tab.FileName != null
-                    select tab)
-                {
-                    tab.SaveIfDirty();
-                }
-
-                if (TestGame != null)
-                    TestGame(null, EventArgs.Empty);
-
-                await BuildEngine.Test(Core.Project);
-            }
-
-            UpdateControls();
+            await StartEngine(false);
         }
 
         private void menuRefreshProject_Click(object sender, EventArgs e)
@@ -984,7 +966,7 @@ namespace SphereStudio.Ide
                     content.DockHandler.Activate();
         }
 
-        private async Task StartDebugger()
+        private async Task StartEngine(bool wantDebugger)
         {
             foreach (DocumentTab tab in
                 from tab in _tabs
@@ -999,35 +981,42 @@ namespace SphereStudio.Ide
             if (TestGame != null)
                 TestGame(null, EventArgs.Empty);
 
-            Debugger = await BuildEngine.Debug(Core.Project);
-            if (Debugger != null)
+            if (wantDebugger && BuildEngine.CanDebug(Core.Project))
             {
-                Debugger.Detached += debugger_Detached;
-                Debugger.Paused += debugger_Paused;
-                Debugger.Resumed += debugger_Resumed;
-                menuTestGame.Enabled = false;
-                toolTestGame.Enabled = false;
-                _isFirstDebugStop = true;
-                if (await Debugger.Attach())
+                Debugger = await BuildEngine.Debug(Core.Project);
+                if (Debugger != null)
                 {
-                    menuDebug.Text = "&Resume";
-                    toolDebug.Text = "Resume";
-                    var breaks = Core.Project.GetAllBreakpoints();
-                    foreach (string filename in breaks.Keys)
-                        foreach (int lineNumber in breaks[filename])
-                            await Debugger.SetBreakpoint(filename, lineNumber);
-                    await Debugger.Resume();
-                }
-                else
-                {
-                    Activate();
-                    MessageBox.Show("Sphere Studio failed to start a debugging session.", "Unable to Start Debugging",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Debugger = null;
-                    UpdateControls();
+                    Debugger.Detached += debugger_Detached;
+                    Debugger.Paused += debugger_Paused;
+                    Debugger.Resumed += debugger_Resumed;
+                    menuTestGame.Enabled = false;
+                    toolTestGame.Enabled = false;
+                    _isFirstDebugStop = true;
+                    if (await Debugger.Attach())
+                    {
+                        menuDebug.Text = "&Resume";
+                        toolDebug.Text = "Resume";
+                        var breaks = Core.Project.GetAllBreakpoints();
+                        foreach (string filename in breaks.Keys)
+                            foreach (int lineNumber in breaks[filename])
+                                await Debugger.SetBreakpoint(filename, lineNumber);
+                        await Debugger.Resume();
+                    }
+                    else
+                    {
+                        Activate();
+                        MessageBox.Show("Sphere Studio failed to start a debugging session.", "Unable to Start Debugging",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Debugger = null;
+                        UpdateControls();
+                    }
                 }
             }
-            
+            else
+            {
+                await BuildEngine.Test(Core.Project);
+            }
+
             UpdateControls();
         }
 
@@ -1046,9 +1035,10 @@ namespace SphereStudio.Ide
 
             menuTestGame.Enabled = toolTestGame.Enabled = Core.Project != null
                 && BuildEngine.CanTest(Core.Project) && Debugger == null;
-            menuDebug.Enabled = toolDebug.Enabled = Core.Project != null
+            menuDebug.Enabled = Core.Project != null
                 && BuildEngine.CanDebug(Core.Project)
                 && (Debugger == null || !Debugger.Running);
+            toolDebug.Enabled = Core.Project != null && (Debugger == null || !Debugger.Running);
             menuBreakNow.Enabled = toolPauseDebug.Enabled = Debugger != null && Debugger.Running;
             menuStopDebug.Enabled = toolStopDebug.Enabled = Debugger != null;
             menuStepInto.Enabled = Debugger != null && !Debugger.Running;
@@ -1168,7 +1158,7 @@ namespace SphereStudio.Ide
             if (Debugger != null)
                 await Debugger.Resume();
             else
-                await StartDebugger();
+                await StartEngine(true);
         }
 
         private void debugBreakNow_Click(object sender, EventArgs e)

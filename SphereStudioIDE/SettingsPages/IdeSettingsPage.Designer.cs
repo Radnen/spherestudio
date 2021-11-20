@@ -273,8 +273,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(410, 27);
             this.label1.TabIndex = 0;
-            this.label1.Text = "\'My Documents\\Sphere Studio\\Projects\' is always searched by default.  You can spe" +
-    "cify additional directories to search for Sphere projects here.";
+            this.label1.Text = @"`Documents/Sphere Projects` is always searched by default.  You can specify additional directories to search for Sphere projects here.";
             // 
             // RemovePathButton
             // 
