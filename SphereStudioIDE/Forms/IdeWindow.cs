@@ -891,9 +891,7 @@ namespace SphereStudio.Ide
             menuOpenLastProject.Enabled = (Core.Settings.LastProject.Length > 0);
 
             // all clear!
-            Core.Project = null;
-            Text = string.Format("{0} {1} {2}", Versioning.Name, Versioning.Version,
-                Environment.Is64BitProcess ? "x64" : "x86");
+            Text = Versioning.Name;
             UpdateEngineList();
             UpdateControls();
             return true;
