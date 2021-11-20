@@ -271,8 +271,6 @@ namespace SphereStudio.Ide
                     tab.Activate();
             }
 
-            Text = $"{Project.Name} - {Versioning.Name}";
-
             UpdateEngineList();
             UpdateControls();
         }
@@ -932,18 +930,22 @@ namespace SphereStudio.Ide
                 {
                     UpdateEngineList();
                     UpdateControls();
+                    RefreshProject();
                 }
             }
         }
 
         private void RefreshProject()
         {
+            Text = Project.BackCompatible
+                ? $"{Project.Name} (Sphere 1.x) - {Versioning.Name}"
+                : $"{Project.Name} - {Versioning.Name}";
             _projectTree.Open();
             _projectTree.Refresh();
             if (Core.Project != null)
                 Core.Settings.LastProject = Core.Project.FileName;
             UpdateControls();
-            _projectTree.ProjectName = "Project: " + Core.Project.Name;
+            _projectTree.ProjectName = $"Project: {Core.Project.Name}";
         }
 
         private void SaveAllDocuments()

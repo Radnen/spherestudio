@@ -13,6 +13,11 @@ namespace SphereStudio.Base
         string RootPath { get; }
 
         /// <summary>
+        /// Gets whether the project is currently in Sphere 1.x legacy mode.
+        /// </summary>
+        bool BackCompatible { get; }
+        
+        /// <summary>
         /// Gets or sets the path of the build directory. May be a
         /// relative path.
         /// </summary>

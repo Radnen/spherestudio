@@ -125,10 +125,8 @@ namespace SphereStudio.Ide.Forms
 
         private void UpgradeButton_Click(object sender, EventArgs e)
         {
-            File.Delete(Path.Combine(Path.GetDirectoryName(_project.FileName), "game.sgm"));
-            _project.BackCompatible = false;
-            _project.BuildPath = "./";
-            _project.Compiler = "Classic";
+            _project.Upgrade();
+            PathTextBox.Text = _project.FileName;
             BuildDirTextBox.Enabled = true;
             CompilerComboBox.Enabled = true;
             BuildDirTextBox.Text = _project.BuildPath;

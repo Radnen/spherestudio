@@ -67,8 +67,7 @@ namespace SphereStudio.Ide
             if (!File.Exists(fileName))
                 throw new FileNotFoundException();
 
-            var rootPath = Path.GetDirectoryName(fileName);
-            Project project = new Project(Path.Combine(rootPath, "game.ssproj"))
+            Project project = new Project(fileName)
             {
                 BackCompatible = true,
                 Name = "Untitled",
@@ -108,7 +107,6 @@ namespace SphereStudio.Ide
                 }
             }
 
-            project.FileName = Path.Combine(rootPath, MakeFileName(project.Name));
             project.Compiler = "Classic";
             return project;
         }
@@ -145,7 +143,7 @@ namespace SphereStudio.Ide
             get
             {
                 return !BackCompatible
-                    ? _ssproj.GetString("buildDir", "dist/")
+                    ? _ssproj.GetString("buildDir", "./")
                     : "./";
             }
             set
@@ -233,10 +231,11 @@ namespace SphereStudio.Ide
         /// </summary>
         public void Save()
         {
-            User.SaveAs(Path.ChangeExtension(FileName, ".ssuser"));
-            _ssproj.SaveAs(FileName);
+            var userFileName = Path.Combine(RootPath, "sphereStudio.cfg");
+            User.SaveAs(userFileName);
             if (BackCompatible)
             {
+                // Sphere 1.x-compatible project mode (treat .sgm as project file)
                 string fileName = Path.Combine(Path.GetDirectoryName(FileName), "game.sgm");
                 using (var writer = new StreamWriter(fileName, false, new UTF8Encoding(false)))
                 {
@@ -248,6 +247,23 @@ namespace SphereStudio.Ide
                     writer.WriteLine(string.Format("screen_height={0}", ScreenHeight));
                 }
             }
+            else
+            {
+                _ssproj.SaveAs(FileName);
+            }
+        }
+
+        /// <summary>
+        /// Upgrades a Sphere 1.x game to a full Sphere Studio project
+        /// </summary>
+        public void Upgrade()
+        {
+            var basePath = Path.GetDirectoryName(FileName);
+            FileName = Path.Combine(basePath, MakeFileName(Name));
+            BackCompatible = false;
+            BuildPath = "./";
+            Compiler = "Classic";
+            Save();
         }
 
         public IReadOnlyDictionary<string, int[]> GetAllBreakpoints()

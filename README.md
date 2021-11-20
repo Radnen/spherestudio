@@ -21,7 +21,7 @@ VB.NET.  The possibilities are endless!
 Download
 ========
 
-**Sphere Studio v1.2.1** is the latest stable version.  You can download the
+**Sphere Studio 2.0.0** is the latest stable version.  You can download the
 latest release from GitHub here:
 
 - <https://github.com/Radnen/spherestudio/releases>
