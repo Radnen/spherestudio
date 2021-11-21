@@ -43,6 +43,5 @@ namespace SphereStudio
             "  DaVince\r\n" +
             "  Eggbertx\r\n" +
             "  Flying Jester\r\n";
-
     }
 }

@@ -94,16 +94,16 @@ namespace SphereStudio.Ide.BuiltIns
             string tag = e.Node.Tag as string;
             switch (tag)
             {
-                case "project-node":
+                case "projectNode":
                     GameSettingsItem.Visible = EngineSettingsItem.Visible = true;
                     AddSubfolderItem.Visible = true;
                     break;
-                case "file-node":
+                case "fileNode":
                     OpenFileItem.Visible = DeleteFileItem.Visible = true;
                     RenameFileItem.Visible = CopyPathItem.Visible = true;
                     string s = e.Node.Text;
                     break;
-                case "directory-node":
+                case "directoryNode":
                     NewFileItem.Visible = ImportFileItem.Visible = true;
                     AddSubfolderItem.Visible = DeleteFolderItem.Visible = true;
                     break;
@@ -115,7 +115,7 @@ namespace SphereStudio.Ide.BuiltIns
         private void RenameFileItem_Click(object sender, EventArgs e)
         {
             TreeNode node = ProjectTreeView.SelectedNode;
-            if (node.Tag.Equals("file-node")) node.BeginEdit();
+            if (node.Tag.Equals("fileNode")) node.BeginEdit();
         }
 
         private void DeleteFileItem_Click(object sender, EventArgs e)
@@ -217,7 +217,7 @@ namespace SphereStudio.Ide.BuiltIns
             // Repopulate the tree
             ProjectTreeView.BeginUpdate();
             ProjectTreeView.Nodes.Clear();
-            var projectNode = new TreeNode(Core.Project.Name) { Tag = "project-node" };
+            var projectNode = new TreeNode(Core.Project.Name) { Tag = "projectNode" };
             ProjectTreeView.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
             PopulateDirectoryNode(ProjectTreeView.Nodes[0], baseDir);
@@ -242,8 +242,10 @@ namespace SphereStudio.Ide.BuiltIns
                 }
             }
 
-            if (ProjectTreeView.SelectedNode == null) ProjectTreeView.SelectedNode = ProjectTreeView.TopNode;
-            if (!ProjectTreeView.Nodes[0].IsExpanded) ProjectTreeView.Nodes[0].Expand();
+            if (ProjectTreeView.SelectedNode == null)
+                ProjectTreeView.SelectedNode = ProjectTreeView.TopNode;
+            if (!ProjectTreeView.Nodes[0].IsExpanded)
+                ProjectTreeView.Nodes[0].Expand();
             Cursor.Current = Cursors.Default;
             ProjectTreeView.EndUpdate();
         }
@@ -251,20 +253,25 @@ namespace SphereStudio.Ide.BuiltIns
         // RECURSIVE:
         private static void PopulateDirectoryNode(TreeNode baseNode, DirectoryInfo dir)
         {
-            DirectoryInfo[] dirs = dir.GetDirectories();
-            FileInfo[] files = dir.GetFiles();
-            TreeNode subNode;
-
-            foreach (DirectoryInfo d in (from d in dirs orderby d.Name select d))
+            var hiddenFlags = FileAttributes.Hidden | FileAttributes.System;
+            var dirInfos = from dirInfo in dir.GetDirectories()
+                           where !dirInfo.Attributes.HasFlag(hiddenFlags)
+                           orderby dirInfo.Name
+                           select dirInfo;
+            foreach (DirectoryInfo dirInfo in dirInfos)
             {
-                subNode = new TreeNode(d.Name, 1, 1) { Tag = "directory-node" };
+                var subNode = new TreeNode(dirInfo.Name, 1, 1) { Tag = "directoryNode" };
                 baseNode.Nodes.Add(subNode);
-                PopulateDirectoryNode(subNode, d);
+                PopulateDirectoryNode(subNode, dirInfo);
             }
 
-            foreach (FileInfo f in (from f in files orderby f.Name select f))
+            var fileInfos = from fileInfo in dir.GetFiles()
+                            where !fileInfo.Attributes.HasFlag(hiddenFlags)
+                            orderby fileInfo.Name
+                            select fileInfo;
+            foreach (FileInfo fileInfo in fileInfos)
             {
-                subNode = new TreeNode(f.Name) { Tag = "file-node" };
+                var subNode = new TreeNode(fileInfo.Name) { Tag = "fileNode" };
                 UpdateImage(subNode);
                 baseNode.Nodes.Add(subNode);
             }
@@ -308,7 +315,7 @@ namespace SphereStudio.Ide.BuiltIns
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
-                        TreeNode node = new TreeNode(form.Input, 2, 1) { Tag = "directory-node" };
+                        TreeNode node = new TreeNode(form.Input, 2, 1) { Tag = "directoryNode" };
                         ProjectTreeView.SelectedNode.Nodes.Add(node);
                     }
                     else
@@ -379,7 +386,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void ProjectTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if ((string)e.Node.Tag != "file-node")
+            if ((string)e.Node.Tag != "fileNode")
             {
                 e.CancelEdit = true;
             }
@@ -439,7 +446,7 @@ namespace SphereStudio.Ide.BuiltIns
             string path = Core.Project.RootPath + pathtop;
 
             // if the node is anything other than a file, don't do anything
-            if ((string) node.Tag != "file-node") return;
+            if ((string) node.Tag != "fileNode") return;
 
             _hostForm.OpenFile(path);
         }
@@ -461,7 +468,7 @@ namespace SphereStudio.Ide.BuiltIns
             switch (e.KeyCode)
             {
                 case Keys.Return:
-                    if (!node.Tag.Equals("file-node")) return;
+                    if (!node.Tag.Equals("fileNode")) return;
                     OpenItem(ProjectTreeView.SelectedNode);
                     e.Handled = true;
                     break;

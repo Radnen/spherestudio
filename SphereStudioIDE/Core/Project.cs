@@ -114,9 +114,10 @@ namespace SphereStudio.Ide
         private Project(string fileName)
         {
             fileName = Path.GetFullPath(fileName);
+            var basePath = Path.GetDirectoryName(fileName);
             FileName = fileName;
             _ssproj = new IniSettings(new IniFile(FileName, false), ".ssproj");
-            User = new UserSettings(Path.ChangeExtension(FileName, ".ssuser"));
+            User = new UserSettings(Path.Combine(basePath, "sphereStudio.cfg"));
         }
 
         public UserSettings User { get; private set; }
@@ -317,8 +318,8 @@ namespace SphereStudio.Ide
 
     class UserSettings : IniSettings
     {
-        public UserSettings(string filepath) :
-            base(new IniFile(filepath, false), ".ssuser")
+        public UserSettings(string filePath) :
+            base(new IniFile(filePath, false), "sphereStudio.cfg")
         {
         }
 
