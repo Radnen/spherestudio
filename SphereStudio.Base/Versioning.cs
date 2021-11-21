@@ -35,13 +35,12 @@ namespace SphereStudio
         /// A short description of the software along with a list of contributors.
         /// </summary>
         public const string Credits =
-            "A modern game development environment for Sphere, coded in C# and sporting many useful features like debugging, support for compilers, plugins, and more.\r\n" +
-            "\r\nDEVELOPERS\r\n" +
-            "  Bruce Pascoe ('Fat Cerberus')\r\n" +
-            "  Andrew Helenius ('Radnen')\r\n" +
+            "DEVELOPERS\r\n" +
+            "    Bruce Pascoe ('Fat Cerberus')\r\n" +
+            "    Andrew Helenius ('Radnen')\r\n" +
             "\r\nTESTERS\r\n" +
-            "  DaVince\r\n" +
-            "  Eggbertx\r\n" +
-            "  Flying Jester\r\n";
+            "    DaVince\r\n" +
+            "    Eggbertx\r\n" +
+            "    Flying Jester\r\n";
     }
 }

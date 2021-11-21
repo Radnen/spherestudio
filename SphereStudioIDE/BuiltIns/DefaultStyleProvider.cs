@@ -11,7 +11,7 @@ namespace SphereStudio.Ide.BuiltIns
         {
             var darkTheme = new UIStyle("Dark") {
                 AccentColor = Color.FromArgb(32, 32, 48),
-                BackColor = Color.FromArgb(24, 24, 24),
+                BackColor = Color.FromArgb(32, 32, 32),
                 FixedFont = new Font("Consolas", 10.25f),
                 Font = new Font("Segoe UI", 9.0f),
                 HighlightColor = Color.DarkSlateBlue,
