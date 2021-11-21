@@ -43,8 +43,7 @@ namespace SphereStudio.Ide
             InitializeDocking();
             PluginManager.Register(null, _fileExplorer, "File Explorer");
 
-            Text = string.Format("{0} {1} {2}", Versioning.Name, Versioning.Version,
-                Environment.Is64BitProcess ? "x64" : "x86");
+            Text = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             toolNew.DropDown = menuNew.DropDown;
 
             BuildEngine.Initialize();
@@ -935,9 +934,10 @@ namespace SphereStudio.Ide
 
         private void RefreshProject()
         {
+            var ideName = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             Text = Project.BackCompatible
-                ? $"{Project.Name} (Sphere 1.x) - {Versioning.Name}"
-                : $"{Project.Name} - {Versioning.Name}";
+                ? $"{Project.Name} (Sphere 1.x) - {ideName}"
+                : $"{Project.Name} - {ideName}";
             _fileExplorer.Open();
             _fileExplorer.Refresh();
             if (Core.Project != null)

@@ -27,6 +27,11 @@ namespace SphereStudio
         public const string Version = "2.1.0 WiP";
 
         /// <summary>
+        /// Whether the Sphere Studio version being built against is a WiP version.
+        /// </summary>
+        public const bool WiP = true;
+
+        /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.
         /// </summary>
         public const string Copyright = "2021 Sphere Engine Group";
