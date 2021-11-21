@@ -24,7 +24,7 @@ namespace SphereStudio
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "2.0.0+";
+        public const string Version = "2.1.0 WiP";
 
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.

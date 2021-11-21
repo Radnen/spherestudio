@@ -829,7 +829,7 @@
             this.menuAbout.Image = global::SphereStudio.Ide.Properties.Resources.information;
             this.menuAbout.Name = "menuAbout";
             this.menuAbout.Size = new System.Drawing.Size(183, 22);
-            this.menuAbout.Text = "&About Sphere Studio";
+            this.menuAbout.Text = "&About Sphere Studio...";
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // toolStripSeparator8

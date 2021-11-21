@@ -16,13 +16,13 @@ using SphereStudio.UI;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class ProjectTreePane : UserControl, IDockPane, IStyleAware
+    partial class FileExplorerPane : UserControl, IDockPane, IStyleAware
     {
         private readonly IdeWindow _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public ProjectTreePane(IdeWindow hostForm)
+        public FileExplorerPane(IdeWindow hostForm)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -38,7 +38,7 @@ namespace SphereStudio.Ide.BuiltIns
             _tip.ToolTipIcon = ToolTipIcon.Info;
             _tip.UseFading = true;
 
-            ProjectTreeView.ImageList = _iconlist;
+            fileTree.ImageList = _iconlist;
             _iconlist.ColorDepth = ColorDepth.Depth32Bit;
         }
 
@@ -52,15 +52,9 @@ namespace SphereStudio.Ide.BuiltIns
             base.OnPaint(e);
         }
 
-        public string ProjectName
-        {
-            get { return ProjectNameLabel.Text; }
-            set { ProjectNameLabel.Text = value; }
-        }
-
         private void ImportFileItem_Click(object sender, EventArgs e)
         {
-            string path = ResolvePath(ProjectTreeView.SelectedNode);
+            string path = ResolvePath(fileTree.SelectedNode);
             string[] filesToAdd = _hostForm.GetFilesToOpen(true);
             
             if (filesToAdd == null || filesToAdd.Length == 0) return;
@@ -83,7 +77,7 @@ namespace SphereStudio.Ide.BuiltIns
         private void ProjectTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
-            ProjectTreeView.SelectedNode = e.Node;
+            fileTree.SelectedNode = e.Node;
 
             OpenFileItem.Visible = DeleteFileItem.Visible = false;
             RenameFileItem.Visible = CopyPathItem.Visible = false;
@@ -109,18 +103,18 @@ namespace SphereStudio.Ide.BuiltIns
                     break;
             }
 
-            ProjectFileContextMenu.Show(ProjectTreeView, e.Location);
+            ProjectFileContextMenu.Show(fileTree, e.Location);
         }
 
         private void RenameFileItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = ProjectTreeView.SelectedNode;
+            TreeNode node = fileTree.SelectedNode;
             if (node.Tag.Equals("fileNode")) node.BeginEdit();
         }
 
         private void DeleteFileItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = ProjectTreeView.SelectedNode;
+            TreeNode node = fileTree.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
             string path = Core.Project.RootPath + pathtop;
 
@@ -194,14 +188,14 @@ namespace SphereStudio.Ide.BuiltIns
             Cursor.Current = Cursors.WaitCursor;
 
             // Save currently selected item and folder expansion states
-            string selectedNodePath = ProjectTreeView.SelectedNode != null
-                                          ? ProjectTreeView.SelectedNode.FullPath
+            string selectedNodePath = fileTree.SelectedNode != null
+                                          ? fileTree.SelectedNode.FullPath
                                           : null;
             var isExpandedTable = new Dictionary<string, bool>();
             var nodesToCheck = new Queue<TreeNode>();
-            if (ProjectTreeView.TopNode != null)
+            if (fileTree.TopNode != null)
             {
-                nodesToCheck.Enqueue(ProjectTreeView.TopNode);
+                nodesToCheck.Enqueue(fileTree.TopNode);
                 while (nodesToCheck.Count > 0)
                 {
                     TreeNode node = nodesToCheck.Dequeue();
@@ -215,25 +209,25 @@ namespace SphereStudio.Ide.BuiltIns
             }
 
             // Repopulate the tree
-            ProjectTreeView.BeginUpdate();
-            ProjectTreeView.Nodes.Clear();
+            fileTree.BeginUpdate();
+            fileTree.Nodes.Clear();
             var projectNode = new TreeNode(Core.Project.Name) { Tag = "projectNode" };
-            ProjectTreeView.Nodes.Add(projectNode);
+            fileTree.Nodes.Add(projectNode);
             var baseDir = new DirectoryInfo(SystemWatcher.Path);
-            PopulateDirectoryNode(ProjectTreeView.Nodes[0], baseDir);
+            PopulateDirectoryNode(fileTree.Nodes[0], baseDir);
 
             // Re-expand folders and try to select previously-selected item
-            if (ProjectTreeView.TopNode != null)
+            if (fileTree.TopNode != null)
             {
                 nodesToCheck.Clear();
-                nodesToCheck.Enqueue(ProjectTreeView.TopNode);
+                nodesToCheck.Enqueue(fileTree.TopNode);
                 while (nodesToCheck.Count > 0)
                 {
                     TreeNode node = nodesToCheck.Dequeue();
                     bool isExpanded;
                     isExpandedTable.TryGetValue(node.FullPath, out isExpanded);
                     if (isExpanded) node.Expand();
-                    if (node.FullPath == selectedNodePath) ProjectTreeView.SelectedNode = node;
+                    if (node.FullPath == selectedNodePath) fileTree.SelectedNode = node;
                     foreach (TreeNode subnode in node.Nodes)
                     {
                         // emulate a recursive search of the tree view:
@@ -242,20 +236,19 @@ namespace SphereStudio.Ide.BuiltIns
                 }
             }
 
-            if (ProjectTreeView.SelectedNode == null)
-                ProjectTreeView.SelectedNode = ProjectTreeView.TopNode;
-            if (!ProjectTreeView.Nodes[0].IsExpanded)
-                ProjectTreeView.Nodes[0].Expand();
+            if (fileTree.SelectedNode == null)
+                fileTree.SelectedNode = fileTree.TopNode;
+            if (!fileTree.Nodes[0].IsExpanded)
+                fileTree.Nodes[0].Expand();
             Cursor.Current = Cursors.Default;
-            ProjectTreeView.EndUpdate();
+            fileTree.EndUpdate();
         }
 
         // RECURSIVE:
         private static void PopulateDirectoryNode(TreeNode baseNode, DirectoryInfo dir)
         {
-            var hiddenFlags = FileAttributes.Hidden | FileAttributes.System;
             var dirInfos = from dirInfo in dir.GetDirectories()
-                           where !dirInfo.Attributes.HasFlag(hiddenFlags)
+                           where !dirInfo.Attributes.HasFlag(FileAttributes.Hidden)
                            orderby dirInfo.Name
                            select dirInfo;
             foreach (DirectoryInfo dirInfo in dirInfos)
@@ -266,7 +259,7 @@ namespace SphereStudio.Ide.BuiltIns
             }
 
             var fileInfos = from fileInfo in dir.GetFiles()
-                            where !fileInfo.Attributes.HasFlag(hiddenFlags)
+                            where !fileInfo.Attributes.HasFlag(FileAttributes.Hidden)
                             orderby fileInfo.Name
                             select fileInfo;
             foreach (FileInfo fileInfo in fileInfos)
@@ -300,13 +293,13 @@ namespace SphereStudio.Ide.BuiltIns
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     string path = "";
-                    if (ProjectTreeView.SelectedNode.Index == 0)
+                    if (fileTree.SelectedNode.Index == 0)
                     {
                         path = Path.Combine(Core.Project.RootPath, form.Input);
                     }
                     else
                     {
-                        string toppath = ProjectTreeView.SelectedNode.FullPath;
+                        string toppath = fileTree.SelectedNode.FullPath;
                         toppath = toppath.Substring(toppath.IndexOf('\\'));
                         string rootpath = Core.Project.RootPath + toppath;
                         path = Path.Combine(rootpath, form.Input);
@@ -316,7 +309,7 @@ namespace SphereStudio.Ide.BuiltIns
                     {
                         Directory.CreateDirectory(path);
                         TreeNode node = new TreeNode(form.Input, 2, 1) { Tag = "directoryNode" };
-                        ProjectTreeView.SelectedNode.Nodes.Add(node);
+                        fileTree.SelectedNode.Nodes.Add(node);
                     }
                     else
                     {
@@ -377,7 +370,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void CopyPathItem_Click(object sender, EventArgs e)
         {
-            string text = ProjectTreeView.SelectedNode.FullPath.Replace('\\', '/');
+            string text = fileTree.SelectedNode.FullPath.Replace('\\', '/');
             text = text.Substring(text.IndexOf('/') + 1);
             text = text.Substring(text.IndexOf('/') + 1);
             Clipboard.Clear();
@@ -407,7 +400,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = ProjectTreeView.SelectedNode;
+            TreeNode node = fileTree.SelectedNode;
             string pathtop = node.FullPath.Substring(node.FullPath.IndexOf('\\'));
             string path = Core.Project.RootPath + pathtop;
 
@@ -421,7 +414,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         public void Close()
         {
-            ProjectTreeView.Nodes.Clear();
+            fileTree.Nodes.Clear();
             SystemWatcher.EnableRaisingEvents = false;
         }
 
@@ -453,27 +446,27 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void OpenFileItem_Click(object sender, EventArgs e)
         {
-            OpenItem(ProjectTreeView.SelectedNode);
+            OpenItem(fileTree.SelectedNode);
         }
 
         private void ProjectTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            OpenItem(ProjectTreeView.SelectedNode);
+            OpenItem(fileTree.SelectedNode);
         }
 
         private void ProjectTreeView_KeyDown(object sender, KeyEventArgs e)
         {
-            TreeNode node = ProjectTreeView.SelectedNode;
+            TreeNode node = fileTree.SelectedNode;
             if (node == null) return;
             switch (e.KeyCode)
             {
                 case Keys.Return:
                     if (!node.Tag.Equals("fileNode")) return;
-                    OpenItem(ProjectTreeView.SelectedNode);
+                    OpenItem(fileTree.SelectedNode);
                     e.Handled = true;
                     break;
                 case Keys.F2:
-                    ProjectTreeView.SelectedNode.BeginEdit();
+                    fileTree.SelectedNode.BeginEdit();
                     e.Handled = true;
                     break;
             }
@@ -500,16 +493,18 @@ namespace SphereStudio.Ide.BuiltIns
             Refresh();
         }
 
-        public void ApplyStyle(UIStyle theme)
+        public void ApplyStyle(UIStyle style)
         {
-            theme.AsTextView(ProjectTreeView);
+            style.AsUIElement(this);
+            style.AsHeading(header);
+            style.AsTextView(fileTree);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
-            if (ProjectTreeView.SelectedNode == null) return;
+            if (fileTree.SelectedNode == null) return;
             string path = "";
-            var node = ProjectTreeView.SelectedNode;
+            var node = fileTree.SelectedNode;
 
             if (node.Level == 0 && node.Index == 0)
                 path = Core.Project.RootPath;

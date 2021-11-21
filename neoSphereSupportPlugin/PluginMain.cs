@@ -30,7 +30,7 @@ namespace SphereStudio.Plugins
             Conf = new PluginConf(conf);
 
             PluginManager.Register(this, new neoSphereStarter(this), "neoSphere");
-            PluginManager.Register(this, new CellCompiler(this), "Cell");
+            PluginManager.Register(this, new CellCompiler(this), "Cellscript");
             PluginManager.Register(this, new SettingsPage(this), "neoSphere Setup");
 
             Panes.Initialize(this);

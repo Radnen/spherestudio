@@ -21,14 +21,14 @@ namespace SphereStudio.Ide.BuiltIns
             };
 
             var lightTheme = new UIStyle("Light") {
-                AccentColor = Color.LightGoldenrodYellow,
+                AccentColor = Color.DarkGray,
                 BackColor = Color.White,
-                FixedFont = new Font("Consolas", 10.25f),
+                FixedFont = new Font("Consolas", 10.0f),
                 Font = new Font("Segoe UI", 9.0f),
-                HighlightColor = Color.DarkGray,
-                LabelColor = Color.FromArgb(64, 64, 64),
+                HighlightColor = Color.LightGray,
+                LabelColor = Color.Gray,
                 TextColor = Color.Black,
-                ToolColor = Color.Gray,
+                ToolColor = Color.LightGray,
             };
 
             this.Styles = new[] { darkTheme, lightTheme };

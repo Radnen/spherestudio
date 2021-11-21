@@ -13,58 +13,74 @@ namespace SphereStudio.Ide.Forms
     {
         private Project _project;
         private bool _resoChanging = false;
-        
+
         public ProjectPropsForm(Project someProject, bool editBuild = false)
         {
             InitializeComponent();
             _project = someProject;
 
-            ActiveControl = NameTextBox;
+            ActiveControl = nameTextBox;
             if (editBuild)
-            {
-                tabControl1.SelectedTab = BuildPage;
-                ActiveControl = BuildDirTextBox;
-            }
+                ActiveControl = buildDirTextBox;
+
+            StyleManager.AutoStyle(this);
         }
 
-        public void ApplyStyle(UIStyle theme)
+        public void ApplyStyle(UIStyle style)
         {
-            theme.AsUIElement(ButtonPanel);
-            theme.AsUIElement(OKButton);
-            theme.AsUIElement(CloseButton);
+            style.AsUIElement(this);
+            
+            style.AsHeading(projectHeader);
+            style.AsHeading(gameHeader);
+            style.AsAccent(projectPanel);
+            style.AsAccent(gamePanel);
+
+            style.AsHeading(ButtonBar);
+            style.AsAccent(OKButton);
+            style.AsAccent(CloseButton);
+            style.AsAccent(upgradeButton);
+            style.AsTextView(nameTextBox);
+            style.AsTextView(authorTextBox);
+            style.AsTextView(resolutionDropDown);
+            style.AsTextView(widthTextBox);
+            style.AsTextView(heightTextBox);
+            style.AsTextView(summaryTextBox);
+            style.AsTextView(typeDropDown);
+            style.AsTextView(buildDirTextBox);
         }
 
         private void ProjectPropsForm_Load(object sender, EventArgs e)
         {
-            CompilerComboBox.Items.AddRange(PluginManager.GetNames<ICompiler>());
-            if (!CompilerComboBox.Items.Contains(_project.Compiler))
-                CompilerComboBox.Items.Insert(0, _project.Compiler);
+            typeDropDown.Items.AddRange(PluginManager.GetNames<ICompiler>());
+            if (!typeDropDown.Items.Contains(_project.Compiler))
+                typeDropDown.Items.Insert(0, _project.Compiler);
 
-            PathTextBox.Text = _project.FileName;
-            NameTextBox.Text = _project.Name;
-            AuthorTextBox.Text = _project.Author;
-            SummaryTextBox.Text = _project.Summary;
-            BuildDirTextBox.Text = _project.BuildPath;
-            CompilerComboBox.Text = _project.Compiler;
-            string resoString = string.Format("{0}x{1}", _project.ScreenWidth, _project.ScreenHeight);
-            if (ResoComboBox.FindStringExact(resoString) >= 0)
-                ResoComboBox.Text = resoString;
+            var resoString = $"{_project.ScreenWidth}x{_project.ScreenHeight}";
+            pathTextBox.Text = Path.GetDirectoryName(_project.FileName);
+            nameTextBox.Text = _project.Name;
+            authorTextBox.Text = _project.Author;
+            summaryTextBox.Text = _project.Summary;
+            buildDirTextBox.Text = _project.BuildPath;
+            typeDropDown.Text = _project.Compiler;
+            if (resolutionDropDown.FindStringExact(resoString) >= 0)
+            {
+                resolutionDropDown.Text = resoString;
+            }
             else
             {
-                WidthBox.Text = _project.ScreenWidth.ToString();
-                HeightBox.Text = _project.ScreenHeight.ToString();
-                ResoComboBox.SelectedIndex = 0;
+                widthTextBox.Text = _project.ScreenWidth.ToString();
+                heightTextBox.Text = _project.ScreenHeight.ToString();
+                resolutionDropDown.SelectedIndex = 0;
             }
 
-            BuildDirTextBox.Enabled = !_project.BackCompatible;
-            CompilerComboBox.Enabled = !_project.BackCompatible;
-            UpgradeButton.Visible = _project.BackCompatible;
-            CompatModeLabel.Visible = _project.BackCompatible;
+            buildDirTextBox.Enabled = !_project.BackCompatible;
+            typeDropDown.Enabled = !_project.BackCompatible;
+            upgradeButton.Visible = _project.BackCompatible;
         }
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            if (CompilerComboBox.Text != _project.Compiler)
+            if (typeDropDown.Text != _project.Compiler)
             {
                 var answer = MessageBox.Show(
                     "You've changed the compiler for this project.  This may prevent Sphere Studio from building the project.  Are you sure you want to continue?",
@@ -72,29 +88,29 @@ namespace SphereStudio.Ide.Forms
                 if (answer == DialogResult.No)
                 {
                     DialogResult = DialogResult.None;
-                    CompilerComboBox.Text = _project.Compiler;
+                    typeDropDown.Text = _project.Compiler;
                     return;
                 }
             }
 
-            _project.Name = NameTextBox.Text;
-            _project.Author = AuthorTextBox.Text;
-            _project.Summary = SummaryTextBox.Text;
-            _project.Compiler = CompilerComboBox.Text;
-            _project.BuildPath = BuildDirTextBox.Text;
-            _project.ScreenWidth = int.Parse(WidthBox.Text);
-            _project.ScreenHeight = int.Parse(HeightBox.Text);
+            _project.Name = nameTextBox.Text;
+            _project.Author = authorTextBox.Text;
+            _project.Summary = summaryTextBox.Text;
+            _project.Compiler = typeDropDown.Text;
+            _project.BuildPath = buildDirTextBox.Text;
+            _project.ScreenWidth = int.Parse(widthTextBox.Text);
+            _project.ScreenHeight = int.Parse(heightTextBox.Text);
             _project.Save();
         }
 
         private void ResoComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ResoComboBox.SelectedIndex > 0)
+            if (resolutionDropDown.SelectedIndex > 0)
             {
                 _resoChanging = true;
-                var match = new Regex(@"(\d+)x(\d+)").Match(ResoComboBox.Text);
-                WidthBox.Text = match.Groups[1].Value;
-                HeightBox.Text = match.Groups[2].Value;
+                var match = new Regex(@"(\d+)x(\d+)").Match(resolutionDropDown.Text);
+                widthTextBox.Text = match.Groups[1].Value;
+                heightTextBox.Text = match.Groups[2].Value;
                 _resoChanging = false;
             }
         }
@@ -103,7 +119,7 @@ namespace SphereStudio.Ide.Forms
         {
             if (!_resoChanging)
             {
-                ResoComboBox.SelectedIndex = 0;
+                resolutionDropDown.SelectedIndex = 0;
             }
         }
 
@@ -119,20 +135,25 @@ namespace SphereStudio.Ide.Forms
 
         private void CompilerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ResoLabel.Visible = ResoComboBox.Visible = WidthBox.Visible = HeightBox.Visible =
-                CompilerComboBox.Text == "Classic";
+            ResoLabel.Visible = resolutionDropDown.Visible = widthTextBox.Visible = heightTextBox.Visible =
+                typeDropDown.Text == "Sphere 1.x compatible";
         }
 
         private void UpgradeButton_Click(object sender, EventArgs e)
         {
-            _project.Upgrade();
-            PathTextBox.Text = _project.FileName;
-            BuildDirTextBox.Enabled = true;
-            CompilerComboBox.Enabled = true;
-            BuildDirTextBox.Text = _project.BuildPath;
-            CompilerComboBox.Text = _project.Compiler;
-            UpgradeButton.Visible = false;
-            CompatModeLabel.Visible = false;
+            var answer = MessageBox.Show(
+                "This is a Sphere 1.x-compatible project (game.sgm).  To enable all Sphere Studio features, you can upgrade it a full Sphere Studio project.  Do you want to upgrade now?",
+                "Upgrade Project", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (answer == DialogResult.Yes)
+            {
+                _project.Upgrade();
+                pathTextBox.Text = _project.FileName;
+                buildDirTextBox.Enabled = true;
+                typeDropDown.Enabled = true;
+                buildDirTextBox.Text = _project.BuildPath;
+                typeDropDown.Text = _project.Compiler;
+                upgradeButton.Visible = false;
+            }
         }
     }
 }

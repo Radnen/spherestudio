@@ -29,7 +29,7 @@ namespace SphereStudio.Ide
         private DockManager _dock = null;
         private bool _isFirstDebugStop;
         private bool _loadingPresets = false;
-        private ProjectTreePane _projectTree;
+        private FileExplorerPane _fileExplorer;
         private StartPageView _startPage = null;
         private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
@@ -41,7 +41,7 @@ namespace SphereStudio.Ide
             PluginManager.Core = this;
 
             InitializeDocking();
-            PluginManager.Register(null, _projectTree, "Project Tree");
+            PluginManager.Register(null, _fileExplorer, "File Explorer");
 
             Text = string.Format("{0} {1} {2}", Versioning.Name, Versioning.Version,
                 Environment.Is64BitProcess ? "x64" : "x86");
@@ -50,8 +50,8 @@ namespace SphereStudio.Ide
             BuildEngine.Initialize();
             Core.Settings.Apply();
 
-            Docking.Show(_projectTree);
-            Docking.Activate(_projectTree);
+            Docking.Show(_fileExplorer);
+            Docking.Activate(_fileExplorer);
             Refresh();
 
             if (Core.Settings.AutoOpenLastProject)
@@ -288,6 +288,7 @@ namespace SphereStudio.Ide
 
         public void ApplyStyle(UIStyle style)
         {
+            style.AsUIElement(MainDock);
             style.AsHeading(MainMenuStrip);
             style.AsUIElement(EditorTools);
             style.AsHeading(EditorStatus);
@@ -739,7 +740,7 @@ namespace SphereStudio.Ide
         #region Private IDE routines
         private void InitializeDocking()
         {
-            _projectTree = new ProjectTreePane(this);
+            _fileExplorer = new FileExplorerPane(this);
             _dock = new DockManager(MainDock);
         }
 
@@ -886,8 +887,7 @@ namespace SphereStudio.Ide
             }
 
             // clear the project tree
-            _projectTree.Close();
-            _projectTree.ProjectName = "Project Name";
+            _fileExplorer.Close();
             menuOpenLastProject.Enabled = (Core.Settings.LastProject.Length > 0);
 
             // all clear!
@@ -938,12 +938,11 @@ namespace SphereStudio.Ide
             Text = Project.BackCompatible
                 ? $"{Project.Name} (Sphere 1.x) - {Versioning.Name}"
                 : $"{Project.Name} - {Versioning.Name}";
-            _projectTree.Open();
-            _projectTree.Refresh();
+            _fileExplorer.Open();
+            _fileExplorer.Refresh();
             if (Core.Project != null)
                 Core.Settings.LastProject = Core.Project.FileName;
             UpdateControls();
-            _projectTree.ProjectName = $"Project: {Core.Project.Name}";
         }
 
         private void SaveAllDocuments()

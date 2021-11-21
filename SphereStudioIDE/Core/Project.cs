@@ -107,7 +107,7 @@ namespace SphereStudio.Ide
                 }
             }
 
-            project.Compiler = "Classic";
+            project.Compiler = "Sphere 1.x compatible";
             return project;
         }
 
@@ -162,7 +162,7 @@ namespace SphereStudio.Ide
         /// </summary>
         public string Compiler
         {
-            get { return !BackCompatible ? _ssproj.GetString("compiler", "Classic") : "Classic"; }
+            get { return !BackCompatible ? _ssproj.GetString("compiler", "Sphere 1.x compatible") : "Sphere 1.x compatible"; }
             set { _ssproj.SetValue("compiler", value); }
         }
 
@@ -263,7 +263,7 @@ namespace SphereStudio.Ide
             FileName = Path.Combine(basePath, MakeFileName(Name));
             BackCompatible = false;
             BuildPath = "./";
-            Compiler = "Classic";
+            Compiler = "Sphere 1.x compatible";
             Save();
         }
 
