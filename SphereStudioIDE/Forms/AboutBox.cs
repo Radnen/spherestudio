@@ -7,9 +7,9 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class AboutDialog : Form, IStyleAware
+    partial class AboutBox : Form, IStyleAware
     {
-        public AboutDialog()
+        public AboutBox()
         {
             InitializeComponent();
 
@@ -48,14 +48,14 @@ namespace SphereStudio.Ide.Forms
                     : os.Version.Build == 19041 ? "May 2020 Update"
                     : os.Version.Build == 19042 ? "Oct. 2020 Update"
                     : os.Version.Build == 19043 ? "May 2021 Update"
-                    : os.Version.Build == 22000 ? "Version 21H2"
-                    : $"v{os.Version.Build}";
+                    : os.Version.Build == 22000 ? "v. 21H2"
+                    : $"build {os.Version.Build}";
             }
             var architecture = RuntimeInformation.OSArchitecture == Architecture.X64 ? "x64"
                 : RuntimeInformation.OSArchitecture == Architecture.Arm64 ? "ARM64"
                 : RuntimeInformation.OSArchitecture == Architecture.Arm ? "ARM"
                 : "x86";
-            this.labelPlatform.Text = $"Windows\x2122 {windowsVersion} - {architecture}\n{updateName}";
+            this.labelPlatform.Text = $"Windows {windowsVersion} {architecture}\n{updateName}";
 
             StyleManager.AutoStyle(this);
         }
@@ -63,6 +63,7 @@ namespace SphereStudio.Ide.Forms
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
+            style.AsHeading(header);
             style.AsHeading(versionHeader);
             style.AsHeading(footerPanel);
             style.AsAccent(versionPanel);

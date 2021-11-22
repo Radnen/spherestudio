@@ -26,13 +26,12 @@ namespace SphereStudio.Ide.BuiltIns
 
         public bool Apply()
         {
-            string[] paths = new string[PathList.Items.Count];
-            PathList.Items.CopyTo(paths, 0);
+            string[] paths = new string[dirsListBox.Items.Count];
+            dirsListBox.Items.CopyTo(paths, 0);
 
-            Core.Settings.StyleName = StylePicker.Text;
-            Core.Settings.UseStartPage = UseStartPage.Checked;
-            Core.Settings.AutoOpenLastProject = OpenLastProject.Checked;
-            Core.Settings.UseScriptHeaders = UseScriptHeader.Checked;
+            Core.Settings.StyleName = styleDropDown.Text;
+            Core.Settings.UseStartPage = useStartPageButton.Checked;
+            Core.Settings.AutoOpenLastProject = rememberProjectButton.Checked;
             Core.Settings.ProjectPaths = paths;
             Core.Settings.Apply();
             return true;
@@ -40,25 +39,27 @@ namespace SphereStudio.Ide.BuiltIns
 
         public void ApplyStyle(UIStyle style)
         {
-            style.AsUIElement(tabPage1);
-            style.AsUIElement(tabPage2);
-            style.AsUIElement(tabPage3);
-            style.AsTextView(StylePicker);
-            style.AsTextView(ScriptHeader);
-            style.AsTextView(PathList);
-            style.AsUIElement(UseStartPage);
-            style.AsUIElement(OpenLastProject);
-            style.AsUIElement(UseScriptHeader);
-            style.AsAccent(AddPathButton);
-            style.AsAccent(RemovePathButton);
-            style.AsAccent(UpButton);
-            style.AsAccent(DownButton);
+            style.AsUIElement(this);
+            style.AsHeading(styleHeading);
+            style.AsHeading(miscHeading);
+            style.AsHeading(dirsHeading);
+            style.AsAccent(stylePanel);
+            style.AsAccent(miscPanel);
+            style.AsAccent(dirsPanel);
+            style.AsTextView(styleDropDown);
+            style.AsTextView(dirsListBox);
+            style.AsUIElement(useStartPageButton);
+            style.AsUIElement(rememberProjectButton);
+            style.AsAccent(addDirButton);
+            style.AsAccent(removeDirButton);
+            style.AsAccent(moveDirUpButton);
+            style.AsAccent(moveDirDownButton);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            StylePicker.Items.Clear();
-            PathList.Items.Clear();
+            styleDropDown.Items.Clear();
+            dirsListBox.Items.Clear();
 
             // populate lists, combo boxes, etc.
             var styleNames = from pluginName in PluginManager.GetNames<IStyleProvider>()
@@ -67,25 +68,24 @@ namespace SphereStudio.Ide.BuiltIns
                              orderby pluginName
                              select pluginName + ": " + style.Name;
             foreach (var name in styleNames)
-                StylePicker.Items.Add(name);
-            StylePicker.SelectedIndex = 0;
+                styleDropDown.Items.Add(name);
+            styleDropDown.SelectedIndex = 0;
 
             // fill in current settings
-            StylePicker.Text = Core.Settings.StyleName;
-            UseStartPage.Checked = Core.Settings.UseStartPage;
-            OpenLastProject.Checked = Core.Settings.AutoOpenLastProject;
-            UseScriptHeader.Checked = Core.Settings.UseScriptHeaders;
-            PathList.Items.AddRange(Core.Settings.ProjectPaths);
+            styleDropDown.Text = Core.Settings.StyleName;
+            useStartPageButton.Checked = Core.Settings.UseStartPage;
+            rememberProjectButton.Checked = Core.Settings.AutoOpenLastProject;
+            dirsListBox.Items.AddRange(Core.Settings.ProjectPaths);
 
-            RemovePathButton.Enabled = PathList.Items.Count > 0 && PathList.SelectedIndex >= 0;
-            UpButton.Enabled = DownButton.Enabled = RemovePathButton.Enabled;
+            removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
+            moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;
             base.OnLoad(e);
         }
 
         private void PathList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            RemovePathButton.Enabled = PathList.Items.Count > 0 && PathList.SelectedIndex >= 0;
-            UpButton.Enabled = DownButton.Enabled = RemovePathButton.Enabled;
+            removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
+            moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;
         }
 
         private void AddPathButton_Click(object sender, EventArgs e)
@@ -95,39 +95,39 @@ namespace SphereStudio.Ide.BuiltIns
             browser.ShowNewFolderButton = true;
             if (browser.ShowDialog() == DialogResult.OK)
             {
-                int idx = PathList.Items.Add(browser.SelectedPath);
-                PathList.SelectedIndex = idx;
+                int idx = dirsListBox.Items.Add(browser.SelectedPath);
+                dirsListBox.SelectedIndex = idx;
             }
         }
 
         private void RemovePathButton_Click(object sender, EventArgs e)
         {
-            PathList.Items.RemoveAt(PathList.SelectedIndex);
-            RemovePathButton.Enabled = PathList.Items.Count > 0 && PathList.SelectedIndex >= 0;
-            UpButton.Enabled = DownButton.Enabled = RemovePathButton.Enabled;
+            dirsListBox.Items.RemoveAt(dirsListBox.SelectedIndex);
+            removeDirButton.Enabled = dirsListBox.Items.Count > 0 && dirsListBox.SelectedIndex >= 0;
+            moveDirUpButton.Enabled = moveDirDownButton.Enabled = removeDirButton.Enabled;
         }
 
         private void UpButton_Click(object sender, EventArgs e)
         {
-            var idx = PathList.SelectedIndex;
+            var idx = dirsListBox.SelectedIndex;
             if (idx - 1 >= 0)
             {
-                var item = PathList.Items[idx];
-                PathList.Items.RemoveAt(idx);
-                PathList.Items.Insert(idx - 1, item);
-                PathList.SelectedIndex = idx - 1;
+                var item = dirsListBox.Items[idx];
+                dirsListBox.Items.RemoveAt(idx);
+                dirsListBox.Items.Insert(idx - 1, item);
+                dirsListBox.SelectedIndex = idx - 1;
             }
         }
 
         private void DownButton_Click(object sender, EventArgs e)
         {
-            var idx = PathList.SelectedIndex;
-            if (idx + 1 < PathList.Items.Count)
+            var idx = dirsListBox.SelectedIndex;
+            if (idx + 1 < dirsListBox.Items.Count)
             {
-                var item = PathList.Items[idx];
-                PathList.Items.RemoveAt(idx);
-                PathList.Items.Insert(idx + 1, item);
-                PathList.SelectedIndex = idx + 1;
+                var item = dirsListBox.Items[idx];
+                dirsListBox.Items.RemoveAt(idx);
+                dirsListBox.Items.Insert(idx + 1, item);
+                dirsListBox.SelectedIndex = idx + 1;
             }
         }
     }

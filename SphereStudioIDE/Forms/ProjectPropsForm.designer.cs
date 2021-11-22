@@ -34,9 +34,8 @@
             this.pathTextBox = new System.Windows.Forms.TextBox();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.authorTextBox = new System.Windows.Forms.TextBox();
-            this.OKButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
-            this.editorLabel1 = new SphereStudio.UI.DialogHeader();
+            this.okButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.resolutionDropDown = new System.Windows.Forms.ComboBox();
             this.heightTextBox = new System.Windows.Forms.TextBox();
             this.widthTextBox = new System.Windows.Forms.TextBox();
@@ -48,12 +47,13 @@
             this.typeDropDown = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.upgradeButton = new System.Windows.Forms.Button();
-            this.ButtonBar = new System.Windows.Forms.Panel();
+            this.footer = new System.Windows.Forms.Panel();
             this.projectPanel = new System.Windows.Forms.Panel();
             this.projectHeader = new SphereStudio.UI.DialogHeader();
             this.gamePanel = new System.Windows.Forms.Panel();
             this.gameHeader = new System.Windows.Forms.Label();
-            this.ButtonBar.SuspendLayout();
+            this.header = new System.Windows.Forms.Label();
+            this.footer.SuspendLayout();
             this.projectPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
             this.SuspendLayout();
@@ -113,45 +113,32 @@
             this.authorTextBox.Size = new System.Drawing.Size(303, 23);
             this.authorTextBox.TabIndex = 5;
             // 
-            // OKButton
+            // okButton
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OKButton.Location = new System.Drawing.Point(235, 13);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(80, 25);
-            this.OKButton.TabIndex = 0;
-            this.OKButton.Text = "OK";
-            this.OKButton.UseVisualStyleBackColor = true;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.okButton.Location = new System.Drawing.Point(235, 13);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(80, 25);
+            this.okButton.TabIndex = 0;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.OKButton_Click);
             // 
-            // CloseButton
+            // cancelButton
             // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.Location = new System.Drawing.Point(321, 13);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(80, 25);
-            this.CloseButton.TabIndex = 1;
-            this.CloseButton.Text = "Cancel";
-            this.CloseButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cancelButton.Location = new System.Drawing.Point(321, 13);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(80, 25);
+            this.cancelButton.TabIndex = 1;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
             // 
-            // editorLabel1
-            // 
-            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.editorLabel1.ForeColor = System.Drawing.Color.White;
-            this.editorLabel1.Location = new System.Drawing.Point(0, 0);
-            this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(413, 23);
-            this.editorLabel1.TabIndex = 0;
-            this.editorLabel1.Text = "edit the settings for this Sphere game project";
-            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // ResoComboBox
+            // resolutionDropDown
             // 
             this.resolutionDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -167,25 +154,25 @@
             "1280x720",
             "1920x1080"});
             this.resolutionDropDown.Location = new System.Drawing.Point(76, 184);
-            this.resolutionDropDown.Name = "ResoComboBox";
+            this.resolutionDropDown.Name = "resolutionDropDown";
             this.resolutionDropDown.Size = new System.Drawing.Size(215, 23);
             this.resolutionDropDown.TabIndex = 9;
             this.resolutionDropDown.SelectedIndexChanged += new System.EventHandler(this.ResoComboBox_SelectedIndexChanged);
             // 
-            // HeightBox
+            // heightTextBox
             // 
             this.heightTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.heightTextBox.Location = new System.Drawing.Point(341, 184);
-            this.heightTextBox.Name = "HeightBox";
+            this.heightTextBox.Name = "heightTextBox";
             this.heightTextBox.Size = new System.Drawing.Size(38, 23);
             this.heightTextBox.TabIndex = 11;
             this.heightTextBox.Text = "240";
             // 
-            // WidthBox
+            // widthTextBox
             // 
             this.widthTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.widthTextBox.Location = new System.Drawing.Point(297, 184);
-            this.widthTextBox.Name = "WidthBox";
+            this.widthTextBox.Name = "widthTextBox";
             this.widthTextBox.Size = new System.Drawing.Size(38, 23);
             this.widthTextBox.TabIndex = 10;
             this.widthTextBox.Text = "320";
@@ -259,11 +246,11 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "type";
             // 
-            // UpgradeButton
+            // upgradeButton
             // 
             this.upgradeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.upgradeButton.Location = new System.Drawing.Point(12, 13);
-            this.upgradeButton.Name = "UpgradeButton";
+            this.upgradeButton.Name = "upgradeButton";
             this.upgradeButton.Size = new System.Drawing.Size(171, 25);
             this.upgradeButton.TabIndex = 2;
             this.upgradeButton.Text = "&Upgrade from Sphere 1.x...";
@@ -271,16 +258,16 @@
             this.upgradeButton.Visible = false;
             this.upgradeButton.Click += new System.EventHandler(this.UpgradeButton_Click);
             // 
-            // ButtonBar
+            // footer
             // 
-            this.ButtonBar.Controls.Add(this.CloseButton);
-            this.ButtonBar.Controls.Add(this.OKButton);
-            this.ButtonBar.Controls.Add(this.upgradeButton);
-            this.ButtonBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonBar.Location = new System.Drawing.Point(0, 397);
-            this.ButtonBar.Name = "ButtonBar";
-            this.ButtonBar.Size = new System.Drawing.Size(413, 50);
-            this.ButtonBar.TabIndex = 14;
+            this.footer.Controls.Add(this.cancelButton);
+            this.footer.Controls.Add(this.okButton);
+            this.footer.Controls.Add(this.upgradeButton);
+            this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.footer.Location = new System.Drawing.Point(0, 397);
+            this.footer.Name = "footer";
+            this.footer.Size = new System.Drawing.Size(413, 50);
+            this.footer.TabIndex = 14;
             // 
             // projectPanel
             // 
@@ -338,26 +325,37 @@
             this.gameHeader.Text = "game information";
             this.gameHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // header
+            // 
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(413, 23);
+            this.header.TabIndex = 17;
+            this.header.Text = "configure your Sphere game project";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // ProjectPropsForm
             // 
-            this.AcceptButton = this.OKButton;
+            this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CloseButton;
+            this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(413, 447);
+            this.Controls.Add(this.header);
             this.Controls.Add(this.gamePanel);
             this.Controls.Add(this.projectPanel);
-            this.Controls.Add(this.ButtonBar);
-            this.Controls.Add(this.editorLabel1);
+            this.Controls.Add(this.footer);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProjectPropsForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Properties";
             this.Load += new System.EventHandler(this.ProjectPropsForm_Load);
-            this.ButtonBar.ResumeLayout(false);
+            this.footer.ResumeLayout(false);
             this.projectPanel.ResumeLayout(false);
             this.projectPanel.PerformLayout();
             this.gamePanel.ResumeLayout(false);
@@ -374,9 +372,8 @@
         private System.Windows.Forms.TextBox pathTextBox;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.TextBox authorTextBox;
-        private System.Windows.Forms.Button OKButton;
-        private System.Windows.Forms.Button CloseButton;
-        private SphereStudio.UI.DialogHeader editorLabel1;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox summaryTextBox;
         private System.Windows.Forms.TextBox buildDirTextBox;
@@ -388,10 +385,11 @@
         private System.Windows.Forms.TextBox widthTextBox;
         private System.Windows.Forms.Label ResoLabel;
         private System.Windows.Forms.Button upgradeButton;
-        private System.Windows.Forms.Panel ButtonBar;
+        private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Panel projectPanel;
         private UI.DialogHeader projectHeader;
         private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.Label gameHeader;
+        private System.Windows.Forms.Label header;
     }
 }

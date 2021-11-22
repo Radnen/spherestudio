@@ -29,16 +29,18 @@ namespace SphereStudio.Ide.Forms
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            
+
+            style.AsHeading(header);
+            style.AsHeading(footer);
             style.AsHeading(projectHeader);
             style.AsHeading(gameHeader);
             style.AsAccent(projectPanel);
             style.AsAccent(gamePanel);
 
-            style.AsHeading(ButtonBar);
-            style.AsAccent(OKButton);
-            style.AsAccent(CloseButton);
+            style.AsAccent(okButton);
+            style.AsAccent(cancelButton);
             style.AsAccent(upgradeButton);
+            style.AsTextView(pathTextBox);
             style.AsTextView(nameTextBox);
             style.AsTextView(authorTextBox);
             style.AsTextView(resolutionDropDown);

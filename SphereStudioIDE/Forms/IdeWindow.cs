@@ -38,10 +38,10 @@ namespace SphereStudio.Ide
         {
             InitializeComponent();
 
-            PluginManager.Core = this;
+            Base.PluginManager.Core = this;
 
             InitializeDocking();
-            PluginManager.Register(null, _fileExplorer, "File Explorer");
+            Base.PluginManager.Register(null, _fileExplorer, "File Explorer");
 
             Text = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             toolNew.DropDown = menuNew.DropDown;
@@ -193,11 +193,11 @@ namespace SphereStudio.Ide
                 string fileExtension = Path.GetExtension(filePath);
                 if (fileExtension.StartsWith("."))  // remove dot from extension
                     fileExtension = fileExtension.Substring(1);
-                var plugins = from name in PluginManager.GetNames<IFileOpener>()
-                              let plugin = PluginManager.Get<IFileOpener>(name)
+                var plugins = from name in Base.PluginManager.GetNames<IFileOpener>()
+                              let plugin = Base.PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions.Contains(fileExtension)
                               select plugin;
-                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
+                IFileOpener defaultOpener = Base.PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
                 if (opener != null)
                     view = opener.Open(filePath);
@@ -228,8 +228,8 @@ namespace SphereStudio.Ide
                 return;
 
             Project pj = SphereStudio.Ide.Project.Open(fileName);
-            IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
-            ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
+            IStarter starter = Base.PluginManager.Get<IStarter>(pj.User.Engine);
+            ICompiler compiler = Base.PluginManager.Get<ICompiler>(pj.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
             {
                 var answer = MessageBox.Show(
@@ -404,11 +404,11 @@ namespace SphereStudio.Ide
         {
             ToolStripDropDown dropdown = ((ToolStripDropDownItem) sender).DropDown;
 
-            string[] pluginNames = PluginManager.GetNames<INewFileOpener>();
+            string[] pluginNames = Base.PluginManager.GetNames<INewFileOpener>();
             if (pluginNames.Length > 0)
                 dropdown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
             var plugins = from name in pluginNames
-                          let plugin = PluginManager.Get<INewFileOpener>(name)
+                          let plugin = Base.PluginManager.Get<INewFileOpener>(name)
                           orderby plugin.FileTypeName ascending
                           select plugin;
             foreach (var plugin in plugins)
@@ -452,8 +452,8 @@ namespace SphereStudio.Ide
                 "Sphere Projects");
             NewProjectForm npf = new NewProjectForm() { RootFolder = rootPath };
 
-            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
-            var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
+            var starter = Base.PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var compiler = Base.PluginManager.Get<ICompiler>(Core.Settings.Compiler);
             if (starter == null || compiler == null)
             {
                 MessageBox.Show(
@@ -582,8 +582,8 @@ namespace SphereStudio.Ide
         #region View menu Click handlers
         private void menuView_DropDownOpening(object sender, EventArgs e)
         {
-            var panelNames = from name in PluginManager.GetNames<IDockPane>()
-                             let plugin = PluginManager.Get<IDockPane>(name)
+            var panelNames = from name in Base.PluginManager.GetNames<IDockPane>()
+                             let plugin = Base.PluginManager.Get<IDockPane>(name)
                              where plugin.ShowInViewMenu
                              select name;
             if (panelNames.Any())
@@ -592,7 +592,7 @@ namespace SphereStudio.Ide
                 menuView.DropDownItems.Add(ts);
                 foreach (string title in panelNames)
                 {
-                    var plugin = PluginManager.Get<IDockPane>(title);
+                    var plugin = Base.PluginManager.Get<IDockPane>(title);
                     ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
                     item.Image = plugin.DockIcon;
                     item.Checked = _dock.IsVisible(plugin);
@@ -690,13 +690,13 @@ namespace SphereStudio.Ide
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            PluginManager.Get<IStarter>(Core.Project.User.Engine)
+            Base.PluginManager.Get<IStarter>(Core.Project.User.Engine)
                 .Configure();
         }
 
         private void menuConfigManager_Click(object sender, EventArgs e)
         {
-            new ConfigManager().ShowDialog(this);
+            new PluginManagerForm().ShowDialog(this);
             UpdateEngineList();
             UpdateControls();
         }
@@ -710,7 +710,7 @@ namespace SphereStudio.Ide
         #region Help menu Click handlers
         private void menuAbout_Click(object sender, EventArgs e)
         {
-            using (AboutDialog about = new AboutDialog())
+            using (AboutBox about = new AboutBox())
             {
                 about.ShowDialog();
             }
@@ -762,8 +762,8 @@ namespace SphereStudio.Ide
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 string filterString = "";
-                var plugins = from name in PluginManager.GetNames<IFileOpener>()
-                              let plugin = PluginManager.Get<IFileOpener>(name)
+                var plugins = from name in Base.PluginManager.GetNames<IFileOpener>()
+                              let plugin = Base.PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions != null
                               orderby plugin.FileTypeName ascending
                               select plugin;
@@ -911,7 +911,7 @@ namespace SphereStudio.Ide
 
         public void OpenEditorSettings()
         {
-            SettingsCenter sc = new SettingsCenter();
+            PreferencesForm sc = new PreferencesForm();
             if (sc.ShowDialog() == DialogResult.OK)
             {
                 Core.Settings.Apply();
@@ -1022,7 +1022,7 @@ namespace SphereStudio.Ide
         private void UpdateControls()
         {
             var starter = IsProjectOpen
-                ? PluginManager.Get<IStarter>(Core.Project.User.Engine)
+                ? Base.PluginManager.Get<IStarter>(Core.Project.User.Engine)
                 : null;
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
@@ -1068,7 +1068,7 @@ namespace SphereStudio.Ide
             _loadingPresets = true;
 
             toolEngineCombo.Items.Clear();
-            string[] engines = PluginManager.GetNames<IStarter>();
+            string[] engines = Base.PluginManager.GetNames<IStarter>();
             if (IsProjectOpen && engines.Length > 0)
             {
                 foreach (string name in engines)

@@ -319,9 +319,6 @@
   <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\style.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AboutSphere" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\AboutSphere.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bullet_toggle_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\bullet_toggle_plus.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

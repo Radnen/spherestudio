@@ -11,8 +11,8 @@ namespace SphereStudio.Ide.BuiltIns
         {
             var darkTheme = new UIStyle("Dark") {
                 AccentColor = Color.FromArgb(32, 32, 48),
-                BackColor = Color.FromArgb(32, 32, 32),
-                FixedFont = new Font("Consolas", 10.25f),
+                BackColor = Color.FromArgb(24, 24, 32),
+                FixedFont = new Font("Consolas", 10.0f),
                 Font = new Font("Segoe UI", 9.0f),
                 HighlightColor = Color.DarkSlateBlue,
                 LabelColor = Color.FromArgb(32, 32, 32),
@@ -21,14 +21,14 @@ namespace SphereStudio.Ide.BuiltIns
             };
 
             var lightTheme = new UIStyle("Light") {
-                AccentColor = Color.DarkGray,
+                AccentColor = Color.FromArgb(192, 192, 208),
                 BackColor = Color.White,
                 FixedFont = new Font("Consolas", 10.0f),
                 Font = new Font("Segoe UI", 9.0f),
-                HighlightColor = Color.LightGray,
-                LabelColor = Color.Gray,
+                HighlightColor = Color.LightGoldenrodYellow,
+                LabelColor = Color.LightGray,
                 TextColor = Color.Black,
-                ToolColor = Color.LightGray,
+                ToolColor = Color.Silver,
             };
 
             this.Styles = new[] { darkTheme, lightTheme };

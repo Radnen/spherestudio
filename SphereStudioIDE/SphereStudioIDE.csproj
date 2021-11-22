@@ -107,11 +107,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\PluginShim.cs" />
-    <Compile Include="Forms\SettingsCenter.cs">
+    <Compile Include="Forms\PreferencesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SettingsCenter.Designer.cs">
-      <DependentUpon>SettingsCenter.cs</DependentUpon>
+    <Compile Include="Forms\PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DockPanes\BuildLogPane.cs">
       <SubType>UserControl</SubType>
@@ -119,17 +119,17 @@
     <Compile Include="DockPanes\BuildLogPane.Designer.cs">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutDialog.cs">
+    <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutDialog.Designer.cs">
-      <DependentUpon>AboutDialog.cs</DependentUpon>
+    <Compile Include="Forms\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ConfigManager.cs">
+    <Compile Include="Forms\PluginManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ConfigManager.Designer.cs">
-      <DependentUpon>ConfigManager.cs</DependentUpon>
+    <Compile Include="Forms\PluginManagerForm.Designer.cs">
+      <DependentUpon>PluginManagerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SavePresetForm.cs">
       <SubType>Form</SubType>
@@ -188,17 +188,17 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Project.cs" />
-    <EmbeddedResource Include="Forms\SettingsCenter.resx">
-      <DependentUpon>SettingsCenter.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PreferencesForm.resx">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanes\BuildLogPane.resx">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutDialog.resx">
-      <DependentUpon>AboutDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ConfigManager.resx">
-      <DependentUpon>ConfigManager.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\PluginManagerForm.resx">
+      <DependentUpon>PluginManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SavePresetForm.resx">
       <DependentUpon>SavePresetForm.cs</DependentUpon>

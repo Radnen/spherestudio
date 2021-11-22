@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.Forms
 {
-    partial class ConfigManager
+    partial class PluginManagerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigManager));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginManagerForm));
             this.PresetsList = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -50,13 +50,15 @@
             this.FilePluginList = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.editorLabel2 = new SphereStudio.UI.DialogHeader();
-            this.OKButton = new System.Windows.Forms.Button();
-            this.DeletePresetButton = new System.Windows.Forms.Button();
-            this.SavePresetButton = new System.Windows.Forms.Button();
-            this.MainHeader = new SphereStudio.UI.DialogHeader();
+            this.okButton = new System.Windows.Forms.Button();
+            this.deletePresetButton = new System.Windows.Forms.Button();
+            this.savePresetButton = new System.Windows.Forms.Button();
+            this.header = new System.Windows.Forms.Label();
+            this.footer = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.footer.SuspendLayout();
             this.SuspendLayout();
             // 
             // PresetsList
@@ -79,7 +81,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 67);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(644, 402);
+            this.tabControl1.Size = new System.Drawing.Size(644, 421);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage2
@@ -91,7 +93,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(636, 376);
+            this.tabPage2.Size = new System.Drawing.Size(636, 395);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Plugins";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -107,11 +109,12 @@
             this.DescriptionColumn});
             this.PluginsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PluginsList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.PluginsList.HideSelection = false;
             this.PluginsList.Location = new System.Drawing.Point(3, 152);
             this.PluginsList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PluginsList.Name = "PluginsList";
             this.PluginsList.ShowItemToolTips = true;
-            this.PluginsList.Size = new System.Drawing.Size(630, 221);
+            this.PluginsList.Size = new System.Drawing.Size(630, 240);
             this.PluginsList.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.PluginsList.TabIndex = 3;
             this.PluginsList.UseCompatibleStateImageBehavior = false;
@@ -237,7 +240,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(295, 17);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(109, 13);
+            this.label3.Size = new System.Drawing.Size(110, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Unknown File Types";
             // 
@@ -284,86 +287,94 @@
             this.editorLabel2.Text = "Select the default engine, compiler, and editors for this configuration.";
             this.editorLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // OKButton
+            // okButton
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OKButton.Location = new System.Drawing.Point(576, 475);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(80, 25);
-            this.OKButton.TabIndex = 5;
-            this.OKButton.Text = "OK";
-            this.OKButton.UseVisualStyleBackColor = true;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.okButton.Location = new System.Drawing.Point(576, 13);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(80, 25);
+            this.okButton.TabIndex = 5;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.OKButton_Click);
             // 
-            // DeletePresetButton
+            // deletePresetButton
             // 
-            this.DeletePresetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeletePresetButton.Image = global::SphereStudio.Ide.Properties.Resources.cross;
-            this.DeletePresetButton.Location = new System.Drawing.Point(272, 35);
-            this.DeletePresetButton.Name = "DeletePresetButton";
-            this.DeletePresetButton.Size = new System.Drawing.Size(36, 26);
-            this.DeletePresetButton.TabIndex = 2;
-            this.DeletePresetButton.UseVisualStyleBackColor = true;
-            this.DeletePresetButton.Click += new System.EventHandler(this.DeletePresetButton_Click);
+            this.deletePresetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deletePresetButton.Image = global::SphereStudio.Ide.Properties.Resources.cross;
+            this.deletePresetButton.Location = new System.Drawing.Point(272, 35);
+            this.deletePresetButton.Name = "deletePresetButton";
+            this.deletePresetButton.Size = new System.Drawing.Size(36, 26);
+            this.deletePresetButton.TabIndex = 2;
+            this.deletePresetButton.UseVisualStyleBackColor = true;
+            this.deletePresetButton.Click += new System.EventHandler(this.DeletePresetButton_Click);
             // 
-            // SavePresetButton
+            // savePresetButton
             // 
-            this.SavePresetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SavePresetButton.Image = global::SphereStudio.Ide.Properties.Resources.disk;
-            this.SavePresetButton.Location = new System.Drawing.Point(314, 35);
-            this.SavePresetButton.Name = "SavePresetButton";
-            this.SavePresetButton.Size = new System.Drawing.Size(36, 26);
-            this.SavePresetButton.TabIndex = 3;
-            this.SavePresetButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.SavePresetButton.UseVisualStyleBackColor = true;
-            this.SavePresetButton.Click += new System.EventHandler(this.SavePresetButton_Click);
+            this.savePresetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.savePresetButton.Image = global::SphereStudio.Ide.Properties.Resources.disk;
+            this.savePresetButton.Location = new System.Drawing.Point(314, 35);
+            this.savePresetButton.Name = "savePresetButton";
+            this.savePresetButton.Size = new System.Drawing.Size(36, 26);
+            this.savePresetButton.TabIndex = 3;
+            this.savePresetButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.savePresetButton.UseVisualStyleBackColor = true;
+            this.savePresetButton.Click += new System.EventHandler(this.SavePresetButton_Click);
             // 
-            // MainHeader
+            // header
             // 
-            this.MainHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.MainHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.MainHeader.Location = new System.Drawing.Point(0, 0);
-            this.MainHeader.Name = "MainHeader";
-            this.MainHeader.Size = new System.Drawing.Size(668, 23);
-            this.MainHeader.TabIndex = 0;
-            this.MainHeader.Text = "Manage your Sphere Studio plugin configurations";
-            this.MainHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(668, 23);
+            this.header.TabIndex = 6;
+            this.header.Text = "manage your Sphere Studio plugins";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // ConfigManager
+            // footer
             // 
-            this.AcceptButton = this.OKButton;
+            this.footer.Controls.Add(this.okButton);
+            this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.footer.Location = new System.Drawing.Point(0, 499);
+            this.footer.Name = "footer";
+            this.footer.Size = new System.Drawing.Size(668, 50);
+            this.footer.TabIndex = 7;
+            // 
+            // PluginManagerForm
+            // 
+            this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.OKButton;
-            this.ClientSize = new System.Drawing.Size(668, 512);
-            this.Controls.Add(this.DeletePresetButton);
-            this.Controls.Add(this.OKButton);
+            this.CancelButton = this.okButton;
+            this.ClientSize = new System.Drawing.Size(668, 549);
+            this.Controls.Add(this.footer);
+            this.Controls.Add(this.header);
+            this.Controls.Add(this.deletePresetButton);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.PresetsList);
-            this.Controls.Add(this.SavePresetButton);
-            this.Controls.Add(this.MainHeader);
+            this.Controls.Add(this.savePresetButton);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ConfigManager";
+            this.Name = "PluginManagerForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Configuration Manager";
+            this.Text = "Plugin Manager";
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.footer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private SphereStudio.UI.DialogHeader MainHeader;
         private System.Windows.Forms.ComboBox PresetsList;
-        private System.Windows.Forms.Button SavePresetButton;
+        private System.Windows.Forms.Button savePresetButton;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListView PluginsList;
@@ -372,8 +383,8 @@
         private System.Windows.Forms.ColumnHeader VersionColumn;
         private System.Windows.Forms.ColumnHeader DescriptionColumn;
         private SphereStudio.UI.DialogHeader pluginHeader;
-        private System.Windows.Forms.Button OKButton;
-        private System.Windows.Forms.Button DeletePresetButton;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button deletePresetButton;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox CompilerPluginList;
@@ -386,5 +397,7 @@
         private System.Windows.Forms.ComboBox ImagePluginList;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ScriptPluginList;
+        private System.Windows.Forms.Label header;
+        private System.Windows.Forms.Panel footer;
     }
 }

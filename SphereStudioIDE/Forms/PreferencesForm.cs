@@ -13,12 +13,12 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class SettingsCenter : Form, IStyleAware
+    partial class PreferencesForm : Form, IStyleAware
     {
         private List<ISettingsPage> _applyList = new List<ISettingsPage>();
         private Control _currentPage = null;
 
-        public SettingsCenter()
+        public PreferencesForm()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -27,12 +27,13 @@ namespace SphereStudio.Ide.Forms
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsUIElement(SplitBox);
-            style.AsUIElement(ButtonBar);
-            style.AsTextView(PageTree);
-            style.AsAccent(OKButton);
-            style.AsAccent(CloseButton);
-            style.AsAccent(ApplyButton);
+            style.AsUIElement(splitterBox);
+            style.AsHeading(header);
+            style.AsHeading(footer);
+            style.AsTextView(pageList);
+            style.AsAccent(okButton);
+            style.AsAccent(cancelButton);
+            style.AsAccent(applyButton);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -42,7 +43,7 @@ namespace SphereStudio.Ide.Forms
             {
                 var page = PluginManager.Get<ISettingsPage>(name);
                 TreeNode node = new TreeNode(name) { Tag = page };
-                PageTree.Nodes.Add(node);
+                pageList.Nodes.Add(node);
             }
             base.OnLoad(e);
         }
@@ -53,7 +54,7 @@ namespace SphereStudio.Ide.Forms
             if (!_applyList.Contains(page))
                 _applyList.Add(page);
             page.Control.Dock = DockStyle.Fill;
-            SplitBox.Panel2.Controls.Add(page.Control);
+            splitterBox.Panel2.Controls.Add(page.Control);
             if (_currentPage != null)
                 _currentPage.Hide();
             page.Control.Show();
@@ -62,8 +63,8 @@ namespace SphereStudio.Ide.Forms
 
         private void PageTree_MouseMove(object sender, MouseEventArgs e)
         {
-            var ht = PageTree.HitTest(e.Location);
-            PageTree.Cursor = ht.Node != null && ht.Node.Bounds.Contains(e.Location)
+            var ht = pageList.HitTest(e.Location);
+            pageList.Cursor = ht.Node != null && ht.Node.Bounds.Contains(e.Location)
                 ? Cursors.Hand : Cursors.Default;
         }
 

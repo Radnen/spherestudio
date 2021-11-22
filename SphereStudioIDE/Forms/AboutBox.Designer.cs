@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.Forms
 {
-    partial class AboutDialog
+    partial class AboutBox
     {
         /// <summary>
         /// Required designer variable.
@@ -32,16 +32,18 @@
             this.creditsTextBox = new System.Windows.Forms.TextBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.websiteUrlLink = new System.Windows.Forms.LinkLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labelCompanyName = new System.Windows.Forms.Label();
             this.labelPlatform = new System.Windows.Forms.Label();
             this.footerPanel = new System.Windows.Forms.Panel();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionHeader = new System.Windows.Forms.Label();
-            this.HeaderBar = new SphereStudio.UI.DialogHeader();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.header = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.footerPanel.SuspendLayout();
             this.versionPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // labelProductName
@@ -97,25 +99,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.websiteUrlLink.LinkArea = new System.Windows.Forms.LinkArea(12, 25);
             this.websiteUrlLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.websiteUrlLink.Location = new System.Drawing.Point(12, 18);
+            this.websiteUrlLink.Location = new System.Drawing.Point(56, 18);
             this.websiteUrlLink.Name = "websiteUrlLink";
-            this.websiteUrlLink.Size = new System.Drawing.Size(329, 18);
+            this.websiteUrlLink.Size = new System.Drawing.Size(250, 18);
             this.websiteUrlLink.TabIndex = 25;
             this.websiteUrlLink.TabStop = true;
             this.websiteUrlLink.Text = "visit us at http://www.spheredev.org/";
             this.websiteUrlLink.UseCompatibleTextRendering = true;
             this.websiteUrlLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.websiteUrlLink_LinkClicked);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 38);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 27;
-            this.pictureBox1.TabStop = false;
             // 
             // labelCompanyName
             // 
@@ -139,6 +130,7 @@
             // 
             // footerPanel
             // 
+            this.footerPanel.Controls.Add(this.pictureBox2);
             this.footerPanel.Controls.Add(this.closeButton);
             this.footerPanel.Controls.Add(this.websiteUrlLink);
             this.footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -173,18 +165,36 @@
             this.versionHeader.Text = "version information";
             this.versionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // HeaderBar
+            // header
             // 
-            this.HeaderBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.HeaderBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HeaderBar.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.HeaderBar.ForeColor = System.Drawing.Color.White;
-            this.HeaderBar.Location = new System.Drawing.Point(0, 0);
-            this.HeaderBar.Name = "HeaderBar";
-            this.HeaderBar.Size = new System.Drawing.Size(439, 23);
-            this.HeaderBar.TabIndex = 28;
-            this.HeaderBar.Text = "information about this copy of Sphere Studio";
-            this.HeaderBar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(439, 23);
+            this.header.TabIndex = 32;
+            this.header.Text = "information about this version of Sphere Studio";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 38);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 27;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::SphereStudio.Ide.Properties.Resources.SphericalLogo;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(47, 44);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 26;
+            this.pictureBox2.TabStop = false;
             // 
             // AboutDialog
             // 
@@ -193,9 +203,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(439, 344);
+            this.Controls.Add(this.header);
             this.Controls.Add(this.versionPanel);
             this.Controls.Add(this.footerPanel);
-            this.Controls.Add(this.HeaderBar);
             this.Controls.Add(this.creditsTextBox);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -206,10 +216,11 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.footerPanel.ResumeLayout(false);
             this.versionPanel.ResumeLayout(false);
             this.versionPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,10 +234,11 @@
         private System.Windows.Forms.LinkLabel websiteUrlLink;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label labelCompanyName;
-        private UI.DialogHeader HeaderBar;
         private System.Windows.Forms.Label labelPlatform;
         private System.Windows.Forms.Panel footerPanel;
         private System.Windows.Forms.Panel versionPanel;
         private System.Windows.Forms.Label versionHeader;
+        private System.Windows.Forms.Label header;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

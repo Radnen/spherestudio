@@ -19,13 +19,13 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class ConfigManager : Form, IStyleAware
+    partial class PluginManagerForm : Form, IStyleAware
     {
         private bool _updatingDefaultsLists = false;
         private bool _updatingPresets = false;
         private bool _updatingPlugins = false;
 
-        public ConfigManager()
+        public PluginManagerForm()
         {
             InitializeComponent();
             
@@ -41,9 +41,11 @@ namespace SphereStudio.Ide.Forms
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsAccent(OKButton);
-            style.AsAccent(SavePresetButton);
-            style.AsAccent(DeletePresetButton);
+            style.AsHeading(header);
+            style.AsHeading(footer);
+            style.AsAccent(okButton);
+            style.AsAccent(savePresetButton);
+            style.AsAccent(deletePresetButton);
             style.AsUIElement(tabControl1);
             style.AsUIElement(panel2);
             style.AsTextView(EnginePluginList);
@@ -153,13 +155,13 @@ namespace SphereStudio.Ide.Forms
             if (PresetsList.Items.Contains(Core.Settings.Preset ?? ""))
             {
                 PresetsList.Text = Core.Settings.Preset;
-                DeletePresetButton.Enabled = true;
+                deletePresetButton.Enabled = true;
             }
             else
             {
                 PresetsList.Items.Insert(0, "Custom Settings");
                 PresetsList.SelectedIndex = 0;
-                DeletePresetButton.Enabled = false;
+                deletePresetButton.Enabled = false;
             }
 
             _updatingPresets = false;

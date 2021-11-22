@@ -141,26 +141,26 @@
             this.CloseAllTabItem,
             this.SaveTabItem});
             this.EditorTabContextMenu.Name = "EditorTabContextMenu";
-            this.EditorTabContextMenu.Size = new System.Drawing.Size(167, 70);
+            this.EditorTabContextMenu.Size = new System.Drawing.Size(166, 70);
             // 
             // CloseTabItem
             // 
             this.CloseTabItem.Image = global::SphereStudio.Ide.Properties.Resources.cross;
             this.CloseTabItem.Name = "CloseTabItem";
-            this.CloseTabItem.Size = new System.Drawing.Size(166, 22);
+            this.CloseTabItem.Size = new System.Drawing.Size(165, 22);
             this.CloseTabItem.Text = "Close Tab";
             // 
             // CloseAllTabItem
             // 
             this.CloseAllTabItem.Name = "CloseAllTabItem";
-            this.CloseAllTabItem.Size = new System.Drawing.Size(166, 22);
+            this.CloseAllTabItem.Size = new System.Drawing.Size(165, 22);
             this.CloseAllTabItem.Text = "Close All But This";
             // 
             // SaveTabItem
             // 
             this.SaveTabItem.Image = global::SphereStudio.Ide.Properties.Resources.disk;
             this.SaveTabItem.Name = "SaveTabItem";
-            this.SaveTabItem.Size = new System.Drawing.Size(166, 22);
+            this.SaveTabItem.Size = new System.Drawing.Size(165, 22);
             this.SaveTabItem.Text = "Save Tab";
             // 
             // MainDock
@@ -820,7 +820,7 @@
             // menuVisitSite
             // 
             this.menuVisitSite.Name = "menuVisitSite";
-            this.menuVisitSite.Size = new System.Drawing.Size(183, 22);
+            this.menuVisitSite.Size = new System.Drawing.Size(192, 22);
             this.menuVisitSite.Text = "Visit Website!";
             this.menuVisitSite.Visible = false;
             // 
@@ -828,14 +828,14 @@
             // 
             this.menuAbout.Image = global::SphereStudio.Ide.Properties.Resources.information;
             this.menuAbout.Name = "menuAbout";
-            this.menuAbout.Size = new System.Drawing.Size(183, 22);
+            this.menuAbout.Size = new System.Drawing.Size(192, 22);
             this.menuAbout.Text = "&About Sphere Studio...";
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(189, 6);
             // 
             // EditorMenu
             // 
@@ -966,8 +966,8 @@
             this.menuConfigManager,
             this.menuEditorSettings});
             this.menuTools.Name = "menuTools";
-            this.menuTools.Size = new System.Drawing.Size(47, 20);
-            this.menuTools.Text = "&Tools";
+            this.menuTools.Size = new System.Drawing.Size(72, 20);
+            this.menuTools.Text = "&Configure";
             this.menuTools.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.menuTools.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
@@ -976,29 +976,29 @@
             this.menuConfigEngine.Enabled = false;
             this.menuConfigEngine.Image = global::SphereStudio.Ide.Properties.Resources.cog;
             this.menuConfigEngine.Name = "menuConfigEngine";
-            this.menuConfigEngine.Size = new System.Drawing.Size(207, 22);
-            this.menuConfigEngine.Text = "Configure &Engine...";
+            this.menuConfigEngine.Size = new System.Drawing.Size(180, 22);
+            this.menuConfigEngine.Text = "&Configure Engine...";
             this.menuConfigEngine.Click += new System.EventHandler(this.menuConfigEngine_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(204, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // menuConfigManager
             // 
             this.menuConfigManager.Image = global::SphereStudio.Ide.Properties.Resources.SphericalLogo;
             this.menuConfigManager.Name = "menuConfigManager";
-            this.menuConfigManager.Size = new System.Drawing.Size(207, 22);
-            this.menuConfigManager.Text = "&Configuration Manager...";
+            this.menuConfigManager.Size = new System.Drawing.Size(180, 22);
+            this.menuConfigManager.Text = "&Plugin Manager...";
             this.menuConfigManager.Click += new System.EventHandler(this.menuConfigManager_Click);
             // 
             // menuEditorSettings
             // 
             this.menuEditorSettings.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
             this.menuEditorSettings.Name = "menuEditorSettings";
-            this.menuEditorSettings.Size = new System.Drawing.Size(207, 22);
-            this.menuEditorSettings.Text = "&Settings Center...";
+            this.menuEditorSettings.Size = new System.Drawing.Size(180, 22);
+            this.menuEditorSettings.Text = "P&references...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
             // IdeWindow
