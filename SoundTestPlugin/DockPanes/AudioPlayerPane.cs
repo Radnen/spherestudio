@@ -22,7 +22,8 @@ namespace SphereStudio.Plugins.UI
             "*.xm:Music",
             "*.it:Music",
             "*.s3d:Music",
-            
+            "*.s3m:Music",
+
             "*.wav:Sounds"
         };
 
@@ -42,9 +43,9 @@ namespace SphereStudio.Plugins.UI
 
             FileExtensions = new[]
             {
-                "mp3", "ogg", "flac",  // compressed audio formats
-                "mod", "it", "s3d",    // tracker formats
-                "wav"                  // uncompressed/PCM formats
+                "mp3", "ogg", "flac",      // compressed audio formats
+                "mod", "it", "s3d", "s3m", // tracker formats
+                "wav"                      // uncompressed/PCM formats
             };
 
             _playIcons.ColorDepth = ColorDepth.Depth32Bit;
@@ -162,8 +163,7 @@ namespace SphereStudio.Plugins.UI
             IPlayer music;
             try
             {
-                try { music = new IrrPlayer(path, isMusic); }
-                catch (Exception) { music = new NAudioPlayer(path, isMusic); }
+                music = new IrrPlayer(path, isMusic);
             }
             catch (Exception)
             {

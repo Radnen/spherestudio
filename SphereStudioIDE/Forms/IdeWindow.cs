@@ -195,7 +195,7 @@ namespace SphereStudio.Ide
                     fileExtension = fileExtension.Substring(1);
                 var plugins = from name in Base.PluginManager.GetNames<IFileOpener>()
                               let plugin = Base.PluginManager.Get<IFileOpener>(name)
-                              where plugin.FileExtensions.Contains(fileExtension)
+                              where plugin.FileExtensions.Any(it => it.ToLower() == fileExtension.ToLower())
                               select plugin;
                 IFileOpener defaultOpener = Base.PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
