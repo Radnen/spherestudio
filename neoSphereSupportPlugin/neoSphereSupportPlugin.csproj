@@ -109,6 +109,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Resources\eye.png" />
   </ItemGroup>
   <ItemGroup>
