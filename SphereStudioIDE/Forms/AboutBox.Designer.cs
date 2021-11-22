@@ -35,15 +35,15 @@
             this.labelCompanyName = new System.Windows.Forms.Label();
             this.labelPlatform = new System.Windows.Forms.Label();
             this.footerPanel = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionHeader = new System.Windows.Forms.Label();
-            this.header = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.header = new System.Windows.Forms.Label();
             this.footerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.versionPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // labelProductName
@@ -139,6 +139,16 @@
             this.footerPanel.Size = new System.Drawing.Size(439, 50);
             this.footerPanel.TabIndex = 30;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::SphereStudio.Ide.Properties.Resources.SphericalLogo;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(47, 44);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 26;
+            this.pictureBox2.TabStop = false;
+            // 
             // versionPanel
             // 
             this.versionPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -165,16 +175,6 @@
             this.versionHeader.Text = "version information";
             this.versionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // header
-            // 
-            this.header.Dock = System.Windows.Forms.DockStyle.Top;
-            this.header.Location = new System.Drawing.Point(0, 0);
-            this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(439, 23);
-            this.header.TabIndex = 32;
-            this.header.Text = "information about this version of Sphere Studio";
-            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
@@ -186,17 +186,17 @@
             this.pictureBox1.TabIndex = 27;
             this.pictureBox1.TabStop = false;
             // 
-            // pictureBox2
+            // header
             // 
-            this.pictureBox2.Image = global::SphereStudio.Ide.Properties.Resources.SphericalLogo;
-            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(47, 44);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 26;
-            this.pictureBox2.TabStop = false;
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(439, 23);
+            this.header.TabIndex = 32;
+            this.header.Text = "information about this version of Sphere Studio";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // AboutDialog
+            // AboutBox
             // 
             this.AcceptButton = this.closeButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -211,16 +211,16 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AboutDialog";
+            this.Name = "AboutBox";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
             this.footerPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.versionPanel.ResumeLayout(false);
             this.versionPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

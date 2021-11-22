@@ -26,9 +26,9 @@ namespace SphereStudio.Ide.BuiltIns
                 FixedFont = new Font("Consolas", 10.0f),
                 Font = new Font("Segoe UI", 9.0f),
                 HighlightColor = Color.LightGoldenrodYellow,
-                LabelColor = Color.LightGray,
+                LabelColor = Color.LightSteelBlue,
                 TextColor = Color.Black,
-                ToolColor = Color.Silver,
+                ToolColor = Color.FromArgb(208, 208, 224),
             };
 
             this.Styles = new[] { darkTheme, lightTheme };

@@ -48,8 +48,8 @@ namespace SphereStudio.Ide.BuiltIns
             style.AsAccent(dirsPanel);
             style.AsTextView(styleDropDown);
             style.AsTextView(dirsListBox);
-            style.AsUIElement(useStartPageButton);
-            style.AsUIElement(rememberProjectButton);
+            style.AsAccent(useStartPageButton);
+            style.AsAccent(rememberProjectButton);
             style.AsAccent(addDirButton);
             style.AsAccent(removeDirButton);
             style.AsAccent(moveDirUpButton);
