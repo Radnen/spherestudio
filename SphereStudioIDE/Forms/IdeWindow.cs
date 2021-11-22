@@ -29,7 +29,7 @@ namespace SphereStudio.Ide
         private DockManager _dock = null;
         private bool _isFirstDebugStop;
         private bool _loadingPresets = false;
-        private FileExplorerPane _fileExplorer;
+        private FileListPane fileListPane;
         private StartPageView _startPage = null;
         private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
@@ -41,7 +41,7 @@ namespace SphereStudio.Ide
             Base.PluginManager.Core = this;
 
             InitializeDocking();
-            Base.PluginManager.Register(null, _fileExplorer, "File Explorer");
+            Base.PluginManager.Register(null, fileListPane, "File List");
 
             Text = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             toolNew.DropDown = menuNew.DropDown;
@@ -49,8 +49,8 @@ namespace SphereStudio.Ide
             BuildEngine.Initialize();
             Core.Settings.Apply();
 
-            Docking.Show(_fileExplorer);
-            Docking.Activate(_fileExplorer);
+            Docking.Show(fileListPane);
+            Docking.Activate(fileListPane);
             Refresh();
 
             if (Core.Settings.AutoOpenLastProject)
@@ -671,8 +671,7 @@ namespace SphereStudio.Ide
 
         private void menuOpenGameDir_Click(object sender, EventArgs e)
         {
-            string path = Core.Project.RootPath;
-            var proc = Process.Start("explorer.exe", string.Format(@"/select, ""{0}\game.sgm""", path));
+            var proc = Process.Start("explorer.exe", $@"/select,""{Core.Project.FileName}""");
             proc.Dispose();
         }
 
@@ -739,7 +738,7 @@ namespace SphereStudio.Ide
         #region Private IDE routines
         private void InitializeDocking()
         {
-            _fileExplorer = new FileExplorerPane(this);
+            fileListPane = new FileListPane(this);
             _dock = new DockManager(MainDock);
         }
 
@@ -886,7 +885,7 @@ namespace SphereStudio.Ide
             }
 
             // clear the project tree
-            _fileExplorer.Close();
+            fileListPane.Close();
             menuOpenLastProject.Enabled = (Core.Settings.LastProject.Length > 0);
 
             // all clear!
@@ -938,8 +937,8 @@ namespace SphereStudio.Ide
             Text = Project.BackCompatible
                 ? $"{Project.Name} (Sphere 1.x) - {ideName}"
                 : $"{Project.Name} - {ideName}";
-            _fileExplorer.Open();
-            _fileExplorer.Refresh();
+            fileListPane.Open();
+            fileListPane.Refresh();
             if (Core.Project != null)
                 Core.Settings.LastProject = Core.Project.FileName;
             UpdateControls();
@@ -1073,7 +1072,7 @@ namespace SphereStudio.Ide
             {
                 foreach (string name in engines)
                     toolEngineCombo.Items.Add(name);
-                toolEngineCombo.Items.Add("Configuration Manager...");
+                toolEngineCombo.Items.Add("Plugin Manager...");
                 toolEngineCombo.Text = Core.Project.User.Engine;
                 toolEngineCombo.Enabled = true;
             }

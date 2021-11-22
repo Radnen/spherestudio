@@ -16,13 +16,13 @@ using SphereStudio.UI;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class FileExplorerPane : UserControl, IDockPane, IStyleAware
+    partial class FileListPane : UserControl, IDockPane, IStyleAware
     {
         private readonly IdeWindow _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public FileExplorerPane(IdeWindow hostForm)
+        public FileListPane(IdeWindow hostForm)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

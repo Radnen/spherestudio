@@ -51,18 +51,19 @@
             // 
             this.splitterBox.Panel1.Controls.Add(this.pageList);
             this.splitterBox.Size = new System.Drawing.Size(604, 364);
-            this.splitterBox.SplitterDistance = 162;
+            this.splitterBox.SplitterDistance = 137;
             this.splitterBox.TabIndex = 2;
             // 
             // pageList
             // 
+            this.pageList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pageList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pageList.FullRowSelect = true;
             this.pageList.HideSelection = false;
             this.pageList.HotTracking = true;
             this.pageList.Location = new System.Drawing.Point(0, 0);
             this.pageList.Name = "pageList";
-            this.pageList.Size = new System.Drawing.Size(162, 364);
+            this.pageList.Size = new System.Drawing.Size(137, 364);
             this.pageList.TabIndex = 1;
             this.pageList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.PageTree_AfterSelect);
             this.pageList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PageTree_MouseMove);

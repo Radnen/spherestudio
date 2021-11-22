@@ -53,9 +53,9 @@
             this.useStartPageButton.BackColor = System.Drawing.SystemColors.Control;
             this.useStartPageButton.Location = new System.Drawing.Point(10, 32);
             this.useStartPageButton.Name = "useStartPageButton";
-            this.useStartPageButton.Size = new System.Drawing.Size(302, 17);
+            this.useStartPageButton.Size = new System.Drawing.Size(303, 17);
             this.useStartPageButton.TabIndex = 0;
-            this.useStartPageButton.Text = "Show the Start Page on startup when not loading a project";
+            this.useStartPageButton.Text = "Show the &Start Page at startup when not opening a project";
             this.useStartPageButton.UseVisualStyleBackColor = false;
             // 
             // rememberProjectButton
@@ -64,9 +64,9 @@
             this.rememberProjectButton.BackColor = System.Drawing.SystemColors.Control;
             this.rememberProjectButton.Location = new System.Drawing.Point(10, 55);
             this.rememberProjectButton.Name = "rememberProjectButton";
-            this.rememberProjectButton.Size = new System.Drawing.Size(227, 17);
+            this.rememberProjectButton.Size = new System.Drawing.Size(328, 17);
             this.rememberProjectButton.TabIndex = 2;
-            this.rememberProjectButton.Text = "Open the last worked-on project on startup";
+            this.rememberProjectButton.Text = "Remember the &last worked-on project and open it at next startup";
             this.rememberProjectButton.UseVisualStyleBackColor = false;
             // 
             // styleDropDown
@@ -80,7 +80,7 @@
             this.styleDropDown.Margin = new System.Windows.Forms.Padding(5);
             this.styleDropDown.MaxDropDownItems = 10;
             this.styleDropDown.Name = "styleDropDown";
-            this.styleDropDown.Size = new System.Drawing.Size(326, 21);
+            this.styleDropDown.Size = new System.Drawing.Size(342, 21);
             this.styleDropDown.TabIndex = 0;
             // 
             // removeDirButton
@@ -114,7 +114,7 @@
             this.moveDirDownButton.Enabled = false;
             this.moveDirDownButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveDirDownButton.Image = global::SphereStudio.Ide.Properties.Resources.resultset_down;
-            this.moveDirDownButton.Location = new System.Drawing.Point(311, 136);
+            this.moveDirDownButton.Location = new System.Drawing.Point(327, 134);
             this.moveDirDownButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.moveDirDownButton.Name = "moveDirDownButton";
             this.moveDirDownButton.Size = new System.Drawing.Size(25, 25);
@@ -129,7 +129,7 @@
             this.moveDirUpButton.Enabled = false;
             this.moveDirUpButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveDirUpButton.Image = global::SphereStudio.Ide.Properties.Resources.resultset_up;
-            this.moveDirUpButton.Location = new System.Drawing.Point(280, 136);
+            this.moveDirUpButton.Location = new System.Drawing.Point(296, 134);
             this.moveDirUpButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.moveDirUpButton.Name = "moveDirUpButton";
             this.moveDirUpButton.Size = new System.Drawing.Size(25, 25);
@@ -149,7 +149,7 @@
             this.dirsListBox.Location = new System.Drawing.Point(10, 32);
             this.dirsListBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dirsListBox.Name = "dirsListBox";
-            this.dirsListBox.Size = new System.Drawing.Size(326, 96);
+            this.dirsListBox.Size = new System.Drawing.Size(342, 94);
             this.dirsListBox.TabIndex = 1;
             this.dirsListBox.SelectedIndexChanged += new System.EventHandler(this.PathList_SelectedIndexChanged);
             // 
@@ -157,11 +157,12 @@
             // 
             this.stylePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.stylePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.stylePanel.Controls.Add(this.styleHeading);
             this.stylePanel.Controls.Add(this.styleDropDown);
-            this.stylePanel.Location = new System.Drawing.Point(18, 19);
+            this.stylePanel.Location = new System.Drawing.Point(9, 12);
             this.stylePanel.Name = "stylePanel";
-            this.stylePanel.Size = new System.Drawing.Size(345, 66);
+            this.stylePanel.Size = new System.Drawing.Size(363, 66);
             this.stylePanel.TabIndex = 6;
             // 
             // styleHeading
@@ -169,7 +170,7 @@
             this.styleHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.styleHeading.Location = new System.Drawing.Point(0, 0);
             this.styleHeading.Name = "styleHeading";
-            this.styleHeading.Size = new System.Drawing.Size(345, 23);
+            this.styleHeading.Size = new System.Drawing.Size(361, 23);
             this.styleHeading.TabIndex = 0;
             this.styleHeading.Text = "default color scheme";
             this.styleHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -178,12 +179,13 @@
             // 
             this.miscPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.miscPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.miscPanel.Controls.Add(this.miscHeading);
             this.miscPanel.Controls.Add(this.useStartPageButton);
             this.miscPanel.Controls.Add(this.rememberProjectButton);
-            this.miscPanel.Location = new System.Drawing.Point(18, 91);
+            this.miscPanel.Location = new System.Drawing.Point(9, 84);
             this.miscPanel.Name = "miscPanel";
-            this.miscPanel.Size = new System.Drawing.Size(345, 84);
+            this.miscPanel.Size = new System.Drawing.Size(363, 84);
             this.miscPanel.TabIndex = 7;
             // 
             // miscHeading
@@ -191,7 +193,7 @@
             this.miscHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.miscHeading.Location = new System.Drawing.Point(0, 0);
             this.miscHeading.Name = "miscHeading";
-            this.miscHeading.Size = new System.Drawing.Size(345, 23);
+            this.miscHeading.Size = new System.Drawing.Size(361, 23);
             this.miscHeading.TabIndex = 0;
             this.miscHeading.Text = "behavior";
             this.miscHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -200,15 +202,16 @@
             // 
             this.dirsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dirsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.dirsPanel.Controls.Add(this.dirsHeading);
             this.dirsPanel.Controls.Add(this.dirsListBox);
             this.dirsPanel.Controls.Add(this.moveDirDownButton);
             this.dirsPanel.Controls.Add(this.moveDirUpButton);
             this.dirsPanel.Controls.Add(this.removeDirButton);
             this.dirsPanel.Controls.Add(this.addDirButton);
-            this.dirsPanel.Location = new System.Drawing.Point(21, 181);
+            this.dirsPanel.Location = new System.Drawing.Point(9, 174);
             this.dirsPanel.Name = "dirsPanel";
-            this.dirsPanel.Size = new System.Drawing.Size(345, 170);
+            this.dirsPanel.Size = new System.Drawing.Size(363, 170);
             this.dirsPanel.TabIndex = 8;
             // 
             // dirsHeading
@@ -216,7 +219,7 @@
             this.dirsHeading.Dock = System.Windows.Forms.DockStyle.Top;
             this.dirsHeading.Location = new System.Drawing.Point(0, 0);
             this.dirsHeading.Name = "dirsHeading";
-            this.dirsHeading.Size = new System.Drawing.Size(345, 23);
+            this.dirsHeading.Size = new System.Drawing.Size(361, 23);
             this.dirsHeading.TabIndex = 0;
             this.dirsHeading.Text = "project directories";
             this.dirsHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -227,7 +230,7 @@
             this.Controls.Add(this.miscPanel);
             this.Controls.Add(this.stylePanel);
             this.Name = "IdeSettingsPage";
-            this.Size = new System.Drawing.Size(382, 394);
+            this.Size = new System.Drawing.Size(382, 370);
             this.stylePanel.ResumeLayout(false);
             this.miscPanel.ResumeLayout(false);
             this.miscPanel.PerformLayout();

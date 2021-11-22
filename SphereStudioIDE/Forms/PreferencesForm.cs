@@ -27,7 +27,8 @@ namespace SphereStudio.Ide.Forms
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsUIElement(splitterBox);
+            style.AsUIElement(splitterBox.Panel1);
+            style.AsUIElement(splitterBox.Panel2);
             style.AsHeading(header);
             style.AsHeading(footer);
             style.AsTextView(pageList);

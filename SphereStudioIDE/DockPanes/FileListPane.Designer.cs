@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.BuiltIns
 {
-    partial class FileExplorerPane
+    partial class FileListPane
     {
         /// <summary> 
         /// Required designer variable.

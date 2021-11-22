@@ -219,16 +219,16 @@
             this.EnginePluginList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.EnginePluginList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EnginePluginList.FormattingEnabled = true;
-            this.EnginePluginList.Location = new System.Drawing.Point(71, 14);
+            this.EnginePluginList.Location = new System.Drawing.Point(86, 14);
             this.EnginePluginList.Name = "EnginePluginList";
-            this.EnginePluginList.Size = new System.Drawing.Size(205, 21);
+            this.EnginePluginList.Size = new System.Drawing.Size(190, 21);
             this.EnginePluginList.TabIndex = 6;
             this.EnginePluginList.SelectedIndexChanged += new System.EventHandler(this.EnginePluginList_SelectedIndexChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(22, 17);
+            this.label5.Location = new System.Drawing.Point(37, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
             this.label5.TabIndex = 5;
@@ -249,9 +249,9 @@
             this.CompilerPluginList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CompilerPluginList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CompilerPluginList.FormattingEnabled = true;
-            this.CompilerPluginList.Location = new System.Drawing.Point(71, 41);
+            this.CompilerPluginList.Location = new System.Drawing.Point(86, 41);
             this.CompilerPluginList.Name = "CompilerPluginList";
-            this.CompilerPluginList.Size = new System.Drawing.Size(205, 21);
+            this.CompilerPluginList.Size = new System.Drawing.Size(190, 21);
             this.CompilerPluginList.TabIndex = 4;
             this.CompilerPluginList.SelectedIndexChanged += new System.EventHandler(this.CompilerPluginList_SelectedIndexChanged);
             // 
@@ -272,9 +272,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 44);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 13);
+            this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Compiler";
+            this.label4.Text = "Project Type";
             // 
             // editorLabel2
             // 
@@ -284,7 +284,7 @@
             this.editorLabel2.Name = "editorLabel2";
             this.editorLabel2.Size = new System.Drawing.Size(630, 23);
             this.editorLabel2.TabIndex = 6;
-            this.editorLabel2.Text = "Select the default engine, compiler, and editors for this configuration.";
+            this.editorLabel2.Text = "Select the default engine, project type, and editors for this configuration.";
             this.editorLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // okButton
