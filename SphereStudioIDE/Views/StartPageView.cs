@@ -25,12 +25,12 @@ namespace SphereStudio.Ide.BuiltIns
         private readonly DockPanel _startDock = new DockPanel();
         private readonly DockContent _gameContent = new DockContent();
         private readonly DockContent _infoContent = new DockContent();
-        private readonly IdeWindow _mainEditor;
+        private readonly MainWindowForm _mainEditor;
 
         private readonly ImageList _listIcons = new ImageList();
         private readonly ImageList _listIconsSmall = new ImageList();
 
-        public StartPageView(IdeWindow mainEditor)
+        public StartPageView(MainWindowForm mainEditor)
         {
             InitializeComponent();
             InitializeDocking();

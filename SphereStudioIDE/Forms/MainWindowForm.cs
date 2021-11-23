@@ -22,7 +22,7 @@ namespace SphereStudio.Ide
     /// <summary>
     /// Represents an instance of the Sphere Studio IDE.
     /// </summary>
-    partial class IdeWindow : Form, ICore, IStyleAware
+    partial class MainWindowForm : Form, ICore, IStyleAware
     {
         private DocumentTab _activeTab;
         private string _defaultActiveName;
@@ -34,7 +34,7 @@ namespace SphereStudio.Ide
         private DocumentTab _startTab = null;
         private List<DocumentTab> _tabs = new List<DocumentTab>();
 
-        public IdeWindow()
+        public MainWindowForm()
         {
             InitializeComponent();
 
@@ -195,7 +195,7 @@ namespace SphereStudio.Ide
                     fileExtension = fileExtension.Substring(1);
                 var plugins = from name in Base.PluginManager.GetNames<IFileOpener>()
                               let plugin = Base.PluginManager.Get<IFileOpener>(name)
-                              where plugin.FileExtensions.Any(it => it.ToLower() == fileExtension.ToLower())
+                              where plugin.FileExtensions.Any(it => it.ToUpperInvariant() == fileExtension.ToUpperInvariant())
                               select plugin;
                 IFileOpener defaultOpener = Base.PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
@@ -450,7 +450,7 @@ namespace SphereStudio.Ide
             string rootPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Projects");
-            NewProjectForm npf = new NewProjectForm() { RootFolder = rootPath };
+            NewProjectForm npf = new NewProjectForm(rootPath);
 
             var starter = Base.PluginManager.Get<IStarter>(Core.Settings.Engine);
             var compiler = Base.PluginManager.Get<ICompiler>(Core.Settings.Compiler);
@@ -709,7 +709,7 @@ namespace SphereStudio.Ide
         #region Help menu Click handlers
         private void menuAbout_Click(object sender, EventArgs e)
         {
-            using (AboutBox about = new AboutBox())
+            using (AboutBoxForm about = new AboutBoxForm())
             {
                 about.ShowDialog();
             }
@@ -910,7 +910,7 @@ namespace SphereStudio.Ide
 
         public void OpenEditorSettings()
         {
-            PreferencesForm sc = new PreferencesForm();
+            SettingsForm sc = new SettingsForm();
             if (sc.ShowDialog() == DialogResult.OK)
             {
                 Core.Settings.Apply();

@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.Forms
 {
-    partial class AboutBox
+    partial class AboutBoxForm
     {
         /// <summary>
         /// Required designer variable.
@@ -97,11 +97,12 @@
             // 
             this.websiteUrlLink.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.websiteUrlLink.AutoSize = true;
             this.websiteUrlLink.LinkArea = new System.Windows.Forms.LinkArea(12, 25);
             this.websiteUrlLink.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.websiteUrlLink.Location = new System.Drawing.Point(56, 18);
             this.websiteUrlLink.Name = "websiteUrlLink";
-            this.websiteUrlLink.Size = new System.Drawing.Size(250, 18);
+            this.websiteUrlLink.Size = new System.Drawing.Size(206, 21);
             this.websiteUrlLink.TabIndex = 25;
             this.websiteUrlLink.TabStop = true;
             this.websiteUrlLink.Text = "visit us at http://www.spheredev.org/";
@@ -172,7 +173,7 @@
             this.versionHeader.Name = "versionHeader";
             this.versionHeader.Size = new System.Drawing.Size(413, 23);
             this.versionHeader.TabIndex = 0;
-            this.versionHeader.Text = "version information";
+            this.versionHeader.Text = "Version Information";
             this.versionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pictureBox1
@@ -217,6 +218,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";
             this.footerPanel.ResumeLayout(false);
+            this.footerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.versionPanel.ResumeLayout(false);
             this.versionPanel.PerformLayout();

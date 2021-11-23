@@ -108,11 +108,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\PluginShim.cs" />
-    <Compile Include="Forms\PreferencesForm.cs">
+    <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PreferencesForm.Designer.cs">
-      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DockPanes\BuildLogPane.cs">
       <SubType>UserControl</SubType>
@@ -120,11 +120,11 @@
     <Compile Include="DockPanes\BuildLogPane.Designer.cs">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutBox.cs">
+    <Compile Include="Forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
+    <Compile Include="Forms\AboutBoxForm.Designer.cs">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\PluginManagerForm.cs">
       <SubType>Form</SubType>
@@ -154,11 +154,11 @@
     <Compile Include="DockPanes\FileListPane.Designer.cs">
       <DependentUpon>FileListPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPages\IdeSettingsPage.cs">
+    <Compile Include="SettingsPages\MainSettingsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SettingsPages\IdeSettingsPage.Designer.cs">
-      <DependentUpon>IdeSettingsPage.cs</DependentUpon>
+    <Compile Include="SettingsPages\MainSettingsPage.Designer.cs">
+      <DependentUpon>MainSettingsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="BuiltIns\DefaultStyleProvider.cs" />
     <Compile Include="Utility\IniFile.cs" />
@@ -168,11 +168,11 @@
     <Compile Include="Views\StartPageView.Designer.cs">
       <DependentUpon>StartPageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\IdeWindow.cs">
+    <Compile Include="Forms\MainWindowForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\IdeWindow.Designer.cs">
-      <DependentUpon>IdeWindow.cs</DependentUpon>
+    <Compile Include="Forms\MainWindowForm.Designer.cs">
+      <DependentUpon>MainWindowForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProjectPropsForm.cs">
       <SubType>Form</SubType>
@@ -189,14 +189,14 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Project.cs" />
-    <EmbeddedResource Include="Forms\PreferencesForm.resx">
-      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DockPanes\BuildLogPane.resx">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutBox.resx">
-      <DependentUpon>AboutBox.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutBoxForm.resx">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PluginManagerForm.resx">
       <DependentUpon>PluginManagerForm.cs</DependentUpon>
@@ -208,15 +208,15 @@
       <DependentUpon>FileListPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPages\IdeSettingsPage.resx">
-      <DependentUpon>IdeSettingsPage.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsPages\MainSettingsPage.resx">
+      <DependentUpon>MainSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\StartPageView.resx">
       <DependentUpon>StartPageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\IdeWindow.resx">
-      <DependentUpon>IdeWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MainWindowForm.resx">
+      <DependentUpon>MainWindowForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectPropsForm.resx">

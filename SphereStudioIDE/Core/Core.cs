@@ -84,7 +84,7 @@ namespace SphereStudio.Ide
 
             var names = from name in PluginManager.GetNames<IFileOpener>()
                         let plugin = PluginManager.Get<IFileOpener>(name)
-                        where plugin.FileExtensions.Any(it => it.ToLower() == fileExtension.ToLower())
+                        where plugin.FileExtensions.Any(it => it.ToUpperInvariant() == fileExtension.ToUpperInvariant())
                         select name;
             return names.FirstOrDefault();
         }

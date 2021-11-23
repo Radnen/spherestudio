@@ -104,7 +104,7 @@
     <Compile Include="Utility\DeferredFileSystemWatcher.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\DialogHeading.cs">
+    <Compile Include="UI\DialogHeader.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\SnapPanel.cs">
@@ -138,8 +138,8 @@
     <EmbeddedResource Include="UI\ColorBox.resx">
       <DependentUpon>ColorBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DialogHeading.resx">
-      <DependentUpon>DialogHeading.cs</DependentUpon>
+    <EmbeddedResource Include="UI\DialogHeader.resx">
+      <DependentUpon>DialogHeader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\StringInputForm.resx">
       <DependentUpon>StringInputForm.cs</DependentUpon>

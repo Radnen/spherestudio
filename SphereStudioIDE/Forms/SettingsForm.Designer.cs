@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.Forms
 {
-    partial class PreferencesForm
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,8 +32,8 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
-            this.header = new SphereStudio.UI.DialogHeader();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.header = new System.Windows.Forms.Label();
             this.footer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,17 +88,6 @@
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
-            // header
-            // 
-            this.header.Dock = System.Windows.Forms.DockStyle.Top;
-            this.header.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.header.Location = new System.Drawing.Point(0, 0);
-            this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(604, 23);
-            this.header.TabIndex = 1;
-            this.header.Text = "configure the Sphere Studio integrated development environment";
-            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tabControl
             // 
             this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -112,20 +101,30 @@
             this.tabControl.TabIndex = 4;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
-            // PreferencesForm
+            // header
+            // 
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(604, 23);
+            this.header.TabIndex = 5;
+            this.header.Text = "configure the Sphere Studio integrated development environment";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // SettingsForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(604, 437);
+            this.Controls.Add(this.header);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.footer);
-            this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "PreferencesForm";
+            this.Name = "SettingsForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -140,7 +139,7 @@
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button applyButton;
-        private UI.DialogHeader header;
         private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.Label header;
     }
 }

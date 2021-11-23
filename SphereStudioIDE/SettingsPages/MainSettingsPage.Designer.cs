@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide.BuiltIns
 {
-    partial class IdeSettingsPage
+    partial class MainSettingsPage
     {
         /// <summary>
         /// Required designer variable.

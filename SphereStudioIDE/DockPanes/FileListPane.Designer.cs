@@ -42,8 +42,8 @@
             this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFolderItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.header = new SphereStudio.UI.DialogHeader();
             this.SystemWatcher = new SphereStudio.Utility.DeferredFileSystemWatcher();
+            this.header = new System.Windows.Forms.Label();
             this.ProjectFileContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).BeginInit();
             this.SuspendLayout();
@@ -178,20 +178,6 @@
             this.GameSettingsItem.Text = "Project P&roperties...";
             this.GameSettingsItem.Click += new System.EventHandler(this.GameSettingsItem_Click);
             // 
-            // header
-            // 
-            this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.header.Dock = System.Windows.Forms.DockStyle.Top;
-            this.header.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.header.ForeColor = System.Drawing.Color.White;
-            this.header.Location = new System.Drawing.Point(0, 0);
-            this.header.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.header.Name = "header";
-            this.header.Size = new System.Drawing.Size(191, 23);
-            this.header.TabIndex = 4;
-            this.header.Text = "explore files in this project";
-            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // SystemWatcher
             // 
             this.SystemWatcher.Delay = 1000D;
@@ -202,13 +188,23 @@
             this.SystemWatcher.Deleted += new SphereStudio.Utility.BatchEventHandler<System.IO.FileSystemEventArgs>(this.SystemWatcher_Deleted);
             this.SystemWatcher.Renamed += new SphereStudio.Utility.BatchEventHandler<System.IO.RenamedEventArgs>(this.SystemWatcher_Renamed);
             // 
-            // FileExplorerPane
+            // header
+            // 
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(191, 23);
+            this.header.TabIndex = 4;
+            this.header.Text = "explore files in this project";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // FileListPane
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.fileTree);
             this.Controls.Add(this.header);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "FileExplorerPane";
+            this.Name = "FileListPane";
             this.Size = new System.Drawing.Size(191, 388);
             this.ProjectFileContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SystemWatcher)).EndInit();
@@ -229,9 +225,9 @@
         private System.Windows.Forms.ToolStripMenuItem EngineSettingsItem;
         private System.Windows.Forms.ToolStripMenuItem AddSubfolderItem;
         private System.Windows.Forms.ToolStripMenuItem CopyPathItem;
-        private SphereStudio.UI.DialogHeader header;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;
         private SphereStudio.Utility.DeferredFileSystemWatcher SystemWatcher;
         private System.Windows.Forms.ToolStripMenuItem OpenFolderItem;
+        private System.Windows.Forms.Label header;
     }
 }

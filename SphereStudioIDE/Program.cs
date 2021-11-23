@@ -25,9 +25,9 @@ namespace SphereStudio.Ide
             Application.SetCompatibleTextRenderingDefault(false);
 
             PluginManager.Register(null, new DefaultStyleProvider(), "Sphere Studio");
-            PluginManager.Register(null, new IdeSettingsPage(), "Sphere Studio");
+            PluginManager.Register(null, new MainSettingsPage(), "Sphere Studio");
 
-            Form = new IdeWindow();
+            Form = new MainWindowForm();
 
             // check for and open files dragged onto the app.
             foreach (var fileName in args)
@@ -49,6 +49,6 @@ namespace SphereStudio.Ide
         /// <summary>
         /// Gets the form representing the IDE main window.
         /// </summary>
-        public static IdeWindow Form { get; private set; }
+        public static MainWindowForm Form { get; private set; }
     }
 }

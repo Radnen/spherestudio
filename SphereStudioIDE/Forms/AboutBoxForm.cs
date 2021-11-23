@@ -7,9 +7,9 @@ using SphereStudio.Base;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class AboutBox : Form, IStyleAware
+    partial class AboutBoxForm : Form, IStyleAware
     {
-        public AboutBox()
+        public AboutBoxForm()
         {
             InitializeComponent();
 
@@ -30,7 +30,7 @@ namespace SphereStudio.Ide.Forms
             string updateName = os.ServicePack;
             if (os.Version.Major == 10 && os.Version.Minor == 0)
             {
-                // Windows 11 is still v10.0, have to detect via build number
+                // Windows 11 still reports v10.0, have to detect via build number
                 if (os.Version.Build >= 22000)
                     windowsVersion = "11";
 

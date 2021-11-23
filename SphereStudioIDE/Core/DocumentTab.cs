@@ -34,7 +34,7 @@ namespace SphereStudio.Ide
         /// <param name="view">The IDocumentView the tab is hosting.</param>
         /// <param name="fileName">The fully-qualified filename of the document, or null if untitled.</param>
         /// <param name="restoreView">'true' to restore the last saved view state. Has no effect on untitled tabs.</param>
-        public DocumentTab(IdeWindow ide, DocumentView view, string fileName = null, bool restoreView = false)
+        public DocumentTab(MainWindowForm ide, DocumentView view, string fileName = null, bool restoreView = false)
         {
             FileName = fileName;
             View = view;

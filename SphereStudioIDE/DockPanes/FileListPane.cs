@@ -18,11 +18,11 @@ namespace SphereStudio.Ide.BuiltIns
     [ToolboxItem(false)]
     partial class FileListPane : UserControl, IDockPane, IStyleAware
     {
-        private readonly IdeWindow _hostForm;
+        private readonly MainWindowForm _hostForm;
         private readonly ImageList _iconlist = new ImageList();
         private readonly ToolTip _tip = new ToolTip();
 
-        public FileListPane(IdeWindow hostForm)
+        public FileListPane(MainWindowForm hostForm)
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);
@@ -46,6 +46,13 @@ namespace SphereStudio.Ide.BuiltIns
         public Control Control => this;
         public DockHint DockHint => DockHint.Right;
         public Bitmap DockIcon => Resources.SphereEditor;
+
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsUIElement(this);
+            style.AsHeading(header);
+            style.AsTextView(fileTree);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -491,13 +498,6 @@ namespace SphereStudio.Ide.BuiltIns
         private void SystemWatcher_Renamed(object sender, IEnumerable<FileSystemEventArgs> eAll)
         {
             Refresh();
-        }
-
-        public void ApplyStyle(UIStyle style)
-        {
-            style.AsUIElement(this);
-            style.AsHeading(header);
-            style.AsTextView(fileTree);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)

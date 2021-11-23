@@ -13,12 +13,12 @@ using SphereStudio.UI;
 
 namespace SphereStudio.Ide.Forms
 {
-    partial class PreferencesForm : Form, IStyleAware
+    partial class SettingsForm : Form, IStyleAware
     {
         private List<ISettingsPage> _applyList = new List<ISettingsPage>();
         private Control _currentPage = null;
 
-        public PreferencesForm()
+        public SettingsForm()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

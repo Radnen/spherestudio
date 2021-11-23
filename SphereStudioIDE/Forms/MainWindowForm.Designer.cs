@@ -1,6 +1,6 @@
 ﻿namespace SphereStudio.Ide
 {
-    partial class IdeWindow
+    partial class MainWindowForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IdeWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindowForm));
             this.EditorTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CloseTabItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseAllTabItem = new System.Windows.Forms.ToolStripMenuItem();

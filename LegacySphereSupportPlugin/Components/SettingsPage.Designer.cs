@@ -107,7 +107,7 @@
             this.directoryHeading.Name = "directoryHeading";
             this.directoryHeading.Size = new System.Drawing.Size(524, 23);
             this.directoryHeading.TabIndex = 0;
-            this.directoryHeading.Text = "Engine Executables";
+            this.directoryHeading.Text = "Sphere 1.x Installation";
             this.directoryHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SettingsPage

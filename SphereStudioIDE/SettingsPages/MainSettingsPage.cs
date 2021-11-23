@@ -14,9 +14,9 @@ using SphereStudio.UI;
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
-    partial class IdeSettingsPage : UserControl, ISettingsPage, IStyleAware
+    partial class MainSettingsPage : UserControl, ISettingsPage, IStyleAware
     {
-        public IdeSettingsPage()
+        public MainSettingsPage()
         {
             InitializeComponent();
             StyleManager.AutoStyle(this);

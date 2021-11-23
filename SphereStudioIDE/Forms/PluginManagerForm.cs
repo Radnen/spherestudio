@@ -44,17 +44,23 @@ namespace SphereStudio.Ide.Forms
             style.AsHeading(header);
             style.AsHeading(footer);
             style.AsAccent(okButton);
+
+            style.AsTextView(presetDropDown);
             style.AsAccent(savePresetButton);
             style.AsAccent(deletePresetButton);
-            style.AsUIElement(tabControl1);
-            style.AsUIElement(panel2);
-            style.AsTextView(EnginePluginList);
-            style.AsTextView(CompilerPluginList);
-            style.AsTextView(ScriptPluginList);
-            style.AsTextView(ImagePluginList);
-            style.AsTextView(FilePluginList);
-            style.AsTextView(PresetsList);
-            style.AsTextView(PluginsList);
+
+            style.AsHeading(defaultsHeading);
+            style.AsAccent(defaultsPanel);
+            style.AsTextView(engineDropDown);
+            style.AsTextView(typeDropDown);
+            style.AsTextView(fileDropDown);
+            style.AsTextView(scriptDropDown);
+            style.AsTextView(imageDropDown);
+            style.AsTextView(presetDropDown);
+
+            style.AsHeading(pluginsHeading);
+            style.AsAccent(pluginsPanel);
+            style.AsTextView(pluginsListView);
         }
 
         private string GetPluginName(ComboBox comboBox)
@@ -67,11 +73,11 @@ namespace SphereStudio.Ide.Forms
         {
             if (_updatingDefaultsLists) return;
 
-            Core.Settings.Engine = GetPluginName(EnginePluginList);
-            Core.Settings.Compiler = GetPluginName(CompilerPluginList);
-            Core.Settings.FileOpener = GetPluginName(FilePluginList);
-            Core.Settings.ScriptEditor = GetPluginName(ScriptPluginList);
-            Core.Settings.ImageEditor = GetPluginName(ImagePluginList);
+            Core.Settings.Engine = GetPluginName(engineDropDown);
+            Core.Settings.Compiler = GetPluginName(typeDropDown);
+            Core.Settings.FileOpener = GetPluginName(fileDropDown);
+            Core.Settings.ScriptEditor = GetPluginName(scriptDropDown);
+            Core.Settings.ImageEditor = GetPluginName(imageDropDown);
             Core.Settings.Apply();
             UpdatePresetsList();
             UpdateDefaultsLists();
@@ -103,11 +109,11 @@ namespace SphereStudio.Ide.Forms
             if (_updatingDefaultsLists) return;
             _updatingDefaultsLists = true;
             
-            PopulateComboBox<ICompiler>(CompilerPluginList, Core.Settings.Compiler);
-            PopulateComboBox<IStarter>(EnginePluginList, Core.Settings.Engine);
-            PopulateComboBox<IFileOpener>(FilePluginList, Core.Settings.FileOpener);
-            PopulateComboBox<IEditor<ScriptView>>(ScriptPluginList, Core.Settings.ScriptEditor);
-            PopulateComboBox<IEditor<ImageView>>(ImagePluginList, Core.Settings.ImageEditor);
+            PopulateComboBox<ICompiler>(typeDropDown, Core.Settings.Compiler);
+            PopulateComboBox<IStarter>(engineDropDown, Core.Settings.Engine);
+            PopulateComboBox<IFileOpener>(fileDropDown, Core.Settings.FileOpener);
+            PopulateComboBox<IEditor<ScriptView>>(scriptDropDown, Core.Settings.ScriptEditor);
+            PopulateComboBox<IEditor<ImageView>>(imageDropDown, Core.Settings.ImageEditor);
 
             _updatingDefaultsLists = false;
         }
@@ -117,8 +123,8 @@ namespace SphereStudio.Ide.Forms
             if (_updatingPlugins) return;
             _updatingPlugins = true;
 
-            PluginsList.CreateGraphics();  // workaround for early ItemCheck event
-            PluginsList.Items.Clear();
+            pluginsListView.CreateGraphics();  // workaround for early ItemCheck event
+            pluginsListView.Items.Clear();
             foreach (KeyValuePair<string, PluginShim> pair in Core.Plugins)
             {
                 ListViewItem item = new ListViewItem();
@@ -128,7 +134,7 @@ namespace SphereStudio.Ide.Forms
                 item.SubItems.Add(pair.Value.Main.Description);
                 item.Tag = pair.Key;
                 item.Checked = !Core.Settings.DisabledPlugins.Contains(pair.Value.Handle);
-                PluginsList.Items.Add(item);
+                pluginsListView.Items.Add(item);
             }
             
             _updatingPlugins = false;
@@ -141,7 +147,7 @@ namespace SphereStudio.Ide.Forms
             
             string lastItem = Core.Settings.Preset;
             
-            PresetsList.Items.Clear();
+            presetDropDown.Items.Clear();
             string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
             if (Directory.Exists(presetPath))
             {
@@ -149,18 +155,18 @@ namespace SphereStudio.Ide.Forms
                               orderby filename ascending
                               select Path.GetFileNameWithoutExtension(filename);
                 foreach (string name in presets)
-                    PresetsList.Items.Add(name);
+                    presetDropDown.Items.Add(name);
             }
 
-            if (PresetsList.Items.Contains(Core.Settings.Preset ?? ""))
+            if (presetDropDown.Items.Contains(Core.Settings.Preset ?? ""))
             {
-                PresetsList.Text = Core.Settings.Preset;
+                presetDropDown.Text = Core.Settings.Preset;
                 deletePresetButton.Enabled = true;
             }
             else
             {
-                PresetsList.Items.Insert(0, "Custom Settings");
-                PresetsList.SelectedIndex = 0;
+                presetDropDown.Items.Insert(0, "Custom Settings");
+                presetDropDown.SelectedIndex = 0;
                 deletePresetButton.Enabled = false;
             }
 
@@ -186,14 +192,14 @@ namespace SphereStudio.Ide.Forms
                     return;
                 }
             }
-            Core.Settings.Preset = PresetsList.Text;
+            Core.Settings.Preset = presetDropDown.Text;
         }
 
         private void PresetsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_updatingPresets) return;
             
-            Core.Settings.Preset = PresetsList.Text;
+            Core.Settings.Preset = presetDropDown.Text;
             Core.Settings.Apply();
             UpdatePluginsList();
             UpdateDefaultsLists();
@@ -213,11 +219,11 @@ namespace SphereStudio.Ide.Forms
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 using (IniFile preset = new IniFile(path))
                 {
-                    preset.Write("Preset", "compiler", GetPluginName(CompilerPluginList));
-                    preset.Write("Preset", "engine", GetPluginName(EnginePluginList));
-                    preset.Write("Preset", "defaultFileOpener", GetPluginName(FilePluginList));
-                    preset.Write("Preset", "scriptEditor", GetPluginName(ScriptPluginList));
-                    preset.Write("Preset", "imageEditor", GetPluginName(ImagePluginList));
+                    preset.Write("Preset", "compiler", GetPluginName(typeDropDown));
+                    preset.Write("Preset", "engine", GetPluginName(engineDropDown));
+                    preset.Write("Preset", "defaultFileOpener", GetPluginName(fileDropDown));
+                    preset.Write("Preset", "scriptEditor", GetPluginName(scriptDropDown));
+                    preset.Write("Preset", "imageEditor", GetPluginName(imageDropDown));
                     preset.Write("Preset", "disabledPlugins", string.Join("|", Core.Settings.DisabledPlugins));
                 }
                 Core.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
@@ -228,7 +234,7 @@ namespace SphereStudio.Ide.Forms
 
         private void DeletePresetButton_Click(object sender, EventArgs e)
         {
-            string filename = string.Format("{0}.preset", PresetsList.Text);
+            string filename = string.Format("{0}.preset", presetDropDown.Text);
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Studio", "Presets", filename);
@@ -246,7 +252,7 @@ namespace SphereStudio.Ide.Forms
         {
             if (_updatingPlugins) return;
 
-            Core.Settings.DisabledPlugins = (from ListViewItem item in PluginsList.Items
+            Core.Settings.DisabledPlugins = (from ListViewItem item in pluginsListView.Items
                                         where !item.Checked
                                         select item.Tag as string).ToArray();
             Core.Settings.Apply();
