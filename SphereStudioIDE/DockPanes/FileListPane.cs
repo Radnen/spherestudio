@@ -394,9 +394,9 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void GameSettingsItem_Click(object sender, EventArgs e)
         {
-            using (var settings = new ProjectPropsForm(Core.Project))
+            using (var form = new ProjectPropsForm(Core.Project))
             {
-                settings.ShowDialog();
+                form.ShowDialog(_hostForm);
             }
         }
 

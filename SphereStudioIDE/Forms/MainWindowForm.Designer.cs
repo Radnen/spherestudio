@@ -114,8 +114,6 @@
             this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBuildPackage = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBreakNow = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStopDebug = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,6 +121,8 @@
             this.menuStepInto = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStepOver = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStepOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuTestGame = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.menuConfigEngine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -511,8 +511,8 @@
             this.menuNewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuNewProject.Name = "menuNewProject";
             this.menuNewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.menuNewProject.Size = new System.Drawing.Size(187, 22);
-            this.menuNewProject.Text = "New &Project";
+            this.menuNewProject.Size = new System.Drawing.Size(195, 22);
+            this.menuNewProject.Text = "New &Project...";
             this.menuNewProject.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
             // menuOpenProject
@@ -521,8 +521,8 @@
             this.menuOpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuOpenProject.Name = "menuOpenProject";
             this.menuOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuOpenProject.Size = new System.Drawing.Size(187, 22);
-            this.menuOpenProject.Text = "&Open Project";
+            this.menuOpenProject.Size = new System.Drawing.Size(195, 22);
+            this.menuOpenProject.Text = "&Open Project...";
             this.menuOpenProject.Click += new System.EventHandler(this.menuOpenProject_Click);
             // 
             // menuCloseProject
@@ -530,21 +530,21 @@
             this.menuCloseProject.Enabled = false;
             this.menuCloseProject.Image = global::SphereStudio.Ide.Properties.Resources.cross;
             this.menuCloseProject.Name = "menuCloseProject";
-            this.menuCloseProject.Size = new System.Drawing.Size(187, 22);
+            this.menuCloseProject.Size = new System.Drawing.Size(195, 22);
             this.menuCloseProject.Text = "&Close Project";
             this.menuCloseProject.Click += new System.EventHandler(this.menuCloseProject_Click);
             // 
             // menuOpenLastProject
             // 
             this.menuOpenLastProject.Name = "menuOpenLastProject";
-            this.menuOpenLastProject.Size = new System.Drawing.Size(187, 22);
+            this.menuOpenLastProject.Size = new System.Drawing.Size(195, 22);
             this.menuOpenLastProject.Text = "Open &Last Project";
             this.menuOpenLastProject.Click += new System.EventHandler(this.menuOpenLastProject_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(184, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(192, 6);
             // 
             // menuNew
             // 
@@ -552,7 +552,7 @@
             this.menuNewProject2});
             this.menuNew.Image = global::SphereStudio.Ide.Properties.Resources.page_white_edit;
             this.menuNew.Name = "menuNew";
-            this.menuNew.Size = new System.Drawing.Size(187, 22);
+            this.menuNew.Size = new System.Drawing.Size(195, 22);
             this.menuNew.Text = "&New";
             this.menuNew.DropDownClosed += new System.EventHandler(this.menuNew_DropDownClosed);
             this.menuNew.DropDownOpening += new System.EventHandler(this.menuNew_DropDownOpening);
@@ -561,22 +561,22 @@
             // 
             this.menuNewProject2.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
             this.menuNewProject2.Name = "menuNewProject2";
-            this.menuNewProject2.Size = new System.Drawing.Size(187, 22);
-            this.menuNewProject2.Text = "Sphere Studio &Project";
+            this.menuNewProject2.Size = new System.Drawing.Size(196, 22);
+            this.menuNewProject2.Text = "Sphere Studio &Project...";
             this.menuNewProject2.Click += new System.EventHandler(this.menuNewProject_Click);
             // 
             // menuOpen
             // 
             this.menuOpen.Image = global::SphereStudio.Ide.Properties.Resources.open;
             this.menuOpen.Name = "menuOpen";
-            this.menuOpen.Size = new System.Drawing.Size(187, 22);
+            this.menuOpen.Size = new System.Drawing.Size(195, 22);
             this.menuOpen.Text = "&Open...";
             this.menuOpen.Click += new System.EventHandler(this.menuOpen_Click);
             // 
             // Seperator2
             // 
             this.Seperator2.Name = "Seperator2";
-            this.Seperator2.Size = new System.Drawing.Size(184, 6);
+            this.Seperator2.Size = new System.Drawing.Size(192, 6);
             // 
             // menuSave
             // 
@@ -584,7 +584,7 @@
             this.menuSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuSave.Name = "menuSave";
             this.menuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuSave.Size = new System.Drawing.Size(187, 22);
+            this.menuSave.Size = new System.Drawing.Size(195, 22);
             this.menuSave.Text = "&Save";
             this.menuSave.Click += new System.EventHandler(this.menuSave_Click);
             // 
@@ -592,8 +592,8 @@
             // 
             this.menuSaveAs.Image = global::SphereStudio.Ide.Properties.Resources.disk_multiple;
             this.menuSaveAs.Name = "menuSaveAs";
-            this.menuSaveAs.Size = new System.Drawing.Size(187, 22);
-            this.menuSaveAs.Text = "Save &As";
+            this.menuSaveAs.Size = new System.Drawing.Size(195, 22);
+            this.menuSaveAs.Text = "Save &As...";
             this.menuSaveAs.Click += new System.EventHandler(this.menuSaveAs_Click);
             // 
             // menuSaveAll
@@ -602,21 +602,21 @@
             this.menuSaveAll.Name = "menuSaveAll";
             this.menuSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.menuSaveAll.Size = new System.Drawing.Size(187, 22);
+            this.menuSaveAll.Size = new System.Drawing.Size(195, 22);
             this.menuSaveAll.Text = "Save &All";
             this.menuSaveAll.Click += new System.EventHandler(this.menuSaveAll_Click);
             // 
             // Seperator3
             // 
             this.Seperator3.Name = "Seperator3";
-            this.Seperator3.Size = new System.Drawing.Size(184, 6);
+            this.Seperator3.Size = new System.Drawing.Size(192, 6);
             // 
             // menuExit
             // 
             this.menuExit.Image = global::SphereStudio.Ide.Properties.Resources.door_in;
             this.menuExit.Name = "menuExit";
             this.menuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.menuExit.Size = new System.Drawing.Size(187, 22);
+            this.menuExit.Size = new System.Drawing.Size(195, 22);
             this.menuExit.Text = "E&xit";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
@@ -894,21 +894,6 @@
             this.debugToolStripMenuItem.DropDownClosed += new System.EventHandler(this.menu_DropDownClosed);
             this.debugToolStripMenuItem.DropDownOpening += new System.EventHandler(this.menu_DropDownOpening);
             // 
-            // menuTestGame
-            // 
-            this.menuTestGame.Enabled = false;
-            this.menuTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
-            this.menuTestGame.Name = "menuTestGame";
-            this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
-            this.menuTestGame.Size = new System.Drawing.Size(273, 22);
-            this.menuTestGame.Text = "Test &Game without Debugger";
-            this.menuTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(270, 6);
-            // 
             // menuDebug
             // 
             this.menuDebug.Image = global::SphereStudio.Ide.Properties.Resources.play;
@@ -966,6 +951,21 @@
             this.menuStepOut.Text = "Step &Out";
             this.menuStepOut.Click += new System.EventHandler(this.menuStepOut_Click);
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(270, 6);
+            // 
+            // menuTestGame
+            // 
+            this.menuTestGame.Enabled = false;
+            this.menuTestGame.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
+            this.menuTestGame.Name = "menuTestGame";
+            this.menuTestGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F5)));
+            this.menuTestGame.Size = new System.Drawing.Size(273, 22);
+            this.menuTestGame.Text = "Test &Game without Debugger";
+            this.menuTestGame.Click += new System.EventHandler(this.menuTestGame_Click);
+            // 
             // menuTools
             // 
             this.menuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1009,7 +1009,7 @@
             this.menuEditorSettings.Text = "P&references...";
             this.menuEditorSettings.Click += new System.EventHandler(this.menuEditorSettings_Click);
             // 
-            // IdeWindow
+            // MainWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1024,7 +1024,7 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.EditorMenu;
             this.MinimumSize = new System.Drawing.Size(480, 360);
-            this.Name = "IdeWindow";
+            this.Name = "MainWindowForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sphere Studio";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IDEForm_FormClosing);

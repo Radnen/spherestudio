@@ -161,7 +161,7 @@
             this.summaryTextBox.Size = new System.Drawing.Size(298, 78);
             this.summaryTextBox.TabIndex = 5;
             // 
-            // resolutionDropDown
+            // resoDropDown
             // 
             this.resoDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -169,7 +169,7 @@
             this.resoDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.resoDropDown.FormattingEnabled = true;
             this.resoDropDown.Items.AddRange(new object[] {
-            "(custom resolution)",
+            "Custom Resolution",
             "320x240",
             "640x480",
             "800x600",
@@ -177,7 +177,7 @@
             "1280x720",
             "1920x1080"});
             this.resoDropDown.Location = new System.Drawing.Point(80, 172);
-            this.resoDropDown.Name = "resolutionDropDown";
+            this.resoDropDown.Name = "resoDropDown";
             this.resoDropDown.Size = new System.Drawing.Size(210, 21);
             this.resoDropDown.TabIndex = 7;
             this.resoDropDown.SelectedIndexChanged += new System.EventHandler(this.resoDropDown_SelectedIndexChanged);
@@ -345,7 +345,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Start New Project";
+            this.Text = "New Project";
             this.footer.ResumeLayout(false);
             this.projectPanel.ResumeLayout(false);
             this.projectPanel.PerformLayout();

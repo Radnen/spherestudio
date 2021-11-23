@@ -918,9 +918,9 @@ namespace SphereStudio.Ide
             }
         }
 
-        private void OpenProjectProps(bool editBuild = false)
+        private void OpenProjectProps()
         {
-            using (var form = new ProjectPropsForm(Core.Project, editBuild))
+            using (var form = new ProjectPropsForm(Core.Project))
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {

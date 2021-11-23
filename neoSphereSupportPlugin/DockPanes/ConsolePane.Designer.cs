@@ -68,7 +68,7 @@
             // 
             // m_textBox
             // 
-            this.m_textBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.m_textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.m_textBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_textBox.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.m_textBox.Location = new System.Drawing.Point(0, 0);
@@ -82,7 +82,7 @@
             // 
             // m_errorListView
             // 
-            this.m_errorListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.m_errorListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.m_errorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnValue,
             this.columnScript,
@@ -90,6 +90,7 @@
             this.m_errorListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_errorListView.FullRowSelect = true;
             this.m_errorListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.m_errorListView.HideSelection = false;
             this.m_errorListView.Location = new System.Drawing.Point(0, 0);
             this.m_errorListView.Name = "m_errorListView";
             this.m_errorListView.Size = new System.Drawing.Size(375, 221);

@@ -32,11 +32,11 @@
             this.GameTitleLabel = new System.Windows.Forms.Label();
             this.AuthorLabel = new System.Windows.Forms.Label();
             this.pathTextBox = new System.Windows.Forms.TextBox();
-            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.titleTextBox = new System.Windows.Forms.TextBox();
             this.authorTextBox = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.resolutionDropDown = new System.Windows.Forms.ComboBox();
+            this.resoDropDown = new System.Windows.Forms.ComboBox();
             this.heightTextBox = new System.Windows.Forms.TextBox();
             this.widthTextBox = new System.Windows.Forms.TextBox();
             this.ResoLabel = new System.Windows.Forms.Label();
@@ -49,7 +49,7 @@
             this.upgradeButton = new System.Windows.Forms.Button();
             this.footer = new System.Windows.Forms.Panel();
             this.projectPanel = new System.Windows.Forms.Panel();
-            this.projectHeader = new SphereStudio.UI.DialogHeader();
+            this.projectHeading = new System.Windows.Forms.Label();
             this.gamePanel = new System.Windows.Forms.Panel();
             this.gameHeader = new System.Windows.Forms.Label();
             this.header = new System.Windows.Forms.Label();
@@ -64,7 +64,7 @@
             this.PathLabel.Location = new System.Drawing.Point(15, 35);
             this.PathLabel.Name = "PathLabel";
             this.PathLabel.Size = new System.Drawing.Size(55, 15);
-            this.PathLabel.TabIndex = 0;
+            this.PathLabel.TabIndex = 1;
             this.PathLabel.Text = "Directory";
             // 
             // GameTitleLabel
@@ -73,7 +73,7 @@
             this.GameTitleLabel.Location = new System.Drawing.Point(43, 35);
             this.GameTitleLabel.Name = "GameTitleLabel";
             this.GameTitleLabel.Size = new System.Drawing.Size(29, 15);
-            this.GameTitleLabel.TabIndex = 2;
+            this.GameTitleLabel.TabIndex = 1;
             this.GameTitleLabel.Text = "Title";
             // 
             // AuthorLabel
@@ -82,7 +82,7 @@
             this.AuthorLabel.Location = new System.Drawing.Point(28, 64);
             this.AuthorLabel.Name = "AuthorLabel";
             this.AuthorLabel.Size = new System.Drawing.Size(44, 15);
-            this.AuthorLabel.TabIndex = 4;
+            this.AuthorLabel.TabIndex = 3;
             this.AuthorLabel.Text = "Author";
             // 
             // pathTextBox
@@ -93,16 +93,16 @@
             this.pathTextBox.Name = "pathTextBox";
             this.pathTextBox.ReadOnly = true;
             this.pathTextBox.Size = new System.Drawing.Size(303, 23);
-            this.pathTextBox.TabIndex = 1;
+            this.pathTextBox.TabIndex = 2;
             // 
-            // nameTextBox
+            // titleTextBox
             // 
-            this.nameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.titleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.nameTextBox.Location = new System.Drawing.Point(76, 32);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(303, 23);
-            this.nameTextBox.TabIndex = 3;
+            this.titleTextBox.Location = new System.Drawing.Point(76, 32);
+            this.titleTextBox.Name = "titleTextBox";
+            this.titleTextBox.Size = new System.Drawing.Size(303, 23);
+            this.titleTextBox.TabIndex = 2;
             // 
             // authorTextBox
             // 
@@ -111,7 +111,7 @@
             this.authorTextBox.Location = new System.Drawing.Point(76, 61);
             this.authorTextBox.Name = "authorTextBox";
             this.authorTextBox.Size = new System.Drawing.Size(303, 23);
-            this.authorTextBox.TabIndex = 5;
+            this.authorTextBox.TabIndex = 4;
             // 
             // okButton
             // 
@@ -124,7 +124,7 @@
             this.okButton.TabIndex = 0;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // cancelButton
             // 
@@ -138,26 +138,26 @@
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
-            // resolutionDropDown
+            // resoDropDown
             // 
-            this.resolutionDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.resoDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.resolutionDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.resolutionDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.resolutionDropDown.FormattingEnabled = true;
-            this.resolutionDropDown.Items.AddRange(new object[] {
-            "Click to select a resolution",
+            this.resoDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.resoDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.resoDropDown.FormattingEnabled = true;
+            this.resoDropDown.Items.AddRange(new object[] {
+            "Custom Resolution",
             "320x240",
             "640x480",
             "800x600",
             "1024x768",
             "1280x720",
             "1920x1080"});
-            this.resolutionDropDown.Location = new System.Drawing.Point(79, 184);
-            this.resolutionDropDown.Name = "resolutionDropDown";
-            this.resolutionDropDown.Size = new System.Drawing.Size(212, 23);
-            this.resolutionDropDown.TabIndex = 9;
-            this.resolutionDropDown.SelectedIndexChanged += new System.EventHandler(this.ResoComboBox_SelectedIndexChanged);
+            this.resoDropDown.Location = new System.Drawing.Point(79, 184);
+            this.resoDropDown.Name = "resoDropDown";
+            this.resoDropDown.Size = new System.Drawing.Size(212, 23);
+            this.resoDropDown.TabIndex = 8;
+            this.resoDropDown.SelectedIndexChanged += new System.EventHandler(this.resoDropDown_SelectedIndexChanged);
             // 
             // heightTextBox
             // 
@@ -165,8 +165,9 @@
             this.heightTextBox.Location = new System.Drawing.Point(341, 184);
             this.heightTextBox.Name = "heightTextBox";
             this.heightTextBox.Size = new System.Drawing.Size(38, 23);
-            this.heightTextBox.TabIndex = 11;
+            this.heightTextBox.TabIndex = 10;
             this.heightTextBox.Text = "240";
+            this.heightTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resoTextBox_KeyPress);
             // 
             // widthTextBox
             // 
@@ -174,8 +175,9 @@
             this.widthTextBox.Location = new System.Drawing.Point(297, 184);
             this.widthTextBox.Name = "widthTextBox";
             this.widthTextBox.Size = new System.Drawing.Size(38, 23);
-            this.widthTextBox.TabIndex = 10;
+            this.widthTextBox.TabIndex = 9;
             this.widthTextBox.Text = "320";
+            this.widthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resoTextBox_KeyPress);
             // 
             // ResoLabel
             // 
@@ -183,7 +185,7 @@
             this.ResoLabel.Location = new System.Drawing.Point(7, 187);
             this.ResoLabel.Name = "ResoLabel";
             this.ResoLabel.Size = new System.Drawing.Size(63, 15);
-            this.ResoLabel.TabIndex = 8;
+            this.ResoLabel.TabIndex = 7;
             this.ResoLabel.Text = "Resolution";
             // 
             // label3
@@ -192,7 +194,7 @@
             this.label3.Location = new System.Drawing.Point(12, 93);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 15);
-            this.label3.TabIndex = 6;
+            this.label3.TabIndex = 5;
             this.label3.Text = "Summary";
             // 
             // summaryTextBox
@@ -203,7 +205,7 @@
             this.summaryTextBox.Multiline = true;
             this.summaryTextBox.Name = "summaryTextBox";
             this.summaryTextBox.Size = new System.Drawing.Size(303, 88);
-            this.summaryTextBox.TabIndex = 7;
+            this.summaryTextBox.TabIndex = 6;
             // 
             // label4
             // 
@@ -211,7 +213,7 @@
             this.label4.Location = new System.Drawing.Point(25, 92);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 15);
-            this.label4.TabIndex = 1;
+            this.label4.TabIndex = 5;
             this.label4.Text = "Build In";
             // 
             // buildDirTextBox
@@ -222,7 +224,7 @@
             this.buildDirTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buildDirTextBox.Name = "buildDirTextBox";
             this.buildDirTextBox.Size = new System.Drawing.Size(303, 23);
-            this.buildDirTextBox.TabIndex = 2;
+            this.buildDirTextBox.TabIndex = 6;
             // 
             // typeDropDown
             // 
@@ -234,8 +236,8 @@
             this.typeDropDown.Location = new System.Drawing.Point(76, 61);
             this.typeDropDown.Name = "typeDropDown";
             this.typeDropDown.Size = new System.Drawing.Size(303, 23);
-            this.typeDropDown.TabIndex = 6;
-            this.typeDropDown.SelectedIndexChanged += new System.EventHandler(this.CompilerComboBox_SelectedIndexChanged);
+            this.typeDropDown.TabIndex = 4;
+            this.typeDropDown.SelectedIndexChanged += new System.EventHandler(this.typeDropDown_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -243,7 +245,7 @@
             this.label1.Location = new System.Drawing.Point(39, 64);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(31, 15);
-            this.label1.TabIndex = 5;
+            this.label1.TabIndex = 3;
             this.label1.Text = "Type";
             // 
             // upgradeButton
@@ -256,7 +258,7 @@
             this.upgradeButton.Text = "&Upgrade from Sphere 1.x...";
             this.upgradeButton.UseVisualStyleBackColor = true;
             this.upgradeButton.Visible = false;
-            this.upgradeButton.Click += new System.EventHandler(this.UpgradeButton_Click);
+            this.upgradeButton.Click += new System.EventHandler(this.upgradeButton_Click);
             // 
             // footer
             // 
@@ -267,14 +269,14 @@
             this.footer.Location = new System.Drawing.Point(0, 397);
             this.footer.Name = "footer";
             this.footer.Size = new System.Drawing.Size(413, 50);
-            this.footer.TabIndex = 14;
+            this.footer.TabIndex = 3;
             // 
             // projectPanel
             // 
             this.projectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.projectPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.projectPanel.Controls.Add(this.projectHeader);
+            this.projectPanel.Controls.Add(this.projectHeading);
             this.projectPanel.Controls.Add(this.pathTextBox);
             this.projectPanel.Controls.Add(this.buildDirTextBox);
             this.projectPanel.Controls.Add(this.PathLabel);
@@ -284,23 +286,23 @@
             this.projectPanel.Location = new System.Drawing.Point(12, 38);
             this.projectPanel.Name = "projectPanel";
             this.projectPanel.Size = new System.Drawing.Size(389, 123);
-            this.projectPanel.TabIndex = 15;
+            this.projectPanel.TabIndex = 1;
             // 
-            // projectHeader
+            // projectHeading
             // 
-            this.projectHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.projectHeader.Location = new System.Drawing.Point(0, 0);
-            this.projectHeader.Name = "projectHeader";
-            this.projectHeader.Size = new System.Drawing.Size(387, 23);
-            this.projectHeader.TabIndex = 0;
-            this.projectHeader.Text = "Project Configuration";
-            this.projectHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.projectHeading.Dock = System.Windows.Forms.DockStyle.Top;
+            this.projectHeading.Location = new System.Drawing.Point(0, 0);
+            this.projectHeading.Name = "projectHeading";
+            this.projectHeading.Size = new System.Drawing.Size(387, 23);
+            this.projectHeading.TabIndex = 0;
+            this.projectHeading.Text = "Project Configuration";
+            this.projectHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gamePanel
             // 
             this.gamePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.gamePanel.Controls.Add(this.gameHeader);
-            this.gamePanel.Controls.Add(this.nameTextBox);
+            this.gamePanel.Controls.Add(this.titleTextBox);
             this.gamePanel.Controls.Add(this.ResoLabel);
             this.gamePanel.Controls.Add(this.label3);
             this.gamePanel.Controls.Add(this.widthTextBox);
@@ -308,12 +310,12 @@
             this.gamePanel.Controls.Add(this.summaryTextBox);
             this.gamePanel.Controls.Add(this.heightTextBox);
             this.gamePanel.Controls.Add(this.GameTitleLabel);
-            this.gamePanel.Controls.Add(this.resolutionDropDown);
+            this.gamePanel.Controls.Add(this.resoDropDown);
             this.gamePanel.Controls.Add(this.authorTextBox);
             this.gamePanel.Location = new System.Drawing.Point(12, 167);
             this.gamePanel.Name = "gamePanel";
             this.gamePanel.Size = new System.Drawing.Size(389, 218);
-            this.gamePanel.TabIndex = 16;
+            this.gamePanel.TabIndex = 2;
             // 
             // gameHeader
             // 
@@ -331,7 +333,7 @@
             this.header.Location = new System.Drawing.Point(0, 0);
             this.header.Name = "header";
             this.header.Size = new System.Drawing.Size(413, 23);
-            this.header.TabIndex = 17;
+            this.header.TabIndex = 0;
             this.header.Text = "configure your Sphere game project";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -354,7 +356,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Properties";
-            this.Load += new System.EventHandler(this.ProjectPropsForm_Load);
             this.footer.ResumeLayout(false);
             this.projectPanel.ResumeLayout(false);
             this.projectPanel.PerformLayout();
@@ -370,7 +371,7 @@
         private System.Windows.Forms.Label GameTitleLabel;
         private System.Windows.Forms.Label AuthorLabel;
         private System.Windows.Forms.TextBox pathTextBox;
-        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.TextBox titleTextBox;
         private System.Windows.Forms.TextBox authorTextBox;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
@@ -380,16 +381,16 @@
         private System.Windows.Forms.ComboBox typeDropDown;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox resolutionDropDown;
+        private System.Windows.Forms.ComboBox resoDropDown;
         private System.Windows.Forms.TextBox heightTextBox;
         private System.Windows.Forms.TextBox widthTextBox;
         private System.Windows.Forms.Label ResoLabel;
         private System.Windows.Forms.Button upgradeButton;
         private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Panel projectPanel;
-        private UI.DialogHeader projectHeader;
         private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.Label gameHeader;
         private System.Windows.Forms.Label header;
+        private System.Windows.Forms.Label projectHeading;
     }
 }

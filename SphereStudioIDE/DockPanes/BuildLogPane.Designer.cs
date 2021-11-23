@@ -35,7 +35,7 @@
             // 
             // textbox
             // 
-            this.textbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textbox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textbox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textbox.Location = new System.Drawing.Point(0, 0);
@@ -51,12 +51,12 @@
             this.printTimer.Interval = 250;
             this.printTimer.Tick += new System.EventHandler(this.printTimer_Tick);
             // 
-            // BuildConsole
+            // BuildLogPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.textbox);
-            this.Name = "BuildConsole";
+            this.Name = "BuildLogPane";
             this.Size = new System.Drawing.Size(659, 150);
             this.ResumeLayout(false);
             this.PerformLayout();

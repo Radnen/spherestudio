@@ -1,32 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using SphereStudio.Base;
 
 namespace SphereStudio.Ide.Forms
 {
-    public partial class SavePresetForm : Form
+    public partial class SavePresetForm : Form, IStyleAware
     {
         public SavePresetForm()
         {
             InitializeComponent();
+            StyleManager.AutoStyle(this);
+            
             UpdatePresetBox();
-
-            presetBox.SelectedIndex = 0;
+            presetDropDown.SelectedIndex = 0;
         }
 
-        public string PresetName
+        public void ApplyStyle(UIStyle style)
         {
-            get;
-            private set;
+            style.AsUIElement(this);
+            style.AsHeading(header);
+            style.AsHeading(footer);
+            style.AsAccent(okButton);
+            style.AsAccent(cancelButton);
+
+            style.AsHeading(nameHeading);
+            style.AsAccent(namePanel);
+            style.AsTextView(presetDropDown);
+            style.AsTextView(nameTextBox);
         }
+
+        public string PresetName { get; private set; }
 
         private void MakeDefaultName()
         {
@@ -37,13 +44,13 @@ namespace SphereStudio.Ide.Forms
             int ordinal = 1;
             while (File.Exists(Path.Combine(path, name + ".preset")))
                 name = string.Format("{0} {1}", defaultName, ++ordinal);
-            customNameBox.Text = name;
+            nameTextBox.Text = name;
         }
         
         private void UpdatePresetBox()
         {
-            presetBox.Items.Clear();
-            presetBox.Items.Add("new preset (enter name below)");
+            presetDropDown.Items.Clear();
+            presetDropDown.Items.Add("new preset (enter name below)");
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
             if (Directory.Exists(path))
             {
@@ -51,29 +58,29 @@ namespace SphereStudio.Ide.Forms
                             orderby filename ascending
                             select Path.GetFileNameWithoutExtension(filename);
                 foreach (string name in presets)
-                    presetBox.Items.Add(name);
+                    presetDropDown.Items.Add(name);
             }
         }
 
         private void presetBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (presetBox.SelectedIndex == 0)
+            if (presetDropDown.SelectedIndex == 0)
             {
                 MakeDefaultName();
-                customNameBox.Enabled = true;
-                customNameBox.SelectAll();
-                customNameBox.Select();
+                nameTextBox.Enabled = true;
+                nameTextBox.SelectAll();
+                nameTextBox.Select();
             }
             else
             {
-                customNameBox.Enabled = false;
-                customNameBox.Text = presetBox.Text;
+                nameTextBox.Enabled = false;
+                nameTextBox.Text = presetDropDown.Text;
             }
         }
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            string filename = customNameBox.Text + ".preset";
+            string filename = nameTextBox.Text + ".preset";
             string path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "Sphere Studio", "Presets", filename);
@@ -81,13 +88,13 @@ namespace SphereStudio.Ide.Forms
             if (File.Exists(path))
             {
                 DialogResult result = MessageBox.Show(
-                    String.Format("A configuration preset named \"{0}\" already exists. Do you want to overwrite it?", customNameBox.Text),
+                    String.Format("A configuration preset named \"{0}\" already exists. Do you want to overwrite it?", nameTextBox.Text),
                     "Preset Already Exists", MessageBoxButtons.YesNo);
                 isSaveAllowed = result == DialogResult.Yes;
             }
             if (isSaveAllowed)
             {
-                PresetName = customNameBox.Text;
+                PresetName = nameTextBox.Text;
                 DialogResult = DialogResult.OK;
             }
         }
@@ -95,7 +102,7 @@ namespace SphereStudio.Ide.Forms
         private void customNameBox_TextChanged(object sender, EventArgs e)
         {
             Regex regex = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-            okButton.Enabled = !regex.IsMatch(customNameBox.Text);
+            okButton.Enabled = !regex.IsMatch(nameTextBox.Text);
         }
     }
 }

@@ -88,7 +88,7 @@
             this.pluginsListView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pluginsListView.Name = "pluginsListView";
             this.pluginsListView.ShowItemToolTips = true;
-            this.pluginsListView.Size = new System.Drawing.Size(605, 251);
+            this.pluginsListView.Size = new System.Drawing.Size(605, 192);
             this.pluginsListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.pluginsListView.TabIndex = 3;
             this.pluginsListView.UseCompatibleStateImageBehavior = false;
@@ -271,7 +271,7 @@
             // 
             this.footer.Controls.Add(this.okButton);
             this.footer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.footer.Location = new System.Drawing.Point(0, 503);
+            this.footer.Location = new System.Drawing.Point(0, 444);
             this.footer.Name = "footer";
             this.footer.Size = new System.Drawing.Size(654, 50);
             this.footer.TabIndex = 7;
@@ -317,7 +317,7 @@
             this.pluginsPanel.Controls.Add(this.pluginsListView);
             this.pluginsPanel.Location = new System.Drawing.Point(12, 194);
             this.pluginsPanel.Name = "pluginsPanel";
-            this.pluginsPanel.Size = new System.Drawing.Size(630, 297);
+            this.pluginsPanel.Size = new System.Drawing.Size(630, 238);
             this.pluginsPanel.TabIndex = 9;
             // 
             // pluginsHeading
@@ -336,7 +336,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.okButton;
-            this.ClientSize = new System.Drawing.Size(654, 553);
+            this.ClientSize = new System.Drawing.Size(654, 494);
             this.Controls.Add(this.pluginsPanel);
             this.Controls.Add(this.defaultsPanel);
             this.Controls.Add(this.footer);
