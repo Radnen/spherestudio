@@ -13,7 +13,7 @@ namespace SphereStudio.Ide
     /// </summary>
     static class Program
     {
-        public const string DefaultStyle = "Sphere Studio: Dark";
+        public const string DefaultStyle = "Sphere Studio: Midnight";
         
         /// <summary>
         /// The main entry point for the application.
@@ -25,7 +25,7 @@ namespace SphereStudio.Ide
             Application.SetCompatibleTextRenderingDefault(false);
 
             PluginManager.Register(null, new DefaultStyleProvider(), "Sphere Studio");
-            PluginManager.Register(null, new IdeSettingsPage(), "Sphere Studio IDE");
+            PluginManager.Register(null, new IdeSettingsPage(), "Sphere Studio");
 
             Form = new IdeWindow();
 

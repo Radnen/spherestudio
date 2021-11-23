@@ -20,31 +20,45 @@ namespace SphereStudio.Plugins.SettingsPages
 
         public void ApplyStyle(UIStyle style)
         {
-            style.AsUIElement(MainTabPage);
-            style.AsTextView(GdkPathTextBox);
-            style.AsTextView(VerbosityComboBox);
-            style.AsAccent(BrowseButton);
+            style.AsUIElement(this);
+
+            style.AsHeading(directoryHeading);
+            style.AsAccent(directoryPanel);
+            style.AsTextView(enginePathTextBox);
+            style.AsAccent(browseDirButton);
+            
+            style.AsHeading(debugHeading);
+            style.AsAccent(debugPanel);
+            style.AsAccent(testWithConsoleButton);
+            style.AsAccent(useSourceMapsButton);
+            style.AsAccent(testInWindowButton);
+            style.AsAccent(showTracesButton);
+            style.AsTextView(logLevelDropDown);
+            
+            style.AsTextView(enginePathTextBox);
+            style.AsTextView(logLevelDropDown);
+            style.AsAccent(browseDirButton);
         }
 
         public bool Apply()
         {
-            m_main.Conf.GdkPath = GdkPathTextBox.Text;
-            m_main.Conf.MakeDebugPackages = MakeDebugPackageCheckBox.Checked;
-            m_main.Conf.AlwaysUseConsole = TestWithConsoleCheckBox.Checked;
-            m_main.Conf.ShowTraceInfo = ShowTraceCheckBox.Checked;
-            m_main.Conf.TestInWindow = TestInWindowCheckBox.Checked;
-            m_main.Conf.Verbosity = VerbosityComboBox.SelectedIndex;
+            m_main.Conf.GdkPath = enginePathTextBox.Text;
+            m_main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
+            m_main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
+            m_main.Conf.ShowTraceInfo = showTracesButton.Checked;
+            m_main.Conf.TestInWindow = testInWindowButton.Checked;
+            m_main.Conf.Verbosity = logLevelDropDown.SelectedIndex;
             return true;
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            GdkPathTextBox.Text = m_main.Conf.GdkPath;
-            MakeDebugPackageCheckBox.Checked = m_main.Conf.MakeDebugPackages;
-            ShowTraceCheckBox.Checked = m_main.Conf.ShowTraceInfo;
-            TestWithConsoleCheckBox.Checked = m_main.Conf.AlwaysUseConsole;
-            TestInWindowCheckBox.Checked = m_main.Conf.TestInWindow;
-            VerbosityComboBox.SelectedIndex = m_main.Conf.Verbosity;
+            enginePathTextBox.Text = m_main.Conf.GdkPath;
+            useSourceMapsButton.Checked = m_main.Conf.MakeDebugPackages;
+            showTracesButton.Checked = m_main.Conf.ShowTraceInfo;
+            testWithConsoleButton.Checked = m_main.Conf.AlwaysUseConsole;
+            testInWindowButton.Checked = m_main.Conf.TestInWindow;
+            logLevelDropDown.SelectedIndex = m_main.Conf.Verbosity;
             base.OnLoad(e);
         }
 
@@ -55,7 +69,7 @@ namespace SphereStudio.Plugins.SettingsPages
             fb.ShowNewFolderButton = false;
             if (fb.ShowDialog(this) == DialogResult.OK)
             {
-                GdkPathTextBox.Text = fb.SelectedPath;
+                enginePathTextBox.Text = fb.SelectedPath;
             }
         }
     }

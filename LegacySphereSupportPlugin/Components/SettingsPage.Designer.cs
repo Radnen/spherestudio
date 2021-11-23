@@ -29,138 +29,106 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsPage));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.ConfigButton = new System.Windows.Forms.Button();
-            this.BrowseButton = new System.Windows.Forms.Button();
-            this.SpherePathEdit = new System.Windows.Forms.TextBox();
+            this.configEngineButton = new System.Windows.Forms.Button();
+            this.browseDirButton = new System.Windows.Forms.Button();
+            this.enginePathTextBox = new System.Windows.Forms.TextBox();
             this.PathLabel = new System.Windows.Forms.Label();
-            this.editorLabel1 = new SphereStudio.UI.DialogHeader();
-            this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.directoryPanel = new System.Windows.Forms.Panel();
+            this.directoryHeading = new System.Windows.Forms.Label();
+            this.directoryPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // configEngineButton
             // 
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(524, 297);
-            this.tabControl1.TabIndex = 4;
+            this.configEngineButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.configEngineButton.Enabled = false;
+            this.configEngineButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.configEngineButton.Image = global::SphereStudio.Plugins.Properties.Resources.ConfigIcon;
+            this.configEngineButton.Location = new System.Drawing.Point(403, 58);
+            this.configEngineButton.Name = "configEngineButton";
+            this.configEngineButton.Size = new System.Drawing.Size(25, 25);
+            this.configEngineButton.TabIndex = 0;
+            this.configEngineButton.UseVisualStyleBackColor = true;
+            this.configEngineButton.Click += new System.EventHandler(this.ConfigButton_Click);
             // 
-            // tabPage2
+            // browseDirButton
             // 
-            this.tabPage2.Controls.Add(this.panel1);
-            this.tabPage2.Controls.Add(this.editorLabel1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(516, 271);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Engine Setup";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.browseDirButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.browseDirButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.browseDirButton.Image = ((System.Drawing.Image)(resources.GetObject("browseDirButton.Image")));
+            this.browseDirButton.Location = new System.Drawing.Point(434, 58);
+            this.browseDirButton.Name = "browseDirButton";
+            this.browseDirButton.Size = new System.Drawing.Size(80, 25);
+            this.browseDirButton.TabIndex = 4;
+            this.browseDirButton.Text = "Browse...";
+            this.browseDirButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.browseDirButton.UseVisualStyleBackColor = true;
+            this.browseDirButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
-            // panel1
+            // enginePathTextBox
             // 
-            this.panel1.Controls.Add(this.ConfigButton);
-            this.panel1.Controls.Add(this.BrowseButton);
-            this.panel1.Controls.Add(this.SpherePathEdit);
-            this.panel1.Controls.Add(this.PathLabel);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 26);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(510, 76);
-            this.panel1.TabIndex = 5;
-            // 
-            // ConfigButton
-            // 
-            this.ConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConfigButton.Enabled = false;
-            this.ConfigButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ConfigButton.Image = global::SphereStudio.Plugins.Properties.Resources.ConfigIcon;
-            this.ConfigButton.Location = new System.Drawing.Point(385, 39);
-            this.ConfigButton.Name = "ConfigButton";
-            this.ConfigButton.Size = new System.Drawing.Size(25, 25);
-            this.ConfigButton.TabIndex = 0;
-            this.ConfigButton.UseVisualStyleBackColor = true;
-            this.ConfigButton.Click += new System.EventHandler(this.ConfigButton_Click);
-            // 
-            // BrowseButton
-            // 
-            this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BrowseButton.Image = ((System.Drawing.Image)(resources.GetObject("BrowseButton.Image")));
-            this.BrowseButton.Location = new System.Drawing.Point(416, 39);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(80, 25);
-            this.BrowseButton.TabIndex = 4;
-            this.BrowseButton.Text = "Browse...";
-            this.BrowseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.BrowseButton.UseVisualStyleBackColor = true;
-            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
-            // 
-            // SpherePathEdit
-            // 
-            this.SpherePathEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.enginePathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpherePathEdit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SpherePathEdit.Location = new System.Drawing.Point(51, 13);
-            this.SpherePathEdit.Name = "SpherePathEdit";
-            this.SpherePathEdit.ReadOnly = true;
-            this.SpherePathEdit.Size = new System.Drawing.Size(445, 20);
-            this.SpherePathEdit.TabIndex = 2;
-            this.SpherePathEdit.TextChanged += new System.EventHandler(this.SpherePath_TextChanged);
+            this.enginePathTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.enginePathTextBox.Location = new System.Drawing.Point(65, 32);
+            this.enginePathTextBox.Name = "enginePathTextBox";
+            this.enginePathTextBox.Size = new System.Drawing.Size(449, 20);
+            this.enginePathTextBox.TabIndex = 2;
+            this.enginePathTextBox.TextChanged += new System.EventHandler(this.SpherePath_TextChanged);
             // 
             // PathLabel
             // 
             this.PathLabel.AutoSize = true;
-            this.PathLabel.Location = new System.Drawing.Point(16, 16);
+            this.PathLabel.Location = new System.Drawing.Point(10, 34);
             this.PathLabel.Name = "PathLabel";
-            this.PathLabel.Size = new System.Drawing.Size(29, 13);
+            this.PathLabel.Size = new System.Drawing.Size(49, 13);
             this.PathLabel.TabIndex = 0;
-            this.PathLabel.Text = "Path";
+            this.PathLabel.Text = "Directory";
             // 
-            // editorLabel1
+            // directoryPanel
             // 
-            this.editorLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editorLabel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.editorLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.editorLabel1.ForeColor = System.Drawing.Color.White;
-            this.editorLabel1.Location = new System.Drawing.Point(3, 3);
-            this.editorLabel1.Name = "editorLabel1";
-            this.editorLabel1.Size = new System.Drawing.Size(510, 23);
-            this.editorLabel1.TabIndex = 4;
-            this.editorLabel1.Text = "Where is Sphere 1.x installed?";
-            this.editorLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.directoryPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.directoryPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.directoryPanel.Controls.Add(this.configEngineButton);
+            this.directoryPanel.Controls.Add(this.directoryHeading);
+            this.directoryPanel.Controls.Add(this.browseDirButton);
+            this.directoryPanel.Controls.Add(this.enginePathTextBox);
+            this.directoryPanel.Controls.Add(this.PathLabel);
+            this.directoryPanel.Location = new System.Drawing.Point(9, 12);
+            this.directoryPanel.Name = "directoryPanel";
+            this.directoryPanel.Size = new System.Drawing.Size(526, 94);
+            this.directoryPanel.TabIndex = 5;
+            // 
+            // directoryHeading
+            // 
+            this.directoryHeading.Dock = System.Windows.Forms.DockStyle.Top;
+            this.directoryHeading.Location = new System.Drawing.Point(0, 0);
+            this.directoryHeading.Name = "directoryHeading";
+            this.directoryHeading.Size = new System.Drawing.Size(524, 23);
+            this.directoryHeading.TabIndex = 0;
+            this.directoryHeading.Text = "Engine Executables";
+            this.directoryHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SettingsPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tabControl1);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.AutoScroll = true;
+            this.Controls.Add(this.directoryPanel);
             this.Name = "SettingsPage";
-            this.Size = new System.Drawing.Size(524, 297);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.Size = new System.Drawing.Size(545, 280);
+            this.directoryPanel.ResumeLayout(false);
+            this.directoryPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button ConfigButton;
-        private System.Windows.Forms.Button BrowseButton;
-        private System.Windows.Forms.TextBox SpherePathEdit;
+        private System.Windows.Forms.Button configEngineButton;
+        private System.Windows.Forms.Button browseDirButton;
+        private System.Windows.Forms.TextBox enginePathTextBox;
         private System.Windows.Forms.Label PathLabel;
-        private SphereStudio.UI.DialogHeader editorLabel1;
+        private System.Windows.Forms.Panel directoryPanel;
+        private System.Windows.Forms.Label directoryHeading;
     }
 }

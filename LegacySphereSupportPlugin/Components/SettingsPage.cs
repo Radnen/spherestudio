@@ -25,21 +25,24 @@ namespace SphereStudio.Plugins.Components
 
         public bool Apply()
         {
-            _conf.SetValue("spherePath", SpherePathEdit.Text);
+            _conf.SetValue("spherePath", enginePathTextBox.Text);
             return true;
         }
 
         public void ApplyStyle(UIStyle style)
         {
-            style.AsUIElement(tabPage2);
-            style.AsTextView(SpherePathEdit);
-            style.AsAccent(ConfigButton);
-            style.AsAccent(BrowseButton);
+            style.AsUIElement(this);
+
+            style.AsHeading(directoryHeading);
+            style.AsAccent(directoryPanel);
+            style.AsTextView(enginePathTextBox);
+            style.AsAccent(configEngineButton);
+            style.AsAccent(browseDirButton);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            SpherePathEdit.Text = _conf.GetString("spherePath", "");
+            enginePathTextBox.Text = _conf.GetString("spherePath", "");
             base.OnLoad(e);
         }
 
@@ -50,16 +53,16 @@ namespace SphereStudio.Plugins.Components
             fb.ShowNewFolderButton = false;
             if (fb.ShowDialog(this) == DialogResult.OK)
             {
-                SpherePathEdit.Text = fb.SelectedPath;
+                enginePathTextBox.Text = fb.SelectedPath;
             }
         }
 
         private void ConfigButton_Click(object sender, EventArgs e)
         {
-            var configAppPath = Path.Combine(SpherePathEdit.Text, "config.exe");
+            var configAppPath = Path.Combine(enginePathTextBox.Text, "config.exe");
             if (File.Exists(configAppPath))
             {
-                Directory.SetCurrentDirectory(SpherePathEdit.Text);
+                Directory.SetCurrentDirectory(enginePathTextBox.Text);
                 Process.Start(configAppPath);
                 Directory.SetCurrentDirectory(Application.StartupPath);
             }
@@ -67,7 +70,7 @@ namespace SphereStudio.Plugins.Components
 
         private void SpherePath_TextChanged(object sender, EventArgs e)
         {
-            ConfigButton.Enabled = File.Exists(Path.Combine(SpherePathEdit.Text, "config.exe"));
+            configEngineButton.Enabled = File.Exists(Path.Combine(enginePathTextBox.Text, "config.exe"));
         }
     }
 }

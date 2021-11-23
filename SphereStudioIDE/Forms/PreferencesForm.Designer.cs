@@ -28,45 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitterBox = new System.Windows.Forms.SplitContainer();
-            this.pageList = new System.Windows.Forms.TreeView();
             this.footer = new System.Windows.Forms.Panel();
             this.applyButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.header = new SphereStudio.UI.DialogHeader();
-            ((System.ComponentModel.ISupportInitialize)(this.splitterBox)).BeginInit();
-            this.splitterBox.Panel1.SuspendLayout();
-            this.splitterBox.SuspendLayout();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.footer.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitterBox
-            // 
-            this.splitterBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitterBox.Location = new System.Drawing.Point(0, 23);
-            this.splitterBox.Name = "splitterBox";
-            // 
-            // splitterBox.Panel1
-            // 
-            this.splitterBox.Panel1.Controls.Add(this.pageList);
-            this.splitterBox.Size = new System.Drawing.Size(604, 364);
-            this.splitterBox.SplitterDistance = 137;
-            this.splitterBox.TabIndex = 2;
-            // 
-            // pageList
-            // 
-            this.pageList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pageList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pageList.FullRowSelect = true;
-            this.pageList.HideSelection = false;
-            this.pageList.HotTracking = true;
-            this.pageList.Location = new System.Drawing.Point(0, 0);
-            this.pageList.Name = "pageList";
-            this.pageList.Size = new System.Drawing.Size(137, 364);
-            this.pageList.TabIndex = 1;
-            this.pageList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.PageTree_AfterSelect);
-            this.pageList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PageTree_MouseMove);
             // 
             // footer
             // 
@@ -90,7 +59,7 @@
             this.applyButton.TabIndex = 2;
             this.applyButton.Text = "&Apply";
             this.applyButton.UseVisualStyleBackColor = true;
-            this.applyButton.Click += new System.EventHandler(this.ApplyButton_Click);
+            this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
             // cancelButton
             // 
@@ -117,7 +86,7 @@
             this.okButton.TabIndex = 0;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // header
             // 
@@ -130,6 +99,19 @@
             this.header.Text = "configure the Sphere Studio integrated development environment";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tabControl
+            // 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl.Location = new System.Drawing.Point(12, 35);
+            this.tabControl.Multiline = true;
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(583, 344);
+            this.tabControl.TabIndex = 4;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+            // 
             // PreferencesForm
             // 
             this.AcceptButton = this.okButton;
@@ -137,7 +119,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(604, 437);
-            this.Controls.Add(this.splitterBox);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.footer);
             this.Controls.Add(this.header);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -148,21 +130,17 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Preferences";
-            this.splitterBox.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitterBox)).EndInit();
-            this.splitterBox.ResumeLayout(false);
             this.footer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.SplitContainer splitterBox;
-        private System.Windows.Forms.TreeView pageList;
         private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button applyButton;
         private UI.DialogHeader header;
+        private System.Windows.Forms.TabControl tabControl;
     }
 }

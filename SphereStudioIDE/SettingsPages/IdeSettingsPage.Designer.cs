@@ -172,7 +172,7 @@
             this.styleHeading.Name = "styleHeading";
             this.styleHeading.Size = new System.Drawing.Size(361, 23);
             this.styleHeading.TabIndex = 0;
-            this.styleHeading.Text = "default color scheme";
+            this.styleHeading.Text = "IDE Color Scheme";
             this.styleHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // miscPanel
@@ -195,7 +195,7 @@
             this.miscHeading.Name = "miscHeading";
             this.miscHeading.Size = new System.Drawing.Size(361, 23);
             this.miscHeading.TabIndex = 0;
-            this.miscHeading.Text = "behavior";
+            this.miscHeading.Text = "Behavior";
             this.miscHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // dirsPanel
@@ -221,11 +221,13 @@
             this.dirsHeading.Name = "dirsHeading";
             this.dirsHeading.Size = new System.Drawing.Size(361, 23);
             this.dirsHeading.TabIndex = 0;
-            this.dirsHeading.Text = "project directories";
+            this.dirsHeading.Text = "Additional Project Directories";
             this.dirsHeading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // IdeSettingsPage
             // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.AutoScroll = true;
             this.Controls.Add(this.dirsPanel);
             this.Controls.Add(this.miscPanel);
             this.Controls.Add(this.stylePanel);

@@ -27,11 +27,9 @@ namespace SphereStudio.Ide.Forms
         public void ApplyStyle(UIStyle style)
         {
             style.AsUIElement(this);
-            style.AsUIElement(splitterBox.Panel1);
-            style.AsUIElement(splitterBox.Panel2);
             style.AsHeading(header);
             style.AsHeading(footer);
-            style.AsTextView(pageList);
+            style.AsAccent(tabControl);
             style.AsAccent(okButton);
             style.AsAccent(cancelButton);
             style.AsAccent(applyButton);
@@ -42,34 +40,15 @@ namespace SphereStudio.Ide.Forms
             string[] pageNames = PluginManager.GetNames<ISettingsPage>();
             foreach (string name in pageNames)
             {
-                var page = PluginManager.Get<ISettingsPage>(name);
-                TreeNode node = new TreeNode(name) { Tag = page };
-                pageList.Nodes.Add(node);
+                var plugin = PluginManager.Get<ISettingsPage>(name);
+                var page = new TabPage(name) { Tag = plugin };
+                tabControl.TabPages.Add(page);
             }
+            loadSettingsPage();
             base.OnLoad(e);
         }
 
-        private void PageTree_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            ISettingsPage page = e.Node.Tag as ISettingsPage;
-            if (!_applyList.Contains(page))
-                _applyList.Add(page);
-            page.Control.Dock = DockStyle.Fill;
-            splitterBox.Panel2.Controls.Add(page.Control);
-            if (_currentPage != null)
-                _currentPage.Hide();
-            page.Control.Show();
-            _currentPage = page.Control;
-        }
-
-        private void PageTree_MouseMove(object sender, MouseEventArgs e)
-        {
-            var ht = pageList.HitTest(e.Location);
-            pageList.Cursor = ht.Node != null && ht.Node.Bounds.Contains(e.Location)
-                ? Cursors.Hand : Cursors.Default;
-        }
-
-        private void OKButton_Click(object sender, EventArgs e)
+        private void okButton_Click(object sender, EventArgs e)
         {
             bool canClose = true;
             foreach (ISettingsPage page in _applyList)
@@ -78,10 +57,28 @@ namespace SphereStudio.Ide.Forms
                 DialogResult = DialogResult.None;
         }
 
-        private void ApplyButton_Click(object sender, EventArgs e)
+        private void applyButton_Click(object sender, EventArgs e)
         {
             foreach (ISettingsPage page in _applyList)
                 page.Apply();
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadSettingsPage();
+        }
+
+        private void loadSettingsPage()
+        {
+            var plugin = tabControl.SelectedTab.Tag as ISettingsPage;
+            if (!_applyList.Contains(plugin))
+                _applyList.Add(plugin);
+            plugin.Control.Dock = DockStyle.Fill;
+            tabControl.SelectedTab.Controls.Add(plugin.Control);
+            if (_currentPage != null)
+                _currentPage.Hide();
+            plugin.Control.Show();
+            _currentPage = plugin.Control;
         }
     }
 }
