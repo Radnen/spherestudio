@@ -285,7 +285,7 @@ namespace SphereStudio.Plugins.Components
             else if (path.StartsWith("~/"))
                 path = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "Sphere", path.Substring(2));
+                    "Sphere Saves", path.Substring(2));
             else
                 path = Path.Combine(m_sourcePath, path);
             return path.Replace('/', Path.DirectorySeparatorChar);

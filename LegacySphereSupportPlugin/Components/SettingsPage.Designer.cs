@@ -74,7 +74,7 @@
             this.enginePathTextBox.Name = "enginePathTextBox";
             this.enginePathTextBox.Size = new System.Drawing.Size(449, 20);
             this.enginePathTextBox.TabIndex = 2;
-            this.enginePathTextBox.TextChanged += new System.EventHandler(this.SpherePath_TextChanged);
+            this.enginePathTextBox.TextChanged += new System.EventHandler(this.enginePathTextBox_TextChanged);
             // 
             // PathLabel
             // 

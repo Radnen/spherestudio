@@ -24,7 +24,7 @@ namespace SphereStudio.Plugins.Components
         public bool Prep(IProject project, IConsole con)
         {
             con.Print("Installing project template... ");
-            CopyDirectory(Path.Combine(m_main.Conf.GdkPath, "system", "template"), project.RootPath);
+            CopyDirectory(Path.Combine(m_main.Conf.EnginePath, "system", "template"), project.RootPath);
             con.Print("OK.\n");
 
             var cellTemplatePath = Path.Combine(project.RootPath, "Cellscript.js.tmpl");
@@ -114,7 +114,7 @@ namespace SphereStudio.Plugins.Components
 
         private async Task<bool> RunCell(string options, IConsole con)
         {
-            string cellPath = Path.Combine(m_main.Conf.GdkPath, "cell.exe");
+            string cellPath = Path.Combine(m_main.Conf.EnginePath, "cell.exe");
             if (!File.Exists(cellPath))
             {
                 con.Print("ERROR: no 'cell' executable was found, did Gohan kill Cell already?\n");

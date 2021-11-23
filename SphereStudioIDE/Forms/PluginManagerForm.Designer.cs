@@ -43,7 +43,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.typeDropDown = new System.Windows.Forms.ComboBox();
-            this.fileDropDown = new System.Windows.Forms.ComboBox();
+            this.otherDropDown = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
             this.deletePresetButton = new System.Windows.Forms.Button();
@@ -68,7 +68,7 @@
             this.presetDropDown.Name = "presetDropDown";
             this.presetDropDown.Size = new System.Drawing.Size(254, 21);
             this.presetDropDown.TabIndex = 1;
-            this.presetDropDown.SelectedIndexChanged += new System.EventHandler(this.PresetsList_SelectedIndexChanged);
+            this.presetDropDown.SelectedIndexChanged += new System.EventHandler(this.presetDropDown_SelectedIndexChanged);
             // 
             // pluginsListView
             // 
@@ -93,7 +93,7 @@
             this.pluginsListView.TabIndex = 3;
             this.pluginsListView.UseCompatibleStateImageBehavior = false;
             this.pluginsListView.View = System.Windows.Forms.View.Details;
-            this.pluginsListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.PluginsList_ItemChecked);
+            this.pluginsListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.pluginsListView_ItemChecked);
             // 
             // NameColumn
             // 
@@ -119,7 +119,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(334, 89);
+            this.label2.Location = new System.Drawing.Point(334, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 13);
             this.label2.TabIndex = 10;
@@ -131,17 +131,17 @@
             this.imageDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.imageDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.imageDropDown.FormattingEnabled = true;
-            this.imageDropDown.Location = new System.Drawing.Point(412, 86);
+            this.imageDropDown.Location = new System.Drawing.Point(412, 59);
             this.imageDropDown.Name = "imageDropDown";
             this.imageDropDown.Size = new System.Drawing.Size(205, 21);
             this.imageDropDown.TabIndex = 9;
-            this.imageDropDown.SelectedIndexChanged += new System.EventHandler(this.ImagePluginList_SelectedIndexChanged);
+            this.imageDropDown.SelectedIndexChanged += new System.EventHandler(this.imageDropDown_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(336, 62);
+            this.label1.Location = new System.Drawing.Point(336, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 8;
@@ -153,11 +153,11 @@
             this.scriptDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.scriptDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.scriptDropDown.FormattingEnabled = true;
-            this.scriptDropDown.Location = new System.Drawing.Point(412, 59);
+            this.scriptDropDown.Location = new System.Drawing.Point(412, 32);
             this.scriptDropDown.Name = "scriptDropDown";
             this.scriptDropDown.Size = new System.Drawing.Size(205, 21);
             this.scriptDropDown.TabIndex = 7;
-            this.scriptDropDown.SelectedIndexChanged += new System.EventHandler(this.ScriptPluginList_SelectedIndexChanged);
+            this.scriptDropDown.SelectedIndexChanged += new System.EventHandler(this.scriptDropDown_SelectedIndexChanged);
             // 
             // engineDropDown
             // 
@@ -168,7 +168,7 @@
             this.engineDropDown.Name = "engineDropDown";
             this.engineDropDown.Size = new System.Drawing.Size(190, 21);
             this.engineDropDown.TabIndex = 6;
-            this.engineDropDown.SelectedIndexChanged += new System.EventHandler(this.EnginePluginList_SelectedIndexChanged);
+            this.engineDropDown.SelectedIndexChanged += new System.EventHandler(this.engineDropDown_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -183,11 +183,11 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(297, 35);
+            this.label3.Location = new System.Drawing.Point(317, 89);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(110, 13);
+            this.label3.Size = new System.Drawing.Size(89, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Unknown File Types";
+            this.label3.Text = "Other File Types";
             // 
             // typeDropDown
             // 
@@ -198,19 +198,19 @@
             this.typeDropDown.Name = "typeDropDown";
             this.typeDropDown.Size = new System.Drawing.Size(190, 21);
             this.typeDropDown.TabIndex = 4;
-            this.typeDropDown.SelectedIndexChanged += new System.EventHandler(this.CompilerPluginList_SelectedIndexChanged);
+            this.typeDropDown.SelectedIndexChanged += new System.EventHandler(this.typeDropDown_SelectedIndexChanged);
             // 
-            // fileDropDown
+            // otherDropDown
             // 
-            this.fileDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.fileDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fileDropDown.FormattingEnabled = true;
-            this.fileDropDown.Location = new System.Drawing.Point(412, 32);
-            this.fileDropDown.Name = "fileDropDown";
-            this.fileDropDown.Size = new System.Drawing.Size(205, 21);
-            this.fileDropDown.TabIndex = 1;
-            this.fileDropDown.SelectedIndexChanged += new System.EventHandler(this.FilePluginList_SelectedIndexChanged);
+            this.otherDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.otherDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.otherDropDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.otherDropDown.FormattingEnabled = true;
+            this.otherDropDown.Location = new System.Drawing.Point(412, 86);
+            this.otherDropDown.Name = "otherDropDown";
+            this.otherDropDown.Size = new System.Drawing.Size(205, 21);
+            this.otherDropDown.TabIndex = 1;
+            this.otherDropDown.SelectedIndexChanged += new System.EventHandler(this.otherDropDown_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -232,7 +232,7 @@
             this.okButton.TabIndex = 5;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // deletePresetButton
             // 
@@ -243,7 +243,7 @@
             this.deletePresetButton.Size = new System.Drawing.Size(36, 26);
             this.deletePresetButton.TabIndex = 2;
             this.deletePresetButton.UseVisualStyleBackColor = true;
-            this.deletePresetButton.Click += new System.EventHandler(this.DeletePresetButton_Click);
+            this.deletePresetButton.Click += new System.EventHandler(this.deletePresetButton_Click);
             // 
             // savePresetButton
             // 
@@ -255,7 +255,7 @@
             this.savePresetButton.TabIndex = 3;
             this.savePresetButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.savePresetButton.UseVisualStyleBackColor = true;
-            this.savePresetButton.Click += new System.EventHandler(this.SavePresetButton_Click);
+            this.savePresetButton.Click += new System.EventHandler(this.savePresetButton_Click);
             // 
             // header
             // 
@@ -284,7 +284,7 @@
             this.defaultsPanel.Controls.Add(this.label2);
             this.defaultsPanel.Controls.Add(this.defaultsHeading);
             this.defaultsPanel.Controls.Add(this.imageDropDown);
-            this.defaultsPanel.Controls.Add(this.fileDropDown);
+            this.defaultsPanel.Controls.Add(this.otherDropDown);
             this.defaultsPanel.Controls.Add(this.label1);
             this.defaultsPanel.Controls.Add(this.label4);
             this.defaultsPanel.Controls.Add(this.scriptDropDown);
@@ -372,7 +372,7 @@
         private System.Windows.Forms.Button deletePresetButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox typeDropDown;
-        private System.Windows.Forms.ComboBox fileDropDown;
+        private System.Windows.Forms.ComboBox otherDropDown;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox engineDropDown;
         private System.Windows.Forms.Label label5;

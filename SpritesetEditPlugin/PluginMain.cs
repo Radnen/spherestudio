@@ -9,8 +9,8 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get; } = "Spriteset Editor";
-        public string Description { get; } = "Sphere Studio default spriteset editor";
+        public string Name { get; } = "Sphere Spriteset Editor";
+        public string Description { get; } = "Sphere v1 RSS format spriteset editor";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 
@@ -24,7 +24,7 @@ namespace SphereStudio.Plugins
         
         public void Initialize(ISettings conf)
         {
-            FileTypeName = "Sphere Spriteset";
+            FileTypeName = "RSS Spriteset";
             FileExtensions = new[] { "rss" };
             FileIcon = Properties.Resources.PersonIcon;
 

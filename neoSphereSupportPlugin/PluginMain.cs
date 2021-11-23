@@ -59,19 +59,19 @@ namespace SphereStudio.Plugins
 
         private void sphereApiRefCommand_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Conf.GdkPath, "documentation", "sphere2-core-api.txt");
+            string filePath = Path.Combine(Conf.EnginePath, "documentation", "sphere2-core-api.txt");
             PluginManager.Core.OpenFile(filePath);
         }
 
         private void miniRTApiRefCommand_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Conf.GdkPath, "documentation", "sphere2-hl-api.txt");
+            string filePath = Path.Combine(Conf.EnginePath, "documentation", "sphere2-hl-api.txt");
             PluginManager.Core.OpenFile(filePath);
         }
 
         private void cellApiRefCommand_Click(object sender, EventArgs e)
         {
-            string filePath = Path.Combine(Conf.GdkPath, "documentation", "cellscript-api.txt");
+            string filePath = Path.Combine(Conf.EnginePath, "documentation", "cellscript-api.txt");
             PluginManager.Core.OpenFile(filePath);
         }
 
@@ -91,7 +91,7 @@ namespace SphereStudio.Plugins
 
         public ISettings Conf { get; private set; }
 
-        public string GdkPath
+        public string EnginePath
         {
             get
             {
@@ -101,18 +101,18 @@ namespace SphereStudio.Plugins
                 {
                     // Sphere is installed, get path from registry
                     string defaultPath = (string)key.GetValue(@"InstallLocation") ?? "";
-                    string path = Conf.GetString("gdkPath", defaultPath);
+                    string path = Conf.GetString("enginePath", defaultPath);
                     return !string.IsNullOrWhiteSpace(path) ? path : defaultPath;
                 }
                 else
                 {
                     // no installation key, just read from conf
-                    return Conf.GetString("gdkPath", "");
+                    return Conf.GetString("enginePath", "");
                 }
             }
             set
             {
-                Conf.SetValue("gdkPath", value);
+                Conf.SetValue("enginePath", value);
             }
         }
 

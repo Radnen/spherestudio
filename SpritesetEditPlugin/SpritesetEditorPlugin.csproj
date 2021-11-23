@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SphereStudio.Plugins</RootNamespace>
-    <AssemblyName>SpritesetEditPlugin</AssemblyName>
+    <AssemblyName>SpritesetEditorPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>

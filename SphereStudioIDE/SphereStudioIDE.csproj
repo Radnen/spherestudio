@@ -278,29 +278,29 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FontEditPlugin\FontEditPlugin.csproj">
+    <ProjectReference Include="..\FontEditPlugin\FontImporterPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
-      <Name>FontEditPlugin</Name>
+      <Name>FontImporterPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageEditPlugin\ImageEditPlugin.csproj">
+    <ProjectReference Include="..\ImageEditPlugin\DefaultImageEditorPlugin.csproj">
       <Project>{83d6d166-7f7d-46ca-81bf-9baf8e35f6bc}</Project>
-      <Name>ImageEditPlugin</Name>
+      <Name>DefaultImageEditorPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LegacySphereSupportPlugin\LegacySphereSupportPlugin.csproj">
+    <ProjectReference Include="..\LegacySphereSupportPlugin\Sphere1xSupportPlugin.csproj">
       <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
-      <Name>LegacySphereSupportPlugin</Name>
+      <Name>Sphere1xSupportPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MapEditPlugin\MapEditPlugin.csproj">
+    <ProjectReference Include="..\MapEditPlugin\MapEditorPlugin.csproj">
       <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
-      <Name>MapEditPlugin</Name>
+      <Name>MapEditorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\neoSphereSupportPlugin\neoSphereSupportPlugin.csproj">
       <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
       <Name>neoSphereSupportPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScriptEditPlugin\ScriptEditPlugin.csproj">
+    <ProjectReference Include="..\ScriptEditPlugin\DefaultTextEditorPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
-      <Name>ScriptEditPlugin</Name>
+      <Name>DefaultTextEditorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\SoundTestPlugin\AudioPlayerPlugin.csproj">
       <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
@@ -310,17 +310,17 @@
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
       <Name>SphereStudio.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditPlugin.csproj">
+    <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditorPlugin.csproj">
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
-      <Name>SpritesetEditPlugin</Name>
+      <Name>SpritesetEditorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\TaskListPlugin\TaskListPlugin.csproj">
       <Project>{f7434dec-a94a-409c-a320-7585b4083a6a}</Project>
       <Name>TaskListPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WindowstyleEditPlugin\WindowstyleEditPlugin.csproj">
+    <ProjectReference Include="..\WindowstyleEditPlugin\WindowstyleEditorPlugin.csproj">
       <Project>{65bcdeef-c718-492a-8c82-7886a3af8b7b}</Project>
-      <Name>WindowstyleEditPlugin</Name>
+      <Name>WindowstyleEditorPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere Studio IDE", "SphereStudioIDE\SphereStudioIDE.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudioIDE", "SphereStudioIDE\SphereStudioIDE.csproj", "{9CAC2194-E0C8-4164-9D47-627520E79B95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListPlugin", "TaskListPlugin\TaskListPlugin.csproj", "{F7434DEC-A94A-409C-A320-7585B4083A6A}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -12,21 +12,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListPlugin", "TaskListP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudio.Base", "SphereStudio.Base\SphereStudio.Base.csproj", "{F58A8DB0-1879-41D2-A349-4FB8991AF3D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEditPlugin", "ScriptEditPlugin\ScriptEditPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultTextEditorPlugin", "ScriptEditPlugin\DefaultTextEditorPlugin.csproj", "{2DA2A233-7DA5-44C6-82CE-045B310A19F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontEditPlugin", "FontEditPlugin\FontEditPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontImporterPlugin", "FontEditPlugin\FontImporterPlugin.csproj", "{DD4965DE-8289-4E3F-839E-B008A06B3A97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayerPlugin", "SoundTestPlugin\AudioPlayerPlugin.csproj", "{F1B89568-607D-4CEC-9C11-6C516D98E2EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditPlugin", "MapEditPlugin\MapEditPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditorPlugin", "MapEditPlugin\MapEditorPlugin.csproj", "{E17C35BE-A26F-411D-B814-979017F290DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageEditPlugin", "ImageEditPlugin\ImageEditPlugin.csproj", "{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultImageEditorPlugin", "ImageEditPlugin\DefaultImageEditorPlugin.csproj", "{83D6D166-7F7D-46CA-81BF-9BAF8E35F6BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditPlugin", "WindowstyleEditPlugin\WindowstyleEditPlugin.csproj", "{65BCDEEF-C718-492A-8C82-7886A3AF8B7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowstyleEditorPlugin", "WindowstyleEditPlugin\WindowstyleEditorPlugin.csproj", "{65BCDEEF-C718-492A-8C82-7886A3AF8B7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditPlugin", "SpritesetEditPlugin\SpritesetEditPlugin.csproj", "{9FEA4A11-754F-4F4B-8A85-B0E780F15159}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpritesetEditorPlugin", "SpritesetEditPlugin\SpritesetEditorPlugin.csproj", "{9FEA4A11-754F-4F4B-8A85-B0E780F15159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegacySphereSupportPlugin", "LegacySphereSupportPlugin\LegacySphereSupportPlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere1xSupportPlugin", "LegacySphereSupportPlugin\Sphere1xSupportPlugin.csproj", "{DA72D708-3F08-4804-B5BB-5A1A78B16605}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SphereStudio.Vanilla", "SphereStudio.Vanilla\SphereStudio.Vanilla.csproj", "{E7883A7F-8CDC-4DBF-BC4F-97ED9332123E}"
 EndProject

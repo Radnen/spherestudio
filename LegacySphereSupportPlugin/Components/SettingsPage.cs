@@ -25,7 +25,7 @@ namespace SphereStudio.Plugins.Components
 
         public bool Apply()
         {
-            _conf.SetValue("spherePath", enginePathTextBox.Text);
+            _conf.SetValue("enginePath", enginePathTextBox.Text);
             return true;
         }
 
@@ -42,7 +42,7 @@ namespace SphereStudio.Plugins.Components
 
         protected override void OnLoad(EventArgs e)
         {
-            enginePathTextBox.Text = _conf.GetString("spherePath", "");
+            enginePathTextBox.Text = _conf.GetString("enginePath", "");
             base.OnLoad(e);
         }
 
@@ -68,7 +68,7 @@ namespace SphereStudio.Plugins.Components
             }
         }
 
-        private void SpherePath_TextChanged(object sender, EventArgs e)
+        private void enginePathTextBox_TextChanged(object sender, EventArgs e)
         {
             configEngineButton.Enabled = File.Exists(Path.Combine(enginePathTextBox.Text, "config.exe"));
         }

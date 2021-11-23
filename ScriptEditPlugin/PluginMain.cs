@@ -13,14 +13,15 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ScriptView>
     {
-        public string Name { get; } = "Script Editor";
-        public string Description { get; } = "Sphere Studio default JS script editor";
+        public string Name { get; } = "Default Text Editor";
+        public string Description { get; } = "Sphere Studio default JS and text editor";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 
         public string FileTypeName { get; private set; }
         public string[] FileExtensions { get; private set; }
         public Bitmap FileIcon { get; private set; }
+        public bool IsGeneric { get; } = true;
 
         internal List<string> Functions { get; private set; }
         internal ISettings Settings { get; private set; }

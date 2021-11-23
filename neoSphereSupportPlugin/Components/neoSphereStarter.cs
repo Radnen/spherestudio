@@ -19,7 +19,7 @@ namespace SphereStudio.Plugins.Components
 
         public void Start(string gamePath, bool isPackage)
         {
-            string gdkPath = m_main.Conf.GdkPath;
+            string gdkPath = m_main.Conf.EnginePath;
             bool wantConsole = m_main.Conf.AlwaysUseConsole;
             bool wantWindow = m_main.Conf.TestInWindow || wantConsole;
 
@@ -39,7 +39,7 @@ namespace SphereStudio.Plugins.Components
 
         public IDebugger Debug(string gamePath, bool isPackage, IProject project)
         {
-            string gdkPath = m_main.Conf.GdkPath;
+            string gdkPath = m_main.Conf.EnginePath;
 
             PluginManager.Core.Docking.Activate(Panes.Console);
             Panes.Console.ClearConsole();

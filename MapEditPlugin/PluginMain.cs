@@ -9,8 +9,8 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get; } = "Map Editor";
-        public string Description { get; } = "Sphere Studio default map editor";
+        public string Name { get; } = "Sphere Map Editor";
+        public string Description { get; } = "Sphere v1 RMP format tilemap editor";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 
@@ -25,7 +25,7 @@ namespace SphereStudio.Plugins
         
         public void Initialize(ISettings conf)
         {
-            FileTypeName = "Sphere Map";
+            FileTypeName = "RMP Tilemap";
             FileExtensions = new[] { "rmp" };
             FileIcon = Properties.Resources.MapIcon;
 

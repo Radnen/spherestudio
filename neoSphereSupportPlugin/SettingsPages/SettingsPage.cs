@@ -42,7 +42,7 @@ namespace SphereStudio.Plugins.SettingsPages
 
         public bool Apply()
         {
-            m_main.Conf.GdkPath = enginePathTextBox.Text;
+            m_main.Conf.EnginePath = enginePathTextBox.Text;
             m_main.Conf.MakeDebugPackages = useSourceMapsButton.Checked;
             m_main.Conf.AlwaysUseConsole = testWithConsoleButton.Checked;
             m_main.Conf.ShowTraceInfo = showTracesButton.Checked;
@@ -53,7 +53,7 @@ namespace SphereStudio.Plugins.SettingsPages
 
         protected override void OnLoad(EventArgs e)
         {
-            enginePathTextBox.Text = m_main.Conf.GdkPath;
+            enginePathTextBox.Text = m_main.Conf.EnginePath;
             useSourceMapsButton.Checked = m_main.Conf.MakeDebugPackages;
             showTracesButton.Checked = m_main.Conf.ShowTraceInfo;
             testWithConsoleButton.Checked = m_main.Conf.AlwaysUseConsole;

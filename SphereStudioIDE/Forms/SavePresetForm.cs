@@ -39,11 +39,13 @@ namespace SphereStudio.Ide.Forms
         {
             const string defaultName = "Untitled Preset";
             
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
+            string path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Sphere Studio", "pluginPresets");
             string name = defaultName;
             int ordinal = 1;
             while (File.Exists(Path.Combine(path, name + ".preset")))
-                name = string.Format("{0} {1}", defaultName, ++ordinal);
+                name = $"{defaultName} {++ordinal}";
             nameTextBox.Text = name;
         }
         
@@ -51,7 +53,9 @@ namespace SphereStudio.Ide.Forms
         {
             presetDropDown.Items.Clear();
             presetDropDown.Items.Add("new preset (enter name below)");
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
+            string path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Sphere Studio", "pluginPresets");
             if (Directory.Exists(path))
             {
                 var presets = from filename in Directory.GetFiles(path, "*.preset")
@@ -82,8 +86,8 @@ namespace SphereStudio.Ide.Forms
         {
             string filename = nameTextBox.Text + ".preset";
             string path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "Sphere Studio", "Presets", filename);
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Sphere Studio", "pluginPresets", filename);
             bool isSaveAllowed = true;
             if (File.Exists(path))
             {

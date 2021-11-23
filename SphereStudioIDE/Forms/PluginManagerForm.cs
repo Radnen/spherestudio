@@ -1,41 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using SphereStudio;
-using SphereStudio.Ide;
-using SphereStudio.Ide.BuiltIns;
-using SphereStudio.Ide.Utility;
 using SphereStudio.Base;
-using SphereStudio.UI;
+using SphereStudio.Ide.Utility;
 
 namespace SphereStudio.Ide.Forms
 {
     partial class PluginManagerForm : Form, IStyleAware
     {
-        private bool _updatingDefaultsLists = false;
-        private bool _updatingPresets = false;
-        private bool _updatingPlugins = false;
+        private bool updatingHandlers = false;
+        private bool updatingPresets = false;
+        private bool updatingPlugins = false;
 
         public PluginManagerForm()
         {
             InitializeComponent();
-            
-            UpdatePresetsList();
-            UpdatePluginsList();
-            UpdateDefaultsLists();
-            
-            PresetsList_SelectedIndexChanged(null, EventArgs.Empty);
-
             StyleManager.AutoStyle(this);
+
+            updatePresets();
+            updatePlugins();
+            updateHandlers();
+            
+            presetDropDown_SelectedIndexChanged(null, EventArgs.Empty);
         }
 
         public void ApplyStyle(UIStyle style)
@@ -53,7 +42,7 @@ namespace SphereStudio.Ide.Forms
             style.AsAccent(defaultsPanel);
             style.AsTextView(engineDropDown);
             style.AsTextView(typeDropDown);
-            style.AsTextView(fileDropDown);
+            style.AsTextView(otherDropDown);
             style.AsTextView(scriptDropDown);
             style.AsTextView(imageDropDown);
             style.AsTextView(presetDropDown);
@@ -63,69 +52,65 @@ namespace SphereStudio.Ide.Forms
             style.AsTextView(pluginsListView);
         }
 
-        private string GetPluginName(ComboBox comboBox)
+        private string getPluginName(ComboBox comboBox)
         {
-            return comboBox.Tag != null || comboBox.SelectedIndex > 0
-                ? comboBox.Text : null;
+            return comboBox.SelectedIndex > 0 ? comboBox.Text : null;
         }
 
-        private void HandleSelectionChanged()
+        private void handleSelectionChanged()
         {
-            if (_updatingDefaultsLists) return;
+            if (updatingHandlers)
+                return;
 
-            Core.Settings.Engine = GetPluginName(engineDropDown);
-            Core.Settings.Compiler = GetPluginName(typeDropDown);
-            Core.Settings.FileOpener = GetPluginName(fileDropDown);
-            Core.Settings.ScriptEditor = GetPluginName(scriptDropDown);
-            Core.Settings.ImageEditor = GetPluginName(imageDropDown);
+            Core.Settings.Engine = getPluginName(engineDropDown);
+            Core.Settings.Compiler = getPluginName(typeDropDown);
+            Core.Settings.FileOpener = getPluginName(otherDropDown);
+            Core.Settings.ScriptEditor = getPluginName(scriptDropDown);
+            Core.Settings.ImageEditor = getPluginName(imageDropDown);
             Core.Settings.Apply();
-            UpdatePresetsList();
-            UpdateDefaultsLists();
+            updatePresets();
+            updateHandlers();
         }
 
-        private void PopulateComboBox<T>(ComboBox combo, string currentName)
+        private void populateHandlers<T>(ComboBox comboBox, string currentName)
             where T : IPlugin
         {
-            combo.Items.Clear();
+            comboBox.Items.Clear();
+            comboBox.Items.Add("(no handler selected)");
             foreach (string name in PluginManager.GetNames<T>())
-            {
-                combo.Items.Add(name);
-            }
-            if (combo.Items.Contains(currentName))
-            {
-                combo.Text = currentName;
-                combo.Tag = combo.Text;
-            }
+                comboBox.Items.Add(name);
+            if (comboBox.Items.Contains(currentName))
+                comboBox.Text = currentName;
             else
-            {
-                combo.Items.Insert(0, "Click to select a plugin!");
-                combo.SelectedIndex = 0;
-                combo.Tag = null;
-            }
+                comboBox.SelectedIndex = 0;
         }
 
-        private void UpdateDefaultsLists()
+        private void updateHandlers()
         {
-            if (_updatingDefaultsLists) return;
-            _updatingDefaultsLists = true;
+            if (updatingHandlers)
+                return;
             
-            PopulateComboBox<ICompiler>(typeDropDown, Core.Settings.Compiler);
-            PopulateComboBox<IStarter>(engineDropDown, Core.Settings.Engine);
-            PopulateComboBox<IFileOpener>(fileDropDown, Core.Settings.FileOpener);
-            PopulateComboBox<IEditor<ScriptView>>(scriptDropDown, Core.Settings.ScriptEditor);
-            PopulateComboBox<IEditor<ImageView>>(imageDropDown, Core.Settings.ImageEditor);
+            updatingHandlers = true;
 
-            _updatingDefaultsLists = false;
+            populateHandlers<ICompiler>(typeDropDown, Core.Settings.Compiler);
+            populateHandlers<IStarter>(engineDropDown, Core.Settings.Engine);
+            populateHandlers<IEditor<ScriptView>>(otherDropDown, Core.Settings.FileOpener);
+            populateHandlers<IEditor<ScriptView>>(scriptDropDown, Core.Settings.ScriptEditor);
+            populateHandlers<IEditor<ImageView>>(imageDropDown, Core.Settings.ImageEditor);
+
+            updatingHandlers = false;
         }
         
-        private void UpdatePluginsList()
+        private void updatePlugins()
         {
-            if (_updatingPlugins) return;
-            _updatingPlugins = true;
+            if (updatingPlugins)
+                return;
+            
+            updatingPlugins = true;
 
             pluginsListView.CreateGraphics();  // workaround for early ItemCheck event
             pluginsListView.Items.Clear();
-            foreach (KeyValuePair<string, PluginShim> pair in Core.Plugins)
+            foreach (var pair in Core.Plugins)
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = pair.Value.Main.Name;
@@ -137,18 +122,20 @@ namespace SphereStudio.Ide.Forms
                 pluginsListView.Items.Add(item);
             }
             
-            _updatingPlugins = false;
+            updatingPlugins = false;
         }
         
-        private void UpdatePresetsList()
+        private void updatePresets()
         {
-            if (_updatingPresets) return;
-            _updatingPresets = true;
+            if (updatingPresets)
+                return;
             
-            string lastItem = Core.Settings.Preset;
+            updatingPresets = true;
             
             presetDropDown.Items.Clear();
-            string presetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Sphere Studio", "Presets");
+            string presetPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Sphere Studio", "pluginPresets");
             if (Directory.Exists(presetPath))
             {
                 var presets = from filename in Directory.GetFiles(presetPath, "*.preset")
@@ -170,10 +157,10 @@ namespace SphereStudio.Ide.Forms
                 deletePresetButton.Enabled = false;
             }
 
-            _updatingPresets = false;
+            updatingPresets = false;
         }
 
-        private void OKButton_Click(object sender, EventArgs e)
+        private void okButton_Click(object sender, EventArgs e)
         {
             bool haveAllPlugins = PluginManager.Get<IStarter>(Core.Settings.Engine) != null
                 && PluginManager.Get<ICompiler>(Core.Settings.Compiler) != null
@@ -195,18 +182,19 @@ namespace SphereStudio.Ide.Forms
             Core.Settings.Preset = presetDropDown.Text;
         }
 
-        private void PresetsList_SelectedIndexChanged(object sender, EventArgs e)
+        private void presetDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_updatingPresets) return;
+            if (updatingPresets)
+                return;
             
             Core.Settings.Preset = presetDropDown.Text;
             Core.Settings.Apply();
-            UpdatePluginsList();
-            UpdateDefaultsLists();
-            UpdatePresetsList();
+            updatePlugins();
+            updateHandlers();
+            updatePresets();
         }
 
-        private void SavePresetButton_Click(object sender, EventArgs e)
+        private void savePresetButton_Click(object sender, EventArgs e)
         {
             using (var diag = new SavePresetForm())
             {
@@ -214,75 +202,77 @@ namespace SphereStudio.Ide.Forms
                     return;
                 string fileName = diag.PresetName + ".preset";
                 string path = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "Sphere Studio", "Presets", fileName);
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "Sphere Studio", "pluginPresets", fileName);
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 using (IniFile preset = new IniFile(path))
                 {
-                    preset.Write("Preset", "compiler", GetPluginName(typeDropDown));
-                    preset.Write("Preset", "engine", GetPluginName(engineDropDown));
-                    preset.Write("Preset", "defaultFileOpener", GetPluginName(fileDropDown));
-                    preset.Write("Preset", "scriptEditor", GetPluginName(scriptDropDown));
-                    preset.Write("Preset", "imageEditor", GetPluginName(imageDropDown));
+                    preset.Write("Preset", "compiler", getPluginName(typeDropDown));
+                    preset.Write("Preset", "engine", getPluginName(engineDropDown));
+                    preset.Write("Preset", "defaultFileOpener", getPluginName(otherDropDown));
+                    preset.Write("Preset", "scriptEditor", getPluginName(scriptDropDown));
+                    preset.Write("Preset", "imageEditor", getPluginName(imageDropDown));
                     preset.Write("Preset", "disabledPlugins", string.Join("|", Core.Settings.DisabledPlugins));
                 }
                 Core.Settings.Preset = Path.GetFileNameWithoutExtension(fileName);
                 Core.Settings.Apply();
-                UpdatePresetsList();
+                updatePresets();
             }
         }
 
-        private void DeletePresetButton_Click(object sender, EventArgs e)
+        private void deletePresetButton_Click(object sender, EventArgs e)
         {
-            string filename = string.Format("{0}.preset", presetDropDown.Text);
+            string filename = $"{presetDropDown.Text}.preset";
             string path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "Sphere Studio", "Presets", filename);
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Sphere Studio", "pluginPresets", filename);
             DialogResult result = MessageBox.Show(
-                String.Format("Are you sure you want to delete the preset file \"{0}\"?", filename),
+                $"Are you sure you want to delete the preset file \"{filename}\"?",
                 "Delete Preset", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 File.Delete(path);
-                UpdatePresetsList();
+                updatePresets();
             }
         }
 
-        private void PluginsList_ItemChecked(object sender, ItemCheckedEventArgs e)
+        private void pluginsListView_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            if (_updatingPlugins) return;
+            if (updatingPlugins)
+                return;
 
             Core.Settings.DisabledPlugins = (from ListViewItem item in pluginsListView.Items
                                         where !item.Checked
                                         select item.Tag as string).ToArray();
             Core.Settings.Apply();
-            UpdateDefaultsLists();
-            UpdatePresetsList();
+            updateHandlers();
+            updatePresets();
+            handleSelectionChanged();
         }
 
-        private void EnginePluginList_SelectedIndexChanged(object sender, EventArgs e)
+        private void engineDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HandleSelectionChanged();
+            handleSelectionChanged();
         }
 
-        private void CompilerPluginList_SelectedIndexChanged(object sender, EventArgs e)
+        private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HandleSelectionChanged();
+            handleSelectionChanged();
         }
 
-        private void FilePluginList_SelectedIndexChanged(object sender, EventArgs e)
+        private void otherDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HandleSelectionChanged();
+            handleSelectionChanged();
         }
 
-        private void ScriptPluginList_SelectedIndexChanged(object sender, EventArgs e)
+        private void scriptDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HandleSelectionChanged();
+            handleSelectionChanged();
         }
 
-        private void ImagePluginList_SelectedIndexChanged(object sender, EventArgs e)
+        private void imageDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HandleSelectionChanged();
+            handleSelectionChanged();
         }
     }
 }

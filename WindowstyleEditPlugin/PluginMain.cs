@@ -7,12 +7,12 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener
     {
-        public string Name { get; } = "Windowstyle Editor";
-        public string Description { get; } = "Sphere Studio default windowstyle editor";
+        public string Name { get; } = "Sphere Windowstyle Editor";
+        public string Description { get; } = "Sphere v1 RWS format windowstyle editor";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
 
-        public string FileTypeName { get; } = "Sphere Windowstyle";
+        public string FileTypeName { get; } = "RWS Windowstyle";
         public string[] FileExtensions { get; private set; } = new[] { "rws" };
         public Bitmap FileIcon { get; } = Properties.Resources.GridToolIcon;
 

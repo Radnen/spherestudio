@@ -10,12 +10,9 @@ using System.Windows.Forms;
 
 using WeifenLuo.WinFormsUI.Docking;
 
-using SphereStudio;
 using SphereStudio.Ide.BuiltIns;
 using SphereStudio.Ide.Forms;
-using SphereStudio.Ide.Properties;
 using SphereStudio.Base;
-using SphereStudio.UI;
 
 namespace SphereStudio.Ide
 {
@@ -38,10 +35,10 @@ namespace SphereStudio.Ide
         {
             InitializeComponent();
 
-            Base.PluginManager.Core = this;
+            PluginManager.Core = this;
 
             InitializeDocking();
-            Base.PluginManager.Register(null, fileListPane, "File List");
+            PluginManager.Register(null, fileListPane, "File List");
 
             Text = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             toolNew.DropDown = menuNew.DropDown;
@@ -193,11 +190,11 @@ namespace SphereStudio.Ide
                 string fileExtension = Path.GetExtension(filePath);
                 if (fileExtension.StartsWith("."))  // remove dot from extension
                     fileExtension = fileExtension.Substring(1);
-                var plugins = from name in Base.PluginManager.GetNames<IFileOpener>()
-                              let plugin = Base.PluginManager.Get<IFileOpener>(name)
+                var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                              let plugin = PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions.Any(it => it.ToUpperInvariant() == fileExtension.ToUpperInvariant())
                               select plugin;
-                IFileOpener defaultOpener = Base.PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
+                IFileOpener defaultOpener = PluginManager.Get<IFileOpener>(Core.Settings.FileOpener);
                 IFileOpener opener = plugins.FirstOrDefault() ?? defaultOpener;
                 if (opener != null)
                     view = opener.Open(filePath);
@@ -228,8 +225,8 @@ namespace SphereStudio.Ide
                 return;
 
             Project pj = SphereStudio.Ide.Project.Open(fileName);
-            IStarter starter = Base.PluginManager.Get<IStarter>(pj.User.Engine);
-            ICompiler compiler = Base.PluginManager.Get<ICompiler>(pj.Compiler);
+            IStarter starter = PluginManager.Get<IStarter>(pj.User.Engine);
+            ICompiler compiler = PluginManager.Get<ICompiler>(pj.Compiler);
             if (usePluginWarning && (starter == null || compiler == null))
             {
                 var answer = MessageBox.Show(
@@ -321,11 +318,19 @@ namespace SphereStudio.Ide
             bool isFirstRun = !Core.Settings.GetBoolean("setupComplete", false);
             if (isFirstRun)
             {
-                MessageBox.Show(@"Hello! It's your first time here! I would love to help you " +
-                                @"set a few things up!", @"Welcome First Timer", MessageBoxButtons.OK,
-                                MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-                Core.Settings.SetValue("setupComplete", true);
-                menuConfigManager_Click(null, EventArgs.Empty);
+                var selection = MessageBox.Show(
+                    "Welcome to Sphere Studio, the fully integrated development environment for the Sphere game platform!\r\n\r\n" +
+                        "Since it looks like this is your first time using the IDE, you'll need to set a few things up.  Do you want to do that now?",
+                    "Welcome to Sphere Studio", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                if (selection == DialogResult.Yes)
+                {
+                    menuConfigManager_Click(null, EventArgs.Empty);
+                    Core.Settings.SetValue("setupComplete", true);
+                }
+                else
+                {
+                    Close();
+                }
             }
 
             if (!String.IsNullOrWhiteSpace(_defaultActiveName))
@@ -404,11 +409,11 @@ namespace SphereStudio.Ide
         {
             ToolStripDropDown dropdown = ((ToolStripDropDownItem) sender).DropDown;
 
-            string[] pluginNames = Base.PluginManager.GetNames<INewFileOpener>();
+            string[] pluginNames = PluginManager.GetNames<INewFileOpener>();
             if (pluginNames.Length > 0)
                 dropdown.Items.Add(new ToolStripSeparator() { Name = "8:12" });
             var plugins = from name in pluginNames
-                          let plugin = Base.PluginManager.Get<INewFileOpener>(name)
+                          let plugin = PluginManager.Get<INewFileOpener>(name)
                           orderby plugin.FileTypeName ascending
                           select plugin;
             foreach (var plugin in plugins)
@@ -452,8 +457,8 @@ namespace SphereStudio.Ide
                 "Sphere Projects");
             NewProjectForm npf = new NewProjectForm(rootPath);
 
-            var starter = Base.PluginManager.Get<IStarter>(Core.Settings.Engine);
-            var compiler = Base.PluginManager.Get<ICompiler>(Core.Settings.Compiler);
+            var starter = PluginManager.Get<IStarter>(Core.Settings.Engine);
+            var compiler = PluginManager.Get<ICompiler>(Core.Settings.Compiler);
             if (starter == null || compiler == null)
             {
                 MessageBox.Show(
@@ -582,8 +587,8 @@ namespace SphereStudio.Ide
         #region View menu Click handlers
         private void menuView_DropDownOpening(object sender, EventArgs e)
         {
-            var panelNames = from name in Base.PluginManager.GetNames<IDockPane>()
-                             let plugin = Base.PluginManager.Get<IDockPane>(name)
+            var panelNames = from name in PluginManager.GetNames<IDockPane>()
+                             let plugin = PluginManager.Get<IDockPane>(name)
                              where plugin.ShowInViewMenu
                              select name;
             if (panelNames.Any())
@@ -592,7 +597,7 @@ namespace SphereStudio.Ide
                 menuView.DropDownItems.Add(ts);
                 foreach (string title in panelNames)
                 {
-                    var plugin = Base.PluginManager.Get<IDockPane>(title);
+                    var plugin = PluginManager.Get<IDockPane>(title);
                     ToolStripMenuItem item = new ToolStripMenuItem(title) { Name = "zz_v" };
                     item.Image = plugin.DockIcon;
                     item.Checked = _dock.IsVisible(plugin);
@@ -689,7 +694,7 @@ namespace SphereStudio.Ide
         #region Tools menu Click handlers
         private void menuConfigEngine_Click(object sender, EventArgs e)
         {
-            Base.PluginManager.Get<IStarter>(Core.Project.User.Engine)
+            PluginManager.Get<IStarter>(Core.Project.User.Engine)
                 .Configure();
         }
 
@@ -761,8 +766,8 @@ namespace SphereStudio.Ide
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 string filterString = "";
-                var plugins = from name in Base.PluginManager.GetNames<IFileOpener>()
-                              let plugin = Base.PluginManager.Get<IFileOpener>(name)
+                var plugins = from name in PluginManager.GetNames<IFileOpener>()
+                              let plugin = PluginManager.Get<IFileOpener>(name)
                               where plugin.FileExtensions != null
                               orderby plugin.FileTypeName ascending
                               select plugin;
@@ -1021,7 +1026,7 @@ namespace SphereStudio.Ide
         private void UpdateControls()
         {
             var starter = IsProjectOpen
-                ? Base.PluginManager.Get<IStarter>(Core.Project.User.Engine)
+                ? PluginManager.Get<IStarter>(Core.Project.User.Engine)
                 : null;
             bool haveConfig = starter != null && starter.CanConfigure;
             bool haveLastProject = !string.IsNullOrEmpty(Core.Settings.LastProject);
@@ -1067,7 +1072,7 @@ namespace SphereStudio.Ide
             _loadingPresets = true;
 
             toolEngineCombo.Items.Clear();
-            string[] engines = Base.PluginManager.GetNames<IStarter>();
+            string[] engines = PluginManager.GetNames<IStarter>();
             if (IsProjectOpen && engines.Length > 0)
             {
                 foreach (string name in engines)

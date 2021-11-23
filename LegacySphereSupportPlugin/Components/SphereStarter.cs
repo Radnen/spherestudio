@@ -24,20 +24,21 @@ namespace SphereStudio.Plugins.Components
         {
             get
             {
-                string spherePath = _conf.GetString("spherePath", "");
-                return File.Exists(Path.Combine(spherePath, "config.exe"));
+                var enginePath = _conf.GetString("enginePath", "");
+                return File.Exists(Path.Combine(enginePath, "config.exe"));
             }
         }
 
         public void Start(string gamePath, bool isPackage)
         {
-            string enginePath = Path.Combine(_conf.GetString("spherePath", ""), "engine.exe");
-            string options = string.Format(@"-game ""{0}""", gamePath);
+            var enginePath = Path.Combine(_conf.GetString("enginePath", ""), "engine.exe");
+            var options = $@"-game ""{gamePath}""";
             if (File.Exists(enginePath))
                 Process.Start(enginePath, options);
             else
             {
-                MessageBox.Show("Sphere 1.x or compatible engine was not found. Please check your Sphere installation path under Settings Center -> Sphere 1.x Setup.",
+                MessageBox.Show(
+                    "Sphere 1.x or compatible engine was not found.  Please check your Sphere installation path under Preferences -> Sphere 1.x.",
                     "Unable to Start Engine", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -47,12 +48,12 @@ namespace SphereStudio.Plugins.Components
             if (!CanConfigure)
                 throw new NotSupportedException("Engine doesn't support configuration.");
 
-            string spherePath = _conf.GetString("spherePath", "");
+            var enginePath = _conf.GetString("enginePath", "");
             ProcessStartInfo psi = new ProcessStartInfo()
             {
-                FileName = Path.Combine(spherePath, "config.exe"),
+                FileName = Path.Combine(enginePath, "config.exe"),
                 UseShellExecute = false,
-                WorkingDirectory = spherePath,
+                WorkingDirectory = enginePath,
             };
             Process.Start(psi);
         }

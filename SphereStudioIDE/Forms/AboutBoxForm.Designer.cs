@@ -197,7 +197,7 @@
             this.header.Text = "information about this version of Sphere Studio";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // AboutBox
+            // AboutBoxForm
             // 
             this.AcceptButton = this.closeButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -212,11 +212,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AboutBox";
+            this.Name = "AboutBoxForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About";
+            this.Text = "About Sphere Studio";
             this.footerPanel.ResumeLayout(false);
             this.footerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

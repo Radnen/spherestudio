@@ -9,7 +9,7 @@ namespace SphereStudio.Plugins
 {
     public class PluginMain : IPluginMain, INewFileOpener, IEditor<ImageView>
     {
-        public string Name { get; } = "Image Editor";
+        public string Name { get; } = "Default Image Editor";
         public string Description { get; } = "Sphere Studio default image editor";
         public string Version { get; } = Versioning.Version;
         public string Author { get; } = Versioning.Author;
