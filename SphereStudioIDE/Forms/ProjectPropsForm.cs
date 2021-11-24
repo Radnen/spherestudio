@@ -107,8 +107,8 @@ namespace SphereStudio.Ide.Forms
         private void upgradeButton_Click(object sender, EventArgs e)
         {
             var answer = MessageBox.Show(
-                "This is a Sphere 1.x-compatible project (game.sgm).  To enable all Sphere Studio features, you can upgrade it a full Sphere Studio project.  Do you want to upgrade now?",
-                "Upgrade Project", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                "This is a Sphere 1.x-compatible project ('game.sgm' only).  To enable all Sphere Studio features, you can upgrade it to a full Sphere Studio project.  Do you want to upgrade now?",
+                "Upgrade from Sphere 1.x", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (answer == DialogResult.Yes)
             {
                 project.Upgrade();
@@ -124,7 +124,7 @@ namespace SphereStudio.Ide.Forms
         private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResoLabel.Visible = resoDropDown.Visible = widthTextBox.Visible = heightTextBox.Visible =
-                typeDropDown.Text == "Sphere 1.x Compatible";
+                typeDropDown.Text == "Sphere Classic";
         }
 
         private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)

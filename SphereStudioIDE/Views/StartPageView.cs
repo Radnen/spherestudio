@@ -119,7 +119,7 @@ namespace SphereStudio.Ide.BuiltIns
                     var imageIndex = getImageIndex(projectRoot);
                     var proj = Project.Open(fileInfo.FullName);
                     var item = new ListViewItem(proj.Name, imageIndex) { Tag = fileInfo.FullName };
-                    item.SubItems.Add("Sphere 1.x Classic");
+                    item.SubItems.Add("Sphere Classic");
                     item.SubItems.Add(proj.Author);
                     item.SubItems.Add(fileInfo.FullName);
                     projectListView.Items.Add(item);

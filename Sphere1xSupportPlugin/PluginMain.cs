@@ -12,7 +12,7 @@ namespace SphereStudio.Plugins
 
         public void Initialize(ISettings conf)
         {
-            PluginManager.Register(this, new SphereCompiler(), "Sphere 1.x Compatible");
+            PluginManager.Register(this, new SphereCompiler(), "Sphere Classic");
             PluginManager.Register(this, new SphereStarter(conf), "Sphere 1.x");
             PluginManager.Register(this, new SettingsPage(conf), "Sphere 1.x");
         }

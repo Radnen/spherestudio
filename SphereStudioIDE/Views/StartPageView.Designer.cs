@@ -214,12 +214,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 200;
+            this.columnHeader1.Width = 250;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Type";
-            this.columnHeader4.Width = 150;
+            this.columnHeader4.Width = 125;
             // 
             // columnHeader2
             // 
