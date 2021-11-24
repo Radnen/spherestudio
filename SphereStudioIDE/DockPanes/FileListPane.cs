@@ -54,11 +54,6 @@ namespace SphereStudio.Ide.BuiltIns
             style.AsTextView(fileTree);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-        }
-
         private void ImportFileItem_Click(object sender, EventArgs e)
         {
             string path = ResolvePath(fileTree.SelectedNode);
@@ -88,7 +83,7 @@ namespace SphereStudio.Ide.BuiltIns
 
             OpenFileItem.Visible = DeleteFileItem.Visible = false;
             RenameFileItem.Visible = CopyPathItem.Visible = false;
-            GameSettingsItem.Visible = EngineSettingsItem.Visible = false;
+            GameSettingsItem.Visible = false;
             NewFileItem.Visible = ImportFileItem.Visible = false;
             AddSubfolderItem.Visible = DeleteFolderItem.Visible = false;
 
@@ -96,7 +91,7 @@ namespace SphereStudio.Ide.BuiltIns
             switch (tag)
             {
                 case "projectNode":
-                    GameSettingsItem.Visible = EngineSettingsItem.Visible = true;
+                    GameSettingsItem.Visible = true;
                     AddSubfolderItem.Visible = true;
                     break;
                 case "fileNode":
@@ -294,7 +289,7 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void AddFolderItem_Click(object sender, EventArgs e)
         {
-            using (var form = new StringInputForm("Create New Folder", "What do you want to name the new folder?"))
+            using (var form = new StringInputForm("New Folder", "give your new folder a name"))
             {
                 form.Input = "Untitled Folder";
                 if (form.ShowDialog() == DialogResult.OK)
@@ -398,11 +393,6 @@ namespace SphereStudio.Ide.BuiltIns
             {
                 form.ShowDialog(_hostForm);
             }
-        }
-
-        private void EngineSettingsItem_Click(object sender, EventArgs e)
-        {
-            _hostForm.OpenEditorSettings();
         }
 
         private void DeleteFolderItem_Click(object sender, EventArgs e)

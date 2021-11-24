@@ -39,7 +39,6 @@
             this.DeleteFolderItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenameFileItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyPathItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EngineSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFolderItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameSettingsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SystemWatcher = new SphereStudio.Utility.DeferredFileSystemWatcher();
@@ -82,7 +81,6 @@
             this.DeleteFolderItem,
             this.RenameFileItem,
             this.CopyPathItem,
-            this.EngineSettingsItem,
             this.OpenFolderItem,
             this.GameSettingsItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
@@ -154,14 +152,6 @@
             this.CopyPathItem.Text = "&Copy Path";
             this.CopyPathItem.Click += new System.EventHandler(this.CopyPathItem_Click);
             // 
-            // EngineSettingsItem
-            // 
-            this.EngineSettingsItem.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
-            this.EngineSettingsItem.Name = "EngineSettingsItem";
-            this.EngineSettingsItem.Size = new System.Drawing.Size(188, 22);
-            this.EngineSettingsItem.Text = "Edit &Editor Settings";
-            this.EngineSettingsItem.Click += new System.EventHandler(this.EngineSettingsItem_Click);
-            // 
             // OpenFolderItem
             // 
             this.OpenFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.open;
@@ -200,7 +190,8 @@
             // 
             // FileListPane
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.fileTree);
             this.Controls.Add(this.header);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -222,7 +213,6 @@
         private System.Windows.Forms.ToolStripMenuItem OpenFileItem;
         private System.Windows.Forms.ToolStripMenuItem RenameFileItem;
         private System.Windows.Forms.ToolStripMenuItem GameSettingsItem;
-        private System.Windows.Forms.ToolStripMenuItem EngineSettingsItem;
         private System.Windows.Forms.ToolStripMenuItem AddSubfolderItem;
         private System.Windows.Forms.ToolStripMenuItem CopyPathItem;
         private System.Windows.Forms.ToolStripMenuItem DeleteFolderItem;

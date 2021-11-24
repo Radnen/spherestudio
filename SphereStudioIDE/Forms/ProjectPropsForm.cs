@@ -124,7 +124,7 @@ namespace SphereStudio.Ide.Forms
         private void typeDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResoLabel.Visible = resoDropDown.Visible = widthTextBox.Visible = heightTextBox.Visible =
-                typeDropDown.Text == "Sphere 1.x compatible";
+                typeDropDown.Text == "Sphere 1.x Compatible";
         }
 
         private void resoDropDown_SelectedIndexChanged(object sender, EventArgs e)

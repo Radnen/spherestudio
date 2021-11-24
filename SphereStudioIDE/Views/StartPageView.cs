@@ -7,24 +7,17 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using WeifenLuo.WinFormsUI.Docking;
-
 using SphereStudio.Base;
-using SphereStudio.Ide.Forms;
 using SphereStudio.Ide.Properties;
-using SphereStudio.UI;
 
 namespace SphereStudio.Ide.BuiltIns
 {
     [ToolboxItem(false)]
     partial class StartPageView : DocumentView, IStyleAware
     {
-        private Project _proj;
-        private ListViewItem _currentItem;
+        private Project project;
+        private ListViewItem selectedItem;
 
-        private readonly DockPanel _startDock = new DockPanel();
-        private readonly DockContent _gameContent = new DockContent();
-        private readonly DockContent _infoContent = new DockContent();
         private readonly MainWindowForm _mainEditor;
 
         private readonly ImageList _listIcons = new ImageList();
@@ -33,7 +26,7 @@ namespace SphereStudio.Ide.BuiltIns
         public StartPageView(MainWindowForm mainEditor)
         {
             InitializeComponent();
-            InitializeDocking();
+            StyleManager.AutoStyle(this);
 
             Icon = Icon.FromHandle(Resources.SphereEditor.GetHicon());
 
@@ -45,45 +38,26 @@ namespace SphereStudio.Ide.BuiltIns
             _listIconsSmall.ImageSize = new Size(16, 16);
             _listIconsSmall.ColorDepth = ColorDepth.Depth32Bit;
             _listIconsSmall.Images.Add(Properties.Resources.SphereEditor);
-            GameFolders.LargeImageList = _listIcons;
-            GameFolders.SmallImageList = _listIconsSmall;
+            projectListView.LargeImageList = _listIcons;
+            projectListView.SmallImageList = _listIconsSmall;
 
             InitializeView();
-            StyleManager.AutoStyle(this);
         }
 
         public override bool CanSave { get { return false; } }
 
-        protected override void OnPaint(PaintEventArgs e)
+        public void ApplyStyle(UIStyle style)
         {
-            base.OnPaint(e);
-        }
+            style.AsUIElement(this);
+            style.AsHeading(header);
 
-        private void InitializeDocking()
-        {
-            Controls.Remove(MainSplitter);
-            _startDock.DocumentStyle = DocumentStyle.DockingSdi;
-            _startDock.Dock = DockStyle.Fill;
-            Controls.Add(_startDock);
-
-            GamesPanel.Dock = InfoPanel.Dock = DockStyle.Fill;
-            _gameContent.Controls.Add(GamesPanel);
-            _gameContent.DockAreas = DockAreas.DockTop | DockAreas.DockBottom | DockAreas.Document;
-            _gameContent.AllowEndUserDocking = false;
-            _gameContent.DockHandler.CloseButtonVisible = false;
-            _gameContent.Text = @"Local Projects";
-            _infoContent.Controls.Add(InfoPanel);
-            _infoContent.DockAreas = DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight;
-            _infoContent.Text = @"Game Information";
-
-            _gameContent.Show(_startDock, DockState.Document);
-            _infoContent.Show(_startDock, DockState.DockBottom);
+            style.AsTextView(projectListView);
         }
 
         private void InitializeView()
         {
             View v = Core.Settings.StartPageView;
-            GameFolders.View = v;
+            projectListView.View = v;
             TilesItem.Checked = false;
             switch (v)
             {
@@ -100,12 +74,13 @@ namespace SphereStudio.Ide.BuiltIns
         /// <summary>
         /// Adds Sphere games to the games panel for start-up use.
         /// </summary>
-        public void PopulateGameList()
+        public void RepopulateProjects()
         {
-            GameFolders.Items.Clear();
-            GameFolders.BeginUpdate();
-            if (_listIcons.Images.Count == 0) return;
-            Image holdOnToMe = _listIcons.Images[0]; // keep this sucker alive.
+            projectListView.Items.Clear();
+            projectListView.BeginUpdate();
+            if (_listIcons.Images.Count == 0)
+                return;
+            var holdOnToMe = _listIcons.Images[0]; // keep this sucker alive.
             _listIcons.Images.Clear();
             _listIcons.Images.Add(holdOnToMe);
 
@@ -123,92 +98,62 @@ namespace SphereStudio.Ide.BuiltIns
                 var baseDir = new DirectoryInfo(path);
                 var fileInfos = baseDir.GetFiles("*.ssproj", SearchOption.AllDirectories);
                 var ssprojDirs = from fi in fileInfos
-                                 select fi.DirectoryName + @"\";
+                                 select $@"{fi.DirectoryName}\";
                 foreach (var fileInfo in fileInfos)
                 {
-                    var dirPath = Path.GetDirectoryName(fileInfo.FullName);
-                    int img = CheckForIcon(dirPath);
-                    Project proj = Project.Open(fileInfo.FullName);
-                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = fileInfo.FullName };
+                    var projectRoot = Path.GetDirectoryName(fileInfo.FullName);
+                    var imageIndex = getImageIndex(projectRoot);
+                    var proj = Project.Open(fileInfo.FullName);
+                    var item = new ListViewItem(proj.Name, imageIndex) { Tag = fileInfo.FullName };
+                    item.SubItems.Add(proj.Compiler);
                     item.SubItems.Add(proj.Author);
                     item.SubItems.Add(fileInfo.FullName);
-                    GameFolders.Items.Add(item);
+                    projectListView.Items.Add(item);
                 }
                 var sgmFileInfos = from fi in baseDir.GetFiles("game.sgm", SearchOption.AllDirectories)
                                    where !ssprojDirs.Any(x => fi.FullName.StartsWith(x))
                                    select fi;
                 foreach (var fileInfo in sgmFileInfos)
                 {
-                    var dirPath = Path.GetDirectoryName(fileInfo.FullName);
-                    int img = CheckForIcon(dirPath);
-                    Project proj = Project.Open(fileInfo.FullName);
-                    ListViewItem item = new ListViewItem(proj.Name, img) { Tag = fileInfo.FullName };
+                    var projectRoot = Path.GetDirectoryName(fileInfo.FullName);
+                    var imageIndex = getImageIndex(projectRoot);
+                    var proj = Project.Open(fileInfo.FullName);
+                    var item = new ListViewItem(proj.Name, imageIndex) { Tag = fileInfo.FullName };
+                    item.SubItems.Add("Sphere 1.x Classic");
                     item.SubItems.Add(proj.Author);
                     item.SubItems.Add(fileInfo.FullName);
-                    GameFolders.Items.Add(item);
+                    projectListView.Items.Add(item);
                 }
             }
-            GameFolders.EndUpdate();
-            GameFolders.Invalidate();
+            projectListView.EndUpdate();
+            projectListView.Invalidate();
         }
 
-        private int CheckForIcon(string fullpath)
+        private void projectListView_MouseClick(object sender, MouseEventArgs e)
         {
-            try {
-                string[] files = Directory.GetFiles(fullpath);
-                foreach (string s in files)
-                {
-                    if (s.EndsWith(".png"))
-                    {
-                        _listIcons.Images.Add(Image.FromFile(s));
-                        _listIconsSmall.Images.Add(Image.FromFile(s));
-                        return _listIcons.Images.Count - 1;
-                    }
-                    if (s.EndsWith(".ico"))
-                    {
-                        _listIcons.Images.Add(new Icon(s));
-                        _listIconsSmall.Images.Add(new Icon(s));
-                        return _listIcons.Images.Count - 1;
-                    }
-                }
-            }
-            catch { return 0; }
-            return 0;
-        }
-
-        private void GameFolders_MouseClick(object sender, MouseEventArgs e)
-        {
-            _currentItem = GameFolders.GetItemAt(e.X, e.Y);
-            if (_currentItem == null) return;
-            _proj = Project.Open((string)_currentItem.Tag);
-            SetProjData();
-        }
-
-        public void SetProjData()
-        {
-            NameLabel.Text = @"Name: " + _proj.Name;
-            AuthorLabel.Text = @"Author: " + _proj.Author;
-            SizeLabel.Text = string.Format(@"Resolution: {0}x{1}", _proj.ScreenWidth, _proj.ScreenHeight);
-            DescTextLabel.Text = _proj.Summary;
+            selectedItem = projectListView.GetItemAt(e.X, e.Y);
+            if (selectedItem == null)
+                return;
+            project = Project.Open((string)selectedItem.Tag);
         }
 
         private async void PlayMenuItem_Click(object sender, EventArgs e)
         {
-            await BuildEngine.Test(_proj);
+            await BuildEngine.Test(project);
         }
 
         private void LoadMenuItem_Click(object sender, EventArgs e)
         {
-            if (_currentItem == null) return;
-            _mainEditor.OpenProject((string)_currentItem.Tag);
+            if (selectedItem == null) return;
+            _mainEditor.OpenProject((string)selectedItem.Tag);
         }
 
         private void RenameMenuItem_Click(object sender, EventArgs e)
         {
-            _currentItem.BeginEdit();
+            selectedItem.BeginEdit();
         }
 
-        private void GameFolders_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        private void projectListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Label))
             {
@@ -216,14 +161,20 @@ namespace SphereStudio.Ide.BuiltIns
                 return;
             }
 
-            ListViewItem item = GameFolders.Items[e.Item];
-            string path = Path.GetDirectoryName(Path.GetDirectoryName(GameFolders.Items[e.Item].Tag as string));
+            ListViewItem item = projectListView.Items[e.Item];
+            string path = Path.GetDirectoryName(Path.GetDirectoryName(projectListView.Items[e.Item].Tag as string));
 
-            if (System.IO.File.Exists(path + e.Label)) e.CancelEdit = true;
-            else if (!RenameProject(path + "\\" + item.Text, path + "\\" + e.Label))
-            {
+            if (System.IO.File.Exists($"{path}{e.Label}"))
                 e.CancelEdit = true;
-            }
+            else if (!RenameProject($@"{path}\{item.Text}", $@"{path}\{e.Label}"))
+                e.CancelEdit = true;
+        }
+
+        private void projectListView_ItemActivate(object sender, EventArgs e)
+        {
+            selectedItem = projectListView.SelectedItems[0];
+            if (selectedItem == null) return;
+            _mainEditor.OpenProject((string)selectedItem.Tag);
         }
 
         private bool RenameProject(string oldname, string newname)
@@ -241,7 +192,7 @@ namespace SphereStudio.Ide.BuiltIns
         {
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                string selPath = Path.GetDirectoryName((string)_currentItem.Tag);
+                string selPath = Path.GetDirectoryName((string)selectedItem.Tag);
                 diag.Filter = @"image files (.png)|*.png";
                 diag.InitialDirectory = selPath;
 
@@ -251,18 +202,18 @@ namespace SphereStudio.Ide.BuiltIns
                     if (System.IO.File.Exists(selPath + "\\icon.png")) System.IO.File.Delete(selPath + "\\icon.png");
                     System.IO.File.Copy(diag.FileName, selPath + "\\icon.png");
 
-                    if (_currentItem.ImageIndex == 0)
+                    if (selectedItem.ImageIndex == 0)
                     {
                         _listIcons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
-                        _currentItem.ImageIndex = _listIcons.Images.Count - 1;
+                        selectedItem.ImageIndex = _listIcons.Images.Count - 1;
                     }
                     else
                     {
-                        _listIcons.Images.RemoveAt(_currentItem.ImageIndex);
+                        _listIcons.Images.RemoveAt(selectedItem.ImageIndex);
                         _listIcons.Images.Add(Image.FromFile(selPath + "\\icon.png"));
-                        _currentItem.ImageIndex = _listIcons.Images.Count - 1;
+                        selectedItem.ImageIndex = _listIcons.Images.Count - 1;
                     }
-                    PopulateGameList();
+                    RepopulateProjects();
                 }
             }
         }
@@ -270,91 +221,80 @@ namespace SphereStudio.Ide.BuiltIns
         private void TilesItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = ListItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = GameFolders.View = View.Tile;
+            Core.Settings.StartPageView = projectListView.View = View.Tile;
         }
 
         private void ListItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = GameFolders.View = View.List;
+            Core.Settings.StartPageView = projectListView.View = View.List;
         }
 
         private void SmallIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = GameFolders.View = View.SmallIcon;
+            Core.Settings.StartPageView = projectListView.View = View.SmallIcon;
         }
 
         private void LargeIconItem_Click(object sender, EventArgs e)
         {
             DetailsItem.Checked = TilesItem.Checked = ListItem.Checked = SmallIconItem.Checked = false;
-            Core.Settings.StartPageView = GameFolders.View = View.LargeIcon;
+            Core.Settings.StartPageView = projectListView.View = View.LargeIcon;
         }
 
         private void DetailsItem_Click(object sender, EventArgs e)
         {
             ListItem.Checked = TilesItem.Checked = SmallIconItem.Checked = LargeIconItem.Checked = false;
-            Core.Settings.StartPageView = GameFolders.View = View.Details;
+            Core.Settings.StartPageView = projectListView.View = View.Details;
         }
 
         private void ItemContextStrip_Opening(object sender, CancelEventArgs e)
         {
-            Point p = GameFolders.PointToClient(Cursor.Position);
-            _currentItem = GameFolders.GetItemAt(p.X, p.Y);
+            Point p = projectListView.PointToClient(Cursor.Position);
+            selectedItem = projectListView.GetItemAt(p.X, p.Y);
             PlayGameItem.Visible = LoadMenuItem.Visible =
                 RenameProjectItem.Visible = SetIconItem.Visible =
-                OpenFolderItem.Visible = (_currentItem != null);
+                OpenFolderItem.Visible = (selectedItem != null);
         }
 
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName((string)_currentItem.Tag);
+            string path = Path.GetDirectoryName((string)selectedItem.Tag);
             Process p = Process.Start("explorer.exe", string.Format(@"/select,""{0}\game.sgm""", path));
             if (p != null) p.Dispose();
         }
 
         private void RefreshItem_Click(object sender, EventArgs e)
         {
-            PopulateGameList();
+            RepopulateProjects();
         }
 
-        #region tip texts
-        private void ClearTip(object sender, EventArgs e)
+        private int getImageIndex(string fullpath)
         {
-            HelpLabel.Text = "";
-        }
-
-        private void GameFolders_MouseEnter(object sender, EventArgs e)
-        {
-            HelpLabel.Text = @"Right-click to view context menu.";
-        }
-
-        private void SetIconItem_MouseEnter(object sender, EventArgs e)
-        {
-            HelpLabel.Text = @"Sets a project icon mainly for the editors use.";
-        }
-
-        private void InfoPanel_MouseEnter(object sender, EventArgs e)
-        {
-            HelpLabel.Text = @"These are the games properties stored in their ""game.sgm"" file.";
-        }
-        #endregion
-
-        private void GameFolders_ItemActivate(object sender, EventArgs e)
-        {
-            _currentItem = GameFolders.SelectedItems[0];
-            if (_currentItem == null) return;
-            _mainEditor.OpenProject((string)_currentItem.Tag);
-        }
-
-        public void ApplyStyle(UIStyle theme)
-        {
-            theme.AsUIElement(GamesPanel);
-            theme.AsUIElement(InfoSplitter.Panel1);
-            theme.AsUIElement(InfoSplitter.Panel2);
-            theme.AsTextView(GamePanel);
-            theme.AsTextView(DescTextLabel);
-            theme.AsTextView(GameFolders);
+            try
+            {
+                string[] files = Directory.GetFiles(fullpath);
+                foreach (string s in files)
+                {
+                    if (s.ToUpperInvariant().EndsWith(".PNG"))
+                    {
+                        _listIcons.Images.Add(Image.FromFile(s));
+                        _listIconsSmall.Images.Add(Image.FromFile(s));
+                        return _listIcons.Images.Count - 1;
+                    }
+                    if (s.ToUpperInvariant().EndsWith(".ICO"))
+                    {
+                        _listIcons.Images.Add(new Icon(s));
+                        _listIconsSmall.Images.Add(new Icon(s));
+                        return _listIcons.Images.Count - 1;
+                    }
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+            return 0;
         }
     }
 }

@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.GameFolders = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ItemContextStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PlayGameItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,76 +43,14 @@
             this.SmallIconItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LargeIconItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DetailsItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.InfoPanel = new System.Windows.Forms.Panel();
-            this.InfoSplitter = new System.Windows.Forms.SplitContainer();
-            this.GamePanel = new System.Windows.Forms.Panel();
-            this.NameLabel = new System.Windows.Forms.Label();
-            this.AuthorLabel = new System.Windows.Forms.Label();
-            this.SizeLabel = new System.Windows.Forms.Label();
-            this.InfoLabel = new SphereStudio.UI.DialogHeader();
-            this.DescTextLabel = new System.Windows.Forms.Label();
-            this.DescLabel = new SphereStudio.UI.DialogHeader();
-            this.GamesPanel = new System.Windows.Forms.Panel();
-            this.GameProjectLabel = new SphereStudio.UI.DialogHeader();
-            this.MainSplitter = new System.Windows.Forms.SplitContainer();
+            this.header = new System.Windows.Forms.Label();
+            this.projectListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ItemContextStrip.SuspendLayout();
-            this.InfoPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.InfoSplitter)).BeginInit();
-            this.InfoSplitter.Panel1.SuspendLayout();
-            this.InfoSplitter.Panel2.SuspendLayout();
-            this.InfoSplitter.SuspendLayout();
-            this.GamePanel.SuspendLayout();
-            this.GamesPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MainSplitter)).BeginInit();
-            this.MainSplitter.Panel1.SuspendLayout();
-            this.MainSplitter.Panel2.SuspendLayout();
-            this.MainSplitter.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // GameFolders
-            // 
-            this.GameFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GameFolders.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.GameFolders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.GameFolders.ContextMenuStrip = this.ItemContextStrip;
-            this.GameFolders.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.GameFolders.HideSelection = false;
-            this.GameFolders.LabelEdit = true;
-            this.GameFolders.Location = new System.Drawing.Point(3, 27);
-            this.GameFolders.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.GameFolders.MultiSelect = false;
-            this.GameFolders.Name = "GameFolders";
-            this.GameFolders.ShowItemToolTips = true;
-            this.GameFolders.Size = new System.Drawing.Size(418, 155);
-            this.GameFolders.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.GameFolders.TabIndex = 0;
-            this.GameFolders.TileSize = new System.Drawing.Size(256, 48);
-            this.GameFolders.UseCompatibleStateImageBehavior = false;
-            this.GameFolders.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.GameFolders_AfterLabelEdit);
-            this.GameFolders.ItemActivate += new System.EventHandler(this.GameFolders_ItemActivate);
-            this.GameFolders.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GameFolders_MouseClick);
-            this.GameFolders.MouseEnter += new System.EventHandler(this.GameFolders_MouseEnter);
-            this.GameFolders.MouseLeave += new System.EventHandler(this.ClearTip);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 300;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Author";
-            this.columnHeader2.Width = 150;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Path";
-            this.columnHeader3.Width = 700;
             // 
             // ItemContextStrip
             // 
@@ -130,14 +64,14 @@
             this.RefreshItem,
             this.ViewItem});
             this.ItemContextStrip.Name = "ItemContextStrip";
-            this.ItemContextStrip.Size = new System.Drawing.Size(194, 164);
+            this.ItemContextStrip.Size = new System.Drawing.Size(215, 164);
             this.ItemContextStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ItemContextStrip_Opening);
             // 
             // PlayGameItem
             // 
             this.PlayGameItem.Image = global::SphereStudio.Ide.Properties.Resources.lightning;
             this.PlayGameItem.Name = "PlayGameItem";
-            this.PlayGameItem.Size = new System.Drawing.Size(193, 22);
+            this.PlayGameItem.Size = new System.Drawing.Size(214, 22);
             this.PlayGameItem.Text = "&Play Game";
             this.PlayGameItem.Click += new System.EventHandler(this.PlayMenuItem_Click);
             // 
@@ -145,46 +79,44 @@
             // 
             this.LoadMenuItem.Image = global::SphereStudio.Ide.Properties.Resources.script_edit;
             this.LoadMenuItem.Name = "LoadMenuItem";
-            this.LoadMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.LoadMenuItem.Text = "&Load Project";
+            this.LoadMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.LoadMenuItem.Text = "&Open Project";
             this.LoadMenuItem.Click += new System.EventHandler(this.LoadMenuItem_Click);
             // 
             // RenameProjectItem
             // 
             this.RenameProjectItem.Image = global::SphereStudio.Ide.Properties.Resources.application_view_list;
             this.RenameProjectItem.Name = "RenameProjectItem";
-            this.RenameProjectItem.Size = new System.Drawing.Size(193, 22);
-            this.RenameProjectItem.Text = "&Rename Project Folder";
+            this.RenameProjectItem.Size = new System.Drawing.Size(214, 22);
+            this.RenameProjectItem.Text = "&Rename Project";
             this.RenameProjectItem.Click += new System.EventHandler(this.RenameMenuItem_Click);
             // 
             // OpenFolderItem
             // 
             this.OpenFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.folder;
             this.OpenFolderItem.Name = "OpenFolderItem";
-            this.OpenFolderItem.Size = new System.Drawing.Size(193, 22);
-            this.OpenFolderItem.Text = "Open Game Location";
+            this.OpenFolderItem.Size = new System.Drawing.Size(214, 22);
+            this.OpenFolderItem.Text = "Show in Windows Explorer";
             this.OpenFolderItem.Click += new System.EventHandler(this.OpenFolderItem_Click);
             // 
             // SetIconItem
             // 
             this.SetIconItem.Image = global::SphereStudio.Ide.Properties.Resources.palette;
             this.SetIconItem.Name = "SetIconItem";
-            this.SetIconItem.Size = new System.Drawing.Size(193, 22);
+            this.SetIconItem.Size = new System.Drawing.Size(214, 22);
             this.SetIconItem.Text = "&Set Icon...";
             this.SetIconItem.Click += new System.EventHandler(this.SetIconItem_Click);
-            this.SetIconItem.MouseEnter += new System.EventHandler(this.SetIconItem_MouseEnter);
-            this.SetIconItem.MouseLeave += new System.EventHandler(this.ClearTip);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(190, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(211, 6);
             // 
             // RefreshItem
             // 
             this.RefreshItem.Image = global::SphereStudio.Ide.Properties.Resources.arrow_refresh;
             this.RefreshItem.Name = "RefreshItem";
-            this.RefreshItem.Size = new System.Drawing.Size(193, 22);
+            this.RefreshItem.Size = new System.Drawing.Size(214, 22);
             this.RefreshItem.Text = "Re&fresh";
             this.RefreshItem.Click += new System.EventHandler(this.RefreshItem_Click);
             // 
@@ -197,7 +129,7 @@
             this.LargeIconItem,
             this.DetailsItem});
             this.ViewItem.Name = "ViewItem";
-            this.ViewItem.Size = new System.Drawing.Size(193, 22);
+            this.ViewItem.Size = new System.Drawing.Size(214, 22);
             this.ViewItem.Text = "&View";
             // 
             // TilesItem
@@ -242,234 +174,98 @@
             this.DetailsItem.Text = "&Details";
             this.DetailsItem.Click += new System.EventHandler(this.DetailsItem_Click);
             // 
-            // InfoPanel
+            // header
             // 
-            this.InfoPanel.Controls.Add(this.InfoSplitter);
-            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoPanel.Location = new System.Drawing.Point(0, 0);
-            this.InfoPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(424, 134);
-            this.InfoPanel.TabIndex = 9;
-            this.InfoPanel.MouseEnter += new System.EventHandler(this.InfoPanel_MouseEnter);
-            this.InfoPanel.MouseLeave += new System.EventHandler(this.ClearTip);
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Name = "header";
+            this.header.Size = new System.Drawing.Size(568, 23);
+            this.header.TabIndex = 12;
+            this.header.Text = "welcome to the Sphere Studio integrated development environment";
+            this.header.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // InfoSplitter
+            // projectListView
             // 
-            this.InfoSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoSplitter.Location = new System.Drawing.Point(0, 0);
-            this.InfoSplitter.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.InfoSplitter.Name = "InfoSplitter";
+            this.projectListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.projectListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader4,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.projectListView.ContextMenuStrip = this.ItemContextStrip;
+            this.projectListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectListView.FullRowSelect = true;
+            this.projectListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.projectListView.HideSelection = false;
+            this.projectListView.LabelEdit = true;
+            this.projectListView.Location = new System.Drawing.Point(0, 23);
+            this.projectListView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.projectListView.MultiSelect = false;
+            this.projectListView.Name = "projectListView";
+            this.projectListView.ShowItemToolTips = true;
+            this.projectListView.Size = new System.Drawing.Size(568, 371);
+            this.projectListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.projectListView.TabIndex = 11;
+            this.projectListView.TileSize = new System.Drawing.Size(256, 48);
+            this.projectListView.UseCompatibleStateImageBehavior = false;
+            this.projectListView.ItemActivate += new System.EventHandler(this.projectListView_ItemActivate);
+            this.projectListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.projectListView_MouseClick);
             // 
-            // InfoSplitter.Panel1
+            // columnHeader1
             // 
-            this.InfoSplitter.Panel1.Controls.Add(this.GamePanel);
-            this.InfoSplitter.Panel1.Controls.Add(this.InfoLabel);
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 200;
             // 
-            // InfoSplitter.Panel2
+            // columnHeader4
             // 
-            this.InfoSplitter.Panel2.Controls.Add(this.DescTextLabel);
-            this.InfoSplitter.Panel2.Controls.Add(this.DescLabel);
-            this.InfoSplitter.Size = new System.Drawing.Size(424, 134);
-            this.InfoSplitter.SplitterDistance = 101;
-            this.InfoSplitter.TabIndex = 14;
+            this.columnHeader4.Text = "Type";
+            this.columnHeader4.Width = 150;
             // 
-            // GamePanel
+            // columnHeader2
             // 
-            this.GamePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GamePanel.BackColor = System.Drawing.SystemColors.Control;
-            this.GamePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.GamePanel.Controls.Add(this.NameLabel);
-            this.GamePanel.Controls.Add(this.AuthorLabel);
-            this.GamePanel.Controls.Add(this.SizeLabel);
-            this.GamePanel.Location = new System.Drawing.Point(3, 27);
-            this.GamePanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.GamePanel.Name = "GamePanel";
-            this.GamePanel.Size = new System.Drawing.Size(95, 103);
-            this.GamePanel.TabIndex = 12;
+            this.columnHeader2.Text = "Author";
+            this.columnHeader2.Width = 150;
             // 
-            // NameLabel
+            // columnHeader3
             // 
-            this.NameLabel.AutoSize = true;
-            this.NameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.NameLabel.Location = new System.Drawing.Point(3, 6);
-            this.NameLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(41, 13);
-            this.NameLabel.TabIndex = 0;
-            this.NameLabel.Text = "Name: ";
-            // 
-            // AuthorLabel
-            // 
-            this.AuthorLabel.AutoSize = true;
-            this.AuthorLabel.BackColor = System.Drawing.Color.Transparent;
-            this.AuthorLabel.Location = new System.Drawing.Point(3, 31);
-            this.AuthorLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(41, 13);
-            this.AuthorLabel.TabIndex = 1;
-            this.AuthorLabel.Text = "Author:";
-            // 
-            // SizeLabel
-            // 
-            this.SizeLabel.AutoSize = true;
-            this.SizeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.SizeLabel.Location = new System.Drawing.Point(3, 56);
-            this.SizeLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.SizeLabel.Name = "SizeLabel";
-            this.SizeLabel.Size = new System.Drawing.Size(63, 13);
-            this.SizeLabel.TabIndex = 2;
-            this.SizeLabel.Text = "Resolution: ";
-            // 
-            // InfoLabel
-            // 
-            this.InfoLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.InfoLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.InfoLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.InfoLabel.ForeColor = System.Drawing.Color.White;
-            this.InfoLabel.Location = new System.Drawing.Point(0, 0);
-            this.InfoLabel.Name = "InfoLabel";
-            this.InfoLabel.Size = new System.Drawing.Size(101, 23);
-            this.InfoLabel.TabIndex = 11;
-            this.InfoLabel.Text = "Game Info";
-            this.InfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // DescTextLabel
-            // 
-            this.DescTextLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DescTextLabel.BackColor = System.Drawing.SystemColors.Control;
-            this.DescTextLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DescTextLabel.Location = new System.Drawing.Point(5, 27);
-            this.DescTextLabel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.DescTextLabel.Name = "DescTextLabel";
-            this.DescTextLabel.Padding = new System.Windows.Forms.Padding(2);
-            this.DescTextLabel.Size = new System.Drawing.Size(311, 103);
-            this.DescTextLabel.TabIndex = 4;
-            // 
-            // DescLabel
-            // 
-            this.DescLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DescLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DescLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.DescLabel.ForeColor = System.Drawing.Color.White;
-            this.DescLabel.Location = new System.Drawing.Point(0, 0);
-            this.DescLabel.Name = "DescLabel";
-            this.DescLabel.Size = new System.Drawing.Size(319, 23);
-            this.DescLabel.TabIndex = 11;
-            this.DescLabel.Text = "Description";
-            this.DescLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // GamesPanel
-            // 
-            this.GamesPanel.Controls.Add(this.GameFolders);
-            this.GamesPanel.Controls.Add(this.GameProjectLabel);
-            this.GamesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GamesPanel.Location = new System.Drawing.Point(0, 0);
-            this.GamesPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.GamesPanel.Name = "GamesPanel";
-            this.GamesPanel.Size = new System.Drawing.Size(424, 186);
-            this.GamesPanel.TabIndex = 3;
-            // 
-            // GameProjectLabel
-            // 
-            this.GameProjectLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.GameProjectLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GameProjectLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.GameProjectLabel.ForeColor = System.Drawing.Color.White;
-            this.GameProjectLabel.Location = new System.Drawing.Point(0, 0);
-            this.GameProjectLabel.Name = "GameProjectLabel";
-            this.GameProjectLabel.Size = new System.Drawing.Size(424, 23);
-            this.GameProjectLabel.TabIndex = 1;
-            this.GameProjectLabel.Text = "Game Projects";
-            this.GameProjectLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // MainSplitter
-            // 
-            this.MainSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainSplitter.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.MainSplitter.Location = new System.Drawing.Point(0, 0);
-            this.MainSplitter.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.MainSplitter.Name = "MainSplitter";
-            this.MainSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // MainSplitter.Panel1
-            // 
-            this.MainSplitter.Panel1.Controls.Add(this.GamesPanel);
-            // 
-            // MainSplitter.Panel2
-            // 
-            this.MainSplitter.Panel2.Controls.Add(this.InfoPanel);
-            this.MainSplitter.Size = new System.Drawing.Size(424, 324);
-            this.MainSplitter.SplitterDistance = 186;
-            this.MainSplitter.TabIndex = 10;
+            this.columnHeader3.Text = "Path";
+            this.columnHeader3.Width = 600;
             // 
             // StartPageView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.MainSplitter);
+            this.Controls.Add(this.projectListView);
+            this.Controls.Add(this.header);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "StartPageView";
-            this.Size = new System.Drawing.Size(424, 324);
+            this.Size = new System.Drawing.Size(568, 394);
             this.ItemContextStrip.ResumeLayout(false);
-            this.InfoPanel.ResumeLayout(false);
-            this.InfoSplitter.Panel1.ResumeLayout(false);
-            this.InfoSplitter.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.InfoSplitter)).EndInit();
-            this.InfoSplitter.ResumeLayout(false);
-            this.GamePanel.ResumeLayout(false);
-            this.GamePanel.PerformLayout();
-            this.GamesPanel.ResumeLayout(false);
-            this.MainSplitter.Panel1.ResumeLayout(false);
-            this.MainSplitter.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MainSplitter)).EndInit();
-            this.MainSplitter.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView GameFolders;
-        private System.Windows.Forms.Label SizeLabel;
-        private System.Windows.Forms.Label AuthorLabel;
-        private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.ContextMenuStrip ItemContextStrip;
         private System.Windows.Forms.ToolStripMenuItem PlayGameItem;
         private System.Windows.Forms.ToolStripMenuItem LoadMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RenameProjectItem;
-        private System.Windows.Forms.Panel GamesPanel;
-        private System.Windows.Forms.Panel InfoPanel;
-        private System.Windows.Forms.Label DescTextLabel;
-        private SphereStudio.UI.DialogHeader GameProjectLabel;
         private System.Windows.Forms.ToolStripMenuItem SetIconItem;
         private System.Windows.Forms.ToolStripMenuItem ViewItem;
         private System.Windows.Forms.ToolStripMenuItem ListItem;
         private System.Windows.Forms.ToolStripMenuItem SmallIconItem;
         private System.Windows.Forms.ToolStripMenuItem LargeIconItem;
         private System.Windows.Forms.ToolStripMenuItem TilesItem;
-        private SphereStudio.UI.DialogHeader DescLabel;
-        private SphereStudio.UI.DialogHeader InfoLabel;
-        private System.Windows.Forms.SplitContainer MainSplitter;
-        private System.Windows.Forms.Panel GamePanel;
-        private System.Windows.Forms.SplitContainer InfoSplitter;
         private System.Windows.Forms.ToolStripMenuItem OpenFolderItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem RefreshItem;
         private System.Windows.Forms.ToolStripMenuItem DetailsItem;
+        private System.Windows.Forms.Label header;
+        private System.Windows.Forms.ListView projectListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-
-
-
-
-
-
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }

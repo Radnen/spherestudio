@@ -4,8 +4,8 @@
 
 #define AppName "Sphere Studio"
 #define AppPublisher "Fat Cerberus"
-#define AppVersion3 "2.0.0"
-#define AppVersion4 "2.0.0.573"
+#define AppVersion3 "2.1.0 WiP"
+#define AppVersion4 "2.1.0.0"
 
 [Setup]
 OutputBaseFilename=sphereStudioSetup-{#AppVersion3}-msw

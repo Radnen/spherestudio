@@ -40,7 +40,7 @@ namespace SphereStudio.Ide
             InitializeDocking();
             PluginManager.Register(null, fileListPane, "File List");
 
-            Text = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
+            Text = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             toolNew.DropDown = menuNew.DropDown;
 
             BuildEngine.Initialize();
@@ -85,7 +85,7 @@ namespace SphereStudio.Ide
                 if (value && !StartVisible)
                 {
                     _startPage = new StartPageView(this) { HelpLabel = HelpLabel };
-                    _startPage.PopulateGameList();
+                    _startPage.RepopulateProjects();
                     _startTab = AddDocument(_startPage, "Start Page");
                     _startTab.Restyle();
                 }
@@ -259,7 +259,7 @@ namespace SphereStudio.Ide
             // it will be done in Form_Load.
             if (Visible)
             {
-                if (Core.Project.User.StartHidden)
+                if (Core.Project.User.StartPageHidden)
                     StartVisible = false;
 
                 DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
@@ -302,7 +302,7 @@ namespace SphereStudio.Ide
             // visibility before the form loads.
             if (Core.Settings.AutoOpenLastProject && Core.Project != null)
             {
-                StartVisible = !Core.Project.User.StartHidden;
+                StartVisible = !Core.Project.User.StartPageHidden;
                 DocumentTab tab = GetDocument(Core.Project.User.ActiveDocument);
                 if (tab != null)
                     tab.Activate();
@@ -474,7 +474,7 @@ namespace SphereStudio.Ide
                 {
                     npf.NewProject.Save();
                     OpenProject(npf.NewProject.FileName, false);
-                    _startPage.PopulateGameList();
+                    _startPage.RepopulateProjects();
                 }
                 else
                 {
@@ -714,7 +714,7 @@ namespace SphereStudio.Ide
         #region Help menu Click handlers
         private void menuAbout_Click(object sender, EventArgs e)
         {
-            using (AboutBoxForm about = new AboutBoxForm())
+            using (AboutDialogForm about = new AboutDialogForm())
             {
                 about.ShowDialog();
             }
@@ -824,7 +824,7 @@ namespace SphereStudio.Ide
 
             UpdateControls();
             SuspendLayout();
-            _startPage.PopulateGameList();
+            _startPage.RepopulateProjects();
             UpdateMenuItems();
             Invalidate(true);
             ResumeLayout();
@@ -870,7 +870,7 @@ namespace SphereStudio.Ide
             }
 
             // user values will be lost if we don't record them now.
-            Core.Project.User.StartHidden = !StartVisible;
+            Core.Project.User.StartPageHidden = !StartVisible;
             Core.Project.User.Documents = _tabs
                 .Where(it => it.FileName != null)
                 .Select(it => it.FileName)
@@ -938,7 +938,7 @@ namespace SphereStudio.Ide
 
         private void RefreshProject()
         {
-            var ideName = Versioning.WiP ? $"{Versioning.Name} WiP" : Versioning.Name;
+            var ideName = Versioning.IsWiP ? $"{Versioning.Name} WiP" : Versioning.Name;
             Text = Project.BackCompatible
                 ? $"{Project.Name} (Sphere 1.x) - {ideName}"
                 : $"{Project.Name} - {ideName}";

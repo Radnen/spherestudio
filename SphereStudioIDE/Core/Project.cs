@@ -107,7 +107,7 @@ namespace SphereStudio.Ide
                 }
             }
 
-            project.Compiler = "Sphere 1.x compatible";
+            project.Compiler = "Sphere 1.x Compatible";
             return project;
         }
 
@@ -162,7 +162,7 @@ namespace SphereStudio.Ide
         /// </summary>
         public string Compiler
         {
-            get { return !BackCompatible ? _ssproj.GetString("compiler", "Sphere 1.x compatible") : "Sphere 1.x compatible"; }
+            get { return !BackCompatible ? _ssproj.GetString("compiler", "Sphere 1.x Compatible") : "Sphere 1.x Compatible"; }
             set { _ssproj.SetValue("compiler", value); }
         }
 
@@ -263,7 +263,7 @@ namespace SphereStudio.Ide
             FileName = Path.Combine(basePath, MakeFileName(Name));
             BackCompatible = false;
             BuildPath = "./";
-            Compiler = "Sphere 1.x compatible";
+            Compiler = "Sphere 1.x Compatible";
             Save();
         }
 
@@ -363,10 +363,10 @@ namespace SphereStudio.Ide
         /// <summary>
         /// Gets or sets if the Start Page is hidden for this user.
         /// </summary>
-        public bool StartHidden
+        public bool StartPageHidden
         {
-            get { return GetBoolean("hideStart", false); }
-            set { SetValue("hideStart", value); }
+            get { return GetBoolean("hideStartPage", false); }
+            set { SetValue("hideStartPage", value); }
         }
 
     }

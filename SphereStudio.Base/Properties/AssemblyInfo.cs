@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sphere Studio Base")]
+[assembly: AssemblyTitle("Sphere Studio plugin base")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Spherical Community")]
+[assembly: AssemblyCompany("Spherical")]
 [assembly: AssemblyProduct("Sphere Studio")]
-[assembly: AssemblyCopyright("Copyright© 2012-2021 Sphere Engine Group")]
+[assembly: AssemblyCopyright("Copyright© 2021 Sphere Engine Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

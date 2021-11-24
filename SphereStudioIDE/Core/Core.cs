@@ -219,7 +219,7 @@ namespace SphereStudio.Ide
         {
             get
             {
-                string val = GetString("startView", "Tile");
+                string val = GetString("startView", "Details");
                 return (View)Enum.Parse(typeof(View), val);
             }
             set

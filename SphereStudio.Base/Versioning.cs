@@ -29,7 +29,7 @@ namespace SphereStudio
         /// <summary>
         /// Whether the Sphere Studio version being built against is a WiP version.
         /// </summary>
-        public const bool WiP = true;
+        public const bool IsWiP = true;
 
         /// <summary>
         /// A string indicating the copyright holder and year(s) of copyright.

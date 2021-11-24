@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spherical")]
-[assembly: AssemblyProduct("Sphere: the JavaScript game platform")]
-[assembly: AssemblyCopyright("Copyright © 2021 Spherical")]
+[assembly: AssemblyProduct("Sphere Studio")]
+[assembly: AssemblyCopyright("Copyright © 2021 Sphere Engine Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

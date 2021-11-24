@@ -120,11 +120,11 @@
     <Compile Include="DockPanes\BuildLogPane.Designer.cs">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutBoxForm.cs">
+    <Compile Include="Forms\AboutDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AboutBoxForm.Designer.cs">
-      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    <Compile Include="Forms\AboutDialogForm.Designer.cs">
+      <DependentUpon>AboutDialogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\PluginManagerForm.cs">
       <SubType>Form</SubType>
@@ -195,8 +195,8 @@
     <EmbeddedResource Include="DockPanes\BuildLogPane.resx">
       <DependentUpon>BuildLogPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AboutBoxForm.resx">
-      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutDialogForm.resx">
+      <DependentUpon>AboutDialogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PluginManagerForm.resx">
       <DependentUpon>PluginManagerForm.cs</DependentUpon>
@@ -278,19 +278,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FontEditPlugin\FontImporterPlugin.csproj">
+    <ProjectReference Include="..\FontImporterPlugin\FontImporterPlugin.csproj">
       <Project>{dd4965de-8289-4e3f-839e-b008a06b3a97}</Project>
       <Name>FontImporterPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageEditPlugin\DefaultImageEditorPlugin.csproj">
+    <ProjectReference Include="..\DefaultImageEditorPlugin\DefaultImageEditorPlugin.csproj">
       <Project>{83d6d166-7f7d-46ca-81bf-9baf8e35f6bc}</Project>
       <Name>DefaultImageEditorPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LegacySphereSupportPlugin\Sphere1xSupportPlugin.csproj">
+    <ProjectReference Include="..\Sphere1xSupportPlugin\Sphere1xSupportPlugin.csproj">
       <Project>{da72d708-3f08-4804-b5bb-5a1a78b16605}</Project>
       <Name>Sphere1xSupportPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MapEditPlugin\MapEditorPlugin.csproj">
+    <ProjectReference Include="..\MapEditorPlugin\MapEditorPlugin.csproj">
       <Project>{e17c35be-a26f-411d-b814-979017f290df}</Project>
       <Name>MapEditorPlugin</Name>
     </ProjectReference>
@@ -298,11 +298,11 @@
       <Project>{d242f8ef-7d85-4b6b-9446-6758b68a7f54}</Project>
       <Name>neoSphereSupportPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScriptEditPlugin\DefaultTextEditorPlugin.csproj">
+    <ProjectReference Include="..\DefaultTextEditorPlugin\DefaultTextEditorPlugin.csproj">
       <Project>{2da2a233-7da5-44c6-82ce-045b310a19f8}</Project>
       <Name>DefaultTextEditorPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SoundTestPlugin\AudioPlayerPlugin.csproj">
+    <ProjectReference Include="..\AudioPlayerPlugin\AudioPlayerPlugin.csproj">
       <Project>{f1b89568-607d-4cec-9c11-6c516d98e2ec}</Project>
       <Name>AudioPlayerPlugin</Name>
     </ProjectReference>
@@ -310,7 +310,7 @@
       <Project>{f58a8db0-1879-41d2-a349-4fb8991af3d2}</Project>
       <Name>SphereStudio.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SpritesetEditPlugin\SpritesetEditorPlugin.csproj">
+    <ProjectReference Include="..\SpritesetEditorPlugin\SpritesetEditorPlugin.csproj">
       <Project>{9fea4a11-754f-4f4b-8a85-b0e780f15159}</Project>
       <Name>SpritesetEditorPlugin</Name>
     </ProjectReference>
@@ -318,7 +318,7 @@
       <Project>{f7434dec-a94a-409c-a320-7585b4083a6a}</Project>
       <Name>TaskListPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WindowstyleEditPlugin\WindowstyleEditorPlugin.csproj">
+    <ProjectReference Include="..\WindowstyleEditorPlugin\WindowstyleEditorPlugin.csproj">
       <Project>{65bcdeef-c718-492a-8c82-7886a3af8b7b}</Project>
       <Name>WindowstyleEditorPlugin</Name>
     </ProjectReference>

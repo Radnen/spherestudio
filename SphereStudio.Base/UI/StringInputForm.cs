@@ -10,7 +10,7 @@ namespace SphereStudio.UI
     /// </summary>
     public partial class StringInputForm : Form, IStyleAware
     {
-        private bool _numOnly;
+        private bool acceptNumbersOnly;
 
         /// <summary>
         /// Initializes the string input form.
@@ -22,19 +22,32 @@ namespace SphereStudio.UI
             if (caption != null)
                 Text = caption;
             if (labelText != null)
-                m_heading.Text = labelText;
-            NumOnly = false;
+                header.Text = labelText;
+            NumbersOnly = false;
 
             StyleManager.AutoStyle(this);
+        }
+
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsUIElement(this);
+            style.AsHeading(header);
+            style.AsHeading(footer);
+            style.AsAccent(okButton);
+            style.AsAccent(cancelButton);
+
+            style.AsHeading(textHeading);
+            style.AsAccent(textPanel);
+            style.AsTextView(textBox);
         }
 
         /// <summary>
         /// Set this to use numbers only or not.
         /// </summary>
-        public bool NumOnly
+        public bool NumbersOnly
         {
-            get { return _numOnly; }
-            set { _numOnly = value; }
+            get { return acceptNumbersOnly; }
+            set { acceptNumbersOnly = value; }
         }
 
         /// <summary>
@@ -42,8 +55,8 @@ namespace SphereStudio.UI
         /// </summary>
         public string Input
         {
-            get { return m_textBox.Text; }
-            set { m_textBox.Text = value; m_textBox.Select(); }
+            get { return textBox.Text; }
+            set { textBox.Text = value; textBox.Select(); }
         }
 
         /// <summary>
@@ -51,25 +64,13 @@ namespace SphereStudio.UI
         /// </summary>
         public int MaxLength
         {
-            get { return m_textBox.MaxLength; }
-            set { m_textBox.MaxLength = value; }
-        }
-
-        /// <summary>
-        /// Restyles the form using a UI style.
-        /// </summary>
-        /// <param name="style"></param>
-        public void ApplyStyle(UIStyle style)
-        {
-            style.AsUIElement(this);
-            style.AsTextView(m_textBox);
-            style.AsAccent(m_okButton);
-            style.AsAccent(m_cancelButton);
+            get { return textBox.MaxLength; }
+            set { textBox.MaxLength = value; }
         }
 
         private void StringTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = (_numOnly && !Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
+            e.Handled = (acceptNumbersOnly && !Char.IsDigit(e.KeyChar) && e.KeyChar != (char)8);
         }
     }
 }
