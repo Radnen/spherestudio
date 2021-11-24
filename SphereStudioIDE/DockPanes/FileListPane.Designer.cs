@@ -84,21 +84,21 @@
             this.OpenFolderItem,
             this.GameSettingsItem});
             this.ProjectFileContextMenu.Name = "ProjectFileContextMenu";
-            this.ProjectFileContextMenu.Size = new System.Drawing.Size(189, 246);
+            this.ProjectFileContextMenu.Size = new System.Drawing.Size(228, 246);
             this.ProjectFileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ProjectFileContextMenu_Opening);
             // 
             // NewFileItem
             // 
             this.NewFileItem.Image = global::SphereStudio.Ide.Properties.Resources.page_white_edit;
             this.NewFileItem.Name = "NewFileItem";
-            this.NewFileItem.Size = new System.Drawing.Size(188, 22);
+            this.NewFileItem.Size = new System.Drawing.Size(227, 22);
             this.NewFileItem.Text = "&New";
             // 
             // ImportFileItem
             // 
             this.ImportFileItem.Image = global::SphereStudio.Ide.Properties.Resources.paste_plain;
             this.ImportFileItem.Name = "ImportFileItem";
-            this.ImportFileItem.Size = new System.Drawing.Size(188, 22);
+            this.ImportFileItem.Size = new System.Drawing.Size(227, 22);
             this.ImportFileItem.Text = "&Import File(s)...";
             this.ImportFileItem.Click += new System.EventHandler(this.ImportFileItem_Click);
             // 
@@ -106,7 +106,7 @@
             // 
             this.AddSubfolderItem.Image = global::SphereStudio.Ide.Properties.Resources.folder_closed;
             this.AddSubfolderItem.Name = "AddSubfolderItem";
-            this.AddSubfolderItem.Size = new System.Drawing.Size(188, 22);
+            this.AddSubfolderItem.Size = new System.Drawing.Size(227, 22);
             this.AddSubfolderItem.Text = "&Add Subfolder...";
             this.AddSubfolderItem.Click += new System.EventHandler(this.AddFolderItem_Click);
             // 
@@ -114,7 +114,7 @@
             // 
             this.OpenFileItem.Image = global::SphereStudio.Ide.Properties.Resources.folder;
             this.OpenFileItem.Name = "OpenFileItem";
-            this.OpenFileItem.Size = new System.Drawing.Size(188, 22);
+            this.OpenFileItem.Size = new System.Drawing.Size(227, 22);
             this.OpenFileItem.Text = "&Open File";
             this.OpenFileItem.Click += new System.EventHandler(this.OpenFileItem_Click);
             // 
@@ -123,7 +123,7 @@
             this.DeleteFileItem.Image = global::SphereStudio.Ide.Properties.Resources.cross;
             this.DeleteFileItem.Name = "DeleteFileItem";
             this.DeleteFileItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.DeleteFileItem.Size = new System.Drawing.Size(188, 22);
+            this.DeleteFileItem.Size = new System.Drawing.Size(227, 22);
             this.DeleteFileItem.Text = "&Delete File";
             this.DeleteFileItem.Click += new System.EventHandler(this.DeleteFileItem_Click);
             // 
@@ -131,7 +131,7 @@
             // 
             this.DeleteFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.cross;
             this.DeleteFolderItem.Name = "DeleteFolderItem";
-            this.DeleteFolderItem.Size = new System.Drawing.Size(188, 22);
+            this.DeleteFolderItem.Size = new System.Drawing.Size(227, 22);
             this.DeleteFolderItem.Text = "De&lete Folder";
             this.DeleteFolderItem.Click += new System.EventHandler(this.DeleteFolderItem_Click);
             // 
@@ -139,7 +139,7 @@
             // 
             this.RenameFileItem.Image = global::SphereStudio.Ide.Properties.Resources.pencil;
             this.RenameFileItem.Name = "RenameFileItem";
-            this.RenameFileItem.Size = new System.Drawing.Size(188, 22);
+            this.RenameFileItem.Size = new System.Drawing.Size(227, 22);
             this.RenameFileItem.Text = "&Rename File";
             this.RenameFileItem.Click += new System.EventHandler(this.RenameFileItem_Click);
             // 
@@ -148,7 +148,7 @@
             this.CopyPathItem.Image = global::SphereStudio.Ide.Properties.Resources.page_copy;
             this.CopyPathItem.Name = "CopyPathItem";
             this.CopyPathItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.CopyPathItem.Size = new System.Drawing.Size(188, 22);
+            this.CopyPathItem.Size = new System.Drawing.Size(227, 22);
             this.CopyPathItem.Text = "&Copy Path";
             this.CopyPathItem.Click += new System.EventHandler(this.CopyPathItem_Click);
             // 
@@ -156,15 +156,15 @@
             // 
             this.OpenFolderItem.Image = global::SphereStudio.Ide.Properties.Resources.open;
             this.OpenFolderItem.Name = "OpenFolderItem";
-            this.OpenFolderItem.Size = new System.Drawing.Size(188, 22);
-            this.OpenFolderItem.Text = "Open in Explorer";
+            this.OpenFolderItem.Size = new System.Drawing.Size(227, 22);
+            this.OpenFolderItem.Text = "Show in Windows &Explorer";
             this.OpenFolderItem.Click += new System.EventHandler(this.OpenFolderItem_Click);
             // 
             // GameSettingsItem
             // 
             this.GameSettingsItem.Image = global::SphereStudio.Ide.Properties.Resources.SphereEditor;
             this.GameSettingsItem.Name = "GameSettingsItem";
-            this.GameSettingsItem.Size = new System.Drawing.Size(188, 22);
+            this.GameSettingsItem.Size = new System.Drawing.Size(227, 22);
             this.GameSettingsItem.Text = "Project P&roperties...";
             this.GameSettingsItem.Click += new System.EventHandler(this.GameSettingsItem_Click);
             // 

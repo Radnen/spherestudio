@@ -492,16 +492,13 @@ namespace SphereStudio.Ide.BuiltIns
 
         private void OpenFolderItem_Click(object sender, EventArgs e)
         {
-            if (fileTree.SelectedNode == null) return;
-            string path = "";
+            if (fileTree.SelectedNode == null)
+                return;
             var node = fileTree.SelectedNode;
-
-            if (node.Level == 0 && node.Index == 0)
-                path = Core.Project.RootPath;
-            else
-                path = ResolvePath(node);
-
-            Process.Start("explorer.exe", path);
+            var path = node.Level == 0 && node.Index == 0
+                ? Core.Project.RootPath
+                : ResolvePath(node);
+            Process.Start("explorer.exe", $@"/select,""{path}""");
         }
 
         private void ProjectFileContextMenu_Opening(object sender, CancelEventArgs e)
