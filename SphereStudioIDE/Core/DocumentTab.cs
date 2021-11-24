@@ -65,7 +65,7 @@ namespace SphereStudio.Ide
 
             if (restoreView && FileName != null)
             {
-                string setting = string.Format("viewState:{0:X8}", FileName.GetHashCode());
+                string setting = $"viewState:{FileName.GetHashCode():X8}";
                 try { View.ViewState = Core.Project.User.GetString(setting, ""); }
                 catch (Exception) { } // *munch*
             }
@@ -305,7 +305,7 @@ namespace SphereStudio.Ide
 
             // save view (cursor position, etc.)
             Core.Project.User.SetValue(
-                string.Format("viewState:{0:X8}", FileName.GetHashCode()),
+                $"viewState:{FileName.GetHashCode():X8}",
                 View.ViewState);
         }
 

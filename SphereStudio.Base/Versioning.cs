@@ -24,7 +24,7 @@ namespace SphereStudio
         /// <summary>
         /// The version number of the software.
         /// </summary>
-        public const string Version = "2.1.0 WiP";
+        public const string Version = "WiP";
 
         /// <summary>
         /// Whether the Sphere Studio version being built against is a WiP version.

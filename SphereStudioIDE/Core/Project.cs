@@ -290,7 +290,7 @@ namespace SphereStudio.Ide
                 try
                 {
                     lines = Array.ConvertAll(
-                        User.GetString(string.Format("breakpointsSet:{0:X8}", hash), "").Split(','),
+                        User.GetString($"breakpointsSet:{hash:X8}", "").Split(','),
                         int.Parse);
                 } catch (Exception) { }  // *munch*
                 _breakpoints.Add(scriptPath, new HashSet<int>(lines));
@@ -303,7 +303,7 @@ namespace SphereStudio.Ide
             _breakpoints[scriptPath] = new HashSet<int>(lineNumbers);
             foreach (var k in _breakpoints.Keys)
             {
-                User.SetValue(string.Format("breakpointsSet:{0:X8}", k.GetHashCode()),
+                User.SetValue($"breakpointsSet:{k.GetHashCode():X8}",
                     string.Join(",", _breakpoints[k]));
             }
         }
@@ -312,7 +312,7 @@ namespace SphereStudio.Ide
         {
             string invalidChars = Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
             string pattern = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
-            return Regex.Replace(name, pattern, "_") + ".ssproj";
+            return $"{Regex.Replace(name, pattern, "_")}.ssproj";
         }
     }
 
