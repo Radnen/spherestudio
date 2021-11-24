@@ -18,8 +18,7 @@ namespace SphereStudio.Plugins.UI
         private readonly Color _hiColor = Color.FromArgb(250, 150, 150);
         private readonly Color _noColor = Color.FromArgb(255, 255, 255);
 
-        // the location to search for a task list:
-        private string RootPath { get; set; }
+        private string tasksFilePath;
 
         public TaskListPane()
         {
@@ -27,12 +26,12 @@ namespace SphereStudio.Plugins.UI
             _imagelist.ColorDepth = ColorDepth.Depth32Bit;
             _imagelist.Images.Add("not", Properties.Resources.lightbulb);
             _imagelist.Images.Add("done", Properties.Resources.lightbulb_off);
-            ObjectTaskList.SmallImageList = _imagelist;
+            listView.SmallImageList = _imagelist;
 
             olvColumn1.ImageGetter = delegate (object rowObject)
             {
-                Task t = (Task)rowObject;
-                return t.Finished ? "done" : "not";
+                TaskEntry t = (TaskEntry)rowObject;
+                return t.IsFinished ? "done" : "not";
             };
 
             string[] names = Enum.GetNames(typeof(TaskType));
@@ -57,21 +56,31 @@ namespace SphereStudio.Plugins.UI
         public DockHint DockHint => DockHint.Left;
         public Bitmap DockIcon => Properties.Resources.lightbulb;
 
+        public void ApplyStyle(UIStyle style)
+        {
+            listView.AlternateRowBackColor = style.LabelColor;
+            listView.SelectedBackColor = style.LabelColor;
+            listView.SelectedForeColor = style.TextColor;
+            listView.UseAlternatingBackColors = true;
+            style.AsUIElement(toolbar);
+            style.AsTextView(listView);
+        }
+
         private void AddTaskItem_Click(object sender, EventArgs e)
         {
-            ObjectTaskList.AddObject(new Task("New Task"));
+            listView.AddObject(new TaskEntry("New Task"));
         }
 
         private void RemoveTaskItem_Click(object sender, EventArgs e)
         {
-            if (ObjectTaskList.SelectedObject != null)
-                ObjectTaskList.RemoveObject(ObjectTaskList.SelectedObject);
+            if (listView.SelectedObject != null)
+                listView.RemoveObject(listView.SelectedObject);
         }
 
         private void RemoveCompletedItem_Click(object sender, EventArgs e)
         {
-            List<Task> removed = ObjectTaskList.Objects.Cast<Task>().Where(task => task.Finished).ToList();
-            ObjectTaskList.RemoveObjects(removed);
+            List<TaskEntry> removed = listView.Objects.Cast<TaskEntry>().Where(task => task.IsFinished).ToList();
+            listView.RemoveObjects(removed);
         }
 
         /// <summary>
@@ -80,17 +89,19 @@ namespace SphereStudio.Plugins.UI
         /// <returns>True if the file was clean, false if there is stuff to save.</returns>
         private bool Clean()
         {
-            if (string.IsNullOrEmpty(RootPath)) return true;
-            if (ObjectTaskList.GetItemCount() > 0) return false;
-            if (File.Exists(RootPath + "\\tasks.list"))
-                File.Delete(RootPath + "\\tasks.list");
+            if (string.IsNullOrEmpty(tasksFilePath))
+                return true;
+            if (listView.GetItemCount() > 0)
+                return false;
+            if (File.Exists(tasksFilePath))
+                File.Delete(tasksFilePath);
             return true;
         }
 
         /// <summary>
         /// Clears the list out
         /// </summary>
-        public void Clear() => ObjectTaskList.ClearObjects();
+        public void Clear() => listView.ClearObjects();
 
         /// <summary>
         /// Tasks are saved as follows:
@@ -104,14 +115,15 @@ namespace SphereStudio.Plugins.UI
         public void SaveList()
         {
             // clean the file
-            if (Clean()) return;
+            if (Clean())
+                return;
 
-            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(RootPath + "\\tasks.list")))
+            using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(tasksFilePath)))
             {
-                writer.Write(ObjectTaskList.GetItemCount());
-                foreach (Task task in ObjectTaskList.Objects)
+                writer.Write(listView.GetItemCount());
+                foreach (TaskEntry task in listView.Objects)
                 {
-                    writer.Write(task.Finished);
+                    writer.Write(task.IsFinished);
                     writer.Write(task.Name);
                     writer.Write((int)task.Priority);
                     writer.Write((int)task.Type);
@@ -120,27 +132,28 @@ namespace SphereStudio.Plugins.UI
             }
         }
 
-        public void LoadList(string path)
+        public void LoadList(string projectRoot)
         {
-            RootPath = path;
-            ObjectTaskList.ClearObjects();
-            if (!File.Exists(path + "\\tasks.list")) return;
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(RootPath + "\\tasks.list")))
+            tasksFilePath = Path.Combine(projectRoot, "sphereStudio.tasks");
+            listView.ClearObjects();
+            if (!File.Exists(tasksFilePath))
+                return;
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(tasksFilePath)))
             {
-                List<Task> tasks = new List<Task>();
+                List<TaskEntry> tasks = new List<TaskEntry>();
                 int amt = reader.ReadInt32();
                 while (amt-- > 0)
                 {
-                    Task t = new Task
+                    TaskEntry t = new TaskEntry()
                     {
-                        Finished = reader.ReadBoolean(),
+                        IsFinished = reader.ReadBoolean(),
                         Name = reader.ReadString(),
                         Priority = (TaskPriority)reader.ReadInt32(),
                         Type = (TaskType)reader.ReadInt32()
                     };
                     tasks.Add(t);
                 }
-                ObjectTaskList.SetObjects(tasks);
+                listView.SetObjects(tasks);
             }
         }
 
@@ -148,74 +161,65 @@ namespace SphereStudio.Plugins.UI
 
         private void priorityUpButton_Click(object sender, EventArgs e)
         {
-            foreach (Task task in ObjectTaskList.SelectedObjects)
+            foreach (TaskEntry task in listView.SelectedObjects)
                 task.IncreasePriority();
 
-            ObjectTaskList.RefreshSelectedObjects();
+            listView.RefreshSelectedObjects();
         }
 
         private void priorityDownButton_Click(object sender, EventArgs e)
         {
-            foreach (Task task in ObjectTaskList.SelectedObjects)
+            foreach (TaskEntry task in listView.SelectedObjects)
                 task.DecreasePriority();
 
-            ObjectTaskList.RefreshSelectedObjects();
+            listView.RefreshSelectedObjects();
         }
 
         private void DeleteItem_Click(object sender, EventArgs e)
         {
-            foreach (Task task in ObjectTaskList.SelectedObjects)
-                ObjectTaskList.RemoveObject(task);
+            foreach (TaskEntry task in listView.SelectedObjects)
+                listView.RemoveObject(task);
         }
 
         private void SetType_Click(object sender, EventArgs e)
         {
-            foreach (Task task in ObjectTaskList.SelectedObjects)
+            foreach (TaskEntry task in listView.SelectedObjects)
             {
                 int index = SetTypeItem.DropDownItems.IndexOf((ToolStripItem)sender);
                 task.Type = (TaskType)index;
-                ObjectTaskList.RefreshObject(task);
+                listView.RefreshObject(task);
             }
         }
 
         private void SetPriorityItem_Click(object sender, EventArgs e)
         {
-            foreach (Task task in ObjectTaskList.SelectedObjects)
+            foreach (TaskEntry task in listView.SelectedObjects)
             {
                 int index = SetPriorityItem.DropDownItems.IndexOf((ToolStripItem)sender);
                 task.Priority = (TaskPriority)index;
-                ObjectTaskList.RefreshObject(task);
+                listView.RefreshObject(task);
             }
         }
 
         private void ObjectTaskList_FormatRow(object sender, BrightIdeasSoftware.FormatRowEventArgs e)
         {
-            Task task = (Task)e.Model;
+            TaskEntry task = (TaskEntry)e.Model;
             switch (task.Priority)
             {
-                case TaskPriority.Hi: e.Item.BackColor = _hiColor; break;
-                case TaskPriority.Lo: e.Item.BackColor = _loColor; break;
-                case TaskPriority.Med: e.Item.BackColor = _medColor; break;
+                case TaskPriority.High: e.Item.BackColor = _hiColor; break;
+                case TaskPriority.Low: e.Item.BackColor = _loColor; break;
+                case TaskPriority.Medium: e.Item.BackColor = _medColor; break;
                 case TaskPriority.None: e.Item.BackColor = _noColor; break;
             }
         }
 
         private void ObjectTaskList_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
         {
-            Task task = e.Model as Task;
+            TaskEntry task = e.Model as TaskEntry;
             if (e.ColumnIndex != olvColumn1.Index || task == null) return;
 
-            FontStyle style = task.Finished ? FontStyle.Strikeout : FontStyle.Regular;
+            FontStyle style = task.IsFinished ? FontStyle.Strikeout : FontStyle.Regular;
             e.SubItem.Font = new Font(e.SubItem.Font, style);
-        }
-
-        public void ApplyStyle(UIStyle style)
-        {
-            ObjectTaskList.AlternateRowBackColor = style.LabelColor;
-            ObjectTaskList.SelectedBackColor = style.BackColor;
-            ObjectTaskList.UseAlternatingBackColors = true;
-            style.AsTextView(ObjectTaskList);
-            style.AsUIElement(toolStrip1);
         }
     }
 }

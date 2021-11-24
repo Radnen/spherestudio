@@ -117,7 +117,7 @@ namespace SphereStudio.Ide
             var basePath = Path.GetDirectoryName(fileName);
             FileName = fileName;
             _ssproj = new IniSettings(new IniFile(FileName, false), ".ssproj");
-            User = new UserSettings(Path.Combine(basePath, "sphereStudio.cfg"));
+            User = new UserSettings(Path.Combine(basePath, "sphereStudio.usr"));
         }
 
         public UserSettings User { get; private set; }
@@ -232,7 +232,7 @@ namespace SphereStudio.Ide
         /// </summary>
         public void Save()
         {
-            var userFileName = Path.Combine(RootPath, "sphereStudio.cfg");
+            var userFileName = Path.Combine(RootPath, "sphereStudio.usr");
             User.SaveAs(userFileName);
             if (BackCompatible)
             {
@@ -319,7 +319,7 @@ namespace SphereStudio.Ide
     class UserSettings : IniSettings
     {
         public UserSettings(string filePath) :
-            base(new IniFile(filePath, false), "sphereStudio.cfg")
+            base(new IniFile(filePath, false), "sphereStudio.usr")
         {
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SphereStudio.Plugins
 {
-    interface IPlayer: IDisposable
+    interface IPlayer : IDisposable
     {
         bool IsPaused { get; }
         uint Position { get; set; }

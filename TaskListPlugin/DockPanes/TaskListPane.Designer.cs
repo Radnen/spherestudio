@@ -38,20 +38,20 @@
             this.Seperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SetTypeItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SetPriorityItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolbar = new System.Windows.Forms.ToolStrip();
             this.PriorityLabel = new System.Windows.Forms.ToolStripLabel();
             this.priorityUpButton = new System.Windows.Forms.ToolStripButton();
             this.priorityDownButton = new System.Windows.Forms.ToolStripButton();
             this.Seperator0 = new System.Windows.Forms.ToolStripSeparator();
             this.AddItem = new System.Windows.Forms.ToolStripButton();
             this.DeleteItem = new System.Windows.Forms.ToolStripButton();
-            this.ObjectTaskList = new BrightIdeasSoftware.ObjectListView();
+            this.listView = new BrightIdeasSoftware.ObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TaskListMenuStrip.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ObjectTaskList)).BeginInit();
+            this.toolbar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.listView)).BeginInit();
             this.SuspendLayout();
             // 
             // TaskListMenuStrip
@@ -123,21 +123,21 @@
             this.SetPriorityItem.Size = new System.Drawing.Size(179, 22);
             this.SetPriorityItem.Text = "Set &Priority";
             // 
-            // toolStrip1
+            // toolbar
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PriorityLabel,
             this.priorityUpButton,
             this.priorityDownButton,
             this.Seperator0,
             this.AddItem,
             this.DeleteItem});
-            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(358, 23);
-            this.toolStrip1.TabIndex = 3;
-            this.toolStrip1.Text = "toolStrip1";
+            this.toolbar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.toolbar.Location = new System.Drawing.Point(0, 0);
+            this.toolbar.Name = "toolbar";
+            this.toolbar.Size = new System.Drawing.Size(358, 23);
+            this.toolbar.TabIndex = 3;
+            this.toolbar.Text = "toolStrip1";
             // 
             // PriorityLabel
             // 
@@ -190,36 +190,37 @@
             this.DeleteItem.Text = "Remove Task(s)";
             this.DeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
             // 
-            // ObjectTaskList
+            // listView
             // 
-            this.ObjectTaskList.AllColumns.Add(this.olvColumn1);
-            this.ObjectTaskList.AllColumns.Add(this.olvColumn2);
-            this.ObjectTaskList.AllColumns.Add(this.olvColumn3);
-            this.ObjectTaskList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ObjectTaskList.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
-            this.ObjectTaskList.CellEditUseWholeCell = false;
-            this.ObjectTaskList.CheckBoxes = true;
-            this.ObjectTaskList.CheckedAspectName = "Finished";
-            this.ObjectTaskList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listView.AllColumns.Add(this.olvColumn1);
+            this.listView.AllColumns.Add(this.olvColumn2);
+            this.listView.AllColumns.Add(this.olvColumn3);
+            this.listView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listView.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
+            this.listView.CellEditUseWholeCell = false;
+            this.listView.CheckBoxes = true;
+            this.listView.CheckedAspectName = "Finished";
+            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1,
             this.olvColumn2,
             this.olvColumn3});
-            this.ObjectTaskList.ContextMenuStrip = this.TaskListMenuStrip;
-            this.ObjectTaskList.Cursor = System.Windows.Forms.Cursors.Default;
-            this.ObjectTaskList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ObjectTaskList.EmptyListMsg = "no tasks";
-            this.ObjectTaskList.FullRowSelect = true;
-            this.ObjectTaskList.GroupWithItemCountFormat = "";
-            this.ObjectTaskList.Location = new System.Drawing.Point(0, 23);
-            this.ObjectTaskList.Name = "ObjectTaskList";
-            this.ObjectTaskList.Size = new System.Drawing.Size(358, 301);
-            this.ObjectTaskList.TabIndex = 4;
-            this.ObjectTaskList.UseAlternatingBackColors = true;
-            this.ObjectTaskList.UseCellFormatEvents = true;
-            this.ObjectTaskList.UseCompatibleStateImageBehavior = false;
-            this.ObjectTaskList.View = System.Windows.Forms.View.Details;
-            this.ObjectTaskList.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.ObjectTaskList_FormatCell);
-            this.ObjectTaskList.FormatRow += new System.EventHandler<BrightIdeasSoftware.FormatRowEventArgs>(this.ObjectTaskList_FormatRow);
+            this.listView.ContextMenuStrip = this.TaskListMenuStrip;
+            this.listView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.listView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView.EmptyListMsg = "no tasks";
+            this.listView.FullRowSelect = true;
+            this.listView.GroupWithItemCountFormat = "";
+            this.listView.HideSelection = false;
+            this.listView.Location = new System.Drawing.Point(0, 23);
+            this.listView.Name = "listView";
+            this.listView.Size = new System.Drawing.Size(358, 301);
+            this.listView.TabIndex = 4;
+            this.listView.UseAlternatingBackColors = true;
+            this.listView.UseCellFormatEvents = true;
+            this.listView.UseCompatibleStateImageBehavior = false;
+            this.listView.View = System.Windows.Forms.View.Details;
+            this.listView.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.ObjectTaskList_FormatCell);
+            this.listView.FormatRow += new System.EventHandler<BrightIdeasSoftware.FormatRowEventArgs>(this.ObjectTaskList_FormatRow);
             // 
             // olvColumn1
             // 
@@ -244,14 +245,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ObjectTaskList);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.listView);
+            this.Controls.Add(this.toolbar);
             this.Name = "TaskListPane";
             this.Size = new System.Drawing.Size(358, 324);
             this.TaskListMenuStrip.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ObjectTaskList)).EndInit();
+            this.toolbar.ResumeLayout(false);
+            this.toolbar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.listView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,7 +265,7 @@
         private System.Windows.Forms.ToolStripMenuItem RemoveTaskItem;
         private System.Windows.Forms.ToolStripMenuItem RemoveCompletedItem;
         private System.Windows.Forms.ToolStripMenuItem ClearAllItem;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip toolbar;
         private System.Windows.Forms.ToolStripButton priorityUpButton;
         private System.Windows.Forms.ToolStripButton priorityDownButton;
         private System.Windows.Forms.ToolStripLabel PriorityLabel;
@@ -275,7 +276,7 @@
         private System.Windows.Forms.ToolStripSeparator Seperator2;
         private System.Windows.Forms.ToolStripMenuItem SetTypeItem;
         private System.Windows.Forms.ToolStripMenuItem SetPriorityItem;
-        private BrightIdeasSoftware.ObjectListView ObjectTaskList;
+        private BrightIdeasSoftware.ObjectListView listView;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.OLVColumn olvColumn3;

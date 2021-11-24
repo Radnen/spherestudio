@@ -52,7 +52,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Task.cs" />
+    <Compile Include="TaskEntry.cs" />
     <Compile Include="DockPanes\TaskListPane.cs">
       <SubType>UserControl</SubType>
     </Compile>

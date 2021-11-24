@@ -8,10 +8,10 @@ using IrrKlang;
 
 namespace SphereStudio.Plugins
 {
-    class IrrPlayer: IPlayer
+    class IrrPlayer : IPlayer
     {
-        ISoundEngine engine = new ISoundEngine();
-        ISound       stream;
+        private ISoundEngine engine = new ISoundEngine();
+        private ISound stream;
 
         public IrrPlayer(string filename, bool wantRepeat)
         {

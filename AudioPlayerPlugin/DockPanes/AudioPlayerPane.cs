@@ -30,11 +30,11 @@ namespace SphereStudio.Plugins.UI
         private readonly Color _labelColor = Color.FromArgb(0, 160, 255);
         private readonly Brush _trackBackColor;
         private readonly Brush _trackForeColor;
-        private static DeferredFileSystemWatcher _fileWatcher;
-        private readonly ImageList _playIcons = new ImageList();
-        private readonly ImageList _listIcons = new ImageList();
-        private IPlayer _music;
-        private string _musicName;
+        private static DeferredFileSystemWatcher fileWatcher;
+        private readonly ImageList playIcons = new ImageList();
+        private readonly ImageList listIcons = new ImageList();
+        private string musicName;
+        private IPlayer player;
 
         public AudioPlayerPane(IPluginMain plugin)
         {
@@ -48,19 +48,19 @@ namespace SphereStudio.Plugins.UI
                 "wav"                      // uncompressed/PCM formats
             };
 
-            _playIcons.ColorDepth = ColorDepth.Depth32Bit;
-            _playIcons.Images.Add("play", Properties.Resources.play_tool);
-            _playIcons.Images.Add("pause", Properties.Resources.pause_tool);
-            _playIcons.Images.Add("stop", Properties.Resources.stop_tool);
-            _listIcons.ColorDepth = ColorDepth.Depth32Bit;
-            _listIcons.Images.Add(Properties.Resources.Icon);
+            playIcons.ColorDepth = ColorDepth.Depth32Bit;
+            playIcons.Images.Add("play", Properties.Resources.play_tool);
+            playIcons.Images.Add("pause", Properties.Resources.pause_tool);
+            playIcons.Images.Add("stop", Properties.Resources.stop_tool);
+            listIcons.ColorDepth = ColorDepth.Depth32Bit;
+            listIcons.Images.Add(Properties.Resources.Icon);
 
-            _fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
-            _fileWatcher.Changed += fileWatcher_Changed;
-            _fileWatcher.IncludeSubdirectories = true;
-            _fileWatcher.EnableRaisingEvents = false;
+            fileWatcher = new DeferredFileSystemWatcher { SynchronizingObject = this, Delay = 1000 };
+            fileWatcher.Changed += fileWatcher_Changed;
+            fileWatcher.IncludeSubdirectories = true;
+            fileWatcher.EnableRaisingEvents = false;
             WatchProject(PluginManager.Core.Project);
-            trackList.SmallImageList = _listIcons;
+            listView.SmallImageList = listIcons;
             _trackBackColor = new SolidBrush(Color.FromArgb(125, _labelColor));
             _trackForeColor = new SolidBrush(_labelColor);
         }
@@ -74,10 +74,64 @@ namespace SphereStudio.Plugins.UI
         public Bitmap FileIcon => Properties.Resources.Icon;
         public string[] FileExtensions { get; private set; }
 
+        public void ApplyStyle(UIStyle style)
+        {
+            style.AsUIElement(toolbar);
+            style.AsTextView(listView);
+        }
+
+        public void ForcePause()
+        {
+            if (player == null)
+                return;
+            player.Pause();
+            pauseTool.CheckState = CheckState.Checked;
+            playTool.Image = playIcons.Images["pause"];
+            playTool.Text = "Paused";
+        }
+
         public DocumentView Open(string fileName)
         {
-            PlayFile(fileName);
+            bool isMusic = Path.GetExtension(fileName) != ".wav";
+            IPlayer newPlayer;
+            try
+            {
+                newPlayer = new IrrPlayer(fileName, isMusic);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Audio Player was unable to play the track you selected.",
+                    "Audio Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            newPlayer.Play();
+            if (isMusic)
+            {
+                stopPlayback();
+                musicName = Path.GetFileNameWithoutExtension(fileName);
+                player = newPlayer;
+                trackNameLabel.Text = $"BGM: {musicName}";
+                playTool.Text = "Playing";
+                playTool.Image = playIcons.Images["play"];
+                pauseTool.Enabled = true;
+                pauseTool.CheckState = CheckState.Unchecked;
+                stopTool.Enabled = true;
+            }
             return null;
+        }
+
+        public void WatchProject(IProject game)
+        {
+            if (game != null && game.RootPath != null)
+            {
+                fileWatcher.Path = game.RootPath;
+                fileWatcher.EnableRaisingEvents = true;
+            }
+            else
+            {
+                fileWatcher.EnableRaisingEvents = false;
+            }
+            Refresh();
         }
 
         private void fileWatcher_Changed(object sender, IEnumerable<FileSystemEventArgs> eAll)
@@ -85,141 +139,53 @@ namespace SphereStudio.Plugins.UI
             Refresh();
         }
 
+        private void listView_DoubleClick(object sender, EventArgs e)
+        {
+            ListViewItem chosenItem = listView.SelectedItems[0];
+            string filePath = (string)chosenItem.Tag;
+            Open(filePath);
+        }
+
         private void pauseTool_Click(object sender, EventArgs e)
         {
-            PlayOrPauseMusic();
+            playOrPause();
         }
 
         private void stopTool_Click(object sender, EventArgs e)
         {
-            StopMusic();
-        }
-
-        private void trackList_Click(object sender, EventArgs e)
-        {
+            stopPlayback();
         }
         
-        private void trackList_DoubleClick(object sender, EventArgs e)
-        {
-            ListViewItem chosenItem = trackList.SelectedItems[0];
-            string filePath = (string)chosenItem.Tag;
-            PlayFile(filePath);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-        }
-
-        public void ApplyStyle(UIStyle style)
-        {
-            style.AsUIElement(toolbar);
-            style.AsTextView(trackList);
-        }
-
-        /// <summary>
-        /// Used by filesystem watcher to attempt to automatically
-        /// add new additions to the sound list.
-        /// </summary>
-        /// <param name="game"></param>
-        public void WatchProject(IProject game)
-        {
-            if (game != null && game.RootPath != null)
-            {
-                _fileWatcher.Path = game.RootPath;
-                _fileWatcher.EnableRaisingEvents = true;
-            }
-            else
-            {
-                _fileWatcher.EnableRaisingEvents = false;
-            }
-            Refresh();
-        }
-
-        /// <summary>
-        /// Forces pause on songs.
-        /// </summary>
-        public void ForcePause()
-        {
-            if (_music == null) return;
-            _music.Pause();
-            pauseTool.CheckState = CheckState.Checked;
-            playTool.Image = _playIcons.Images["pause"];
-            playTool.Text = @"Paused";
-        }
-
-        /// <summary>
-        /// Plays the song or sound located at the path's location.
-        /// </summary>
-        /// <param name="path">The full path of the file to play.</param>
-        public void PlayFile(string path)
-        {
-            bool isMusic = Path.GetExtension(path) != ".wav";
-            IPlayer music;
-            try
-            {
-                music = new IrrPlayer(path, isMusic);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Audio Player was unable to play the track you selected. The format may not be supported on your system.",
-                    "Audio Playback Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            music.Play();
-            if (isMusic)
-            {
-                StopMusic();
-                _musicName = Path.GetFileNameWithoutExtension(path);
-                _music = music;
-                trackNameLabel.Text = @"Now Playing: " + _musicName;
-                playTool.Text = @"Playing";
-                playTool.Image = _playIcons.Images["play"];
-                pauseTool.Enabled = true;
-                pauseTool.CheckState = CheckState.Unchecked;
-                stopTool.Enabled = true;
-            }
-        }
-
         /// <summary>
         /// Toggles between the playing and pausing of the current music file.
         /// </summary>
-        public void PlayOrPauseMusic()
+        public void playOrPause()
         {
-            if (_music == null) return;
-            _music.PlayOrPause();
-            pauseTool.CheckState = _music.IsPaused ? CheckState.Checked : CheckState.Unchecked;
-            playTool.Image = _music.IsPaused ? _playIcons.Images["pause"] : _playIcons.Images["play"];
-            playTool.Text = _music.IsPaused ? "Paused" : "Playing";
+            if (player == null) return;
+            player.PlayOrPause();
+            pauseTool.CheckState = player.IsPaused ? CheckState.Checked : CheckState.Unchecked;
+            playTool.Image = player.IsPaused ? playIcons.Images["pause"] : playIcons.Images["play"];
+            playTool.Text = player.IsPaused ? "Paused" : "Playing";
         }
 
-        /// <summary>
-        /// Overrides the refresh method to re-add the music and sounds
-        /// found in your project.
-        /// </summary>
         public override void Refresh()
         {
             base.Refresh();
-            if (PluginManager.Core.Project == null) { Reset(); return; }
+            if (PluginManager.Core.Project == null) { reset(); return; }
 
             string currentItemName = null;
             
-            if (trackList.SelectedItems.Count > 0)
-                currentItemName = trackList.SelectedItems[0].Text;
+            if (listView.SelectedItems.Count > 0)
+                currentItemName = listView.SelectedItems[0].Text;
             
-            trackList.Items.Clear();
-            trackList.Groups.Clear();
+            listView.Items.Clear();
+            listView.Groups.Clear();
 
-            UpdateTrackList();
+            updateTrackList();
 
             if (!string.IsNullOrEmpty(currentItemName))
             {
-                ListViewItem itemToSelect = trackList.FindItemWithText(currentItemName);
+                ListViewItem itemToSelect = listView.FindItemWithText(currentItemName);
                 if (itemToSelect != null)
                     itemToSelect.Selected = true;
             }
@@ -228,7 +194,7 @@ namespace SphereStudio.Plugins.UI
         /// <summary>
         /// Fills out the list with the music and sound files in your game path.
         /// </summary>
-        private void UpdateTrackList()
+        private void updateTrackList()
         {
             string gamePath = PluginManager.Core.Project.RootPath;
             if (string.IsNullOrEmpty(gamePath))
@@ -242,14 +208,14 @@ namespace SphereStudio.Plugins.UI
                 buildPath = buildPath.Substring(0, buildPath.Length - 1);
             bool haveBuildDir = Path.GetFullPath(buildPath) != Path.GetFullPath(gamePath);
 
-            trackList.BeginUpdate();
+            listView.BeginUpdate();
             foreach (string filterInfo in _fileTypes)
             {
                 string[] parsedFilter = filterInfo.Split(':');
                 string searchFilter = parsedFilter[0];
                 string groupName = parsedFilter[1];
                 
-                trackList.Groups.Add(groupName, groupName);
+                listView.Groups.Add(groupName, groupName);
 
                 try {
                     DirectoryInfo dirInfo = new DirectoryInfo(gamePath);
@@ -259,11 +225,11 @@ namespace SphereStudio.Plugins.UI
                                             orderby x.Name
                                             select x) {
                         var relativePath = fi.FullName
-                            .Replace(gamePath + Path.DirectorySeparatorChar, string.Empty)
+                            .Replace($"{gamePath}{Path.DirectorySeparatorChar}", string.Empty)
                             .Replace(Path.DirectorySeparatorChar, '/');
-                        ListViewItem listItem = trackList.Items.Add(Path.GetFileNameWithoutExtension(fi.FullName), 0);
+                        ListViewItem listItem = listView.Items.Add(Path.GetFileNameWithoutExtension(fi.FullName), 0);
                         listItem.Tag = (object)fi.FullName;
-                        listItem.Group = trackList.Groups[groupName];
+                        listItem.Group = listView.Groups[groupName];
                         listItem.SubItems.Add(relativePath);
                     }
                 }
@@ -271,29 +237,23 @@ namespace SphereStudio.Plugins.UI
                     // just pretend like nothing happened... :o)
                 }
             }
-            trackList.EndUpdate();
+            listView.EndUpdate();
         }
 
-        /// <summary>
-        /// Resets the sound engine and clears the playlist.
-        /// </summary>
-        public void Reset()
+        public void reset()
         {
-            StopMusic();
-            trackList.Items.Clear();
-            trackList.Groups.Clear();
+            stopPlayback();
+            listView.Items.Clear();
+            listView.Groups.Clear();
         }
 
-        /// <summary>
-        /// Stops any currently playing music
-        /// </summary>
-        public void StopMusic()
+        public void stopPlayback()
         {
-            if (_music != null) _music.Dispose();
+            if (player != null) player.Dispose();
 
-            trackNameLabel.Text = @"-";
-            playTool.Image = _playIcons.Images["stop"];
-            playTool.Text = @"Stopped";
+            trackNameLabel.Text = "-";
+            playTool.Image = playIcons.Images["stop"];
+            playTool.Text = "Stopped";
             pauseTool.CheckState = CheckState.Unchecked;
             pauseTool.Enabled = false;
             stopTool.Enabled = false;
@@ -306,26 +266,27 @@ namespace SphereStudio.Plugins.UI
 
         private void trackNameLabel_MouseClick(object sender, MouseEventArgs e)
         {
-            if (_music == null) return;
-            double delta = (double)e.X / trackNameLabel.Width;
-            _music.Position = (uint)(delta * _music.Length);
+            if (player == null)
+                return;
+            var delta = (double)e.X / trackNameLabel.Width;
+            player.Position = (uint)(delta * player.Length);
         }
 
         private void trackNameLabel_Paint(object sender, PaintEventArgs e)
         {
-            if (_music == null) return;
+            if (player == null) return;
 
-            int width = trackNameLabel.Width;
-            int height = trackNameLabel.Height;
-            double delta = _music.Position / (double)_music.Length;
+            var width = trackNameLabel.Width;
+            var height = trackNameLabel.Height;
+            var delta = player.Position / (double)player.Length;
 
             e.Graphics.Clear(Color.Black);
             e.Graphics.FillRectangle(_trackBackColor, 0, 0, (int)(delta * width), height);
             e.Graphics.FillRectangle(_trackForeColor, (int)(delta * width), 0, 2, height);
 
-            SizeF textsize = e.Graphics.MeasureString(trackNameLabel.Text, trackNameLabel.Font);
-            int x = width / 2 - (int)textsize.Width / 2;
-            int y = trackNameLabel.Height / 2 - (int)textsize.Height / 2;
+            var textSize = e.Graphics.MeasureString(trackNameLabel.Text, trackNameLabel.Font);
+            int x = width / 2 - (int)textSize.Width / 2;
+            int y = trackNameLabel.Height / 2 - (int)textSize.Height / 2;
 
             e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, Brushes.Black, x + 1, y + 1);
             e.Graphics.DrawString(trackNameLabel.Text, trackNameLabel.Font, _trackForeColor, x, y);
