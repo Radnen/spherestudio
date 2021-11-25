@@ -43,7 +43,7 @@ namespace SphereStudio.Plugins.Components
 
         public async Task<bool> Build(IProject project, string outPath, bool debuggable, IConsole con)
         {
-            con.Print("Compiling project for Sphere 1.x or compatible engine.\n");
+            con.Print($"building Sphere Classic project '{project.Name}'...\n");
 
             Directory.CreateDirectory(outPath);
 
@@ -51,7 +51,7 @@ namespace SphereStudio.Plugins.Components
             // just generate game.sgm in-place.
             if (Path.GetFullPath(project.RootPath) != Path.GetFullPath(outPath))
             {
-                con.Print("Installing assets... ");
+                con.Print("copying Sphere-compatible game files... ");
                 int installCount = 0;
                 await Task.Run(() =>
                 {
@@ -71,8 +71,9 @@ namespace SphereStudio.Plugins.Components
                             Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
                             if (!File.Exists(destFilePath) || File.GetLastWriteTimeUtc(destFilePath) < info.LastWriteTimeUtc)
                             {
-                                if (installCount == 0) con.Print("\n");
-                                con.Print("  " + relFilePath + "\n");
+                                if (installCount == 0)
+                                    con.Print("\n");
+                                con.Print($"      {relFilePath}\n");
                                 File.Copy(info.FullName, destFilePath, true);
                                 ++installCount;
                             }
@@ -80,12 +81,12 @@ namespace SphereStudio.Plugins.Components
                     }
                 });
                 if (installCount > 0)
-                    con.Print(string.Format("  {0} asset(s) installed\n", installCount));
+                    con.Print(string.Format("      {0} file(s) copied.\n", installCount));
                 else
-                    con.Print("Up to date.\n");
+                    con.Print("up to date.\n");
             }
 
-            con.Print("Writing game manifest... ");
+            con.Print("writing game manifest 'game.sgm'... ");
             string sgmPath = Path.Combine(outPath, "game.sgm");
             using (StreamWriter sw = new StreamWriter(sgmPath)) {
                 sw.WriteLine($"name={project.Name}");
@@ -97,7 +98,7 @@ namespace SphereStudio.Plugins.Components
             }
             con.Print("OK.\n");
 
-            con.Print("Success!\n");
+            con.Print("Sphere Classic build succeeded.\n");
             return true;
         }
     }
