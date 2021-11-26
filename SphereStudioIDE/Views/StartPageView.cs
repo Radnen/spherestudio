@@ -119,7 +119,7 @@ namespace SphereStudio.Ide.BuiltIns
                     var imageIndex = getImageIndex(projectRoot);
                     var proj = Project.Open(fileInfo.FullName);
                     var item = new ListViewItem(proj.Name, imageIndex) { Tag = fileInfo.FullName };
-                    item.SubItems.Add("Sphere 1.x");
+                    item.SubItems.Add("Sphere Game");
                     item.SubItems.Add(proj.Author);
                     item.SubItems.Add(fileInfo.FullName);
                     projectListView.Items.Add(item);
@@ -192,26 +192,27 @@ namespace SphereStudio.Ide.BuiltIns
         {
             using (OpenFileDialog diag = new OpenFileDialog())
             {
-                string selPath = Path.GetDirectoryName((string)selectedItem.Tag);
-                diag.Filter = @"image files (.png)|*.png";
-                diag.InitialDirectory = selPath;
-
+                var projectRoot = Path.GetDirectoryName((string)selectedItem.Tag);
+                var iconFilePath = Path.GetFullPath($@"{projectRoot}\icon.png");
+                diag.Filter = @"PNG Image Files (.png)|*.png";
+                diag.InitialDirectory = projectRoot;
                 if (diag.ShowDialog() == DialogResult.OK)
                 {
-                    if (diag.FileName == $@"{selPath}\icon.png") return;
-                    if (File.Exists($@"{selPath}\icon.png"))
-                        File.Delete($@"{selPath}\icon.png");
-                    File.Copy(diag.FileName, $@"{selPath}\icon.png");
+                    if (diag.FileName == iconFilePath)
+                        return;
+                    if (File.Exists(iconFilePath))
+                        File.Delete(iconFilePath);
+                    File.Copy(diag.FileName, iconFilePath);
 
                     if (selectedItem.ImageIndex == 0)
                     {
-                        _listIcons.Images.Add(Image.FromFile($@"{selPath}\icon.png"));
+                        _listIcons.Images.Add(Image.FromFile(iconFilePath));
                         selectedItem.ImageIndex = _listIcons.Images.Count - 1;
                     }
                     else
                     {
                         _listIcons.Images.RemoveAt(selectedItem.ImageIndex);
-                        _listIcons.Images.Add(Image.FromFile($@"{selPath}\icon.png"));
+                        _listIcons.Images.Add(Image.FromFile(iconFilePath));
                         selectedItem.ImageIndex = _listIcons.Images.Count - 1;
                     }
                     RepopulateProjects();
